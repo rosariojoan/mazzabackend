@@ -1,0 +1,110 @@
+input SignupInput {
+    companyInput: CreateCompanyInput!
+    userInput: CreateUserInput!
+}
+
+input invitedUserSignupInput {
+    userInput: CreateUserInput!
+    invitationToken: String!
+}
+
+input ResetPasswordInput {
+    token: String!
+    password: String!
+}
+
+input LoginInput {
+    username: String!
+    password: String!
+    fcmToken: String!
+}
+
+type LoginOutput {
+    user: User!
+    companyId: Int!
+    companies: [Company!]!
+    accessToken: String!
+    refreshToken: String!
+    ttl: Int!
+}
+
+
+extend type Query {
+    verifyPasswordResetToken(token: String!): Boolean!
+
+    companies(where: CompanyWhereInput): [Company!]!
+    customers(where: CustomerWhereInput): [Customer!]!
+    employees(where: EmployeeWhereInput): [Employee!]!
+    payables(where: PayableWhereInput): [Payable!]!
+    products(where: ProductWhereInput): [Product!]!
+    lowStock(where: ProductWhereInput): [Product!]!
+    numberOfProducts(where: ProductWhereInput): Int!
+    numberOfLowStock(where: ProductWhereInput): Int!
+    numberOfOutOfStock(where: ProductWhereInput): Int!
+
+    suppliers(where: SupplierWhereInput): [Supplier!]!
+    treasuries(where: TreasuryWhereInput): [Treasury!]!
+    users(where: UserWhereInput): [User!]!
+    userRoles(where: UserRoleWhereInput): [UserRole!]!
+
+    workShifts(where: WorkshiftWhereInput): [Workshift!]!
+
+    workTags(where: WorktagWhereInput): [Worktag!]!
+    workTasks(where: WorktaskWhereInput): [Worktask!]!
+}
+
+type Mutation {
+    # This is used to register a new company along with its admin
+    signup(input: SignupInput!): LoginOutput!
+    # This is meant to be used by an admin user logged into a parent company
+    createCompany(input: CreateCompanyInput): Company
+    
+    updateCompany(id: ID!, input: UpdateCompanyInput!): Company!
+    # removeCompany()
+
+    # Used to register users who were invited to join an existing company 
+    invitedUserSignup(input: invitedUserSignupInput!): User!
+    
+    # Probably will not be used: used to allow admin to register new users
+    createUser(input: CreateUserInput!): User
+
+    updateUser(id: ID!, input: UpdateUserInput!): User!
+    # login(input: LoginInput!): LoginOutput!
+    forgotPassword(username: String!): String!
+    resetPassword(input: ResetPasswordInput!): Boolean!
+    unsubscribe(id: ID!): Boolean!
+
+    createUserRole(input: CreateUserRoleInput!): Boolean!
+
+    createCustomer(input: CreateCustomerInput!): Customer
+    updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
+    deleteCustomer(id: ID!): Boolean!
+
+    createEmployee(input: CreateEmployeeInput!): Employee
+    updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
+    deleteEmployee(id: ID!): Boolean!
+
+    createProduct(input: CreateProductInput!): Product
+    updateProduct(id: ID!, input: UpdateProductInput!): Product!
+    deleteProduct(id: ID!): Boolean!
+
+    createSupplier(input: CreateSupplierInput!): Supplier
+    updateSupplier(id: ID!, input: UpdateSupplierInput!): Supplier!
+    deleteSupplier(id: ID!): Boolean!
+
+    createTreasury(input: CreateTreasuryInput!): Treasury
+    updateTreasury(id: ID!, input: UpdateTreasuryInput!): Treasury!
+    deleteTreasury(id: ID!): Boolean!
+
+    createWorkShift(input: CreateWorkshiftInput!): Workshift
+    updateWorkShift(id: ID!, input: UpdateWorkshiftInput!): Workshift!
+    deleteWorkShift(id: ID!): Boolean!
+
+    createWorkTask(input: CreateWorktaskInput!): Worktask
+    updateWorkTask(id: ID!, input: UpdateWorktaskInput!): Worktask!
+    deleteWorkTask(id: ID!): Boolean!
+
+    createWorkTag(input: CreateWorktagInput!): Worktag
+    updateWorkTag(id: ID!, input: UpdateWorktagInput!): Worktag!
+    deleteWorkTag(id: ID!): Boolean!
+}

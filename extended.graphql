@@ -1,0 +1,6 @@
+# Allow the creation of associated models from mutations
+
+extended input CreateCompanyInput {
+    createUser: [CreateUserInput!]
+    createDaughterCompany: [CreateDaughterCompanyInput!]
+}

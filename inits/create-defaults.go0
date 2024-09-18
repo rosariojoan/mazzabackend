@@ -1,0 +1,54 @@
+package inits
+
+import "mazza-backend/models"
+
+// import "mazza-backend/inits"
+
+// Create default product, client, and supplier.
+// This function is meant to be used only once, when a new company is being registered
+func CreateDefaultItems(company models.Company) {
+	descr := "Gerado automaticamente"
+	product := models.Product{
+		CompanyID:    company.ID,
+		Description:  &descr,
+		IsDefault:    true,
+		MinimumStock: 0,
+		Name:         "Produtos/serviços diversos",
+		Price:        0,
+		Sku:          "P0001",
+		Stock:        0,
+		Type:         models.ProductType.Other,
+		UnitCost:     0,
+	}
+
+	client := models.Client{
+		CompanyID:   company.ID,
+		Description: descr,
+		IsDefault:   true,
+		Name:        "Clientes diversos",
+		TaxID:       "----",
+	}
+
+	supplier := models.Supplier{
+		CompanyID:   company.ID,
+		Description: descr,
+		IsDefault:   true,
+		Name:        "Fornecedores diversos",
+		TaxID:       "----",
+	}
+
+	treasury := models.Treasury{
+		CompanyID:     company.ID,
+		Currency:      models.Currencies.MZN,
+		Description:   &descr,
+		IsDefault:     true,
+		IsMainAccount: true,
+		Name:          "Caixa e bancos - diversos",
+		Type:          models.TreasuryAccountType.Cash,
+	}
+
+	go DB.Create(&product)
+	go DB.Create(&client)
+	go DB.Create(&supplier)
+	go DB.Create(&treasury)
+}
