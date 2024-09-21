@@ -178,38 +178,38 @@ func (eu *EmployeeUpdate) SetUser(u *User) *EmployeeUpdate {
 	return eu.SetUserID(u.ID)
 }
 
-// AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
-func (eu *EmployeeUpdate) AddEmployeeIDs(ids ...int) *EmployeeUpdate {
-	eu.mutation.AddEmployeeIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (eu *EmployeeUpdate) AddSubordinateIDs(ids ...int) *EmployeeUpdate {
+	eu.mutation.AddSubordinateIDs(ids...)
 	return eu
 }
 
-// AddEmployees adds the "employees" edges to the Employee entity.
-func (eu *EmployeeUpdate) AddEmployees(e ...*Employee) *EmployeeUpdate {
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (eu *EmployeeUpdate) AddSubordinates(e ...*Employee) *EmployeeUpdate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return eu.AddEmployeeIDs(ids...)
+	return eu.AddSubordinateIDs(ids...)
 }
 
-// SetSupervisorID sets the "supervisor" edge to the Employee entity by ID.
-func (eu *EmployeeUpdate) SetSupervisorID(id int) *EmployeeUpdate {
-	eu.mutation.SetSupervisorID(id)
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (eu *EmployeeUpdate) SetLeaderID(id int) *EmployeeUpdate {
+	eu.mutation.SetLeaderID(id)
 	return eu
 }
 
-// SetNillableSupervisorID sets the "supervisor" edge to the Employee entity by ID if the given value is not nil.
-func (eu *EmployeeUpdate) SetNillableSupervisorID(id *int) *EmployeeUpdate {
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableLeaderID(id *int) *EmployeeUpdate {
 	if id != nil {
-		eu = eu.SetSupervisorID(*id)
+		eu = eu.SetLeaderID(*id)
 	}
 	return eu
 }
 
-// SetSupervisor sets the "supervisor" edge to the Employee entity.
-func (eu *EmployeeUpdate) SetSupervisor(e *Employee) *EmployeeUpdate {
-	return eu.SetSupervisorID(e.ID)
+// SetLeader sets the "leader" edge to the Employee entity.
+func (eu *EmployeeUpdate) SetLeader(e *Employee) *EmployeeUpdate {
+	return eu.SetLeaderID(e.ID)
 }
 
 // AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
@@ -274,30 +274,30 @@ func (eu *EmployeeUpdate) ClearUser() *EmployeeUpdate {
 	return eu
 }
 
-// ClearEmployees clears all "employees" edges to the Employee entity.
-func (eu *EmployeeUpdate) ClearEmployees() *EmployeeUpdate {
-	eu.mutation.ClearEmployees()
+// ClearSubordinates clears all "subordinates" edges to the Employee entity.
+func (eu *EmployeeUpdate) ClearSubordinates() *EmployeeUpdate {
+	eu.mutation.ClearSubordinates()
 	return eu
 }
 
-// RemoveEmployeeIDs removes the "employees" edge to Employee entities by IDs.
-func (eu *EmployeeUpdate) RemoveEmployeeIDs(ids ...int) *EmployeeUpdate {
-	eu.mutation.RemoveEmployeeIDs(ids...)
+// RemoveSubordinateIDs removes the "subordinates" edge to Employee entities by IDs.
+func (eu *EmployeeUpdate) RemoveSubordinateIDs(ids ...int) *EmployeeUpdate {
+	eu.mutation.RemoveSubordinateIDs(ids...)
 	return eu
 }
 
-// RemoveEmployees removes "employees" edges to Employee entities.
-func (eu *EmployeeUpdate) RemoveEmployees(e ...*Employee) *EmployeeUpdate {
+// RemoveSubordinates removes "subordinates" edges to Employee entities.
+func (eu *EmployeeUpdate) RemoveSubordinates(e ...*Employee) *EmployeeUpdate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return eu.RemoveEmployeeIDs(ids...)
+	return eu.RemoveSubordinateIDs(ids...)
 }
 
-// ClearSupervisor clears the "supervisor" edge to the Employee entity.
-func (eu *EmployeeUpdate) ClearSupervisor() *EmployeeUpdate {
-	eu.mutation.ClearSupervisor()
+// ClearLeader clears the "leader" edge to the Employee entity.
+func (eu *EmployeeUpdate) ClearLeader() *EmployeeUpdate {
+	eu.mutation.ClearLeader()
 	return eu
 }
 
@@ -515,12 +515,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if eu.mutation.EmployeesCleared() {
+	if eu.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -528,12 +528,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := eu.mutation.RemovedEmployeesIDs(); len(nodes) > 0 && !eu.mutation.EmployeesCleared() {
+	if nodes := eu.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !eu.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -544,12 +544,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := eu.mutation.EmployeesIDs(); len(nodes) > 0 {
+	if nodes := eu.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -560,12 +560,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if eu.mutation.SupervisorCleared() {
+	if eu.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.SupervisorTable,
-			Columns: []string{employee.SupervisorColumn},
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -573,12 +573,12 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := eu.mutation.SupervisorIDs(); len(nodes) > 0 {
+	if nodes := eu.mutation.LeaderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.SupervisorTable,
-			Columns: []string{employee.SupervisorColumn},
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -890,38 +890,38 @@ func (euo *EmployeeUpdateOne) SetUser(u *User) *EmployeeUpdateOne {
 	return euo.SetUserID(u.ID)
 }
 
-// AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
-func (euo *EmployeeUpdateOne) AddEmployeeIDs(ids ...int) *EmployeeUpdateOne {
-	euo.mutation.AddEmployeeIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (euo *EmployeeUpdateOne) AddSubordinateIDs(ids ...int) *EmployeeUpdateOne {
+	euo.mutation.AddSubordinateIDs(ids...)
 	return euo
 }
 
-// AddEmployees adds the "employees" edges to the Employee entity.
-func (euo *EmployeeUpdateOne) AddEmployees(e ...*Employee) *EmployeeUpdateOne {
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (euo *EmployeeUpdateOne) AddSubordinates(e ...*Employee) *EmployeeUpdateOne {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return euo.AddEmployeeIDs(ids...)
+	return euo.AddSubordinateIDs(ids...)
 }
 
-// SetSupervisorID sets the "supervisor" edge to the Employee entity by ID.
-func (euo *EmployeeUpdateOne) SetSupervisorID(id int) *EmployeeUpdateOne {
-	euo.mutation.SetSupervisorID(id)
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (euo *EmployeeUpdateOne) SetLeaderID(id int) *EmployeeUpdateOne {
+	euo.mutation.SetLeaderID(id)
 	return euo
 }
 
-// SetNillableSupervisorID sets the "supervisor" edge to the Employee entity by ID if the given value is not nil.
-func (euo *EmployeeUpdateOne) SetNillableSupervisorID(id *int) *EmployeeUpdateOne {
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableLeaderID(id *int) *EmployeeUpdateOne {
 	if id != nil {
-		euo = euo.SetSupervisorID(*id)
+		euo = euo.SetLeaderID(*id)
 	}
 	return euo
 }
 
-// SetSupervisor sets the "supervisor" edge to the Employee entity.
-func (euo *EmployeeUpdateOne) SetSupervisor(e *Employee) *EmployeeUpdateOne {
-	return euo.SetSupervisorID(e.ID)
+// SetLeader sets the "leader" edge to the Employee entity.
+func (euo *EmployeeUpdateOne) SetLeader(e *Employee) *EmployeeUpdateOne {
+	return euo.SetLeaderID(e.ID)
 }
 
 // AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
@@ -986,30 +986,30 @@ func (euo *EmployeeUpdateOne) ClearUser() *EmployeeUpdateOne {
 	return euo
 }
 
-// ClearEmployees clears all "employees" edges to the Employee entity.
-func (euo *EmployeeUpdateOne) ClearEmployees() *EmployeeUpdateOne {
-	euo.mutation.ClearEmployees()
+// ClearSubordinates clears all "subordinates" edges to the Employee entity.
+func (euo *EmployeeUpdateOne) ClearSubordinates() *EmployeeUpdateOne {
+	euo.mutation.ClearSubordinates()
 	return euo
 }
 
-// RemoveEmployeeIDs removes the "employees" edge to Employee entities by IDs.
-func (euo *EmployeeUpdateOne) RemoveEmployeeIDs(ids ...int) *EmployeeUpdateOne {
-	euo.mutation.RemoveEmployeeIDs(ids...)
+// RemoveSubordinateIDs removes the "subordinates" edge to Employee entities by IDs.
+func (euo *EmployeeUpdateOne) RemoveSubordinateIDs(ids ...int) *EmployeeUpdateOne {
+	euo.mutation.RemoveSubordinateIDs(ids...)
 	return euo
 }
 
-// RemoveEmployees removes "employees" edges to Employee entities.
-func (euo *EmployeeUpdateOne) RemoveEmployees(e ...*Employee) *EmployeeUpdateOne {
+// RemoveSubordinates removes "subordinates" edges to Employee entities.
+func (euo *EmployeeUpdateOne) RemoveSubordinates(e ...*Employee) *EmployeeUpdateOne {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return euo.RemoveEmployeeIDs(ids...)
+	return euo.RemoveSubordinateIDs(ids...)
 }
 
-// ClearSupervisor clears the "supervisor" edge to the Employee entity.
-func (euo *EmployeeUpdateOne) ClearSupervisor() *EmployeeUpdateOne {
-	euo.mutation.ClearSupervisor()
+// ClearLeader clears the "leader" edge to the Employee entity.
+func (euo *EmployeeUpdateOne) ClearLeader() *EmployeeUpdateOne {
+	euo.mutation.ClearLeader()
 	return euo
 }
 
@@ -1257,12 +1257,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if euo.mutation.EmployeesCleared() {
+	if euo.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -1270,12 +1270,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := euo.mutation.RemovedEmployeesIDs(); len(nodes) > 0 && !euo.mutation.EmployeesCleared() {
+	if nodes := euo.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !euo.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -1286,12 +1286,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := euo.mutation.EmployeesIDs(); len(nodes) > 0 {
+	if nodes := euo.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -1302,12 +1302,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if euo.mutation.SupervisorCleared() {
+	if euo.mutation.LeaderCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.SupervisorTable,
-			Columns: []string{employee.SupervisorColumn},
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -1315,12 +1315,12 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := euo.mutation.SupervisorIDs(); len(nodes) > 0 {
+	if nodes := euo.mutation.LeaderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.SupervisorTable,
-			Columns: []string{employee.SupervisorColumn},
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),

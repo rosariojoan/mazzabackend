@@ -3,7 +3,10 @@
 package mazza
 
 import (
+	"fmt"
+	"io"
 	"mazza/ent"
+	"strconv"
 )
 
 type LoginInput struct {
@@ -31,7 +34,59 @@ type SignupInput struct {
 	UserInput    *ent.CreateUserInput    `json:"userInput"`
 }
 
+type WorkShiftAggregationPayload struct {
+	Date              string `json:"date"`
+	Count             int    `json:"count"`
+	DurationInMinutes *int   `json:"durationInMinutes,omitempty"`
+	PendingCount      *int   `json:"pendingCount,omitempty"`
+}
+
 type InvitedUserSignupInput struct {
 	UserInput       *ent.CreateUserInput `json:"userInput"`
 	InvitationToken string               `json:"invitationToken"`
+}
+
+type ShiftGroupBy string
+
+const (
+	ShiftGroupByApprovedAt ShiftGroupBy = "APPROVED_AT"
+	ShiftGroupByClockIn    ShiftGroupBy = "CLOCK_IN"
+	ShiftGroupByClockOut   ShiftGroupBy = "CLOCK_OUT"
+	ShiftGroupByStatus     ShiftGroupBy = "STATUS"
+)
+
+var AllShiftGroupBy = []ShiftGroupBy{
+	ShiftGroupByApprovedAt,
+	ShiftGroupByClockIn,
+	ShiftGroupByClockOut,
+	ShiftGroupByStatus,
+}
+
+func (e ShiftGroupBy) IsValid() bool {
+	switch e {
+	case ShiftGroupByApprovedAt, ShiftGroupByClockIn, ShiftGroupByClockOut, ShiftGroupByStatus:
+		return true
+	}
+	return false
+}
+
+func (e ShiftGroupBy) String() string {
+	return string(e)
+}
+
+func (e *ShiftGroupBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ShiftGroupBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ShiftGroupBy", str)
+	}
+	return nil
+}
+
+func (e ShiftGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

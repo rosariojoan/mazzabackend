@@ -16,7 +16,7 @@ var (
 	FirebaseStorage *storage.BucketHandle
 )
 
-func InitFirebase() {
+func InitFirebase() error {
 	ctx := context.Background()
 	config := &firebase.Config{StorageBucket: os.Getenv("FIREBASE_BUCKET")}
 	opt := option.WithCredentialsFile(os.Getenv("FIREBASE_CONFIG_FILE"))
@@ -26,11 +26,13 @@ func InitFirebase() {
 		log.Fatal("Firebase initialization error:", err)
 	}
 
+	// Initialize Messaging client
 	FCM, err = app.Messaging(ctx)
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
 	}
 
+	// Initialize Storage client
 	client, err := app.Storage(ctx)
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
@@ -40,4 +42,6 @@ func InitFirebase() {
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
 	}
+
+	return err
 }

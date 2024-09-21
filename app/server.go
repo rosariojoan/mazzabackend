@@ -14,6 +14,8 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-gonic/gin"
+
+	_ "mazza/ent/runtime"  // to avoid import cycle error. See: entgo.io/docs/hooks
 )
 
 const defaultPort = "8080"

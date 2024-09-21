@@ -265,13 +265,15 @@ func (r *mutationResolver) DeleteTreasury(ctx context.Context, id int) (bool, er
 func (r *mutationResolver) CreateWorkShift(ctx context.Context, input ent.CreateWorkshiftInput) (*ent.Workshift, error) {
 	_, currentCompany, employeeID := utils.GetSession(&ctx)
 	var clockIn time.Time
-	if input.EditRequestID == nil {
+	fmt.Println("## edit iD:", input.EditRequestID)
+	// Clock-in is the current time if this is a workshift
+	if input.WorkShiftID == nil {
 		clockIn = time.Now()
 	} else {
+		// If it is a edit request, clock-in is the given input
 		clockIn = *input.ClockIn
 	}
-	fmt.Println(&input)
-
+	fmt.Println("** emp  id:", employeeID)
 	return r.client.Workshift.Create().SetInput(input).
 		SetCompanyID(currentCompany.ID).
 		SetEmployeeID(*employeeID).
@@ -283,6 +285,7 @@ func (r *mutationResolver) CreateWorkShift(ctx context.Context, input ent.Create
 func (r *mutationResolver) UpdateWorkShift(ctx context.Context, id int, input ent.UpdateWorkshiftInput) (*ent.Workshift, error) {
 	companyQ := utils.CurrentCompanyQuery(&ctx)
 	filter := workshift.HasCompanyWith(companyQ)
+
 	return ent.FromContext(ctx).Workshift.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
 }
 
@@ -315,7 +318,7 @@ func (r *mutationResolver) UpdateWorkTask(ctx context.Context, id int, input ent
 func (r *mutationResolver) DeleteWorkTask(ctx context.Context, id int) (bool, error) {
 	companyQ := utils.CurrentCompanyQuery(&ctx)
 	filter := worktask.HasCompanyWith(companyQ)
-	// r.client.Workshift.Query().GroupBy().Aggregate()
+
 	if err := ent.FromContext(ctx).Worktask.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
 		return false, err
 	}
@@ -501,6 +504,64 @@ func (r *queryResolver) WorkShifts(ctx context.Context, where *ent.WorkshiftWher
 		return nil, err
 	}
 	return query.All(ctx)
+}
+
+// AggregateWorkShift is the resolver for the aggregateWorkShift field.
+func (r *queryResolver) AggregateWorkShift(ctx context.Context, where *ent.WorkshiftWhereInput, groupBy []ShiftGroupBy) ([]*WorkShiftAggregationPayload, error) {
+	_, _, employeeID := utils.GetSession(&ctx)
+	var payload = []*WorkShiftAggregationPayload{}
+
+	var result []struct {
+		ClockIn           time.Time `json:"clock_in"`
+		Count             int       `json:"count"`
+		DurationInMinutes int       `json:"durationinminutes,omitempty"`
+		PendingCount      int       `json:"pendingcount"`
+		Status            string    `json:"status"`
+		Employee          int       `json:"employee_work_shifts"`
+	}
+
+	// DurationInMinutes is an aggregate function to calculate the duration between clockIn and clockOut
+	duration := func(s *sql.Selector) string {
+		return "ROUND(SUM(EXTRACT(EPOCH FROM (clock_out - clock_in)) / 60))::INT AS durationInMinutes," +
+			"(status = 'PENDING')::INT as pendingCount"
+	}
+
+	query, err := where.Filter(
+		r.client.Workshift.Query().
+			Where(workshift.HasEmployeeWith(employee.IDEQ(*employeeID))),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = query.Order(ent.Desc(workshift.FieldClockIn)).
+		GroupBy(workshift.FieldClockIn, workshift.FieldStatus). //, workshift.EmployeeColumn
+		Aggregate(ent.Count(), duration).Scan(ctx, &result)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i, rs := range result {
+		date := rs.ClockIn.Format("2006-01-02")
+		lastIdx := len(payload) - 1
+
+		if i == 0 || (i > 0 && payload[lastIdx].Date != date) {
+			payload = append(payload, &WorkShiftAggregationPayload{
+				Date:              date,
+				Count:             1,
+				DurationInMinutes: &rs.DurationInMinutes,
+				PendingCount:      &rs.PendingCount,
+			})
+		} else {
+			payload[lastIdx].Count += rs.Count
+			*payload[lastIdx].DurationInMinutes += rs.DurationInMinutes
+			*payload[lastIdx].PendingCount += rs.PendingCount
+		}
+	}
+
+	return payload, nil
 }
 
 // WorkTags is the resolver for the workTags field.

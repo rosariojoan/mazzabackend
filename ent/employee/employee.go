@@ -37,10 +37,10 @@ const (
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
-	// EdgeEmployees holds the string denoting the employees edge name in mutations.
-	EdgeEmployees = "employees"
-	// EdgeSupervisor holds the string denoting the supervisor edge name in mutations.
-	EdgeSupervisor = "supervisor"
+	// EdgeSubordinates holds the string denoting the subordinates edge name in mutations.
+	EdgeSubordinates = "subordinates"
+	// EdgeLeader holds the string denoting the leader edge name in mutations.
+	EdgeLeader = "leader"
 	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
 	EdgeWorkShifts = "workShifts"
 	// EdgeApprovedWorkShifts holds the string denoting the approvedworkshifts edge name in mutations.
@@ -63,14 +63,14 @@ const (
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_employee"
-	// EmployeesTable is the table that holds the employees relation/edge.
-	EmployeesTable = "employees"
-	// EmployeesColumn is the table column denoting the employees relation/edge.
-	EmployeesColumn = "employee_employees"
-	// SupervisorTable is the table that holds the supervisor relation/edge.
-	SupervisorTable = "employees"
-	// SupervisorColumn is the table column denoting the supervisor relation/edge.
-	SupervisorColumn = "employee_employees"
+	// SubordinatesTable is the table that holds the subordinates relation/edge.
+	SubordinatesTable = "employees"
+	// SubordinatesColumn is the table column denoting the subordinates relation/edge.
+	SubordinatesColumn = "employee_subordinates"
+	// LeaderTable is the table that holds the leader relation/edge.
+	LeaderTable = "employees"
+	// LeaderColumn is the table column denoting the leader relation/edge.
+	LeaderColumn = "employee_subordinates"
 	// WorkShiftsTable is the table that holds the workShifts relation/edge.
 	WorkShiftsTable = "workshifts"
 	// WorkShiftsInverseTable is the table name for the Workshift entity.
@@ -109,7 +109,7 @@ var Columns = []string{
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_employees",
-	"employee_employees",
+	"employee_subordinates",
 	"user_employee",
 }
 
@@ -230,24 +230,24 @@ func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByEmployeesCount orders the results by employees count.
-func ByEmployeesCount(opts ...sql.OrderTermOption) OrderOption {
+// BySubordinatesCount orders the results by subordinates count.
+func BySubordinatesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newEmployeesStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSubordinatesStep(), opts...)
 	}
 }
 
-// ByEmployees orders the results by employees terms.
-func ByEmployees(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySubordinates orders the results by subordinates terms.
+func BySubordinates(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newEmployeesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSubordinatesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// BySupervisorField orders the results by supervisor field.
-func BySupervisorField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByLeaderField orders the results by leader field.
+func ByLeaderField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newSupervisorStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newLeaderStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -306,18 +306,18 @@ func newUserStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2O, true, UserTable, UserColumn),
 	)
 }
-func newEmployeesStep() *sqlgraph.Step {
+func newSubordinatesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(Table, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, EmployeesTable, EmployeesColumn),
+		sqlgraph.Edge(sqlgraph.O2M, false, SubordinatesTable, SubordinatesColumn),
 	)
 }
-func newSupervisorStep() *sqlgraph.Step {
+func newLeaderStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(Table, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, SupervisorTable, SupervisorColumn),
+		sqlgraph.Edge(sqlgraph.M2O, true, LeaderTable, LeaderColumn),
 	)
 }
 func newWorkShiftsStep() *sqlgraph.Step {

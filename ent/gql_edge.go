@@ -244,22 +244,22 @@ func (e *Employee) User(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
-func (e *Employee) Employees(ctx context.Context) (result []*Employee, err error) {
+func (e *Employee) Subordinates(ctx context.Context) (result []*Employee, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = e.NamedEmployees(graphql.GetFieldContext(ctx).Field.Alias)
+		result, err = e.NamedSubordinates(graphql.GetFieldContext(ctx).Field.Alias)
 	} else {
-		result, err = e.Edges.EmployeesOrErr()
+		result, err = e.Edges.SubordinatesOrErr()
 	}
 	if IsNotLoaded(err) {
-		result, err = e.QueryEmployees().All(ctx)
+		result, err = e.QuerySubordinates().All(ctx)
 	}
 	return result, err
 }
 
-func (e *Employee) Supervisor(ctx context.Context) (*Employee, error) {
-	result, err := e.Edges.SupervisorOrErr()
+func (e *Employee) Leader(ctx context.Context) (*Employee, error) {
+	result, err := e.Edges.LeaderOrErr()
 	if IsNotLoaded(err) {
-		result, err = e.QuerySupervisor().Only(ctx)
+		result, err = e.QueryLeader().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }

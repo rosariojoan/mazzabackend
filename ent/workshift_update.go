@@ -356,7 +356,9 @@ func (wu *WorkshiftUpdate) ClearWorkShift() *WorkshiftUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (wu *WorkshiftUpdate) Save(ctx context.Context) (int, error) {
-	wu.defaults()
+	if err := wu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, wu.sqlSave, wu.mutation, wu.hooks)
 }
 
@@ -383,11 +385,15 @@ func (wu *WorkshiftUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (wu *WorkshiftUpdate) defaults() {
+func (wu *WorkshiftUpdate) defaults() error {
 	if _, ok := wu.mutation.UpdatedAt(); !ok {
+		if workshift.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized workshift.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := workshift.UpdateDefaultUpdatedAt()
 		wu.mutation.SetUpdatedAt(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -992,7 +998,9 @@ func (wuo *WorkshiftUpdateOne) Select(field string, fields ...string) *Workshift
 
 // Save executes the query and returns the updated Workshift entity.
 func (wuo *WorkshiftUpdateOne) Save(ctx context.Context) (*Workshift, error) {
-	wuo.defaults()
+	if err := wuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, wuo.sqlSave, wuo.mutation, wuo.hooks)
 }
 
@@ -1019,11 +1027,15 @@ func (wuo *WorkshiftUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (wuo *WorkshiftUpdateOne) defaults() {
+func (wuo *WorkshiftUpdateOne) defaults() error {
 	if _, ok := wuo.mutation.UpdatedAt(); !ok {
+		if workshift.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized workshift.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := workshift.UpdateDefaultUpdatedAt()
 		wuo.mutation.SetUpdatedAt(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.

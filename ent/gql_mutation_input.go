@@ -878,8 +878,8 @@ type CreateEmployeeInput struct {
 	Phone                string
 	CompanyID            *int
 	UserID               *int
-	EmployeeIDs          []int
-	SupervisorID         *int
+	SubordinateIDs       []int
+	LeaderID             *int
 	WorkShiftIDs         []int
 	ApprovedWorkShiftIDs []int
 	AssignedTaskIDs      []int
@@ -911,11 +911,11 @@ func (i *CreateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
-	if v := i.EmployeeIDs; len(v) > 0 {
-		m.AddEmployeeIDs(v...)
+	if v := i.SubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
 	}
-	if v := i.SupervisorID; v != nil {
-		m.SetSupervisorID(*v)
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 	if v := i.WorkShiftIDs; len(v) > 0 {
 		m.AddWorkShiftIDs(v...)
@@ -950,11 +950,11 @@ type UpdateEmployeeInput struct {
 	CompanyID                  *int
 	ClearUser                  bool
 	UserID                     *int
-	ClearEmployees             bool
-	AddEmployeeIDs             []int
-	RemoveEmployeeIDs          []int
-	ClearSupervisor            bool
-	SupervisorID               *int
+	ClearSubordinates          bool
+	AddSubordinateIDs          []int
+	RemoveSubordinateIDs       []int
+	ClearLeader                bool
+	LeaderID                   *int
 	ClearWorkShifts            bool
 	AddWorkShiftIDs            []int
 	RemoveWorkShiftIDs         []int
@@ -1010,20 +1010,20 @@ func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
-	if i.ClearEmployees {
-		m.ClearEmployees()
+	if i.ClearSubordinates {
+		m.ClearSubordinates()
 	}
-	if v := i.AddEmployeeIDs; len(v) > 0 {
-		m.AddEmployeeIDs(v...)
+	if v := i.AddSubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
 	}
-	if v := i.RemoveEmployeeIDs; len(v) > 0 {
-		m.RemoveEmployeeIDs(v...)
+	if v := i.RemoveSubordinateIDs; len(v) > 0 {
+		m.RemoveSubordinateIDs(v...)
 	}
-	if i.ClearSupervisor {
-		m.ClearSupervisor()
+	if i.ClearLeader {
+		m.ClearLeader()
 	}
-	if v := i.SupervisorID; v != nil {
-		m.SetSupervisorID(*v)
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 	if i.ClearWorkShifts {
 		m.ClearWorkShifts()

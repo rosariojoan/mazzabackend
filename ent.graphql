@@ -986,8 +986,8 @@ input CreateEmployeeInput {
   phone: String!
   companyID: ID
   userID: ID
-  employeeIDs: [ID!]
-  supervisorID: ID
+  subordinateIDs: [ID!]
+  leaderID: ID
   workshiftIDs: [ID!]
   approvedworkshiftIDs: [ID!]
   assignedtaskIDs: [ID!]
@@ -1455,8 +1455,8 @@ type Employee implements Node {
   phone: String!
   company: Company
   user: User
-  employees: [Employee!]
-  supervisor: Employee
+  subordinates: [Employee!]
+  leader: Employee
   workshifts: [Workshift!] @goField(name: "WorkShifts", forceResolver: false)
   approvedworkshifts: [Workshift!] @goField(name: "ApprovedWorkShifts", forceResolver: false)
   assignedtasks: [Worktask!] @goField(name: "AssignedTasks", forceResolver: false)
@@ -1608,15 +1608,15 @@ input EmployeeWhereInput {
   hasUser: Boolean
   hasUserWith: [UserWhereInput!]
   """
-  employees edge predicates
+  subordinates edge predicates
   """
-  hasEmployees: Boolean
-  hasEmployeesWith: [EmployeeWhereInput!]
+  hasSubordinates: Boolean
+  hasSubordinatesWith: [EmployeeWhereInput!]
   """
-  supervisor edge predicates
+  leader edge predicates
   """
-  hasSupervisor: Boolean
-  hasSupervisorWith: [EmployeeWhereInput!]
+  hasLeader: Boolean
+  hasLeaderWith: [EmployeeWhereInput!]
   """
   workShifts edge predicates
   """
@@ -3443,11 +3443,11 @@ input UpdateEmployeeInput {
   clearCompany: Boolean
   userID: ID
   clearUser: Boolean
-  addEmployeeIDs: [ID!]
-  removeEmployeeIDs: [ID!]
-  clearEmployees: Boolean
-  supervisorID: ID
-  clearSupervisor: Boolean
+  addSubordinateIDs: [ID!]
+  removeSubordinateIDs: [ID!]
+  clearSubordinates: Boolean
+  leaderID: ID
+  clearLeader: Boolean
   addWorkShiftIDs: [ID!]
   removeWorkShiftIDs: [ID!]
   clearWorkShifts: Boolean
@@ -4074,6 +4074,28 @@ type Workshift implements Node {
   worktask: Worktask @goField(name: "WorkTask", forceResolver: false)
   editrequest: Workshift @goField(name: "EditRequest", forceResolver: false)
   workshift: Workshift @goField(name: "WorkShift", forceResolver: false)
+}
+"""
+Ordering options for Workshift connections
+"""
+input WorkshiftOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Workshifts.
+  """
+  field: WorkshiftOrderField!
+}
+"""
+Properties by which Workshift connections can be ordered.
+"""
+enum WorkshiftOrderField {
+  APPROVED_AT
+  CLOCK_IN
+  CLOCK_OUT
+  STATUS
 }
 """
 WorkshiftStatus is enum for the field status

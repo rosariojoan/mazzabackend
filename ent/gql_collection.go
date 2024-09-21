@@ -856,7 +856,7 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			e.withUser = query
-		case "employees":
+		case "subordinates":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -865,10 +865,10 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			e.WithNamedEmployees(alias, func(wq *EmployeeQuery) {
+			e.WithNamedSubordinates(alias, func(wq *EmployeeQuery) {
 				*wq = *query
 			})
-		case "supervisor":
+		case "leader":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -877,7 +877,7 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			e.withSupervisor = query
+			e.withLeader = query
 		case "workshifts":
 			var (
 				alias = field.Alias
@@ -2538,6 +2538,34 @@ func newWorkshiftPaginateArgs(rv map[string]any) *workshiftPaginateArgs {
 	}
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*WorkshiftOrder:
+			args.opts = append(args.opts, WithWorkshiftOrder(v))
+		case []any:
+			var orders []*WorkshiftOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &WorkshiftOrder{Field: &WorkshiftOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithWorkshiftOrder(orders))
+		}
 	}
 	if v, ok := rv[whereField].(*WorkshiftWhereInput); ok {
 		args.opts = append(args.opts, WithWorkshiftFilter(v.Filter))

@@ -566,21 +566,21 @@ func HasUserWith(preds ...predicate.User) predicate.Employee {
 	})
 }
 
-// HasEmployees applies the HasEdge predicate on the "employees" edge.
-func HasEmployees() predicate.Employee {
+// HasSubordinates applies the HasEdge predicate on the "subordinates" edge.
+func HasSubordinates() predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, EmployeesTable, EmployeesColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, SubordinatesTable, SubordinatesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasEmployeesWith applies the HasEdge predicate on the "employees" edge with a given conditions (other predicates).
-func HasEmployeesWith(preds ...predicate.Employee) predicate.Employee {
+// HasSubordinatesWith applies the HasEdge predicate on the "subordinates" edge with a given conditions (other predicates).
+func HasSubordinatesWith(preds ...predicate.Employee) predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
-		step := newEmployeesStep()
+		step := newSubordinatesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -589,21 +589,21 @@ func HasEmployeesWith(preds ...predicate.Employee) predicate.Employee {
 	})
 }
 
-// HasSupervisor applies the HasEdge predicate on the "supervisor" edge.
-func HasSupervisor() predicate.Employee {
+// HasLeader applies the HasEdge predicate on the "leader" edge.
+func HasLeader() predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, SupervisorTable, SupervisorColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, LeaderTable, LeaderColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasSupervisorWith applies the HasEdge predicate on the "supervisor" edge with a given conditions (other predicates).
-func HasSupervisorWith(preds ...predicate.Employee) predicate.Employee {
+// HasLeaderWith applies the HasEdge predicate on the "leader" edge with a given conditions (other predicates).
+func HasLeaderWith(preds ...predicate.Employee) predicate.Employee {
 	return predicate.Employee(func(s *sql.Selector) {
-		step := newSupervisorStep()
+		step := newLeaderStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

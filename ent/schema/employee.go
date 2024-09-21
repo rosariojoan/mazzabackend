@@ -36,8 +36,8 @@ func (Employee) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("employees").Unique(),
 		edge.From("user", User.Type).Ref("employee").Unique(),
-		edge.To("employees", Employee.Type).Annotations(entsql.OnDelete(entsql.SetNull)), // an employee can be a supervisor of many employees
-		edge.From("supervisor", Employee.Type).Ref("employees").Unique(),                 // an employee can have only one supervisor
+		edge.To("subordinates", Employee.Type).Annotations(entsql.OnDelete(entsql.SetNull)), // an employee can be a leader of many employees
+		edge.From("leader", Employee.Type).Ref("subordinates").Unique(),                     // an employee can have only one leader
 		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 		edge.To("approvedWorkShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 		edge.To("assignedTasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.SetNull)),

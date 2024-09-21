@@ -150,38 +150,38 @@ func (ec *EmployeeCreate) SetUser(u *User) *EmployeeCreate {
 	return ec.SetUserID(u.ID)
 }
 
-// AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
-func (ec *EmployeeCreate) AddEmployeeIDs(ids ...int) *EmployeeCreate {
-	ec.mutation.AddEmployeeIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (ec *EmployeeCreate) AddSubordinateIDs(ids ...int) *EmployeeCreate {
+	ec.mutation.AddSubordinateIDs(ids...)
 	return ec
 }
 
-// AddEmployees adds the "employees" edges to the Employee entity.
-func (ec *EmployeeCreate) AddEmployees(e ...*Employee) *EmployeeCreate {
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (ec *EmployeeCreate) AddSubordinates(e ...*Employee) *EmployeeCreate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ec.AddEmployeeIDs(ids...)
+	return ec.AddSubordinateIDs(ids...)
 }
 
-// SetSupervisorID sets the "supervisor" edge to the Employee entity by ID.
-func (ec *EmployeeCreate) SetSupervisorID(id int) *EmployeeCreate {
-	ec.mutation.SetSupervisorID(id)
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (ec *EmployeeCreate) SetLeaderID(id int) *EmployeeCreate {
+	ec.mutation.SetLeaderID(id)
 	return ec
 }
 
-// SetNillableSupervisorID sets the "supervisor" edge to the Employee entity by ID if the given value is not nil.
-func (ec *EmployeeCreate) SetNillableSupervisorID(id *int) *EmployeeCreate {
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableLeaderID(id *int) *EmployeeCreate {
 	if id != nil {
-		ec = ec.SetSupervisorID(*id)
+		ec = ec.SetLeaderID(*id)
 	}
 	return ec
 }
 
-// SetSupervisor sets the "supervisor" edge to the Employee entity.
-func (ec *EmployeeCreate) SetSupervisor(e *Employee) *EmployeeCreate {
-	return ec.SetSupervisorID(e.ID)
+// SetLeader sets the "leader" edge to the Employee entity.
+func (ec *EmployeeCreate) SetLeader(e *Employee) *EmployeeCreate {
+	return ec.SetLeaderID(e.ID)
 }
 
 // AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
@@ -393,12 +393,12 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 		_node.user_employee = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := ec.mutation.EmployeesIDs(); len(nodes) > 0 {
+	if nodes := ec.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   employee.EmployeesTable,
-			Columns: []string{employee.EmployeesColumn},
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
 			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -409,12 +409,12 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := ec.mutation.SupervisorIDs(); len(nodes) > 0 {
+	if nodes := ec.mutation.LeaderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   employee.SupervisorTable,
-			Columns: []string{employee.SupervisorColumn},
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
@@ -423,7 +423,7 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.employee_employees = &nodes[0]
+		_node.employee_subordinates = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := ec.mutation.WorkShiftsIDs(); len(nodes) > 0 {

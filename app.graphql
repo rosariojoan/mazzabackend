@@ -28,6 +28,21 @@ type LoginOutput {
     ttl: Int!
 }
 
+enum ShiftGroupBy {
+  APPROVED_AT
+  CLOCK_IN
+  CLOCK_OUT
+  STATUS
+}
+
+type WorkShiftAggregationPayload {
+  date: String!
+  count: Int!
+  durationInMinutes: Int
+  pendingCount: Int
+  # You can add other aggregations here, like sum, avg, etc.
+}
+
 
 extend type Query {
     verifyPasswordResetToken(token: String!): Boolean!
@@ -48,6 +63,8 @@ extend type Query {
     userRoles(where: UserRoleWhereInput): [UserRole!]!
 
     workShifts(where: WorkshiftWhereInput): [Workshift!]!
+    aggregateWorkShift(where: WorkshiftWhereInput, groupBy: [ShiftGroupBy!]!): [WorkShiftAggregationPayload!]!
+    # workshiftGroupBy(where: WorkshiftWhereInput): [WorkshiftGroupByPayload!]!
 
     workTags(where: WorktagWhereInput): [Worktag!]!
     workTasks(where: WorktaskWhereInput): [Worktask!]!

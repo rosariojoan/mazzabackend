@@ -3372,13 +3372,13 @@ type EmployeeWhereInput struct {
 	HasUser     *bool             `json:"hasUser,omitempty"`
 	HasUserWith []*UserWhereInput `json:"hasUserWith,omitempty"`
 
-	// "employees" edge predicates.
-	HasEmployees     *bool                 `json:"hasEmployees,omitempty"`
-	HasEmployeesWith []*EmployeeWhereInput `json:"hasEmployeesWith,omitempty"`
+	// "subordinates" edge predicates.
+	HasSubordinates     *bool                 `json:"hasSubordinates,omitempty"`
+	HasSubordinatesWith []*EmployeeWhereInput `json:"hasSubordinatesWith,omitempty"`
 
-	// "supervisor" edge predicates.
-	HasSupervisor     *bool                 `json:"hasSupervisor,omitempty"`
-	HasSupervisorWith []*EmployeeWhereInput `json:"hasSupervisorWith,omitempty"`
+	// "leader" edge predicates.
+	HasLeader     *bool                 `json:"hasLeader,omitempty"`
+	HasLeaderWith []*EmployeeWhereInput `json:"hasLeaderWith,omitempty"`
 
 	// "workShifts" edge predicates.
 	HasWorkShifts     *bool                  `json:"hasWorkShifts,omitempty"`
@@ -3783,41 +3783,41 @@ func (i *EmployeeWhereInput) P() (predicate.Employee, error) {
 		}
 		predicates = append(predicates, employee.HasUserWith(with...))
 	}
-	if i.HasEmployees != nil {
-		p := employee.HasEmployees()
-		if !*i.HasEmployees {
+	if i.HasSubordinates != nil {
+		p := employee.HasSubordinates()
+		if !*i.HasSubordinates {
 			p = employee.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasEmployeesWith) > 0 {
-		with := make([]predicate.Employee, 0, len(i.HasEmployeesWith))
-		for _, w := range i.HasEmployeesWith {
+	if len(i.HasSubordinatesWith) > 0 {
+		with := make([]predicate.Employee, 0, len(i.HasSubordinatesWith))
+		for _, w := range i.HasSubordinatesWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasEmployeesWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasSubordinatesWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, employee.HasEmployeesWith(with...))
+		predicates = append(predicates, employee.HasSubordinatesWith(with...))
 	}
-	if i.HasSupervisor != nil {
-		p := employee.HasSupervisor()
-		if !*i.HasSupervisor {
+	if i.HasLeader != nil {
+		p := employee.HasLeader()
+		if !*i.HasLeader {
 			p = employee.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasSupervisorWith) > 0 {
-		with := make([]predicate.Employee, 0, len(i.HasSupervisorWith))
-		for _, w := range i.HasSupervisorWith {
+	if len(i.HasLeaderWith) > 0 {
+		with := make([]predicate.Employee, 0, len(i.HasLeaderWith))
+		for _, w := range i.HasLeaderWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasSupervisorWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasLeaderWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, employee.HasSupervisorWith(with...))
+		predicates = append(predicates, employee.HasLeaderWith(with...))
 	}
 	if i.HasWorkShifts != nil {
 		p := employee.HasWorkShifts()

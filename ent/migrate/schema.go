@@ -183,7 +183,7 @@ var (
 		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString},
 		{Name: "company_employees", Type: field.TypeInt, Nullable: true},
-		{Name: "employee_employees", Type: field.TypeInt, Nullable: true},
+		{Name: "employee_subordinates", Type: field.TypeInt, Nullable: true},
 		{Name: "user_employee", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// EmployeesTable holds the schema information for the "employees" table.
@@ -199,7 +199,7 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "employees_employees_employees",
+				Symbol:     "employees_employees_subordinates",
 				Columns:    []*schema.Column{EmployeesColumns[10]},
 				RefColumns: []*schema.Column{EmployeesColumns[0]},
 				OnDelete:   schema.SetNull,

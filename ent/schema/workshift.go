@@ -1,6 +1,15 @@
 package schema
 
 import (
+	"context"
+	"fmt"
+	"mazza/app/notifications"
+	"mazza/app/utils"
+	gen "mazza/ent"
+	"mazza/ent/employee"
+	"mazza/ent/hook"
+	"mazza/ent/user"
+	"mazza/ent/workshift"
 	"time"
 
 	"entgo.io/contrib/entgql"
@@ -15,11 +24,11 @@ type Workshift struct {
 	ent.Schema
 }
 
-type Location struct {
-	Latitude    float64 `json:"latitude"`
-	Longitude   float64 `json:"longitude"`
-	Description string  `json:"description"`
-}
+// type Location struct {
+// 	Latitude    float64 `json:"latitude"`
+// 	Longitude   float64 `json:"longitude"`
+// 	Description string  `json:"description"`
+// }
 
 func (Workshift) Mixin() []ent.Mixin {
 	return []ent.Mixin{
@@ -30,14 +39,14 @@ func (Workshift) Mixin() []ent.Mixin {
 // Fields of the Workshift.
 func (Workshift) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("approvedAt").Nillable().Optional().Comment("time that this shift was approved by the supervisor"),
-		field.Time("clockIn").Default(time.Now),
-		field.Time("clockOut").Nillable().Optional(),
+		field.Time("approvedAt").Nillable().Optional().Annotations(entgql.OrderField("APPROVED_AT")).Comment("time that this shift was approved by the supervisor"),
+		field.Time("clockIn").Default(time.Now).Annotations(entgql.OrderField("CLOCK_IN")),
+		field.Time("clockOut").Nillable().Optional().Annotations(entgql.OrderField("CLOCK_OUT")),
 		field.String("clockInLocation").Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
 		field.String("clockOutLocation").Optional().Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
 		field.String("description").Optional(),
 		field.String("note").Optional().Comment("this is only used when the current item is a shift edit request"),
-		field.Enum("status").Values("APPROVED", "PENDING").Default("PENDING"),
+		field.Enum("status").Values("APPROVED", "PENDING").Default("PENDING").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
@@ -58,5 +67,133 @@ func (Workshift) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+		entgql.MultiOrder(),
+		// entgql.Type("WorkshiftGroupBy"),
+	}
+}
+
+// Hooks of the card. Send notification:
+// to the employee's leader on shift creation
+// to the employee on shift approval
+func (Workshift) Hooks() []ent.Hook {
+	return []ent.Hook{
+		hook.On(
+			func(next ent.Mutator) ent.Mutator {
+				return hook.WorkshiftFunc(func(ctx context.Context, m *gen.WorkshiftMutation) (ent.Value, error) {
+					fmt.Println("## update")
+					// On clock-out, if the employee has a leader, set status to "PENDING", otherwise set status "APPROVED"
+					employeeID, exists := m.EmployeeID()
+					if !exists {
+						_, _, employeeID_ := utils.GetSession(&ctx)
+						employeeID = *employeeID_
+						// return next.Mutate(ctx, m)
+					}
+
+					leader, err := m.Client().Employee.Query().Where(employee.IDEQ(employeeID)).
+						QueryLeader().QueryUser().Select(user.FieldID, user.FieldFcmToken).First(ctx)
+					fmt.Println("&& update leader:", leader, err)
+					if err != nil {
+						// This employee does not have a leader, so his workshift status is automatically approved.
+						// Proceed with the mutation operation and return.
+						m.SetStatus(workshift.StatusAPPROVED)
+						m.SetApprovedAt(time.Now())
+						m.SetApprovedByID(employeeID)
+						return next.Mutate(ctx, m)
+					}
+					v, err := next.Mutate(ctx, m)
+
+					// Post mutation: this user has a leader, send a notification to the leader after creating the workshift
+					if leader.FcmToken != nil {
+						fmt.Println("sending notif to:", leader)
+
+						data := struct {
+							AlertType   string    `json:"alertType"`
+							UserID      int       `json:"userID"`
+							RequestedAt time.Time `json:"requestedAt"`
+						}{
+							AlertType:   notifications.AlertType.WorkShiftApprovalRequest,
+							UserID:      leader.ID,
+							RequestedAt: time.Now(),
+						}
+
+						go func() {
+							dataMap, err := notifications.GetMap(data)
+							if err != nil {
+								return
+							}
+							// Send notification to the closest, available driver
+							title := "Novo timesheet submetido"
+							notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
+						}()
+					}
+					return v, err
+				})
+			},
+			// Limit the hook for only update operations, when the user clocks out
+			ent.OpUpdateOne,
+		),
+
+		hook.On(
+			// Workshift update request hook: send a notification to the leader
+			func(next ent.Mutator) ent.Mutator {
+				return hook.WorkshiftFunc(func(ctx context.Context, m *gen.WorkshiftMutation) (ent.Value, error) {
+					workshiftID, exists := m.WorkShiftID()
+					fmt.Println("** create workshiftID:", workshiftID, exists)
+					// Do nothing if this is not a workshift update request
+					if !exists {
+						return next.Mutate(ctx, m)
+					}
+
+					leader, err := m.Client().Workshift.Query().Where(workshift.IDEQ(workshiftID)).
+						QueryEmployee().QueryLeader().QueryUser().
+						Select(user.FieldID, user.FieldFcmToken).First(ctx)
+
+					fmt.Println("\ncreate edit req leader:", leader, err)
+					if err != nil {
+						updater := m.Client().Workshift.UpdateOneID(workshiftID).SetApprovedAt(time.Now())
+						if clockIn, exists := m.ClockIn(); exists {
+							fmt.Println("clockin:", clockIn)
+							updater.SetClockIn(clockIn)
+						}
+						if clockOut, exists := m.ClockOut(); exists {
+							fmt.Println("clockout:", clockOut)
+							updater.SetClockOut(clockOut)
+						}
+						if description, exists := m.Description(); exists {
+							updater.SetDescription(description)
+						}
+						if note, exists := m.Note(); exists {
+							updater.SetNote(note)
+						}
+						fmt.Println("saving")
+						return updater.Save(ctx)
+						// return next.Mutate(ctx, m)
+					}
+
+					data := struct {
+						AlertType   string    `json:"alertType"`
+						UserID      int       `json:"userID"`
+						RequestedAt time.Time `json:"requestedAt"`
+					}{
+						AlertType:   notifications.AlertType.WorkShifUpdateRequest,
+						UserID:      leader.ID,
+						RequestedAt: time.Now(),
+					}
+
+					go func() {
+						dataMap, err := notifications.GetMap(data)
+						if err != nil {
+							return
+						}
+						// Send notification to the closest, available driver
+						title := "Timesheet"
+						notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
+					}()
+
+					return next.Mutate(ctx, m)
+				})
+			},
+			ent.OpCreate,
+		),
 	}
 }

@@ -290,7 +290,9 @@ func (wc *WorkshiftCreate) Mutation() *WorkshiftMutation {
 
 // Save creates the Workshift in the database.
 func (wc *WorkshiftCreate) Save(ctx context.Context) (*Workshift, error) {
-	wc.defaults()
+	if err := wc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, wc.sqlSave, wc.mutation, wc.hooks)
 }
 
@@ -317,16 +319,25 @@ func (wc *WorkshiftCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (wc *WorkshiftCreate) defaults() {
+func (wc *WorkshiftCreate) defaults() error {
 	if _, ok := wc.mutation.CreatedAt(); !ok {
+		if workshift.DefaultCreatedAt == nil {
+			return fmt.Errorf("ent: uninitialized workshift.DefaultCreatedAt (forgotten import ent/runtime?)")
+		}
 		v := workshift.DefaultCreatedAt()
 		wc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := wc.mutation.UpdatedAt(); !ok {
+		if workshift.DefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized workshift.DefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := workshift.DefaultUpdatedAt()
 		wc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := wc.mutation.ClockIn(); !ok {
+		if workshift.DefaultClockIn == nil {
+			return fmt.Errorf("ent: uninitialized workshift.DefaultClockIn (forgotten import ent/runtime?)")
+		}
 		v := workshift.DefaultClockIn()
 		wc.mutation.SetClockIn(v)
 	}
@@ -334,6 +345,7 @@ func (wc *WorkshiftCreate) defaults() {
 		v := workshift.DefaultStatus
 		wc.mutation.SetStatus(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.

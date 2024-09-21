@@ -1340,15 +1340,15 @@ func (c *EmployeeClient) QueryUser(e *Employee) *UserQuery {
 	return query
 }
 
-// QueryEmployees queries the employees edge of a Employee.
-func (c *EmployeeClient) QueryEmployees(e *Employee) *EmployeeQuery {
+// QuerySubordinates queries the subordinates edge of a Employee.
+func (c *EmployeeClient) QuerySubordinates(e *Employee) *EmployeeQuery {
 	query := (&EmployeeClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := e.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(employee.Table, employee.FieldID, id),
 			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, employee.EmployeesTable, employee.EmployeesColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, employee.SubordinatesTable, employee.SubordinatesColumn),
 		)
 		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
 		return fromV, nil
@@ -1356,15 +1356,15 @@ func (c *EmployeeClient) QueryEmployees(e *Employee) *EmployeeQuery {
 	return query
 }
 
-// QuerySupervisor queries the supervisor edge of a Employee.
-func (c *EmployeeClient) QuerySupervisor(e *Employee) *EmployeeQuery {
+// QueryLeader queries the leader edge of a Employee.
+func (c *EmployeeClient) QueryLeader(e *Employee) *EmployeeQuery {
 	query := (&EmployeeClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := e.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(employee.Table, employee.FieldID, id),
 			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, employee.SupervisorTable, employee.SupervisorColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, employee.LeaderTable, employee.LeaderColumn),
 		)
 		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
 		return fromV, nil
@@ -3333,7 +3333,8 @@ func (c *WorkshiftClient) QueryWorkShift(w *Workshift) *WorkshiftQuery {
 
 // Hooks returns the client hooks.
 func (c *WorkshiftClient) Hooks() []Hook {
-	return c.hooks.Workshift
+	hooks := c.hooks.Workshift
+	return append(hooks[:len(hooks):len(hooks)], workshift.Hooks[:]...)
 }
 
 // Interceptors returns the client interceptors.

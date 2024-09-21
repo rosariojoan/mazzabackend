@@ -4322,19 +4322,14 @@ func (c *WorkshiftConnection) build(nodes []*Workshift, pager *workshiftPager, a
 type WorkshiftPaginateOption func(*workshiftPager) error
 
 // WithWorkshiftOrder configures pagination ordering.
-func WithWorkshiftOrder(order *WorkshiftOrder) WorkshiftPaginateOption {
-	if order == nil {
-		order = DefaultWorkshiftOrder
-	}
-	o := *order
+func WithWorkshiftOrder(order []*WorkshiftOrder) WorkshiftPaginateOption {
 	return func(pager *workshiftPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultWorkshiftOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -4352,7 +4347,7 @@ func WithWorkshiftFilter(filter func(*WorkshiftQuery) (*WorkshiftQuery, error)) 
 
 type workshiftPager struct {
 	reverse bool
-	order   *WorkshiftOrder
+	order   []*WorkshiftOrder
 	filter  func(*WorkshiftQuery) (*WorkshiftQuery, error)
 }
 
@@ -4363,8 +4358,10 @@ func newWorkshiftPager(opts []WorkshiftPaginateOption, reverse bool) (*workshift
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultWorkshiftOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -4377,48 +4374,87 @@ func (p *workshiftPager) applyFilter(query *WorkshiftQuery) (*WorkshiftQuery, er
 }
 
 func (p *workshiftPager) toCursor(w *Workshift) Cursor {
-	return p.order.Field.toCursor(w)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(w).Value)
+	}
+	return Cursor{ID: w.ID, Value: cs}
 }
 
 func (p *workshiftPager) applyCursors(query *WorkshiftQuery, after, before *Cursor) (*WorkshiftQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultWorkshiftOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultWorkshiftOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *workshiftPager) applyOrder(query *WorkshiftQuery) *WorkshiftQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultWorkshiftOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultWorkshiftOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultWorkshiftOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *workshiftPager) orderExpr(query *WorkshiftQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultWorkshiftOrder.Field {
-			b.Comma().Ident(DefaultWorkshiftOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultWorkshiftOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -4470,6 +4506,107 @@ func (w *WorkshiftQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// WorkshiftOrderFieldApprovedAt orders Workshift by approvedAt.
+	WorkshiftOrderFieldApprovedAt = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.ApprovedAt, nil
+		},
+		column: workshift.FieldApprovedAt,
+		toTerm: workshift.ByApprovedAt,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.ApprovedAt,
+			}
+		},
+	}
+	// WorkshiftOrderFieldClockIn orders Workshift by clockIn.
+	WorkshiftOrderFieldClockIn = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.ClockIn, nil
+		},
+		column: workshift.FieldClockIn,
+		toTerm: workshift.ByClockIn,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.ClockIn,
+			}
+		},
+	}
+	// WorkshiftOrderFieldClockOut orders Workshift by clockOut.
+	WorkshiftOrderFieldClockOut = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.ClockOut, nil
+		},
+		column: workshift.FieldClockOut,
+		toTerm: workshift.ByClockOut,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.ClockOut,
+			}
+		},
+	}
+	// WorkshiftOrderFieldStatus orders Workshift by status.
+	WorkshiftOrderFieldStatus = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.Status, nil
+		},
+		column: workshift.FieldStatus,
+		toTerm: workshift.ByStatus,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.Status,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f WorkshiftOrderField) String() string {
+	var str string
+	switch f.column {
+	case WorkshiftOrderFieldApprovedAt.column:
+		str = "APPROVED_AT"
+	case WorkshiftOrderFieldClockIn.column:
+		str = "CLOCK_IN"
+	case WorkshiftOrderFieldClockOut.column:
+		str = "CLOCK_OUT"
+	case WorkshiftOrderFieldStatus.column:
+		str = "STATUS"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f WorkshiftOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *WorkshiftOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("WorkshiftOrderField %T must be a string", v)
+	}
+	switch str {
+	case "APPROVED_AT":
+		*f = *WorkshiftOrderFieldApprovedAt
+	case "CLOCK_IN":
+		*f = *WorkshiftOrderFieldClockIn
+	case "CLOCK_OUT":
+		*f = *WorkshiftOrderFieldClockOut
+	case "STATUS":
+		*f = *WorkshiftOrderFieldStatus
+	default:
+		return fmt.Errorf("%s is not a valid WorkshiftOrderField", str)
+	}
+	return nil
 }
 
 // WorkshiftOrderField defines the ordering field of Workshift.

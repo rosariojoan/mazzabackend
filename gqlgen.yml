@@ -53,7 +53,7 @@ models:
   Node:
     model:
       - mazza/ent.Noder
-
+  
   # Cursor:
   #   model:
   #     - mazza/ent.Cursor # Assuming this is the correct path to the named type

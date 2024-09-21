@@ -178,13 +178,13 @@ type ComplexityRoot struct {
 		CreatedAt          func(childComplexity int) int
 		DeletedAt          func(childComplexity int) int
 		Email              func(childComplexity int) int
-		Employees          func(childComplexity int) int
 		Gender             func(childComplexity int) int
 		ID                 func(childComplexity int) int
+		Leader             func(childComplexity int) int
 		Name               func(childComplexity int) int
 		Phone              func(childComplexity int) int
 		Position           func(childComplexity int) int
-		Supervisor         func(childComplexity int) int
+		Subordinates       func(childComplexity int) int
 		UpdatedAt          func(childComplexity int) int
 		User               func(childComplexity int) int
 		WorkShifts         func(childComplexity int) int
@@ -327,6 +327,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		AccountingEntries        func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *ent.AccountingEntryOrder, where *ent.AccountingEntryWhereInput) int
+		AggregateWorkShift       func(childComplexity int, where *ent.WorkshiftWhereInput, groupBy []ShiftGroupBy) int
 		CashMovements            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.CashMovementWhereInput) int
 		Companies                func(childComplexity int, where *ent.CompanyWhereInput) int
 		Customers                func(childComplexity int, where *ent.CustomerWhereInput) int
@@ -452,6 +453,13 @@ type ComplexityRoot struct {
 		User    func(childComplexity int) int
 	}
 
+	WorkShiftAggregationPayload struct {
+		Count             func(childComplexity int) int
+		Date              func(childComplexity int) int
+		DurationInMinutes func(childComplexity int) int
+		PendingCount      func(childComplexity int) int
+	}
+
 	Workshift struct {
 		ApprovedAt       func(childComplexity int) int
 		ApprovedBy       func(childComplexity int) int
@@ -564,6 +572,7 @@ type QueryResolver interface {
 	Users(ctx context.Context, where *ent.UserWhereInput) ([]*ent.User, error)
 	UserRoles(ctx context.Context, where *ent.UserRoleWhereInput) ([]*ent.UserRole, error)
 	WorkShifts(ctx context.Context, where *ent.WorkshiftWhereInput) ([]*ent.Workshift, error)
+	AggregateWorkShift(ctx context.Context, where *ent.WorkshiftWhereInput, groupBy []ShiftGroupBy) ([]*WorkShiftAggregationPayload, error)
 	WorkTags(ctx context.Context, where *ent.WorktagWhereInput) ([]*ent.Worktag, error)
 	WorkTasks(ctx context.Context, where *ent.WorktaskWhereInput) ([]*ent.Worktask, error)
 }
@@ -1238,13 +1247,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Employee.Email(childComplexity), true
 
-	case "Employee.employees":
-		if e.complexity.Employee.Employees == nil {
-			break
-		}
-
-		return e.complexity.Employee.Employees(childComplexity), true
-
 	case "Employee.gender":
 		if e.complexity.Employee.Gender == nil {
 			break
@@ -1258,6 +1260,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Employee.ID(childComplexity), true
+
+	case "Employee.leader":
+		if e.complexity.Employee.Leader == nil {
+			break
+		}
+
+		return e.complexity.Employee.Leader(childComplexity), true
 
 	case "Employee.name":
 		if e.complexity.Employee.Name == nil {
@@ -1280,12 +1289,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Employee.Position(childComplexity), true
 
-	case "Employee.supervisor":
-		if e.complexity.Employee.Supervisor == nil {
+	case "Employee.subordinates":
+		if e.complexity.Employee.Subordinates == nil {
 			break
 		}
 
-		return e.complexity.Employee.Supervisor(childComplexity), true
+		return e.complexity.Employee.Subordinates(childComplexity), true
 
 	case "Employee.updatedat":
 		if e.complexity.Employee.UpdatedAt == nil {
@@ -2204,6 +2213,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.AccountingEntries(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].(*ent.AccountingEntryOrder), args["where"].(*ent.AccountingEntryWhereInput)), true
 
+	case "Query.aggregateWorkShift":
+		if e.complexity.Query.AggregateWorkShift == nil {
+			break
+		}
+
+		args, err := ec.field_Query_aggregateWorkShift_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AggregateWorkShift(childComplexity, args["where"].(*ent.WorkshiftWhereInput), args["groupBy"].([]ShiftGroupBy)), true
+
 	case "Query.cashMovements":
 		if e.complexity.Query.CashMovements == nil {
 			break
@@ -3012,6 +3033,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.UserRole.User(childComplexity), true
 
+	case "WorkShiftAggregationPayload.count":
+		if e.complexity.WorkShiftAggregationPayload.Count == nil {
+			break
+		}
+
+		return e.complexity.WorkShiftAggregationPayload.Count(childComplexity), true
+
+	case "WorkShiftAggregationPayload.date":
+		if e.complexity.WorkShiftAggregationPayload.Date == nil {
+			break
+		}
+
+		return e.complexity.WorkShiftAggregationPayload.Date(childComplexity), true
+
+	case "WorkShiftAggregationPayload.durationInMinutes":
+		if e.complexity.WorkShiftAggregationPayload.DurationInMinutes == nil {
+			break
+		}
+
+		return e.complexity.WorkShiftAggregationPayload.DurationInMinutes(childComplexity), true
+
+	case "WorkShiftAggregationPayload.pendingCount":
+		if e.complexity.WorkShiftAggregationPayload.PendingCount == nil {
+			break
+		}
+
+		return e.complexity.WorkShiftAggregationPayload.PendingCount(childComplexity), true
+
 	case "Workshift.approvedat":
 		if e.complexity.Workshift.ApprovedAt == nil {
 			break
@@ -3365,6 +3414,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUserRoleOrder,
 		ec.unmarshalInputUserRoleWhereInput,
 		ec.unmarshalInputUserWhereInput,
+		ec.unmarshalInputWorkshiftOrder,
 		ec.unmarshalInputWorkshiftWhereInput,
 		ec.unmarshalInputWorktagWhereInput,
 		ec.unmarshalInputWorktaskWhereInput,
@@ -5040,6 +5090,65 @@ func (ec *executionContext) field_Query_accountingEntries_argsWhere(
 	}
 
 	var zeroVal *ent.AccountingEntryWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_aggregateWorkShift_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_aggregateWorkShift_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg0
+	arg1, err := ec.field_Query_aggregateWorkShift_argsGroupBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["groupBy"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Query_aggregateWorkShift_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*ent.WorkshiftWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *ent.WorkshiftWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *ent.WorkshiftWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_aggregateWorkShift_argsGroupBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]ShiftGroupBy, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["groupBy"]
+	if !ok {
+		var zeroVal []ShiftGroupBy
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("groupBy"))
+	if tmp, ok := rawArgs["groupBy"]; ok {
+		return ec.unmarshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx, tmp)
+	}
+
+	var zeroVal []ShiftGroupBy
 	return zeroVal, nil
 }
 
@@ -9252,10 +9361,10 @@ func (ec *executionContext) fieldContext_Company_employees(_ context.Context, fi
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -11461,8 +11570,8 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_employees(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_employees(ctx, field)
+func (ec *executionContext) _Employee_subordinates(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Employee_subordinates(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -11475,7 +11584,7 @@ func (ec *executionContext) _Employee_employees(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Employees(ctx)
+		return obj.Subordinates(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11489,7 +11598,7 @@ func (ec *executionContext) _Employee_employees(ctx context.Context, field graph
 	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Employee_employees(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Employee_subordinates(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Employee",
 		Field:      field,
@@ -11519,10 +11628,10 @@ func (ec *executionContext) fieldContext_Employee_employees(_ context.Context, f
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -11536,8 +11645,8 @@ func (ec *executionContext) fieldContext_Employee_employees(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_supervisor(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_supervisor(ctx, field)
+func (ec *executionContext) _Employee_leader(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Employee_leader(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -11550,7 +11659,7 @@ func (ec *executionContext) _Employee_supervisor(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Supervisor(ctx)
+		return obj.Leader(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11564,7 +11673,7 @@ func (ec *executionContext) _Employee_supervisor(ctx context.Context, field grap
 	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Employee_supervisor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Employee_leader(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Employee",
 		Field:      field,
@@ -11594,10 +11703,10 @@ func (ec *executionContext) fieldContext_Employee_supervisor(_ context.Context, 
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -14151,10 +14260,10 @@ func (ec *executionContext) fieldContext_Mutation_createEmployee(ctx context.Con
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -14240,10 +14349,10 @@ func (ec *executionContext) fieldContext_Mutation_updateEmployee(ctx context.Con
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -18785,10 +18894,10 @@ func (ec *executionContext) fieldContext_Query_employees(ctx context.Context, fi
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -19654,6 +19763,71 @@ func (ec *executionContext) fieldContext_Query_workShifts(ctx context.Context, f
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_workShifts_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_aggregateWorkShift(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_aggregateWorkShift(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AggregateWorkShift(rctx, fc.Args["where"].(*ent.WorkshiftWhereInput), fc.Args["groupBy"].([]ShiftGroupBy))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*WorkShiftAggregationPayload)
+	fc.Result = res
+	return ec.marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWorkShiftAggregationPayloadᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_aggregateWorkShift(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "date":
+				return ec.fieldContext_WorkShiftAggregationPayload_date(ctx, field)
+			case "count":
+				return ec.fieldContext_WorkShiftAggregationPayload_count(ctx, field)
+			case "durationInMinutes":
+				return ec.fieldContext_WorkShiftAggregationPayload_durationInMinutes(ctx, field)
+			case "pendingCount":
+				return ec.fieldContext_WorkShiftAggregationPayload_pendingCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type WorkShiftAggregationPayload", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_aggregateWorkShift_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -23445,10 +23619,10 @@ func (ec *executionContext) fieldContext_User_employee(_ context.Context, field 
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -23792,6 +23966,176 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_tokens(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _WorkShiftAggregationPayload_date(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_WorkShiftAggregationPayload_date(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_date(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "WorkShiftAggregationPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _WorkShiftAggregationPayload_count(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_WorkShiftAggregationPayload_count(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Count, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_count(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "WorkShiftAggregationPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _WorkShiftAggregationPayload_durationInMinutes(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_WorkShiftAggregationPayload_durationInMinutes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DurationInMinutes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_durationInMinutes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "WorkShiftAggregationPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _WorkShiftAggregationPayload_pendingCount(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_WorkShiftAggregationPayload_pendingCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PendingCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_pendingCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "WorkShiftAggregationPayload",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -24482,10 +24826,10 @@ func (ec *executionContext) fieldContext_Workshift_employee(_ context.Context, f
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -24557,10 +24901,10 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -25934,10 +26278,10 @@ func (ec *executionContext) fieldContext_Worktask_assignedto(_ context.Context, 
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "employees":
-				return ec.fieldContext_Employee_employees(ctx, field)
-			case "supervisor":
-				return ec.fieldContext_Employee_supervisor(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_Employee_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_Employee_leader(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Employee_workshifts(ctx, field)
 			case "approvedworkshifts":
@@ -31949,7 +32293,7 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "name", "gender", "position", "email", "phone", "companyID", "userID", "employeeIDs", "supervisorID", "workshiftIDs", "approvedworkshiftIDs", "assignedtaskIDs"}
+	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "name", "gender", "position", "email", "phone", "companyID", "userID", "subordinateIDs", "leaderID", "workshiftIDs", "approvedworkshiftIDs", "assignedtaskIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -32026,20 +32370,20 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 				return it, err
 			}
 			it.UserID = data
-		case "employeeIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeIDs"))
+		case "subordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("subordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EmployeeIDs = data
-		case "supervisorID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("supervisorID"))
+			it.SubordinateIDs = data
+		case "leaderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.SupervisorID = data
+			it.LeaderID = data
 		case "workshiftIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workshiftIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -34364,7 +34708,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "gender", "genderNEQ", "genderIn", "genderNotIn", "position", "positionNEQ", "positionIn", "positionNotIn", "positionGT", "positionGTE", "positionLT", "positionLTE", "positionContains", "positionHasPrefix", "positionHasSuffix", "positionIsNil", "positionNotNil", "positionEqualFold", "positionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneEqualFold", "phoneContainsFold", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasEmployees", "hasEmployeesWith", "hasSupervisor", "hasSupervisorWith", "hasWorkShifts", "hasWorkShiftsWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasAssignedTasks", "hasAssignedTasksWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "gender", "genderNEQ", "genderIn", "genderNotIn", "position", "positionNEQ", "positionIn", "positionNotIn", "positionGT", "positionGTE", "positionLT", "positionLTE", "positionContains", "positionHasPrefix", "positionHasSuffix", "positionIsNil", "positionNotNil", "positionEqualFold", "positionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneEqualFold", "phoneContainsFold", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasWorkShifts", "hasWorkShiftsWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasAssignedTasks", "hasAssignedTasksWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -35078,34 +35422,34 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasUserWith = data
-		case "hasEmployees":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployees"))
+		case "hasSubordinates":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinates"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasEmployees = data
-		case "hasEmployeesWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployeesWith"))
+			it.HasSubordinates = data
+		case "hasSubordinatesWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinatesWith"))
 			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasEmployeesWith = data
-		case "hasSupervisor":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSupervisor"))
+			it.HasSubordinatesWith = data
+		case "hasLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeader"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasSupervisor = data
-		case "hasSupervisorWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSupervisorWith"))
+			it.HasLeader = data
+		case "hasLeaderWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeaderWith"))
 			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasSupervisorWith = data
+			it.HasLeaderWith = data
 		case "hasWorkShifts":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShifts"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -42040,7 +42384,7 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "name", "gender", "position", "clearPosition", "email", "clearEmail", "phone", "companyID", "clearCompany", "userID", "clearUser", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "supervisorID", "clearSupervisor", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addAssignedTaskIDs", "removeAssignedTaskIDs", "clearAssignedTasks"}
+	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "name", "gender", "position", "clearPosition", "email", "clearEmail", "phone", "companyID", "clearCompany", "userID", "clearUser", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addAssignedTaskIDs", "removeAssignedTaskIDs", "clearAssignedTasks"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -42145,41 +42489,41 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearUser = data
-		case "addEmployeeIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addEmployeeIDs"))
+		case "addSubordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addSubordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.AddEmployeeIDs = data
-		case "removeEmployeeIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeEmployeeIDs"))
+			it.AddSubordinateIDs = data
+		case "removeSubordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeSubordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.RemoveEmployeeIDs = data
-		case "clearEmployees":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEmployees"))
+			it.RemoveSubordinateIDs = data
+		case "clearSubordinates":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSubordinates"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearEmployees = data
-		case "supervisorID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("supervisorID"))
+			it.ClearSubordinates = data
+		case "leaderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.SupervisorID = data
-		case "clearSupervisor":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSupervisor"))
+			it.LeaderID = data
+		case "clearLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearLeader"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearSupervisor = data
+			it.ClearLeader = data
 		case "addWorkShiftIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkShiftIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -44979,6 +45323,44 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasTokensWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputWorkshiftOrder(ctx context.Context, obj interface{}) (ent.WorkshiftOrder, error) {
+	var it ent.WorkshiftOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
 		}
 	}
 
@@ -48633,7 +49015,7 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "employees":
+		case "subordinates":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -48642,7 +49024,7 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Employee_employees(ctx, field, obj)
+				res = ec._Employee_subordinates(ctx, field, obj)
 				return res
 			}
 
@@ -48666,7 +49048,7 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "supervisor":
+		case "leader":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -48675,7 +49057,7 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Employee_supervisor(ctx, field, obj)
+				res = ec._Employee_leader(ctx, field, obj)
 				return res
 			}
 
@@ -50461,6 +50843,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "aggregateWorkShift":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_aggregateWorkShift(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "workTags":
 			field := field
 
@@ -51524,6 +51928,54 @@ func (ec *executionContext) _UserRole(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var workShiftAggregationPayloadImplementors = []string{"WorkShiftAggregationPayload"}
+
+func (ec *executionContext) _WorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, obj *WorkShiftAggregationPayload) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, workShiftAggregationPayloadImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("WorkShiftAggregationPayload")
+		case "date":
+			out.Values[i] = ec._WorkShiftAggregationPayload_date(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "count":
+			out.Values[i] = ec._WorkShiftAggregationPayload_count(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "durationInMinutes":
+			out.Values[i] = ec._WorkShiftAggregationPayload_durationInMinutes(ctx, field, obj)
+		case "pendingCount":
+			out.Values[i] = ec._WorkShiftAggregationPayload_pendingCount(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -53339,6 +53791,77 @@ func (ec *executionContext) unmarshalNResetPasswordInput2mazzaᚐResetPasswordIn
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx context.Context, v interface{}) (ShiftGroupBy, error) {
+	var res ShiftGroupBy
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx context.Context, sel ast.SelectionSet, v ShiftGroupBy) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx context.Context, v interface{}) ([]ShiftGroupBy, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]ShiftGroupBy, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx context.Context, sel ast.SelectionSet, v []ShiftGroupBy) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalNSignupInput2mazzaᚐSignupInput(ctx context.Context, v interface{}) (SignupInput, error) {
 	res, err := ec.unmarshalInputSignupInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -53845,6 +54368,60 @@ func (ec *executionContext) unmarshalNUserWhereInput2ᚖmazzaᚋentᚐUserWhereI
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWorkShiftAggregationPayloadᚄ(ctx context.Context, sel ast.SelectionSet, v []*WorkShiftAggregationPayload) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNWorkShiftAggregationPayload2ᚖmazzaᚐWorkShiftAggregationPayload(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚖmazzaᚐWorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, v *WorkShiftAggregationPayload) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._WorkShiftAggregationPayload(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNWorkshift2mazzaᚋentᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v ent.Workshift) graphql.Marshaler {
 	return ec._Workshift(ctx, sel, &v)
 }
@@ -53901,6 +54478,22 @@ func (ec *executionContext) marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx con
 		return graphql.Null
 	}
 	return ec._Workshift(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx context.Context, v interface{}) (*ent.WorkshiftOrderField, error) {
+	var res = new(ent.WorkshiftOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.WorkshiftOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx context.Context, v interface{}) (workshift.Status, error) {

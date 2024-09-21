@@ -37,11 +37,11 @@ type Employee struct {
 	Phone string `json:"phone,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EmployeeQuery when eager-loading is set.
-	Edges              EmployeeEdges `json:"edges"`
-	company_employees  *int
-	employee_employees *int
-	user_employee      *int
-	selectValues       sql.SelectValues
+	Edges                 EmployeeEdges `json:"edges"`
+	company_employees     *int
+	employee_subordinates *int
+	user_employee         *int
+	selectValues          sql.SelectValues
 }
 
 // EmployeeEdges holds the relations/edges for other nodes in the graph.
@@ -50,10 +50,10 @@ type EmployeeEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
-	// Employees holds the value of the employees edge.
-	Employees []*Employee `json:"employees,omitempty"`
-	// Supervisor holds the value of the supervisor edge.
-	Supervisor *Employee `json:"supervisor,omitempty"`
+	// Subordinates holds the value of the subordinates edge.
+	Subordinates []*Employee `json:"subordinates,omitempty"`
+	// Leader holds the value of the leader edge.
+	Leader *Employee `json:"leader,omitempty"`
 	// WorkShifts holds the value of the workShifts edge.
 	WorkShifts []*Workshift `json:"workShifts,omitempty"`
 	// ApprovedWorkShifts holds the value of the approvedWorkShifts edge.
@@ -66,7 +66,7 @@ type EmployeeEdges struct {
 	// totalCount holds the count of the edges above.
 	totalCount [7]map[string]int
 
-	namedEmployees          map[string][]*Employee
+	namedSubordinates       map[string][]*Employee
 	namedWorkShifts         map[string][]*Workshift
 	namedApprovedWorkShifts map[string][]*Workshift
 	namedAssignedTasks      map[string][]*Worktask
@@ -94,24 +94,24 @@ func (e EmployeeEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
-// EmployeesOrErr returns the Employees value or an error if the edge
+// SubordinatesOrErr returns the Subordinates value or an error if the edge
 // was not loaded in eager-loading.
-func (e EmployeeEdges) EmployeesOrErr() ([]*Employee, error) {
+func (e EmployeeEdges) SubordinatesOrErr() ([]*Employee, error) {
 	if e.loadedTypes[2] {
-		return e.Employees, nil
+		return e.Subordinates, nil
 	}
-	return nil, &NotLoadedError{edge: "employees"}
+	return nil, &NotLoadedError{edge: "subordinates"}
 }
 
-// SupervisorOrErr returns the Supervisor value or an error if the edge
+// LeaderOrErr returns the Leader value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e EmployeeEdges) SupervisorOrErr() (*Employee, error) {
-	if e.Supervisor != nil {
-		return e.Supervisor, nil
+func (e EmployeeEdges) LeaderOrErr() (*Employee, error) {
+	if e.Leader != nil {
+		return e.Leader, nil
 	} else if e.loadedTypes[3] {
 		return nil, &NotFoundError{label: employee.Label}
 	}
-	return nil, &NotLoadedError{edge: "supervisor"}
+	return nil, &NotLoadedError{edge: "leader"}
 }
 
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
@@ -154,7 +154,7 @@ func (*Employee) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case employee.ForeignKeys[0]: // company_employees
 			values[i] = new(sql.NullInt64)
-		case employee.ForeignKeys[1]: // employee_employees
+		case employee.ForeignKeys[1]: // employee_subordinates
 			values[i] = new(sql.NullInt64)
 		case employee.ForeignKeys[2]: // user_employee
 			values[i] = new(sql.NullInt64)
@@ -239,10 +239,10 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			}
 		case employee.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field employee_employees", value)
+				return fmt.Errorf("unexpected type %T for edge-field employee_subordinates", value)
 			} else if value.Valid {
-				e.employee_employees = new(int)
-				*e.employee_employees = int(value.Int64)
+				e.employee_subordinates = new(int)
+				*e.employee_subordinates = int(value.Int64)
 			}
 		case employee.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -274,14 +274,14 @@ func (e *Employee) QueryUser() *UserQuery {
 	return NewEmployeeClient(e.config).QueryUser(e)
 }
 
-// QueryEmployees queries the "employees" edge of the Employee entity.
-func (e *Employee) QueryEmployees() *EmployeeQuery {
-	return NewEmployeeClient(e.config).QueryEmployees(e)
+// QuerySubordinates queries the "subordinates" edge of the Employee entity.
+func (e *Employee) QuerySubordinates() *EmployeeQuery {
+	return NewEmployeeClient(e.config).QuerySubordinates(e)
 }
 
-// QuerySupervisor queries the "supervisor" edge of the Employee entity.
-func (e *Employee) QuerySupervisor() *EmployeeQuery {
-	return NewEmployeeClient(e.config).QuerySupervisor(e)
+// QueryLeader queries the "leader" edge of the Employee entity.
+func (e *Employee) QueryLeader() *EmployeeQuery {
+	return NewEmployeeClient(e.config).QueryLeader(e)
 }
 
 // QueryWorkShifts queries the "workShifts" edge of the Employee entity.
@@ -355,27 +355,27 @@ func (e *Employee) String() string {
 	return builder.String()
 }
 
-// NamedEmployees returns the Employees named value or an error if the edge was not
+// NamedSubordinates returns the Subordinates named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (e *Employee) NamedEmployees(name string) ([]*Employee, error) {
-	if e.Edges.namedEmployees == nil {
+func (e *Employee) NamedSubordinates(name string) ([]*Employee, error) {
+	if e.Edges.namedSubordinates == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := e.Edges.namedEmployees[name]
+	nodes, ok := e.Edges.namedSubordinates[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (e *Employee) appendNamedEmployees(name string, edges ...*Employee) {
-	if e.Edges.namedEmployees == nil {
-		e.Edges.namedEmployees = make(map[string][]*Employee)
+func (e *Employee) appendNamedSubordinates(name string, edges ...*Employee) {
+	if e.Edges.namedSubordinates == nil {
+		e.Edges.namedSubordinates = make(map[string][]*Employee)
 	}
 	if len(edges) == 0 {
-		e.Edges.namedEmployees[name] = []*Employee{}
+		e.Edges.namedSubordinates[name] = []*Employee{}
 	} else {
-		e.Edges.namedEmployees[name] = append(e.Edges.namedEmployees[name], edges...)
+		e.Edges.namedSubordinates[name] = append(e.Edges.namedSubordinates[name], edges...)
 	}
 }
 
