@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"mazza/app/utils"
 	"mazza/app/utils/email"
-	"mazza/ent"
-	"mazza/ent/token"
-	"mazza/ent/user"
+	ent "mazza/ent/generated"
+	"mazza/ent/generated/token"
+	"mazza/ent/generated/user"
 	"time"
 )
 

@@ -25,7 +25,7 @@ func (ProductMovement) Fields() []ent.Field {
 		field.Int("entryGroup").Positive(),
 		field.Float("averageCost").Min(0),
 		field.Float("unitCost").Min(0),
-		field.Float("price").Min(0),
+		field.Float("price").Min(0).Default(0),
 		field.Int("quantity"),
 	}
 }

@@ -26,7 +26,11 @@ func main() {
 		entc.Extensions(ex),
 		entc.TemplateDir("./ent/template"),
 	}
-	if err := entc.Generate("./ent/schema", &gen.Config{}, opts...); err != nil {
+	config := gen.Config{
+		Package: "mazza/ent/generated",
+		Target: "./ent/generated",
+	}
+	if err := entc.Generate("./ent/schema", &config, opts...); err != nil {
 		log.Fatalf("running ent codegen: %v", err)
 	}
 }

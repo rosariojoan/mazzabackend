@@ -3,8 +3,8 @@ package inits
 import (
 	"context"
 	"log"
-	"mazza/ent"
-	"mazza/ent/migrate"
+	ent "mazza/ent/generated"
+	"mazza/ent/generated/migrate"
 
 	"entgo.io/ent/dialect"
 	_ "github.com/lib/pq"

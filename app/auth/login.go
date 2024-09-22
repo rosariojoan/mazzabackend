@@ -3,9 +3,12 @@ package auth
 import (
 	"fmt"
 	"mazza/app/utils"
-	"mazza/ent"
-	"mazza/ent/employee"
-	"mazza/ent/user"
+	ent "mazza/ent/generated"
+	"mazza/ent/generated/company"
+	"mazza/ent/generated/employee"
+	"mazza/ent/generated/user"
+	"mazza/ent/generated/userrole"
+
 	"mazza/inits"
 	"net/http"
 	"os"
@@ -23,12 +26,13 @@ type LoginInput struct {
 }
 
 type LoginOutput struct {
-	User         ent.User       `json:"user"`
-	CompanyID    int            `json:"activeCompanyId"`
-	Companies    []*ent.Company `json:"companies"`
-	AccessToken  string         `json:"accessToken"`
-	RefreshToken string         `json:"refreshToken"`
-	TTL          int            `json:"ttl"`
+	User         ent.User        `json:"user"`
+	Roles        []*ent.UserRole `json:"userRoles"`
+	CompanyID    int             `json:"activeCompanyId"`
+	Companies    []*ent.Company  `json:"companies"`
+	AccessToken  string          `json:"accessToken"`
+	RefreshToken string          `json:"refreshToken"`
+	TTL          int             `json:"ttl"`
 }
 
 /* User login via JWT token */
@@ -41,7 +45,7 @@ func Login(ctx *gin.Context) {
 		fmt.Println("err:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 	}
-	fmt.Println("\n ++ client:", input)
+	// fmt.Println("\n ++ client:", input, *input.FcmToken)
 	currentUser, err := inits.DB.User.Query().
 		Where(user.And(
 			user.UsernameEQ(input.Username),
@@ -73,8 +77,8 @@ func Login(ctx *gin.Context) {
 	activeCompanyID := companies[0].ID
 
 	// Update user FCM token
-	inits.DB.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken)
-	inits.DB.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).SetFcmToken("")
+	inits.DB.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
+	inits.DB.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
 
 	// Generate JWT token
 	duration := time.Hour * 24 * 30
@@ -100,8 +104,15 @@ func Login(ctx *gin.Context) {
 	if err != nil {
 		ttl = 2592000 // 30 days
 	}
+
+	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.IDEQ(activeCompanyID))).All(ctx)
+	if err != nil {
+		roles = []*ent.UserRole{}
+	}
+
 	response := LoginOutput{
 		User:         *currentUser,
+		Roles:        roles,
 		CompanyID:    activeCompanyID,
 		Companies:    companies,
 		AccessToken:  token,

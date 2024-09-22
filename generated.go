@@ -8,18 +8,19 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"mazza/ent"
-	"mazza/ent/accountingentry"
-	"mazza/ent/employee"
-	"mazza/ent/file"
-	"mazza/ent/payable"
-	"mazza/ent/product"
-	"mazza/ent/receivable"
-	"mazza/ent/token"
-	"mazza/ent/treasury"
-	"mazza/ent/userrole"
-	"mazza/ent/workshift"
-	"mazza/ent/worktask"
+	"mazza/ent/generated"
+	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/employee"
+	"mazza/ent/generated/file"
+	"mazza/ent/generated/payable"
+	"mazza/ent/generated/product"
+	"mazza/ent/generated/receivable"
+	"mazza/ent/generated/token"
+	"mazza/ent/generated/treasury"
+	"mazza/ent/generated/userrole"
+	"mazza/ent/generated/workshift"
+	"mazza/ent/generated/worktask"
+	"mazza/mazza/generated/model"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -215,6 +216,46 @@ type ComplexityRoot struct {
 		Node   func(childComplexity int) int
 	}
 
+	Invoice struct {
+		Body            func(childComplexity int) int
+		CustomerDetails func(childComplexity int) int
+		Date            func(childComplexity int) int
+		Filename        func(childComplexity int) int
+		IssuerDetails   func(childComplexity int) int
+		Keywords        func(childComplexity int) int
+		Number          func(childComplexity int) int
+		PaymentDetails  func(childComplexity int) int
+		Title           func(childComplexity int) int
+		Totals          func(childComplexity int) int
+	}
+
+	InvoiceCustomer struct {
+		Address func(childComplexity int) int
+		City    func(childComplexity int) int
+		Country func(childComplexity int) int
+		Email   func(childComplexity int) int
+		Name    func(childComplexity int) int
+		Phone   func(childComplexity int) int
+		TaxID   func(childComplexity int) int
+	}
+
+	InvoiceIssuer struct {
+		Address func(childComplexity int) int
+		City    func(childComplexity int) int
+		Country func(childComplexity int) int
+		Email   func(childComplexity int) int
+		Name    func(childComplexity int) int
+		Phone   func(childComplexity int) int
+		TaxID   func(childComplexity int) int
+	}
+
+	InvoiceTotals struct {
+		Subtotal func(childComplexity int) int
+		Total    func(childComplexity int) int
+		Vat      func(childComplexity int) int
+		VatRate  func(childComplexity int) int
+	}
+
 	LoginOutput struct {
 		AccessToken  func(childComplexity int) int
 		Companies    func(childComplexity int) int
@@ -225,17 +266,17 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateCompany     func(childComplexity int, input *ent.CreateCompanyInput) int
-		CreateCustomer    func(childComplexity int, input ent.CreateCustomerInput) int
-		CreateEmployee    func(childComplexity int, input ent.CreateEmployeeInput) int
-		CreateProduct     func(childComplexity int, input ent.CreateProductInput) int
-		CreateSupplier    func(childComplexity int, input ent.CreateSupplierInput) int
-		CreateTreasury    func(childComplexity int, input ent.CreateTreasuryInput) int
-		CreateUser        func(childComplexity int, input ent.CreateUserInput) int
-		CreateUserRole    func(childComplexity int, input ent.CreateUserRoleInput) int
-		CreateWorkShift   func(childComplexity int, input ent.CreateWorkshiftInput) int
-		CreateWorkTag     func(childComplexity int, input ent.CreateWorktagInput) int
-		CreateWorkTask    func(childComplexity int, input ent.CreateWorktaskInput) int
+		CreateCompany     func(childComplexity int, input *generated.CreateCompanyInput) int
+		CreateCustomer    func(childComplexity int, input generated.CreateCustomerInput) int
+		CreateEmployee    func(childComplexity int, input generated.CreateEmployeeInput) int
+		CreateProduct     func(childComplexity int, input generated.CreateProductInput) int
+		CreateSupplier    func(childComplexity int, input generated.CreateSupplierInput) int
+		CreateTreasury    func(childComplexity int, input generated.CreateTreasuryInput) int
+		CreateUser        func(childComplexity int, input generated.CreateUserInput) int
+		CreateUserRole    func(childComplexity int, input generated.CreateUserRoleInput) int
+		CreateWorkShift   func(childComplexity int, input generated.CreateWorkshiftInput) int
+		CreateWorkTag     func(childComplexity int, input generated.CreateWorktagInput) int
+		CreateWorkTask    func(childComplexity int, input generated.CreateWorktaskInput) int
 		DeleteCustomer    func(childComplexity int, id int) int
 		DeleteEmployee    func(childComplexity int, id int) int
 		DeleteProduct     func(childComplexity int, id int) int
@@ -245,20 +286,21 @@ type ComplexityRoot struct {
 		DeleteWorkTag     func(childComplexity int, id int) int
 		DeleteWorkTask    func(childComplexity int, id int) int
 		ForgotPassword    func(childComplexity int, username string) int
-		InvitedUserSignup func(childComplexity int, input InvitedUserSignupInput) int
-		ResetPassword     func(childComplexity int, input ResetPasswordInput) int
-		Signup            func(childComplexity int, input SignupInput) int
+		InvitedUserSignup func(childComplexity int, input model.InvitedUserSignupInput) int
+		RegisterPurchase  func(childComplexity int, input model.PurchaseRegistrationInput) int
+		ResetPassword     func(childComplexity int, input model.ResetPasswordInput) int
+		Signup            func(childComplexity int, input model.SignupInput) int
 		Unsubscribe       func(childComplexity int, id int) int
-		UpdateCompany     func(childComplexity int, id int, input ent.UpdateCompanyInput) int
-		UpdateCustomer    func(childComplexity int, id int, input ent.UpdateCustomerInput) int
-		UpdateEmployee    func(childComplexity int, id int, input ent.UpdateEmployeeInput) int
-		UpdateProduct     func(childComplexity int, id int, input ent.UpdateProductInput) int
-		UpdateSupplier    func(childComplexity int, id int, input ent.UpdateSupplierInput) int
-		UpdateTreasury    func(childComplexity int, id int, input ent.UpdateTreasuryInput) int
-		UpdateUser        func(childComplexity int, id int, input ent.UpdateUserInput) int
-		UpdateWorkShift   func(childComplexity int, id int, input ent.UpdateWorkshiftInput) int
-		UpdateWorkTag     func(childComplexity int, id int, input ent.UpdateWorktagInput) int
-		UpdateWorkTask    func(childComplexity int, id int, input ent.UpdateWorktaskInput) int
+		UpdateCompany     func(childComplexity int, id int, input generated.UpdateCompanyInput) int
+		UpdateCustomer    func(childComplexity int, id int, input generated.UpdateCustomerInput) int
+		UpdateEmployee    func(childComplexity int, id int, input generated.UpdateEmployeeInput) int
+		UpdateProduct     func(childComplexity int, id int, input generated.UpdateProductInput) int
+		UpdateSupplier    func(childComplexity int, id int, input generated.UpdateSupplierInput) int
+		UpdateTreasury    func(childComplexity int, id int, input generated.UpdateTreasuryInput) int
+		UpdateUser        func(childComplexity int, id int, input generated.UpdateUserInput) int
+		UpdateWorkShift   func(childComplexity int, id int, input generated.UpdateWorkshiftInput) int
+		UpdateWorkTag     func(childComplexity int, id int, input generated.UpdateWorktagInput) int
+		UpdateWorkTask    func(childComplexity int, id int, input generated.UpdateWorktaskInput) int
 	}
 
 	PageInfo struct {
@@ -280,6 +322,13 @@ type ComplexityRoot struct {
 		Supplier           func(childComplexity int) int
 		TotalTransaction   func(childComplexity int) int
 		UpdatedAt          func(childComplexity int) int
+	}
+
+	PaymentDetails struct {
+		AccountNumber func(childComplexity int) int
+		BankName      func(childComplexity int) int
+		DueDate       func(childComplexity int) int
+		Iban          func(childComplexity int) int
 	}
 
 	Product struct {
@@ -326,32 +375,32 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		AccountingEntries        func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *ent.AccountingEntryOrder, where *ent.AccountingEntryWhereInput) int
-		AggregateWorkShift       func(childComplexity int, where *ent.WorkshiftWhereInput, groupBy []ShiftGroupBy) int
-		CashMovements            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.CashMovementWhereInput) int
-		Companies                func(childComplexity int, where *ent.CompanyWhereInput) int
-		Customers                func(childComplexity int, where *ent.CustomerWhereInput) int
-		Employees                func(childComplexity int, where *ent.EmployeeWhereInput) int
-		Files                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *ent.FileOrder, where *ent.FileWhereInput) int
-		LowStock                 func(childComplexity int, where *ent.ProductWhereInput) int
+		AccountingEntries        func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) int
+		AggregateWorkShift       func(childComplexity int, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) int
+		CashMovements            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) int
+		Companies                func(childComplexity int, where *generated.CompanyWhereInput) int
+		Customers                func(childComplexity int, where *generated.CustomerWhereInput) int
+		Employees                func(childComplexity int, where *generated.EmployeeWhereInput) int
+		Files                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) int
+		LowStock                 func(childComplexity int, where *generated.ProductWhereInput) int
 		Node                     func(childComplexity int, id int) int
 		Nodes                    func(childComplexity int, ids []int) int
-		NumberOfLowStock         func(childComplexity int, where *ent.ProductWhereInput) int
-		NumberOfOutOfStock       func(childComplexity int, where *ent.ProductWhereInput) int
-		NumberOfProducts         func(childComplexity int, where *ent.ProductWhereInput) int
-		Payables                 func(childComplexity int, where *ent.PayableWhereInput) int
-		ProductMovements         func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.ProductMovementWhereInput) int
-		Products                 func(childComplexity int, where *ent.ProductWhereInput) int
-		Receivables              func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.ReceivableWhereInput) int
-		Suppliers                func(childComplexity int, where *ent.SupplierWhereInput) int
+		NumberOfLowStock         func(childComplexity int, where *generated.ProductWhereInput) int
+		NumberOfOutOfStock       func(childComplexity int, where *generated.ProductWhereInput) int
+		NumberOfProducts         func(childComplexity int, where *generated.ProductWhereInput) int
+		Payables                 func(childComplexity int, where *generated.PayableWhereInput) int
+		ProductMovements         func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ProductMovementWhereInput) int
+		Products                 func(childComplexity int, where *generated.ProductWhereInput) int
+		Receivables              func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ReceivableWhereInput) int
+		Suppliers                func(childComplexity int, where *generated.SupplierWhereInput) int
 		Tokens                   func(childComplexity int) int
-		Treasuries               func(childComplexity int, where *ent.TreasuryWhereInput) int
-		UserRoles                func(childComplexity int, where *ent.UserRoleWhereInput) int
-		Users                    func(childComplexity int, where *ent.UserWhereInput) int
+		Treasuries               func(childComplexity int, where *generated.TreasuryWhereInput) int
+		UserRoles                func(childComplexity int, where *generated.UserRoleWhereInput) int
+		Users                    func(childComplexity int, where *generated.UserWhereInput) int
 		VerifyPasswordResetToken func(childComplexity int, token string) int
-		WorkShifts               func(childComplexity int, where *ent.WorkshiftWhereInput) int
-		WorkTags                 func(childComplexity int, where *ent.WorktagWhereInput) int
-		WorkTasks                func(childComplexity int, where *ent.WorktaskWhereInput) int
+		WorkShifts               func(childComplexity int, where *generated.WorkshiftWhereInput) int
+		WorkTags                 func(childComplexity int, where *generated.WorktagWhereInput) int
+		WorkTasks                func(childComplexity int, where *generated.WorktaskWhereInput) int
 		Workshifts               func(childComplexity int) int
 	}
 
@@ -512,69 +561,70 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	Signup(ctx context.Context, input SignupInput) (*LoginOutput, error)
-	CreateCompany(ctx context.Context, input *ent.CreateCompanyInput) (*ent.Company, error)
-	UpdateCompany(ctx context.Context, id int, input ent.UpdateCompanyInput) (*ent.Company, error)
-	InvitedUserSignup(ctx context.Context, input InvitedUserSignupInput) (*ent.User, error)
-	CreateUser(ctx context.Context, input ent.CreateUserInput) (*ent.User, error)
-	UpdateUser(ctx context.Context, id int, input ent.UpdateUserInput) (*ent.User, error)
+	Signup(ctx context.Context, input model.SignupInput) (*model.LoginOutput, error)
+	CreateCompany(ctx context.Context, input *generated.CreateCompanyInput) (*generated.Company, error)
+	UpdateCompany(ctx context.Context, id int, input generated.UpdateCompanyInput) (*generated.Company, error)
+	InvitedUserSignup(ctx context.Context, input model.InvitedUserSignupInput) (*generated.User, error)
+	CreateUser(ctx context.Context, input generated.CreateUserInput) (*generated.User, error)
+	UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput) (*generated.User, error)
 	ForgotPassword(ctx context.Context, username string) (string, error)
-	ResetPassword(ctx context.Context, input ResetPasswordInput) (bool, error)
+	ResetPassword(ctx context.Context, input model.ResetPasswordInput) (bool, error)
 	Unsubscribe(ctx context.Context, id int) (bool, error)
-	CreateUserRole(ctx context.Context, input ent.CreateUserRoleInput) (bool, error)
-	CreateCustomer(ctx context.Context, input ent.CreateCustomerInput) (*ent.Customer, error)
-	UpdateCustomer(ctx context.Context, id int, input ent.UpdateCustomerInput) (*ent.Customer, error)
+	CreateUserRole(ctx context.Context, input generated.CreateUserRoleInput) (bool, error)
+	CreateCustomer(ctx context.Context, input generated.CreateCustomerInput) (*generated.Customer, error)
+	UpdateCustomer(ctx context.Context, id int, input generated.UpdateCustomerInput) (*generated.Customer, error)
 	DeleteCustomer(ctx context.Context, id int) (bool, error)
-	CreateEmployee(ctx context.Context, input ent.CreateEmployeeInput) (*ent.Employee, error)
-	UpdateEmployee(ctx context.Context, id int, input ent.UpdateEmployeeInput) (*ent.Employee, error)
+	CreateEmployee(ctx context.Context, input generated.CreateEmployeeInput) (*generated.Employee, error)
+	UpdateEmployee(ctx context.Context, id int, input generated.UpdateEmployeeInput) (*generated.Employee, error)
 	DeleteEmployee(ctx context.Context, id int) (bool, error)
-	CreateProduct(ctx context.Context, input ent.CreateProductInput) (*ent.Product, error)
-	UpdateProduct(ctx context.Context, id int, input ent.UpdateProductInput) (*ent.Product, error)
+	CreateProduct(ctx context.Context, input generated.CreateProductInput) (*generated.Product, error)
+	UpdateProduct(ctx context.Context, id int, input generated.UpdateProductInput) (*generated.Product, error)
 	DeleteProduct(ctx context.Context, id int) (bool, error)
-	CreateSupplier(ctx context.Context, input ent.CreateSupplierInput) (*ent.Supplier, error)
-	UpdateSupplier(ctx context.Context, id int, input ent.UpdateSupplierInput) (*ent.Supplier, error)
+	CreateSupplier(ctx context.Context, input generated.CreateSupplierInput) (*generated.Supplier, error)
+	UpdateSupplier(ctx context.Context, id int, input generated.UpdateSupplierInput) (*generated.Supplier, error)
 	DeleteSupplier(ctx context.Context, id int) (bool, error)
-	CreateTreasury(ctx context.Context, input ent.CreateTreasuryInput) (*ent.Treasury, error)
-	UpdateTreasury(ctx context.Context, id int, input ent.UpdateTreasuryInput) (*ent.Treasury, error)
+	CreateTreasury(ctx context.Context, input generated.CreateTreasuryInput) (*generated.Treasury, error)
+	UpdateTreasury(ctx context.Context, id int, input generated.UpdateTreasuryInput) (*generated.Treasury, error)
 	DeleteTreasury(ctx context.Context, id int) (bool, error)
-	CreateWorkShift(ctx context.Context, input ent.CreateWorkshiftInput) (*ent.Workshift, error)
-	UpdateWorkShift(ctx context.Context, id int, input ent.UpdateWorkshiftInput) (*ent.Workshift, error)
+	CreateWorkShift(ctx context.Context, input generated.CreateWorkshiftInput) (*generated.Workshift, error)
+	UpdateWorkShift(ctx context.Context, id int, input generated.UpdateWorkshiftInput) (*generated.Workshift, error)
 	DeleteWorkShift(ctx context.Context, id int) (bool, error)
-	CreateWorkTask(ctx context.Context, input ent.CreateWorktaskInput) (*ent.Worktask, error)
-	UpdateWorkTask(ctx context.Context, id int, input ent.UpdateWorktaskInput) (*ent.Worktask, error)
+	CreateWorkTask(ctx context.Context, input generated.CreateWorktaskInput) (*generated.Worktask, error)
+	UpdateWorkTask(ctx context.Context, id int, input generated.UpdateWorktaskInput) (*generated.Worktask, error)
 	DeleteWorkTask(ctx context.Context, id int) (bool, error)
-	CreateWorkTag(ctx context.Context, input ent.CreateWorktagInput) (*ent.Worktag, error)
-	UpdateWorkTag(ctx context.Context, id int, input ent.UpdateWorktagInput) (*ent.Worktag, error)
+	CreateWorkTag(ctx context.Context, input generated.CreateWorktagInput) (*generated.Worktag, error)
+	UpdateWorkTag(ctx context.Context, id int, input generated.UpdateWorktagInput) (*generated.Worktag, error)
 	DeleteWorkTag(ctx context.Context, id int) (bool, error)
+	RegisterPurchase(ctx context.Context, input model.PurchaseRegistrationInput) (string, error)
 }
 type QueryResolver interface {
-	Node(ctx context.Context, id int) (ent.Noder, error)
-	Nodes(ctx context.Context, ids []int) ([]ent.Noder, error)
-	AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *ent.AccountingEntryOrder, where *ent.AccountingEntryWhereInput) (*ent.AccountingEntryConnection, error)
-	CashMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.CashMovementWhereInput) (*ent.CashMovementConnection, error)
-	Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *ent.FileOrder, where *ent.FileWhereInput) (*ent.FileConnection, error)
-	ProductMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.ProductMovementWhereInput) (*ent.ProductMovementConnection, error)
-	Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.ReceivableWhereInput) (*ent.ReceivableConnection, error)
-	Tokens(ctx context.Context) ([]*ent.Token, error)
-	Workshifts(ctx context.Context) ([]*ent.Workshift, error)
+	Node(ctx context.Context, id int) (generated.Noder, error)
+	Nodes(ctx context.Context, ids []int) ([]generated.Noder, error)
+	AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) (*generated.AccountingEntryConnection, error)
+	CashMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) (*generated.CashMovementConnection, error)
+	Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) (*generated.FileConnection, error)
+	ProductMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ProductMovementWhereInput) (*generated.ProductMovementConnection, error)
+	Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error)
+	Tokens(ctx context.Context) ([]*generated.Token, error)
+	Workshifts(ctx context.Context) ([]*generated.Workshift, error)
 	VerifyPasswordResetToken(ctx context.Context, token string) (bool, error)
-	Companies(ctx context.Context, where *ent.CompanyWhereInput) ([]*ent.Company, error)
-	Customers(ctx context.Context, where *ent.CustomerWhereInput) ([]*ent.Customer, error)
-	Employees(ctx context.Context, where *ent.EmployeeWhereInput) ([]*ent.Employee, error)
-	Payables(ctx context.Context, where *ent.PayableWhereInput) ([]*ent.Payable, error)
-	Products(ctx context.Context, where *ent.ProductWhereInput) ([]*ent.Product, error)
-	LowStock(ctx context.Context, where *ent.ProductWhereInput) ([]*ent.Product, error)
-	NumberOfProducts(ctx context.Context, where *ent.ProductWhereInput) (int, error)
-	NumberOfLowStock(ctx context.Context, where *ent.ProductWhereInput) (int, error)
-	NumberOfOutOfStock(ctx context.Context, where *ent.ProductWhereInput) (int, error)
-	Suppliers(ctx context.Context, where *ent.SupplierWhereInput) ([]*ent.Supplier, error)
-	Treasuries(ctx context.Context, where *ent.TreasuryWhereInput) ([]*ent.Treasury, error)
-	Users(ctx context.Context, where *ent.UserWhereInput) ([]*ent.User, error)
-	UserRoles(ctx context.Context, where *ent.UserRoleWhereInput) ([]*ent.UserRole, error)
-	WorkShifts(ctx context.Context, where *ent.WorkshiftWhereInput) ([]*ent.Workshift, error)
-	AggregateWorkShift(ctx context.Context, where *ent.WorkshiftWhereInput, groupBy []ShiftGroupBy) ([]*WorkShiftAggregationPayload, error)
-	WorkTags(ctx context.Context, where *ent.WorktagWhereInput) ([]*ent.Worktag, error)
-	WorkTasks(ctx context.Context, where *ent.WorktaskWhereInput) ([]*ent.Worktask, error)
+	Companies(ctx context.Context, where *generated.CompanyWhereInput) ([]*generated.Company, error)
+	Customers(ctx context.Context, where *generated.CustomerWhereInput) ([]*generated.Customer, error)
+	Employees(ctx context.Context, where *generated.EmployeeWhereInput) ([]*generated.Employee, error)
+	Payables(ctx context.Context, where *generated.PayableWhereInput) ([]*generated.Payable, error)
+	Products(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error)
+	LowStock(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error)
+	NumberOfProducts(ctx context.Context, where *generated.ProductWhereInput) (int, error)
+	NumberOfLowStock(ctx context.Context, where *generated.ProductWhereInput) (int, error)
+	NumberOfOutOfStock(ctx context.Context, where *generated.ProductWhereInput) (int, error)
+	Suppliers(ctx context.Context, where *generated.SupplierWhereInput) ([]*generated.Supplier, error)
+	Treasuries(ctx context.Context, where *generated.TreasuryWhereInput) ([]*generated.Treasury, error)
+	Users(ctx context.Context, where *generated.UserWhereInput) ([]*generated.User, error)
+	UserRoles(ctx context.Context, where *generated.UserRoleWhereInput) ([]*generated.UserRole, error)
+	WorkShifts(ctx context.Context, where *generated.WorkshiftWhereInput) ([]*generated.Workshift, error)
+	AggregateWorkShift(ctx context.Context, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) ([]*model.WorkShiftAggregationPayload, error)
+	WorkTags(ctx context.Context, where *generated.WorktagWhereInput) ([]*generated.Worktag, error)
+	WorkTasks(ctx context.Context, where *generated.WorktaskWhereInput) ([]*generated.Worktask, error)
 }
 
 type executableSchema struct {
@@ -1429,6 +1479,202 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FileEdge.Node(childComplexity), true
 
+	case "Invoice.body":
+		if e.complexity.Invoice.Body == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Body(childComplexity), true
+
+	case "Invoice.customerDetails":
+		if e.complexity.Invoice.CustomerDetails == nil {
+			break
+		}
+
+		return e.complexity.Invoice.CustomerDetails(childComplexity), true
+
+	case "Invoice.date":
+		if e.complexity.Invoice.Date == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Date(childComplexity), true
+
+	case "Invoice.filename":
+		if e.complexity.Invoice.Filename == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Filename(childComplexity), true
+
+	case "Invoice.issuerDetails":
+		if e.complexity.Invoice.IssuerDetails == nil {
+			break
+		}
+
+		return e.complexity.Invoice.IssuerDetails(childComplexity), true
+
+	case "Invoice.keywords":
+		if e.complexity.Invoice.Keywords == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Keywords(childComplexity), true
+
+	case "Invoice.number":
+		if e.complexity.Invoice.Number == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Number(childComplexity), true
+
+	case "Invoice.paymentDetails":
+		if e.complexity.Invoice.PaymentDetails == nil {
+			break
+		}
+
+		return e.complexity.Invoice.PaymentDetails(childComplexity), true
+
+	case "Invoice.title":
+		if e.complexity.Invoice.Title == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Title(childComplexity), true
+
+	case "Invoice.totals":
+		if e.complexity.Invoice.Totals == nil {
+			break
+		}
+
+		return e.complexity.Invoice.Totals(childComplexity), true
+
+	case "InvoiceCustomer.address":
+		if e.complexity.InvoiceCustomer.Address == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.Address(childComplexity), true
+
+	case "InvoiceCustomer.city":
+		if e.complexity.InvoiceCustomer.City == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.City(childComplexity), true
+
+	case "InvoiceCustomer.country":
+		if e.complexity.InvoiceCustomer.Country == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.Country(childComplexity), true
+
+	case "InvoiceCustomer.email":
+		if e.complexity.InvoiceCustomer.Email == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.Email(childComplexity), true
+
+	case "InvoiceCustomer.name":
+		if e.complexity.InvoiceCustomer.Name == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.Name(childComplexity), true
+
+	case "InvoiceCustomer.phone":
+		if e.complexity.InvoiceCustomer.Phone == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.Phone(childComplexity), true
+
+	case "InvoiceCustomer.taxID":
+		if e.complexity.InvoiceCustomer.TaxID == nil {
+			break
+		}
+
+		return e.complexity.InvoiceCustomer.TaxID(childComplexity), true
+
+	case "InvoiceIssuer.address":
+		if e.complexity.InvoiceIssuer.Address == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.Address(childComplexity), true
+
+	case "InvoiceIssuer.city":
+		if e.complexity.InvoiceIssuer.City == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.City(childComplexity), true
+
+	case "InvoiceIssuer.country":
+		if e.complexity.InvoiceIssuer.Country == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.Country(childComplexity), true
+
+	case "InvoiceIssuer.email":
+		if e.complexity.InvoiceIssuer.Email == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.Email(childComplexity), true
+
+	case "InvoiceIssuer.name":
+		if e.complexity.InvoiceIssuer.Name == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.Name(childComplexity), true
+
+	case "InvoiceIssuer.phone":
+		if e.complexity.InvoiceIssuer.Phone == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.Phone(childComplexity), true
+
+	case "InvoiceIssuer.taxID":
+		if e.complexity.InvoiceIssuer.TaxID == nil {
+			break
+		}
+
+		return e.complexity.InvoiceIssuer.TaxID(childComplexity), true
+
+	case "InvoiceTotals.subtotal":
+		if e.complexity.InvoiceTotals.Subtotal == nil {
+			break
+		}
+
+		return e.complexity.InvoiceTotals.Subtotal(childComplexity), true
+
+	case "InvoiceTotals.total":
+		if e.complexity.InvoiceTotals.Total == nil {
+			break
+		}
+
+		return e.complexity.InvoiceTotals.Total(childComplexity), true
+
+	case "InvoiceTotals.vat":
+		if e.complexity.InvoiceTotals.Vat == nil {
+			break
+		}
+
+		return e.complexity.InvoiceTotals.Vat(childComplexity), true
+
+	case "InvoiceTotals.vatRate":
+		if e.complexity.InvoiceTotals.VatRate == nil {
+			break
+		}
+
+		return e.complexity.InvoiceTotals.VatRate(childComplexity), true
+
 	case "LoginOutput.accessToken":
 		if e.complexity.LoginOutput.AccessToken == nil {
 			break
@@ -1481,7 +1727,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateCompany(childComplexity, args["input"].(*ent.CreateCompanyInput)), true
+		return e.complexity.Mutation.CreateCompany(childComplexity, args["input"].(*generated.CreateCompanyInput)), true
 
 	case "Mutation.createCustomer":
 		if e.complexity.Mutation.CreateCustomer == nil {
@@ -1493,7 +1739,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateCustomer(childComplexity, args["input"].(ent.CreateCustomerInput)), true
+		return e.complexity.Mutation.CreateCustomer(childComplexity, args["input"].(generated.CreateCustomerInput)), true
 
 	case "Mutation.createEmployee":
 		if e.complexity.Mutation.CreateEmployee == nil {
@@ -1505,7 +1751,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateEmployee(childComplexity, args["input"].(ent.CreateEmployeeInput)), true
+		return e.complexity.Mutation.CreateEmployee(childComplexity, args["input"].(generated.CreateEmployeeInput)), true
 
 	case "Mutation.createProduct":
 		if e.complexity.Mutation.CreateProduct == nil {
@@ -1517,7 +1763,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateProduct(childComplexity, args["input"].(ent.CreateProductInput)), true
+		return e.complexity.Mutation.CreateProduct(childComplexity, args["input"].(generated.CreateProductInput)), true
 
 	case "Mutation.createSupplier":
 		if e.complexity.Mutation.CreateSupplier == nil {
@@ -1529,7 +1775,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateSupplier(childComplexity, args["input"].(ent.CreateSupplierInput)), true
+		return e.complexity.Mutation.CreateSupplier(childComplexity, args["input"].(generated.CreateSupplierInput)), true
 
 	case "Mutation.createTreasury":
 		if e.complexity.Mutation.CreateTreasury == nil {
@@ -1541,7 +1787,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTreasury(childComplexity, args["input"].(ent.CreateTreasuryInput)), true
+		return e.complexity.Mutation.CreateTreasury(childComplexity, args["input"].(generated.CreateTreasuryInput)), true
 
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -1553,7 +1799,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(ent.CreateUserInput)), true
+		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(generated.CreateUserInput)), true
 
 	case "Mutation.createUserRole":
 		if e.complexity.Mutation.CreateUserRole == nil {
@@ -1565,7 +1811,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateUserRole(childComplexity, args["input"].(ent.CreateUserRoleInput)), true
+		return e.complexity.Mutation.CreateUserRole(childComplexity, args["input"].(generated.CreateUserRoleInput)), true
 
 	case "Mutation.createWorkShift":
 		if e.complexity.Mutation.CreateWorkShift == nil {
@@ -1577,7 +1823,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateWorkShift(childComplexity, args["input"].(ent.CreateWorkshiftInput)), true
+		return e.complexity.Mutation.CreateWorkShift(childComplexity, args["input"].(generated.CreateWorkshiftInput)), true
 
 	case "Mutation.createWorkTag":
 		if e.complexity.Mutation.CreateWorkTag == nil {
@@ -1589,7 +1835,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateWorkTag(childComplexity, args["input"].(ent.CreateWorktagInput)), true
+		return e.complexity.Mutation.CreateWorkTag(childComplexity, args["input"].(generated.CreateWorktagInput)), true
 
 	case "Mutation.createWorkTask":
 		if e.complexity.Mutation.CreateWorkTask == nil {
@@ -1601,7 +1847,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateWorkTask(childComplexity, args["input"].(ent.CreateWorktaskInput)), true
+		return e.complexity.Mutation.CreateWorkTask(childComplexity, args["input"].(generated.CreateWorktaskInput)), true
 
 	case "Mutation.deleteCustomer":
 		if e.complexity.Mutation.DeleteCustomer == nil {
@@ -1721,7 +1967,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.InvitedUserSignup(childComplexity, args["input"].(InvitedUserSignupInput)), true
+		return e.complexity.Mutation.InvitedUserSignup(childComplexity, args["input"].(model.InvitedUserSignupInput)), true
+
+	case "Mutation.registerPurchase":
+		if e.complexity.Mutation.RegisterPurchase == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_registerPurchase_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RegisterPurchase(childComplexity, args["input"].(model.PurchaseRegistrationInput)), true
 
 	case "Mutation.resetPassword":
 		if e.complexity.Mutation.ResetPassword == nil {
@@ -1733,7 +1991,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.ResetPassword(childComplexity, args["input"].(ResetPasswordInput)), true
+		return e.complexity.Mutation.ResetPassword(childComplexity, args["input"].(model.ResetPasswordInput)), true
 
 	case "Mutation.signup":
 		if e.complexity.Mutation.Signup == nil {
@@ -1745,7 +2003,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.Signup(childComplexity, args["input"].(SignupInput)), true
+		return e.complexity.Mutation.Signup(childComplexity, args["input"].(model.SignupInput)), true
 
 	case "Mutation.unsubscribe":
 		if e.complexity.Mutation.Unsubscribe == nil {
@@ -1769,7 +2027,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateCompany(childComplexity, args["id"].(int), args["input"].(ent.UpdateCompanyInput)), true
+		return e.complexity.Mutation.UpdateCompany(childComplexity, args["id"].(int), args["input"].(generated.UpdateCompanyInput)), true
 
 	case "Mutation.updateCustomer":
 		if e.complexity.Mutation.UpdateCustomer == nil {
@@ -1781,7 +2039,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateCustomer(childComplexity, args["id"].(int), args["input"].(ent.UpdateCustomerInput)), true
+		return e.complexity.Mutation.UpdateCustomer(childComplexity, args["id"].(int), args["input"].(generated.UpdateCustomerInput)), true
 
 	case "Mutation.updateEmployee":
 		if e.complexity.Mutation.UpdateEmployee == nil {
@@ -1793,7 +2051,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateEmployee(childComplexity, args["id"].(int), args["input"].(ent.UpdateEmployeeInput)), true
+		return e.complexity.Mutation.UpdateEmployee(childComplexity, args["id"].(int), args["input"].(generated.UpdateEmployeeInput)), true
 
 	case "Mutation.updateProduct":
 		if e.complexity.Mutation.UpdateProduct == nil {
@@ -1805,7 +2063,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateProduct(childComplexity, args["id"].(int), args["input"].(ent.UpdateProductInput)), true
+		return e.complexity.Mutation.UpdateProduct(childComplexity, args["id"].(int), args["input"].(generated.UpdateProductInput)), true
 
 	case "Mutation.updateSupplier":
 		if e.complexity.Mutation.UpdateSupplier == nil {
@@ -1817,7 +2075,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateSupplier(childComplexity, args["id"].(int), args["input"].(ent.UpdateSupplierInput)), true
+		return e.complexity.Mutation.UpdateSupplier(childComplexity, args["id"].(int), args["input"].(generated.UpdateSupplierInput)), true
 
 	case "Mutation.updateTreasury":
 		if e.complexity.Mutation.UpdateTreasury == nil {
@@ -1829,7 +2087,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTreasury(childComplexity, args["id"].(int), args["input"].(ent.UpdateTreasuryInput)), true
+		return e.complexity.Mutation.UpdateTreasury(childComplexity, args["id"].(int), args["input"].(generated.UpdateTreasuryInput)), true
 
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -1841,7 +2099,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(int), args["input"].(ent.UpdateUserInput)), true
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(int), args["input"].(generated.UpdateUserInput)), true
 
 	case "Mutation.updateWorkShift":
 		if e.complexity.Mutation.UpdateWorkShift == nil {
@@ -1853,7 +2111,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateWorkShift(childComplexity, args["id"].(int), args["input"].(ent.UpdateWorkshiftInput)), true
+		return e.complexity.Mutation.UpdateWorkShift(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorkshiftInput)), true
 
 	case "Mutation.updateWorkTag":
 		if e.complexity.Mutation.UpdateWorkTag == nil {
@@ -1865,7 +2123,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateWorkTag(childComplexity, args["id"].(int), args["input"].(ent.UpdateWorktagInput)), true
+		return e.complexity.Mutation.UpdateWorkTag(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorktagInput)), true
 
 	case "Mutation.updateWorkTask":
 		if e.complexity.Mutation.UpdateWorkTask == nil {
@@ -1877,7 +2135,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateWorkTask(childComplexity, args["id"].(int), args["input"].(ent.UpdateWorktaskInput)), true
+		return e.complexity.Mutation.UpdateWorkTask(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorktaskInput)), true
 
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
@@ -1983,6 +2241,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Payable.UpdatedAt(childComplexity), true
+
+	case "PaymentDetails.accountNumber":
+		if e.complexity.PaymentDetails.AccountNumber == nil {
+			break
+		}
+
+		return e.complexity.PaymentDetails.AccountNumber(childComplexity), true
+
+	case "PaymentDetails.bankName":
+		if e.complexity.PaymentDetails.BankName == nil {
+			break
+		}
+
+		return e.complexity.PaymentDetails.BankName(childComplexity), true
+
+	case "PaymentDetails.dueDate":
+		if e.complexity.PaymentDetails.DueDate == nil {
+			break
+		}
+
+		return e.complexity.PaymentDetails.DueDate(childComplexity), true
+
+	case "PaymentDetails.iban":
+		if e.complexity.PaymentDetails.Iban == nil {
+			break
+		}
+
+		return e.complexity.PaymentDetails.Iban(childComplexity), true
 
 	case "Product.category":
 		if e.complexity.Product.Category == nil {
@@ -2211,7 +2497,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.AccountingEntries(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].(*ent.AccountingEntryOrder), args["where"].(*ent.AccountingEntryWhereInput)), true
+		return e.complexity.Query.AccountingEntries(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].(*generated.AccountingEntryOrder), args["where"].(*generated.AccountingEntryWhereInput)), true
 
 	case "Query.aggregateWorkShift":
 		if e.complexity.Query.AggregateWorkShift == nil {
@@ -2223,7 +2509,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.AggregateWorkShift(childComplexity, args["where"].(*ent.WorkshiftWhereInput), args["groupBy"].([]ShiftGroupBy)), true
+		return e.complexity.Query.AggregateWorkShift(childComplexity, args["where"].(*generated.WorkshiftWhereInput), args["groupBy"].([]model.ShiftGroupBy)), true
 
 	case "Query.cashMovements":
 		if e.complexity.Query.CashMovements == nil {
@@ -2235,7 +2521,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.CashMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*ent.CashMovementWhereInput)), true
+		return e.complexity.Query.CashMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*generated.CashMovementWhereInput)), true
 
 	case "Query.companies":
 		if e.complexity.Query.Companies == nil {
@@ -2247,7 +2533,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Companies(childComplexity, args["where"].(*ent.CompanyWhereInput)), true
+		return e.complexity.Query.Companies(childComplexity, args["where"].(*generated.CompanyWhereInput)), true
 
 	case "Query.customers":
 		if e.complexity.Query.Customers == nil {
@@ -2259,7 +2545,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Customers(childComplexity, args["where"].(*ent.CustomerWhereInput)), true
+		return e.complexity.Query.Customers(childComplexity, args["where"].(*generated.CustomerWhereInput)), true
 
 	case "Query.employees":
 		if e.complexity.Query.Employees == nil {
@@ -2271,7 +2557,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Employees(childComplexity, args["where"].(*ent.EmployeeWhereInput)), true
+		return e.complexity.Query.Employees(childComplexity, args["where"].(*generated.EmployeeWhereInput)), true
 
 	case "Query.files":
 		if e.complexity.Query.Files == nil {
@@ -2283,7 +2569,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Files(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].(*ent.FileOrder), args["where"].(*ent.FileWhereInput)), true
+		return e.complexity.Query.Files(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].(*generated.FileOrder), args["where"].(*generated.FileWhereInput)), true
 
 	case "Query.lowStock":
 		if e.complexity.Query.LowStock == nil {
@@ -2295,7 +2581,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.LowStock(childComplexity, args["where"].(*ent.ProductWhereInput)), true
+		return e.complexity.Query.LowStock(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
@@ -2331,7 +2617,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.NumberOfLowStock(childComplexity, args["where"].(*ent.ProductWhereInput)), true
+		return e.complexity.Query.NumberOfLowStock(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
 	case "Query.numberOfOutOfStock":
 		if e.complexity.Query.NumberOfOutOfStock == nil {
@@ -2343,7 +2629,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.NumberOfOutOfStock(childComplexity, args["where"].(*ent.ProductWhereInput)), true
+		return e.complexity.Query.NumberOfOutOfStock(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
 	case "Query.numberOfProducts":
 		if e.complexity.Query.NumberOfProducts == nil {
@@ -2355,7 +2641,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.NumberOfProducts(childComplexity, args["where"].(*ent.ProductWhereInput)), true
+		return e.complexity.Query.NumberOfProducts(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
 	case "Query.payables":
 		if e.complexity.Query.Payables == nil {
@@ -2367,7 +2653,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Payables(childComplexity, args["where"].(*ent.PayableWhereInput)), true
+		return e.complexity.Query.Payables(childComplexity, args["where"].(*generated.PayableWhereInput)), true
 
 	case "Query.productMovements":
 		if e.complexity.Query.ProductMovements == nil {
@@ -2379,7 +2665,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ProductMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*ent.ProductMovementWhereInput)), true
+		return e.complexity.Query.ProductMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*generated.ProductMovementWhereInput)), true
 
 	case "Query.products":
 		if e.complexity.Query.Products == nil {
@@ -2391,7 +2677,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Products(childComplexity, args["where"].(*ent.ProductWhereInput)), true
+		return e.complexity.Query.Products(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
 	case "Query.receivables":
 		if e.complexity.Query.Receivables == nil {
@@ -2403,7 +2689,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Receivables(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*ent.ReceivableWhereInput)), true
+		return e.complexity.Query.Receivables(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*generated.ReceivableWhereInput)), true
 
 	case "Query.suppliers":
 		if e.complexity.Query.Suppliers == nil {
@@ -2415,7 +2701,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Suppliers(childComplexity, args["where"].(*ent.SupplierWhereInput)), true
+		return e.complexity.Query.Suppliers(childComplexity, args["where"].(*generated.SupplierWhereInput)), true
 
 	case "Query.tokens":
 		if e.complexity.Query.Tokens == nil {
@@ -2434,7 +2720,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Treasuries(childComplexity, args["where"].(*ent.TreasuryWhereInput)), true
+		return e.complexity.Query.Treasuries(childComplexity, args["where"].(*generated.TreasuryWhereInput)), true
 
 	case "Query.userRoles":
 		if e.complexity.Query.UserRoles == nil {
@@ -2446,7 +2732,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.UserRoles(childComplexity, args["where"].(*ent.UserRoleWhereInput)), true
+		return e.complexity.Query.UserRoles(childComplexity, args["where"].(*generated.UserRoleWhereInput)), true
 
 	case "Query.users":
 		if e.complexity.Query.Users == nil {
@@ -2458,7 +2744,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Users(childComplexity, args["where"].(*ent.UserWhereInput)), true
+		return e.complexity.Query.Users(childComplexity, args["where"].(*generated.UserWhereInput)), true
 
 	case "Query.verifyPasswordResetToken":
 		if e.complexity.Query.VerifyPasswordResetToken == nil {
@@ -2482,7 +2768,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.WorkShifts(childComplexity, args["where"].(*ent.WorkshiftWhereInput)), true
+		return e.complexity.Query.WorkShifts(childComplexity, args["where"].(*generated.WorkshiftWhereInput)), true
 
 	case "Query.workTags":
 		if e.complexity.Query.WorkTags == nil {
@@ -2494,7 +2780,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.WorkTags(childComplexity, args["where"].(*ent.WorktagWhereInput)), true
+		return e.complexity.Query.WorkTags(childComplexity, args["where"].(*generated.WorktagWhereInput)), true
 
 	case "Query.workTasks":
 		if e.complexity.Query.WorkTasks == nil {
@@ -2506,7 +2792,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.WorkTasks(childComplexity, args["where"].(*ent.WorktaskWhereInput)), true
+		return e.complexity.Query.WorkTasks(childComplexity, args["where"].(*generated.WorktaskWhereInput)), true
 
 	case "Query.workshifts":
 		if e.complexity.Query.Workshifts == nil {
@@ -3380,6 +3666,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateWorktaskInput,
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputEmployeeWhereInput,
+		ec.unmarshalInputEntryItem,
+		ec.unmarshalInputEntryProductInput,
+		ec.unmarshalInputEntrySupplierInput,
+		ec.unmarshalInputEntryTreasuryInput,
 		ec.unmarshalInputFileOrder,
 		ec.unmarshalInputFileWhereInput,
 		ec.unmarshalInputLoginInput,
@@ -3387,6 +3677,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputProductMovementWhereInput,
 		ec.unmarshalInputProductOrder,
 		ec.unmarshalInputProductWhereInput,
+		ec.unmarshalInputPurchaseRegistrationInput,
 		ec.unmarshalInputReceivableWhereInput,
 		ec.unmarshalInputResetPasswordInput,
 		ec.unmarshalInputSignupInput,
@@ -3515,7 +3806,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(ec.Schema(), ec.Schema().Types[name]), nil
 }
 
-//go:embed "app.graphql" "ent.graphql"
+//go:embed "accounting.graphql" "app.graphql" "ent.graphql"
 var sourcesFS embed.FS
 
 func sourceData(filename string) string {
@@ -3527,6 +3818,7 @@ func sourceData(filename string) string {
 }
 
 var sources = []*ast.Source{
+	{Name: "accounting.graphql", Input: sourceData("accounting.graphql"), BuiltIn: false},
 	{Name: "app.graphql", Input: sourceData("app.graphql"), BuiltIn: false},
 	{Name: "ent.graphql", Input: sourceData("ent.graphql"), BuiltIn: false},
 }
@@ -3549,22 +3841,22 @@ func (ec *executionContext) field_Mutation_createCompany_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_createCompany_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.CreateCompanyInput, error) {
+) (*generated.CreateCompanyInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal *ent.CreateCompanyInput
+		var zeroVal *generated.CreateCompanyInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalOCreateCompanyInput2ᚖmazzaᚋentᚐCreateCompanyInput(ctx, tmp)
+		return ec.unmarshalOCreateCompanyInput2ᚖmazzaᚋentᚋgeneratedᚐCreateCompanyInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.CreateCompanyInput
+	var zeroVal *generated.CreateCompanyInput
 	return zeroVal, nil
 }
 
@@ -3581,22 +3873,22 @@ func (ec *executionContext) field_Mutation_createCustomer_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createCustomer_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateCustomerInput, error) {
+) (generated.CreateCustomerInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateCustomerInput
+		var zeroVal generated.CreateCustomerInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateCustomerInput2mazzaᚋentᚐCreateCustomerInput(ctx, tmp)
+		return ec.unmarshalNCreateCustomerInput2mazzaᚋentᚋgeneratedᚐCreateCustomerInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateCustomerInput
+	var zeroVal generated.CreateCustomerInput
 	return zeroVal, nil
 }
 
@@ -3613,22 +3905,22 @@ func (ec *executionContext) field_Mutation_createEmployee_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createEmployee_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateEmployeeInput, error) {
+) (generated.CreateEmployeeInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateEmployeeInput
+		var zeroVal generated.CreateEmployeeInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateEmployeeInput2mazzaᚋentᚐCreateEmployeeInput(ctx, tmp)
+		return ec.unmarshalNCreateEmployeeInput2mazzaᚋentᚋgeneratedᚐCreateEmployeeInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateEmployeeInput
+	var zeroVal generated.CreateEmployeeInput
 	return zeroVal, nil
 }
 
@@ -3645,22 +3937,22 @@ func (ec *executionContext) field_Mutation_createProduct_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_createProduct_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateProductInput, error) {
+) (generated.CreateProductInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateProductInput
+		var zeroVal generated.CreateProductInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateProductInput2mazzaᚋentᚐCreateProductInput(ctx, tmp)
+		return ec.unmarshalNCreateProductInput2mazzaᚋentᚋgeneratedᚐCreateProductInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateProductInput
+	var zeroVal generated.CreateProductInput
 	return zeroVal, nil
 }
 
@@ -3677,22 +3969,22 @@ func (ec *executionContext) field_Mutation_createSupplier_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createSupplier_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateSupplierInput, error) {
+) (generated.CreateSupplierInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateSupplierInput
+		var zeroVal generated.CreateSupplierInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateSupplierInput2mazzaᚋentᚐCreateSupplierInput(ctx, tmp)
+		return ec.unmarshalNCreateSupplierInput2mazzaᚋentᚋgeneratedᚐCreateSupplierInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateSupplierInput
+	var zeroVal generated.CreateSupplierInput
 	return zeroVal, nil
 }
 
@@ -3709,22 +4001,22 @@ func (ec *executionContext) field_Mutation_createTreasury_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createTreasury_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateTreasuryInput, error) {
+) (generated.CreateTreasuryInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateTreasuryInput
+		var zeroVal generated.CreateTreasuryInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateTreasuryInput2mazzaᚋentᚐCreateTreasuryInput(ctx, tmp)
+		return ec.unmarshalNCreateTreasuryInput2mazzaᚋentᚋgeneratedᚐCreateTreasuryInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateTreasuryInput
+	var zeroVal generated.CreateTreasuryInput
 	return zeroVal, nil
 }
 
@@ -3741,22 +4033,22 @@ func (ec *executionContext) field_Mutation_createUserRole_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createUserRole_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateUserRoleInput, error) {
+) (generated.CreateUserRoleInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateUserRoleInput
+		var zeroVal generated.CreateUserRoleInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateUserRoleInput2mazzaᚋentᚐCreateUserRoleInput(ctx, tmp)
+		return ec.unmarshalNCreateUserRoleInput2mazzaᚋentᚋgeneratedᚐCreateUserRoleInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateUserRoleInput
+	var zeroVal generated.CreateUserRoleInput
 	return zeroVal, nil
 }
 
@@ -3773,22 +4065,22 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 func (ec *executionContext) field_Mutation_createUser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateUserInput, error) {
+) (generated.CreateUserInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateUserInput
+		var zeroVal generated.CreateUserInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateUserInput2mazzaᚋentᚐCreateUserInput(ctx, tmp)
+		return ec.unmarshalNCreateUserInput2mazzaᚋentᚋgeneratedᚐCreateUserInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateUserInput
+	var zeroVal generated.CreateUserInput
 	return zeroVal, nil
 }
 
@@ -3805,22 +4097,22 @@ func (ec *executionContext) field_Mutation_createWorkShift_args(ctx context.Cont
 func (ec *executionContext) field_Mutation_createWorkShift_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateWorkshiftInput, error) {
+) (generated.CreateWorkshiftInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateWorkshiftInput
+		var zeroVal generated.CreateWorkshiftInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateWorkshiftInput2mazzaᚋentᚐCreateWorkshiftInput(ctx, tmp)
+		return ec.unmarshalNCreateWorkshiftInput2mazzaᚋentᚋgeneratedᚐCreateWorkshiftInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateWorkshiftInput
+	var zeroVal generated.CreateWorkshiftInput
 	return zeroVal, nil
 }
 
@@ -3837,22 +4129,22 @@ func (ec *executionContext) field_Mutation_createWorkTag_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_createWorkTag_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateWorktagInput, error) {
+) (generated.CreateWorktagInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateWorktagInput
+		var zeroVal generated.CreateWorktagInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateWorktagInput2mazzaᚋentᚐCreateWorktagInput(ctx, tmp)
+		return ec.unmarshalNCreateWorktagInput2mazzaᚋentᚋgeneratedᚐCreateWorktagInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateWorktagInput
+	var zeroVal generated.CreateWorktagInput
 	return zeroVal, nil
 }
 
@@ -3869,22 +4161,22 @@ func (ec *executionContext) field_Mutation_createWorkTask_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createWorkTask_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.CreateWorktaskInput, error) {
+) (generated.CreateWorktaskInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.CreateWorktaskInput
+		var zeroVal generated.CreateWorktaskInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateWorktaskInput2mazzaᚋentᚐCreateWorktaskInput(ctx, tmp)
+		return ec.unmarshalNCreateWorktaskInput2mazzaᚋentᚋgeneratedᚐCreateWorktaskInput(ctx, tmp)
 	}
 
-	var zeroVal ent.CreateWorktaskInput
+	var zeroVal generated.CreateWorktaskInput
 	return zeroVal, nil
 }
 
@@ -4189,22 +4481,54 @@ func (ec *executionContext) field_Mutation_invitedUserSignup_args(ctx context.Co
 func (ec *executionContext) field_Mutation_invitedUserSignup_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (InvitedUserSignupInput, error) {
+) (model.InvitedUserSignupInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal InvitedUserSignupInput
+		var zeroVal model.InvitedUserSignupInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNinvitedUserSignupInput2mazzaᚐInvitedUserSignupInput(ctx, tmp)
+		return ec.unmarshalNinvitedUserSignupInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐInvitedUserSignupInput(ctx, tmp)
 	}
 
-	var zeroVal InvitedUserSignupInput
+	var zeroVal model.InvitedUserSignupInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_registerPurchase_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_registerPurchase_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_registerPurchase_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (model.PurchaseRegistrationInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal model.PurchaseRegistrationInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNPurchaseRegistrationInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPurchaseRegistrationInput(ctx, tmp)
+	}
+
+	var zeroVal model.PurchaseRegistrationInput
 	return zeroVal, nil
 }
 
@@ -4221,22 +4545,22 @@ func (ec *executionContext) field_Mutation_resetPassword_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_resetPassword_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ResetPasswordInput, error) {
+) (model.ResetPasswordInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ResetPasswordInput
+		var zeroVal model.ResetPasswordInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNResetPasswordInput2mazzaᚐResetPasswordInput(ctx, tmp)
+		return ec.unmarshalNResetPasswordInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐResetPasswordInput(ctx, tmp)
 	}
 
-	var zeroVal ResetPasswordInput
+	var zeroVal model.ResetPasswordInput
 	return zeroVal, nil
 }
 
@@ -4253,22 +4577,22 @@ func (ec *executionContext) field_Mutation_signup_args(ctx context.Context, rawA
 func (ec *executionContext) field_Mutation_signup_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (SignupInput, error) {
+) (model.SignupInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal SignupInput
+		var zeroVal model.SignupInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNSignupInput2mazzaᚐSignupInput(ctx, tmp)
+		return ec.unmarshalNSignupInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐSignupInput(ctx, tmp)
 	}
 
-	var zeroVal SignupInput
+	var zeroVal model.SignupInput
 	return zeroVal, nil
 }
 
@@ -4344,22 +4668,22 @@ func (ec *executionContext) field_Mutation_updateCompany_argsID(
 func (ec *executionContext) field_Mutation_updateCompany_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateCompanyInput, error) {
+) (generated.UpdateCompanyInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateCompanyInput
+		var zeroVal generated.UpdateCompanyInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateCompanyInput2mazzaᚋentᚐUpdateCompanyInput(ctx, tmp)
+		return ec.unmarshalNUpdateCompanyInput2mazzaᚋentᚋgeneratedᚐUpdateCompanyInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateCompanyInput
+	var zeroVal generated.UpdateCompanyInput
 	return zeroVal, nil
 }
 
@@ -4403,22 +4727,22 @@ func (ec *executionContext) field_Mutation_updateCustomer_argsID(
 func (ec *executionContext) field_Mutation_updateCustomer_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateCustomerInput, error) {
+) (generated.UpdateCustomerInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateCustomerInput
+		var zeroVal generated.UpdateCustomerInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateCustomerInput2mazzaᚋentᚐUpdateCustomerInput(ctx, tmp)
+		return ec.unmarshalNUpdateCustomerInput2mazzaᚋentᚋgeneratedᚐUpdateCustomerInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateCustomerInput
+	var zeroVal generated.UpdateCustomerInput
 	return zeroVal, nil
 }
 
@@ -4462,22 +4786,22 @@ func (ec *executionContext) field_Mutation_updateEmployee_argsID(
 func (ec *executionContext) field_Mutation_updateEmployee_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateEmployeeInput, error) {
+) (generated.UpdateEmployeeInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateEmployeeInput
+		var zeroVal generated.UpdateEmployeeInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateEmployeeInput2mazzaᚋentᚐUpdateEmployeeInput(ctx, tmp)
+		return ec.unmarshalNUpdateEmployeeInput2mazzaᚋentᚋgeneratedᚐUpdateEmployeeInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateEmployeeInput
+	var zeroVal generated.UpdateEmployeeInput
 	return zeroVal, nil
 }
 
@@ -4521,22 +4845,22 @@ func (ec *executionContext) field_Mutation_updateProduct_argsID(
 func (ec *executionContext) field_Mutation_updateProduct_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateProductInput, error) {
+) (generated.UpdateProductInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateProductInput
+		var zeroVal generated.UpdateProductInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateProductInput2mazzaᚋentᚐUpdateProductInput(ctx, tmp)
+		return ec.unmarshalNUpdateProductInput2mazzaᚋentᚋgeneratedᚐUpdateProductInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateProductInput
+	var zeroVal generated.UpdateProductInput
 	return zeroVal, nil
 }
 
@@ -4580,22 +4904,22 @@ func (ec *executionContext) field_Mutation_updateSupplier_argsID(
 func (ec *executionContext) field_Mutation_updateSupplier_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateSupplierInput, error) {
+) (generated.UpdateSupplierInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateSupplierInput
+		var zeroVal generated.UpdateSupplierInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateSupplierInput2mazzaᚋentᚐUpdateSupplierInput(ctx, tmp)
+		return ec.unmarshalNUpdateSupplierInput2mazzaᚋentᚋgeneratedᚐUpdateSupplierInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateSupplierInput
+	var zeroVal generated.UpdateSupplierInput
 	return zeroVal, nil
 }
 
@@ -4639,22 +4963,22 @@ func (ec *executionContext) field_Mutation_updateTreasury_argsID(
 func (ec *executionContext) field_Mutation_updateTreasury_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateTreasuryInput, error) {
+) (generated.UpdateTreasuryInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateTreasuryInput
+		var zeroVal generated.UpdateTreasuryInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateTreasuryInput2mazzaᚋentᚐUpdateTreasuryInput(ctx, tmp)
+		return ec.unmarshalNUpdateTreasuryInput2mazzaᚋentᚋgeneratedᚐUpdateTreasuryInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateTreasuryInput
+	var zeroVal generated.UpdateTreasuryInput
 	return zeroVal, nil
 }
 
@@ -4698,22 +5022,22 @@ func (ec *executionContext) field_Mutation_updateUser_argsID(
 func (ec *executionContext) field_Mutation_updateUser_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateUserInput, error) {
+) (generated.UpdateUserInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateUserInput
+		var zeroVal generated.UpdateUserInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateUserInput2mazzaᚋentᚐUpdateUserInput(ctx, tmp)
+		return ec.unmarshalNUpdateUserInput2mazzaᚋentᚋgeneratedᚐUpdateUserInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateUserInput
+	var zeroVal generated.UpdateUserInput
 	return zeroVal, nil
 }
 
@@ -4757,22 +5081,22 @@ func (ec *executionContext) field_Mutation_updateWorkShift_argsID(
 func (ec *executionContext) field_Mutation_updateWorkShift_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateWorkshiftInput, error) {
+) (generated.UpdateWorkshiftInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateWorkshiftInput
+		var zeroVal generated.UpdateWorkshiftInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateWorkshiftInput2mazzaᚋentᚐUpdateWorkshiftInput(ctx, tmp)
+		return ec.unmarshalNUpdateWorkshiftInput2mazzaᚋentᚋgeneratedᚐUpdateWorkshiftInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateWorkshiftInput
+	var zeroVal generated.UpdateWorkshiftInput
 	return zeroVal, nil
 }
 
@@ -4816,22 +5140,22 @@ func (ec *executionContext) field_Mutation_updateWorkTag_argsID(
 func (ec *executionContext) field_Mutation_updateWorkTag_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateWorktagInput, error) {
+) (generated.UpdateWorktagInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateWorktagInput
+		var zeroVal generated.UpdateWorktagInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateWorktagInput2mazzaᚋentᚐUpdateWorktagInput(ctx, tmp)
+		return ec.unmarshalNUpdateWorktagInput2mazzaᚋentᚋgeneratedᚐUpdateWorktagInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateWorktagInput
+	var zeroVal generated.UpdateWorktagInput
 	return zeroVal, nil
 }
 
@@ -4875,22 +5199,22 @@ func (ec *executionContext) field_Mutation_updateWorkTask_argsID(
 func (ec *executionContext) field_Mutation_updateWorkTask_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (ent.UpdateWorktaskInput, error) {
+) (generated.UpdateWorktaskInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal ent.UpdateWorktaskInput
+		var zeroVal generated.UpdateWorktaskInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateWorktaskInput2mazzaᚋentᚐUpdateWorktaskInput(ctx, tmp)
+		return ec.unmarshalNUpdateWorktaskInput2mazzaᚋentᚋgeneratedᚐUpdateWorktaskInput(ctx, tmp)
 	}
 
-	var zeroVal ent.UpdateWorktaskInput
+	var zeroVal generated.UpdateWorktaskInput
 	return zeroVal, nil
 }
 
@@ -5052,44 +5376,44 @@ func (ec *executionContext) field_Query_accountingEntries_argsLast(
 func (ec *executionContext) field_Query_accountingEntries_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.AccountingEntryOrder, error) {
+) (*generated.AccountingEntryOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.AccountingEntryOrder
+		var zeroVal *generated.AccountingEntryOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOAccountingEntryOrder2ᚖmazzaᚋentᚐAccountingEntryOrder(ctx, tmp)
+		return ec.unmarshalOAccountingEntryOrder2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryOrder(ctx, tmp)
 	}
 
-	var zeroVal *ent.AccountingEntryOrder
+	var zeroVal *generated.AccountingEntryOrder
 	return zeroVal, nil
 }
 
 func (ec *executionContext) field_Query_accountingEntries_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.AccountingEntryWhereInput, error) {
+) (*generated.AccountingEntryWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.AccountingEntryWhereInput
+		var zeroVal *generated.AccountingEntryWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚐAccountingEntryWhereInput(ctx, tmp)
+		return ec.unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.AccountingEntryWhereInput
+	var zeroVal *generated.AccountingEntryWhereInput
 	return zeroVal, nil
 }
 
@@ -5111,44 +5435,44 @@ func (ec *executionContext) field_Query_aggregateWorkShift_args(ctx context.Cont
 func (ec *executionContext) field_Query_aggregateWorkShift_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.WorkshiftWhereInput, error) {
+) (*generated.WorkshiftWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.WorkshiftWhereInput
+		var zeroVal *generated.WorkshiftWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx, tmp)
+		return ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.WorkshiftWhereInput
+	var zeroVal *generated.WorkshiftWhereInput
 	return zeroVal, nil
 }
 
 func (ec *executionContext) field_Query_aggregateWorkShift_argsGroupBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) ([]ShiftGroupBy, error) {
+) ([]model.ShiftGroupBy, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["groupBy"]
 	if !ok {
-		var zeroVal []ShiftGroupBy
+		var zeroVal []model.ShiftGroupBy
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("groupBy"))
 	if tmp, ok := rawArgs["groupBy"]; ok {
-		return ec.unmarshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx, tmp)
+		return ec.unmarshalNShiftGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupByᚄ(ctx, tmp)
 	}
 
-	var zeroVal []ShiftGroupBy
+	var zeroVal []model.ShiftGroupBy
 	return zeroVal, nil
 }
 
@@ -5273,22 +5597,22 @@ func (ec *executionContext) field_Query_cashMovements_argsLast(
 func (ec *executionContext) field_Query_cashMovements_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.CashMovementWhereInput, error) {
+) (*generated.CashMovementWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.CashMovementWhereInput
+		var zeroVal *generated.CashMovementWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚐCashMovementWhereInput(ctx, tmp)
+		return ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.CashMovementWhereInput
+	var zeroVal *generated.CashMovementWhereInput
 	return zeroVal, nil
 }
 
@@ -5305,22 +5629,22 @@ func (ec *executionContext) field_Query_companies_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_companies_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.CompanyWhereInput, error) {
+) (*generated.CompanyWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.CompanyWhereInput
+		var zeroVal *generated.CompanyWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚐCompanyWhereInput(ctx, tmp)
+		return ec.unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.CompanyWhereInput
+	var zeroVal *generated.CompanyWhereInput
 	return zeroVal, nil
 }
 
@@ -5337,22 +5661,22 @@ func (ec *executionContext) field_Query_customers_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_customers_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.CustomerWhereInput, error) {
+) (*generated.CustomerWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.CustomerWhereInput
+		var zeroVal *generated.CustomerWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚐCustomerWhereInput(ctx, tmp)
+		return ec.unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.CustomerWhereInput
+	var zeroVal *generated.CustomerWhereInput
 	return zeroVal, nil
 }
 
@@ -5369,22 +5693,22 @@ func (ec *executionContext) field_Query_employees_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_employees_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.EmployeeWhereInput, error) {
+) (*generated.EmployeeWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.EmployeeWhereInput
+		var zeroVal *generated.EmployeeWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚐEmployeeWhereInput(ctx, tmp)
+		return ec.unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.EmployeeWhereInput
+	var zeroVal *generated.EmployeeWhereInput
 	return zeroVal, nil
 }
 
@@ -5514,44 +5838,44 @@ func (ec *executionContext) field_Query_files_argsLast(
 func (ec *executionContext) field_Query_files_argsOrderBy(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.FileOrder, error) {
+) (*generated.FileOrder, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["orderBy"]
 	if !ok {
-		var zeroVal *ent.FileOrder
+		var zeroVal *generated.FileOrder
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
 	if tmp, ok := rawArgs["orderBy"]; ok {
-		return ec.unmarshalOFileOrder2ᚖmazzaᚋentᚐFileOrder(ctx, tmp)
+		return ec.unmarshalOFileOrder2ᚖmazzaᚋentᚋgeneratedᚐFileOrder(ctx, tmp)
 	}
 
-	var zeroVal *ent.FileOrder
+	var zeroVal *generated.FileOrder
 	return zeroVal, nil
 }
 
 func (ec *executionContext) field_Query_files_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.FileWhereInput, error) {
+) (*generated.FileWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.FileWhereInput
+		var zeroVal *generated.FileWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOFileWhereInput2ᚖmazzaᚋentᚐFileWhereInput(ctx, tmp)
+		return ec.unmarshalOFileWhereInput2ᚖmazzaᚋentᚋgeneratedᚐFileWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.FileWhereInput
+	var zeroVal *generated.FileWhereInput
 	return zeroVal, nil
 }
 
@@ -5568,22 +5892,22 @@ func (ec *executionContext) field_Query_lowStock_args(ctx context.Context, rawAr
 func (ec *executionContext) field_Query_lowStock_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductWhereInput, error) {
+) (*generated.ProductWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductWhereInput
+		var zeroVal *generated.ProductWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, tmp)
+		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductWhereInput
+	var zeroVal *generated.ProductWhereInput
 	return zeroVal, nil
 }
 
@@ -5664,22 +5988,22 @@ func (ec *executionContext) field_Query_numberOfLowStock_args(ctx context.Contex
 func (ec *executionContext) field_Query_numberOfLowStock_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductWhereInput, error) {
+) (*generated.ProductWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductWhereInput
+		var zeroVal *generated.ProductWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, tmp)
+		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductWhereInput
+	var zeroVal *generated.ProductWhereInput
 	return zeroVal, nil
 }
 
@@ -5696,22 +6020,22 @@ func (ec *executionContext) field_Query_numberOfOutOfStock_args(ctx context.Cont
 func (ec *executionContext) field_Query_numberOfOutOfStock_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductWhereInput, error) {
+) (*generated.ProductWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductWhereInput
+		var zeroVal *generated.ProductWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, tmp)
+		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductWhereInput
+	var zeroVal *generated.ProductWhereInput
 	return zeroVal, nil
 }
 
@@ -5728,22 +6052,22 @@ func (ec *executionContext) field_Query_numberOfProducts_args(ctx context.Contex
 func (ec *executionContext) field_Query_numberOfProducts_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductWhereInput, error) {
+) (*generated.ProductWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductWhereInput
+		var zeroVal *generated.ProductWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, tmp)
+		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductWhereInput
+	var zeroVal *generated.ProductWhereInput
 	return zeroVal, nil
 }
 
@@ -5760,22 +6084,22 @@ func (ec *executionContext) field_Query_payables_args(ctx context.Context, rawAr
 func (ec *executionContext) field_Query_payables_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.PayableWhereInput, error) {
+) (*generated.PayableWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.PayableWhereInput
+		var zeroVal *generated.PayableWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOPayableWhereInput2ᚖmazzaᚋentᚐPayableWhereInput(ctx, tmp)
+		return ec.unmarshalOPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.PayableWhereInput
+	var zeroVal *generated.PayableWhereInput
 	return zeroVal, nil
 }
 
@@ -5900,22 +6224,22 @@ func (ec *executionContext) field_Query_productMovements_argsLast(
 func (ec *executionContext) field_Query_productMovements_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductMovementWhereInput, error) {
+) (*generated.ProductMovementWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductMovementWhereInput
+		var zeroVal *generated.ProductMovementWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚐProductMovementWhereInput(ctx, tmp)
+		return ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductMovementWhereInput
+	var zeroVal *generated.ProductMovementWhereInput
 	return zeroVal, nil
 }
 
@@ -5932,22 +6256,22 @@ func (ec *executionContext) field_Query_products_args(ctx context.Context, rawAr
 func (ec *executionContext) field_Query_products_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ProductWhereInput, error) {
+) (*generated.ProductWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ProductWhereInput
+		var zeroVal *generated.ProductWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, tmp)
+		return ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ProductWhereInput
+	var zeroVal *generated.ProductWhereInput
 	return zeroVal, nil
 }
 
@@ -6072,22 +6396,22 @@ func (ec *executionContext) field_Query_receivables_argsLast(
 func (ec *executionContext) field_Query_receivables_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.ReceivableWhereInput, error) {
+) (*generated.ReceivableWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.ReceivableWhereInput
+		var zeroVal *generated.ReceivableWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚐReceivableWhereInput(ctx, tmp)
+		return ec.unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.ReceivableWhereInput
+	var zeroVal *generated.ReceivableWhereInput
 	return zeroVal, nil
 }
 
@@ -6104,22 +6428,22 @@ func (ec *executionContext) field_Query_suppliers_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_suppliers_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.SupplierWhereInput, error) {
+) (*generated.SupplierWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.SupplierWhereInput
+		var zeroVal *generated.SupplierWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚐSupplierWhereInput(ctx, tmp)
+		return ec.unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.SupplierWhereInput
+	var zeroVal *generated.SupplierWhereInput
 	return zeroVal, nil
 }
 
@@ -6136,22 +6460,22 @@ func (ec *executionContext) field_Query_treasuries_args(ctx context.Context, raw
 func (ec *executionContext) field_Query_treasuries_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.TreasuryWhereInput, error) {
+) (*generated.TreasuryWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.TreasuryWhereInput
+		var zeroVal *generated.TreasuryWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚐTreasuryWhereInput(ctx, tmp)
+		return ec.unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.TreasuryWhereInput
+	var zeroVal *generated.TreasuryWhereInput
 	return zeroVal, nil
 }
 
@@ -6168,22 +6492,22 @@ func (ec *executionContext) field_Query_userRoles_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_userRoles_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.UserRoleWhereInput, error) {
+) (*generated.UserRoleWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.UserRoleWhereInput
+		var zeroVal *generated.UserRoleWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚐUserRoleWhereInput(ctx, tmp)
+		return ec.unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.UserRoleWhereInput
+	var zeroVal *generated.UserRoleWhereInput
 	return zeroVal, nil
 }
 
@@ -6200,22 +6524,22 @@ func (ec *executionContext) field_Query_users_args(ctx context.Context, rawArgs 
 func (ec *executionContext) field_Query_users_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.UserWhereInput, error) {
+) (*generated.UserWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.UserWhereInput
+		var zeroVal *generated.UserWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOUserWhereInput2ᚖmazzaᚋentᚐUserWhereInput(ctx, tmp)
+		return ec.unmarshalOUserWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.UserWhereInput
+	var zeroVal *generated.UserWhereInput
 	return zeroVal, nil
 }
 
@@ -6264,22 +6588,22 @@ func (ec *executionContext) field_Query_workShifts_args(ctx context.Context, raw
 func (ec *executionContext) field_Query_workShifts_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.WorkshiftWhereInput, error) {
+) (*generated.WorkshiftWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.WorkshiftWhereInput
+		var zeroVal *generated.WorkshiftWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx, tmp)
+		return ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.WorkshiftWhereInput
+	var zeroVal *generated.WorkshiftWhereInput
 	return zeroVal, nil
 }
 
@@ -6296,22 +6620,22 @@ func (ec *executionContext) field_Query_workTags_args(ctx context.Context, rawAr
 func (ec *executionContext) field_Query_workTags_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.WorktagWhereInput, error) {
+) (*generated.WorktagWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.WorktagWhereInput
+		var zeroVal *generated.WorktagWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚐWorktagWhereInput(ctx, tmp)
+		return ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.WorktagWhereInput
+	var zeroVal *generated.WorktagWhereInput
 	return zeroVal, nil
 }
 
@@ -6328,22 +6652,22 @@ func (ec *executionContext) field_Query_workTasks_args(ctx context.Context, rawA
 func (ec *executionContext) field_Query_workTasks_argsWhere(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*ent.WorktaskWhereInput, error) {
+) (*generated.WorktaskWhereInput, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["where"]
 	if !ok {
-		var zeroVal *ent.WorktaskWhereInput
+		var zeroVal *generated.WorktaskWhereInput
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
 	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚐWorktaskWhereInput(ctx, tmp)
+		return ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, tmp)
 	}
 
-	var zeroVal *ent.WorktaskWhereInput
+	var zeroVal *generated.WorktaskWhereInput
 	return zeroVal, nil
 }
 
@@ -6419,7 +6743,7 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _AccountingEntry_id(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_id(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6463,7 +6787,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_id(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6507,7 +6831,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_createdat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6551,7 +6875,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_updatedat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6592,7 +6916,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_deletedat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_number(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_number(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_number(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6636,7 +6960,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_number(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_group(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_group(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_group(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6680,7 +7004,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_group(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_date(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_date(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_date(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6724,7 +7048,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_date(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_account(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_account(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_account(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6768,7 +7092,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_account(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_label(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_label(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_label(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6812,7 +7136,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_label(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_amount(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_amount(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_amount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6856,7 +7180,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_amount(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_description(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_description(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6900,7 +7224,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_description(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_accounttype(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_accounttype(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6928,7 +7252,7 @@ func (ec *executionContext) _AccountingEntry_accounttype(ctx context.Context, fi
 	}
 	res := resTmp.(accountingentry.AccountType)
 	fc.Result = res
-	return ec.marshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx, field.Selections, res)
+	return ec.marshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_AccountingEntry_accounttype(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -6944,7 +7268,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_accounttype(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_isdebit(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_isdebit(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -6988,7 +7312,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_isdebit(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_isreversal(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_isreversal(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_isreversal(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7032,7 +7356,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_isreversal(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_reversed(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_reversed(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_reversed(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7076,7 +7400,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_reversed(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_company(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_company(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7099,9 +7423,9 @@ func (ec *executionContext) _AccountingEntry_company(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_AccountingEntry_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7193,7 +7517,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_company(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntry_user(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntry) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntry_user(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_user(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7216,9 +7540,9 @@ func (ec *executionContext) _AccountingEntry_user(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7268,7 +7592,7 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntryConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntryConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntryConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntryConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntryConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7291,9 +7615,9 @@ func (ec *executionContext) _AccountingEntryConnection_edges(ctx context.Context
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.AccountingEntryEdge)
+	res := resTmp.([]*generated.AccountingEntryEdge)
 	fc.Result = res
-	return ec.marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚐAccountingEntryEdge(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryEdge(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_AccountingEntryConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7315,7 +7639,7 @@ func (ec *executionContext) fieldContext_AccountingEntryConnection_edges(_ conte
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntryConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntryConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntryConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntryConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntryConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7369,7 +7693,7 @@ func (ec *executionContext) fieldContext_AccountingEntryConnection_pageInfo(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntryConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntryConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntryConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntryConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntryConnection_totalCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7413,7 +7737,7 @@ func (ec *executionContext) fieldContext_AccountingEntryConnection_totalCount(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntryEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntryEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntryEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntryEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntryEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7436,9 +7760,9 @@ func (ec *executionContext) _AccountingEntryEdge_node(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.AccountingEntry)
+	res := resTmp.(*generated.AccountingEntry)
 	fc.Result = res
-	return ec.marshalOAccountingEntry2ᚖmazzaᚋentᚐAccountingEntry(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntry2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntry(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_AccountingEntryEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7490,7 +7814,7 @@ func (ec *executionContext) fieldContext_AccountingEntryEdge_node(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _AccountingEntryEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.AccountingEntryEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _AccountingEntryEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntryEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntryEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7534,7 +7858,7 @@ func (ec *executionContext) fieldContext_AccountingEntryEdge_cursor(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_id(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_id(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7578,7 +7902,7 @@ func (ec *executionContext) fieldContext_CashMovement_id(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7622,7 +7946,7 @@ func (ec *executionContext) fieldContext_CashMovement_createdat(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7666,7 +7990,7 @@ func (ec *executionContext) fieldContext_CashMovement_updatedat(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7707,7 +8031,7 @@ func (ec *executionContext) fieldContext_CashMovement_deletedat(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_amount(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_amount(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_amount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7751,7 +8075,7 @@ func (ec *executionContext) fieldContext_CashMovement_amount(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_date(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_date(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_date(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7795,7 +8119,7 @@ func (ec *executionContext) fieldContext_CashMovement_date(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_entrygroup(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7839,7 +8163,7 @@ func (ec *executionContext) fieldContext_CashMovement_entrygroup(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovement_treasury(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovement_treasury(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovement_treasury(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7862,9 +8186,9 @@ func (ec *executionContext) _CashMovement_treasury(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Treasury)
+	res := resTmp.(*generated.Treasury)
 	fc.Result = res
-	return ec.marshalOTreasury2ᚖmazzaᚋentᚐTreasury(ctx, field.Selections, res)
+	return ec.marshalOTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_CashMovement_treasury(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7916,7 +8240,7 @@ func (ec *executionContext) fieldContext_CashMovement_treasury(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovementConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -7939,9 +8263,9 @@ func (ec *executionContext) _CashMovementConnection_edges(ctx context.Context, f
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.CashMovementEdge)
+	res := resTmp.([]*generated.CashMovementEdge)
 	fc.Result = res
-	return ec.marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚐCashMovementEdge(ctx, field.Selections, res)
+	return ec.marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_CashMovementConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -7963,7 +8287,7 @@ func (ec *executionContext) fieldContext_CashMovementConnection_edges(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovementConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8017,7 +8341,7 @@ func (ec *executionContext) fieldContext_CashMovementConnection_pageInfo(_ conte
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovementConnection_totalCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8061,7 +8385,7 @@ func (ec *executionContext) fieldContext_CashMovementConnection_totalCount(_ con
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovementEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovementEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8084,9 +8408,9 @@ func (ec *executionContext) _CashMovementEdge_node(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.CashMovement)
+	res := resTmp.(*generated.CashMovement)
 	fc.Result = res
-	return ec.marshalOCashMovement2ᚖmazzaᚋentᚐCashMovement(ctx, field.Selections, res)
+	return ec.marshalOCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_CashMovementEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -8120,7 +8444,7 @@ func (ec *executionContext) fieldContext_CashMovementEdge_node(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _CashMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.CashMovementEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _CashMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_CashMovementEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8164,7 +8488,7 @@ func (ec *executionContext) fieldContext_CashMovementEdge_cursor(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_id(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_id(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8208,7 +8532,7 @@ func (ec *executionContext) fieldContext_Company_id(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8252,7 +8576,7 @@ func (ec *executionContext) fieldContext_Company_createdat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8296,7 +8620,7 @@ func (ec *executionContext) fieldContext_Company_updatedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8337,7 +8661,7 @@ func (ec *executionContext) fieldContext_Company_deletedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_address(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_address(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_address(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8378,7 +8702,7 @@ func (ec *executionContext) fieldContext_Company_address(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_basecurrency(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_basecurrency(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_basecurrency(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8422,7 +8746,7 @@ func (ec *executionContext) fieldContext_Company_basecurrency(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_ceoname(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_ceoname(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_ceoname(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8463,7 +8787,7 @@ func (ec *executionContext) fieldContext_Company_ceoname(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_city(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_city(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_city(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8507,7 +8831,7 @@ func (ec *executionContext) fieldContext_Company_city(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_country(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_country(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_country(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8551,7 +8875,7 @@ func (ec *executionContext) fieldContext_Company_country(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_establishedat(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_establishedat(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_establishedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8595,7 +8919,7 @@ func (ec *executionContext) fieldContext_Company_establishedat(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_description(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_description(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8636,7 +8960,7 @@ func (ec *executionContext) fieldContext_Company_description(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_email(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_email(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_email(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8677,7 +9001,7 @@ func (ec *executionContext) fieldContext_Company_email(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_lastentrydate(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_lastentrydate(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_lastentrydate(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8721,7 +9045,7 @@ func (ec *executionContext) fieldContext_Company_lastentrydate(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_lastinvoicenumber(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_lastinvoicenumber(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_lastinvoicenumber(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8762,7 +9086,7 @@ func (ec *executionContext) fieldContext_Company_lastinvoicenumber(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_logo(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_logo(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_logo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8803,7 +9127,7 @@ func (ec *executionContext) fieldContext_Company_logo(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_name(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_name(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8847,7 +9171,7 @@ func (ec *executionContext) fieldContext_Company_name(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_numberofemployees(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_numberofemployees(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_numberofemployees(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8891,7 +9215,7 @@ func (ec *executionContext) fieldContext_Company_numberofemployees(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_phone(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_phone(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_phone(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8932,7 +9256,7 @@ func (ec *executionContext) fieldContext_Company_phone(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_sector(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_sector(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_sector(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -8973,7 +9297,7 @@ func (ec *executionContext) fieldContext_Company_sector(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_taxid(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_taxid(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_taxid(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9017,7 +9341,7 @@ func (ec *executionContext) fieldContext_Company_taxid(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_vatrate(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_vatrate(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_vatrate(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9061,7 +9385,7 @@ func (ec *executionContext) fieldContext_Company_vatrate(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_website(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_website(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_website(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9102,7 +9426,7 @@ func (ec *executionContext) fieldContext_Company_website(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_availableroles(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_availableroles(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_availableroles(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9125,9 +9449,9 @@ func (ec *executionContext) _Company_availableroles(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.UserRole)
+	res := resTmp.([]*generated.UserRole)
 	fc.Result = res
-	return ec.marshalOUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx, field.Selections, res)
+	return ec.marshalOUserRole2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_availableroles(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9153,7 +9477,7 @@ func (ec *executionContext) fieldContext_Company_availableroles(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_accountingentries(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_accountingentries(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_accountingentries(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9176,9 +9500,9 @@ func (ec *executionContext) _Company_accountingentries(ctx context.Context, fiel
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.AccountingEntry)
+	res := resTmp.([]*generated.AccountingEntry)
 	fc.Result = res
-	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚐAccountingEntryᚄ(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_accountingentries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9230,7 +9554,7 @@ func (ec *executionContext) fieldContext_Company_accountingentries(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_customers(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_customers(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_customers(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9253,9 +9577,9 @@ func (ec *executionContext) _Company_customers(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Customer)
+	res := resTmp.([]*generated.Customer)
 	fc.Result = res
-	return ec.marshalOCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx, field.Selections, res)
+	return ec.marshalOCustomer2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_customers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9303,7 +9627,7 @@ func (ec *executionContext) fieldContext_Company_customers(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_employees(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_employees(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_employees(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9326,9 +9650,9 @@ func (ec *executionContext) _Company_employees(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Employee)
+	res := resTmp.([]*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_employees(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9378,7 +9702,7 @@ func (ec *executionContext) fieldContext_Company_employees(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_files(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_files(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_files(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9401,9 +9725,9 @@ func (ec *executionContext) _Company_files(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.File)
+	res := resTmp.([]*generated.File)
 	fc.Result = res
-	return ec.marshalOFile2ᚕᚖmazzaᚋentᚐFileᚄ(ctx, field.Selections, res)
+	return ec.marshalOFile2ᚕᚖmazzaᚋentᚋgeneratedᚐFileᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_files(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9443,7 +9767,7 @@ func (ec *executionContext) fieldContext_Company_files(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_products(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_products(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_products(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9466,9 +9790,9 @@ func (ec *executionContext) _Company_products(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Product)
+	res := resTmp.([]*generated.Product)
 	fc.Result = res
-	return ec.marshalOProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx, field.Selections, res)
+	return ec.marshalOProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_products(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9518,7 +9842,7 @@ func (ec *executionContext) fieldContext_Company_products(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_suppliers(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_suppliers(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_suppliers(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9541,9 +9865,9 @@ func (ec *executionContext) _Company_suppliers(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Supplier)
+	res := resTmp.([]*generated.Supplier)
 	fc.Result = res
-	return ec.marshalOSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx, field.Selections, res)
+	return ec.marshalOSupplier2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_suppliers(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9591,7 +9915,7 @@ func (ec *executionContext) fieldContext_Company_suppliers(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_tokens(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_tokens(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_tokens(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9614,9 +9938,9 @@ func (ec *executionContext) _Company_tokens(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Token)
+	res := resTmp.([]*generated.Token)
 	fc.Result = res
-	return ec.marshalOToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx, field.Selections, res)
+	return ec.marshalOToken2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_tokens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9646,7 +9970,7 @@ func (ec *executionContext) fieldContext_Company_tokens(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_treasuries(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_treasuries(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_treasuries(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9669,9 +9993,9 @@ func (ec *executionContext) _Company_treasuries(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Treasury)
+	res := resTmp.([]*generated.Treasury)
 	fc.Result = res
-	return ec.marshalOTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx, field.Selections, res)
+	return ec.marshalOTreasury2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_treasuries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9723,7 +10047,7 @@ func (ec *executionContext) fieldContext_Company_treasuries(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_workshifts(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_workshifts(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9746,9 +10070,9 @@ func (ec *executionContext) _Company_workshifts(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9802,7 +10126,7 @@ func (ec *executionContext) fieldContext_Company_workshifts(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_worktasks(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_worktasks(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_worktasks(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9825,9 +10149,9 @@ func (ec *executionContext) _Company_worktasks(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktask)
+	res := resTmp.([]*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_worktasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9875,7 +10199,7 @@ func (ec *executionContext) fieldContext_Company_worktasks(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_worktags(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_worktags(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_worktags(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9898,9 +10222,9 @@ func (ec *executionContext) _Company_worktags(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktag)
+	res := resTmp.([]*generated.Worktag)
 	fc.Result = res
-	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_worktags(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -9934,7 +10258,7 @@ func (ec *executionContext) fieldContext_Company_worktags(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_users(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_users(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_users(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -9957,9 +10281,9 @@ func (ec *executionContext) _Company_users(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.User)
+	res := resTmp.([]*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_users(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -10009,7 +10333,7 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_daughtercompanies(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_daughtercompanies(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_daughtercompanies(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10032,9 +10356,9 @@ func (ec *executionContext) _Company_daughtercompanies(ctx context.Context, fiel
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Company)
+	res := resTmp.([]*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_daughtercompanies(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -10126,7 +10450,7 @@ func (ec *executionContext) fieldContext_Company_daughtercompanies(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_parentcompany(ctx context.Context, field graphql.CollectedField, obj *ent.Company) (ret graphql.Marshaler) {
+func (ec *executionContext) _Company_parentcompany(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Company_parentcompany(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10149,9 +10473,9 @@ func (ec *executionContext) _Company_parentcompany(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_parentcompany(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -10243,7 +10567,7 @@ func (ec *executionContext) fieldContext_Company_parentcompany(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_id(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_id(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10287,7 +10611,7 @@ func (ec *executionContext) fieldContext_Customer_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10331,7 +10655,7 @@ func (ec *executionContext) fieldContext_Customer_createdat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10375,7 +10699,7 @@ func (ec *executionContext) fieldContext_Customer_updatedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10416,7 +10740,7 @@ func (ec *executionContext) fieldContext_Customer_deletedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_address(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_address(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_address(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10460,7 +10784,7 @@ func (ec *executionContext) fieldContext_Customer_address(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_city(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_city(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_city(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10504,7 +10828,7 @@ func (ec *executionContext) fieldContext_Customer_city(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_country(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_country(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_country(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10548,7 +10872,7 @@ func (ec *executionContext) fieldContext_Customer_country(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_description(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_description(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10592,7 +10916,7 @@ func (ec *executionContext) fieldContext_Customer_description(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_email(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_email(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_email(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10636,7 +10960,7 @@ func (ec *executionContext) fieldContext_Customer_email(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_isdefault(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_isdefault(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_isdefault(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10677,7 +11001,7 @@ func (ec *executionContext) fieldContext_Customer_isdefault(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_name(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_name(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10721,7 +11045,7 @@ func (ec *executionContext) fieldContext_Customer_name(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_phone(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_phone(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_phone(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10765,7 +11089,7 @@ func (ec *executionContext) fieldContext_Customer_phone(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_taxid(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_taxid(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_taxid(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10809,7 +11133,7 @@ func (ec *executionContext) fieldContext_Customer_taxid(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_company(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_company(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10832,9 +11156,9 @@ func (ec *executionContext) _Customer_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Customer_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -10926,7 +11250,7 @@ func (ec *executionContext) fieldContext_Customer_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Customer_receivables(ctx context.Context, field graphql.CollectedField, obj *ent.Customer) (ret graphql.Marshaler) {
+func (ec *executionContext) _Customer_receivables(ctx context.Context, field graphql.CollectedField, obj *generated.Customer) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Customer_receivables(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -10949,9 +11273,9 @@ func (ec *executionContext) _Customer_receivables(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Receivable)
+	res := resTmp.([]*generated.Receivable)
 	fc.Result = res
-	return ec.marshalOReceivable2ᚕᚖmazzaᚋentᚐReceivableᚄ(ctx, field.Selections, res)
+	return ec.marshalOReceivable2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Customer_receivables(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -10991,7 +11315,7 @@ func (ec *executionContext) fieldContext_Customer_receivables(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_id(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_id(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11035,7 +11359,7 @@ func (ec *executionContext) fieldContext_Employee_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11079,7 +11403,7 @@ func (ec *executionContext) fieldContext_Employee_createdat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11123,7 +11447,7 @@ func (ec *executionContext) fieldContext_Employee_updatedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11164,7 +11488,7 @@ func (ec *executionContext) fieldContext_Employee_deletedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_name(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_name(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11208,7 +11532,7 @@ func (ec *executionContext) fieldContext_Employee_name(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_gender(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_gender(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_gender(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11236,7 +11560,7 @@ func (ec *executionContext) _Employee_gender(ctx context.Context, field graphql.
 	}
 	res := resTmp.(employee.Gender)
 	fc.Result = res
-	return ec.marshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx, field.Selections, res)
+	return ec.marshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_gender(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11252,7 +11576,7 @@ func (ec *executionContext) fieldContext_Employee_gender(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_position(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_position(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_position(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11293,7 +11617,7 @@ func (ec *executionContext) fieldContext_Employee_position(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_email(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_email(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_email(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11334,7 +11658,7 @@ func (ec *executionContext) fieldContext_Employee_email(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_phone(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_phone(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_phone(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11378,7 +11702,7 @@ func (ec *executionContext) fieldContext_Employee_phone(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_company(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_company(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11401,9 +11725,9 @@ func (ec *executionContext) _Employee_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11495,7 +11819,7 @@ func (ec *executionContext) fieldContext_Employee_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_user(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_user(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_user(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11518,9 +11842,9 @@ func (ec *executionContext) _Employee_user(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11570,7 +11894,7 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_subordinates(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_subordinates(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_subordinates(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11593,9 +11917,9 @@ func (ec *executionContext) _Employee_subordinates(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Employee)
+	res := resTmp.([]*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_subordinates(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11645,7 +11969,7 @@ func (ec *executionContext) fieldContext_Employee_subordinates(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_leader(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_leader(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_leader(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11668,9 +11992,9 @@ func (ec *executionContext) _Employee_leader(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_leader(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11720,7 +12044,7 @@ func (ec *executionContext) fieldContext_Employee_leader(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_workshifts(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_workshifts(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11743,9 +12067,9 @@ func (ec *executionContext) _Employee_workshifts(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11799,7 +12123,7 @@ func (ec *executionContext) fieldContext_Employee_workshifts(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_approvedworkshifts(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_approvedworkshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_approvedworkshifts(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11822,9 +12146,9 @@ func (ec *executionContext) _Employee_approvedworkshifts(ctx context.Context, fi
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_approvedworkshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11878,7 +12202,7 @@ func (ec *executionContext) fieldContext_Employee_approvedworkshifts(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _Employee_assignedtasks(ctx context.Context, field graphql.CollectedField, obj *ent.Employee) (ret graphql.Marshaler) {
+func (ec *executionContext) _Employee_assignedtasks(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Employee_assignedtasks(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11901,9 +12225,9 @@ func (ec *executionContext) _Employee_assignedtasks(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktask)
+	res := resTmp.([]*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Employee_assignedtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -11951,7 +12275,7 @@ func (ec *executionContext) fieldContext_Employee_assignedtasks(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _File_id(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_id(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -11995,7 +12319,7 @@ func (ec *executionContext) fieldContext_File_id(_ context.Context, field graphq
 	return fc, nil
 }
 
-func (ec *executionContext) _File_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12039,7 +12363,7 @@ func (ec *executionContext) fieldContext_File_createdat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _File_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12083,7 +12407,7 @@ func (ec *executionContext) fieldContext_File_updatedat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _File_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12124,7 +12448,7 @@ func (ec *executionContext) fieldContext_File_deletedat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _File_category(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_category(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_category(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12152,7 +12476,7 @@ func (ec *executionContext) _File_category(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(file.Category)
 	fc.Result = res
-	return ec.marshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_File_category(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12168,7 +12492,7 @@ func (ec *executionContext) fieldContext_File_category(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _File_extension(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_extension(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_extension(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12212,7 +12536,7 @@ func (ec *executionContext) fieldContext_File_extension(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _File_size(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_size(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_size(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12256,7 +12580,7 @@ func (ec *executionContext) fieldContext_File_size(_ context.Context, field grap
 	return fc, nil
 }
 
-func (ec *executionContext) _File_url(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_url(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_url(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12300,7 +12624,7 @@ func (ec *executionContext) fieldContext_File_url(_ context.Context, field graph
 	return fc, nil
 }
 
-func (ec *executionContext) _File_description(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_description(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12344,7 +12668,7 @@ func (ec *executionContext) fieldContext_File_description(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _File_company(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_company(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12367,9 +12691,9 @@ func (ec *executionContext) _File_company(ctx context.Context, field graphql.Col
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_File_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12461,7 +12785,7 @@ func (ec *executionContext) fieldContext_File_company(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _File_product(ctx context.Context, field graphql.CollectedField, obj *ent.File) (ret graphql.Marshaler) {
+func (ec *executionContext) _File_product(ctx context.Context, field graphql.CollectedField, obj *generated.File) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_File_product(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12484,9 +12808,9 @@ func (ec *executionContext) _File_product(ctx context.Context, field graphql.Col
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Product)
+	res := resTmp.(*generated.Product)
 	fc.Result = res
-	return ec.marshalOProduct2ᚖmazzaᚋentᚐProduct(ctx, field.Selections, res)
+	return ec.marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_File_product(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12536,7 +12860,7 @@ func (ec *executionContext) fieldContext_File_product(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _FileConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.FileConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _FileConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.FileConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FileConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12559,9 +12883,9 @@ func (ec *executionContext) _FileConnection_edges(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.FileEdge)
+	res := resTmp.([]*generated.FileEdge)
 	fc.Result = res
-	return ec.marshalOFileEdge2ᚕᚖmazzaᚋentᚐFileEdge(ctx, field.Selections, res)
+	return ec.marshalOFileEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐFileEdge(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_FileConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12583,7 +12907,7 @@ func (ec *executionContext) fieldContext_FileConnection_edges(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _FileConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.FileConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _FileConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.FileConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FileConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12637,7 +12961,7 @@ func (ec *executionContext) fieldContext_FileConnection_pageInfo(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _FileConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.FileConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _FileConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.FileConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FileConnection_totalCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12681,7 +13005,7 @@ func (ec *executionContext) fieldContext_FileConnection_totalCount(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _FileEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.FileEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _FileEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.FileEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FileEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12704,9 +13028,9 @@ func (ec *executionContext) _FileEdge_node(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.File)
+	res := resTmp.(*generated.File)
 	fc.Result = res
-	return ec.marshalOFile2ᚖmazzaᚋentᚐFile(ctx, field.Selections, res)
+	return ec.marshalOFile2ᚖmazzaᚋentᚋgeneratedᚐFile(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_FileEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12746,7 +13070,7 @@ func (ec *executionContext) fieldContext_FileEdge_node(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _FileEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.FileEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _FileEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.FileEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FileEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12790,7 +13114,1261 @@ func (ec *executionContext) fieldContext_FileEdge_cursor(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_user(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _Invoice_date(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_date(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_date(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_filename(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_filename(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Filename, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_filename(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_keywords(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_keywords(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Keywords, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_keywords(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_number(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_number(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Number, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_number(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_paymentDetails(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_paymentDetails(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PaymentDetails, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.PaymentDetails)
+	fc.Result = res
+	return ec.marshalNPaymentDetails2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPaymentDetails(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_paymentDetails(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "bankName":
+				return ec.fieldContext_PaymentDetails_bankName(ctx, field)
+			case "accountNumber":
+				return ec.fieldContext_PaymentDetails_accountNumber(ctx, field)
+			case "iban":
+				return ec.fieldContext_PaymentDetails_iban(ctx, field)
+			case "dueDate":
+				return ec.fieldContext_PaymentDetails_dueDate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PaymentDetails", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_title(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_issuerDetails(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_issuerDetails(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IssuerDetails, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.InvoiceIssuer)
+	fc.Result = res
+	return ec.marshalNInvoiceIssuer2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceIssuer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_issuerDetails(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "name":
+				return ec.fieldContext_InvoiceIssuer_name(ctx, field)
+			case "taxID":
+				return ec.fieldContext_InvoiceIssuer_taxID(ctx, field)
+			case "address":
+				return ec.fieldContext_InvoiceIssuer_address(ctx, field)
+			case "city":
+				return ec.fieldContext_InvoiceIssuer_city(ctx, field)
+			case "country":
+				return ec.fieldContext_InvoiceIssuer_country(ctx, field)
+			case "phone":
+				return ec.fieldContext_InvoiceIssuer_phone(ctx, field)
+			case "email":
+				return ec.fieldContext_InvoiceIssuer_email(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type InvoiceIssuer", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_customerDetails(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_customerDetails(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomerDetails, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.InvoiceCustomer)
+	fc.Result = res
+	return ec.marshalNInvoiceCustomer2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceCustomer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_customerDetails(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "name":
+				return ec.fieldContext_InvoiceCustomer_name(ctx, field)
+			case "taxID":
+				return ec.fieldContext_InvoiceCustomer_taxID(ctx, field)
+			case "address":
+				return ec.fieldContext_InvoiceCustomer_address(ctx, field)
+			case "city":
+				return ec.fieldContext_InvoiceCustomer_city(ctx, field)
+			case "country":
+				return ec.fieldContext_InvoiceCustomer_country(ctx, field)
+			case "phone":
+				return ec.fieldContext_InvoiceCustomer_phone(ctx, field)
+			case "email":
+				return ec.fieldContext_InvoiceCustomer_email(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type InvoiceCustomer", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_body(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_body(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Body, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([][]string)
+	fc.Result = res
+	return ec.marshalNString2ᚕᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_body(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Invoice_totals(ctx context.Context, field graphql.CollectedField, obj *model.Invoice) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Invoice_totals(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Totals, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.InvoiceTotals)
+	fc.Result = res
+	return ec.marshalNInvoiceTotals2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceTotals(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Invoice_totals(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Invoice",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "subtotal":
+				return ec.fieldContext_InvoiceTotals_subtotal(ctx, field)
+			case "vatRate":
+				return ec.fieldContext_InvoiceTotals_vatRate(ctx, field)
+			case "vat":
+				return ec.fieldContext_InvoiceTotals_vat(ctx, field)
+			case "total":
+				return ec.fieldContext_InvoiceTotals_total(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type InvoiceTotals", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_name(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_taxID(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_taxID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TaxID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_taxID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_address(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_address(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_address(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_city(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_city(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.City, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_city(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_country(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_country(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Country, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_country(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_phone(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_phone(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Phone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_phone(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceCustomer_email(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceCustomer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceCustomer_email(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceCustomer_email(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceCustomer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_name(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_taxID(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_taxID(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TaxID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_taxID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_address(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_address(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_address(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_city(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_city(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.City, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_city(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_country(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_country(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Country, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_country(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_phone(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_phone(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Phone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_phone(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceIssuer_email(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceIssuer) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceIssuer_email(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceIssuer_email(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceIssuer",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceTotals_subtotal(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceTotals) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceTotals_subtotal(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Subtotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceTotals_subtotal(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceTotals",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceTotals_vatRate(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceTotals) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceTotals_vatRate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VatRate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceTotals_vatRate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceTotals",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceTotals_vat(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceTotals) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceTotals_vat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Vat, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceTotals_vat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceTotals",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _InvoiceTotals_total(ctx context.Context, field graphql.CollectedField, obj *model.InvoiceTotals) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_InvoiceTotals_total(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_InvoiceTotals_total(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "InvoiceTotals",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoginOutput_user(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_user(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12816,9 +14394,9 @@ func (ec *executionContext) _LoginOutput_user(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -12868,7 +14446,7 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_companyId(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _LoginOutput_companyId(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_companyId(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12912,7 +14490,7 @@ func (ec *executionContext) fieldContext_LoginOutput_companyId(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_companies(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _LoginOutput_companies(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_companies(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -12938,9 +14516,9 @@ func (ec *executionContext) _LoginOutput_companies(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Company)
+	res := resTmp.([]*generated.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_LoginOutput_companies(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13032,7 +14610,7 @@ func (ec *executionContext) fieldContext_LoginOutput_companies(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_accessToken(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _LoginOutput_accessToken(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_accessToken(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -13076,7 +14654,7 @@ func (ec *executionContext) fieldContext_LoginOutput_accessToken(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_refreshToken(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _LoginOutput_refreshToken(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_refreshToken(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -13120,7 +14698,7 @@ func (ec *executionContext) fieldContext_LoginOutput_refreshToken(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _LoginOutput_ttl(ctx context.Context, field graphql.CollectedField, obj *LoginOutput) (ret graphql.Marshaler) {
+func (ec *executionContext) _LoginOutput_ttl(ctx context.Context, field graphql.CollectedField, obj *model.LoginOutput) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoginOutput_ttl(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -13178,7 +14756,7 @@ func (ec *executionContext) _Mutation_signup(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Signup(rctx, fc.Args["input"].(SignupInput))
+		return ec.resolvers.Mutation().Signup(rctx, fc.Args["input"].(model.SignupInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13190,9 +14768,9 @@ func (ec *executionContext) _Mutation_signup(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*LoginOutput)
+	res := resTmp.(*model.LoginOutput)
 	fc.Result = res
-	return ec.marshalNLoginOutput2ᚖmazzaᚐLoginOutput(ctx, field.Selections, res)
+	return ec.marshalNLoginOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoginOutput(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_signup(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13247,7 +14825,7 @@ func (ec *executionContext) _Mutation_createCompany(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateCompany(rctx, fc.Args["input"].(*ent.CreateCompanyInput))
+		return ec.resolvers.Mutation().CreateCompany(rctx, fc.Args["input"].(*generated.CreateCompanyInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13256,9 +14834,9 @@ func (ec *executionContext) _Mutation_createCompany(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createCompany(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13375,7 +14953,7 @@ func (ec *executionContext) _Mutation_updateCompany(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateCompany(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateCompanyInput))
+		return ec.resolvers.Mutation().UpdateCompany(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateCompanyInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13387,9 +14965,9 @@ func (ec *executionContext) _Mutation_updateCompany(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateCompany(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13506,7 +15084,7 @@ func (ec *executionContext) _Mutation_invitedUserSignup(ctx context.Context, fie
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().InvitedUserSignup(rctx, fc.Args["input"].(InvitedUserSignupInput))
+		return ec.resolvers.Mutation().InvitedUserSignup(rctx, fc.Args["input"].(model.InvitedUserSignupInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13518,9 +15096,9 @@ func (ec *executionContext) _Mutation_invitedUserSignup(ctx context.Context, fie
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13595,7 +15173,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateUser(rctx, fc.Args["input"].(ent.CreateUserInput))
+		return ec.resolvers.Mutation().CreateUser(rctx, fc.Args["input"].(generated.CreateUserInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13604,9 +15182,9 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13681,7 +15259,7 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateUser(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateUserInput))
+		return ec.resolvers.Mutation().UpdateUser(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateUserInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13693,9 +15271,9 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -13825,7 +15403,7 @@ func (ec *executionContext) _Mutation_resetPassword(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().ResetPassword(rctx, fc.Args["input"].(ResetPasswordInput))
+		return ec.resolvers.Mutation().ResetPassword(rctx, fc.Args["input"].(model.ResetPasswordInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13935,7 +15513,7 @@ func (ec *executionContext) _Mutation_createUserRole(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateUserRole(rctx, fc.Args["input"].(ent.CreateUserRoleInput))
+		return ec.resolvers.Mutation().CreateUserRole(rctx, fc.Args["input"].(generated.CreateUserRoleInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13990,7 +15568,7 @@ func (ec *executionContext) _Mutation_createCustomer(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateCustomer(rctx, fc.Args["input"].(ent.CreateCustomerInput))
+		return ec.resolvers.Mutation().CreateCustomer(rctx, fc.Args["input"].(generated.CreateCustomerInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13999,9 +15577,9 @@ func (ec *executionContext) _Mutation_createCustomer(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Customer)
+	res := resTmp.(*generated.Customer)
 	fc.Result = res
-	return ec.marshalOCustomer2ᚖmazzaᚋentᚐCustomer(ctx, field.Selections, res)
+	return ec.marshalOCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createCustomer(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14074,7 +15652,7 @@ func (ec *executionContext) _Mutation_updateCustomer(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateCustomer(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateCustomerInput))
+		return ec.resolvers.Mutation().UpdateCustomer(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateCustomerInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14086,9 +15664,9 @@ func (ec *executionContext) _Mutation_updateCustomer(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Customer)
+	res := resTmp.(*generated.Customer)
 	fc.Result = res
-	return ec.marshalNCustomer2ᚖmazzaᚋentᚐCustomer(ctx, field.Selections, res)
+	return ec.marshalNCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateCustomer(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14216,7 +15794,7 @@ func (ec *executionContext) _Mutation_createEmployee(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateEmployee(rctx, fc.Args["input"].(ent.CreateEmployeeInput))
+		return ec.resolvers.Mutation().CreateEmployee(rctx, fc.Args["input"].(generated.CreateEmployeeInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14225,9 +15803,9 @@ func (ec *executionContext) _Mutation_createEmployee(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createEmployee(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14302,7 +15880,7 @@ func (ec *executionContext) _Mutation_updateEmployee(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateEmployee(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateEmployeeInput))
+		return ec.resolvers.Mutation().UpdateEmployee(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateEmployeeInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14314,9 +15892,9 @@ func (ec *executionContext) _Mutation_updateEmployee(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalNEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalNEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateEmployee(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14446,7 +16024,7 @@ func (ec *executionContext) _Mutation_createProduct(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateProduct(rctx, fc.Args["input"].(ent.CreateProductInput))
+		return ec.resolvers.Mutation().CreateProduct(rctx, fc.Args["input"].(generated.CreateProductInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14455,9 +16033,9 @@ func (ec *executionContext) _Mutation_createProduct(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Product)
+	res := resTmp.(*generated.Product)
 	fc.Result = res
-	return ec.marshalOProduct2ᚖmazzaᚋentᚐProduct(ctx, field.Selections, res)
+	return ec.marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createProduct(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14532,7 +16110,7 @@ func (ec *executionContext) _Mutation_updateProduct(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateProduct(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateProductInput))
+		return ec.resolvers.Mutation().UpdateProduct(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateProductInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14544,9 +16122,9 @@ func (ec *executionContext) _Mutation_updateProduct(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Product)
+	res := resTmp.(*generated.Product)
 	fc.Result = res
-	return ec.marshalNProduct2ᚖmazzaᚋentᚐProduct(ctx, field.Selections, res)
+	return ec.marshalNProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateProduct(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14676,7 +16254,7 @@ func (ec *executionContext) _Mutation_createSupplier(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateSupplier(rctx, fc.Args["input"].(ent.CreateSupplierInput))
+		return ec.resolvers.Mutation().CreateSupplier(rctx, fc.Args["input"].(generated.CreateSupplierInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14685,9 +16263,9 @@ func (ec *executionContext) _Mutation_createSupplier(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Supplier)
+	res := resTmp.(*generated.Supplier)
 	fc.Result = res
-	return ec.marshalOSupplier2ᚖmazzaᚋentᚐSupplier(ctx, field.Selections, res)
+	return ec.marshalOSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createSupplier(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14760,7 +16338,7 @@ func (ec *executionContext) _Mutation_updateSupplier(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateSupplier(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateSupplierInput))
+		return ec.resolvers.Mutation().UpdateSupplier(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateSupplierInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14772,9 +16350,9 @@ func (ec *executionContext) _Mutation_updateSupplier(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Supplier)
+	res := resTmp.(*generated.Supplier)
 	fc.Result = res
-	return ec.marshalNSupplier2ᚖmazzaᚋentᚐSupplier(ctx, field.Selections, res)
+	return ec.marshalNSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateSupplier(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14902,7 +16480,7 @@ func (ec *executionContext) _Mutation_createTreasury(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTreasury(rctx, fc.Args["input"].(ent.CreateTreasuryInput))
+		return ec.resolvers.Mutation().CreateTreasury(rctx, fc.Args["input"].(generated.CreateTreasuryInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14911,9 +16489,9 @@ func (ec *executionContext) _Mutation_createTreasury(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Treasury)
+	res := resTmp.(*generated.Treasury)
 	fc.Result = res
-	return ec.marshalOTreasury2ᚖmazzaᚋentᚐTreasury(ctx, field.Selections, res)
+	return ec.marshalOTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTreasury(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -14990,7 +16568,7 @@ func (ec *executionContext) _Mutation_updateTreasury(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTreasury(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateTreasuryInput))
+		return ec.resolvers.Mutation().UpdateTreasury(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateTreasuryInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15002,9 +16580,9 @@ func (ec *executionContext) _Mutation_updateTreasury(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Treasury)
+	res := resTmp.(*generated.Treasury)
 	fc.Result = res
-	return ec.marshalNTreasury2ᚖmazzaᚋentᚐTreasury(ctx, field.Selections, res)
+	return ec.marshalNTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateTreasury(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15136,7 +16714,7 @@ func (ec *executionContext) _Mutation_createWorkShift(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWorkShift(rctx, fc.Args["input"].(ent.CreateWorkshiftInput))
+		return ec.resolvers.Mutation().CreateWorkShift(rctx, fc.Args["input"].(generated.CreateWorkshiftInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15145,9 +16723,9 @@ func (ec *executionContext) _Mutation_createWorkShift(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Workshift)
+	res := resTmp.(*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createWorkShift(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15226,7 +16804,7 @@ func (ec *executionContext) _Mutation_updateWorkShift(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkShift(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateWorkshiftInput))
+		return ec.resolvers.Mutation().UpdateWorkShift(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateWorkshiftInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15238,9 +16816,9 @@ func (ec *executionContext) _Mutation_updateWorkShift(ctx context.Context, field
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Workshift)
+	res := resTmp.(*generated.Workshift)
 	fc.Result = res
-	return ec.marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, field.Selections, res)
+	return ec.marshalNWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateWorkShift(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15374,7 +16952,7 @@ func (ec *executionContext) _Mutation_createWorkTask(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWorkTask(rctx, fc.Args["input"].(ent.CreateWorktaskInput))
+		return ec.resolvers.Mutation().CreateWorkTask(rctx, fc.Args["input"].(generated.CreateWorktaskInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15383,9 +16961,9 @@ func (ec *executionContext) _Mutation_createWorkTask(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Worktask)
+	res := resTmp.(*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚖmazzaᚋentᚐWorktask(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createWorkTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15458,7 +17036,7 @@ func (ec *executionContext) _Mutation_updateWorkTask(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkTask(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateWorktaskInput))
+		return ec.resolvers.Mutation().UpdateWorkTask(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateWorktaskInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15470,9 +17048,9 @@ func (ec *executionContext) _Mutation_updateWorkTask(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Worktask)
+	res := resTmp.(*generated.Worktask)
 	fc.Result = res
-	return ec.marshalNWorktask2ᚖmazzaᚋentᚐWorktask(ctx, field.Selections, res)
+	return ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateWorkTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15600,7 +17178,7 @@ func (ec *executionContext) _Mutation_createWorkTag(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWorkTag(rctx, fc.Args["input"].(ent.CreateWorktagInput))
+		return ec.resolvers.Mutation().CreateWorkTag(rctx, fc.Args["input"].(generated.CreateWorktagInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15609,9 +17187,9 @@ func (ec *executionContext) _Mutation_createWorkTag(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Worktag)
+	res := resTmp.(*generated.Worktag)
 	fc.Result = res
-	return ec.marshalOWorktag2ᚖmazzaᚋentᚐWorktag(ctx, field.Selections, res)
+	return ec.marshalOWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createWorkTag(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15670,7 +17248,7 @@ func (ec *executionContext) _Mutation_updateWorkTag(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkTag(rctx, fc.Args["id"].(int), fc.Args["input"].(ent.UpdateWorktagInput))
+		return ec.resolvers.Mutation().UpdateWorkTag(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateWorktagInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15682,9 +17260,9 @@ func (ec *executionContext) _Mutation_updateWorkTag(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Worktag)
+	res := resTmp.(*generated.Worktag)
 	fc.Result = res
-	return ec.marshalNWorktag2ᚖmazzaᚋentᚐWorktag(ctx, field.Selections, res)
+	return ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateWorkTag(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -15778,6 +17356,61 @@ func (ec *executionContext) fieldContext_Mutation_deleteWorkTag(ctx context.Cont
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_deleteWorkTag_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_registerPurchase(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_registerPurchase(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().RegisterPurchase(rctx, fc.Args["input"].(model.PurchaseRegistrationInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_registerPurchase(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_registerPurchase_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -15954,7 +17587,7 @@ func (ec *executionContext) fieldContext_PageInfo_endCursor(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_id(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_id(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -15998,7 +17631,7 @@ func (ec *executionContext) fieldContext_Payable_id(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16042,7 +17675,7 @@ func (ec *executionContext) fieldContext_Payable_createdat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16086,7 +17719,7 @@ func (ec *executionContext) fieldContext_Payable_updatedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16127,7 +17760,7 @@ func (ec *executionContext) fieldContext_Payable_deletedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_entrygroup(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_entrygroup(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16171,7 +17804,7 @@ func (ec *executionContext) fieldContext_Payable_entrygroup(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_date(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_date(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_date(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16215,7 +17848,7 @@ func (ec *executionContext) fieldContext_Payable_date(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_outstandingbalance(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_outstandingbalance(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_outstandingbalance(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16259,7 +17892,7 @@ func (ec *executionContext) fieldContext_Payable_outstandingbalance(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_totaltransaction(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_totaltransaction(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_totaltransaction(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16303,7 +17936,7 @@ func (ec *executionContext) fieldContext_Payable_totaltransaction(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_daysdue(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_daysdue(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_daysdue(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16347,7 +17980,7 @@ func (ec *executionContext) fieldContext_Payable_daysdue(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_status(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_status(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_status(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16375,7 +18008,7 @@ func (ec *executionContext) _Payable_status(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(payable.Status)
 	fc.Result = res
-	return ec.marshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Payable_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -16391,7 +18024,7 @@ func (ec *executionContext) fieldContext_Payable_status(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Payable_supplier(ctx context.Context, field graphql.CollectedField, obj *ent.Payable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Payable_supplier(ctx context.Context, field graphql.CollectedField, obj *generated.Payable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Payable_supplier(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16414,9 +18047,9 @@ func (ec *executionContext) _Payable_supplier(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Supplier)
+	res := resTmp.(*generated.Supplier)
 	fc.Result = res
-	return ec.marshalOSupplier2ᚖmazzaᚋentᚐSupplier(ctx, field.Selections, res)
+	return ec.marshalOSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Payable_supplier(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -16464,7 +18097,171 @@ func (ec *executionContext) fieldContext_Payable_supplier(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_id(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _PaymentDetails_bankName(ctx context.Context, field graphql.CollectedField, obj *model.PaymentDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PaymentDetails_bankName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BankName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PaymentDetails_bankName(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PaymentDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PaymentDetails_accountNumber(ctx context.Context, field graphql.CollectedField, obj *model.PaymentDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PaymentDetails_accountNumber(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccountNumber, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PaymentDetails_accountNumber(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PaymentDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PaymentDetails_iban(ctx context.Context, field graphql.CollectedField, obj *model.PaymentDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PaymentDetails_iban(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Iban, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PaymentDetails_iban(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PaymentDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PaymentDetails_dueDate(ctx context.Context, field graphql.CollectedField, obj *model.PaymentDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PaymentDetails_dueDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DueDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PaymentDetails_dueDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PaymentDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Product_id(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16508,7 +18305,7 @@ func (ec *executionContext) fieldContext_Product_id(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16552,7 +18349,7 @@ func (ec *executionContext) fieldContext_Product_createdat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16596,7 +18393,7 @@ func (ec *executionContext) fieldContext_Product_updatedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16637,7 +18434,7 @@ func (ec *executionContext) fieldContext_Product_deletedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_description(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_description(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16681,7 +18478,7 @@ func (ec *executionContext) fieldContext_Product_description(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_isdefault(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_isdefault(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_isdefault(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16725,7 +18522,7 @@ func (ec *executionContext) fieldContext_Product_isdefault(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_minimumstock(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_minimumstock(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_minimumstock(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16769,7 +18566,7 @@ func (ec *executionContext) fieldContext_Product_minimumstock(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_name(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_name(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16813,7 +18610,7 @@ func (ec *executionContext) fieldContext_Product_name(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_price(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_price(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_price(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16857,7 +18654,7 @@ func (ec *executionContext) fieldContext_Product_price(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_sku(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_sku(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_sku(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16901,7 +18698,7 @@ func (ec *executionContext) fieldContext_Product_sku(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_stock(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_stock(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_stock(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16945,7 +18742,7 @@ func (ec *executionContext) fieldContext_Product_stock(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_category(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_category(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_category(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -16973,7 +18770,7 @@ func (ec *executionContext) _Product_category(ctx context.Context, field graphql
 	}
 	res := resTmp.(product.Category)
 	fc.Result = res
-	return ec.marshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Product_category(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -16989,7 +18786,7 @@ func (ec *executionContext) fieldContext_Product_category(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_unitcost(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_unitcost(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_unitcost(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17033,7 +18830,7 @@ func (ec *executionContext) fieldContext_Product_unitcost(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_company(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_company(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17056,9 +18853,9 @@ func (ec *executionContext) _Product_company(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Product_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17150,7 +18947,7 @@ func (ec *executionContext) fieldContext_Product_company(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_pictures(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_pictures(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_pictures(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17173,9 +18970,9 @@ func (ec *executionContext) _Product_pictures(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.File)
+	res := resTmp.([]*generated.File)
 	fc.Result = res
-	return ec.marshalOFile2ᚕᚖmazzaᚋentᚐFileᚄ(ctx, field.Selections, res)
+	return ec.marshalOFile2ᚕᚖmazzaᚋentᚋgeneratedᚐFileᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Product_pictures(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17215,7 +19012,7 @@ func (ec *executionContext) fieldContext_Product_pictures(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_productmovements(ctx context.Context, field graphql.CollectedField, obj *ent.Product) (ret graphql.Marshaler) {
+func (ec *executionContext) _Product_productmovements(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Product_productmovements(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17238,9 +19035,9 @@ func (ec *executionContext) _Product_productmovements(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.ProductMovement)
+	res := resTmp.([]*generated.ProductMovement)
 	fc.Result = res
-	return ec.marshalOProductMovement2ᚕᚖmazzaᚋentᚐProductMovementᚄ(ctx, field.Selections, res)
+	return ec.marshalOProductMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Product_productmovements(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17278,7 +19075,7 @@ func (ec *executionContext) fieldContext_Product_productmovements(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_id(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_id(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17322,7 +19119,7 @@ func (ec *executionContext) fieldContext_ProductMovement_id(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17366,7 +19163,7 @@ func (ec *executionContext) fieldContext_ProductMovement_createdat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17410,7 +19207,7 @@ func (ec *executionContext) fieldContext_ProductMovement_updatedat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17451,7 +19248,7 @@ func (ec *executionContext) fieldContext_ProductMovement_deletedat(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_entrygroup(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17495,7 +19292,7 @@ func (ec *executionContext) fieldContext_ProductMovement_entrygroup(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_averagecost(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_averagecost(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_averagecost(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17539,7 +19336,7 @@ func (ec *executionContext) fieldContext_ProductMovement_averagecost(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_unitcost(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_unitcost(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_unitcost(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17583,7 +19380,7 @@ func (ec *executionContext) fieldContext_ProductMovement_unitcost(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_price(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_price(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_price(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17627,7 +19424,7 @@ func (ec *executionContext) fieldContext_ProductMovement_price(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_quantity(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_quantity(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_quantity(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17671,7 +19468,7 @@ func (ec *executionContext) fieldContext_ProductMovement_quantity(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovement_product(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovement) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovement_product(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovement_product(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17694,9 +19491,9 @@ func (ec *executionContext) _ProductMovement_product(ctx context.Context, field 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Product)
+	res := resTmp.(*generated.Product)
 	fc.Result = res
-	return ec.marshalOProduct2ᚖmazzaᚋentᚐProduct(ctx, field.Selections, res)
+	return ec.marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ProductMovement_product(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17746,7 +19543,7 @@ func (ec *executionContext) fieldContext_ProductMovement_product(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovementConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17769,9 +19566,9 @@ func (ec *executionContext) _ProductMovementConnection_edges(ctx context.Context
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.ProductMovementEdge)
+	res := resTmp.([]*generated.ProductMovementEdge)
 	fc.Result = res
-	return ec.marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚐProductMovementEdge(ctx, field.Selections, res)
+	return ec.marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ProductMovementConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17793,7 +19590,7 @@ func (ec *executionContext) fieldContext_ProductMovementConnection_edges(_ conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovementConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17847,7 +19644,7 @@ func (ec *executionContext) fieldContext_ProductMovementConnection_pageInfo(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovementConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovementConnection_totalCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17891,7 +19688,7 @@ func (ec *executionContext) fieldContext_ProductMovementConnection_totalCount(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovementEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovementEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -17914,9 +19711,9 @@ func (ec *executionContext) _ProductMovementEdge_node(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.ProductMovement)
+	res := resTmp.(*generated.ProductMovement)
 	fc.Result = res
-	return ec.marshalOProductMovement2ᚖmazzaᚋentᚐProductMovement(ctx, field.Selections, res)
+	return ec.marshalOProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ProductMovementEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -17954,7 +19751,7 @@ func (ec *executionContext) fieldContext_ProductMovementEdge_node(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _ProductMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.ProductMovementEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _ProductMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ProductMovementEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -18021,9 +19818,9 @@ func (ec *executionContext) _Query_node(ctx context.Context, field graphql.Colle
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(ent.Noder)
+	res := resTmp.(generated.Noder)
 	fc.Result = res
-	return ec.marshalONode2mazzaᚋentᚐNoder(ctx, field.Selections, res)
+	return ec.marshalONode2mazzaᚋentᚋgeneratedᚐNoder(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_node(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18076,9 +19873,9 @@ func (ec *executionContext) _Query_nodes(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]ent.Noder)
+	res := resTmp.([]generated.Noder)
 	fc.Result = res
-	return ec.marshalNNode2ᚕmazzaᚋentᚐNoder(ctx, field.Selections, res)
+	return ec.marshalNNode2ᚕmazzaᚋentᚋgeneratedᚐNoder(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_nodes(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18119,7 +19916,7 @@ func (ec *executionContext) _Query_accountingEntries(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AccountingEntries(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.AccountingEntryOrder), fc.Args["where"].(*ent.AccountingEntryWhereInput))
+		return ec.resolvers.Query().AccountingEntries(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["orderBy"].(*generated.AccountingEntryOrder), fc.Args["where"].(*generated.AccountingEntryWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18131,9 +19928,9 @@ func (ec *executionContext) _Query_accountingEntries(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.AccountingEntryConnection)
+	res := resTmp.(*generated.AccountingEntryConnection)
 	fc.Result = res
-	return ec.marshalNAccountingEntryConnection2ᚖmazzaᚋentᚐAccountingEntryConnection(ctx, field.Selections, res)
+	return ec.marshalNAccountingEntryConnection2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_accountingEntries(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18182,7 +19979,7 @@ func (ec *executionContext) _Query_cashMovements(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().CashMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*ent.CashMovementWhereInput))
+		return ec.resolvers.Query().CashMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*generated.CashMovementWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18194,9 +19991,9 @@ func (ec *executionContext) _Query_cashMovements(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.CashMovementConnection)
+	res := resTmp.(*generated.CashMovementConnection)
 	fc.Result = res
-	return ec.marshalNCashMovementConnection2ᚖmazzaᚋentᚐCashMovementConnection(ctx, field.Selections, res)
+	return ec.marshalNCashMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_cashMovements(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18245,7 +20042,7 @@ func (ec *executionContext) _Query_files(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Files(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["orderBy"].(*ent.FileOrder), fc.Args["where"].(*ent.FileWhereInput))
+		return ec.resolvers.Query().Files(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["orderBy"].(*generated.FileOrder), fc.Args["where"].(*generated.FileWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18257,9 +20054,9 @@ func (ec *executionContext) _Query_files(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.FileConnection)
+	res := resTmp.(*generated.FileConnection)
 	fc.Result = res
-	return ec.marshalNFileConnection2ᚖmazzaᚋentᚐFileConnection(ctx, field.Selections, res)
+	return ec.marshalNFileConnection2ᚖmazzaᚋentᚋgeneratedᚐFileConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_files(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18308,7 +20105,7 @@ func (ec *executionContext) _Query_productMovements(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ProductMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*ent.ProductMovementWhereInput))
+		return ec.resolvers.Query().ProductMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*generated.ProductMovementWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18320,9 +20117,9 @@ func (ec *executionContext) _Query_productMovements(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.ProductMovementConnection)
+	res := resTmp.(*generated.ProductMovementConnection)
 	fc.Result = res
-	return ec.marshalNProductMovementConnection2ᚖmazzaᚋentᚐProductMovementConnection(ctx, field.Selections, res)
+	return ec.marshalNProductMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_productMovements(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18371,7 +20168,7 @@ func (ec *executionContext) _Query_receivables(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Receivables(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*ent.ReceivableWhereInput))
+		return ec.resolvers.Query().Receivables(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*generated.ReceivableWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18383,9 +20180,9 @@ func (ec *executionContext) _Query_receivables(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ent.ReceivableConnection)
+	res := resTmp.(*generated.ReceivableConnection)
 	fc.Result = res
-	return ec.marshalNReceivableConnection2ᚖmazzaᚋentᚐReceivableConnection(ctx, field.Selections, res)
+	return ec.marshalNReceivableConnection2ᚖmazzaᚋentᚋgeneratedᚐReceivableConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_receivables(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18446,9 +20243,9 @@ func (ec *executionContext) _Query_tokens(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Token)
+	res := resTmp.([]*generated.Token)
 	fc.Result = res
-	return ec.marshalNToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx, field.Selections, res)
+	return ec.marshalNToken2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_tokens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18504,9 +20301,9 @@ func (ec *executionContext) _Query_workshifts(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalNWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalNWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18629,7 +20426,7 @@ func (ec *executionContext) _Query_companies(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Companies(rctx, fc.Args["where"].(*ent.CompanyWhereInput))
+		return ec.resolvers.Query().Companies(rctx, fc.Args["where"].(*generated.CompanyWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18641,9 +20438,9 @@ func (ec *executionContext) _Query_companies(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Company)
+	res := resTmp.([]*generated.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_companies(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18760,7 +20557,7 @@ func (ec *executionContext) _Query_customers(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Customers(rctx, fc.Args["where"].(*ent.CustomerWhereInput))
+		return ec.resolvers.Query().Customers(rctx, fc.Args["where"].(*generated.CustomerWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18772,9 +20569,9 @@ func (ec *executionContext) _Query_customers(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Customer)
+	res := resTmp.([]*generated.Customer)
 	fc.Result = res
-	return ec.marshalNCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx, field.Selections, res)
+	return ec.marshalNCustomer2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_customers(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18847,7 +20644,7 @@ func (ec *executionContext) _Query_employees(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Employees(rctx, fc.Args["where"].(*ent.EmployeeWhereInput))
+		return ec.resolvers.Query().Employees(rctx, fc.Args["where"].(*generated.EmployeeWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18859,9 +20656,9 @@ func (ec *executionContext) _Query_employees(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Employee)
+	res := resTmp.([]*generated.Employee)
 	fc.Result = res
-	return ec.marshalNEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx, field.Selections, res)
+	return ec.marshalNEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_employees(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -18936,7 +20733,7 @@ func (ec *executionContext) _Query_payables(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Payables(rctx, fc.Args["where"].(*ent.PayableWhereInput))
+		return ec.resolvers.Query().Payables(rctx, fc.Args["where"].(*generated.PayableWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18948,9 +20745,9 @@ func (ec *executionContext) _Query_payables(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Payable)
+	res := resTmp.([]*generated.Payable)
 	fc.Result = res
-	return ec.marshalNPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx, field.Selections, res)
+	return ec.marshalNPayable2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_payables(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19015,7 +20812,7 @@ func (ec *executionContext) _Query_products(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Products(rctx, fc.Args["where"].(*ent.ProductWhereInput))
+		return ec.resolvers.Query().Products(rctx, fc.Args["where"].(*generated.ProductWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19027,9 +20824,9 @@ func (ec *executionContext) _Query_products(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Product)
+	res := resTmp.([]*generated.Product)
 	fc.Result = res
-	return ec.marshalNProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx, field.Selections, res)
+	return ec.marshalNProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_products(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19104,7 +20901,7 @@ func (ec *executionContext) _Query_lowStock(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LowStock(rctx, fc.Args["where"].(*ent.ProductWhereInput))
+		return ec.resolvers.Query().LowStock(rctx, fc.Args["where"].(*generated.ProductWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19116,9 +20913,9 @@ func (ec *executionContext) _Query_lowStock(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Product)
+	res := resTmp.([]*generated.Product)
 	fc.Result = res
-	return ec.marshalNProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx, field.Selections, res)
+	return ec.marshalNProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_lowStock(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19193,7 +20990,7 @@ func (ec *executionContext) _Query_numberOfProducts(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().NumberOfProducts(rctx, fc.Args["where"].(*ent.ProductWhereInput))
+		return ec.resolvers.Query().NumberOfProducts(rctx, fc.Args["where"].(*generated.ProductWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19248,7 +21045,7 @@ func (ec *executionContext) _Query_numberOfLowStock(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().NumberOfLowStock(rctx, fc.Args["where"].(*ent.ProductWhereInput))
+		return ec.resolvers.Query().NumberOfLowStock(rctx, fc.Args["where"].(*generated.ProductWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19303,7 +21100,7 @@ func (ec *executionContext) _Query_numberOfOutOfStock(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().NumberOfOutOfStock(rctx, fc.Args["where"].(*ent.ProductWhereInput))
+		return ec.resolvers.Query().NumberOfOutOfStock(rctx, fc.Args["where"].(*generated.ProductWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19358,7 +21155,7 @@ func (ec *executionContext) _Query_suppliers(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Suppliers(rctx, fc.Args["where"].(*ent.SupplierWhereInput))
+		return ec.resolvers.Query().Suppliers(rctx, fc.Args["where"].(*generated.SupplierWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19370,9 +21167,9 @@ func (ec *executionContext) _Query_suppliers(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Supplier)
+	res := resTmp.([]*generated.Supplier)
 	fc.Result = res
-	return ec.marshalNSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx, field.Selections, res)
+	return ec.marshalNSupplier2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_suppliers(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19445,7 +21242,7 @@ func (ec *executionContext) _Query_treasuries(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Treasuries(rctx, fc.Args["where"].(*ent.TreasuryWhereInput))
+		return ec.resolvers.Query().Treasuries(rctx, fc.Args["where"].(*generated.TreasuryWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19457,9 +21254,9 @@ func (ec *executionContext) _Query_treasuries(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Treasury)
+	res := resTmp.([]*generated.Treasury)
 	fc.Result = res
-	return ec.marshalNTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx, field.Selections, res)
+	return ec.marshalNTreasury2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_treasuries(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19536,7 +21333,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Users(rctx, fc.Args["where"].(*ent.UserWhereInput))
+		return ec.resolvers.Query().Users(rctx, fc.Args["where"].(*generated.UserWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19548,9 +21345,9 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.User)
+	res := resTmp.([]*generated.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19625,7 +21422,7 @@ func (ec *executionContext) _Query_userRoles(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().UserRoles(rctx, fc.Args["where"].(*ent.UserRoleWhereInput))
+		return ec.resolvers.Query().UserRoles(rctx, fc.Args["where"].(*generated.UserRoleWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19637,9 +21434,9 @@ func (ec *executionContext) _Query_userRoles(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.UserRole)
+	res := resTmp.([]*generated.UserRole)
 	fc.Result = res
-	return ec.marshalNUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx, field.Selections, res)
+	return ec.marshalNUserRole2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_userRoles(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19690,7 +21487,7 @@ func (ec *executionContext) _Query_workShifts(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WorkShifts(rctx, fc.Args["where"].(*ent.WorkshiftWhereInput))
+		return ec.resolvers.Query().WorkShifts(rctx, fc.Args["where"].(*generated.WorkshiftWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19702,9 +21499,9 @@ func (ec *executionContext) _Query_workShifts(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalNWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalNWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_workShifts(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19783,7 +21580,7 @@ func (ec *executionContext) _Query_aggregateWorkShift(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AggregateWorkShift(rctx, fc.Args["where"].(*ent.WorkshiftWhereInput), fc.Args["groupBy"].([]ShiftGroupBy))
+		return ec.resolvers.Query().AggregateWorkShift(rctx, fc.Args["where"].(*generated.WorkshiftWhereInput), fc.Args["groupBy"].([]model.ShiftGroupBy))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19795,9 +21592,9 @@ func (ec *executionContext) _Query_aggregateWorkShift(ctx context.Context, field
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*WorkShiftAggregationPayload)
+	res := resTmp.([]*model.WorkShiftAggregationPayload)
 	fc.Result = res
-	return ec.marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWorkShiftAggregationPayloadᚄ(ctx, field.Selections, res)
+	return ec.marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐWorkShiftAggregationPayloadᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_aggregateWorkShift(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19848,7 +21645,7 @@ func (ec *executionContext) _Query_workTags(ctx context.Context, field graphql.C
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WorkTags(rctx, fc.Args["where"].(*ent.WorktagWhereInput))
+		return ec.resolvers.Query().WorkTags(rctx, fc.Args["where"].(*generated.WorktagWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19860,9 +21657,9 @@ func (ec *executionContext) _Query_workTags(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktag)
+	res := resTmp.([]*generated.Worktag)
 	fc.Result = res
-	return ec.marshalNWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx, field.Selections, res)
+	return ec.marshalNWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_workTags(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -19921,7 +21718,7 @@ func (ec *executionContext) _Query_workTasks(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WorkTasks(rctx, fc.Args["where"].(*ent.WorktaskWhereInput))
+		return ec.resolvers.Query().WorkTasks(rctx, fc.Args["where"].(*generated.WorktaskWhereInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -19933,9 +21730,9 @@ func (ec *executionContext) _Query_workTasks(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktask)
+	res := resTmp.([]*generated.Worktask)
 	fc.Result = res
-	return ec.marshalNWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_workTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -20123,7 +21920,7 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_id(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_id(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20167,7 +21964,7 @@ func (ec *executionContext) fieldContext_Receivable_id(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20211,7 +22008,7 @@ func (ec *executionContext) fieldContext_Receivable_createdat(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20255,7 +22052,7 @@ func (ec *executionContext) fieldContext_Receivable_updatedat(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20296,7 +22093,7 @@ func (ec *executionContext) fieldContext_Receivable_deletedat(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_entrygroup(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_entrygroup(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20340,7 +22137,7 @@ func (ec *executionContext) fieldContext_Receivable_entrygroup(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_date(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_date(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_date(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20384,7 +22181,7 @@ func (ec *executionContext) fieldContext_Receivable_date(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_outstandingbalance(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_outstandingbalance(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_outstandingbalance(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20428,7 +22225,7 @@ func (ec *executionContext) fieldContext_Receivable_outstandingbalance(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_totaltransaction(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_totaltransaction(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_totaltransaction(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20472,7 +22269,7 @@ func (ec *executionContext) fieldContext_Receivable_totaltransaction(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_daysdue(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_daysdue(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_daysdue(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20516,7 +22313,7 @@ func (ec *executionContext) fieldContext_Receivable_daysdue(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_status(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_status(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_status(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20544,7 +22341,7 @@ func (ec *executionContext) _Receivable_status(ctx context.Context, field graphq
 	}
 	res := resTmp.(receivable.Status)
 	fc.Result = res
-	return ec.marshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Receivable_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -20560,7 +22357,7 @@ func (ec *executionContext) fieldContext_Receivable_status(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Receivable_customer(ctx context.Context, field graphql.CollectedField, obj *ent.Receivable) (ret graphql.Marshaler) {
+func (ec *executionContext) _Receivable_customer(ctx context.Context, field graphql.CollectedField, obj *generated.Receivable) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Receivable_customer(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20583,9 +22380,9 @@ func (ec *executionContext) _Receivable_customer(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Customer)
+	res := resTmp.(*generated.Customer)
 	fc.Result = res
-	return ec.marshalOCustomer2ᚖmazzaᚋentᚐCustomer(ctx, field.Selections, res)
+	return ec.marshalOCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Receivable_customer(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -20633,7 +22430,7 @@ func (ec *executionContext) fieldContext_Receivable_customer(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _ReceivableConnection_edges(ctx context.Context, field graphql.CollectedField, obj *ent.ReceivableConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ReceivableConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.ReceivableConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ReceivableConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20656,9 +22453,9 @@ func (ec *executionContext) _ReceivableConnection_edges(ctx context.Context, fie
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.ReceivableEdge)
+	res := resTmp.([]*generated.ReceivableEdge)
 	fc.Result = res
-	return ec.marshalOReceivableEdge2ᚕᚖmazzaᚋentᚐReceivableEdge(ctx, field.Selections, res)
+	return ec.marshalOReceivableEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableEdge(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ReceivableConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -20680,7 +22477,7 @@ func (ec *executionContext) fieldContext_ReceivableConnection_edges(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _ReceivableConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *ent.ReceivableConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ReceivableConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.ReceivableConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ReceivableConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20734,7 +22531,7 @@ func (ec *executionContext) fieldContext_ReceivableConnection_pageInfo(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _ReceivableConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *ent.ReceivableConnection) (ret graphql.Marshaler) {
+func (ec *executionContext) _ReceivableConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.ReceivableConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ReceivableConnection_totalCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20778,7 +22575,7 @@ func (ec *executionContext) fieldContext_ReceivableConnection_totalCount(_ conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ReceivableEdge_node(ctx context.Context, field graphql.CollectedField, obj *ent.ReceivableEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _ReceivableEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.ReceivableEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ReceivableEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20801,9 +22598,9 @@ func (ec *executionContext) _ReceivableEdge_node(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Receivable)
+	res := resTmp.(*generated.Receivable)
 	fc.Result = res
-	return ec.marshalOReceivable2ᚖmazzaᚋentᚐReceivable(ctx, field.Selections, res)
+	return ec.marshalOReceivable2ᚖmazzaᚋentᚋgeneratedᚐReceivable(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_ReceivableEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -20843,7 +22640,7 @@ func (ec *executionContext) fieldContext_ReceivableEdge_node(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _ReceivableEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *ent.ReceivableEdge) (ret graphql.Marshaler) {
+func (ec *executionContext) _ReceivableEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.ReceivableEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_ReceivableEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20887,7 +22684,7 @@ func (ec *executionContext) fieldContext_ReceivableEdge_cursor(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_id(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_id(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20931,7 +22728,7 @@ func (ec *executionContext) fieldContext_Supplier_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -20975,7 +22772,7 @@ func (ec *executionContext) fieldContext_Supplier_createdat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21019,7 +22816,7 @@ func (ec *executionContext) fieldContext_Supplier_updatedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21060,7 +22857,7 @@ func (ec *executionContext) fieldContext_Supplier_deletedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_address(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_address(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_address(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21104,7 +22901,7 @@ func (ec *executionContext) fieldContext_Supplier_address(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_city(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_city(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_city(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21148,7 +22945,7 @@ func (ec *executionContext) fieldContext_Supplier_city(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_country(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_country(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_country(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21192,7 +22989,7 @@ func (ec *executionContext) fieldContext_Supplier_country(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_description(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_description(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21236,7 +23033,7 @@ func (ec *executionContext) fieldContext_Supplier_description(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_email(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_email(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_email(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21280,7 +23077,7 @@ func (ec *executionContext) fieldContext_Supplier_email(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_isdefault(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_isdefault(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_isdefault(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21321,7 +23118,7 @@ func (ec *executionContext) fieldContext_Supplier_isdefault(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_name(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_name(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21365,7 +23162,7 @@ func (ec *executionContext) fieldContext_Supplier_name(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_phone(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_phone(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_phone(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21409,7 +23206,7 @@ func (ec *executionContext) fieldContext_Supplier_phone(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_taxid(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_taxid(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_taxid(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21453,7 +23250,7 @@ func (ec *executionContext) fieldContext_Supplier_taxid(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_company(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_company(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21476,9 +23273,9 @@ func (ec *executionContext) _Supplier_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Supplier_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -21570,7 +23367,7 @@ func (ec *executionContext) fieldContext_Supplier_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Supplier_payables(ctx context.Context, field graphql.CollectedField, obj *ent.Supplier) (ret graphql.Marshaler) {
+func (ec *executionContext) _Supplier_payables(ctx context.Context, field graphql.CollectedField, obj *generated.Supplier) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Supplier_payables(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21593,9 +23390,9 @@ func (ec *executionContext) _Supplier_payables(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Payable)
+	res := resTmp.([]*generated.Payable)
 	fc.Result = res
-	return ec.marshalOPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx, field.Selections, res)
+	return ec.marshalOPayable2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Supplier_payables(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -21635,7 +23432,7 @@ func (ec *executionContext) fieldContext_Supplier_payables(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_id(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_id(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21679,7 +23476,7 @@ func (ec *executionContext) fieldContext_Token_id(_ context.Context, field graph
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_expiry(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_expiry(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_expiry(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21723,7 +23520,7 @@ func (ec *executionContext) fieldContext_Token_expiry(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_category(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_category(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_category(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21751,7 +23548,7 @@ func (ec *executionContext) _Token_category(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(token.Category)
 	fc.Result = res
-	return ec.marshalNTokenCategory2mazzaᚋentᚋtokenᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Token_category(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -21767,7 +23564,7 @@ func (ec *executionContext) fieldContext_Token_category(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_token(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_token(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_token(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21811,7 +23608,7 @@ func (ec *executionContext) fieldContext_Token_token(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_company(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_company(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21834,9 +23631,9 @@ func (ec *executionContext) _Token_company(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Token_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -21928,7 +23725,7 @@ func (ec *executionContext) fieldContext_Token_company(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Token_user(ctx context.Context, field graphql.CollectedField, obj *ent.Token) (ret graphql.Marshaler) {
+func (ec *executionContext) _Token_user(ctx context.Context, field graphql.CollectedField, obj *generated.Token) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Token_user(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -21951,9 +23748,9 @@ func (ec *executionContext) _Token_user(ctx context.Context, field graphql.Colle
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Token_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22003,7 +23800,7 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_id(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_id(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22047,7 +23844,7 @@ func (ec *executionContext) fieldContext_Treasury_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22091,7 +23888,7 @@ func (ec *executionContext) fieldContext_Treasury_createdat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22135,7 +23932,7 @@ func (ec *executionContext) fieldContext_Treasury_updatedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22176,7 +23973,7 @@ func (ec *executionContext) fieldContext_Treasury_deletedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_accountnumber(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_accountnumber(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_accountnumber(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22217,7 +24014,7 @@ func (ec *executionContext) fieldContext_Treasury_accountnumber(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_balance(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_balance(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_balance(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22261,7 +24058,7 @@ func (ec *executionContext) fieldContext_Treasury_balance(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_bankname(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_bankname(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_bankname(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22302,7 +24099,7 @@ func (ec *executionContext) fieldContext_Treasury_bankname(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_currency(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_currency(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_currency(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22330,7 +24127,7 @@ func (ec *executionContext) _Treasury_currency(ctx context.Context, field graphq
 	}
 	res := resTmp.(treasury.Currency)
 	fc.Result = res
-	return ec.marshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx, field.Selections, res)
+	return ec.marshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Treasury_currency(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22346,7 +24143,7 @@ func (ec *executionContext) fieldContext_Treasury_currency(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_description(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_description(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22387,7 +24184,7 @@ func (ec *executionContext) fieldContext_Treasury_description(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_iban(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_iban(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_iban(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22428,7 +24225,7 @@ func (ec *executionContext) fieldContext_Treasury_iban(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_isdefault(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_isdefault(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_isdefault(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22469,7 +24266,7 @@ func (ec *executionContext) fieldContext_Treasury_isdefault(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_ismainaccount(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_ismainaccount(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_ismainaccount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22510,7 +24307,7 @@ func (ec *executionContext) fieldContext_Treasury_ismainaccount(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_name(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_name(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22554,7 +24351,7 @@ func (ec *executionContext) fieldContext_Treasury_name(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_category(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_category(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_category(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22582,7 +24379,7 @@ func (ec *executionContext) _Treasury_category(ctx context.Context, field graphq
 	}
 	res := resTmp.(treasury.Category)
 	fc.Result = res
-	return ec.marshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Treasury_category(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22598,7 +24395,7 @@ func (ec *executionContext) fieldContext_Treasury_category(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_swiftcode(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_swiftcode(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_swiftcode(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22639,7 +24436,7 @@ func (ec *executionContext) fieldContext_Treasury_swiftcode(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_company(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_company(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22662,9 +24459,9 @@ func (ec *executionContext) _Treasury_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22756,7 +24553,7 @@ func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field graphql.CollectedField, obj *ent.Treasury) (ret graphql.Marshaler) {
+func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Treasury_cashmovements(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22779,9 +24576,9 @@ func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.CashMovement)
+	res := resTmp.([]*generated.CashMovement)
 	fc.Result = res
-	return ec.marshalOCashMovement2ᚕᚖmazzaᚋentᚐCashMovementᚄ(ctx, field.Selections, res)
+	return ec.marshalOCashMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Treasury_cashmovements(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -22815,7 +24612,7 @@ func (ec *executionContext) fieldContext_Treasury_cashmovements(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22859,7 +24656,7 @@ func (ec *executionContext) fieldContext_User_id(_ context.Context, field graphq
 	return fc, nil
 }
 
-func (ec *executionContext) _User_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22903,7 +24700,7 @@ func (ec *executionContext) fieldContext_User_createdat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _User_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22947,7 +24744,7 @@ func (ec *executionContext) fieldContext_User_updatedat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _User_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -22988,7 +24785,7 @@ func (ec *executionContext) fieldContext_User_deletedat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _User_fcmtoken(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_fcmtoken(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_fcmtoken(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23029,7 +24826,7 @@ func (ec *executionContext) fieldContext_User_fcmtoken(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_email(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23070,7 +24867,7 @@ func (ec *executionContext) fieldContext_User_email(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23114,7 +24911,7 @@ func (ec *executionContext) fieldContext_User_name(_ context.Context, field grap
 	return fc, nil
 }
 
-func (ec *executionContext) _User_username(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_username(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_username(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23158,7 +24955,7 @@ func (ec *executionContext) fieldContext_User_username(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _User_disabled(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_disabled(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_disabled(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23199,7 +24996,7 @@ func (ec *executionContext) fieldContext_User_disabled(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _User_notverified(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_notverified(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_notverified(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23240,7 +25037,7 @@ func (ec *executionContext) fieldContext_User_notverified(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _User_accountingentries(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_accountingentries(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_accountingentries(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23263,9 +25060,9 @@ func (ec *executionContext) _User_accountingentries(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.AccountingEntry)
+	res := resTmp.([]*generated.AccountingEntry)
 	fc.Result = res
-	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚐAccountingEntryᚄ(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_accountingentries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23317,7 +25114,7 @@ func (ec *executionContext) fieldContext_User_accountingentries(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _User_company(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_company(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23343,9 +25140,9 @@ func (ec *executionContext) _User_company(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Company)
+	res := resTmp.([]*generated.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23437,7 +25234,7 @@ func (ec *executionContext) fieldContext_User_company(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _User_assignedroles(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_assignedroles(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_assignedroles(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23460,9 +25257,9 @@ func (ec *executionContext) _User_assignedroles(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.UserRole)
+	res := resTmp.([]*generated.UserRole)
 	fc.Result = res
-	return ec.marshalOUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx, field.Selections, res)
+	return ec.marshalOUserRole2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_assignedroles(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23488,7 +25285,7 @@ func (ec *executionContext) fieldContext_User_assignedroles(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_createdtasks(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23511,9 +25308,9 @@ func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktask)
+	res := resTmp.([]*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23561,7 +25358,7 @@ func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _User_employee(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_employee(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_employee(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23584,9 +25381,9 @@ func (ec *executionContext) _User_employee(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_employee(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23636,7 +25433,7 @@ func (ec *executionContext) fieldContext_User_employee(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _User_tokens(ctx context.Context, field graphql.CollectedField, obj *ent.User) (ret graphql.Marshaler) {
+func (ec *executionContext) _User_tokens(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_tokens(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23659,9 +25456,9 @@ func (ec *executionContext) _User_tokens(ctx context.Context, field graphql.Coll
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Token)
+	res := resTmp.([]*generated.Token)
 	fc.Result = res
-	return ec.marshalOToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx, field.Selections, res)
+	return ec.marshalOToken2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_tokens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23691,7 +25488,7 @@ func (ec *executionContext) fieldContext_User_tokens(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _UserRole_id(ctx context.Context, field graphql.CollectedField, obj *ent.UserRole) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserRole_id(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UserRole_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23735,7 +25532,7 @@ func (ec *executionContext) fieldContext_UserRole_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _UserRole_role(ctx context.Context, field graphql.CollectedField, obj *ent.UserRole) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserRole_role(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UserRole_role(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23763,7 +25560,7 @@ func (ec *executionContext) _UserRole_role(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(userrole.Role)
 	fc.Result = res
-	return ec.marshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx, field.Selections, res)
+	return ec.marshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UserRole_role(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23779,7 +25576,7 @@ func (ec *executionContext) fieldContext_UserRole_role(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _UserRole_company(ctx context.Context, field graphql.CollectedField, obj *ent.UserRole) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserRole_company(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UserRole_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23802,9 +25599,9 @@ func (ec *executionContext) _UserRole_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UserRole_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23896,7 +25693,7 @@ func (ec *executionContext) fieldContext_UserRole_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _UserRole_user(ctx context.Context, field graphql.CollectedField, obj *ent.UserRole) (ret graphql.Marshaler) {
+func (ec *executionContext) _UserRole_user(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UserRole_user(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -23919,9 +25716,9 @@ func (ec *executionContext) _UserRole_user(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.User)
+	res := resTmp.([]*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -23971,7 +25768,7 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _WorkShiftAggregationPayload_date(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _WorkShiftAggregationPayload_date(ctx context.Context, field graphql.CollectedField, obj *model.WorkShiftAggregationPayload) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_WorkShiftAggregationPayload_date(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24015,7 +25812,7 @@ func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_date(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _WorkShiftAggregationPayload_count(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _WorkShiftAggregationPayload_count(ctx context.Context, field graphql.CollectedField, obj *model.WorkShiftAggregationPayload) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_WorkShiftAggregationPayload_count(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24059,7 +25856,7 @@ func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_count(_ con
 	return fc, nil
 }
 
-func (ec *executionContext) _WorkShiftAggregationPayload_durationInMinutes(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _WorkShiftAggregationPayload_durationInMinutes(ctx context.Context, field graphql.CollectedField, obj *model.WorkShiftAggregationPayload) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_WorkShiftAggregationPayload_durationInMinutes(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24100,7 +25897,7 @@ func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_durationInM
 	return fc, nil
 }
 
-func (ec *executionContext) _WorkShiftAggregationPayload_pendingCount(ctx context.Context, field graphql.CollectedField, obj *WorkShiftAggregationPayload) (ret graphql.Marshaler) {
+func (ec *executionContext) _WorkShiftAggregationPayload_pendingCount(ctx context.Context, field graphql.CollectedField, obj *model.WorkShiftAggregationPayload) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_WorkShiftAggregationPayload_pendingCount(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24141,7 +25938,7 @@ func (ec *executionContext) fieldContext_WorkShiftAggregationPayload_pendingCoun
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_id(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_id(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24185,7 +25982,7 @@ func (ec *executionContext) fieldContext_Workshift_id(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24229,7 +26026,7 @@ func (ec *executionContext) fieldContext_Workshift_createdat(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24273,7 +26070,7 @@ func (ec *executionContext) fieldContext_Workshift_updatedat(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24314,7 +26111,7 @@ func (ec *executionContext) fieldContext_Workshift_deletedat(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_approvedat(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_approvedat(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_approvedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24355,7 +26152,7 @@ func (ec *executionContext) fieldContext_Workshift_approvedat(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_clockin(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_clockin(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_clockin(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24399,7 +26196,7 @@ func (ec *executionContext) fieldContext_Workshift_clockin(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_clockout(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_clockout(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_clockout(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24440,7 +26237,7 @@ func (ec *executionContext) fieldContext_Workshift_clockout(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_clockinlocation(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_clockinlocation(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_clockinlocation(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24484,7 +26281,7 @@ func (ec *executionContext) fieldContext_Workshift_clockinlocation(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_clockoutlocation(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_clockoutlocation(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_clockoutlocation(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24525,7 +26322,7 @@ func (ec *executionContext) fieldContext_Workshift_clockoutlocation(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_description(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_description(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24566,7 +26363,7 @@ func (ec *executionContext) fieldContext_Workshift_description(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_note(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_note(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_note(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24607,7 +26404,7 @@ func (ec *executionContext) fieldContext_Workshift_note(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_status(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_status(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_status(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24635,7 +26432,7 @@ func (ec *executionContext) _Workshift_status(ctx context.Context, field graphql
 	}
 	res := resTmp.(workshift.Status)
 	fc.Result = res
-	return ec.marshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24651,7 +26448,7 @@ func (ec *executionContext) fieldContext_Workshift_status(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_company(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_company(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24674,9 +26471,9 @@ func (ec *executionContext) _Workshift_company(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24768,7 +26565,7 @@ func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_employee(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_employee(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_employee(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24791,9 +26588,9 @@ func (ec *executionContext) _Workshift_employee(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_employee(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24843,7 +26640,7 @@ func (ec *executionContext) fieldContext_Workshift_employee(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_approvedby(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_approvedby(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_approvedby(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24866,9 +26663,9 @@ func (ec *executionContext) _Workshift_approvedby(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Employee)
+	res := resTmp.(*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24918,7 +26715,7 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_worktask(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -24941,9 +26738,9 @@ func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Worktask)
+	res := resTmp.(*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚖmazzaᚋentᚐWorktask(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_worktask(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -24991,7 +26788,7 @@ func (ec *executionContext) fieldContext_Workshift_worktask(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_editrequest(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_editrequest(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_editrequest(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25014,9 +26811,9 @@ func (ec *executionContext) _Workshift_editrequest(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Workshift)
+	res := resTmp.(*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_editrequest(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25070,7 +26867,7 @@ func (ec *executionContext) fieldContext_Workshift_editrequest(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_workshift(ctx context.Context, field graphql.CollectedField, obj *ent.Workshift) (ret graphql.Marshaler) {
+func (ec *executionContext) _Workshift_workshift(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Workshift_workshift(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25093,9 +26890,9 @@ func (ec *executionContext) _Workshift_workshift(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Workshift)
+	res := resTmp.(*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_workshift(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25149,7 +26946,7 @@ func (ec *executionContext) fieldContext_Workshift_workshift(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_id(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_id(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25193,7 +26990,7 @@ func (ec *executionContext) fieldContext_Worktag_id(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25237,7 +27034,7 @@ func (ec *executionContext) fieldContext_Worktag_createdat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25281,7 +27078,7 @@ func (ec *executionContext) fieldContext_Worktag_updatedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25322,7 +27119,7 @@ func (ec *executionContext) fieldContext_Worktag_deletedat(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_name(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_name(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_name(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25366,7 +27163,7 @@ func (ec *executionContext) fieldContext_Worktag_name(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_color(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_color(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_color(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25410,7 +27207,7 @@ func (ec *executionContext) fieldContext_Worktag_color(_ context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_company(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_company(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25433,9 +27230,9 @@ func (ec *executionContext) _Worktag_company(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktag_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25527,7 +27324,7 @@ func (ec *executionContext) fieldContext_Worktag_company(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktag_worktasks(ctx context.Context, field graphql.CollectedField, obj *ent.Worktag) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktag_worktasks(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktag_worktasks(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25550,9 +27347,9 @@ func (ec *executionContext) _Worktag_worktasks(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktask)
+	res := resTmp.([]*generated.Worktask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktag_worktasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25600,7 +27397,7 @@ func (ec *executionContext) fieldContext_Worktag_worktasks(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_id(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_id(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_id(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25644,7 +27441,7 @@ func (ec *executionContext) fieldContext_Worktask_id(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_createdat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_createdat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25688,7 +27485,7 @@ func (ec *executionContext) fieldContext_Worktask_createdat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_updatedat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_updatedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25732,7 +27529,7 @@ func (ec *executionContext) fieldContext_Worktask_updatedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_deletedat(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_deletedat(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25773,7 +27570,7 @@ func (ec *executionContext) fieldContext_Worktask_deletedat(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_description(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_description(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_description(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25814,7 +27611,7 @@ func (ec *executionContext) fieldContext_Worktask_description(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_status(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_status(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_status(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25842,7 +27639,7 @@ func (ec *executionContext) _Worktask_status(ctx context.Context, field graphql.
 	}
 	res := resTmp.(worktask.Status)
 	fc.Result = res
-	return ec.marshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -25858,7 +27655,7 @@ func (ec *executionContext) fieldContext_Worktask_status(_ context.Context, fiel
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_subtasks(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_subtasks(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_subtasks(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25899,7 +27696,7 @@ func (ec *executionContext) fieldContext_Worktask_subtasks(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_title(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_title(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_title(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25943,7 +27740,7 @@ func (ec *executionContext) fieldContext_Worktask_title(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_starttime(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_starttime(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_starttime(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -25987,7 +27784,7 @@ func (ec *executionContext) fieldContext_Worktask_starttime(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_endtime(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_endtime(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_endtime(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26028,7 +27825,7 @@ func (ec *executionContext) fieldContext_Worktask_endtime(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_company(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_company(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_company(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26051,9 +27848,9 @@ func (ec *executionContext) _Worktask_company(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.Company)
+	res := resTmp.(*generated.Company)
 	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx, field.Selections, res)
+	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -26145,7 +27942,7 @@ func (ec *executionContext) fieldContext_Worktask_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_createdby(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_createdby(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_createdby(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26168,9 +27965,9 @@ func (ec *executionContext) _Worktask_createdby(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*ent.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_createdby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -26220,7 +28017,7 @@ func (ec *executionContext) fieldContext_Worktask_createdby(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_assignedto(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_assignedto(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_assignedto(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26243,9 +28040,9 @@ func (ec *executionContext) _Worktask_assignedto(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Employee)
+	res := resTmp.([]*generated.Employee)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx, field.Selections, res)
+	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_assignedto(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -26295,7 +28092,7 @@ func (ec *executionContext) fieldContext_Worktask_assignedto(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_workshifts(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_workshifts(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26318,9 +28115,9 @@ func (ec *executionContext) _Worktask_workshifts(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Workshift)
+	res := resTmp.([]*generated.Workshift)
 	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -26374,7 +28171,7 @@ func (ec *executionContext) fieldContext_Worktask_workshifts(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Worktask_worktags(ctx context.Context, field graphql.CollectedField, obj *ent.Worktask) (ret graphql.Marshaler) {
+func (ec *executionContext) _Worktask_worktags(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Worktask_worktags(ctx, field)
 	if err != nil {
 		return graphql.Null
@@ -26397,9 +28194,9 @@ func (ec *executionContext) _Worktask_worktags(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*ent.Worktag)
+	res := resTmp.([]*generated.Worktag)
 	fc.Result = res
-	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx, field.Selections, res)
+	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Worktask_worktags(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -28206,8 +30003,8 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputAccountingEntryOrder(ctx context.Context, obj interface{}) (ent.AccountingEntryOrder, error) {
-	var it ent.AccountingEntryOrder
+func (ec *executionContext) unmarshalInputAccountingEntryOrder(ctx context.Context, obj interface{}) (generated.AccountingEntryOrder, error) {
+	var it generated.AccountingEntryOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -28233,7 +30030,7 @@ func (ec *executionContext) unmarshalInputAccountingEntryOrder(ctx context.Conte
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNAccountingEntryOrderField2ᚖmazzaᚋentᚐAccountingEntryOrderField(ctx, v)
+			data, err := ec.unmarshalNAccountingEntryOrderField2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -28244,8 +30041,8 @@ func (ec *executionContext) unmarshalInputAccountingEntryOrder(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.Context, obj interface{}) (ent.AccountingEntryWhereInput, error) {
-	var it ent.AccountingEntryWhereInput
+func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.Context, obj interface{}) (generated.AccountingEntryWhereInput, error) {
+	var it generated.AccountingEntryWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -28260,21 +30057,21 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚐAccountingEntryWhereInput(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚐAccountingEntryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚐAccountingEntryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29016,28 +30813,28 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 			it.DescriptionContainsFold = data
 		case "accounttype":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttype"))
-			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋaccountingentryᚐAccountType(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.AccountType = data
 		case "accounttypeNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttypeNEQ"))
-			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋaccountingentryᚐAccountType(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.AccountTypeNEQ = data
 		case "accounttypeIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttypeIn"))
-			data, err := ec.unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋaccountingentryᚐAccountTypeᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountTypeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.AccountTypeIn = data
 		case "accounttypeNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttypeNotIn"))
-			data, err := ec.unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋaccountingentryᚐAccountTypeᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountTypeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29093,7 +30890,7 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29107,7 +30904,7 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 			it.HasUser = data
 		case "hasUserWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUserWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29118,8 +30915,8 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Context, obj interface{}) (ent.CashMovementWhereInput, error) {
-	var it ent.CashMovementWhereInput
+func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Context, obj interface{}) (generated.CashMovementWhereInput, error) {
+	var it generated.CashMovementWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -29134,21 +30931,21 @@ func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Con
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚐCashMovementWhereInput(ctx, v)
+			data, err := ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚐCashMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚐCashMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29568,7 +31365,7 @@ func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Con
 			it.HasTreasury = data
 		case "hasTreasuryWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTreasuryWith"))
-			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTreasuryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29579,8 +31376,8 @@ func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Con
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCompanyOrder(ctx context.Context, obj interface{}) (ent.CompanyOrder, error) {
-	var it ent.CompanyOrder
+func (ec *executionContext) unmarshalInputCompanyOrder(ctx context.Context, obj interface{}) (generated.CompanyOrder, error) {
+	var it generated.CompanyOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -29606,7 +31403,7 @@ func (ec *executionContext) unmarshalInputCompanyOrder(ctx context.Context, obj 
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNCompanyOrderField2ᚖmazzaᚋentᚐCompanyOrderField(ctx, v)
+			data, err := ec.unmarshalNCompanyOrderField2ᚖmazzaᚋentᚋgeneratedᚐCompanyOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -29617,8 +31414,8 @@ func (ec *executionContext) unmarshalInputCompanyOrder(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context, obj interface{}) (ent.CompanyWhereInput, error) {
-	var it ent.CompanyWhereInput
+func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context, obj interface{}) (generated.CompanyWhereInput, error) {
+	var it generated.CompanyWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -29633,21 +31430,21 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚐCompanyWhereInput(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31488,7 +33285,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasAvailableRoles = data
 		case "hasAvailableRolesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAvailableRolesWith"))
-			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUserRoleWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31502,7 +33299,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasAccountingEntries = data
 		case "hasAccountingEntriesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntriesWith"))
-			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚐAccountingEntryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31516,7 +33313,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasCustomers = data
 		case "hasCustomersWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCustomersWith"))
-			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCustomerWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31530,7 +33327,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasEmployees = data
 		case "hasEmployeesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployeesWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31544,7 +33341,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasFiles = data
 		case "hasFilesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasFilesWith"))
-			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐFileWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31558,7 +33355,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasProducts = data
 		case "hasProductsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductsWith"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31572,7 +33369,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasSuppliers = data
 		case "hasSuppliersWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSuppliersWith"))
-			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSupplierWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31586,7 +33383,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasTokens = data
 		case "hasTokensWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTokensWith"))
-			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31600,7 +33397,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasTreasuries = data
 		case "hasTreasuriesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTreasuriesWith"))
-			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTreasuryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31614,7 +33411,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasWorkShifts = data
 		case "hasWorkShiftsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31628,7 +33425,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasWorkTasks = data
 		case "hasWorkTasksWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31642,7 +33439,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasWorkTags = data
 		case "hasWorkTagsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTagsWith"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWorktagWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31656,7 +33453,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasUsers = data
 		case "hasUsersWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUsersWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31670,7 +33467,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasDaughterCompanies = data
 		case "hasDaughterCompaniesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasDaughterCompaniesWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31684,7 +33481,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 			it.HasParentCompany = data
 		case "hasParentCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasParentCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31695,8 +33492,8 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context.Context, obj interface{}) (ent.CreateAccountingEntryInput, error) {
-	var it ent.CreateAccountingEntryInput
+func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context.Context, obj interface{}) (generated.CreateAccountingEntryInput, error) {
+	var it generated.CreateAccountingEntryInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -31781,7 +33578,7 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 			it.Description = data
 		case "accounttype":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttype"))
-			data, err := ec.unmarshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx, v)
+			data, err := ec.unmarshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -31827,8 +33624,8 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateCashMovementInput(ctx context.Context, obj interface{}) (ent.CreateCashMovementInput, error) {
-	var it ent.CreateCashMovementInput
+func (ec *executionContext) unmarshalInputCreateCashMovementInput(ctx context.Context, obj interface{}) (generated.CreateCashMovementInput, error) {
+	var it generated.CreateCashMovementInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -31896,8 +33693,8 @@ func (ec *executionContext) unmarshalInputCreateCashMovementInput(ctx context.Co
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context, obj interface{}) (ent.CreateCompanyInput, error) {
-	var it ent.CreateCompanyInput
+func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context, obj interface{}) (generated.CreateCompanyInput, error) {
+	var it generated.CreateCompanyInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32168,8 +33965,8 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Context, obj interface{}) (ent.CreateCustomerInput, error) {
-	var it ent.CreateCustomerInput
+func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Context, obj interface{}) (generated.CreateCustomerInput, error) {
+	var it generated.CreateCustomerInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32286,8 +34083,8 @@ func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Context, obj interface{}) (ent.CreateEmployeeInput, error) {
-	var it ent.CreateEmployeeInput
+func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Context, obj interface{}) (generated.CreateEmployeeInput, error) {
+	var it generated.CreateEmployeeInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32330,7 +34127,7 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 			it.Name = data
 		case "gender":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gender"))
-			data, err := ec.unmarshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx, v)
+			data, err := ec.unmarshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32411,8 +34208,8 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, obj interface{}) (ent.CreateFileInput, error) {
-	var it ent.CreateFileInput
+func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, obj interface{}) (generated.CreateFileInput, error) {
+	var it generated.CreateFileInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32448,7 +34245,7 @@ func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, o
 			it.DeletedAt = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx, v)
+			data, err := ec.unmarshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32501,8 +34298,8 @@ func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreatePayableInput(ctx context.Context, obj interface{}) (ent.CreatePayableInput, error) {
-	var it ent.CreatePayableInput
+func (ec *executionContext) unmarshalInputCreatePayableInput(ctx context.Context, obj interface{}) (generated.CreatePayableInput, error) {
+	var it generated.CreatePayableInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32573,7 +34370,7 @@ func (ec *executionContext) unmarshalInputCreatePayableInput(ctx context.Context
 			it.DaysDue = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx, v)
+			data, err := ec.unmarshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32591,8 +34388,8 @@ func (ec *executionContext) unmarshalInputCreatePayableInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context, obj interface{}) (ent.CreateProductInput, error) {
-	var it ent.CreateProductInput
+func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context, obj interface{}) (generated.CreateProductInput, error) {
+	var it generated.CreateProductInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32677,7 +34474,7 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 			it.Stock = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx, v)
+			data, err := ec.unmarshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32716,8 +34513,8 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateProductMovementInput(ctx context.Context, obj interface{}) (ent.CreateProductMovementInput, error) {
-	var it ent.CreateProductMovementInput
+func (ec *executionContext) unmarshalInputCreateProductMovementInput(ctx context.Context, obj interface{}) (generated.CreateProductMovementInput, error) {
+	var it generated.CreateProductMovementInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32774,7 +34571,7 @@ func (ec *executionContext) unmarshalInputCreateProductMovementInput(ctx context
 			it.UnitCost = data
 		case "price":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("price"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32799,8 +34596,8 @@ func (ec *executionContext) unmarshalInputCreateProductMovementInput(ctx context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateReceivableInput(ctx context.Context, obj interface{}) (ent.CreateReceivableInput, error) {
-	var it ent.CreateReceivableInput
+func (ec *executionContext) unmarshalInputCreateReceivableInput(ctx context.Context, obj interface{}) (generated.CreateReceivableInput, error) {
+	var it generated.CreateReceivableInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -32871,7 +34668,7 @@ func (ec *executionContext) unmarshalInputCreateReceivableInput(ctx context.Cont
 			it.DaysDue = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx, v)
+			data, err := ec.unmarshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -32889,8 +34686,8 @@ func (ec *executionContext) unmarshalInputCreateReceivableInput(ctx context.Cont
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateSupplierInput(ctx context.Context, obj interface{}) (ent.CreateSupplierInput, error) {
-	var it ent.CreateSupplierInput
+func (ec *executionContext) unmarshalInputCreateSupplierInput(ctx context.Context, obj interface{}) (generated.CreateSupplierInput, error) {
+	var it generated.CreateSupplierInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33007,8 +34804,8 @@ func (ec *executionContext) unmarshalInputCreateSupplierInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Context, obj interface{}) (ent.CreateTreasuryInput, error) {
-	var it ent.CreateTreasuryInput
+func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Context, obj interface{}) (generated.CreateTreasuryInput, error) {
+	var it generated.CreateTreasuryInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33065,7 +34862,7 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 			it.BankName = data
 		case "currency":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currency"))
-			data, err := ec.unmarshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx, v)
+			data, err := ec.unmarshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33107,7 +34904,7 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 			it.Name = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx, v)
+			data, err := ec.unmarshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33139,8 +34936,8 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, obj interface{}) (ent.CreateUserInput, error) {
-	var it ent.CreateUserInput
+func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, obj interface{}) (generated.CreateUserInput, error) {
+	var it generated.CreateUserInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33271,8 +35068,8 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Context, obj interface{}) (ent.CreateUserRoleInput, error) {
-	var it ent.CreateUserRoleInput
+func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Context, obj interface{}) (generated.CreateUserRoleInput, error) {
+	var it generated.CreateUserRoleInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33287,7 +35084,7 @@ func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Contex
 		switch k {
 		case "role":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-			data, err := ec.unmarshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx, v)
+			data, err := ec.unmarshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33312,8 +35109,8 @@ func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Context, obj interface{}) (ent.CreateWorkshiftInput, error) {
-	var it ent.CreateWorkshiftInput
+func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Context, obj interface{}) (generated.CreateWorkshiftInput, error) {
+	var it generated.CreateWorkshiftInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33398,7 +35195,7 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 			it.Note = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33451,8 +35248,8 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateWorktagInput(ctx context.Context, obj interface{}) (ent.CreateWorktagInput, error) {
-	var it ent.CreateWorktagInput
+func (ec *executionContext) unmarshalInputCreateWorktagInput(ctx context.Context, obj interface{}) (generated.CreateWorktagInput, error) {
+	var it generated.CreateWorktagInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33520,8 +35317,8 @@ func (ec *executionContext) unmarshalInputCreateWorktagInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCreateWorktaskInput(ctx context.Context, obj interface{}) (ent.CreateWorktaskInput, error) {
-	var it ent.CreateWorktaskInput
+func (ec *executionContext) unmarshalInputCreateWorktaskInput(ctx context.Context, obj interface{}) (generated.CreateWorktaskInput, error) {
+	var it generated.CreateWorktaskInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33564,7 +35361,7 @@ func (ec *executionContext) unmarshalInputCreateWorktaskInput(ctx context.Contex
 			it.Description = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx, v)
+			data, err := ec.unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -33638,8 +35435,8 @@ func (ec *executionContext) unmarshalInputCreateWorktaskInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context, obj interface{}) (ent.CustomerWhereInput, error) {
-	var it ent.CustomerWhereInput
+func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context, obj interface{}) (generated.CustomerWhereInput, error) {
+	var it generated.CustomerWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -33654,21 +35451,21 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚐCustomerWhereInput(ctx, v)
+			data, err := ec.unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCustomerWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCustomerWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -34676,7 +36473,7 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -34690,7 +36487,7 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 			it.HasReceivables = data
 		case "hasReceivablesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasReceivablesWith"))
-			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐReceivableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -34701,8 +36498,8 @@ func (ec *executionContext) unmarshalInputCustomerWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context, obj interface{}) (ent.EmployeeWhereInput, error) {
-	var it ent.EmployeeWhereInput
+func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context, obj interface{}) (generated.EmployeeWhereInput, error) {
+	var it generated.EmployeeWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -34717,21 +36514,21 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚐEmployeeWhereInput(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35067,28 +36864,28 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.NameContainsFold = data
 		case "gender":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gender"))
-			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋemployeeᚐGender(ctx, v)
+			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Gender = data
 		case "genderNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("genderNEQ"))
-			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋemployeeᚐGender(ctx, v)
+			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.GenderNEQ = data
 		case "genderIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("genderIn"))
-			data, err := ec.unmarshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐGenderᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeGender2ᚕmazzaᚋentᚋgeneratedᚋemployeeᚐGenderᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.GenderIn = data
 		case "genderNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("genderNotIn"))
-			data, err := ec.unmarshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐGenderᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeGender2ᚕmazzaᚋentᚋgeneratedᚋemployeeᚐGenderᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35403,7 +37200,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35417,7 +37214,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasUser = data
 		case "hasUserWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUserWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35431,7 +37228,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasSubordinates = data
 		case "hasSubordinatesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinatesWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35445,7 +37242,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasLeader = data
 		case "hasLeaderWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeaderWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35459,7 +37256,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasWorkShifts = data
 		case "hasWorkShiftsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35473,7 +37270,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasApprovedWorkShifts = data
 		case "hasApprovedWorkShiftsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35487,7 +37284,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 			it.HasAssignedTasks = data
 		case "hasAssignedTasksWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35498,8 +37295,179 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputFileOrder(ctx context.Context, obj interface{}) (ent.FileOrder, error) {
-	var it ent.FileOrder
+func (ec *executionContext) unmarshalInputEntryItem(ctx context.Context, obj interface{}) (model.EntryItem, error) {
+	var it model.EntryItem
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"account", "accountType", "amount", "isDebit", "label"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "account":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("account"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Account = data
+		case "accountType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountType"))
+			data, err := ec.unmarshalNAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountType = data
+		case "amount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Amount = data
+		case "isDebit":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isDebit"))
+			data, err := ec.unmarshalNBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsDebit = data
+		case "label":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("label"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Label = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEntryProductInput(ctx context.Context, obj interface{}) (model.EntryProductInput, error) {
+	var it model.EntryProductInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "amount", "quantity"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			data, err := ec.unmarshalNID2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "amount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Amount = data
+		case "quantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Quantity = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEntrySupplierInput(ctx context.Context, obj interface{}) (model.EntrySupplierInput, error) {
+	var it model.EntrySupplierInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "amount", "daysDue"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			data, err := ec.unmarshalNID2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "amount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Amount = data
+		case "daysDue":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("daysDue"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DaysDue = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEntryTreasuryInput(ctx context.Context, obj interface{}) (model.EntryTreasuryInput, error) {
+	var it model.EntryTreasuryInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "amount"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			data, err := ec.unmarshalNID2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "amount":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Amount = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFileOrder(ctx context.Context, obj interface{}) (generated.FileOrder, error) {
+	var it generated.FileOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -35525,7 +37493,7 @@ func (ec *executionContext) unmarshalInputFileOrder(ctx context.Context, obj int
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNFileOrderField2ᚖmazzaᚋentᚐFileOrderField(ctx, v)
+			data, err := ec.unmarshalNFileOrderField2ᚖmazzaᚋentᚋgeneratedᚐFileOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35536,8 +37504,8 @@ func (ec *executionContext) unmarshalInputFileOrder(ctx context.Context, obj int
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, obj interface{}) (ent.FileWhereInput, error) {
-	var it ent.FileWhereInput
+func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, obj interface{}) (generated.FileWhereInput, error) {
+	var it generated.FileWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -35552,21 +37520,21 @@ func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, ob
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOFileWhereInput2ᚖmazzaᚋentᚐFileWhereInput(ctx, v)
+			data, err := ec.unmarshalOFileWhereInput2ᚖmazzaᚋentᚋgeneratedᚐFileWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐFileWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐFileWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -35811,28 +37779,28 @@ func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, ob
 			it.DeletedAtNotNil = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCategory(ctx, v)
+			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Category = data
 		case "categoryNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNEQ"))
-			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCategory(ctx, v)
+			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryNEQ = data
 		case "categoryIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIn"))
-			data, err := ec.unmarshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOFileCategory2ᚕmazzaᚋentᚋgeneratedᚋfileᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryIn = data
 		case "categoryNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNotIn"))
-			data, err := ec.unmarshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOFileCategory2ᚕmazzaᚋentᚋgeneratedᚋfileᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36210,7 +38178,7 @@ func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, ob
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36224,7 +38192,7 @@ func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, ob
 			it.HasProduct = data
 		case "hasProductWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductWith"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36235,8 +38203,8 @@ func (ec *executionContext) unmarshalInputFileWhereInput(ctx context.Context, ob
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputLoginInput(ctx context.Context, obj interface{}) (LoginInput, error) {
-	var it LoginInput
+func (ec *executionContext) unmarshalInputLoginInput(ctx context.Context, obj interface{}) (model.LoginInput, error) {
+	var it model.LoginInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -36276,8 +38244,8 @@ func (ec *executionContext) unmarshalInputLoginInput(ctx context.Context, obj in
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context, obj interface{}) (ent.PayableWhereInput, error) {
-	var it ent.PayableWhereInput
+func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context, obj interface{}) (generated.PayableWhereInput, error) {
+	var it generated.PayableWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -36292,21 +38260,21 @@ func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context,
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOPayableWhereInput2ᚖmazzaᚋentᚐPayableWhereInput(ctx, v)
+			data, err := ec.unmarshalOPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPayableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPayableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36831,28 +38799,28 @@ func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context,
 			it.DaysDueLTE = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Status = data
 		case "statusNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNEQ"))
-			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusNEQ = data
 		case "statusIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusIn"))
-			data, err := ec.unmarshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOPayableStatus2ᚕmazzaᚋentᚋgeneratedᚋpayableᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusIn = data
 		case "statusNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNotIn"))
-			data, err := ec.unmarshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOPayableStatus2ᚕmazzaᚋentᚋgeneratedᚋpayableᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36866,7 +38834,7 @@ func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context,
 			it.HasSupplier = data
 		case "hasSupplierWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSupplierWith"))
-			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSupplierWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -36877,8 +38845,8 @@ func (ec *executionContext) unmarshalInputPayableWhereInput(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.Context, obj interface{}) (ent.ProductMovementWhereInput, error) {
-	var it ent.ProductMovementWhereInput
+func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.Context, obj interface{}) (generated.ProductMovementWhereInput, error) {
+	var it generated.ProductMovementWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -36893,21 +38861,21 @@ func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚐProductMovementWhereInput(ctx, v)
+			data, err := ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚐProductMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚐProductMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -37439,7 +39407,7 @@ func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.
 			it.HasProduct = data
 		case "hasProductWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductWith"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -37450,8 +39418,8 @@ func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputProductOrder(ctx context.Context, obj interface{}) (ent.ProductOrder, error) {
-	var it ent.ProductOrder
+func (ec *executionContext) unmarshalInputProductOrder(ctx context.Context, obj interface{}) (generated.ProductOrder, error) {
+	var it generated.ProductOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -37477,7 +39445,7 @@ func (ec *executionContext) unmarshalInputProductOrder(ctx context.Context, obj 
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNProductOrderField2ᚖmazzaᚋentᚐProductOrderField(ctx, v)
+			data, err := ec.unmarshalNProductOrderField2ᚖmazzaᚋentᚋgeneratedᚐProductOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -37488,8 +39456,8 @@ func (ec *executionContext) unmarshalInputProductOrder(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context, obj interface{}) (ent.ProductWhereInput, error) {
-	var it ent.ProductWhereInput
+func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context, obj interface{}) (generated.ProductWhereInput, error) {
+	var it generated.ProductWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -37504,21 +39472,21 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38218,28 +40186,28 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 			it.StockLTE = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋproductᚐCategory(ctx, v)
+			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Category = data
 		case "categoryNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNEQ"))
-			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋproductᚐCategory(ctx, v)
+			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryNEQ = data
 		case "categoryIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIn"))
-			data, err := ec.unmarshalOProductCategory2ᚕmazzaᚋentᚋproductᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOProductCategory2ᚕmazzaᚋentᚋgeneratedᚋproductᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryIn = data
 		case "categoryNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNotIn"))
-			data, err := ec.unmarshalOProductCategory2ᚕmazzaᚋentᚋproductᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOProductCategory2ᚕmazzaᚋentᚋgeneratedᚋproductᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38309,7 +40277,7 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38323,7 +40291,7 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 			it.HasPictures = data
 		case "hasPicturesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasPicturesWith"))
-			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐFileWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38337,7 +40305,7 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 			it.HasProductMovements = data
 		case "hasProductMovementsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductMovementsWith"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚐProductMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38348,8 +40316,91 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Context, obj interface{}) (ent.ReceivableWhereInput, error) {
-	var it ent.ReceivableWhereInput
+func (ec *executionContext) unmarshalInputPurchaseRegistrationInput(ctx context.Context, obj interface{}) (model.PurchaseRegistrationInput, error) {
+	var it model.PurchaseRegistrationInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"main", "counterpart", "cash", "supplier", "date", "description", "operationType", "products", "totalTransactionValue"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "main":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("main"))
+			data, err := ec.unmarshalNEntryItem2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryItemᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Main = data
+		case "counterpart":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("counterpart"))
+			data, err := ec.unmarshalNEntryItem2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryItemᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Counterpart = data
+		case "cash":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cash"))
+			data, err := ec.unmarshalOEntryTreasuryInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cash = data
+		case "supplier":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("supplier"))
+			data, err := ec.unmarshalNEntrySupplierInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntrySupplierInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Supplier = data
+		case "date":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
+			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Date = data
+		case "description":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Description = data
+		case "operationType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("operationType"))
+			data, err := ec.unmarshalNPurchaseOperationType2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPurchaseOperationType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.OperationType = data
+		case "products":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("products"))
+			data, err := ec.unmarshalNEntryProductInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Products = data
+		case "totalTransactionValue":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalTransactionValue"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TotalTransactionValue = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Context, obj interface{}) (generated.ReceivableWhereInput, error) {
+	var it generated.ReceivableWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -38364,21 +40415,21 @@ func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Conte
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚐReceivableWhereInput(ctx, v)
+			data, err := ec.unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐReceivableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐReceivableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38903,28 +40954,28 @@ func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Conte
 			it.DaysDueLTE = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋreceivableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Status = data
 		case "statusNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNEQ"))
-			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋreceivableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusNEQ = data
 		case "statusIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusIn"))
-			data, err := ec.unmarshalOReceivableStatus2ᚕmazzaᚋentᚋreceivableᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOReceivableStatus2ᚕmazzaᚋentᚋgeneratedᚋreceivableᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusIn = data
 		case "statusNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNotIn"))
-			data, err := ec.unmarshalOReceivableStatus2ᚕmazzaᚋentᚋreceivableᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOReceivableStatus2ᚕmazzaᚋentᚋgeneratedᚋreceivableᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38938,7 +40989,7 @@ func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Conte
 			it.HasCustomer = data
 		case "hasCustomerWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCustomerWith"))
-			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCustomerWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -38949,8 +41000,8 @@ func (ec *executionContext) unmarshalInputReceivableWhereInput(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputResetPasswordInput(ctx context.Context, obj interface{}) (ResetPasswordInput, error) {
-	var it ResetPasswordInput
+func (ec *executionContext) unmarshalInputResetPasswordInput(ctx context.Context, obj interface{}) (model.ResetPasswordInput, error) {
+	var it model.ResetPasswordInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -38983,8 +41034,8 @@ func (ec *executionContext) unmarshalInputResetPasswordInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj interface{}) (SignupInput, error) {
-	var it SignupInput
+func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj interface{}) (model.SignupInput, error) {
+	var it model.SignupInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -38999,14 +41050,14 @@ func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj i
 		switch k {
 		case "companyInput":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyInput"))
-			data, err := ec.unmarshalNCreateCompanyInput2ᚖmazzaᚋentᚐCreateCompanyInput(ctx, v)
+			data, err := ec.unmarshalNCreateCompanyInput2ᚖmazzaᚋentᚋgeneratedᚐCreateCompanyInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CompanyInput = data
 		case "userInput":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userInput"))
-			data, err := ec.unmarshalNCreateUserInput2ᚖmazzaᚋentᚐCreateUserInput(ctx, v)
+			data, err := ec.unmarshalNCreateUserInput2ᚖmazzaᚋentᚋgeneratedᚐCreateUserInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -39017,8 +41068,8 @@ func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj i
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context, obj interface{}) (ent.SupplierWhereInput, error) {
-	var it ent.SupplierWhereInput
+func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context, obj interface{}) (generated.SupplierWhereInput, error) {
+	var it generated.SupplierWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -39033,21 +41084,21 @@ func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚐSupplierWhereInput(ctx, v)
+			data, err := ec.unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSupplierWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSupplierWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40055,7 +42106,7 @@ func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40069,7 +42120,7 @@ func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context
 			it.HasPayables = data
 		case "hasPayablesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasPayablesWith"))
-			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPayableWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40080,8 +42131,8 @@ func (ec *executionContext) unmarshalInputSupplierWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, obj interface{}) (ent.TokenWhereInput, error) {
-	var it ent.TokenWhereInput
+func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, obj interface{}) (generated.TokenWhereInput, error) {
+	var it generated.TokenWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -40096,21 +42147,21 @@ func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, o
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOTokenWhereInput2ᚖmazzaᚋentᚐTokenWhereInput(ctx, v)
+			data, err := ec.unmarshalOTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTokenWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40229,28 +42280,28 @@ func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, o
 			it.ExpiryLTE = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOTokenCategory2ᚖmazzaᚋentᚋtokenᚐCategory(ctx, v)
+			data, err := ec.unmarshalOTokenCategory2ᚖmazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Category = data
 		case "categoryNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNEQ"))
-			data, err := ec.unmarshalOTokenCategory2ᚖmazzaᚋentᚋtokenᚐCategory(ctx, v)
+			data, err := ec.unmarshalOTokenCategory2ᚖmazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryNEQ = data
 		case "categoryIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIn"))
-			data, err := ec.unmarshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenCategory2ᚕmazzaᚋentᚋgeneratedᚋtokenᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryIn = data
 		case "categoryNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNotIn"))
-			data, err := ec.unmarshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenCategory2ᚕmazzaᚋentᚋgeneratedᚋtokenᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40355,7 +42406,7 @@ func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, o
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40369,7 +42420,7 @@ func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, o
 			it.HasUser = data
 		case "hasUserWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUserWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40380,8 +42431,8 @@ func (ec *executionContext) unmarshalInputTokenWhereInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context, obj interface{}) (ent.TreasuryWhereInput, error) {
-	var it ent.TreasuryWhereInput
+func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context, obj interface{}) (generated.TreasuryWhereInput, error) {
+	var it generated.TreasuryWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -40396,21 +42447,21 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚐTreasuryWhereInput(ctx, v)
+			data, err := ec.unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTreasuryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTreasuryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -40921,28 +42972,28 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 			it.BankNameContainsFold = data
 		case "currency":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currency"))
-			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasuryᚐCurrency(ctx, v)
+			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Currency = data
 		case "currencyNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currencyNEQ"))
-			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasuryᚐCurrency(ctx, v)
+			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CurrencyNEQ = data
 		case "currencyIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currencyIn"))
-			data, err := ec.unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasuryᚐCurrencyᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrencyᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CurrencyIn = data
 		case "currencyNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currencyNotIn"))
-			data, err := ec.unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasuryᚐCurrencyᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrencyᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41306,28 +43357,28 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 			it.NameContainsFold = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasuryᚐCategory(ctx, v)
+			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Category = data
 		case "categoryNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNEQ"))
-			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasuryᚐCategory(ctx, v)
+			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryNEQ = data
 		case "categoryIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryIn"))
-			data, err := ec.unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasuryᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.CategoryIn = data
 		case "categoryNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoryNotIn"))
-			data, err := ec.unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasuryᚐCategoryᚄ(ctx, v)
+			data, err := ec.unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCategoryᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41446,7 +43497,7 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41460,7 +43511,7 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 			it.HasCashMovements = data
 		case "hasCashMovementsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCashMovementsWith"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚐCashMovementWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41471,8 +43522,8 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context.Context, obj interface{}) (ent.UpdateAccountingEntryInput, error) {
-	var it ent.UpdateAccountingEntryInput
+func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context.Context, obj interface{}) (generated.UpdateAccountingEntryInput, error) {
+	var it generated.UpdateAccountingEntryInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -41557,7 +43608,7 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 			it.Description = data
 		case "accounttype":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accounttype"))
-			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋaccountingentryᚐAccountType(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -41617,8 +43668,8 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateCashMovementInput(ctx context.Context, obj interface{}) (ent.UpdateCashMovementInput, error) {
-	var it ent.UpdateCashMovementInput
+func (ec *executionContext) unmarshalInputUpdateCashMovementInput(ctx context.Context, obj interface{}) (generated.UpdateCashMovementInput, error) {
+	var it generated.UpdateCashMovementInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -41693,8 +43744,8 @@ func (ec *executionContext) unmarshalInputUpdateCashMovementInput(ctx context.Co
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context, obj interface{}) (ent.UpdateCompanyInput, error) {
-	var it ent.UpdateCompanyInput
+func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context, obj interface{}) (generated.UpdateCompanyInput, error) {
+	var it generated.UpdateCompanyInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42231,8 +44282,8 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Context, obj interface{}) (ent.UpdateCustomerInput, error) {
-	var it ent.UpdateCustomerInput
+func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Context, obj interface{}) (generated.UpdateCustomerInput, error) {
+	var it generated.UpdateCustomerInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42377,8 +44428,8 @@ func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Context, obj interface{}) (ent.UpdateEmployeeInput, error) {
-	var it ent.UpdateEmployeeInput
+func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Context, obj interface{}) (generated.UpdateEmployeeInput, error) {
+	var it generated.UpdateEmployeeInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42421,7 +44472,7 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 			it.Name = data
 		case "gender":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gender"))
-			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋemployeeᚐGender(ctx, v)
+			data, err := ec.unmarshalOEmployeeGender2ᚖmazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -42593,8 +44644,8 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, obj interface{}) (ent.UpdateFileInput, error) {
-	var it ent.UpdateFileInput
+func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, obj interface{}) (generated.UpdateFileInput, error) {
+	var it generated.UpdateFileInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42630,7 +44681,7 @@ func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, o
 			it.ClearDeletedAt = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCategory(ctx, v)
+			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -42697,8 +44748,8 @@ func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdatePayableInput(ctx context.Context, obj interface{}) (ent.UpdatePayableInput, error) {
-	var it ent.UpdatePayableInput
+func (ec *executionContext) unmarshalInputUpdatePayableInput(ctx context.Context, obj interface{}) (generated.UpdatePayableInput, error) {
+	var it generated.UpdatePayableInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42769,7 +44820,7 @@ func (ec *executionContext) unmarshalInputUpdatePayableInput(ctx context.Context
 			it.DaysDue = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOPayableStatus2ᚖmazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -42794,8 +44845,8 @@ func (ec *executionContext) unmarshalInputUpdatePayableInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context, obj interface{}) (ent.UpdateProductInput, error) {
-	var it ent.UpdateProductInput
+func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context, obj interface{}) (generated.UpdateProductInput, error) {
+	var it generated.UpdateProductInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -42880,7 +44931,7 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 			it.Stock = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋproductᚐCategory(ctx, v)
+			data, err := ec.unmarshalOProductCategory2ᚖmazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -42954,8 +45005,8 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateProductMovementInput(ctx context.Context, obj interface{}) (ent.UpdateProductMovementInput, error) {
-	var it ent.UpdateProductMovementInput
+func (ec *executionContext) unmarshalInputUpdateProductMovementInput(ctx context.Context, obj interface{}) (generated.UpdateProductMovementInput, error) {
+	var it generated.UpdateProductMovementInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43044,8 +45095,8 @@ func (ec *executionContext) unmarshalInputUpdateProductMovementInput(ctx context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateReceivableInput(ctx context.Context, obj interface{}) (ent.UpdateReceivableInput, error) {
-	var it ent.UpdateReceivableInput
+func (ec *executionContext) unmarshalInputUpdateReceivableInput(ctx context.Context, obj interface{}) (generated.UpdateReceivableInput, error) {
+	var it generated.UpdateReceivableInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43116,7 +45167,7 @@ func (ec *executionContext) unmarshalInputUpdateReceivableInput(ctx context.Cont
 			it.DaysDue = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋreceivableᚐStatus(ctx, v)
+			data, err := ec.unmarshalOReceivableStatus2ᚖmazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -43141,8 +45192,8 @@ func (ec *executionContext) unmarshalInputUpdateReceivableInput(ctx context.Cont
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateSupplierInput(ctx context.Context, obj interface{}) (ent.UpdateSupplierInput, error) {
-	var it ent.UpdateSupplierInput
+func (ec *executionContext) unmarshalInputUpdateSupplierInput(ctx context.Context, obj interface{}) (generated.UpdateSupplierInput, error) {
+	var it generated.UpdateSupplierInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43287,8 +45338,8 @@ func (ec *executionContext) unmarshalInputUpdateSupplierInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Context, obj interface{}) (ent.UpdateTreasuryInput, error) {
-	var it ent.UpdateTreasuryInput
+func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Context, obj interface{}) (generated.UpdateTreasuryInput, error) {
+	var it generated.UpdateTreasuryInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43359,7 +45410,7 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 			it.ClearBankName = data
 		case "currency":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("currency"))
-			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasuryᚐCurrency(ctx, v)
+			data, err := ec.unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -43429,7 +45480,7 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 			it.Name = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
-			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasuryᚐCategory(ctx, v)
+			data, err := ec.unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -43489,8 +45540,8 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, obj interface{}) (ent.UpdateUserInput, error) {
-	var it ent.UpdateUserInput
+func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, obj interface{}) (generated.UpdateUserInput, error) {
+	var it generated.UpdateUserInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43719,8 +45770,8 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Context, obj interface{}) (ent.UpdateUserRoleInput, error) {
-	var it ent.UpdateUserRoleInput
+func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Context, obj interface{}) (generated.UpdateUserRoleInput, error) {
+	var it generated.UpdateUserRoleInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43735,7 +45786,7 @@ func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Contex
 		switch k {
 		case "role":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐRole(ctx, v)
+			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -43781,8 +45832,8 @@ func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Context, obj interface{}) (ent.UpdateWorkshiftInput, error) {
-	var it ent.UpdateWorkshiftInput
+func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Context, obj interface{}) (generated.UpdateWorkshiftInput, error) {
+	var it generated.UpdateWorkshiftInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -43902,7 +45953,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 			it.ClearNote = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -43997,8 +46048,8 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateWorktagInput(ctx context.Context, obj interface{}) (ent.UpdateWorktagInput, error) {
-	var it ent.UpdateWorktagInput
+func (ec *executionContext) unmarshalInputUpdateWorktagInput(ctx context.Context, obj interface{}) (generated.UpdateWorktagInput, error) {
+	var it generated.UpdateWorktagInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44087,8 +46138,8 @@ func (ec *executionContext) unmarshalInputUpdateWorktagInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateWorktaskInput(ctx context.Context, obj interface{}) (ent.UpdateWorktaskInput, error) {
-	var it ent.UpdateWorktaskInput
+func (ec *executionContext) unmarshalInputUpdateWorktaskInput(ctx context.Context, obj interface{}) (generated.UpdateWorktaskInput, error) {
+	var it generated.UpdateWorktaskInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44138,7 +46189,7 @@ func (ec *executionContext) unmarshalInputUpdateWorktaskInput(ctx context.Contex
 			it.ClearDescription = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋworktaskᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44289,8 +46340,8 @@ func (ec *executionContext) unmarshalInputUpdateWorktaskInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserOrder(ctx context.Context, obj interface{}) (ent.UserOrder, error) {
-	var it ent.UserOrder
+func (ec *executionContext) unmarshalInputUserOrder(ctx context.Context, obj interface{}) (generated.UserOrder, error) {
+	var it generated.UserOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44316,7 +46367,7 @@ func (ec *executionContext) unmarshalInputUserOrder(ctx context.Context, obj int
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNUserOrderField2ᚖmazzaᚋentᚐUserOrderField(ctx, v)
+			data, err := ec.unmarshalNUserOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44327,8 +46378,8 @@ func (ec *executionContext) unmarshalInputUserOrder(ctx context.Context, obj int
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserRoleOrder(ctx context.Context, obj interface{}) (ent.UserRoleOrder, error) {
-	var it ent.UserRoleOrder
+func (ec *executionContext) unmarshalInputUserRoleOrder(ctx context.Context, obj interface{}) (generated.UserRoleOrder, error) {
+	var it generated.UserRoleOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44354,7 +46405,7 @@ func (ec *executionContext) unmarshalInputUserRoleOrder(ctx context.Context, obj
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNUserRoleOrderField2ᚖmazzaᚋentᚐUserRoleOrderField(ctx, v)
+			data, err := ec.unmarshalNUserRoleOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserRoleOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44365,8 +46416,8 @@ func (ec *executionContext) unmarshalInputUserRoleOrder(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context, obj interface{}) (ent.UserRoleWhereInput, error) {
-	var it ent.UserRoleWhereInput
+func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context, obj interface{}) (generated.UserRoleWhereInput, error) {
+	var it generated.UserRoleWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44381,21 +46432,21 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚐUserRoleWhereInput(ctx, v)
+			data, err := ec.unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUserRoleWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUserRoleWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44458,28 +46509,28 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 			it.IDLTE = data
 		case "role":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐRole(ctx, v)
+			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Role = data
 		case "roleNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleNEQ"))
-			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐRole(ctx, v)
+			data, err := ec.unmarshalOUserRoleRole2ᚖmazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.RoleNEQ = data
 		case "roleIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleIn"))
-			data, err := ec.unmarshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRoleᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleRole2ᚕmazzaᚋentᚋgeneratedᚋuserroleᚐRoleᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.RoleIn = data
 		case "roleNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleNotIn"))
-			data, err := ec.unmarshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRoleᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleRole2ᚕmazzaᚋentᚋgeneratedᚋuserroleᚐRoleᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44493,7 +46544,7 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44507,7 +46558,7 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 			it.HasUser = data
 		case "hasUserWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUserWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -44518,8 +46569,8 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, obj interface{}) (ent.UserWhereInput, error) {
-	var it ent.UserWhereInput
+func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, obj interface{}) (generated.UserWhereInput, error) {
+	var it generated.UserWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -44534,21 +46585,21 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOUserWhereInput2ᚖmazzaᚋentᚐUserWhereInput(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45248,7 +47299,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasAccountingEntries = data
 		case "hasAccountingEntriesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntriesWith"))
-			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚐAccountingEntryWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45262,7 +47313,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45276,7 +47327,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasAssignedRoles = data
 		case "hasAssignedRolesWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedRolesWith"))
-			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUserRoleWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45290,7 +47341,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasCreatedTasks = data
 		case "hasCreatedTasksWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45304,7 +47355,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasEmployee = data
 		case "hasEmployeeWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployeeWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45318,7 +47369,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 			it.HasTokens = data
 		case "hasTokensWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTokensWith"))
-			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45329,8 +47380,8 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputWorkshiftOrder(ctx context.Context, obj interface{}) (ent.WorkshiftOrder, error) {
-	var it ent.WorkshiftOrder
+func (ec *executionContext) unmarshalInputWorkshiftOrder(ctx context.Context, obj interface{}) (generated.WorkshiftOrder, error) {
+	var it generated.WorkshiftOrder
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -45356,7 +47407,7 @@ func (ec *executionContext) unmarshalInputWorkshiftOrder(ctx context.Context, ob
 			it.Direction = data
 		case "field":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
-			data, err := ec.unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx, v)
+			data, err := ec.unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftOrderField(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -45367,8 +47418,8 @@ func (ec *executionContext) unmarshalInputWorkshiftOrder(ctx context.Context, ob
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Context, obj interface{}) (ent.WorkshiftWhereInput, error) {
-	var it ent.WorkshiftWhereInput
+func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Context, obj interface{}) (generated.WorkshiftWhereInput, error) {
+	var it generated.WorkshiftWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -45383,21 +47434,21 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46244,28 +48295,28 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.NoteContainsFold = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Status = data
 		case "statusNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNEQ"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusNEQ = data
 		case "statusIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusIn"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshiftᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋgeneratedᚋworkshiftᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusIn = data
 		case "statusNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNotIn"))
-			data, err := ec.unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshiftᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋgeneratedᚋworkshiftᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46279,7 +48330,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46293,7 +48344,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasEmployee = data
 		case "hasEmployeeWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployeeWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46307,7 +48358,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasApprovedBy = data
 		case "hasApprovedByWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedByWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46321,7 +48372,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasWorkTask = data
 		case "hasWorkTaskWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTaskWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46335,7 +48386,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasEditRequest = data
 		case "hasEditRequestWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditRequestWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46349,7 +48400,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasWorkShift = data
 		case "hasWorkShiftWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46360,8 +48411,8 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context, obj interface{}) (ent.WorktagWhereInput, error) {
-	var it ent.WorktagWhereInput
+func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context, obj interface{}) (generated.WorktagWhereInput, error) {
+	var it generated.WorktagWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -46376,21 +48427,21 @@ func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context,
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚐWorktagWhereInput(ctx, v)
+			data, err := ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWorktagWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWorktagWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46824,7 +48875,7 @@ func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context,
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46838,7 +48889,7 @@ func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context,
 			it.HasWorkTasks = data
 		case "hasWorkTasksWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -46849,8 +48900,8 @@ func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context, obj interface{}) (ent.WorktaskWhereInput, error) {
-	var it ent.WorktaskWhereInput
+func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context, obj interface{}) (generated.WorktaskWhereInput, error) {
+	var it generated.WorktaskWhereInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -46865,21 +48916,21 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 		switch k {
 		case "not":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚐWorktaskWhereInput(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Not = data
 		case "and":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.And = data
 		case "or":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47229,28 +49280,28 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.DescriptionContainsFold = data
 		case "status":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋworktaskᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Status = data
 		case "statusNEQ":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNEQ"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋworktaskᚐStatus(ctx, v)
+			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusNEQ = data
 		case "statusIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusIn"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.StatusIn = data
 		case "statusNotIn":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNotIn"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐStatusᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47481,7 +49532,7 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.HasCompany = data
 		case "hasCompanyWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47495,7 +49546,7 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.HasCreatedBy = data
 		case "hasCreatedByWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedByWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47509,7 +49560,7 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.HasAssignedTo = data
 		case "hasAssignedToWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedToWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47523,7 +49574,7 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.HasWorkShifts = data
 		case "hasWorkShiftsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47537,7 +49588,7 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 			it.HasWorkTags = data
 		case "hasWorkTagsWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTagsWith"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWorktagWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47548,8 +49599,8 @@ func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Context, obj interface{}) (InvitedUserSignupInput, error) {
-	var it InvitedUserSignupInput
+func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Context, obj interface{}) (model.InvitedUserSignupInput, error) {
+	var it model.InvitedUserSignupInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -47564,7 +49615,7 @@ func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Con
 		switch k {
 		case "userInput":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userInput"))
-			data, err := ec.unmarshalNCreateUserInput2ᚖmazzaᚋentᚐCreateUserInput(ctx, v)
+			data, err := ec.unmarshalNCreateUserInput2ᚖmazzaᚋentᚋgeneratedᚐCreateUserInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -47586,96 +49637,96 @@ func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Con
 
 // region    ************************** interface.gotpl ***************************
 
-func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj ent.Noder) graphql.Marshaler {
+func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj generated.Noder) graphql.Marshaler {
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
-	case *ent.AccountingEntry:
+	case *generated.AccountingEntry:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._AccountingEntry(ctx, sel, obj)
-	case *ent.CashMovement:
+	case *generated.CashMovement:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._CashMovement(ctx, sel, obj)
-	case *ent.Company:
+	case *generated.Company:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Company(ctx, sel, obj)
-	case *ent.Customer:
+	case *generated.Customer:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Customer(ctx, sel, obj)
-	case *ent.Employee:
+	case *generated.Employee:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Employee(ctx, sel, obj)
-	case *ent.File:
+	case *generated.File:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._File(ctx, sel, obj)
-	case *ent.Payable:
+	case *generated.Payable:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Payable(ctx, sel, obj)
-	case *ent.Product:
+	case *generated.Product:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Product(ctx, sel, obj)
-	case *ent.ProductMovement:
+	case *generated.ProductMovement:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._ProductMovement(ctx, sel, obj)
-	case *ent.Receivable:
+	case *generated.Receivable:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Receivable(ctx, sel, obj)
-	case *ent.Supplier:
+	case *generated.Supplier:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Supplier(ctx, sel, obj)
-	case *ent.Token:
+	case *generated.Token:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Token(ctx, sel, obj)
-	case *ent.Treasury:
+	case *generated.Treasury:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Treasury(ctx, sel, obj)
-	case *ent.User:
+	case *generated.User:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._User(ctx, sel, obj)
-	case *ent.UserRole:
+	case *generated.UserRole:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._UserRole(ctx, sel, obj)
-	case *ent.Workshift:
+	case *generated.Workshift:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Workshift(ctx, sel, obj)
-	case *ent.Worktag:
+	case *generated.Worktag:
 		if obj == nil {
 			return graphql.Null
 		}
 		return ec._Worktag(ctx, sel, obj)
-	case *ent.Worktask:
+	case *generated.Worktask:
 		if obj == nil {
 			return graphql.Null
 		}
@@ -47691,7 +49742,7 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 
 var accountingEntryImplementors = []string{"AccountingEntry", "Node"}
 
-func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.SelectionSet, obj *ent.AccountingEntry) graphql.Marshaler {
+func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.SelectionSet, obj *generated.AccountingEntry) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountingEntryImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -47863,7 +49914,7 @@ func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.Select
 
 var accountingEntryConnectionImplementors = []string{"AccountingEntryConnection"}
 
-func (ec *executionContext) _AccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.AccountingEntryConnection) graphql.Marshaler {
+func (ec *executionContext) _AccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.AccountingEntryConnection) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountingEntryConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -47909,7 +49960,7 @@ func (ec *executionContext) _AccountingEntryConnection(ctx context.Context, sel 
 
 var accountingEntryEdgeImplementors = []string{"AccountingEntryEdge"}
 
-func (ec *executionContext) _AccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.AccountingEntryEdge) graphql.Marshaler {
+func (ec *executionContext) _AccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.AccountingEntryEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, accountingEntryEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -47950,7 +50001,7 @@ func (ec *executionContext) _AccountingEntryEdge(ctx context.Context, sel ast.Se
 
 var cashMovementImplementors = []string{"CashMovement", "Node"}
 
-func (ec *executionContext) _CashMovement(ctx context.Context, sel ast.SelectionSet, obj *ent.CashMovement) graphql.Marshaler {
+func (ec *executionContext) _CashMovement(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovement) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -48049,7 +50100,7 @@ func (ec *executionContext) _CashMovement(ctx context.Context, sel ast.Selection
 
 var cashMovementConnectionImplementors = []string{"CashMovementConnection"}
 
-func (ec *executionContext) _CashMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.CashMovementConnection) graphql.Marshaler {
+func (ec *executionContext) _CashMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovementConnection) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -48095,7 +50146,7 @@ func (ec *executionContext) _CashMovementConnection(ctx context.Context, sel ast
 
 var cashMovementEdgeImplementors = []string{"CashMovementEdge"}
 
-func (ec *executionContext) _CashMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.CashMovementEdge) graphql.Marshaler {
+func (ec *executionContext) _CashMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovementEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -48136,7 +50187,7 @@ func (ec *executionContext) _CashMovementEdge(ctx context.Context, sel ast.Selec
 
 var companyImplementors = []string{"Company", "Node"}
 
-func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, obj *ent.Company) graphql.Marshaler {
+func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, obj *generated.Company) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, companyImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -48745,7 +50796,7 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 
 var customerImplementors = []string{"Customer", "Node"}
 
-func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet, obj *ent.Customer) graphql.Marshaler {
+func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet, obj *generated.Customer) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, customerImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -48904,7 +50955,7 @@ func (ec *executionContext) _Customer(ctx context.Context, sel ast.SelectionSet,
 
 var employeeImplementors = []string{"Employee", "Node"}
 
-func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet, obj *ent.Employee) graphql.Marshaler {
+func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet, obj *generated.Employee) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, employeeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49205,7 +51256,7 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 
 var fileImplementors = []string{"File", "Node"}
 
-func (ec *executionContext) _File(ctx context.Context, sel ast.SelectionSet, obj *ent.File) graphql.Marshaler {
+func (ec *executionContext) _File(ctx context.Context, sel ast.SelectionSet, obj *generated.File) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, fileImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49347,7 +51398,7 @@ func (ec *executionContext) _File(ctx context.Context, sel ast.SelectionSet, obj
 
 var fileConnectionImplementors = []string{"FileConnection"}
 
-func (ec *executionContext) _FileConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.FileConnection) graphql.Marshaler {
+func (ec *executionContext) _FileConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.FileConnection) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, fileConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49393,7 +51444,7 @@ func (ec *executionContext) _FileConnection(ctx context.Context, sel ast.Selecti
 
 var fileEdgeImplementors = []string{"FileEdge"}
 
-func (ec *executionContext) _FileEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.FileEdge) graphql.Marshaler {
+func (ec *executionContext) _FileEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.FileEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, fileEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49432,9 +51483,255 @@ func (ec *executionContext) _FileEdge(ctx context.Context, sel ast.SelectionSet,
 	return out
 }
 
+var invoiceImplementors = []string{"Invoice"}
+
+func (ec *executionContext) _Invoice(ctx context.Context, sel ast.SelectionSet, obj *model.Invoice) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, invoiceImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Invoice")
+		case "date":
+			out.Values[i] = ec._Invoice_date(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "filename":
+			out.Values[i] = ec._Invoice_filename(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "keywords":
+			out.Values[i] = ec._Invoice_keywords(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "number":
+			out.Values[i] = ec._Invoice_number(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "paymentDetails":
+			out.Values[i] = ec._Invoice_paymentDetails(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "title":
+			out.Values[i] = ec._Invoice_title(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "issuerDetails":
+			out.Values[i] = ec._Invoice_issuerDetails(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "customerDetails":
+			out.Values[i] = ec._Invoice_customerDetails(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "body":
+			out.Values[i] = ec._Invoice_body(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totals":
+			out.Values[i] = ec._Invoice_totals(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var invoiceCustomerImplementors = []string{"InvoiceCustomer"}
+
+func (ec *executionContext) _InvoiceCustomer(ctx context.Context, sel ast.SelectionSet, obj *model.InvoiceCustomer) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, invoiceCustomerImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("InvoiceCustomer")
+		case "name":
+			out.Values[i] = ec._InvoiceCustomer_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "taxID":
+			out.Values[i] = ec._InvoiceCustomer_taxID(ctx, field, obj)
+		case "address":
+			out.Values[i] = ec._InvoiceCustomer_address(ctx, field, obj)
+		case "city":
+			out.Values[i] = ec._InvoiceCustomer_city(ctx, field, obj)
+		case "country":
+			out.Values[i] = ec._InvoiceCustomer_country(ctx, field, obj)
+		case "phone":
+			out.Values[i] = ec._InvoiceCustomer_phone(ctx, field, obj)
+		case "email":
+			out.Values[i] = ec._InvoiceCustomer_email(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var invoiceIssuerImplementors = []string{"InvoiceIssuer"}
+
+func (ec *executionContext) _InvoiceIssuer(ctx context.Context, sel ast.SelectionSet, obj *model.InvoiceIssuer) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, invoiceIssuerImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("InvoiceIssuer")
+		case "name":
+			out.Values[i] = ec._InvoiceIssuer_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "taxID":
+			out.Values[i] = ec._InvoiceIssuer_taxID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "address":
+			out.Values[i] = ec._InvoiceIssuer_address(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "city":
+			out.Values[i] = ec._InvoiceIssuer_city(ctx, field, obj)
+		case "country":
+			out.Values[i] = ec._InvoiceIssuer_country(ctx, field, obj)
+		case "phone":
+			out.Values[i] = ec._InvoiceIssuer_phone(ctx, field, obj)
+		case "email":
+			out.Values[i] = ec._InvoiceIssuer_email(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var invoiceTotalsImplementors = []string{"InvoiceTotals"}
+
+func (ec *executionContext) _InvoiceTotals(ctx context.Context, sel ast.SelectionSet, obj *model.InvoiceTotals) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, invoiceTotalsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("InvoiceTotals")
+		case "subtotal":
+			out.Values[i] = ec._InvoiceTotals_subtotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "vatRate":
+			out.Values[i] = ec._InvoiceTotals_vatRate(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "vat":
+			out.Values[i] = ec._InvoiceTotals_vat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "total":
+			out.Values[i] = ec._InvoiceTotals_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var loginOutputImplementors = []string{"LoginOutput"}
 
-func (ec *executionContext) _LoginOutput(ctx context.Context, sel ast.SelectionSet, obj *LoginOutput) graphql.Marshaler {
+func (ec *executionContext) _LoginOutput(ctx context.Context, sel ast.SelectionSet, obj *model.LoginOutput) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, loginOutputImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49723,6 +52020,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "registerPurchase":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_registerPurchase(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -49796,7 +52100,7 @@ func (ec *executionContext) _PageInfo(ctx context.Context, sel ast.SelectionSet,
 
 var payableImplementors = []string{"Payable", "Node"}
 
-func (ec *executionContext) _Payable(ctx context.Context, sel ast.SelectionSet, obj *ent.Payable) graphql.Marshaler {
+func (ec *executionContext) _Payable(ctx context.Context, sel ast.SelectionSet, obj *generated.Payable) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, payableImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -49908,9 +52212,51 @@ func (ec *executionContext) _Payable(ctx context.Context, sel ast.SelectionSet, 
 	return out
 }
 
+var paymentDetailsImplementors = []string{"PaymentDetails"}
+
+func (ec *executionContext) _PaymentDetails(ctx context.Context, sel ast.SelectionSet, obj *model.PaymentDetails) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, paymentDetailsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PaymentDetails")
+		case "bankName":
+			out.Values[i] = ec._PaymentDetails_bankName(ctx, field, obj)
+		case "accountNumber":
+			out.Values[i] = ec._PaymentDetails_accountNumber(ctx, field, obj)
+		case "iban":
+			out.Values[i] = ec._PaymentDetails_iban(ctx, field, obj)
+		case "dueDate":
+			out.Values[i] = ec._PaymentDetails_dueDate(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var productImplementors = []string{"Product", "Node"}
 
-func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, obj *ent.Product) graphql.Marshaler {
+func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, obj *generated.Product) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, productImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50105,7 +52451,7 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 
 var productMovementImplementors = []string{"ProductMovement", "Node"}
 
-func (ec *executionContext) _ProductMovement(ctx context.Context, sel ast.SelectionSet, obj *ent.ProductMovement) graphql.Marshaler {
+func (ec *executionContext) _ProductMovement(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovement) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50214,7 +52560,7 @@ func (ec *executionContext) _ProductMovement(ctx context.Context, sel ast.Select
 
 var productMovementConnectionImplementors = []string{"ProductMovementConnection"}
 
-func (ec *executionContext) _ProductMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.ProductMovementConnection) graphql.Marshaler {
+func (ec *executionContext) _ProductMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovementConnection) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50260,7 +52606,7 @@ func (ec *executionContext) _ProductMovementConnection(ctx context.Context, sel 
 
 var productMovementEdgeImplementors = []string{"ProductMovementEdge"}
 
-func (ec *executionContext) _ProductMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.ProductMovementEdge) graphql.Marshaler {
+func (ec *executionContext) _ProductMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovementEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -50942,7 +53288,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var receivableImplementors = []string{"Receivable", "Node"}
 
-func (ec *executionContext) _Receivable(ctx context.Context, sel ast.SelectionSet, obj *ent.Receivable) graphql.Marshaler {
+func (ec *executionContext) _Receivable(ctx context.Context, sel ast.SelectionSet, obj *generated.Receivable) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, receivableImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51056,7 +53402,7 @@ func (ec *executionContext) _Receivable(ctx context.Context, sel ast.SelectionSe
 
 var receivableConnectionImplementors = []string{"ReceivableConnection"}
 
-func (ec *executionContext) _ReceivableConnection(ctx context.Context, sel ast.SelectionSet, obj *ent.ReceivableConnection) graphql.Marshaler {
+func (ec *executionContext) _ReceivableConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.ReceivableConnection) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, receivableConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51102,7 +53448,7 @@ func (ec *executionContext) _ReceivableConnection(ctx context.Context, sel ast.S
 
 var receivableEdgeImplementors = []string{"ReceivableEdge"}
 
-func (ec *executionContext) _ReceivableEdge(ctx context.Context, sel ast.SelectionSet, obj *ent.ReceivableEdge) graphql.Marshaler {
+func (ec *executionContext) _ReceivableEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.ReceivableEdge) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, receivableEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51143,7 +53489,7 @@ func (ec *executionContext) _ReceivableEdge(ctx context.Context, sel ast.Selecti
 
 var supplierImplementors = []string{"Supplier", "Node"}
 
-func (ec *executionContext) _Supplier(ctx context.Context, sel ast.SelectionSet, obj *ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) _Supplier(ctx context.Context, sel ast.SelectionSet, obj *generated.Supplier) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, supplierImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51302,7 +53648,7 @@ func (ec *executionContext) _Supplier(ctx context.Context, sel ast.SelectionSet,
 
 var tokenImplementors = []string{"Token", "Node"}
 
-func (ec *executionContext) _Token(ctx context.Context, sel ast.SelectionSet, obj *ent.Token) graphql.Marshaler {
+func (ec *executionContext) _Token(ctx context.Context, sel ast.SelectionSet, obj *generated.Token) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, tokenImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51422,7 +53768,7 @@ func (ec *executionContext) _Token(ctx context.Context, sel ast.SelectionSet, ob
 
 var treasuryImplementors = []string{"Treasury", "Node"}
 
-func (ec *executionContext) _Treasury(ctx context.Context, sel ast.SelectionSet, obj *ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) _Treasury(ctx context.Context, sel ast.SelectionSet, obj *generated.Treasury) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, treasuryImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51573,7 +53919,7 @@ func (ec *executionContext) _Treasury(ctx context.Context, sel ast.SelectionSet,
 
 var userImplementors = []string{"User", "Node"}
 
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *ent.User) graphql.Marshaler {
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *generated.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51843,7 +54189,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 
 var userRoleImplementors = []string{"UserRole", "Node"}
 
-func (ec *executionContext) _UserRole(ctx context.Context, sel ast.SelectionSet, obj *ent.UserRole) graphql.Marshaler {
+func (ec *executionContext) _UserRole(ctx context.Context, sel ast.SelectionSet, obj *generated.UserRole) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userRoleImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -51953,7 +54299,7 @@ func (ec *executionContext) _UserRole(ctx context.Context, sel ast.SelectionSet,
 
 var workShiftAggregationPayloadImplementors = []string{"WorkShiftAggregationPayload"}
 
-func (ec *executionContext) _WorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, obj *WorkShiftAggregationPayload) graphql.Marshaler {
+func (ec *executionContext) _WorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, obj *model.WorkShiftAggregationPayload) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, workShiftAggregationPayloadImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52001,7 +54347,7 @@ func (ec *executionContext) _WorkShiftAggregationPayload(ctx context.Context, se
 
 var workshiftImplementors = []string{"Workshift", "Node"}
 
-func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet, obj *ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet, obj *generated.Workshift) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, workshiftImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52275,7 +54621,7 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 
 var worktagImplementors = []string{"Worktag", "Node"}
 
-func (ec *executionContext) _Worktag(ctx context.Context, sel ast.SelectionSet, obj *ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) _Worktag(ctx context.Context, sel ast.SelectionSet, obj *generated.Worktag) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, worktagImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52402,7 +54748,7 @@ func (ec *executionContext) _Worktag(ctx context.Context, sel ast.SelectionSet, 
 
 var worktaskImplementors = []string{"Worktask", "Node"}
 
-func (ec *executionContext) _Worktask(ctx context.Context, sel ast.SelectionSet, obj *ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) _Worktask(ctx context.Context, sel ast.SelectionSet, obj *generated.Worktask) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, worktaskImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -52963,7 +55309,17 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNAccountingEntry2ᚖmazzaᚋentᚐAccountingEntry(ctx context.Context, sel ast.SelectionSet, v *ent.AccountingEntry) graphql.Marshaler {
+func (ec *executionContext) unmarshalNAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, v interface{}) (accountingentry.AccountType, error) {
+	var res accountingentry.AccountType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, sel ast.SelectionSet, v accountingentry.AccountType) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) marshalNAccountingEntry2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntry(ctx context.Context, sel ast.SelectionSet, v *generated.AccountingEntry) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -52973,21 +55329,21 @@ func (ec *executionContext) marshalNAccountingEntry2ᚖmazzaᚋentᚐAccountingE
 	return ec._AccountingEntry(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx context.Context, v interface{}) (accountingentry.AccountType, error) {
+func (ec *executionContext) unmarshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, v interface{}) (accountingentry.AccountType, error) {
 	var res accountingentry.AccountType
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx context.Context, sel ast.SelectionSet, v accountingentry.AccountType) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, sel ast.SelectionSet, v accountingentry.AccountType) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) marshalNAccountingEntryConnection2mazzaᚋentᚐAccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, v ent.AccountingEntryConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountingEntryConnection2mazzaᚋentᚋgeneratedᚐAccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, v generated.AccountingEntryConnection) graphql.Marshaler {
 	return ec._AccountingEntryConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAccountingEntryConnection2ᚖmazzaᚋentᚐAccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, v *ent.AccountingEntryConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountingEntryConnection2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryConnection(ctx context.Context, sel ast.SelectionSet, v *generated.AccountingEntryConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -52997,13 +55353,13 @@ func (ec *executionContext) marshalNAccountingEntryConnection2ᚖmazzaᚋentᚐA
 	return ec._AccountingEntryConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNAccountingEntryOrderField2ᚖmazzaᚋentᚐAccountingEntryOrderField(ctx context.Context, v interface{}) (*ent.AccountingEntryOrderField, error) {
-	var res = new(ent.AccountingEntryOrderField)
+func (ec *executionContext) unmarshalNAccountingEntryOrderField2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryOrderField(ctx context.Context, v interface{}) (*generated.AccountingEntryOrderField, error) {
+	var res = new(generated.AccountingEntryOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNAccountingEntryOrderField2ᚖmazzaᚋentᚐAccountingEntryOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.AccountingEntryOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNAccountingEntryOrderField2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.AccountingEntryOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53013,7 +55369,7 @@ func (ec *executionContext) marshalNAccountingEntryOrderField2ᚖmazzaᚋentᚐA
 	return v
 }
 
-func (ec *executionContext) unmarshalNAccountingEntryWhereInput2ᚖmazzaᚋentᚐAccountingEntryWhereInput(ctx context.Context, v interface{}) (*ent.AccountingEntryWhereInput, error) {
+func (ec *executionContext) unmarshalNAccountingEntryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInput(ctx context.Context, v interface{}) (*generated.AccountingEntryWhereInput, error) {
 	res, err := ec.unmarshalInputAccountingEntryWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
@@ -53033,7 +55389,7 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCashMovement2ᚖmazzaᚋentᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *ent.CashMovement) graphql.Marshaler {
+func (ec *executionContext) marshalNCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovement) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53043,11 +55399,11 @@ func (ec *executionContext) marshalNCashMovement2ᚖmazzaᚋentᚐCashMovement(c
 	return ec._CashMovement(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNCashMovementConnection2mazzaᚋentᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v ent.CashMovementConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNCashMovementConnection2mazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v generated.CashMovementConnection) graphql.Marshaler {
 	return ec._CashMovementConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCashMovementConnection2ᚖmazzaᚋentᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v *ent.CashMovementConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNCashMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovementConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53057,16 +55413,16 @@ func (ec *executionContext) marshalNCashMovementConnection2ᚖmazzaᚋentᚐCash
 	return ec._CashMovementConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*ent.CashMovementWhereInput, error) {
+func (ec *executionContext) unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*generated.CashMovementWhereInput, error) {
 	res, err := ec.unmarshalInputCashMovementWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNCompany2mazzaᚋentᚐCompany(ctx context.Context, sel ast.SelectionSet, v ent.Company) graphql.Marshaler {
+func (ec *executionContext) marshalNCompany2mazzaᚋentᚋgeneratedᚐCompany(ctx context.Context, sel ast.SelectionSet, v generated.Company) graphql.Marshaler {
 	return ec._Company(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Company) graphql.Marshaler {
+func (ec *executionContext) marshalNCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Company) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53090,7 +55446,7 @@ func (ec *executionContext) marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCompany2ᚖmazzaᚋentᚐCompany(ctx, sel, v[i])
+			ret[i] = ec.marshalNCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53110,7 +55466,7 @@ func (ec *executionContext) marshalNCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalNCompany2ᚖmazzaᚋentᚐCompany(ctx context.Context, sel ast.SelectionSet, v *ent.Company) graphql.Marshaler {
+func (ec *executionContext) marshalNCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx context.Context, sel ast.SelectionSet, v *generated.Company) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53120,13 +55476,13 @@ func (ec *executionContext) marshalNCompany2ᚖmazzaᚋentᚐCompany(ctx context
 	return ec._Company(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNCompanyOrderField2ᚖmazzaᚋentᚐCompanyOrderField(ctx context.Context, v interface{}) (*ent.CompanyOrderField, error) {
-	var res = new(ent.CompanyOrderField)
+func (ec *executionContext) unmarshalNCompanyOrderField2ᚖmazzaᚋentᚋgeneratedᚐCompanyOrderField(ctx context.Context, v interface{}) (*generated.CompanyOrderField, error) {
+	var res = new(generated.CompanyOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNCompanyOrderField2ᚖmazzaᚋentᚐCompanyOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.CompanyOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNCompanyOrderField2ᚖmazzaᚋentᚋgeneratedᚐCompanyOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.CompanyOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53136,67 +55492,67 @@ func (ec *executionContext) marshalNCompanyOrderField2ᚖmazzaᚋentᚐCompanyOr
 	return v
 }
 
-func (ec *executionContext) unmarshalNCompanyWhereInput2ᚖmazzaᚋentᚐCompanyWhereInput(ctx context.Context, v interface{}) (*ent.CompanyWhereInput, error) {
+func (ec *executionContext) unmarshalNCompanyWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInput(ctx context.Context, v interface{}) (*generated.CompanyWhereInput, error) {
 	res, err := ec.unmarshalInputCompanyWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateCompanyInput2ᚖmazzaᚋentᚐCreateCompanyInput(ctx context.Context, v interface{}) (*ent.CreateCompanyInput, error) {
+func (ec *executionContext) unmarshalNCreateCompanyInput2ᚖmazzaᚋentᚋgeneratedᚐCreateCompanyInput(ctx context.Context, v interface{}) (*generated.CreateCompanyInput, error) {
 	res, err := ec.unmarshalInputCreateCompanyInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateCustomerInput2mazzaᚋentᚐCreateCustomerInput(ctx context.Context, v interface{}) (ent.CreateCustomerInput, error) {
+func (ec *executionContext) unmarshalNCreateCustomerInput2mazzaᚋentᚋgeneratedᚐCreateCustomerInput(ctx context.Context, v interface{}) (generated.CreateCustomerInput, error) {
 	res, err := ec.unmarshalInputCreateCustomerInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateEmployeeInput2mazzaᚋentᚐCreateEmployeeInput(ctx context.Context, v interface{}) (ent.CreateEmployeeInput, error) {
+func (ec *executionContext) unmarshalNCreateEmployeeInput2mazzaᚋentᚋgeneratedᚐCreateEmployeeInput(ctx context.Context, v interface{}) (generated.CreateEmployeeInput, error) {
 	res, err := ec.unmarshalInputCreateEmployeeInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateProductInput2mazzaᚋentᚐCreateProductInput(ctx context.Context, v interface{}) (ent.CreateProductInput, error) {
+func (ec *executionContext) unmarshalNCreateProductInput2mazzaᚋentᚋgeneratedᚐCreateProductInput(ctx context.Context, v interface{}) (generated.CreateProductInput, error) {
 	res, err := ec.unmarshalInputCreateProductInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateSupplierInput2mazzaᚋentᚐCreateSupplierInput(ctx context.Context, v interface{}) (ent.CreateSupplierInput, error) {
+func (ec *executionContext) unmarshalNCreateSupplierInput2mazzaᚋentᚋgeneratedᚐCreateSupplierInput(ctx context.Context, v interface{}) (generated.CreateSupplierInput, error) {
 	res, err := ec.unmarshalInputCreateSupplierInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateTreasuryInput2mazzaᚋentᚐCreateTreasuryInput(ctx context.Context, v interface{}) (ent.CreateTreasuryInput, error) {
+func (ec *executionContext) unmarshalNCreateTreasuryInput2mazzaᚋentᚋgeneratedᚐCreateTreasuryInput(ctx context.Context, v interface{}) (generated.CreateTreasuryInput, error) {
 	res, err := ec.unmarshalInputCreateTreasuryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateUserInput2mazzaᚋentᚐCreateUserInput(ctx context.Context, v interface{}) (ent.CreateUserInput, error) {
+func (ec *executionContext) unmarshalNCreateUserInput2mazzaᚋentᚋgeneratedᚐCreateUserInput(ctx context.Context, v interface{}) (generated.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateUserInput2ᚖmazzaᚋentᚐCreateUserInput(ctx context.Context, v interface{}) (*ent.CreateUserInput, error) {
+func (ec *executionContext) unmarshalNCreateUserInput2ᚖmazzaᚋentᚋgeneratedᚐCreateUserInput(ctx context.Context, v interface{}) (*generated.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateUserRoleInput2mazzaᚋentᚐCreateUserRoleInput(ctx context.Context, v interface{}) (ent.CreateUserRoleInput, error) {
+func (ec *executionContext) unmarshalNCreateUserRoleInput2mazzaᚋentᚋgeneratedᚐCreateUserRoleInput(ctx context.Context, v interface{}) (generated.CreateUserRoleInput, error) {
 	res, err := ec.unmarshalInputCreateUserRoleInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateWorkshiftInput2mazzaᚋentᚐCreateWorkshiftInput(ctx context.Context, v interface{}) (ent.CreateWorkshiftInput, error) {
+func (ec *executionContext) unmarshalNCreateWorkshiftInput2mazzaᚋentᚋgeneratedᚐCreateWorkshiftInput(ctx context.Context, v interface{}) (generated.CreateWorkshiftInput, error) {
 	res, err := ec.unmarshalInputCreateWorkshiftInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateWorktagInput2mazzaᚋentᚐCreateWorktagInput(ctx context.Context, v interface{}) (ent.CreateWorktagInput, error) {
+func (ec *executionContext) unmarshalNCreateWorktagInput2mazzaᚋentᚋgeneratedᚐCreateWorktagInput(ctx context.Context, v interface{}) (generated.CreateWorktagInput, error) {
 	res, err := ec.unmarshalInputCreateWorktagInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateWorktaskInput2mazzaᚋentᚐCreateWorktaskInput(ctx context.Context, v interface{}) (ent.CreateWorktaskInput, error) {
+func (ec *executionContext) unmarshalNCreateWorktaskInput2mazzaᚋentᚋgeneratedᚐCreateWorktaskInput(ctx context.Context, v interface{}) (generated.CreateWorktaskInput, error) {
 	res, err := ec.unmarshalInputCreateWorktaskInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -53211,11 +55567,11 @@ func (ec *executionContext) marshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCurso
 	return v
 }
 
-func (ec *executionContext) marshalNCustomer2mazzaᚋentᚐCustomer(ctx context.Context, sel ast.SelectionSet, v ent.Customer) graphql.Marshaler {
+func (ec *executionContext) marshalNCustomer2mazzaᚋentᚋgeneratedᚐCustomer(ctx context.Context, sel ast.SelectionSet, v generated.Customer) graphql.Marshaler {
 	return ec._Customer(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Customer) graphql.Marshaler {
+func (ec *executionContext) marshalNCustomer2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Customer) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53239,7 +55595,7 @@ func (ec *executionContext) marshalNCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCustomer2ᚖmazzaᚋentᚐCustomer(ctx, sel, v[i])
+			ret[i] = ec.marshalNCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53259,7 +55615,7 @@ func (ec *executionContext) marshalNCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNCustomer2ᚖmazzaᚋentᚐCustomer(ctx context.Context, sel ast.SelectionSet, v *ent.Customer) graphql.Marshaler {
+func (ec *executionContext) marshalNCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx context.Context, sel ast.SelectionSet, v *generated.Customer) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53269,16 +55625,16 @@ func (ec *executionContext) marshalNCustomer2ᚖmazzaᚋentᚐCustomer(ctx conte
 	return ec._Customer(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNCustomerWhereInput2ᚖmazzaᚋentᚐCustomerWhereInput(ctx context.Context, v interface{}) (*ent.CustomerWhereInput, error) {
+func (ec *executionContext) unmarshalNCustomerWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInput(ctx context.Context, v interface{}) (*generated.CustomerWhereInput, error) {
 	res, err := ec.unmarshalInputCustomerWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNEmployee2mazzaᚋentᚐEmployee(ctx context.Context, sel ast.SelectionSet, v ent.Employee) graphql.Marshaler {
+func (ec *executionContext) marshalNEmployee2mazzaᚋentᚋgeneratedᚐEmployee(ctx context.Context, sel ast.SelectionSet, v generated.Employee) graphql.Marshaler {
 	return ec._Employee(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Employee) graphql.Marshaler {
+func (ec *executionContext) marshalNEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Employee) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53302,7 +55658,7 @@ func (ec *executionContext) marshalNEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNEmployee2ᚖmazzaᚋentᚐEmployee(ctx, sel, v[i])
+			ret[i] = ec.marshalNEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53322,7 +55678,7 @@ func (ec *executionContext) marshalNEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNEmployee2ᚖmazzaᚋentᚐEmployee(ctx context.Context, sel ast.SelectionSet, v *ent.Employee) graphql.Marshaler {
+func (ec *executionContext) marshalNEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx context.Context, sel ast.SelectionSet, v *generated.Employee) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53332,22 +55688,76 @@ func (ec *executionContext) marshalNEmployee2ᚖmazzaᚋentᚐEmployee(ctx conte
 	return ec._Employee(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx context.Context, v interface{}) (employee.Gender, error) {
+func (ec *executionContext) unmarshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx context.Context, v interface{}) (employee.Gender, error) {
 	var res employee.Gender
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx context.Context, sel ast.SelectionSet, v employee.Gender) graphql.Marshaler {
+func (ec *executionContext) marshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx context.Context, sel ast.SelectionSet, v employee.Gender) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNEmployeeWhereInput2ᚖmazzaᚋentᚐEmployeeWhereInput(ctx context.Context, v interface{}) (*ent.EmployeeWhereInput, error) {
+func (ec *executionContext) unmarshalNEmployeeWhereInput2ᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInput(ctx context.Context, v interface{}) (*generated.EmployeeWhereInput, error) {
 	res, err := ec.unmarshalInputEmployeeWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNFile2ᚖmazzaᚋentᚐFile(ctx context.Context, sel ast.SelectionSet, v *ent.File) graphql.Marshaler {
+func (ec *executionContext) unmarshalNEntryItem2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryItemᚄ(ctx context.Context, v interface{}) ([]*model.EntryItem, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.EntryItem, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNEntryItem2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryItem(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalNEntryItem2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryItem(ctx context.Context, v interface{}) (*model.EntryItem, error) {
+	res, err := ec.unmarshalInputEntryItem(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEntryProductInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInputᚄ(ctx context.Context, v interface{}) ([]*model.EntryProductInput, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.EntryProductInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNEntryProductInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalNEntryProductInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInput(ctx context.Context, v interface{}) (*model.EntryProductInput, error) {
+	res, err := ec.unmarshalInputEntryProductInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEntrySupplierInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntrySupplierInput(ctx context.Context, v interface{}) (*model.EntrySupplierInput, error) {
+	res, err := ec.unmarshalInputEntrySupplierInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNEntryTreasuryInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInput(ctx context.Context, v interface{}) (*model.EntryTreasuryInput, error) {
+	res, err := ec.unmarshalInputEntryTreasuryInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNFile2ᚖmazzaᚋentᚋgeneratedᚐFile(ctx context.Context, sel ast.SelectionSet, v *generated.File) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53357,21 +55767,21 @@ func (ec *executionContext) marshalNFile2ᚖmazzaᚋentᚐFile(ctx context.Conte
 	return ec._File(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx context.Context, v interface{}) (file.Category, error) {
+func (ec *executionContext) unmarshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx context.Context, v interface{}) (file.Category, error) {
 	var res file.Category
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx context.Context, sel ast.SelectionSet, v file.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx context.Context, sel ast.SelectionSet, v file.Category) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) marshalNFileConnection2mazzaᚋentᚐFileConnection(ctx context.Context, sel ast.SelectionSet, v ent.FileConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNFileConnection2mazzaᚋentᚋgeneratedᚐFileConnection(ctx context.Context, sel ast.SelectionSet, v generated.FileConnection) graphql.Marshaler {
 	return ec._FileConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNFileConnection2ᚖmazzaᚋentᚐFileConnection(ctx context.Context, sel ast.SelectionSet, v *ent.FileConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNFileConnection2ᚖmazzaᚋentᚋgeneratedᚐFileConnection(ctx context.Context, sel ast.SelectionSet, v *generated.FileConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53381,13 +55791,13 @@ func (ec *executionContext) marshalNFileConnection2ᚖmazzaᚋentᚐFileConnecti
 	return ec._FileConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNFileOrderField2ᚖmazzaᚋentᚐFileOrderField(ctx context.Context, v interface{}) (*ent.FileOrderField, error) {
-	var res = new(ent.FileOrderField)
+func (ec *executionContext) unmarshalNFileOrderField2ᚖmazzaᚋentᚋgeneratedᚐFileOrderField(ctx context.Context, v interface{}) (*generated.FileOrderField, error) {
+	var res = new(generated.FileOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNFileOrderField2ᚖmazzaᚋentᚐFileOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.FileOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNFileOrderField2ᚖmazzaᚋentᚋgeneratedᚐFileOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.FileOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53397,7 +55807,7 @@ func (ec *executionContext) marshalNFileOrderField2ᚖmazzaᚋentᚐFileOrderFie
 	return v
 }
 
-func (ec *executionContext) unmarshalNFileWhereInput2ᚖmazzaᚋentᚐFileWhereInput(ctx context.Context, v interface{}) (*ent.FileWhereInput, error) {
+func (ec *executionContext) unmarshalNFileWhereInput2ᚖmazzaᚋentᚋgeneratedᚐFileWhereInput(ctx context.Context, v interface{}) (*generated.FileWhereInput, error) {
 	res, err := ec.unmarshalInputFileWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
@@ -53494,11 +55904,41 @@ func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) marshalNLoginOutput2mazzaᚐLoginOutput(ctx context.Context, sel ast.SelectionSet, v LoginOutput) graphql.Marshaler {
+func (ec *executionContext) marshalNInvoiceCustomer2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceCustomer(ctx context.Context, sel ast.SelectionSet, v *model.InvoiceCustomer) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._InvoiceCustomer(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNInvoiceIssuer2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceIssuer(ctx context.Context, sel ast.SelectionSet, v *model.InvoiceIssuer) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._InvoiceIssuer(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNInvoiceTotals2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInvoiceTotals(ctx context.Context, sel ast.SelectionSet, v *model.InvoiceTotals) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._InvoiceTotals(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNLoginOutput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐLoginOutput(ctx context.Context, sel ast.SelectionSet, v model.LoginOutput) graphql.Marshaler {
 	return ec._LoginOutput(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLoginOutput2ᚖmazzaᚐLoginOutput(ctx context.Context, sel ast.SelectionSet, v *LoginOutput) graphql.Marshaler {
+func (ec *executionContext) marshalNLoginOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoginOutput(ctx context.Context, sel ast.SelectionSet, v *model.LoginOutput) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53508,7 +55948,7 @@ func (ec *executionContext) marshalNLoginOutput2ᚖmazzaᚐLoginOutput(ctx conte
 	return ec._LoginOutput(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNNode2ᚕmazzaᚋentᚐNoder(ctx context.Context, sel ast.SelectionSet, v []ent.Noder) graphql.Marshaler {
+func (ec *executionContext) marshalNNode2ᚕmazzaᚋentᚋgeneratedᚐNoder(ctx context.Context, sel ast.SelectionSet, v []generated.Noder) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53532,7 +55972,7 @@ func (ec *executionContext) marshalNNode2ᚕmazzaᚋentᚐNoder(ctx context.Cont
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalONode2mazzaᚋentᚐNoder(ctx, sel, v[i])
+			ret[i] = ec.marshalONode2mazzaᚋentᚋgeneratedᚐNoder(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53560,7 +56000,7 @@ func (ec *executionContext) marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPag
 	return ec._PageInfo(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Payable) graphql.Marshaler {
+func (ec *executionContext) marshalNPayable2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Payable) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53584,7 +56024,7 @@ func (ec *executionContext) marshalNPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPayable2ᚖmazzaᚋentᚐPayable(ctx, sel, v[i])
+			ret[i] = ec.marshalNPayable2ᚖmazzaᚋentᚋgeneratedᚐPayable(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53604,7 +56044,7 @@ func (ec *executionContext) marshalNPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalNPayable2ᚖmazzaᚋentᚐPayable(ctx context.Context, sel ast.SelectionSet, v *ent.Payable) graphql.Marshaler {
+func (ec *executionContext) marshalNPayable2ᚖmazzaᚋentᚋgeneratedᚐPayable(ctx context.Context, sel ast.SelectionSet, v *generated.Payable) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53614,26 +56054,36 @@ func (ec *executionContext) marshalNPayable2ᚖmazzaᚋentᚐPayable(ctx context
 	return ec._Payable(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx context.Context, v interface{}) (payable.Status, error) {
+func (ec *executionContext) unmarshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx context.Context, v interface{}) (payable.Status, error) {
 	var res payable.Status
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx context.Context, sel ast.SelectionSet, v payable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx context.Context, sel ast.SelectionSet, v payable.Status) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNPayableWhereInput2ᚖmazzaᚋentᚐPayableWhereInput(ctx context.Context, v interface{}) (*ent.PayableWhereInput, error) {
+func (ec *executionContext) unmarshalNPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx context.Context, v interface{}) (*generated.PayableWhereInput, error) {
 	res, err := ec.unmarshalInputPayableWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNProduct2mazzaᚋentᚐProduct(ctx context.Context, sel ast.SelectionSet, v ent.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNPaymentDetails2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPaymentDetails(ctx context.Context, sel ast.SelectionSet, v *model.PaymentDetails) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._PaymentDetails(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNProduct2mazzaᚋentᚋgeneratedᚐProduct(ctx context.Context, sel ast.SelectionSet, v generated.Product) graphql.Marshaler {
 	return ec._Product(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Product) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53657,7 +56107,7 @@ func (ec *executionContext) marshalNProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProduct2ᚖmazzaᚋentᚐProduct(ctx, sel, v[i])
+			ret[i] = ec.marshalNProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53677,7 +56127,7 @@ func (ec *executionContext) marshalNProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalNProduct2ᚖmazzaᚋentᚐProduct(ctx context.Context, sel ast.SelectionSet, v *ent.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx context.Context, sel ast.SelectionSet, v *generated.Product) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53687,17 +56137,17 @@ func (ec *executionContext) marshalNProduct2ᚖmazzaᚋentᚐProduct(ctx context
 	return ec._Product(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx context.Context, v interface{}) (product.Category, error) {
+func (ec *executionContext) unmarshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx context.Context, v interface{}) (product.Category, error) {
 	var res product.Category
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx context.Context, sel ast.SelectionSet, v product.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx context.Context, sel ast.SelectionSet, v product.Category) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) marshalNProductMovement2ᚖmazzaᚋentᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *ent.ProductMovement) graphql.Marshaler {
+func (ec *executionContext) marshalNProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovement) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53707,11 +56157,11 @@ func (ec *executionContext) marshalNProductMovement2ᚖmazzaᚋentᚐProductMove
 	return ec._ProductMovement(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProductMovementConnection2mazzaᚋentᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v ent.ProductMovementConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNProductMovementConnection2mazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v generated.ProductMovementConnection) graphql.Marshaler {
 	return ec._ProductMovementConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProductMovementConnection2ᚖmazzaᚋentᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v *ent.ProductMovementConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNProductMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovementConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53721,18 +56171,18 @@ func (ec *executionContext) marshalNProductMovementConnection2ᚖmazzaᚋentᚐP
 	return ec._ProductMovementConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*ent.ProductMovementWhereInput, error) {
+func (ec *executionContext) unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*generated.ProductMovementWhereInput, error) {
 	res, err := ec.unmarshalInputProductMovementWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNProductOrderField2ᚖmazzaᚋentᚐProductOrderField(ctx context.Context, v interface{}) (*ent.ProductOrderField, error) {
-	var res = new(ent.ProductOrderField)
+func (ec *executionContext) unmarshalNProductOrderField2ᚖmazzaᚋentᚋgeneratedᚐProductOrderField(ctx context.Context, v interface{}) (*generated.ProductOrderField, error) {
+	var res = new(generated.ProductOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNProductOrderField2ᚖmazzaᚋentᚐProductOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.ProductOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNProductOrderField2ᚖmazzaᚋentᚋgeneratedᚐProductOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.ProductOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53742,12 +56192,27 @@ func (ec *executionContext) marshalNProductOrderField2ᚖmazzaᚋentᚐProductOr
 	return v
 }
 
-func (ec *executionContext) unmarshalNProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx context.Context, v interface{}) (*ent.ProductWhereInput, error) {
+func (ec *executionContext) unmarshalNProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx context.Context, v interface{}) (*generated.ProductWhereInput, error) {
 	res, err := ec.unmarshalInputProductWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNReceivable2ᚖmazzaᚋentᚐReceivable(ctx context.Context, sel ast.SelectionSet, v *ent.Receivable) graphql.Marshaler {
+func (ec *executionContext) unmarshalNPurchaseOperationType2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPurchaseOperationType(ctx context.Context, v interface{}) (model.PurchaseOperationType, error) {
+	var res model.PurchaseOperationType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNPurchaseOperationType2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPurchaseOperationType(ctx context.Context, sel ast.SelectionSet, v model.PurchaseOperationType) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalNPurchaseRegistrationInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPurchaseRegistrationInput(ctx context.Context, v interface{}) (model.PurchaseRegistrationInput, error) {
+	res, err := ec.unmarshalInputPurchaseRegistrationInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNReceivable2ᚖmazzaᚋentᚋgeneratedᚐReceivable(ctx context.Context, sel ast.SelectionSet, v *generated.Receivable) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53757,11 +56222,11 @@ func (ec *executionContext) marshalNReceivable2ᚖmazzaᚋentᚐReceivable(ctx c
 	return ec._Receivable(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNReceivableConnection2mazzaᚋentᚐReceivableConnection(ctx context.Context, sel ast.SelectionSet, v ent.ReceivableConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNReceivableConnection2mazzaᚋentᚋgeneratedᚐReceivableConnection(ctx context.Context, sel ast.SelectionSet, v generated.ReceivableConnection) graphql.Marshaler {
 	return ec._ReceivableConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNReceivableConnection2ᚖmazzaᚋentᚐReceivableConnection(ctx context.Context, sel ast.SelectionSet, v *ent.ReceivableConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNReceivableConnection2ᚖmazzaᚋentᚋgeneratedᚐReceivableConnection(ctx context.Context, sel ast.SelectionSet, v *generated.ReceivableConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53771,46 +56236,46 @@ func (ec *executionContext) marshalNReceivableConnection2ᚖmazzaᚋentᚐReceiv
 	return ec._ReceivableConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx context.Context, v interface{}) (receivable.Status, error) {
+func (ec *executionContext) unmarshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx context.Context, v interface{}) (receivable.Status, error) {
 	var res receivable.Status
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx context.Context, sel ast.SelectionSet, v receivable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx context.Context, sel ast.SelectionSet, v receivable.Status) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNReceivableWhereInput2ᚖmazzaᚋentᚐReceivableWhereInput(ctx context.Context, v interface{}) (*ent.ReceivableWhereInput, error) {
+func (ec *executionContext) unmarshalNReceivableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInput(ctx context.Context, v interface{}) (*generated.ReceivableWhereInput, error) {
 	res, err := ec.unmarshalInputReceivableWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNResetPasswordInput2mazzaᚐResetPasswordInput(ctx context.Context, v interface{}) (ResetPasswordInput, error) {
+func (ec *executionContext) unmarshalNResetPasswordInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐResetPasswordInput(ctx context.Context, v interface{}) (model.ResetPasswordInput, error) {
 	res, err := ec.unmarshalInputResetPasswordInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx context.Context, v interface{}) (ShiftGroupBy, error) {
-	var res ShiftGroupBy
+func (ec *executionContext) unmarshalNShiftGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupBy(ctx context.Context, v interface{}) (model.ShiftGroupBy, error) {
+	var res model.ShiftGroupBy
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx context.Context, sel ast.SelectionSet, v ShiftGroupBy) graphql.Marshaler {
+func (ec *executionContext) marshalNShiftGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupBy(ctx context.Context, sel ast.SelectionSet, v model.ShiftGroupBy) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx context.Context, v interface{}) ([]ShiftGroupBy, error) {
+func (ec *executionContext) unmarshalNShiftGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupByᚄ(ctx context.Context, v interface{}) ([]model.ShiftGroupBy, error) {
 	var vSlice []interface{}
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]ShiftGroupBy, len(vSlice))
+	res := make([]model.ShiftGroupBy, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNShiftGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupBy(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -53818,7 +56283,7 @@ func (ec *executionContext) unmarshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ct
 	return res, nil
 }
 
-func (ec *executionContext) marshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx context.Context, sel ast.SelectionSet, v []ShiftGroupBy) graphql.Marshaler {
+func (ec *executionContext) marshalNShiftGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupByᚄ(ctx context.Context, sel ast.SelectionSet, v []model.ShiftGroupBy) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53842,7 +56307,7 @@ func (ec *executionContext) marshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx 
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNShiftGroupBy2mazzaᚐShiftGroupBy(ctx, sel, v[i])
+			ret[i] = ec.marshalNShiftGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐShiftGroupBy(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53862,7 +56327,7 @@ func (ec *executionContext) marshalNShiftGroupBy2ᚕmazzaᚐShiftGroupByᚄ(ctx 
 	return ret
 }
 
-func (ec *executionContext) unmarshalNSignupInput2mazzaᚐSignupInput(ctx context.Context, v interface{}) (SignupInput, error) {
+func (ec *executionContext) unmarshalNSignupInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐSignupInput(ctx context.Context, v interface{}) (model.SignupInput, error) {
 	res, err := ec.unmarshalInputSignupInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -53880,6 +56345,70 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalNString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) unmarshalNString2ᚕᚕstringᚄ(ctx context.Context, v interface{}) ([][]string, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([][]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2ᚕstringᚄ(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNString2ᚕᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v [][]string) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2ᚕstringᚄ(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalNString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
@@ -53903,11 +56432,11 @@ func (ec *executionContext) marshalNString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalNSupplier2mazzaᚋentᚐSupplier(ctx context.Context, sel ast.SelectionSet, v ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) marshalNSupplier2mazzaᚋentᚋgeneratedᚐSupplier(ctx context.Context, sel ast.SelectionSet, v generated.Supplier) graphql.Marshaler {
 	return ec._Supplier(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) marshalNSupplier2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Supplier) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -53931,7 +56460,7 @@ func (ec *executionContext) marshalNSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNSupplier2ᚖmazzaᚋentᚐSupplier(ctx, sel, v[i])
+			ret[i] = ec.marshalNSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -53951,7 +56480,7 @@ func (ec *executionContext) marshalNSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNSupplier2ᚖmazzaᚋentᚐSupplier(ctx context.Context, sel ast.SelectionSet, v *ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) marshalNSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx context.Context, sel ast.SelectionSet, v *generated.Supplier) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -53961,7 +56490,7 @@ func (ec *executionContext) marshalNSupplier2ᚖmazzaᚋentᚐSupplier(ctx conte
 	return ec._Supplier(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNSupplierWhereInput2ᚖmazzaᚋentᚐSupplierWhereInput(ctx context.Context, v interface{}) (*ent.SupplierWhereInput, error) {
+func (ec *executionContext) unmarshalNSupplierWhereInput2ᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInput(ctx context.Context, v interface{}) (*generated.SupplierWhereInput, error) {
 	res, err := ec.unmarshalInputSupplierWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
@@ -54002,7 +56531,7 @@ func (ec *executionContext) marshalNTime2ᚖtimeᚐTime(ctx context.Context, sel
 	return res
 }
 
-func (ec *executionContext) marshalNToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Token) graphql.Marshaler {
+func (ec *executionContext) marshalNToken2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Token) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54026,7 +56555,7 @@ func (ec *executionContext) marshalNToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx conte
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNToken2ᚖmazzaᚋentᚐToken(ctx, sel, v[i])
+			ret[i] = ec.marshalNToken2ᚖmazzaᚋentᚋgeneratedᚐToken(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54046,7 +56575,7 @@ func (ec *executionContext) marshalNToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx conte
 	return ret
 }
 
-func (ec *executionContext) marshalNToken2ᚖmazzaᚋentᚐToken(ctx context.Context, sel ast.SelectionSet, v *ent.Token) graphql.Marshaler {
+func (ec *executionContext) marshalNToken2ᚖmazzaᚋentᚋgeneratedᚐToken(ctx context.Context, sel ast.SelectionSet, v *generated.Token) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54056,26 +56585,26 @@ func (ec *executionContext) marshalNToken2ᚖmazzaᚋentᚐToken(ctx context.Con
 	return ec._Token(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNTokenCategory2mazzaᚋentᚋtokenᚐCategory(ctx context.Context, v interface{}) (token.Category, error) {
+func (ec *executionContext) unmarshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx context.Context, v interface{}) (token.Category, error) {
 	var res token.Category
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTokenCategory2mazzaᚋentᚋtokenᚐCategory(ctx context.Context, sel ast.SelectionSet, v token.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx context.Context, sel ast.SelectionSet, v token.Category) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNTokenWhereInput2ᚖmazzaᚋentᚐTokenWhereInput(ctx context.Context, v interface{}) (*ent.TokenWhereInput, error) {
+func (ec *executionContext) unmarshalNTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTokenWhereInput(ctx context.Context, v interface{}) (*generated.TokenWhereInput, error) {
 	res, err := ec.unmarshalInputTokenWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTreasury2mazzaᚋentᚐTreasury(ctx context.Context, sel ast.SelectionSet, v ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) marshalNTreasury2mazzaᚋentᚋgeneratedᚐTreasury(ctx context.Context, sel ast.SelectionSet, v generated.Treasury) graphql.Marshaler {
 	return ec._Treasury(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) marshalNTreasury2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Treasury) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54099,7 +56628,7 @@ func (ec *executionContext) marshalNTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTreasury2ᚖmazzaᚋentᚐTreasury(ctx, sel, v[i])
+			ret[i] = ec.marshalNTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54119,7 +56648,7 @@ func (ec *executionContext) marshalNTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNTreasury2ᚖmazzaᚋentᚐTreasury(ctx context.Context, sel ast.SelectionSet, v *ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) marshalNTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx context.Context, sel ast.SelectionSet, v *generated.Treasury) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54129,86 +56658,86 @@ func (ec *executionContext) marshalNTreasury2ᚖmazzaᚋentᚐTreasury(ctx conte
 	return ec._Treasury(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx context.Context, v interface{}) (treasury.Category, error) {
+func (ec *executionContext) unmarshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx context.Context, v interface{}) (treasury.Category, error) {
 	var res treasury.Category
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx context.Context, sel ast.SelectionSet, v treasury.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx context.Context, sel ast.SelectionSet, v treasury.Category) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx context.Context, v interface{}) (treasury.Currency, error) {
+func (ec *executionContext) unmarshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx context.Context, v interface{}) (treasury.Currency, error) {
 	var res treasury.Currency
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx context.Context, sel ast.SelectionSet, v treasury.Currency) graphql.Marshaler {
+func (ec *executionContext) marshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx context.Context, sel ast.SelectionSet, v treasury.Currency) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNTreasuryWhereInput2ᚖmazzaᚋentᚐTreasuryWhereInput(ctx context.Context, v interface{}) (*ent.TreasuryWhereInput, error) {
+func (ec *executionContext) unmarshalNTreasuryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInput(ctx context.Context, v interface{}) (*generated.TreasuryWhereInput, error) {
 	res, err := ec.unmarshalInputTreasuryWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateCompanyInput2mazzaᚋentᚐUpdateCompanyInput(ctx context.Context, v interface{}) (ent.UpdateCompanyInput, error) {
+func (ec *executionContext) unmarshalNUpdateCompanyInput2mazzaᚋentᚋgeneratedᚐUpdateCompanyInput(ctx context.Context, v interface{}) (generated.UpdateCompanyInput, error) {
 	res, err := ec.unmarshalInputUpdateCompanyInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateCustomerInput2mazzaᚋentᚐUpdateCustomerInput(ctx context.Context, v interface{}) (ent.UpdateCustomerInput, error) {
+func (ec *executionContext) unmarshalNUpdateCustomerInput2mazzaᚋentᚋgeneratedᚐUpdateCustomerInput(ctx context.Context, v interface{}) (generated.UpdateCustomerInput, error) {
 	res, err := ec.unmarshalInputUpdateCustomerInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateEmployeeInput2mazzaᚋentᚐUpdateEmployeeInput(ctx context.Context, v interface{}) (ent.UpdateEmployeeInput, error) {
+func (ec *executionContext) unmarshalNUpdateEmployeeInput2mazzaᚋentᚋgeneratedᚐUpdateEmployeeInput(ctx context.Context, v interface{}) (generated.UpdateEmployeeInput, error) {
 	res, err := ec.unmarshalInputUpdateEmployeeInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateProductInput2mazzaᚋentᚐUpdateProductInput(ctx context.Context, v interface{}) (ent.UpdateProductInput, error) {
+func (ec *executionContext) unmarshalNUpdateProductInput2mazzaᚋentᚋgeneratedᚐUpdateProductInput(ctx context.Context, v interface{}) (generated.UpdateProductInput, error) {
 	res, err := ec.unmarshalInputUpdateProductInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateSupplierInput2mazzaᚋentᚐUpdateSupplierInput(ctx context.Context, v interface{}) (ent.UpdateSupplierInput, error) {
+func (ec *executionContext) unmarshalNUpdateSupplierInput2mazzaᚋentᚋgeneratedᚐUpdateSupplierInput(ctx context.Context, v interface{}) (generated.UpdateSupplierInput, error) {
 	res, err := ec.unmarshalInputUpdateSupplierInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateTreasuryInput2mazzaᚋentᚐUpdateTreasuryInput(ctx context.Context, v interface{}) (ent.UpdateTreasuryInput, error) {
+func (ec *executionContext) unmarshalNUpdateTreasuryInput2mazzaᚋentᚋgeneratedᚐUpdateTreasuryInput(ctx context.Context, v interface{}) (generated.UpdateTreasuryInput, error) {
 	res, err := ec.unmarshalInputUpdateTreasuryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateUserInput2mazzaᚋentᚐUpdateUserInput(ctx context.Context, v interface{}) (ent.UpdateUserInput, error) {
+func (ec *executionContext) unmarshalNUpdateUserInput2mazzaᚋentᚋgeneratedᚐUpdateUserInput(ctx context.Context, v interface{}) (generated.UpdateUserInput, error) {
 	res, err := ec.unmarshalInputUpdateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateWorkshiftInput2mazzaᚋentᚐUpdateWorkshiftInput(ctx context.Context, v interface{}) (ent.UpdateWorkshiftInput, error) {
+func (ec *executionContext) unmarshalNUpdateWorkshiftInput2mazzaᚋentᚋgeneratedᚐUpdateWorkshiftInput(ctx context.Context, v interface{}) (generated.UpdateWorkshiftInput, error) {
 	res, err := ec.unmarshalInputUpdateWorkshiftInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateWorktagInput2mazzaᚋentᚐUpdateWorktagInput(ctx context.Context, v interface{}) (ent.UpdateWorktagInput, error) {
+func (ec *executionContext) unmarshalNUpdateWorktagInput2mazzaᚋentᚋgeneratedᚐUpdateWorktagInput(ctx context.Context, v interface{}) (generated.UpdateWorktagInput, error) {
 	res, err := ec.unmarshalInputUpdateWorktagInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateWorktaskInput2mazzaᚋentᚐUpdateWorktaskInput(ctx context.Context, v interface{}) (ent.UpdateWorktaskInput, error) {
+func (ec *executionContext) unmarshalNUpdateWorktaskInput2mazzaᚋentᚋgeneratedᚐUpdateWorktaskInput(ctx context.Context, v interface{}) (generated.UpdateWorktaskInput, error) {
 	res, err := ec.unmarshalInputUpdateWorktaskInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUser2mazzaᚋentᚐUser(ctx context.Context, sel ast.SelectionSet, v ent.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2mazzaᚋentᚋgeneratedᚐUser(ctx context.Context, sel ast.SelectionSet, v generated.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.User) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54232,7 +56761,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2ᚖmazzaᚋentᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54252,7 +56781,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context
 	return ret
 }
 
-func (ec *executionContext) marshalNUser2ᚖmazzaᚋentᚐUser(ctx context.Context, sel ast.SelectionSet, v *ent.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx context.Context, sel ast.SelectionSet, v *generated.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54262,13 +56791,13 @@ func (ec *executionContext) marshalNUser2ᚖmazzaᚋentᚐUser(ctx context.Conte
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUserOrderField2ᚖmazzaᚋentᚐUserOrderField(ctx context.Context, v interface{}) (*ent.UserOrderField, error) {
-	var res = new(ent.UserOrderField)
+func (ec *executionContext) unmarshalNUserOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserOrderField(ctx context.Context, v interface{}) (*generated.UserOrderField, error) {
+	var res = new(generated.UserOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUserOrderField2ᚖmazzaᚋentᚐUserOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.UserOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNUserOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.UserOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54278,7 +56807,7 @@ func (ec *executionContext) marshalNUserOrderField2ᚖmazzaᚋentᚐUserOrderFie
 	return v
 }
 
-func (ec *executionContext) marshalNUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.UserRole) graphql.Marshaler {
+func (ec *executionContext) marshalNUserRole2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.UserRole) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54302,7 +56831,7 @@ func (ec *executionContext) marshalNUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUserRole2ᚖmazzaᚋentᚐUserRole(ctx, sel, v[i])
+			ret[i] = ec.marshalNUserRole2ᚖmazzaᚋentᚋgeneratedᚐUserRole(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54322,7 +56851,7 @@ func (ec *executionContext) marshalNUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNUserRole2ᚖmazzaᚋentᚐUserRole(ctx context.Context, sel ast.SelectionSet, v *ent.UserRole) graphql.Marshaler {
+func (ec *executionContext) marshalNUserRole2ᚖmazzaᚋentᚋgeneratedᚐUserRole(ctx context.Context, sel ast.SelectionSet, v *generated.UserRole) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54332,13 +56861,13 @@ func (ec *executionContext) marshalNUserRole2ᚖmazzaᚋentᚐUserRole(ctx conte
 	return ec._UserRole(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUserRoleOrderField2ᚖmazzaᚋentᚐUserRoleOrderField(ctx context.Context, v interface{}) (*ent.UserRoleOrderField, error) {
-	var res = new(ent.UserRoleOrderField)
+func (ec *executionContext) unmarshalNUserRoleOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserRoleOrderField(ctx context.Context, v interface{}) (*generated.UserRoleOrderField, error) {
+	var res = new(generated.UserRoleOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUserRoleOrderField2ᚖmazzaᚋentᚐUserRoleOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.UserRoleOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNUserRoleOrderField2ᚖmazzaᚋentᚋgeneratedᚐUserRoleOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.UserRoleOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54348,27 +56877,27 @@ func (ec *executionContext) marshalNUserRoleOrderField2ᚖmazzaᚋentᚐUserRole
 	return v
 }
 
-func (ec *executionContext) unmarshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx context.Context, v interface{}) (userrole.Role, error) {
+func (ec *executionContext) unmarshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx context.Context, v interface{}) (userrole.Role, error) {
 	var res userrole.Role
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx context.Context, sel ast.SelectionSet, v userrole.Role) graphql.Marshaler {
+func (ec *executionContext) marshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx context.Context, sel ast.SelectionSet, v userrole.Role) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNUserRoleWhereInput2ᚖmazzaᚋentᚐUserRoleWhereInput(ctx context.Context, v interface{}) (*ent.UserRoleWhereInput, error) {
+func (ec *executionContext) unmarshalNUserRoleWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInput(ctx context.Context, v interface{}) (*generated.UserRoleWhereInput, error) {
 	res, err := ec.unmarshalInputUserRoleWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUserWhereInput2ᚖmazzaᚋentᚐUserWhereInput(ctx context.Context, v interface{}) (*ent.UserWhereInput, error) {
+func (ec *executionContext) unmarshalNUserWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserWhereInput(ctx context.Context, v interface{}) (*generated.UserWhereInput, error) {
 	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWorkShiftAggregationPayloadᚄ(ctx context.Context, sel ast.SelectionSet, v []*WorkShiftAggregationPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐWorkShiftAggregationPayloadᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.WorkShiftAggregationPayload) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54392,7 +56921,7 @@ func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWo
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorkShiftAggregationPayload2ᚖmazzaᚐWorkShiftAggregationPayload(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorkShiftAggregationPayload2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐWorkShiftAggregationPayload(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54412,7 +56941,7 @@ func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚕᚖmazzaᚐWo
 	return ret
 }
 
-func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚖmazzaᚐWorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, v *WorkShiftAggregationPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐWorkShiftAggregationPayload(ctx context.Context, sel ast.SelectionSet, v *model.WorkShiftAggregationPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54422,11 +56951,11 @@ func (ec *executionContext) marshalNWorkShiftAggregationPayload2ᚖmazzaᚐWorkS
 	return ec._WorkShiftAggregationPayload(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNWorkshift2mazzaᚋentᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkshift2mazzaᚋentᚋgeneratedᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v generated.Workshift) graphql.Marshaler {
 	return ec._Workshift(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Workshift) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54450,7 +56979,7 @@ func (ec *executionContext) marshalNWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54470,7 +56999,7 @@ func (ec *executionContext) marshalNWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(c
 	return ret
 }
 
-func (ec *executionContext) marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v *ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v *generated.Workshift) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54480,13 +57009,13 @@ func (ec *executionContext) marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx con
 	return ec._Workshift(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx context.Context, v interface{}) (*ent.WorkshiftOrderField, error) {
-	var res = new(ent.WorkshiftOrderField)
+func (ec *executionContext) unmarshalNWorkshiftOrderField2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftOrderField(ctx context.Context, v interface{}) (*generated.WorkshiftOrderField, error) {
+	var res = new(generated.WorkshiftOrderField)
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshiftOrderField(ctx context.Context, sel ast.SelectionSet, v *ent.WorkshiftOrderField) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkshiftOrderField2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.WorkshiftOrderField) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54496,26 +57025,26 @@ func (ec *executionContext) marshalNWorkshiftOrderField2ᚖmazzaᚋentᚐWorkshi
 	return v
 }
 
-func (ec *executionContext) unmarshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx context.Context, v interface{}) (workshift.Status, error) {
+func (ec *executionContext) unmarshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx context.Context, v interface{}) (workshift.Status, error) {
 	var res workshift.Status
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx context.Context, sel ast.SelectionSet, v workshift.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx context.Context, sel ast.SelectionSet, v workshift.Status) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx context.Context, v interface{}) (*ent.WorkshiftWhereInput, error) {
+func (ec *executionContext) unmarshalNWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx context.Context, v interface{}) (*generated.WorkshiftWhereInput, error) {
 	res, err := ec.unmarshalInputWorkshiftWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorktag2mazzaᚋentᚐWorktag(ctx context.Context, sel ast.SelectionSet, v ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktag2mazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v generated.Worktag) graphql.Marshaler {
 	return ec._Worktag(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktag) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54539,7 +57068,7 @@ func (ec *executionContext) marshalNWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚐWorktag(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54559,7 +57088,7 @@ func (ec *executionContext) marshalNWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalNWorktag2ᚖmazzaᚋentᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *generated.Worktag) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54569,16 +57098,16 @@ func (ec *executionContext) marshalNWorktag2ᚖmazzaᚋentᚐWorktag(ctx context
 	return ec._Worktag(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚐWorktagWhereInput(ctx context.Context, v interface{}) (*ent.WorktagWhereInput, error) {
+func (ec *executionContext) unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx context.Context, v interface{}) (*generated.WorktagWhereInput, error) {
 	res, err := ec.unmarshalInputWorktagWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorktask2mazzaᚋentᚐWorktask(ctx context.Context, sel ast.SelectionSet, v ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktask2mazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v generated.Worktask) graphql.Marshaler {
 	return ec._Worktask(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktask) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -54602,7 +57131,7 @@ func (ec *executionContext) marshalNWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚐWorktask(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54622,7 +57151,7 @@ func (ec *executionContext) marshalNWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalNWorktask2ᚖmazzaᚋentᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *generated.Worktask) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -54632,17 +57161,17 @@ func (ec *executionContext) marshalNWorktask2ᚖmazzaᚋentᚐWorktask(ctx conte
 	return ec._Worktask(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx context.Context, v interface{}) (worktask.Status, error) {
+func (ec *executionContext) unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, v interface{}) (worktask.Status, error) {
 	var res worktask.Status
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v worktask.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v worktask.Status) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*ent.WorktaskWhereInput, error) {
+func (ec *executionContext) unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*generated.WorktaskWhereInput, error) {
 	res, err := ec.unmarshalInputWorktaskWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
@@ -54900,12 +57429,12 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) unmarshalNinvitedUserSignupInput2mazzaᚐInvitedUserSignupInput(ctx context.Context, v interface{}) (InvitedUserSignupInput, error) {
+func (ec *executionContext) unmarshalNinvitedUserSignupInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐInvitedUserSignupInput(ctx context.Context, v interface{}) (model.InvitedUserSignupInput, error) {
 	res, err := ec.unmarshalInputinvitedUserSignupInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOAccountingEntry2ᚕᚖmazzaᚋentᚐAccountingEntryᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.AccountingEntry) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntry2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.AccountingEntry) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -54932,7 +57461,7 @@ func (ec *executionContext) marshalOAccountingEntry2ᚕᚖmazzaᚋentᚐAccounti
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNAccountingEntry2ᚖmazzaᚋentᚐAccountingEntry(ctx, sel, v[i])
+			ret[i] = ec.marshalNAccountingEntry2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntry(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -54952,14 +57481,14 @@ func (ec *executionContext) marshalOAccountingEntry2ᚕᚖmazzaᚋentᚐAccounti
 	return ret
 }
 
-func (ec *executionContext) marshalOAccountingEntry2ᚖmazzaᚋentᚐAccountingEntry(ctx context.Context, sel ast.SelectionSet, v *ent.AccountingEntry) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntry2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntry(ctx context.Context, sel ast.SelectionSet, v *generated.AccountingEntry) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._AccountingEntry(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋaccountingentryᚐAccountTypeᚄ(ctx context.Context, v interface{}) ([]accountingentry.AccountType, error) {
+func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountTypeᚄ(ctx context.Context, v interface{}) ([]accountingentry.AccountType, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -54971,7 +57500,7 @@ func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚕmazzaᚋent�
 	res := make([]accountingentry.AccountType, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -54979,7 +57508,7 @@ func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚕmazzaᚋent�
 	return res, nil
 }
 
-func (ec *executionContext) marshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋaccountingentryᚐAccountTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []accountingentry.AccountType) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountTypeᚄ(ctx context.Context, sel ast.SelectionSet, v []accountingentry.AccountType) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55006,7 +57535,7 @@ func (ec *executionContext) marshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNAccountingEntryAccountType2mazzaᚋentᚋaccountingentryᚐAccountType(ctx, sel, v[i])
+			ret[i] = ec.marshalNAccountingEntryAccountType2mazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55026,7 +57555,7 @@ func (ec *executionContext) marshalOAccountingEntryAccountType2ᚕmazzaᚋentᚋ
 	return ret
 }
 
-func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋaccountingentryᚐAccountType(ctx context.Context, v interface{}) (*accountingentry.AccountType, error) {
+func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, v interface{}) (*accountingentry.AccountType, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55035,14 +57564,14 @@ func (ec *executionContext) unmarshalOAccountingEntryAccountType2ᚖmazzaᚋent�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋaccountingentryᚐAccountType(ctx context.Context, sel ast.SelectionSet, v *accountingentry.AccountType) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntryAccountType2ᚖmazzaᚋentᚋgeneratedᚋaccountingentryᚐAccountType(ctx context.Context, sel ast.SelectionSet, v *accountingentry.AccountType) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚐAccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.AccountingEntryEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.AccountingEntryEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55069,7 +57598,7 @@ func (ec *executionContext) marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚐAcco
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOAccountingEntryEdge2ᚖmazzaᚋentᚐAccountingEntryEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalOAccountingEntryEdge2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55083,14 +57612,14 @@ func (ec *executionContext) marshalOAccountingEntryEdge2ᚕᚖmazzaᚋentᚐAcco
 	return ret
 }
 
-func (ec *executionContext) marshalOAccountingEntryEdge2ᚖmazzaᚋentᚐAccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, v *ent.AccountingEntryEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOAccountingEntryEdge2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryEdge(ctx context.Context, sel ast.SelectionSet, v *generated.AccountingEntryEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._AccountingEntryEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOAccountingEntryOrder2ᚖmazzaᚋentᚐAccountingEntryOrder(ctx context.Context, v interface{}) (*ent.AccountingEntryOrder, error) {
+func (ec *executionContext) unmarshalOAccountingEntryOrder2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryOrder(ctx context.Context, v interface{}) (*generated.AccountingEntryOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55098,7 +57627,7 @@ func (ec *executionContext) unmarshalOAccountingEntryOrder2ᚖmazzaᚋentᚐAcco
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚐAccountingEntryWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.AccountingEntryWhereInput, error) {
+func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.AccountingEntryWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55107,10 +57636,10 @@ func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋen
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.AccountingEntryWhereInput, len(vSlice))
+	res := make([]*generated.AccountingEntryWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNAccountingEntryWhereInput2ᚖmazzaᚋentᚐAccountingEntryWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNAccountingEntryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55118,7 +57647,7 @@ func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋen
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚐAccountingEntryWhereInput(ctx context.Context, v interface{}) (*ent.AccountingEntryWhereInput, error) {
+func (ec *executionContext) unmarshalOAccountingEntryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInput(ctx context.Context, v interface{}) (*generated.AccountingEntryWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55152,7 +57681,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOCashMovement2ᚕᚖmazzaᚋentᚐCashMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.CashMovement) graphql.Marshaler {
+func (ec *executionContext) marshalOCashMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.CashMovement) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55179,7 +57708,7 @@ func (ec *executionContext) marshalOCashMovement2ᚕᚖmazzaᚋentᚐCashMovemen
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCashMovement2ᚖmazzaᚋentᚐCashMovement(ctx, sel, v[i])
+			ret[i] = ec.marshalNCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55199,14 +57728,14 @@ func (ec *executionContext) marshalOCashMovement2ᚕᚖmazzaᚋentᚐCashMovemen
 	return ret
 }
 
-func (ec *executionContext) marshalOCashMovement2ᚖmazzaᚋentᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *ent.CashMovement) graphql.Marshaler {
+func (ec *executionContext) marshalOCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovement) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._CashMovement(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.CashMovementEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.CashMovementEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55233,7 +57762,7 @@ func (ec *executionContext) marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚐCashMov
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOCashMovementEdge2ᚖmazzaᚋentᚐCashMovementEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalOCashMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55247,14 +57776,14 @@ func (ec *executionContext) marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚐCashMov
 	return ret
 }
 
-func (ec *executionContext) marshalOCashMovementEdge2ᚖmazzaᚋentᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v *ent.CashMovementEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOCashMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovementEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._CashMovementEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚐCashMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CashMovementWhereInput, error) {
+func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.CashMovementWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55263,10 +57792,10 @@ func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋent�
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.CashMovementWhereInput, len(vSlice))
+	res := make([]*generated.CashMovementWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚐCashMovementWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55274,7 +57803,7 @@ func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋent�
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*ent.CashMovementWhereInput, error) {
+func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*generated.CashMovementWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55282,7 +57811,7 @@ func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚐCa
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Company) graphql.Marshaler {
+func (ec *executionContext) marshalOCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Company) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55309,7 +57838,7 @@ func (ec *executionContext) marshalOCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCompany2ᚖmazzaᚋentᚐCompany(ctx, sel, v[i])
+			ret[i] = ec.marshalNCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55329,14 +57858,14 @@ func (ec *executionContext) marshalOCompany2ᚕᚖmazzaᚋentᚐCompanyᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalOCompany2ᚖmazzaᚋentᚐCompany(ctx context.Context, sel ast.SelectionSet, v *ent.Company) graphql.Marshaler {
+func (ec *executionContext) marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx context.Context, sel ast.SelectionSet, v *generated.Company) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Company(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐCompanyWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CompanyWhereInput, error) {
+func (ec *executionContext) unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.CompanyWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55345,10 +57874,10 @@ func (ec *executionContext) unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐComp
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.CompanyWhereInput, len(vSlice))
+	res := make([]*generated.CompanyWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNCompanyWhereInput2ᚖmazzaᚋentᚐCompanyWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNCompanyWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55356,7 +57885,7 @@ func (ec *executionContext) unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚐComp
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚐCompanyWhereInput(ctx context.Context, v interface{}) (*ent.CompanyWhereInput, error) {
+func (ec *executionContext) unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInput(ctx context.Context, v interface{}) (*generated.CompanyWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55364,7 +57893,7 @@ func (ec *executionContext) unmarshalOCompanyWhereInput2ᚖmazzaᚋentᚐCompany
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOCreateCompanyInput2ᚖmazzaᚋentᚐCreateCompanyInput(ctx context.Context, v interface{}) (*ent.CreateCompanyInput, error) {
+func (ec *executionContext) unmarshalOCreateCompanyInput2ᚖmazzaᚋentᚋgeneratedᚐCreateCompanyInput(ctx context.Context, v interface{}) (*generated.CreateCompanyInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55388,7 +57917,7 @@ func (ec *executionContext) marshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCu
 	return v
 }
 
-func (ec *executionContext) marshalOCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Customer) graphql.Marshaler {
+func (ec *executionContext) marshalOCustomer2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Customer) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55415,7 +57944,7 @@ func (ec *executionContext) marshalOCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCustomer2ᚖmazzaᚋentᚐCustomer(ctx, sel, v[i])
+			ret[i] = ec.marshalNCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55435,14 +57964,14 @@ func (ec *executionContext) marshalOCustomer2ᚕᚖmazzaᚋentᚐCustomerᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalOCustomer2ᚖmazzaᚋentᚐCustomer(ctx context.Context, sel ast.SelectionSet, v *ent.Customer) graphql.Marshaler {
+func (ec *executionContext) marshalOCustomer2ᚖmazzaᚋentᚋgeneratedᚐCustomer(ctx context.Context, sel ast.SelectionSet, v *generated.Customer) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Customer(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCustomerWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.CustomerWhereInput, error) {
+func (ec *executionContext) unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.CustomerWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55451,10 +57980,10 @@ func (ec *executionContext) unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCus
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.CustomerWhereInput, len(vSlice))
+	res := make([]*generated.CustomerWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNCustomerWhereInput2ᚖmazzaᚋentᚐCustomerWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNCustomerWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55462,7 +57991,7 @@ func (ec *executionContext) unmarshalOCustomerWhereInput2ᚕᚖmazzaᚋentᚐCus
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚐCustomerWhereInput(ctx context.Context, v interface{}) (*ent.CustomerWhereInput, error) {
+func (ec *executionContext) unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCustomerWhereInput(ctx context.Context, v interface{}) (*generated.CustomerWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55470,7 +57999,7 @@ func (ec *executionContext) unmarshalOCustomerWhereInput2ᚖmazzaᚋentᚐCustom
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Employee) graphql.Marshaler {
+func (ec *executionContext) marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Employee) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55497,7 +58026,7 @@ func (ec *executionContext) marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNEmployee2ᚖmazzaᚋentᚐEmployee(ctx, sel, v[i])
+			ret[i] = ec.marshalNEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55517,14 +58046,14 @@ func (ec *executionContext) marshalOEmployee2ᚕᚖmazzaᚋentᚐEmployeeᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalOEmployee2ᚖmazzaᚋentᚐEmployee(ctx context.Context, sel ast.SelectionSet, v *ent.Employee) graphql.Marshaler {
+func (ec *executionContext) marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx context.Context, sel ast.SelectionSet, v *generated.Employee) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Employee(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐGenderᚄ(ctx context.Context, v interface{}) ([]employee.Gender, error) {
+func (ec *executionContext) unmarshalOEmployeeGender2ᚕmazzaᚋentᚋgeneratedᚋemployeeᚐGenderᚄ(ctx context.Context, v interface{}) ([]employee.Gender, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55536,7 +58065,7 @@ func (ec *executionContext) unmarshalOEmployeeGender2ᚕmazzaᚋentᚋemployee�
 	res := make([]employee.Gender, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55544,7 +58073,7 @@ func (ec *executionContext) unmarshalOEmployeeGender2ᚕmazzaᚋentᚋemployee�
 	return res, nil
 }
 
-func (ec *executionContext) marshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐGenderᚄ(ctx context.Context, sel ast.SelectionSet, v []employee.Gender) graphql.Marshaler {
+func (ec *executionContext) marshalOEmployeeGender2ᚕmazzaᚋentᚋgeneratedᚋemployeeᚐGenderᚄ(ctx context.Context, sel ast.SelectionSet, v []employee.Gender) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55571,7 +58100,7 @@ func (ec *executionContext) marshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐG
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNEmployeeGender2mazzaᚋentᚋemployeeᚐGender(ctx, sel, v[i])
+			ret[i] = ec.marshalNEmployeeGender2mazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55591,7 +58120,7 @@ func (ec *executionContext) marshalOEmployeeGender2ᚕmazzaᚋentᚋemployeeᚐG
 	return ret
 }
 
-func (ec *executionContext) unmarshalOEmployeeGender2ᚖmazzaᚋentᚋemployeeᚐGender(ctx context.Context, v interface{}) (*employee.Gender, error) {
+func (ec *executionContext) unmarshalOEmployeeGender2ᚖmazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx context.Context, v interface{}) (*employee.Gender, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55600,14 +58129,14 @@ func (ec *executionContext) unmarshalOEmployeeGender2ᚖmazzaᚋentᚋemployee�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOEmployeeGender2ᚖmazzaᚋentᚋemployeeᚐGender(ctx context.Context, sel ast.SelectionSet, v *employee.Gender) graphql.Marshaler {
+func (ec *executionContext) marshalOEmployeeGender2ᚖmazzaᚋentᚋgeneratedᚋemployeeᚐGender(ctx context.Context, sel ast.SelectionSet, v *employee.Gender) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmployeeWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.EmployeeWhereInput, error) {
+func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.EmployeeWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55616,10 +58145,10 @@ func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmp
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.EmployeeWhereInput, len(vSlice))
+	res := make([]*generated.EmployeeWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNEmployeeWhereInput2ᚖmazzaᚋentᚐEmployeeWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNEmployeeWhereInput2ᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55627,7 +58156,7 @@ func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚐEmp
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚐEmployeeWhereInput(ctx context.Context, v interface{}) (*ent.EmployeeWhereInput, error) {
+func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInput(ctx context.Context, v interface{}) (*generated.EmployeeWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55635,7 +58164,27 @@ func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚐEmploy
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFile2ᚕᚖmazzaᚋentᚐFileᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.File) graphql.Marshaler {
+func (ec *executionContext) unmarshalOEntryTreasuryInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInputᚄ(ctx context.Context, v interface{}) ([]*model.EntryTreasuryInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.EntryTreasuryInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNEntryTreasuryInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOFile2ᚕᚖmazzaᚋentᚋgeneratedᚐFileᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.File) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55662,7 +58211,7 @@ func (ec *executionContext) marshalOFile2ᚕᚖmazzaᚋentᚐFileᚄ(ctx context
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNFile2ᚖmazzaᚋentᚐFile(ctx, sel, v[i])
+			ret[i] = ec.marshalNFile2ᚖmazzaᚋentᚋgeneratedᚐFile(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55682,14 +58231,14 @@ func (ec *executionContext) marshalOFile2ᚕᚖmazzaᚋentᚐFileᚄ(ctx context
 	return ret
 }
 
-func (ec *executionContext) marshalOFile2ᚖmazzaᚋentᚐFile(ctx context.Context, sel ast.SelectionSet, v *ent.File) graphql.Marshaler {
+func (ec *executionContext) marshalOFile2ᚖmazzaᚋentᚋgeneratedᚐFile(ctx context.Context, sel ast.SelectionSet, v *generated.File) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._File(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategoryᚄ(ctx context.Context, v interface{}) ([]file.Category, error) {
+func (ec *executionContext) unmarshalOFileCategory2ᚕmazzaᚋentᚋgeneratedᚋfileᚐCategoryᚄ(ctx context.Context, v interface{}) ([]file.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55701,7 +58250,7 @@ func (ec *executionContext) unmarshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCateg
 	res := make([]file.Category, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55709,7 +58258,7 @@ func (ec *executionContext) unmarshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCateg
 	return res, nil
 }
 
-func (ec *executionContext) marshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []file.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOFileCategory2ᚕmazzaᚋentᚋgeneratedᚋfileᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []file.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55736,7 +58285,7 @@ func (ec *executionContext) marshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategor
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNFileCategory2mazzaᚋentᚋfileᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55756,7 +58305,7 @@ func (ec *executionContext) marshalOFileCategory2ᚕmazzaᚋentᚋfileᚐCategor
 	return ret
 }
 
-func (ec *executionContext) unmarshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCategory(ctx context.Context, v interface{}) (*file.Category, error) {
+func (ec *executionContext) unmarshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx context.Context, v interface{}) (*file.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55765,14 +58314,14 @@ func (ec *executionContext) unmarshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCateg
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFileCategory2ᚖmazzaᚋentᚋfileᚐCategory(ctx context.Context, sel ast.SelectionSet, v *file.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx context.Context, sel ast.SelectionSet, v *file.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) marshalOFileEdge2ᚕᚖmazzaᚋentᚐFileEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.FileEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOFileEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐFileEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.FileEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -55799,7 +58348,7 @@ func (ec *executionContext) marshalOFileEdge2ᚕᚖmazzaᚋentᚐFileEdge(ctx co
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOFileEdge2ᚖmazzaᚋentᚐFileEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalOFileEdge2ᚖmazzaᚋentᚋgeneratedᚐFileEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -55813,14 +58362,14 @@ func (ec *executionContext) marshalOFileEdge2ᚕᚖmazzaᚋentᚐFileEdge(ctx co
 	return ret
 }
 
-func (ec *executionContext) marshalOFileEdge2ᚖmazzaᚋentᚐFileEdge(ctx context.Context, sel ast.SelectionSet, v *ent.FileEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOFileEdge2ᚖmazzaᚋentᚋgeneratedᚐFileEdge(ctx context.Context, sel ast.SelectionSet, v *generated.FileEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._FileEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOFileOrder2ᚖmazzaᚋentᚐFileOrder(ctx context.Context, v interface{}) (*ent.FileOrder, error) {
+func (ec *executionContext) unmarshalOFileOrder2ᚖmazzaᚋentᚋgeneratedᚐFileOrder(ctx context.Context, v interface{}) (*generated.FileOrder, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55828,7 +58377,7 @@ func (ec *executionContext) unmarshalOFileOrder2ᚖmazzaᚋentᚐFileOrder(ctx c
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.FileWhereInput, error) {
+func (ec *executionContext) unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐFileWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.FileWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -55837,10 +58386,10 @@ func (ec *executionContext) unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhe
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.FileWhereInput, len(vSlice))
+	res := make([]*generated.FileWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNFileWhereInput2ᚖmazzaᚋentᚐFileWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNFileWhereInput2ᚖmazzaᚋentᚋgeneratedᚐFileWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -55848,7 +58397,7 @@ func (ec *executionContext) unmarshalOFileWhereInput2ᚕᚖmazzaᚋentᚐFileWhe
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOFileWhereInput2ᚖmazzaᚋentᚐFileWhereInput(ctx context.Context, v interface{}) (*ent.FileWhereInput, error) {
+func (ec *executionContext) unmarshalOFileWhereInput2ᚖmazzaᚋentᚋgeneratedᚐFileWhereInput(ctx context.Context, v interface{}) (*generated.FileWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56082,14 +58631,14 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalONode2mazzaᚋentᚐNoder(ctx context.Context, sel ast.SelectionSet, v ent.Noder) graphql.Marshaler {
+func (ec *executionContext) marshalONode2mazzaᚋentᚋgeneratedᚐNoder(ctx context.Context, sel ast.SelectionSet, v generated.Noder) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Node(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Payable) graphql.Marshaler {
+func (ec *executionContext) marshalOPayable2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Payable) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56116,7 +58665,7 @@ func (ec *executionContext) marshalOPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPayable2ᚖmazzaᚋentᚐPayable(ctx, sel, v[i])
+			ret[i] = ec.marshalNPayable2ᚖmazzaᚋentᚋgeneratedᚐPayable(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56136,7 +58685,7 @@ func (ec *executionContext) marshalOPayable2ᚕᚖmazzaᚋentᚐPayableᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) unmarshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐStatusᚄ(ctx context.Context, v interface{}) ([]payable.Status, error) {
+func (ec *executionContext) unmarshalOPayableStatus2ᚕmazzaᚋentᚋgeneratedᚋpayableᚐStatusᚄ(ctx context.Context, v interface{}) ([]payable.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56148,7 +58697,7 @@ func (ec *executionContext) unmarshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐS
 	res := make([]payable.Status, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56156,7 +58705,7 @@ func (ec *executionContext) unmarshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐS
 	return res, nil
 }
 
-func (ec *executionContext) marshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []payable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOPayableStatus2ᚕmazzaᚋentᚋgeneratedᚋpayableᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []payable.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56183,7 +58732,7 @@ func (ec *executionContext) marshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐSta
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPayableStatus2mazzaᚋentᚋpayableᚐStatus(ctx, sel, v[i])
+			ret[i] = ec.marshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56203,7 +58752,7 @@ func (ec *executionContext) marshalOPayableStatus2ᚕmazzaᚋentᚋpayableᚐSta
 	return ret
 }
 
-func (ec *executionContext) unmarshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐStatus(ctx context.Context, v interface{}) (*payable.Status, error) {
+func (ec *executionContext) unmarshalOPayableStatus2ᚖmazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx context.Context, v interface{}) (*payable.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56212,14 +58761,14 @@ func (ec *executionContext) unmarshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐS
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOPayableStatus2ᚖmazzaᚋentᚋpayableᚐStatus(ctx context.Context, sel ast.SelectionSet, v *payable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOPayableStatus2ᚖmazzaᚋentᚋgeneratedᚋpayableᚐStatus(ctx context.Context, sel ast.SelectionSet, v *payable.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPayableWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.PayableWhereInput, error) {
+func (ec *executionContext) unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.PayableWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56228,10 +58777,10 @@ func (ec *executionContext) unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPaya
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.PayableWhereInput, len(vSlice))
+	res := make([]*generated.PayableWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNPayableWhereInput2ᚖmazzaᚋentᚐPayableWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56239,7 +58788,7 @@ func (ec *executionContext) unmarshalOPayableWhereInput2ᚕᚖmazzaᚋentᚐPaya
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOPayableWhereInput2ᚖmazzaᚋentᚐPayableWhereInput(ctx context.Context, v interface{}) (*ent.PayableWhereInput, error) {
+func (ec *executionContext) unmarshalOPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx context.Context, v interface{}) (*generated.PayableWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56247,7 +58796,7 @@ func (ec *executionContext) unmarshalOPayableWhereInput2ᚖmazzaᚋentᚐPayable
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Product) graphql.Marshaler {
+func (ec *executionContext) marshalOProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Product) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56274,7 +58823,7 @@ func (ec *executionContext) marshalOProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProduct2ᚖmazzaᚋentᚐProduct(ctx, sel, v[i])
+			ret[i] = ec.marshalNProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56294,14 +58843,14 @@ func (ec *executionContext) marshalOProduct2ᚕᚖmazzaᚋentᚐProductᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalOProduct2ᚖmazzaᚋentᚐProduct(ctx context.Context, sel ast.SelectionSet, v *ent.Product) graphql.Marshaler {
+func (ec *executionContext) marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx context.Context, sel ast.SelectionSet, v *generated.Product) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Product(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOProductCategory2ᚕmazzaᚋentᚋproductᚐCategoryᚄ(ctx context.Context, v interface{}) ([]product.Category, error) {
+func (ec *executionContext) unmarshalOProductCategory2ᚕmazzaᚋentᚋgeneratedᚋproductᚐCategoryᚄ(ctx context.Context, v interface{}) ([]product.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56313,7 +58862,7 @@ func (ec *executionContext) unmarshalOProductCategory2ᚕmazzaᚋentᚋproduct�
 	res := make([]product.Category, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56321,7 +58870,7 @@ func (ec *executionContext) unmarshalOProductCategory2ᚕmazzaᚋentᚋproduct�
 	return res, nil
 }
 
-func (ec *executionContext) marshalOProductCategory2ᚕmazzaᚋentᚋproductᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []product.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOProductCategory2ᚕmazzaᚋentᚋgeneratedᚋproductᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []product.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56348,7 +58897,7 @@ func (ec *executionContext) marshalOProductCategory2ᚕmazzaᚋentᚋproductᚐC
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProductCategory2mazzaᚋentᚋproductᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56368,7 +58917,7 @@ func (ec *executionContext) marshalOProductCategory2ᚕmazzaᚋentᚋproductᚐC
 	return ret
 }
 
-func (ec *executionContext) unmarshalOProductCategory2ᚖmazzaᚋentᚋproductᚐCategory(ctx context.Context, v interface{}) (*product.Category, error) {
+func (ec *executionContext) unmarshalOProductCategory2ᚖmazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx context.Context, v interface{}) (*product.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56377,14 +58926,14 @@ func (ec *executionContext) unmarshalOProductCategory2ᚖmazzaᚋentᚋproduct�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOProductCategory2ᚖmazzaᚋentᚋproductᚐCategory(ctx context.Context, sel ast.SelectionSet, v *product.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOProductCategory2ᚖmazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx context.Context, sel ast.SelectionSet, v *product.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) marshalOProductMovement2ᚕᚖmazzaᚋentᚐProductMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.ProductMovement) graphql.Marshaler {
+func (ec *executionContext) marshalOProductMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.ProductMovement) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56411,7 +58960,7 @@ func (ec *executionContext) marshalOProductMovement2ᚕᚖmazzaᚋentᚐProductM
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProductMovement2ᚖmazzaᚋentᚐProductMovement(ctx, sel, v[i])
+			ret[i] = ec.marshalNProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56431,14 +58980,14 @@ func (ec *executionContext) marshalOProductMovement2ᚕᚖmazzaᚋentᚐProductM
 	return ret
 }
 
-func (ec *executionContext) marshalOProductMovement2ᚖmazzaᚋentᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *ent.ProductMovement) graphql.Marshaler {
+func (ec *executionContext) marshalOProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovement) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._ProductMovement(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.ProductMovementEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.ProductMovementEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56465,7 +59014,7 @@ func (ec *executionContext) marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚐProd
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOProductMovementEdge2ᚖmazzaᚋentᚐProductMovementEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalOProductMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56479,14 +59028,14 @@ func (ec *executionContext) marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚐProd
 	return ret
 }
 
-func (ec *executionContext) marshalOProductMovementEdge2ᚖmazzaᚋentᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v *ent.ProductMovementEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOProductMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovementEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._ProductMovementEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚐProductMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.ProductMovementWhereInput, error) {
+func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.ProductMovementWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56495,10 +59044,10 @@ func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋen
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.ProductMovementWhereInput, len(vSlice))
+	res := make([]*generated.ProductMovementWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚐProductMovementWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56506,7 +59055,7 @@ func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋen
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*ent.ProductMovementWhereInput, error) {
+func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*generated.ProductMovementWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56514,7 +59063,7 @@ func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚖmazzaᚋent�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProductWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.ProductWhereInput, error) {
+func (ec *executionContext) unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.ProductWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56523,10 +59072,10 @@ func (ec *executionContext) unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProd
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.ProductWhereInput, len(vSlice))
+	res := make([]*generated.ProductWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56534,7 +59083,7 @@ func (ec *executionContext) unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚐProd
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProductWhereInput(ctx context.Context, v interface{}) (*ent.ProductWhereInput, error) {
+func (ec *executionContext) unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductWhereInput(ctx context.Context, v interface{}) (*generated.ProductWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56542,7 +59091,7 @@ func (ec *executionContext) unmarshalOProductWhereInput2ᚖmazzaᚋentᚐProduct
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOReceivable2ᚕᚖmazzaᚋentᚐReceivableᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Receivable) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivable2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Receivable) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56569,7 +59118,7 @@ func (ec *executionContext) marshalOReceivable2ᚕᚖmazzaᚋentᚐReceivableᚄ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNReceivable2ᚖmazzaᚋentᚐReceivable(ctx, sel, v[i])
+			ret[i] = ec.marshalNReceivable2ᚖmazzaᚋentᚋgeneratedᚐReceivable(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56589,14 +59138,14 @@ func (ec *executionContext) marshalOReceivable2ᚕᚖmazzaᚋentᚐReceivableᚄ
 	return ret
 }
 
-func (ec *executionContext) marshalOReceivable2ᚖmazzaᚋentᚐReceivable(ctx context.Context, sel ast.SelectionSet, v *ent.Receivable) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivable2ᚖmazzaᚋentᚋgeneratedᚐReceivable(ctx context.Context, sel ast.SelectionSet, v *generated.Receivable) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Receivable(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOReceivableEdge2ᚕᚖmazzaᚋentᚐReceivableEdge(ctx context.Context, sel ast.SelectionSet, v []*ent.ReceivableEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivableEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.ReceivableEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56623,7 +59172,7 @@ func (ec *executionContext) marshalOReceivableEdge2ᚕᚖmazzaᚋentᚐReceivabl
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOReceivableEdge2ᚖmazzaᚋentᚐReceivableEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalOReceivableEdge2ᚖmazzaᚋentᚋgeneratedᚐReceivableEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56637,14 +59186,14 @@ func (ec *executionContext) marshalOReceivableEdge2ᚕᚖmazzaᚋentᚐReceivabl
 	return ret
 }
 
-func (ec *executionContext) marshalOReceivableEdge2ᚖmazzaᚋentᚐReceivableEdge(ctx context.Context, sel ast.SelectionSet, v *ent.ReceivableEdge) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivableEdge2ᚖmazzaᚋentᚋgeneratedᚐReceivableEdge(ctx context.Context, sel ast.SelectionSet, v *generated.ReceivableEdge) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._ReceivableEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOReceivableStatus2ᚕmazzaᚋentᚋreceivableᚐStatusᚄ(ctx context.Context, v interface{}) ([]receivable.Status, error) {
+func (ec *executionContext) unmarshalOReceivableStatus2ᚕmazzaᚋentᚋgeneratedᚋreceivableᚐStatusᚄ(ctx context.Context, v interface{}) ([]receivable.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56656,7 +59205,7 @@ func (ec *executionContext) unmarshalOReceivableStatus2ᚕmazzaᚋentᚋreceivab
 	res := make([]receivable.Status, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56664,7 +59213,7 @@ func (ec *executionContext) unmarshalOReceivableStatus2ᚕmazzaᚋentᚋreceivab
 	return res, nil
 }
 
-func (ec *executionContext) marshalOReceivableStatus2ᚕmazzaᚋentᚋreceivableᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []receivable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivableStatus2ᚕmazzaᚋentᚋgeneratedᚋreceivableᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []receivable.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56691,7 +59240,7 @@ func (ec *executionContext) marshalOReceivableStatus2ᚕmazzaᚋentᚋreceivable
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNReceivableStatus2mazzaᚋentᚋreceivableᚐStatus(ctx, sel, v[i])
+			ret[i] = ec.marshalNReceivableStatus2mazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56711,7 +59260,7 @@ func (ec *executionContext) marshalOReceivableStatus2ᚕmazzaᚋentᚋreceivable
 	return ret
 }
 
-func (ec *executionContext) unmarshalOReceivableStatus2ᚖmazzaᚋentᚋreceivableᚐStatus(ctx context.Context, v interface{}) (*receivable.Status, error) {
+func (ec *executionContext) unmarshalOReceivableStatus2ᚖmazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx context.Context, v interface{}) (*receivable.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56720,14 +59269,14 @@ func (ec *executionContext) unmarshalOReceivableStatus2ᚖmazzaᚋentᚋreceivab
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOReceivableStatus2ᚖmazzaᚋentᚋreceivableᚐStatus(ctx context.Context, sel ast.SelectionSet, v *receivable.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOReceivableStatus2ᚖmazzaᚋentᚋgeneratedᚋreceivableᚐStatus(ctx context.Context, sel ast.SelectionSet, v *receivable.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐReceivableWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.ReceivableWhereInput, error) {
+func (ec *executionContext) unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.ReceivableWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56736,10 +59285,10 @@ func (ec *executionContext) unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐR
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.ReceivableWhereInput, len(vSlice))
+	res := make([]*generated.ReceivableWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNReceivableWhereInput2ᚖmazzaᚋentᚐReceivableWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNReceivableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56747,7 +59296,7 @@ func (ec *executionContext) unmarshalOReceivableWhereInput2ᚕᚖmazzaᚋentᚐR
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚐReceivableWhereInput(ctx context.Context, v interface{}) (*ent.ReceivableWhereInput, error) {
+func (ec *executionContext) unmarshalOReceivableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐReceivableWhereInput(ctx context.Context, v interface{}) (*generated.ReceivableWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56819,7 +59368,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalOSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) marshalOSupplier2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Supplier) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56846,7 +59395,7 @@ func (ec *executionContext) marshalOSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNSupplier2ᚖmazzaᚋentᚐSupplier(ctx, sel, v[i])
+			ret[i] = ec.marshalNSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -56866,14 +59415,14 @@ func (ec *executionContext) marshalOSupplier2ᚕᚖmazzaᚋentᚐSupplierᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalOSupplier2ᚖmazzaᚋentᚐSupplier(ctx context.Context, sel ast.SelectionSet, v *ent.Supplier) graphql.Marshaler {
+func (ec *executionContext) marshalOSupplier2ᚖmazzaᚋentᚋgeneratedᚐSupplier(ctx context.Context, sel ast.SelectionSet, v *generated.Supplier) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Supplier(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSupplierWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.SupplierWhereInput, error) {
+func (ec *executionContext) unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.SupplierWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56882,10 +59431,10 @@ func (ec *executionContext) unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSup
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.SupplierWhereInput, len(vSlice))
+	res := make([]*generated.SupplierWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNSupplierWhereInput2ᚖmazzaᚋentᚐSupplierWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNSupplierWhereInput2ᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -56893,7 +59442,7 @@ func (ec *executionContext) unmarshalOSupplierWhereInput2ᚕᚖmazzaᚋentᚐSup
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚐSupplierWhereInput(ctx context.Context, v interface{}) (*ent.SupplierWhereInput, error) {
+func (ec *executionContext) unmarshalOSupplierWhereInput2ᚖmazzaᚋentᚋgeneratedᚐSupplierWhereInput(ctx context.Context, v interface{}) (*generated.SupplierWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -56965,7 +59514,7 @@ func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel
 	return res
 }
 
-func (ec *executionContext) marshalOToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Token) graphql.Marshaler {
+func (ec *executionContext) marshalOToken2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Token) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -56992,7 +59541,7 @@ func (ec *executionContext) marshalOToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx conte
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNToken2ᚖmazzaᚋentᚐToken(ctx, sel, v[i])
+			ret[i] = ec.marshalNToken2ᚖmazzaᚋentᚋgeneratedᚐToken(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57012,7 +59561,7 @@ func (ec *executionContext) marshalOToken2ᚕᚖmazzaᚋentᚐTokenᚄ(ctx conte
 	return ret
 }
 
-func (ec *executionContext) unmarshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCategoryᚄ(ctx context.Context, v interface{}) ([]token.Category, error) {
+func (ec *executionContext) unmarshalOTokenCategory2ᚕmazzaᚋentᚋgeneratedᚋtokenᚐCategoryᚄ(ctx context.Context, v interface{}) ([]token.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57024,7 +59573,7 @@ func (ec *executionContext) unmarshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCat
 	res := make([]token.Category, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTokenCategory2mazzaᚋentᚋtokenᚐCategory(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57032,7 +59581,7 @@ func (ec *executionContext) unmarshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCat
 	return res, nil
 }
 
-func (ec *executionContext) marshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []token.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOTokenCategory2ᚕmazzaᚋentᚋgeneratedᚋtokenᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []token.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57059,7 +59608,7 @@ func (ec *executionContext) marshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCateg
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTokenCategory2mazzaᚋentᚋtokenᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57079,7 +59628,7 @@ func (ec *executionContext) marshalOTokenCategory2ᚕmazzaᚋentᚋtokenᚐCateg
 	return ret
 }
 
-func (ec *executionContext) unmarshalOTokenCategory2ᚖmazzaᚋentᚋtokenᚐCategory(ctx context.Context, v interface{}) (*token.Category, error) {
+func (ec *executionContext) unmarshalOTokenCategory2ᚖmazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx context.Context, v interface{}) (*token.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57088,14 +59637,14 @@ func (ec *executionContext) unmarshalOTokenCategory2ᚖmazzaᚋentᚋtokenᚐCat
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTokenCategory2ᚖmazzaᚋentᚋtokenᚐCategory(ctx context.Context, sel ast.SelectionSet, v *token.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOTokenCategory2ᚖmazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx context.Context, sel ast.SelectionSet, v *token.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.TokenWhereInput, error) {
+func (ec *executionContext) unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTokenWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.TokenWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57104,10 +59653,10 @@ func (ec *executionContext) unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenW
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.TokenWhereInput, len(vSlice))
+	res := make([]*generated.TokenWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTokenWhereInput2ᚖmazzaᚋentᚐTokenWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTokenWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57115,7 +59664,7 @@ func (ec *executionContext) unmarshalOTokenWhereInput2ᚕᚖmazzaᚋentᚐTokenW
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOTokenWhereInput2ᚖmazzaᚋentᚐTokenWhereInput(ctx context.Context, v interface{}) (*ent.TokenWhereInput, error) {
+func (ec *executionContext) unmarshalOTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTokenWhereInput(ctx context.Context, v interface{}) (*generated.TokenWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57123,7 +59672,7 @@ func (ec *executionContext) unmarshalOTokenWhereInput2ᚖmazzaᚋentᚐTokenWher
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasury2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Treasury) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57150,7 +59699,7 @@ func (ec *executionContext) marshalOTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTreasury2ᚖmazzaᚋentᚐTreasury(ctx, sel, v[i])
+			ret[i] = ec.marshalNTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57170,14 +59719,14 @@ func (ec *executionContext) marshalOTreasury2ᚕᚖmazzaᚋentᚐTreasuryᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalOTreasury2ᚖmazzaᚋentᚐTreasury(ctx context.Context, sel ast.SelectionSet, v *ent.Treasury) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx context.Context, sel ast.SelectionSet, v *generated.Treasury) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Treasury(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasuryᚐCategoryᚄ(ctx context.Context, v interface{}) ([]treasury.Category, error) {
+func (ec *executionContext) unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCategoryᚄ(ctx context.Context, v interface{}) ([]treasury.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57189,7 +59738,7 @@ func (ec *executionContext) unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasury
 	res := make([]treasury.Category, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57197,7 +59746,7 @@ func (ec *executionContext) unmarshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasury
 	return res, nil
 }
 
-func (ec *executionContext) marshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasuryᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []treasury.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasuryCategory2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []treasury.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57224,7 +59773,7 @@ func (ec *executionContext) marshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasury�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTreasuryCategory2mazzaᚋentᚋtreasuryᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNTreasuryCategory2mazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57244,7 +59793,7 @@ func (ec *executionContext) marshalOTreasuryCategory2ᚕmazzaᚋentᚋtreasury�
 	return ret
 }
 
-func (ec *executionContext) unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasuryᚐCategory(ctx context.Context, v interface{}) (*treasury.Category, error) {
+func (ec *executionContext) unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx context.Context, v interface{}) (*treasury.Category, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57253,14 +59802,14 @@ func (ec *executionContext) unmarshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasury
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTreasuryCategory2ᚖmazzaᚋentᚋtreasuryᚐCategory(ctx context.Context, sel ast.SelectionSet, v *treasury.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasuryCategory2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCategory(ctx context.Context, sel ast.SelectionSet, v *treasury.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasuryᚐCurrencyᚄ(ctx context.Context, v interface{}) ([]treasury.Currency, error) {
+func (ec *executionContext) unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrencyᚄ(ctx context.Context, v interface{}) ([]treasury.Currency, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57272,7 +59821,7 @@ func (ec *executionContext) unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasury
 	res := make([]treasury.Currency, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57280,7 +59829,7 @@ func (ec *executionContext) unmarshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasury
 	return res, nil
 }
 
-func (ec *executionContext) marshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasuryᚐCurrencyᚄ(ctx context.Context, sel ast.SelectionSet, v []treasury.Currency) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasuryCurrency2ᚕmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrencyᚄ(ctx context.Context, sel ast.SelectionSet, v []treasury.Currency) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57307,7 +59856,7 @@ func (ec *executionContext) marshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasury�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTreasuryCurrency2mazzaᚋentᚋtreasuryᚐCurrency(ctx, sel, v[i])
+			ret[i] = ec.marshalNTreasuryCurrency2mazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57327,7 +59876,7 @@ func (ec *executionContext) marshalOTreasuryCurrency2ᚕmazzaᚋentᚋtreasury�
 	return ret
 }
 
-func (ec *executionContext) unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasuryᚐCurrency(ctx context.Context, v interface{}) (*treasury.Currency, error) {
+func (ec *executionContext) unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx context.Context, v interface{}) (*treasury.Currency, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57336,14 +59885,14 @@ func (ec *executionContext) unmarshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasury
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTreasuryCurrency2ᚖmazzaᚋentᚋtreasuryᚐCurrency(ctx context.Context, sel ast.SelectionSet, v *treasury.Currency) graphql.Marshaler {
+func (ec *executionContext) marshalOTreasuryCurrency2ᚖmazzaᚋentᚋgeneratedᚋtreasuryᚐCurrency(ctx context.Context, sel ast.SelectionSet, v *treasury.Currency) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTreasuryWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.TreasuryWhereInput, error) {
+func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.TreasuryWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57352,10 +59901,10 @@ func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTre
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.TreasuryWhereInput, len(vSlice))
+	res := make([]*generated.TreasuryWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNTreasuryWhereInput2ᚖmazzaᚋentᚐTreasuryWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNTreasuryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57363,7 +59912,7 @@ func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚕᚖmazzaᚋentᚐTre
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚐTreasuryWhereInput(ctx context.Context, v interface{}) (*ent.TreasuryWhereInput, error) {
+func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚋgeneratedᚐTreasuryWhereInput(ctx context.Context, v interface{}) (*generated.TreasuryWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57371,7 +59920,7 @@ func (ec *executionContext) unmarshalOTreasuryWhereInput2ᚖmazzaᚋentᚐTreasu
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57398,7 +59947,7 @@ func (ec *executionContext) marshalOUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2ᚖmazzaᚋentᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57418,14 +59967,14 @@ func (ec *executionContext) marshalOUser2ᚕᚖmazzaᚋentᚐUserᚄ(ctx context
 	return ret
 }
 
-func (ec *executionContext) marshalOUser2ᚖmazzaᚋentᚐUser(ctx context.Context, sel ast.SelectionSet, v *ent.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx context.Context, sel ast.SelectionSet, v *generated.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.UserRole) graphql.Marshaler {
+func (ec *executionContext) marshalOUserRole2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.UserRole) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57452,7 +60001,7 @@ func (ec *executionContext) marshalOUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUserRole2ᚖmazzaᚋentᚐUserRole(ctx, sel, v[i])
+			ret[i] = ec.marshalNUserRole2ᚖmazzaᚋentᚋgeneratedᚐUserRole(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57472,7 +60021,7 @@ func (ec *executionContext) marshalOUserRole2ᚕᚖmazzaᚋentᚐUserRoleᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) unmarshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRoleᚄ(ctx context.Context, v interface{}) ([]userrole.Role, error) {
+func (ec *executionContext) unmarshalOUserRoleRole2ᚕmazzaᚋentᚋgeneratedᚋuserroleᚐRoleᚄ(ctx context.Context, v interface{}) ([]userrole.Role, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57484,7 +60033,7 @@ func (ec *executionContext) unmarshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐR
 	res := make([]userrole.Role, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57492,7 +60041,7 @@ func (ec *executionContext) unmarshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐR
 	return res, nil
 }
 
-func (ec *executionContext) marshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []userrole.Role) graphql.Marshaler {
+func (ec *executionContext) marshalOUserRoleRole2ᚕmazzaᚋentᚋgeneratedᚋuserroleᚐRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []userrole.Role) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57519,7 +60068,7 @@ func (ec *executionContext) marshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRol
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUserRoleRole2mazzaᚋentᚋuserroleᚐRole(ctx, sel, v[i])
+			ret[i] = ec.marshalNUserRoleRole2mazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57539,7 +60088,7 @@ func (ec *executionContext) marshalOUserRoleRole2ᚕmazzaᚋentᚋuserroleᚐRol
 	return ret
 }
 
-func (ec *executionContext) unmarshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐRole(ctx context.Context, v interface{}) (*userrole.Role, error) {
+func (ec *executionContext) unmarshalOUserRoleRole2ᚖmazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx context.Context, v interface{}) (*userrole.Role, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57548,14 +60097,14 @@ func (ec *executionContext) unmarshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐR
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOUserRoleRole2ᚖmazzaᚋentᚋuserroleᚐRole(ctx context.Context, sel ast.SelectionSet, v *userrole.Role) graphql.Marshaler {
+func (ec *executionContext) marshalOUserRoleRole2ᚖmazzaᚋentᚋgeneratedᚋuserroleᚐRole(ctx context.Context, sel ast.SelectionSet, v *userrole.Role) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUserRoleWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.UserRoleWhereInput, error) {
+func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.UserRoleWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57564,10 +60113,10 @@ func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUse
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.UserRoleWhereInput, len(vSlice))
+	res := make([]*generated.UserRoleWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNUserRoleWhereInput2ᚖmazzaᚋentᚐUserRoleWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNUserRoleWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57575,7 +60124,7 @@ func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚕᚖmazzaᚋentᚐUse
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚐUserRoleWhereInput(ctx context.Context, v interface{}) (*ent.UserRoleWhereInput, error) {
+func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserRoleWhereInput(ctx context.Context, v interface{}) (*generated.UserRoleWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57583,7 +60132,7 @@ func (ec *executionContext) unmarshalOUserRoleWhereInput2ᚖmazzaᚋentᚐUserRo
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.UserWhereInput, error) {
+func (ec *executionContext) unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.UserWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57592,10 +60141,10 @@ func (ec *executionContext) unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhe
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.UserWhereInput, len(vSlice))
+	res := make([]*generated.UserWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNUserWhereInput2ᚖmazzaᚋentᚐUserWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNUserWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57603,7 +60152,7 @@ func (ec *executionContext) unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚐUserWhe
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOUserWhereInput2ᚖmazzaᚋentᚐUserWhereInput(ctx context.Context, v interface{}) (*ent.UserWhereInput, error) {
+func (ec *executionContext) unmarshalOUserWhereInput2ᚖmazzaᚋentᚋgeneratedᚐUserWhereInput(ctx context.Context, v interface{}) (*generated.UserWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57611,7 +60160,7 @@ func (ec *executionContext) unmarshalOUserWhereInput2ᚖmazzaᚋentᚐUserWhereI
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Workshift) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57638,7 +60187,7 @@ func (ec *executionContext) marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57658,14 +60207,14 @@ func (ec *executionContext) marshalOWorkshift2ᚕᚖmazzaᚋentᚐWorkshiftᚄ(c
 	return ret
 }
 
-func (ec *executionContext) marshalOWorkshift2ᚖmazzaᚋentᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v *ent.Workshift) graphql.Marshaler {
+func (ec *executionContext) marshalOWorkshift2ᚖmazzaᚋentᚋgeneratedᚐWorkshift(ctx context.Context, sel ast.SelectionSet, v *generated.Workshift) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Workshift(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshiftᚐStatusᚄ(ctx context.Context, v interface{}) ([]workshift.Status, error) {
+func (ec *executionContext) unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋgeneratedᚋworkshiftᚐStatusᚄ(ctx context.Context, v interface{}) ([]workshift.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57677,7 +60226,7 @@ func (ec *executionContext) unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshift
 	res := make([]workshift.Status, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57685,7 +60234,7 @@ func (ec *executionContext) unmarshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshift
 	return res, nil
 }
 
-func (ec *executionContext) marshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshiftᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []workshift.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOWorkshiftStatus2ᚕmazzaᚋentᚋgeneratedᚋworkshiftᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []workshift.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57712,7 +60261,7 @@ func (ec *executionContext) marshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshift�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorkshiftStatus2mazzaᚋentᚋworkshiftᚐStatus(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57732,7 +60281,7 @@ func (ec *executionContext) marshalOWorkshiftStatus2ᚕmazzaᚋentᚋworkshift�
 	return ret
 }
 
-func (ec *executionContext) unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx context.Context, v interface{}) (*workshift.Status, error) {
+func (ec *executionContext) unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx context.Context, v interface{}) (*workshift.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57741,14 +60290,14 @@ func (ec *executionContext) unmarshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshift
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOWorkshiftStatus2ᚖmazzaᚋentᚋworkshiftᚐStatus(ctx context.Context, sel ast.SelectionSet, v *workshift.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOWorkshiftStatus2ᚖmazzaᚋentᚋgeneratedᚋworkshiftᚐStatus(ctx context.Context, sel ast.SelectionSet, v *workshift.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWorkshiftWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.WorkshiftWhereInput, error) {
+func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.WorkshiftWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57757,10 +60306,10 @@ func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWo
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.WorkshiftWhereInput, len(vSlice))
+	res := make([]*generated.WorkshiftWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57768,7 +60317,7 @@ func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚐWo
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorkshiftWhereInput(ctx context.Context, v interface{}) (*ent.WorkshiftWhereInput, error) {
+func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx context.Context, v interface{}) (*generated.WorkshiftWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57776,7 +60325,7 @@ func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚐWorks
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktag) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57803,7 +60352,7 @@ func (ec *executionContext) marshalOWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx c
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚐWorktag(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57823,14 +60372,14 @@ func (ec *executionContext) marshalOWorktag2ᚕᚖmazzaᚋentᚐWorktagᚄ(ctx c
 	return ret
 }
 
-func (ec *executionContext) marshalOWorktag2ᚖmazzaᚋentᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *ent.Worktag) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *generated.Worktag) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Worktag(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWorktagWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.WorktagWhereInput, error) {
+func (ec *executionContext) unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.WorktagWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57839,10 +60388,10 @@ func (ec *executionContext) unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWork
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.WorktagWhereInput, len(vSlice))
+	res := make([]*generated.WorktagWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚐWorktagWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57850,7 +60399,7 @@ func (ec *executionContext) unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚐWork
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚐWorktagWhereInput(ctx context.Context, v interface{}) (*ent.WorktagWhereInput, error) {
+func (ec *executionContext) unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx context.Context, v interface{}) (*generated.WorktagWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57858,7 +60407,7 @@ func (ec *executionContext) unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚐWorktag
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktask) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57885,7 +60434,7 @@ func (ec *executionContext) marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚐWorktask(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57905,14 +60454,14 @@ func (ec *executionContext) marshalOWorktask2ᚕᚖmazzaᚋentᚐWorktaskᚄ(ctx
 	return ret
 }
 
-func (ec *executionContext) marshalOWorktask2ᚖmazzaᚋentᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *ent.Worktask) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *generated.Worktask) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Worktask(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐStatusᚄ(ctx context.Context, v interface{}) ([]worktask.Status, error) {
+func (ec *executionContext) unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx context.Context, v interface{}) ([]worktask.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57924,7 +60473,7 @@ func (ec *executionContext) unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋworktask�
 	res := make([]worktask.Status, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -57932,7 +60481,7 @@ func (ec *executionContext) unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋworktask�
 	return res, nil
 }
 
-func (ec *executionContext) marshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []worktask.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []worktask.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -57959,7 +60508,7 @@ func (ec *executionContext) marshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐS
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNWorktaskStatus2mazzaᚋentᚋworktaskᚐStatus(ctx, sel, v[i])
+			ret[i] = ec.marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -57979,7 +60528,7 @@ func (ec *executionContext) marshalOWorktaskStatus2ᚕmazzaᚋentᚋworktaskᚐS
 	return ret
 }
 
-func (ec *executionContext) unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋworktaskᚐStatus(ctx context.Context, v interface{}) (*worktask.Status, error) {
+func (ec *executionContext) unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, v interface{}) (*worktask.Status, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -57988,14 +60537,14 @@ func (ec *executionContext) unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋworktask�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOWorktaskStatus2ᚖmazzaᚋentᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v *worktask.Status) graphql.Marshaler {
+func (ec *executionContext) marshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v *worktask.Status) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWorktaskWhereInputᚄ(ctx context.Context, v interface{}) ([]*ent.WorktaskWhereInput, error) {
+func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.WorktaskWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -58004,10 +60553,10 @@ func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWor
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*ent.WorktaskWhereInput, len(vSlice))
+	res := make([]*generated.WorktaskWhereInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚐWorktaskWhereInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -58015,7 +60564,7 @@ func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚐWor
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*ent.WorktaskWhereInput, error) {
+func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*generated.WorktaskWhereInput, error) {
 	if v == nil {
 		return nil, nil
 	}

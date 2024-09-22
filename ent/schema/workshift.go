@@ -2,14 +2,13 @@ package schema
 
 import (
 	"context"
-	"fmt"
 	"mazza/app/notifications"
-	"mazza/app/utils"
-	gen "mazza/ent"
-	"mazza/ent/employee"
-	"mazza/ent/hook"
-	"mazza/ent/user"
-	"mazza/ent/workshift"
+	gen "mazza/ent/generated"
+	"mazza/ent/generated/employee"
+	"mazza/ent/generated/hook"
+	"mazza/ent/generated/user"
+	"mazza/ent/generated/workshift"
+	"mazza/ent/utils"
 	"time"
 
 	"entgo.io/contrib/entgql"
@@ -80,7 +79,6 @@ func (Workshift) Hooks() []ent.Hook {
 		hook.On(
 			func(next ent.Mutator) ent.Mutator {
 				return hook.WorkshiftFunc(func(ctx context.Context, m *gen.WorkshiftMutation) (ent.Value, error) {
-					fmt.Println("## update")
 					// On clock-out, if the employee has a leader, set status to "PENDING", otherwise set status "APPROVED"
 					employeeID, exists := m.EmployeeID()
 					if !exists {
@@ -91,7 +89,7 @@ func (Workshift) Hooks() []ent.Hook {
 
 					leader, err := m.Client().Employee.Query().Where(employee.IDEQ(employeeID)).
 						QueryLeader().QueryUser().Select(user.FieldID, user.FieldFcmToken).First(ctx)
-					fmt.Println("&& update leader:", leader, err)
+
 					if err != nil {
 						// This employee does not have a leader, so his workshift status is automatically approved.
 						// Proceed with the mutation operation and return.
@@ -104,16 +102,14 @@ func (Workshift) Hooks() []ent.Hook {
 
 					// Post mutation: this user has a leader, send a notification to the leader after creating the workshift
 					if leader.FcmToken != nil {
-						fmt.Println("sending notif to:", leader)
-
 						data := struct {
-							AlertType   string    `json:"alertType"`
-							UserID      int       `json:"userID"`
-							RequestedAt time.Time `json:"requestedAt"`
+							AlertType string    `json:"alertType"`
+							UserID    int       `json:"userID"`
+							TimeSent  time.Time `json:"timeSent"`
 						}{
-							AlertType:   notifications.AlertType.WorkShiftApprovalRequest,
-							UserID:      leader.ID,
-							RequestedAt: time.Now(),
+							AlertType: notifications.AlertType.WorkShiftApprovalRequest,
+							UserID:    leader.ID,
+							TimeSent:  time.Now(),
 						}
 
 						go func() {
@@ -126,6 +122,7 @@ func (Workshift) Hooks() []ent.Hook {
 							notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
 						}()
 					}
+					
 					return v, err
 				})
 			},
@@ -138,7 +135,7 @@ func (Workshift) Hooks() []ent.Hook {
 			func(next ent.Mutator) ent.Mutator {
 				return hook.WorkshiftFunc(func(ctx context.Context, m *gen.WorkshiftMutation) (ent.Value, error) {
 					workshiftID, exists := m.WorkShiftID()
-					fmt.Println("** create workshiftID:", workshiftID, exists)
+
 					// Do nothing if this is not a workshift update request
 					if !exists {
 						return next.Mutate(ctx, m)
@@ -148,15 +145,12 @@ func (Workshift) Hooks() []ent.Hook {
 						QueryEmployee().QueryLeader().QueryUser().
 						Select(user.FieldID, user.FieldFcmToken).First(ctx)
 
-					fmt.Println("\ncreate edit req leader:", leader, err)
 					if err != nil {
 						updater := m.Client().Workshift.UpdateOneID(workshiftID).SetApprovedAt(time.Now())
 						if clockIn, exists := m.ClockIn(); exists {
-							fmt.Println("clockin:", clockIn)
 							updater.SetClockIn(clockIn)
 						}
 						if clockOut, exists := m.ClockOut(); exists {
-							fmt.Println("clockout:", clockOut)
 							updater.SetClockOut(clockOut)
 						}
 						if description, exists := m.Description(); exists {
@@ -165,19 +159,19 @@ func (Workshift) Hooks() []ent.Hook {
 						if note, exists := m.Note(); exists {
 							updater.SetNote(note)
 						}
-						fmt.Println("saving")
+
 						return updater.Save(ctx)
 						// return next.Mutate(ctx, m)
 					}
 
 					data := struct {
-						AlertType   string    `json:"alertType"`
-						UserID      int       `json:"userID"`
-						RequestedAt time.Time `json:"requestedAt"`
+						AlertType string    `json:"alertType"`
+						UserID    int       `json:"userID"`
+						TimeSent  time.Time `json:"timeSent"`
 					}{
-						AlertType:   notifications.AlertType.WorkShifUpdateRequest,
-						UserID:      leader.ID,
-						RequestedAt: time.Now(),
+						AlertType: notifications.AlertType.WorkShifUpdateRequest,
+						UserID:    leader.ID,
+						TimeSent:  time.Now(),
 					}
 
 					go func() {
@@ -189,7 +183,7 @@ func (Workshift) Hooks() []ent.Hook {
 						title := "Timesheet"
 						notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
 					}()
-
+					_ = leader
 					return next.Mutate(ctx, m)
 				})
 			},

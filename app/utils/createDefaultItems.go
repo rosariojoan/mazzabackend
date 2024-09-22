@@ -2,9 +2,9 @@ package utils
 
 import (
 	"context"
-	"mazza/ent"
-	"mazza/ent/product"
-	"mazza/ent/treasury"
+	ent "mazza/ent/generated"
+	"mazza/ent/generated/product"
+	"mazza/ent/generated/treasury"
 )
 
 /* Prepare default items to be used during company creation */

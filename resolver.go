@@ -1,7 +1,7 @@
 package mazza
 
 import (
-	"mazza/ent"
+	ent "mazza/ent/generated"
 
 	"github.com/99designs/gqlgen/graphql"
 )

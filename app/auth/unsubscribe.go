@@ -3,9 +3,10 @@ package auth
 import (
 	"context"
 	"fmt"
-	"mazza/app/utils"
-	"mazza/ent"
-	"mazza/ent/userrole"
+	// "mazza/app/utils"
+	"mazza/ent/utils"
+	ent "mazza/ent/generated"
+	"mazza/ent/generated/userrole"
 )
 
 type contact struct {

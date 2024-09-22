@@ -27,7 +27,7 @@ func (Payable) Fields() []ent.Field {
 		field.Float("outstandingBalance"),
 		field.Float("totalTransaction"),
 		field.Int("daysDue").NonNegative(),
-		field.Enum("status").Values("paid", "unpaid", "doubtful", "default"),
+		field.Enum("status").Values("PAID", "UNPAID", "DOUBTFUL", "DEFAULT"),
 	}
 }
 

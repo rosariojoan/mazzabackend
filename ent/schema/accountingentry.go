@@ -22,19 +22,34 @@ func (AccountingEntry) Mixin() []ent.Mixin {
 	}
 }
 
+// var accountTypes = []string{
+// 	"asset",
+// 	"liability",
+// 	"equity",
+// 	"revenue",
+// 	"expense",
+// 	"taxExpense",
+// 	"income",
+// 	"dividendExpense",
+// 	"contraAsset",
+// 	"contraLiability",
+// 	"contraRevenue",
+// 	"contraExpense",
+// }
+
 var accountTypes = []string{
-	"asset",
-	"liability",
-	"equity",
-	"revenue",
-	"expense",
-	"taxExpense",
-	"income",
-	"dividendExpense",
-	"contraAsset",
-	"contraLiability",
-	"contraRevenue",
-	"contraExpense",
+	"ASSET",
+	"LIABILITY",
+	"EQUITY",
+	"REVENUE",
+	"EXPENSE",
+	"TAX_EXPENSE",
+	"INCOME",
+	"DIVIDEND_EXPENSE",
+	"CONTRA_ASSET",
+	"CONTRA_LIABILITY",
+	"CONTRA_REVENUE",
+	"CONTRA_EXPENSE",
 }
 
 // Fields of the AccountingEntry.

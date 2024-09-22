@@ -20,8 +20,8 @@ func (File) Mixin() []ent.Mixin {
 }
 
 var fileCategory = []string{
-	"invoice",
-	"salesQuotation",
+	"INVOICE",
+	"SALESQUOTATION",
 }
 
 // Fields of the File.

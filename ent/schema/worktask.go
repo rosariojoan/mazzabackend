@@ -1,6 +1,15 @@
 package schema
 
 import (
+	"context"
+	"mazza/app/notifications"
+	gen "mazza/ent/generated"
+	"mazza/ent/generated/employee"
+	"mazza/ent/generated/hook"
+	"mazza/ent/generated/user"
+	"mazza/ent/utils"
+	"time"
+
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
@@ -53,5 +62,81 @@ func (Worktask) Edges() []ent.Edge {
 func (Worktask) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+	}
+}
+
+// Hooks of the Worktask. On create, notification to assigned employees
+func (Worktask) Hooks() []ent.Hook {
+	return []ent.Hook{
+		hook.On(
+			func(next ent.Mutator) ent.Mutator {
+				return hook.WorktaskFunc(func(ctx context.Context, m *gen.WorktaskMutation) (ent.Value, error) {
+					v, err := next.Mutate(ctx, m)
+					if err != nil {
+						return v, nil
+					}
+
+					// Post mutation action: send notification to the assigned employees
+
+					// The current user is excluded from the notification list
+					currentUser, _, currentEmployeeID := utils.GetSession(&ctx)
+					_assignedIDs := m.AssignedToIDs()
+
+					if len(_assignedIDs) == 0 {
+						return v, nil
+					}
+
+					var assignedIDs []int
+					for _, id := range _assignedIDs {
+						if id != *currentEmployeeID {
+							assignedIDs = append(assignedIDs, id)
+						}
+					}
+
+					if len(assignedIDs) == 0 {
+						return v, nil
+					}
+
+					// Get the users associated the assigned employees
+					users, err := m.Client().Employee.Query().Where(employee.IDIn(assignedIDs...)).
+						QueryUser().Select(user.FieldID, user.FieldFcmToken).All(ctx)
+
+					if err != nil {
+						return v, nil
+					}
+
+					// Post mutation: this user has a leader, send a notification to the leader after creating the workshift
+					taskTitle, _ := m.Title()
+					for _, user := range users {
+						data := struct {
+							AlertType  string    `json:"alertType"`
+							UserID     int       `json:"userID"`
+							TimeSent   time.Time `json:"timeSent"`
+							Title      string    `json:"title"`
+							AssignedBy string    `json:"assignedBy"`
+						}{
+							AlertType:  notifications.AlertType.AssignedWorkTask,
+							UserID:     user.ID,
+							TimeSent:   time.Now(),
+							Title:      taskTitle,
+							AssignedBy: currentUser.Name,
+						}
+
+						go func() {
+							dataMap, err := notifications.GetMap(data)
+							if err != nil {
+								return
+							}
+							// Send notification to the closest, available driver
+							title := "Nova tarefa atribuída"
+							notifications.SendDataNotification(*user.FcmToken, &title, dataMap)
+						}()
+					}
+					_ = currentUser
+					return v, nil
+				})
+			},
+			ent.OpCreate,
+		),
 	}
 }

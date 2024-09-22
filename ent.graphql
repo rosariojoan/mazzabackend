@@ -22,19 +22,19 @@ type AccountingEntry implements Node {
 """
 AccountingEntryAccountType is enum for the field accountType
 """
-enum AccountingEntryAccountType @goModel(model: "mazza/ent/accountingentry.AccountType") {
-  asset
-  liability
-  equity
-  revenue
-  expense
-  taxExpense
-  income
-  dividendExpense
-  contraAsset
-  contraLiability
-  contraRevenue
-  contraExpense
+enum AccountingEntryAccountType @goModel(model: "mazza/ent/generated/accountingentry.AccountType") {
+  ASSET
+  LIABILITY
+  EQUITY
+  REVENUE
+  EXPENSE
+  TAX_EXPENSE
+  INCOME
+  DIVIDEND_EXPENSE
+  CONTRA_ASSET
+  CONTRA_LIABILITY
+  CONTRA_REVENUE
+  CONTRA_EXPENSE
 }
 """
 A connection to a list of items.
@@ -1056,7 +1056,7 @@ input CreateProductMovementInput {
   entrygroup: Int!
   averagecost: Float!
   unitcost: Float!
-  price: Float!
+  price: Float
   quantity: Int!
   productID: ID
 }
@@ -1464,7 +1464,7 @@ type Employee implements Node {
 """
 EmployeeGender is enum for the field gender
 """
-enum EmployeeGender @goModel(model: "mazza/ent/employee.Gender") {
+enum EmployeeGender @goModel(model: "mazza/ent/generated/employee.Gender") {
   male
   female
 }
@@ -1649,9 +1649,9 @@ type File implements Node {
 """
 FileCategory is enum for the field category
 """
-enum FileCategory @goModel(model: "mazza/ent/file.Category") {
-  invoice
-  salesQuotation
+enum FileCategory @goModel(model: "mazza/ent/generated/file.Category") {
+  INVOICE
+  SALESQUOTATION
 }
 """
 A connection to a list of items.
@@ -1842,7 +1842,7 @@ input FileWhereInput {
 An object with an ID.
 Follows the [Relay Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm)
 """
-interface Node @goModel(model: "mazza/ent.Noder") {
+interface Node @goModel(model: "mazza/ent/generated.Noder") {
   """
   The id of the object.
   """
@@ -1899,11 +1899,11 @@ type Payable implements Node {
 """
 PayableStatus is enum for the field status
 """
-enum PayableStatus @goModel(model: "mazza/ent/payable.Status") {
-  paid
-  unpaid
-  doubtful
-  default
+enum PayableStatus @goModel(model: "mazza/ent/generated/payable.Status") {
+  PAID
+  UNPAID
+  DOUBTFUL
+  DEFAULT
 }
 """
 PayableWhereInput is used for filtering Payable objects.
@@ -2048,7 +2048,7 @@ type Product implements Node {
 """
 ProductCategory is enum for the field category
 """
-enum ProductCategory @goModel(model: "mazza/ent/product.Category") {
+enum ProductCategory @goModel(model: "mazza/ent/generated/product.Category") {
   merchandise
   other
   service
@@ -2612,7 +2612,7 @@ type ReceivableEdge {
 """
 ReceivableStatus is enum for the field status
 """
-enum ReceivableStatus @goModel(model: "mazza/ent/receivable.Status") {
+enum ReceivableStatus @goModel(model: "mazza/ent/generated/receivable.Status") {
   paid
   unpaid
   doubtful
@@ -2972,7 +2972,7 @@ type Token implements Node {
 """
 TokenCategory is enum for the field category
 """
-enum TokenCategory @goModel(model: "mazza/ent/token.Category") {
+enum TokenCategory @goModel(model: "mazza/ent/generated/token.Category") {
   passwordReset
   invitation
 }
@@ -3062,14 +3062,14 @@ type Treasury implements Node {
 """
 TreasuryCategory is enum for the field category
 """
-enum TreasuryCategory @goModel(model: "mazza/ent/treasury.Category") {
+enum TreasuryCategory @goModel(model: "mazza/ent/generated/treasury.Category") {
   deposit
   cash
 }
 """
 TreasuryCurrency is enum for the field currency
 """
-enum TreasuryCurrency @goModel(model: "mazza/ent/treasury.Currency") {
+enum TreasuryCurrency @goModel(model: "mazza/ent/generated/treasury.Currency") {
   mzn
 }
 """
@@ -3832,7 +3832,7 @@ enum UserRoleOrderField {
 """
 UserRoleRole is enum for the field role
 """
-enum UserRoleRole @goModel(model: "mazza/ent/userrole.Role") {
+enum UserRoleRole @goModel(model: "mazza/ent/generated/userrole.Role") {
   superuser
   admin
   accountant
@@ -4100,7 +4100,7 @@ enum WorkshiftOrderField {
 """
 WorkshiftStatus is enum for the field status
 """
-enum WorkshiftStatus @goModel(model: "mazza/ent/workshift.Status") {
+enum WorkshiftStatus @goModel(model: "mazza/ent/generated/workshift.Status") {
   APPROVED
   PENDING
 }
@@ -4434,7 +4434,7 @@ type Worktask implements Node {
 """
 WorktaskStatus is enum for the field status
 """
-enum WorktaskStatus @goModel(model: "mazza/ent/worktask.Status") {
+enum WorktaskStatus @goModel(model: "mazza/ent/generated/worktask.Status") {
   DRAFT
   ASSIGNED
   DONE

@@ -1,0 +1,109 @@
+
+input EntryTreasuryInput {
+    id:     ID!
+    amount: Float!
+}
+
+input EntryProductInput {
+    id:       ID!
+    amount:   Float!
+    quantity: Int!
+}
+
+input EntrySupplierInput {
+    id:      ID!
+    amount:  Float!
+    daysDue: Int!
+}
+
+input EntryItem {
+    account:     String!
+    accountType: AccountType!
+    amount:      Float!
+    isDebit:     Boolean!
+    label:       String!
+}
+
+type InvoiceIssuer {
+	name:    String!
+	taxID:   String!
+	address: String!
+	city:    String
+	country: String
+	phone:   String
+	email:   String
+}
+
+type InvoiceCustomer {
+    name:    String!
+	taxID:   String
+	address: String
+	city:    String
+	country: String
+	phone:   String
+	email:   String
+}
+
+type InvoiceTotals {
+	subtotal: String!
+	vatRate:  String!
+	vat:      String!
+	total:    String!
+}
+
+type PaymentDetails {
+	bankName:      String
+	accountNumber: String
+	iban:          String
+	dueDate:       String
+}
+
+type Invoice {
+    date:            String!
+    filename:        String!
+    keywords:        String!
+    number:          String!
+    paymentDetails:  PaymentDetails!
+    title:           String!
+    issuerDetails:   InvoiceIssuer!
+    customerDetails: InvoiceCustomer!
+    body:            [[String!]!]!
+    totals:          InvoiceTotals!
+}
+
+enum PurchaseOperationType {
+    PURCHASE
+    PURCHASE_RETURN
+}
+
+enum AccountType {
+	ASSET
+	LIABILITY
+	EQUITY
+	REVENUE
+	EXPENSE
+	TAX_EXPENSE
+	INCOME
+	DIVIDEND_EXPENSE
+	CONTRA_ASSET
+	CONTRA_LIABILITY
+	CONTRA_REVENUE
+	CONTRA_EXPENSE
+}
+
+input PurchaseRegistrationInput {
+	main:                  [EntryItem!]!
+	counterpart:           [EntryItem!]!
+	cash:                  [EntryTreasuryInput!]
+	supplier:              EntrySupplierInput!
+	date:                  Time!
+	description:           String
+	operationType:         PurchaseOperationType!
+	products:              [EntryProductInput!]!
+	totalTransactionValue: Float!
+}
+
+# -------------------------------------------------
+extend type Mutation {
+    registerPurchase(input: PurchaseRegistrationInput!): String!
+}
