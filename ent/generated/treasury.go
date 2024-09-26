@@ -57,15 +57,15 @@ type Treasury struct {
 type TreasuryEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// CashMovements holds the value of the cashMovements edge.
-	CashMovements []*CashMovement `json:"cashMovements,omitempty"`
+	// AccountingEntries holds the value of the accountingEntries edge.
+	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
 	totalCount [2]map[string]int
 
-	namedCashMovements map[string][]*CashMovement
+	namedAccountingEntries map[string][]*AccountingEntry
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -79,13 +79,13 @@ func (e TreasuryEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
-// CashMovementsOrErr returns the CashMovements value or an error if the edge
+// AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
 // was not loaded in eager-loading.
-func (e TreasuryEdges) CashMovementsOrErr() ([]*CashMovement, error) {
+func (e TreasuryEdges) AccountingEntriesOrErr() ([]*AccountingEntry, error) {
 	if e.loadedTypes[1] {
-		return e.CashMovements, nil
+		return e.AccountingEntries, nil
 	}
-	return nil, &NotLoadedError{edge: "cashMovements"}
+	return nil, &NotLoadedError{edge: "accountingEntries"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -236,9 +236,9 @@ func (t *Treasury) QueryCompany() *CompanyQuery {
 	return NewTreasuryClient(t.config).QueryCompany(t)
 }
 
-// QueryCashMovements queries the "cashMovements" edge of the Treasury entity.
-func (t *Treasury) QueryCashMovements() *CashMovementQuery {
-	return NewTreasuryClient(t.config).QueryCashMovements(t)
+// QueryAccountingEntries queries the "accountingEntries" edge of the Treasury entity.
+func (t *Treasury) QueryAccountingEntries() *AccountingEntryQuery {
+	return NewTreasuryClient(t.config).QueryAccountingEntries(t)
 }
 
 // Update returns a builder for updating this Treasury.
@@ -311,27 +311,27 @@ func (t *Treasury) String() string {
 	return builder.String()
 }
 
-// NamedCashMovements returns the CashMovements named value or an error if the edge was not
+// NamedAccountingEntries returns the AccountingEntries named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (t *Treasury) NamedCashMovements(name string) ([]*CashMovement, error) {
-	if t.Edges.namedCashMovements == nil {
+func (t *Treasury) NamedAccountingEntries(name string) ([]*AccountingEntry, error) {
+	if t.Edges.namedAccountingEntries == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := t.Edges.namedCashMovements[name]
+	nodes, ok := t.Edges.namedAccountingEntries[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (t *Treasury) appendNamedCashMovements(name string, edges ...*CashMovement) {
-	if t.Edges.namedCashMovements == nil {
-		t.Edges.namedCashMovements = make(map[string][]*CashMovement)
+func (t *Treasury) appendNamedAccountingEntries(name string, edges ...*AccountingEntry) {
+	if t.Edges.namedAccountingEntries == nil {
+		t.Edges.namedAccountingEntries = make(map[string][]*AccountingEntry)
 	}
 	if len(edges) == 0 {
-		t.Edges.namedCashMovements[name] = []*CashMovement{}
+		t.Edges.namedAccountingEntries[name] = []*AccountingEntry{}
 	} else {
-		t.Edges.namedCashMovements[name] = append(t.Edges.namedCashMovements[name], edges...)
+		t.Edges.namedAccountingEntries[name] = append(t.Edges.namedAccountingEntries[name], edges...)
 	}
 }
 

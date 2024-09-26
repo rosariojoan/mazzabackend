@@ -39,9 +39,11 @@ func (Product) Fields() []ent.Field {
 // Edges of the Product.
 func (Product) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("products").Unique(),                                    // a product can belong to only one company
-		edge.To("pictures", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),                    // a product can have many pictures
-		edge.To("productMovements", ProductMovement.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a product can have many product movements
+		edge.From("company", Company.Type).Ref("products").Unique(),                                     // a product can belong to only one company
+		edge.To("pictures", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),                     // a product can have many pictures
+		edge.To("accountingEntries", AccountingEntry.Type).Annotations(entsql.OnDelete(entsql.SetNull)), // a product can have many accounting entries
+
+		// edge.To("productMovements", ProductMovement.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a product can have many product movements
 	}
 }
 

@@ -828,21 +828,21 @@ func HasCompanyWith(preds ...predicate.Company) predicate.Treasury {
 	})
 }
 
-// HasCashMovements applies the HasEdge predicate on the "cashMovements" edge.
-func HasCashMovements() predicate.Treasury {
+// HasAccountingEntries applies the HasEdge predicate on the "accountingEntries" edge.
+func HasAccountingEntries() predicate.Treasury {
 	return predicate.Treasury(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, CashMovementsTable, CashMovementsColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCashMovementsWith applies the HasEdge predicate on the "cashMovements" edge with a given conditions (other predicates).
-func HasCashMovementsWith(preds ...predicate.CashMovement) predicate.Treasury {
+// HasAccountingEntriesWith applies the HasEdge predicate on the "accountingEntries" edge with a given conditions (other predicates).
+func HasAccountingEntriesWith(preds ...predicate.AccountingEntry) predicate.Treasury {
 	return predicate.Treasury(func(s *sql.Selector) {
-		step := newCashMovementsStep()
+		step := newAccountingEntriesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

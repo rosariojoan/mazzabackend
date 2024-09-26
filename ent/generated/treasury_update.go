@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/cashmovement"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/treasury"
@@ -279,19 +279,19 @@ func (tu *TreasuryUpdate) SetCompany(c *Company) *TreasuryUpdate {
 	return tu.SetCompanyID(c.ID)
 }
 
-// AddCashMovementIDs adds the "cashMovements" edge to the CashMovement entity by IDs.
-func (tu *TreasuryUpdate) AddCashMovementIDs(ids ...int) *TreasuryUpdate {
-	tu.mutation.AddCashMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (tu *TreasuryUpdate) AddAccountingEntryIDs(ids ...int) *TreasuryUpdate {
+	tu.mutation.AddAccountingEntryIDs(ids...)
 	return tu
 }
 
-// AddCashMovements adds the "cashMovements" edges to the CashMovement entity.
-func (tu *TreasuryUpdate) AddCashMovements(c ...*CashMovement) *TreasuryUpdate {
-	ids := make([]int, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (tu *TreasuryUpdate) AddAccountingEntries(a ...*AccountingEntry) *TreasuryUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return tu.AddCashMovementIDs(ids...)
+	return tu.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the TreasuryMutation object of the builder.
@@ -305,25 +305,25 @@ func (tu *TreasuryUpdate) ClearCompany() *TreasuryUpdate {
 	return tu
 }
 
-// ClearCashMovements clears all "cashMovements" edges to the CashMovement entity.
-func (tu *TreasuryUpdate) ClearCashMovements() *TreasuryUpdate {
-	tu.mutation.ClearCashMovements()
+// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+func (tu *TreasuryUpdate) ClearAccountingEntries() *TreasuryUpdate {
+	tu.mutation.ClearAccountingEntries()
 	return tu
 }
 
-// RemoveCashMovementIDs removes the "cashMovements" edge to CashMovement entities by IDs.
-func (tu *TreasuryUpdate) RemoveCashMovementIDs(ids ...int) *TreasuryUpdate {
-	tu.mutation.RemoveCashMovementIDs(ids...)
+// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+func (tu *TreasuryUpdate) RemoveAccountingEntryIDs(ids ...int) *TreasuryUpdate {
+	tu.mutation.RemoveAccountingEntryIDs(ids...)
 	return tu
 }
 
-// RemoveCashMovements removes "cashMovements" edges to CashMovement entities.
-func (tu *TreasuryUpdate) RemoveCashMovements(c ...*CashMovement) *TreasuryUpdate {
-	ids := make([]int, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
+// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+func (tu *TreasuryUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *TreasuryUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return tu.RemoveCashMovementIDs(ids...)
+	return tu.RemoveAccountingEntryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -495,28 +495,28 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tu.mutation.CashMovementsCleared() {
+	if tu.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.RemovedCashMovementsIDs(); len(nodes) > 0 && !tu.mutation.CashMovementsCleared() {
+	if nodes := tu.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !tu.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -524,15 +524,15 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.CashMovementsIDs(); len(nodes) > 0 {
+	if nodes := tu.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -810,19 +810,19 @@ func (tuo *TreasuryUpdateOne) SetCompany(c *Company) *TreasuryUpdateOne {
 	return tuo.SetCompanyID(c.ID)
 }
 
-// AddCashMovementIDs adds the "cashMovements" edge to the CashMovement entity by IDs.
-func (tuo *TreasuryUpdateOne) AddCashMovementIDs(ids ...int) *TreasuryUpdateOne {
-	tuo.mutation.AddCashMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (tuo *TreasuryUpdateOne) AddAccountingEntryIDs(ids ...int) *TreasuryUpdateOne {
+	tuo.mutation.AddAccountingEntryIDs(ids...)
 	return tuo
 }
 
-// AddCashMovements adds the "cashMovements" edges to the CashMovement entity.
-func (tuo *TreasuryUpdateOne) AddCashMovements(c ...*CashMovement) *TreasuryUpdateOne {
-	ids := make([]int, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (tuo *TreasuryUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *TreasuryUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return tuo.AddCashMovementIDs(ids...)
+	return tuo.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the TreasuryMutation object of the builder.
@@ -836,25 +836,25 @@ func (tuo *TreasuryUpdateOne) ClearCompany() *TreasuryUpdateOne {
 	return tuo
 }
 
-// ClearCashMovements clears all "cashMovements" edges to the CashMovement entity.
-func (tuo *TreasuryUpdateOne) ClearCashMovements() *TreasuryUpdateOne {
-	tuo.mutation.ClearCashMovements()
+// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+func (tuo *TreasuryUpdateOne) ClearAccountingEntries() *TreasuryUpdateOne {
+	tuo.mutation.ClearAccountingEntries()
 	return tuo
 }
 
-// RemoveCashMovementIDs removes the "cashMovements" edge to CashMovement entities by IDs.
-func (tuo *TreasuryUpdateOne) RemoveCashMovementIDs(ids ...int) *TreasuryUpdateOne {
-	tuo.mutation.RemoveCashMovementIDs(ids...)
+// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+func (tuo *TreasuryUpdateOne) RemoveAccountingEntryIDs(ids ...int) *TreasuryUpdateOne {
+	tuo.mutation.RemoveAccountingEntryIDs(ids...)
 	return tuo
 }
 
-// RemoveCashMovements removes "cashMovements" edges to CashMovement entities.
-func (tuo *TreasuryUpdateOne) RemoveCashMovements(c ...*CashMovement) *TreasuryUpdateOne {
-	ids := make([]int, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
+// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+func (tuo *TreasuryUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *TreasuryUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return tuo.RemoveCashMovementIDs(ids...)
+	return tuo.RemoveAccountingEntryIDs(ids...)
 }
 
 // Where appends a list predicates to the TreasuryUpdate builder.
@@ -1056,28 +1056,28 @@ func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if tuo.mutation.CashMovementsCleared() {
+	if tuo.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.RemovedCashMovementsIDs(); len(nodes) > 0 && !tuo.mutation.CashMovementsCleared() {
+	if nodes := tuo.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !tuo.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1085,15 +1085,15 @@ func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.CashMovementsIDs(); len(nodes) > 0 {
+	if nodes := tuo.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

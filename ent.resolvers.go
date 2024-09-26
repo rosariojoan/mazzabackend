@@ -9,9 +9,7 @@ import (
 	"fmt"
 	"mazza/ent/generated"
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 	"mazza/ent/utils"
 
@@ -39,17 +37,6 @@ func (r *queryResolver) AccountingEntries(ctx context.Context, after *entgql.Cur
 	)
 }
 
-// CashMovements is the resolver for the cashMovements field.
-func (r *queryResolver) CashMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) (*generated.CashMovementConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
-	compFilter := cashmovement.HasTreasuryWith(treasury.HasCompanyWith(company.IDEQ(currentCompany.ID)))
-
-	return r.client.CashMovement.Query().Where(compFilter).Paginate(
-		ctx, after, first, before, last,
-		generated.WithCashMovementFilter(where.Filter),
-	)
-}
-
 // Files is the resolver for the files field.
 func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) (*generated.FileConnection, error) {
 	currentUser, currentCompany, _ := utils.GetSession(&ctx)
@@ -60,17 +47,6 @@ func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], fi
 		ctx, after, first, before, last,
 		generated.WithFileOrder(orderBy),
 		generated.WithFileFilter(where.Filter),
-	)
-}
-
-// ProductMovements is the resolver for the productMovements field.
-func (r *queryResolver) ProductMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ProductMovementWhereInput) (*generated.ProductMovementConnection, error) {
-	currentUser, _, _ := utils.GetSession(&ctx)
-	userQ := user.IDEQ(currentUser.ID)
-
-	return r.client.User.Query().Where(userQ).QueryAssignedRoles().QueryCompany().QueryProducts().QueryProductMovements().Paginate(
-		ctx, after, first, before, last,
-		generated.WithProductMovementFilter(where.Filter),
 	)
 }
 

@@ -26,7 +26,10 @@ var (
 		{Name: "is_debit", Type: field.TypeBool},
 		{Name: "is_reversal", Type: field.TypeBool, Default: false},
 		{Name: "reversed", Type: field.TypeBool, Default: false},
+		{Name: "quantity", Type: field.TypeInt, Nullable: true},
 		{Name: "company_accounting_entries", Type: field.TypeInt, Nullable: true},
+		{Name: "product_accounting_entries", Type: field.TypeInt, Nullable: true},
+		{Name: "treasury_accounting_entries", Type: field.TypeInt, Nullable: true},
 		{Name: "user_accounting_entries", Type: field.TypeInt, Nullable: true},
 	}
 	// AccountingEntriesTable holds the schema information for the "accounting_entries" table.
@@ -37,13 +40,25 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "accounting_entries_companies_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[15]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[16]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
+				Symbol:     "accounting_entries_products_accountingEntries",
+				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
+				RefColumns: []*schema.Column{ProductsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "accounting_entries_treasuries_accountingEntries",
+				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
+				RefColumns: []*schema.Column{TreasuriesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
 				Symbol:     "accounting_entries_users_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[16]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[19]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -52,32 +67,7 @@ var (
 			{
 				Name:    "accountingentry_number_company_accounting_entries",
 				Unique:  true,
-				Columns: []*schema.Column{AccountingEntriesColumns[4], AccountingEntriesColumns[15]},
-			},
-		},
-	}
-	// CashMovementsColumns holds the columns for the "cash_movements" table.
-	CashMovementsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "amount", Type: field.TypeFloat64},
-		{Name: "date", Type: field.TypeTime},
-		{Name: "entry_group", Type: field.TypeInt},
-		{Name: "treasury_cash_movements", Type: field.TypeInt, Nullable: true},
-	}
-	// CashMovementsTable holds the schema information for the "cash_movements" table.
-	CashMovementsTable = &schema.Table{
-		Name:       "cash_movements",
-		Columns:    CashMovementsColumns,
-		PrimaryKey: []*schema.Column{CashMovementsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "cash_movements_treasuries_cashMovements",
-				Columns:    []*schema.Column{CashMovementsColumns[7]},
-				RefColumns: []*schema.Column{TreasuriesColumns[0]},
-				OnDelete:   schema.Cascade,
+				Columns: []*schema.Column{AccountingEntriesColumns[4], AccountingEntriesColumns[16]},
 			},
 		},
 	}
@@ -315,33 +305,6 @@ var (
 				Name:    "product_sku_company_products",
 				Unique:  true,
 				Columns: []*schema.Column{ProductsColumns[9], ProductsColumns[13]},
-			},
-		},
-	}
-	// ProductMovementsColumns holds the columns for the "product_movements" table.
-	ProductMovementsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "entry_group", Type: field.TypeInt},
-		{Name: "average_cost", Type: field.TypeFloat64},
-		{Name: "unit_cost", Type: field.TypeFloat64},
-		{Name: "price", Type: field.TypeFloat64, Default: 0},
-		{Name: "quantity", Type: field.TypeInt},
-		{Name: "product_product_movements", Type: field.TypeInt, Nullable: true},
-	}
-	// ProductMovementsTable holds the schema information for the "product_movements" table.
-	ProductMovementsTable = &schema.Table{
-		Name:       "product_movements",
-		Columns:    ProductMovementsColumns,
-		PrimaryKey: []*schema.Column{ProductMovementsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "product_movements_products_productMovements",
-				Columns:    []*schema.Column{ProductMovementsColumns[9]},
-				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.Cascade,
 			},
 		},
 	}
@@ -752,14 +715,12 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AccountingEntriesTable,
-		CashMovementsTable,
 		CompaniesTable,
 		CustomersTable,
 		EmployeesTable,
 		FilesTable,
 		PayablesTable,
 		ProductsTable,
-		ProductMovementsTable,
 		ReceivablesTable,
 		SuppliersTable,
 		TokensTable,
@@ -778,8 +739,9 @@ var (
 
 func init() {
 	AccountingEntriesTable.ForeignKeys[0].RefTable = CompaniesTable
-	AccountingEntriesTable.ForeignKeys[1].RefTable = UsersTable
-	CashMovementsTable.ForeignKeys[0].RefTable = TreasuriesTable
+	AccountingEntriesTable.ForeignKeys[1].RefTable = ProductsTable
+	AccountingEntriesTable.ForeignKeys[2].RefTable = TreasuriesTable
+	AccountingEntriesTable.ForeignKeys[3].RefTable = UsersTable
 	CompaniesTable.ForeignKeys[0].RefTable = CompaniesTable
 	CustomersTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
@@ -789,7 +751,6 @@ func init() {
 	FilesTable.ForeignKeys[1].RefTable = ProductsTable
 	PayablesTable.ForeignKeys[0].RefTable = SuppliersTable
 	ProductsTable.ForeignKeys[0].RefTable = CompaniesTable
-	ProductMovementsTable.ForeignKeys[0].RefTable = ProductsTable
 	ReceivablesTable.ForeignKeys[0].RefTable = CustomersTable
 	SuppliersTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[0].RefTable = CompaniesTable

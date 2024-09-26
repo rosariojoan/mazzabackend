@@ -66,6 +66,7 @@ func (AccountingEntry) Fields() []ent.Field {
 		field.Bool("isDebit").Annotations(entgql.OrderField("ISDEBIT")),
 		field.Bool("isReversal").Default(false),
 		field.Bool("reversed").Default(false),
+		field.Int("quantity").Optional(),
 	}
 }
 
@@ -81,6 +82,8 @@ func (AccountingEntry) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("accountingEntries").Unique(), // one company can have many accounting entries
 		edge.From("user", User.Type).Ref("accountingEntries").Unique(),       // one user can have many accounting entries
+		edge.From("product", Product.Type).Ref("accountingEntries").Unique(), // an accounting entry can belong to only one product
+		edge.From("treasury", Treasury.Type).Ref("accountingEntries").Unique(),
 	}
 }
 

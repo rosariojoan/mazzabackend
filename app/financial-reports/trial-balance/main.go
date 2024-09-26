@@ -28,7 +28,7 @@ func BuildReport(client *ent.Client, ctx context.Context, user ent.User, current
 		File: &model.FileOutput{
 			Encoding: "base64",
 			Kind:     "application/pdf",
-			Name:     "diario_contabilistico.pdf",
+			Name:     "balancete.pdf",
 			Data:     *file,
 		},
 	}
@@ -78,13 +78,13 @@ func GetTrialBalance(
 					CASE WHEN is_debit THEN amount ELSE 0 END AS debit,
 					CASE WHEN is_debit THEN 0 ELSE amount END AS credit
 				FROM accounting_entries
-				WHERE company_accounting_entries = %d AND account_type NOT IN (%s)
+				WHERE company_accounting_entries = %d AND date < '%s' AND account_type NOT IN (%s)
 			) AS intermediate_result
 		) AS result
 		
 		GROUP BY account, account_type
 		ORDER BY account ASC
-	`, currentCompany.ID, excluded)
+	`, currentCompany.ID, endDate.Format(time.RFC3339), excluded)
 
 	rows, err := client.QueryContext(ctx, sqlStr)
 	if err != nil {

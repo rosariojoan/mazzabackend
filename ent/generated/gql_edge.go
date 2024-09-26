@@ -24,10 +24,18 @@ func (ae *AccountingEntry) User(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
-func (cm *CashMovement) Treasury(ctx context.Context) (*Treasury, error) {
-	result, err := cm.Edges.TreasuryOrErr()
+func (ae *AccountingEntry) Product(ctx context.Context) (*Product, error) {
+	result, err := ae.Edges.ProductOrErr()
 	if IsNotLoaded(err) {
-		result, err = cm.QueryTreasury().Only(ctx)
+		result, err = ae.QueryProduct().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (ae *AccountingEntry) Treasury(ctx context.Context) (*Treasury, error) {
+	result, err := ae.Edges.TreasuryOrErr()
+	if IsNotLoaded(err) {
+		result, err = ae.QueryTreasury().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
@@ -344,24 +352,16 @@ func (pr *Product) Pictures(ctx context.Context) (result []*File, err error) {
 	return result, err
 }
 
-func (pr *Product) ProductMovements(ctx context.Context) (result []*ProductMovement, err error) {
+func (pr *Product) AccountingEntries(ctx context.Context) (result []*AccountingEntry, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = pr.NamedProductMovements(graphql.GetFieldContext(ctx).Field.Alias)
+		result, err = pr.NamedAccountingEntries(graphql.GetFieldContext(ctx).Field.Alias)
 	} else {
-		result, err = pr.Edges.ProductMovementsOrErr()
+		result, err = pr.Edges.AccountingEntriesOrErr()
 	}
 	if IsNotLoaded(err) {
-		result, err = pr.QueryProductMovements().All(ctx)
+		result, err = pr.QueryAccountingEntries().All(ctx)
 	}
 	return result, err
-}
-
-func (pm *ProductMovement) Product(ctx context.Context) (*Product, error) {
-	result, err := pm.Edges.ProductOrErr()
-	if IsNotLoaded(err) {
-		result, err = pm.QueryProduct().Only(ctx)
-	}
-	return result, MaskNotFound(err)
 }
 
 func (r *Receivable) Customer(ctx context.Context) (*Customer, error) {
@@ -416,14 +416,14 @@ func (t *Treasury) Company(ctx context.Context) (*Company, error) {
 	return result, MaskNotFound(err)
 }
 
-func (t *Treasury) CashMovements(ctx context.Context) (result []*CashMovement, err error) {
+func (t *Treasury) AccountingEntries(ctx context.Context) (result []*AccountingEntry, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = t.NamedCashMovements(graphql.GetFieldContext(ctx).Field.Alias)
+		result, err = t.NamedAccountingEntries(graphql.GetFieldContext(ctx).Field.Alias)
 	} else {
-		result, err = t.Edges.CashMovementsOrErr()
+		result, err = t.Edges.AccountingEntriesOrErr()
 	}
 	if IsNotLoaded(err) {
-		result, err = t.QueryCashMovements().All(ctx)
+		result, err = t.QueryAccountingEntries().All(ctx)
 	}
 	return result, err
 }

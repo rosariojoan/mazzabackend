@@ -9,6 +9,8 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/product"
+	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 	"time"
 
@@ -232,6 +234,33 @@ func (aeu *AccountingEntryUpdate) SetNillableReversed(b *bool) *AccountingEntryU
 	return aeu
 }
 
+// SetQuantity sets the "quantity" field.
+func (aeu *AccountingEntryUpdate) SetQuantity(i int) *AccountingEntryUpdate {
+	aeu.mutation.ResetQuantity()
+	aeu.mutation.SetQuantity(i)
+	return aeu
+}
+
+// SetNillableQuantity sets the "quantity" field if the given value is not nil.
+func (aeu *AccountingEntryUpdate) SetNillableQuantity(i *int) *AccountingEntryUpdate {
+	if i != nil {
+		aeu.SetQuantity(*i)
+	}
+	return aeu
+}
+
+// AddQuantity adds i to the "quantity" field.
+func (aeu *AccountingEntryUpdate) AddQuantity(i int) *AccountingEntryUpdate {
+	aeu.mutation.AddQuantity(i)
+	return aeu
+}
+
+// ClearQuantity clears the value of the "quantity" field.
+func (aeu *AccountingEntryUpdate) ClearQuantity() *AccountingEntryUpdate {
+	aeu.mutation.ClearQuantity()
+	return aeu
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (aeu *AccountingEntryUpdate) SetCompanyID(id int) *AccountingEntryUpdate {
 	aeu.mutation.SetCompanyID(id)
@@ -270,6 +299,44 @@ func (aeu *AccountingEntryUpdate) SetUser(u *User) *AccountingEntryUpdate {
 	return aeu.SetUserID(u.ID)
 }
 
+// SetProductID sets the "product" edge to the Product entity by ID.
+func (aeu *AccountingEntryUpdate) SetProductID(id int) *AccountingEntryUpdate {
+	aeu.mutation.SetProductID(id)
+	return aeu
+}
+
+// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
+func (aeu *AccountingEntryUpdate) SetNillableProductID(id *int) *AccountingEntryUpdate {
+	if id != nil {
+		aeu = aeu.SetProductID(*id)
+	}
+	return aeu
+}
+
+// SetProduct sets the "product" edge to the Product entity.
+func (aeu *AccountingEntryUpdate) SetProduct(p *Product) *AccountingEntryUpdate {
+	return aeu.SetProductID(p.ID)
+}
+
+// SetTreasuryID sets the "treasury" edge to the Treasury entity by ID.
+func (aeu *AccountingEntryUpdate) SetTreasuryID(id int) *AccountingEntryUpdate {
+	aeu.mutation.SetTreasuryID(id)
+	return aeu
+}
+
+// SetNillableTreasuryID sets the "treasury" edge to the Treasury entity by ID if the given value is not nil.
+func (aeu *AccountingEntryUpdate) SetNillableTreasuryID(id *int) *AccountingEntryUpdate {
+	if id != nil {
+		aeu = aeu.SetTreasuryID(*id)
+	}
+	return aeu
+}
+
+// SetTreasury sets the "treasury" edge to the Treasury entity.
+func (aeu *AccountingEntryUpdate) SetTreasury(t *Treasury) *AccountingEntryUpdate {
+	return aeu.SetTreasuryID(t.ID)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeu *AccountingEntryUpdate) Mutation() *AccountingEntryMutation {
 	return aeu.mutation
@@ -284,6 +351,18 @@ func (aeu *AccountingEntryUpdate) ClearCompany() *AccountingEntryUpdate {
 // ClearUser clears the "user" edge to the User entity.
 func (aeu *AccountingEntryUpdate) ClearUser() *AccountingEntryUpdate {
 	aeu.mutation.ClearUser()
+	return aeu
+}
+
+// ClearProduct clears the "product" edge to the Product entity.
+func (aeu *AccountingEntryUpdate) ClearProduct() *AccountingEntryUpdate {
+	aeu.mutation.ClearProduct()
+	return aeu
+}
+
+// ClearTreasury clears the "treasury" edge to the Treasury entity.
+func (aeu *AccountingEntryUpdate) ClearTreasury() *AccountingEntryUpdate {
+	aeu.mutation.ClearTreasury()
 	return aeu
 }
 
@@ -417,6 +496,15 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := aeu.mutation.Reversed(); ok {
 		_spec.SetField(accountingentry.FieldReversed, field.TypeBool, value)
 	}
+	if value, ok := aeu.mutation.Quantity(); ok {
+		_spec.SetField(accountingentry.FieldQuantity, field.TypeInt, value)
+	}
+	if value, ok := aeu.mutation.AddedQuantity(); ok {
+		_spec.AddField(accountingentry.FieldQuantity, field.TypeInt, value)
+	}
+	if aeu.mutation.QuantityCleared() {
+		_spec.ClearField(accountingentry.FieldQuantity, field.TypeInt)
+	}
 	if aeu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -468,6 +556,64 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeu.mutation.ProductCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.ProductTable,
+			Columns: []string{accountingentry.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeu.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.ProductTable,
+			Columns: []string{accountingentry.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeu.mutation.TreasuryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.TreasuryTable,
+			Columns: []string{accountingentry.TreasuryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeu.mutation.TreasuryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.TreasuryTable,
+			Columns: []string{accountingentry.TreasuryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -698,6 +844,33 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableReversed(b *bool) *AccountingEn
 	return aeuo
 }
 
+// SetQuantity sets the "quantity" field.
+func (aeuo *AccountingEntryUpdateOne) SetQuantity(i int) *AccountingEntryUpdateOne {
+	aeuo.mutation.ResetQuantity()
+	aeuo.mutation.SetQuantity(i)
+	return aeuo
+}
+
+// SetNillableQuantity sets the "quantity" field if the given value is not nil.
+func (aeuo *AccountingEntryUpdateOne) SetNillableQuantity(i *int) *AccountingEntryUpdateOne {
+	if i != nil {
+		aeuo.SetQuantity(*i)
+	}
+	return aeuo
+}
+
+// AddQuantity adds i to the "quantity" field.
+func (aeuo *AccountingEntryUpdateOne) AddQuantity(i int) *AccountingEntryUpdateOne {
+	aeuo.mutation.AddQuantity(i)
+	return aeuo
+}
+
+// ClearQuantity clears the value of the "quantity" field.
+func (aeuo *AccountingEntryUpdateOne) ClearQuantity() *AccountingEntryUpdateOne {
+	aeuo.mutation.ClearQuantity()
+	return aeuo
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (aeuo *AccountingEntryUpdateOne) SetCompanyID(id int) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetCompanyID(id)
@@ -736,6 +909,44 @@ func (aeuo *AccountingEntryUpdateOne) SetUser(u *User) *AccountingEntryUpdateOne
 	return aeuo.SetUserID(u.ID)
 }
 
+// SetProductID sets the "product" edge to the Product entity by ID.
+func (aeuo *AccountingEntryUpdateOne) SetProductID(id int) *AccountingEntryUpdateOne {
+	aeuo.mutation.SetProductID(id)
+	return aeuo
+}
+
+// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
+func (aeuo *AccountingEntryUpdateOne) SetNillableProductID(id *int) *AccountingEntryUpdateOne {
+	if id != nil {
+		aeuo = aeuo.SetProductID(*id)
+	}
+	return aeuo
+}
+
+// SetProduct sets the "product" edge to the Product entity.
+func (aeuo *AccountingEntryUpdateOne) SetProduct(p *Product) *AccountingEntryUpdateOne {
+	return aeuo.SetProductID(p.ID)
+}
+
+// SetTreasuryID sets the "treasury" edge to the Treasury entity by ID.
+func (aeuo *AccountingEntryUpdateOne) SetTreasuryID(id int) *AccountingEntryUpdateOne {
+	aeuo.mutation.SetTreasuryID(id)
+	return aeuo
+}
+
+// SetNillableTreasuryID sets the "treasury" edge to the Treasury entity by ID if the given value is not nil.
+func (aeuo *AccountingEntryUpdateOne) SetNillableTreasuryID(id *int) *AccountingEntryUpdateOne {
+	if id != nil {
+		aeuo = aeuo.SetTreasuryID(*id)
+	}
+	return aeuo
+}
+
+// SetTreasury sets the "treasury" edge to the Treasury entity.
+func (aeuo *AccountingEntryUpdateOne) SetTreasury(t *Treasury) *AccountingEntryUpdateOne {
+	return aeuo.SetTreasuryID(t.ID)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeuo *AccountingEntryUpdateOne) Mutation() *AccountingEntryMutation {
 	return aeuo.mutation
@@ -750,6 +961,18 @@ func (aeuo *AccountingEntryUpdateOne) ClearCompany() *AccountingEntryUpdateOne {
 // ClearUser clears the "user" edge to the User entity.
 func (aeuo *AccountingEntryUpdateOne) ClearUser() *AccountingEntryUpdateOne {
 	aeuo.mutation.ClearUser()
+	return aeuo
+}
+
+// ClearProduct clears the "product" edge to the Product entity.
+func (aeuo *AccountingEntryUpdateOne) ClearProduct() *AccountingEntryUpdateOne {
+	aeuo.mutation.ClearProduct()
+	return aeuo
+}
+
+// ClearTreasury clears the "treasury" edge to the Treasury entity.
+func (aeuo *AccountingEntryUpdateOne) ClearTreasury() *AccountingEntryUpdateOne {
+	aeuo.mutation.ClearTreasury()
 	return aeuo
 }
 
@@ -913,6 +1136,15 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 	if value, ok := aeuo.mutation.Reversed(); ok {
 		_spec.SetField(accountingentry.FieldReversed, field.TypeBool, value)
 	}
+	if value, ok := aeuo.mutation.Quantity(); ok {
+		_spec.SetField(accountingentry.FieldQuantity, field.TypeInt, value)
+	}
+	if value, ok := aeuo.mutation.AddedQuantity(); ok {
+		_spec.AddField(accountingentry.FieldQuantity, field.TypeInt, value)
+	}
+	if aeuo.mutation.QuantityCleared() {
+		_spec.ClearField(accountingentry.FieldQuantity, field.TypeInt)
+	}
 	if aeuo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -964,6 +1196,64 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeuo.mutation.ProductCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.ProductTable,
+			Columns: []string{accountingentry.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeuo.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.ProductTable,
+			Columns: []string{accountingentry.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeuo.mutation.TreasuryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.TreasuryTable,
+			Columns: []string{accountingentry.TreasuryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeuo.mutation.TreasuryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.TreasuryTable,
+			Columns: []string{accountingentry.TreasuryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

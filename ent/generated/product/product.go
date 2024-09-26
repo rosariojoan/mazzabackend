@@ -45,8 +45,8 @@ const (
 	EdgeCompany = "company"
 	// EdgePictures holds the string denoting the pictures edge name in mutations.
 	EdgePictures = "pictures"
-	// EdgeProductMovements holds the string denoting the productmovements edge name in mutations.
-	EdgeProductMovements = "productMovements"
+	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
+	EdgeAccountingEntries = "accountingEntries"
 	// Table holds the table name of the product in the database.
 	Table = "products"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -63,13 +63,13 @@ const (
 	PicturesInverseTable = "files"
 	// PicturesColumn is the table column denoting the pictures relation/edge.
 	PicturesColumn = "product_pictures"
-	// ProductMovementsTable is the table that holds the productMovements relation/edge.
-	ProductMovementsTable = "product_movements"
-	// ProductMovementsInverseTable is the table name for the ProductMovement entity.
-	// It exists in this package in order to avoid circular dependency with the "productmovement" package.
-	ProductMovementsInverseTable = "product_movements"
-	// ProductMovementsColumn is the table column denoting the productMovements relation/edge.
-	ProductMovementsColumn = "product_product_movements"
+	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
+	AccountingEntriesTable = "accounting_entries"
+	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
+	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
+	AccountingEntriesInverseTable = "accounting_entries"
+	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
+	AccountingEntriesColumn = "product_accounting_entries"
 )
 
 // Columns holds all SQL columns for product fields.
@@ -252,17 +252,17 @@ func ByPictures(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByProductMovementsCount orders the results by productMovements count.
-func ByProductMovementsCount(opts ...sql.OrderTermOption) OrderOption {
+// ByAccountingEntriesCount orders the results by accountingEntries count.
+func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProductMovementsStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
 	}
 }
 
-// ByProductMovements orders the results by productMovements terms.
-func ByProductMovements(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByAccountingEntries orders the results by accountingEntries terms.
+func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductMovementsStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 func newCompanyStep() *sqlgraph.Step {
@@ -279,11 +279,11 @@ func newPicturesStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2M, false, PicturesTable, PicturesColumn),
 	)
 }
-func newProductMovementsStep() *sqlgraph.Step {
+func newAccountingEntriesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductMovementsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProductMovementsTable, ProductMovementsColumn),
+		sqlgraph.To(AccountingEntriesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
 	)
 }
 

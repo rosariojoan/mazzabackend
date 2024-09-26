@@ -6,10 +6,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -185,19 +185,19 @@ func (pc *ProductCreate) AddPictures(f ...*File) *ProductCreate {
 	return pc.AddPictureIDs(ids...)
 }
 
-// AddProductMovementIDs adds the "productMovements" edge to the ProductMovement entity by IDs.
-func (pc *ProductCreate) AddProductMovementIDs(ids ...int) *ProductCreate {
-	pc.mutation.AddProductMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (pc *ProductCreate) AddAccountingEntryIDs(ids ...int) *ProductCreate {
+	pc.mutation.AddAccountingEntryIDs(ids...)
 	return pc
 }
 
-// AddProductMovements adds the "productMovements" edges to the ProductMovement entity.
-func (pc *ProductCreate) AddProductMovements(p ...*ProductMovement) *ProductCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (pc *ProductCreate) AddAccountingEntries(a ...*AccountingEntry) *ProductCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return pc.AddProductMovementIDs(ids...)
+	return pc.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -438,15 +438,15 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := pc.mutation.ProductMovementsIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

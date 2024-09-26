@@ -6,11 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -246,19 +246,19 @@ func (pu *ProductUpdate) AddPictures(f ...*File) *ProductUpdate {
 	return pu.AddPictureIDs(ids...)
 }
 
-// AddProductMovementIDs adds the "productMovements" edge to the ProductMovement entity by IDs.
-func (pu *ProductUpdate) AddProductMovementIDs(ids ...int) *ProductUpdate {
-	pu.mutation.AddProductMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (pu *ProductUpdate) AddAccountingEntryIDs(ids ...int) *ProductUpdate {
+	pu.mutation.AddAccountingEntryIDs(ids...)
 	return pu
 }
 
-// AddProductMovements adds the "productMovements" edges to the ProductMovement entity.
-func (pu *ProductUpdate) AddProductMovements(p ...*ProductMovement) *ProductUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (pu *ProductUpdate) AddAccountingEntries(a ...*AccountingEntry) *ProductUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return pu.AddProductMovementIDs(ids...)
+	return pu.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -293,25 +293,25 @@ func (pu *ProductUpdate) RemovePictures(f ...*File) *ProductUpdate {
 	return pu.RemovePictureIDs(ids...)
 }
 
-// ClearProductMovements clears all "productMovements" edges to the ProductMovement entity.
-func (pu *ProductUpdate) ClearProductMovements() *ProductUpdate {
-	pu.mutation.ClearProductMovements()
+// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+func (pu *ProductUpdate) ClearAccountingEntries() *ProductUpdate {
+	pu.mutation.ClearAccountingEntries()
 	return pu
 }
 
-// RemoveProductMovementIDs removes the "productMovements" edge to ProductMovement entities by IDs.
-func (pu *ProductUpdate) RemoveProductMovementIDs(ids ...int) *ProductUpdate {
-	pu.mutation.RemoveProductMovementIDs(ids...)
+// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+func (pu *ProductUpdate) RemoveAccountingEntryIDs(ids ...int) *ProductUpdate {
+	pu.mutation.RemoveAccountingEntryIDs(ids...)
 	return pu
 }
 
-// RemoveProductMovements removes "productMovements" edges to ProductMovement entities.
-func (pu *ProductUpdate) RemoveProductMovements(p ...*ProductMovement) *ProductUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
+// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+func (pu *ProductUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *ProductUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return pu.RemoveProductMovementIDs(ids...)
+	return pu.RemoveAccountingEntryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -530,28 +530,28 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if pu.mutation.ProductMovementsCleared() {
+	if pu.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.RemovedProductMovementsIDs(); len(nodes) > 0 && !pu.mutation.ProductMovementsCleared() {
+	if nodes := pu.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !pu.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -559,15 +559,15 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.ProductMovementsIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -811,19 +811,19 @@ func (puo *ProductUpdateOne) AddPictures(f ...*File) *ProductUpdateOne {
 	return puo.AddPictureIDs(ids...)
 }
 
-// AddProductMovementIDs adds the "productMovements" edge to the ProductMovement entity by IDs.
-func (puo *ProductUpdateOne) AddProductMovementIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.AddProductMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (puo *ProductUpdateOne) AddAccountingEntryIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.AddAccountingEntryIDs(ids...)
 	return puo
 }
 
-// AddProductMovements adds the "productMovements" edges to the ProductMovement entity.
-func (puo *ProductUpdateOne) AddProductMovements(p ...*ProductMovement) *ProductUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (puo *ProductUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *ProductUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return puo.AddProductMovementIDs(ids...)
+	return puo.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -858,25 +858,25 @@ func (puo *ProductUpdateOne) RemovePictures(f ...*File) *ProductUpdateOne {
 	return puo.RemovePictureIDs(ids...)
 }
 
-// ClearProductMovements clears all "productMovements" edges to the ProductMovement entity.
-func (puo *ProductUpdateOne) ClearProductMovements() *ProductUpdateOne {
-	puo.mutation.ClearProductMovements()
+// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+func (puo *ProductUpdateOne) ClearAccountingEntries() *ProductUpdateOne {
+	puo.mutation.ClearAccountingEntries()
 	return puo
 }
 
-// RemoveProductMovementIDs removes the "productMovements" edge to ProductMovement entities by IDs.
-func (puo *ProductUpdateOne) RemoveProductMovementIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.RemoveProductMovementIDs(ids...)
+// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+func (puo *ProductUpdateOne) RemoveAccountingEntryIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.RemoveAccountingEntryIDs(ids...)
 	return puo
 }
 
-// RemoveProductMovements removes "productMovements" edges to ProductMovement entities.
-func (puo *ProductUpdateOne) RemoveProductMovements(p ...*ProductMovement) *ProductUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
+// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+func (puo *ProductUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *ProductUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return puo.RemoveProductMovementIDs(ids...)
+	return puo.RemoveAccountingEntryIDs(ids...)
 }
 
 // Where appends a list predicates to the ProductUpdate builder.
@@ -1125,28 +1125,28 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if puo.mutation.ProductMovementsCleared() {
+	if puo.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.RemovedProductMovementsIDs(); len(nodes) > 0 && !puo.mutation.ProductMovementsCleared() {
+	if nodes := puo.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !puo.mutation.AccountingEntriesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1154,15 +1154,15 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.ProductMovementsIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   product.ProductMovementsTable,
-			Columns: []string{product.ProductMovementsColumn},
+			Table:   product.AccountingEntriesTable,
+			Columns: []string{product.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(productmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

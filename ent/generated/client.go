@@ -12,14 +12,12 @@ import (
 	"mazza/ent/generated/migrate"
 
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -45,8 +43,6 @@ type Client struct {
 	Schema *migrate.Schema
 	// AccountingEntry is the client for interacting with the AccountingEntry builders.
 	AccountingEntry *AccountingEntryClient
-	// CashMovement is the client for interacting with the CashMovement builders.
-	CashMovement *CashMovementClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
 	// Customer is the client for interacting with the Customer builders.
@@ -59,8 +55,6 @@ type Client struct {
 	Payable *PayableClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
-	// ProductMovement is the client for interacting with the ProductMovement builders.
-	ProductMovement *ProductMovementClient
 	// Receivable is the client for interacting with the Receivable builders.
 	Receivable *ReceivableClient
 	// Supplier is the client for interacting with the Supplier builders.
@@ -93,14 +87,12 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.AccountingEntry = NewAccountingEntryClient(c.config)
-	c.CashMovement = NewCashMovementClient(c.config)
 	c.Company = NewCompanyClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
 	c.Employee = NewEmployeeClient(c.config)
 	c.File = NewFileClient(c.config)
 	c.Payable = NewPayableClient(c.config)
 	c.Product = NewProductClient(c.config)
-	c.ProductMovement = NewProductMovementClient(c.config)
 	c.Receivable = NewReceivableClient(c.config)
 	c.Supplier = NewSupplierClient(c.config)
 	c.Token = NewTokenClient(c.config)
@@ -203,14 +195,12 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:             ctx,
 		config:          cfg,
 		AccountingEntry: NewAccountingEntryClient(cfg),
-		CashMovement:    NewCashMovementClient(cfg),
 		Company:         NewCompanyClient(cfg),
 		Customer:        NewCustomerClient(cfg),
 		Employee:        NewEmployeeClient(cfg),
 		File:            NewFileClient(cfg),
 		Payable:         NewPayableClient(cfg),
 		Product:         NewProductClient(cfg),
-		ProductMovement: NewProductMovementClient(cfg),
 		Receivable:      NewReceivableClient(cfg),
 		Supplier:        NewSupplierClient(cfg),
 		Token:           NewTokenClient(cfg),
@@ -240,14 +230,12 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:             ctx,
 		config:          cfg,
 		AccountingEntry: NewAccountingEntryClient(cfg),
-		CashMovement:    NewCashMovementClient(cfg),
 		Company:         NewCompanyClient(cfg),
 		Customer:        NewCustomerClient(cfg),
 		Employee:        NewEmployeeClient(cfg),
 		File:            NewFileClient(cfg),
 		Payable:         NewPayableClient(cfg),
 		Product:         NewProductClient(cfg),
-		ProductMovement: NewProductMovementClient(cfg),
 		Receivable:      NewReceivableClient(cfg),
 		Supplier:        NewSupplierClient(cfg),
 		Token:           NewTokenClient(cfg),
@@ -286,9 +274,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.AccountingEntry, c.CashMovement, c.Company, c.Customer, c.Employee, c.File,
-		c.Payable, c.Product, c.ProductMovement, c.Receivable, c.Supplier, c.Token,
-		c.Treasury, c.User, c.UserRole, c.Workshift, c.Worktag, c.Worktask,
+		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
+		c.Product, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole,
+		c.Workshift, c.Worktag, c.Worktask,
 	} {
 		n.Use(hooks...)
 	}
@@ -298,9 +286,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.AccountingEntry, c.CashMovement, c.Company, c.Customer, c.Employee, c.File,
-		c.Payable, c.Product, c.ProductMovement, c.Receivable, c.Supplier, c.Token,
-		c.Treasury, c.User, c.UserRole, c.Workshift, c.Worktag, c.Worktask,
+		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
+		c.Product, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole,
+		c.Workshift, c.Worktag, c.Worktask,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -311,8 +299,6 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AccountingEntryMutation:
 		return c.AccountingEntry.mutate(ctx, m)
-	case *CashMovementMutation:
-		return c.CashMovement.mutate(ctx, m)
 	case *CompanyMutation:
 		return c.Company.mutate(ctx, m)
 	case *CustomerMutation:
@@ -325,8 +311,6 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Payable.mutate(ctx, m)
 	case *ProductMutation:
 		return c.Product.mutate(ctx, m)
-	case *ProductMovementMutation:
-		return c.ProductMovement.mutate(ctx, m)
 	case *ReceivableMutation:
 		return c.Receivable.mutate(ctx, m)
 	case *SupplierMutation:
@@ -490,6 +474,38 @@ func (c *AccountingEntryClient) QueryUser(ae *AccountingEntry) *UserQuery {
 	return query
 }
 
+// QueryProduct queries the product edge of a AccountingEntry.
+func (c *AccountingEntryClient) QueryProduct(ae *AccountingEntry) *ProductQuery {
+	query := (&ProductClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ae.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.ProductTable, accountingentry.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTreasury queries the treasury edge of a AccountingEntry.
+func (c *AccountingEntryClient) QueryTreasury(ae *AccountingEntry) *TreasuryQuery {
+	query := (&TreasuryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ae.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
+			sqlgraph.To(treasury.Table, treasury.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.TreasuryTable, accountingentry.TreasuryColumn),
+		)
+		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *AccountingEntryClient) Hooks() []Hook {
 	return c.hooks.AccountingEntry
@@ -512,155 +528,6 @@ func (c *AccountingEntryClient) mutate(ctx context.Context, m *AccountingEntryMu
 		return (&AccountingEntryDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown AccountingEntry mutation op: %q", m.Op())
-	}
-}
-
-// CashMovementClient is a client for the CashMovement schema.
-type CashMovementClient struct {
-	config
-}
-
-// NewCashMovementClient returns a client for the CashMovement from the given config.
-func NewCashMovementClient(c config) *CashMovementClient {
-	return &CashMovementClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `cashmovement.Hooks(f(g(h())))`.
-func (c *CashMovementClient) Use(hooks ...Hook) {
-	c.hooks.CashMovement = append(c.hooks.CashMovement, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `cashmovement.Intercept(f(g(h())))`.
-func (c *CashMovementClient) Intercept(interceptors ...Interceptor) {
-	c.inters.CashMovement = append(c.inters.CashMovement, interceptors...)
-}
-
-// Create returns a builder for creating a CashMovement entity.
-func (c *CashMovementClient) Create() *CashMovementCreate {
-	mutation := newCashMovementMutation(c.config, OpCreate)
-	return &CashMovementCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of CashMovement entities.
-func (c *CashMovementClient) CreateBulk(builders ...*CashMovementCreate) *CashMovementCreateBulk {
-	return &CashMovementCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *CashMovementClient) MapCreateBulk(slice any, setFunc func(*CashMovementCreate, int)) *CashMovementCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &CashMovementCreateBulk{err: fmt.Errorf("calling to CashMovementClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*CashMovementCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &CashMovementCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for CashMovement.
-func (c *CashMovementClient) Update() *CashMovementUpdate {
-	mutation := newCashMovementMutation(c.config, OpUpdate)
-	return &CashMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *CashMovementClient) UpdateOne(cm *CashMovement) *CashMovementUpdateOne {
-	mutation := newCashMovementMutation(c.config, OpUpdateOne, withCashMovement(cm))
-	return &CashMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *CashMovementClient) UpdateOneID(id int) *CashMovementUpdateOne {
-	mutation := newCashMovementMutation(c.config, OpUpdateOne, withCashMovementID(id))
-	return &CashMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for CashMovement.
-func (c *CashMovementClient) Delete() *CashMovementDelete {
-	mutation := newCashMovementMutation(c.config, OpDelete)
-	return &CashMovementDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *CashMovementClient) DeleteOne(cm *CashMovement) *CashMovementDeleteOne {
-	return c.DeleteOneID(cm.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *CashMovementClient) DeleteOneID(id int) *CashMovementDeleteOne {
-	builder := c.Delete().Where(cashmovement.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &CashMovementDeleteOne{builder}
-}
-
-// Query returns a query builder for CashMovement.
-func (c *CashMovementClient) Query() *CashMovementQuery {
-	return &CashMovementQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeCashMovement},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a CashMovement entity by its id.
-func (c *CashMovementClient) Get(ctx context.Context, id int) (*CashMovement, error) {
-	return c.Query().Where(cashmovement.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *CashMovementClient) GetX(ctx context.Context, id int) *CashMovement {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryTreasury queries the treasury edge of a CashMovement.
-func (c *CashMovementClient) QueryTreasury(cm *CashMovement) *TreasuryQuery {
-	query := (&TreasuryClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := cm.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(cashmovement.Table, cashmovement.FieldID, id),
-			sqlgraph.To(treasury.Table, treasury.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, cashmovement.TreasuryTable, cashmovement.TreasuryColumn),
-		)
-		fromV = sqlgraph.Neighbors(cm.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *CashMovementClient) Hooks() []Hook {
-	return c.hooks.CashMovement
-}
-
-// Interceptors returns the client interceptors.
-func (c *CashMovementClient) Interceptors() []Interceptor {
-	return c.inters.CashMovement
-}
-
-func (c *CashMovementClient) mutate(ctx context.Context, m *CashMovementMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&CashMovementCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&CashMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&CashMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&CashMovementDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("generated: unknown CashMovement mutation op: %q", m.Op())
 	}
 }
 
@@ -1901,15 +1768,15 @@ func (c *ProductClient) QueryPictures(pr *Product) *FileQuery {
 	return query
 }
 
-// QueryProductMovements queries the productMovements edge of a Product.
-func (c *ProductClient) QueryProductMovements(pr *Product) *ProductMovementQuery {
-	query := (&ProductMovementClient{config: c.config}).Query()
+// QueryAccountingEntries queries the accountingEntries edge of a Product.
+func (c *ProductClient) QueryAccountingEntries(pr *Product) *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
-			sqlgraph.To(productmovement.Table, productmovement.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductMovementsTable, product.ProductMovementsColumn),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.AccountingEntriesTable, product.AccountingEntriesColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -1939,155 +1806,6 @@ func (c *ProductClient) mutate(ctx context.Context, m *ProductMutation) (Value, 
 		return (&ProductDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown Product mutation op: %q", m.Op())
-	}
-}
-
-// ProductMovementClient is a client for the ProductMovement schema.
-type ProductMovementClient struct {
-	config
-}
-
-// NewProductMovementClient returns a client for the ProductMovement from the given config.
-func NewProductMovementClient(c config) *ProductMovementClient {
-	return &ProductMovementClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `productmovement.Hooks(f(g(h())))`.
-func (c *ProductMovementClient) Use(hooks ...Hook) {
-	c.hooks.ProductMovement = append(c.hooks.ProductMovement, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `productmovement.Intercept(f(g(h())))`.
-func (c *ProductMovementClient) Intercept(interceptors ...Interceptor) {
-	c.inters.ProductMovement = append(c.inters.ProductMovement, interceptors...)
-}
-
-// Create returns a builder for creating a ProductMovement entity.
-func (c *ProductMovementClient) Create() *ProductMovementCreate {
-	mutation := newProductMovementMutation(c.config, OpCreate)
-	return &ProductMovementCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of ProductMovement entities.
-func (c *ProductMovementClient) CreateBulk(builders ...*ProductMovementCreate) *ProductMovementCreateBulk {
-	return &ProductMovementCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *ProductMovementClient) MapCreateBulk(slice any, setFunc func(*ProductMovementCreate, int)) *ProductMovementCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &ProductMovementCreateBulk{err: fmt.Errorf("calling to ProductMovementClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*ProductMovementCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &ProductMovementCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for ProductMovement.
-func (c *ProductMovementClient) Update() *ProductMovementUpdate {
-	mutation := newProductMovementMutation(c.config, OpUpdate)
-	return &ProductMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *ProductMovementClient) UpdateOne(pm *ProductMovement) *ProductMovementUpdateOne {
-	mutation := newProductMovementMutation(c.config, OpUpdateOne, withProductMovement(pm))
-	return &ProductMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *ProductMovementClient) UpdateOneID(id int) *ProductMovementUpdateOne {
-	mutation := newProductMovementMutation(c.config, OpUpdateOne, withProductMovementID(id))
-	return &ProductMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for ProductMovement.
-func (c *ProductMovementClient) Delete() *ProductMovementDelete {
-	mutation := newProductMovementMutation(c.config, OpDelete)
-	return &ProductMovementDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *ProductMovementClient) DeleteOne(pm *ProductMovement) *ProductMovementDeleteOne {
-	return c.DeleteOneID(pm.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ProductMovementClient) DeleteOneID(id int) *ProductMovementDeleteOne {
-	builder := c.Delete().Where(productmovement.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &ProductMovementDeleteOne{builder}
-}
-
-// Query returns a query builder for ProductMovement.
-func (c *ProductMovementClient) Query() *ProductMovementQuery {
-	return &ProductMovementQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeProductMovement},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a ProductMovement entity by its id.
-func (c *ProductMovementClient) Get(ctx context.Context, id int) (*ProductMovement, error) {
-	return c.Query().Where(productmovement.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *ProductMovementClient) GetX(ctx context.Context, id int) *ProductMovement {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryProduct queries the product edge of a ProductMovement.
-func (c *ProductMovementClient) QueryProduct(pm *ProductMovement) *ProductQuery {
-	query := (&ProductClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pm.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(productmovement.Table, productmovement.FieldID, id),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, productmovement.ProductTable, productmovement.ProductColumn),
-		)
-		fromV = sqlgraph.Neighbors(pm.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *ProductMovementClient) Hooks() []Hook {
-	return c.hooks.ProductMovement
-}
-
-// Interceptors returns the client interceptors.
-func (c *ProductMovementClient) Interceptors() []Interceptor {
-	return c.inters.ProductMovement
-}
-
-func (c *ProductMovementClient) mutate(ctx context.Context, m *ProductMovementMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&ProductMovementCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&ProductMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&ProductMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&ProductMovementDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("generated: unknown ProductMovement mutation op: %q", m.Op())
 	}
 }
 
@@ -2694,15 +2412,15 @@ func (c *TreasuryClient) QueryCompany(t *Treasury) *CompanyQuery {
 	return query
 }
 
-// QueryCashMovements queries the cashMovements edge of a Treasury.
-func (c *TreasuryClient) QueryCashMovements(t *Treasury) *CashMovementQuery {
-	query := (&CashMovementClient{config: c.config}).Query()
+// QueryAccountingEntries queries the accountingEntries edge of a Treasury.
+func (c *TreasuryClient) QueryAccountingEntries(t *Treasury) *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := t.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(treasury.Table, treasury.FieldID, id),
-			sqlgraph.To(cashmovement.Table, cashmovement.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, treasury.CashMovementsTable, treasury.CashMovementsColumn),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, treasury.AccountingEntriesTable, treasury.AccountingEntriesColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil
@@ -3741,14 +3459,14 @@ func (c *WorktaskClient) mutate(ctx context.Context, m *WorktaskMutation) (Value
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AccountingEntry, CashMovement, Company, Customer, Employee, File, Payable,
-		Product, ProductMovement, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift, Worktag, Worktask []ent.Hook
+		AccountingEntry, Company, Customer, Employee, File, Payable, Product,
+		Receivable, Supplier, Token, Treasury, User, UserRole, Workshift, Worktag,
+		Worktask []ent.Hook
 	}
 	inters struct {
-		AccountingEntry, CashMovement, Company, Customer, Employee, File, Payable,
-		Product, ProductMovement, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift, Worktag, Worktask []ent.Interceptor
+		AccountingEntry, Company, Customer, Employee, File, Payable, Product,
+		Receivable, Supplier, Token, Treasury, User, UserRole, Workshift, Worktag,
+		Worktask []ent.Interceptor
 	}
 )
 

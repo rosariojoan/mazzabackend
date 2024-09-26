@@ -4,14 +4,12 @@ package runtime
 
 import (
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -67,25 +65,6 @@ func init() {
 	accountingentryDescReversed := accountingentryFields[10].Descriptor()
 	// accountingentry.DefaultReversed holds the default value on creation for the reversed field.
 	accountingentry.DefaultReversed = accountingentryDescReversed.Default.(bool)
-	cashmovementMixin := schema.CashMovement{}.Mixin()
-	cashmovementMixinFields0 := cashmovementMixin[0].Fields()
-	_ = cashmovementMixinFields0
-	cashmovementFields := schema.CashMovement{}.Fields()
-	_ = cashmovementFields
-	// cashmovementDescCreatedAt is the schema descriptor for createdAt field.
-	cashmovementDescCreatedAt := cashmovementMixinFields0[0].Descriptor()
-	// cashmovement.DefaultCreatedAt holds the default value on creation for the createdAt field.
-	cashmovement.DefaultCreatedAt = cashmovementDescCreatedAt.Default.(func() time.Time)
-	// cashmovementDescUpdatedAt is the schema descriptor for updatedAt field.
-	cashmovementDescUpdatedAt := cashmovementMixinFields0[1].Descriptor()
-	// cashmovement.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
-	cashmovement.DefaultUpdatedAt = cashmovementDescUpdatedAt.Default.(func() time.Time)
-	// cashmovement.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
-	cashmovement.UpdateDefaultUpdatedAt = cashmovementDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// cashmovementDescEntryGroup is the schema descriptor for entryGroup field.
-	cashmovementDescEntryGroup := cashmovementFields[2].Descriptor()
-	// cashmovement.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
-	cashmovement.EntryGroupValidator = cashmovementDescEntryGroup.Validators[0].(func(int) error)
 	companyMixin := schema.Company{}.Mixin()
 	companyMixinFields0 := companyMixin[0].Fields()
 	_ = companyMixinFields0
@@ -258,39 +237,6 @@ func init() {
 	productDescUnitCost := productFields[8].Descriptor()
 	// product.UnitCostValidator is a validator for the "unitCost" field. It is called by the builders before save.
 	product.UnitCostValidator = productDescUnitCost.Validators[0].(func(float64) error)
-	productmovementMixin := schema.ProductMovement{}.Mixin()
-	productmovementMixinFields0 := productmovementMixin[0].Fields()
-	_ = productmovementMixinFields0
-	productmovementFields := schema.ProductMovement{}.Fields()
-	_ = productmovementFields
-	// productmovementDescCreatedAt is the schema descriptor for createdAt field.
-	productmovementDescCreatedAt := productmovementMixinFields0[0].Descriptor()
-	// productmovement.DefaultCreatedAt holds the default value on creation for the createdAt field.
-	productmovement.DefaultCreatedAt = productmovementDescCreatedAt.Default.(func() time.Time)
-	// productmovementDescUpdatedAt is the schema descriptor for updatedAt field.
-	productmovementDescUpdatedAt := productmovementMixinFields0[1].Descriptor()
-	// productmovement.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
-	productmovement.DefaultUpdatedAt = productmovementDescUpdatedAt.Default.(func() time.Time)
-	// productmovement.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
-	productmovement.UpdateDefaultUpdatedAt = productmovementDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productmovementDescEntryGroup is the schema descriptor for entryGroup field.
-	productmovementDescEntryGroup := productmovementFields[0].Descriptor()
-	// productmovement.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
-	productmovement.EntryGroupValidator = productmovementDescEntryGroup.Validators[0].(func(int) error)
-	// productmovementDescAverageCost is the schema descriptor for averageCost field.
-	productmovementDescAverageCost := productmovementFields[1].Descriptor()
-	// productmovement.AverageCostValidator is a validator for the "averageCost" field. It is called by the builders before save.
-	productmovement.AverageCostValidator = productmovementDescAverageCost.Validators[0].(func(float64) error)
-	// productmovementDescUnitCost is the schema descriptor for unitCost field.
-	productmovementDescUnitCost := productmovementFields[2].Descriptor()
-	// productmovement.UnitCostValidator is a validator for the "unitCost" field. It is called by the builders before save.
-	productmovement.UnitCostValidator = productmovementDescUnitCost.Validators[0].(func(float64) error)
-	// productmovementDescPrice is the schema descriptor for price field.
-	productmovementDescPrice := productmovementFields[3].Descriptor()
-	// productmovement.DefaultPrice holds the default value on creation for the price field.
-	productmovement.DefaultPrice = productmovementDescPrice.Default.(float64)
-	// productmovement.PriceValidator is a validator for the "price" field. It is called by the builders before save.
-	productmovement.PriceValidator = productmovementDescPrice.Validators[0].(func(float64) error)
 	receivableMixin := schema.Receivable{}.Mixin()
 	receivableMixinFields0 := receivableMixin[0].Fields()
 	_ = receivableMixinFields0

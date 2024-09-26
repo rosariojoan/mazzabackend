@@ -16,8 +16,6 @@ type Tx struct {
 	config
 	// AccountingEntry is the client for interacting with the AccountingEntry builders.
 	AccountingEntry *AccountingEntryClient
-	// CashMovement is the client for interacting with the CashMovement builders.
-	CashMovement *CashMovementClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
 	// Customer is the client for interacting with the Customer builders.
@@ -30,8 +28,6 @@ type Tx struct {
 	Payable *PayableClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
-	// ProductMovement is the client for interacting with the ProductMovement builders.
-	ProductMovement *ProductMovementClient
 	// Receivable is the client for interacting with the Receivable builders.
 	Receivable *ReceivableClient
 	// Supplier is the client for interacting with the Supplier builders.
@@ -182,14 +178,12 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.AccountingEntry = NewAccountingEntryClient(tx.config)
-	tx.CashMovement = NewCashMovementClient(tx.config)
 	tx.Company = NewCompanyClient(tx.config)
 	tx.Customer = NewCustomerClient(tx.config)
 	tx.Employee = NewEmployeeClient(tx.config)
 	tx.File = NewFileClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
-	tx.ProductMovement = NewProductMovementClient(tx.config)
 	tx.Receivable = NewReceivableClient(tx.config)
 	tx.Supplier = NewSupplierClient(tx.config)
 	tx.Token = NewTokenClient(tx.config)

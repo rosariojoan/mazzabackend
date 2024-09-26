@@ -49,8 +49,10 @@ func (Treasury) Indexes() []ent.Index {
 // Edges of the Treasury.
 func (Treasury) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("treasuries").Unique(),                            // a treasury can belong to only one company
-		edge.To("cashMovements", CashMovement.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a cash & cash equivalent account can have many cash movements
+		edge.From("company", Company.Type).Ref("treasuries").Unique(),                                   // a treasury can belong to only one company
+		edge.To("accountingEntries", AccountingEntry.Type).Annotations(entsql.OnDelete(entsql.SetNull)), // a treasury account can have many accounting entries
+
+		// edge.To("cashMovements", CashMovement.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a cash & cash equivalent account can have many cash movements
 	}
 }
 

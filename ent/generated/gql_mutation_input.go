@@ -32,8 +32,11 @@ type CreateAccountingEntryInput struct {
 	IsDebit     bool
 	IsReversal  *bool
 	Reversed    *bool
+	Quantity    *int
 	CompanyID   *int
 	UserID      *int
+	ProductID   *int
+	TreasuryID  *int
 }
 
 // Mutate applies the CreateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -64,11 +67,20 @@ func (i *CreateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.Reversed; v != nil {
 		m.SetReversed(*v)
 	}
+	if v := i.Quantity; v != nil {
+		m.SetQuantity(*v)
+	}
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
+	}
+	if v := i.ProductID; v != nil {
+		m.SetProductID(*v)
+	}
+	if v := i.TreasuryID; v != nil {
+		m.SetTreasuryID(*v)
 	}
 }
 
@@ -94,10 +106,16 @@ type UpdateAccountingEntryInput struct {
 	IsDebit        *bool
 	IsReversal     *bool
 	Reversed       *bool
+	ClearQuantity  bool
+	Quantity       *int
 	ClearCompany   bool
 	CompanyID      *int
 	ClearUser      bool
 	UserID         *int
+	ClearProduct   bool
+	ProductID      *int
+	ClearTreasury  bool
+	TreasuryID     *int
 }
 
 // Mutate applies the UpdateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -144,6 +162,12 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.Reversed; v != nil {
 		m.SetReversed(*v)
 	}
+	if i.ClearQuantity {
+		m.ClearQuantity()
+	}
+	if v := i.Quantity; v != nil {
+		m.SetQuantity(*v)
+	}
 	if i.ClearCompany {
 		m.ClearCompany()
 	}
@@ -156,6 +180,18 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
+	if i.ClearProduct {
+		m.ClearProduct()
+	}
+	if v := i.ProductID; v != nil {
+		m.SetProductID(*v)
+	}
+	if i.ClearTreasury {
+		m.ClearTreasury()
+	}
+	if v := i.TreasuryID; v != nil {
+		m.SetTreasuryID(*v)
+	}
 }
 
 // SetInput applies the change-set in the UpdateAccountingEntryInput on the AccountingEntryUpdate builder.
@@ -166,94 +202,6 @@ func (c *AccountingEntryUpdate) SetInput(i UpdateAccountingEntryInput) *Accounti
 
 // SetInput applies the change-set in the UpdateAccountingEntryInput on the AccountingEntryUpdateOne builder.
 func (c *AccountingEntryUpdateOne) SetInput(i UpdateAccountingEntryInput) *AccountingEntryUpdateOne {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// CreateCashMovementInput represents a mutation input for creating cashmovements.
-type CreateCashMovementInput struct {
-	CreatedAt  *time.Time
-	UpdatedAt  *time.Time
-	DeletedAt  *time.Time
-	Amount     float64
-	Date       time.Time
-	EntryGroup int
-	TreasuryID *int
-}
-
-// Mutate applies the CreateCashMovementInput on the CashMovementMutation builder.
-func (i *CreateCashMovementInput) Mutate(m *CashMovementMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	m.SetAmount(i.Amount)
-	m.SetDate(i.Date)
-	m.SetEntryGroup(i.EntryGroup)
-	if v := i.TreasuryID; v != nil {
-		m.SetTreasuryID(*v)
-	}
-}
-
-// SetInput applies the change-set in the CreateCashMovementInput on the CashMovementCreate builder.
-func (c *CashMovementCreate) SetInput(i CreateCashMovementInput) *CashMovementCreate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// UpdateCashMovementInput represents a mutation input for updating cashmovements.
-type UpdateCashMovementInput struct {
-	UpdatedAt      *time.Time
-	ClearDeletedAt bool
-	DeletedAt      *time.Time
-	Amount         *float64
-	Date           *time.Time
-	EntryGroup     *int
-	ClearTreasury  bool
-	TreasuryID     *int
-}
-
-// Mutate applies the UpdateCashMovementInput on the CashMovementMutation builder.
-func (i *UpdateCashMovementInput) Mutate(m *CashMovementMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if v := i.Amount; v != nil {
-		m.SetAmount(*v)
-	}
-	if v := i.Date; v != nil {
-		m.SetDate(*v)
-	}
-	if v := i.EntryGroup; v != nil {
-		m.SetEntryGroup(*v)
-	}
-	if i.ClearTreasury {
-		m.ClearTreasury()
-	}
-	if v := i.TreasuryID; v != nil {
-		m.SetTreasuryID(*v)
-	}
-}
-
-// SetInput applies the change-set in the UpdateCashMovementInput on the CashMovementUpdate builder.
-func (c *CashMovementUpdate) SetInput(i UpdateCashMovementInput) *CashMovementUpdate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// SetInput applies the change-set in the UpdateCashMovementInput on the CashMovementUpdateOne builder.
-func (c *CashMovementUpdateOne) SetInput(i UpdateCashMovementInput) *CashMovementUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -1318,7 +1266,7 @@ type CreateProductInput struct {
 	UnitCost           float64
 	CompanyID          *int
 	PictureIDs         []int
-	ProductMovementIDs []int
+	AccountingEntryIDs []int
 }
 
 // Mutate applies the CreateProductInput on the ProductMutation builder.
@@ -1355,8 +1303,8 @@ func (i *CreateProductInput) Mutate(m *ProductMutation) {
 	if v := i.PictureIDs; len(v) > 0 {
 		m.AddPictureIDs(v...)
 	}
-	if v := i.ProductMovementIDs; len(v) > 0 {
-		m.AddProductMovementIDs(v...)
+	if v := i.AccountingEntryIDs; len(v) > 0 {
+		m.AddAccountingEntryIDs(v...)
 	}
 }
 
@@ -1385,9 +1333,9 @@ type UpdateProductInput struct {
 	ClearPictures            bool
 	AddPictureIDs            []int
 	RemovePictureIDs         []int
-	ClearProductMovements    bool
-	AddProductMovementIDs    []int
-	RemoveProductMovementIDs []int
+	ClearAccountingEntries   bool
+	AddAccountingEntryIDs    []int
+	RemoveAccountingEntryIDs []int
 }
 
 // Mutate applies the UpdateProductInput on the ProductMutation builder.
@@ -1443,14 +1391,14 @@ func (i *UpdateProductInput) Mutate(m *ProductMutation) {
 	if v := i.RemovePictureIDs; len(v) > 0 {
 		m.RemovePictureIDs(v...)
 	}
-	if i.ClearProductMovements {
-		m.ClearProductMovements()
+	if i.ClearAccountingEntries {
+		m.ClearAccountingEntries()
 	}
-	if v := i.AddProductMovementIDs; len(v) > 0 {
-		m.AddProductMovementIDs(v...)
+	if v := i.AddAccountingEntryIDs; len(v) > 0 {
+		m.AddAccountingEntryIDs(v...)
 	}
-	if v := i.RemoveProductMovementIDs; len(v) > 0 {
-		m.RemoveProductMovementIDs(v...)
+	if v := i.RemoveAccountingEntryIDs; len(v) > 0 {
+		m.RemoveAccountingEntryIDs(v...)
 	}
 }
 
@@ -1462,108 +1410,6 @@ func (c *ProductUpdate) SetInput(i UpdateProductInput) *ProductUpdate {
 
 // SetInput applies the change-set in the UpdateProductInput on the ProductUpdateOne builder.
 func (c *ProductUpdateOne) SetInput(i UpdateProductInput) *ProductUpdateOne {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// CreateProductMovementInput represents a mutation input for creating productmovements.
-type CreateProductMovementInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	DeletedAt   *time.Time
-	EntryGroup  int
-	AverageCost float64
-	UnitCost    float64
-	Price       *float64
-	Quantity    int
-	ProductID   *int
-}
-
-// Mutate applies the CreateProductMovementInput on the ProductMovementMutation builder.
-func (i *CreateProductMovementInput) Mutate(m *ProductMovementMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	m.SetEntryGroup(i.EntryGroup)
-	m.SetAverageCost(i.AverageCost)
-	m.SetUnitCost(i.UnitCost)
-	if v := i.Price; v != nil {
-		m.SetPrice(*v)
-	}
-	m.SetQuantity(i.Quantity)
-	if v := i.ProductID; v != nil {
-		m.SetProductID(*v)
-	}
-}
-
-// SetInput applies the change-set in the CreateProductMovementInput on the ProductMovementCreate builder.
-func (c *ProductMovementCreate) SetInput(i CreateProductMovementInput) *ProductMovementCreate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// UpdateProductMovementInput represents a mutation input for updating productmovements.
-type UpdateProductMovementInput struct {
-	UpdatedAt      *time.Time
-	ClearDeletedAt bool
-	DeletedAt      *time.Time
-	EntryGroup     *int
-	AverageCost    *float64
-	UnitCost       *float64
-	Price          *float64
-	Quantity       *int
-	ClearProduct   bool
-	ProductID      *int
-}
-
-// Mutate applies the UpdateProductMovementInput on the ProductMovementMutation builder.
-func (i *UpdateProductMovementInput) Mutate(m *ProductMovementMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if v := i.EntryGroup; v != nil {
-		m.SetEntryGroup(*v)
-	}
-	if v := i.AverageCost; v != nil {
-		m.SetAverageCost(*v)
-	}
-	if v := i.UnitCost; v != nil {
-		m.SetUnitCost(*v)
-	}
-	if v := i.Price; v != nil {
-		m.SetPrice(*v)
-	}
-	if v := i.Quantity; v != nil {
-		m.SetQuantity(*v)
-	}
-	if i.ClearProduct {
-		m.ClearProduct()
-	}
-	if v := i.ProductID; v != nil {
-		m.SetProductID(*v)
-	}
-}
-
-// SetInput applies the change-set in the UpdateProductMovementInput on the ProductMovementUpdate builder.
-func (c *ProductMovementUpdate) SetInput(i UpdateProductMovementInput) *ProductMovementUpdate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// SetInput applies the change-set in the UpdateProductMovementInput on the ProductMovementUpdateOne builder.
-func (c *ProductMovementUpdateOne) SetInput(i UpdateProductMovementInput) *ProductMovementUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -1822,22 +1668,22 @@ func (c *SupplierUpdateOne) SetInput(i UpdateSupplierInput) *SupplierUpdateOne {
 
 // CreateTreasuryInput represents a mutation input for creating treasuries.
 type CreateTreasuryInput struct {
-	CreatedAt       *time.Time
-	UpdatedAt       *time.Time
-	DeletedAt       *time.Time
-	AccountNumber   *string
-	Balance         float64
-	BankName        *string
-	Currency        treasury.Currency
-	Description     *string
-	Iban            *string
-	IsDefault       *bool
-	IsMainAccount   *bool
-	Name            string
-	Category        treasury.Category
-	SwiftCode       *string
-	CompanyID       *int
-	CashMovementIDs []int
+	CreatedAt          *time.Time
+	UpdatedAt          *time.Time
+	DeletedAt          *time.Time
+	AccountNumber      *string
+	Balance            float64
+	BankName           *string
+	Currency           treasury.Currency
+	Description        *string
+	Iban               *string
+	IsDefault          *bool
+	IsMainAccount      *bool
+	Name               string
+	Category           treasury.Category
+	SwiftCode          *string
+	CompanyID          *int
+	AccountingEntryIDs []int
 }
 
 // Mutate applies the CreateTreasuryInput on the TreasuryMutation builder.
@@ -1879,8 +1725,8 @@ func (i *CreateTreasuryInput) Mutate(m *TreasuryMutation) {
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
-	if v := i.CashMovementIDs; len(v) > 0 {
-		m.AddCashMovementIDs(v...)
+	if v := i.AccountingEntryIDs; len(v) > 0 {
+		m.AddAccountingEntryIDs(v...)
 	}
 }
 
@@ -1892,32 +1738,32 @@ func (c *TreasuryCreate) SetInput(i CreateTreasuryInput) *TreasuryCreate {
 
 // UpdateTreasuryInput represents a mutation input for updating treasuries.
 type UpdateTreasuryInput struct {
-	UpdatedAt             *time.Time
-	ClearDeletedAt        bool
-	DeletedAt             *time.Time
-	ClearAccountNumber    bool
-	AccountNumber         *string
-	Balance               *float64
-	ClearBankName         bool
-	BankName              *string
-	Currency              *treasury.Currency
-	ClearDescription      bool
-	Description           *string
-	ClearIban             bool
-	Iban                  *string
-	ClearIsDefault        bool
-	IsDefault             *bool
-	ClearIsMainAccount    bool
-	IsMainAccount         *bool
-	Name                  *string
-	Category              *treasury.Category
-	ClearSwiftCode        bool
-	SwiftCode             *string
-	ClearCompany          bool
-	CompanyID             *int
-	ClearCashMovements    bool
-	AddCashMovementIDs    []int
-	RemoveCashMovementIDs []int
+	UpdatedAt                *time.Time
+	ClearDeletedAt           bool
+	DeletedAt                *time.Time
+	ClearAccountNumber       bool
+	AccountNumber            *string
+	Balance                  *float64
+	ClearBankName            bool
+	BankName                 *string
+	Currency                 *treasury.Currency
+	ClearDescription         bool
+	Description              *string
+	ClearIban                bool
+	Iban                     *string
+	ClearIsDefault           bool
+	IsDefault                *bool
+	ClearIsMainAccount       bool
+	IsMainAccount            *bool
+	Name                     *string
+	Category                 *treasury.Category
+	ClearSwiftCode           bool
+	SwiftCode                *string
+	ClearCompany             bool
+	CompanyID                *int
+	ClearAccountingEntries   bool
+	AddAccountingEntryIDs    []int
+	RemoveAccountingEntryIDs []int
 }
 
 // Mutate applies the UpdateTreasuryInput on the TreasuryMutation builder.
@@ -1991,14 +1837,14 @@ func (i *UpdateTreasuryInput) Mutate(m *TreasuryMutation) {
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
-	if i.ClearCashMovements {
-		m.ClearCashMovements()
+	if i.ClearAccountingEntries {
+		m.ClearAccountingEntries()
 	}
-	if v := i.AddCashMovementIDs; len(v) > 0 {
-		m.AddCashMovementIDs(v...)
+	if v := i.AddAccountingEntryIDs; len(v) > 0 {
+		m.AddAccountingEntryIDs(v...)
 	}
-	if v := i.RemoveCashMovementIDs; len(v) > 0 {
-		m.RemoveCashMovementIDs(v...)
+	if v := i.RemoveAccountingEntryIDs; len(v) > 0 {
+		m.RemoveAccountingEntryIDs(v...)
 	}
 }
 

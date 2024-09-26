@@ -6,14 +6,12 @@ import (
 	"context"
 	"fmt"
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -44,9 +42,6 @@ type Noder interface {
 func (n *AccountingEntry) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
-func (n *CashMovement) IsNode() {}
-
-// IsNode implements the Node interface check for GQLGen.
 func (n *Company) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
@@ -63,9 +58,6 @@ func (n *Payable) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Product) IsNode() {}
-
-// IsNode implements the Node interface check for GQLGen.
-func (n *ProductMovement) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Receivable) IsNode() {}
@@ -164,18 +156,6 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 			return nil, err
 		}
 		return n, nil
-	case cashmovement.Table:
-		query := c.CashMovement.Query().
-			Where(cashmovement.ID(id))
-		query, err := query.CollectFields(ctx, "CashMovement")
-		if err != nil {
-			return nil, err
-		}
-		n, err := query.Only(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return n, nil
 	case company.Table:
 		query := c.Company.Query().
 			Where(company.ID(id))
@@ -240,18 +220,6 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Product.Query().
 			Where(product.ID(id))
 		query, err := query.CollectFields(ctx, "Product")
-		if err != nil {
-			return nil, err
-		}
-		n, err := query.Only(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return n, nil
-	case productmovement.Table:
-		query := c.ProductMovement.Query().
-			Where(productmovement.ID(id))
-		query, err := query.CollectFields(ctx, "ProductMovement")
 		if err != nil {
 			return nil, err
 		}
@@ -457,22 +425,6 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 				*noder = node
 			}
 		}
-	case cashmovement.Table:
-		query := c.CashMovement.Query().
-			Where(cashmovement.IDIn(ids...))
-		query, err := query.CollectFields(ctx, "CashMovement")
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
 	case company.Table:
 		query := c.Company.Query().
 			Where(company.IDIn(ids...))
@@ -557,22 +509,6 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Product.Query().
 			Where(product.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Product")
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case productmovement.Table:
-		query := c.ProductMovement.Query().
-			Where(productmovement.IDIn(ids...))
-		query, err := query.CollectFields(ctx, "ProductMovement")
 		if err != nil {
 			return nil, err
 		}

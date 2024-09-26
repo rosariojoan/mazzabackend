@@ -7,11 +7,11 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"math"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -22,18 +22,18 @@ import (
 // ProductQuery is the builder for querying Product entities.
 type ProductQuery struct {
 	config
-	ctx                       *QueryContext
-	order                     []product.OrderOption
-	inters                    []Interceptor
-	predicates                []predicate.Product
-	withCompany               *CompanyQuery
-	withPictures              *FileQuery
-	withProductMovements      *ProductMovementQuery
-	withFKs                   bool
-	loadTotal                 []func(context.Context, []*Product) error
-	modifiers                 []func(*sql.Selector)
-	withNamedPictures         map[string]*FileQuery
-	withNamedProductMovements map[string]*ProductMovementQuery
+	ctx                        *QueryContext
+	order                      []product.OrderOption
+	inters                     []Interceptor
+	predicates                 []predicate.Product
+	withCompany                *CompanyQuery
+	withPictures               *FileQuery
+	withAccountingEntries      *AccountingEntryQuery
+	withFKs                    bool
+	loadTotal                  []func(context.Context, []*Product) error
+	modifiers                  []func(*sql.Selector)
+	withNamedPictures          map[string]*FileQuery
+	withNamedAccountingEntries map[string]*AccountingEntryQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -114,9 +114,9 @@ func (pq *ProductQuery) QueryPictures() *FileQuery {
 	return query
 }
 
-// QueryProductMovements chains the current query on the "productMovements" edge.
-func (pq *ProductQuery) QueryProductMovements() *ProductMovementQuery {
-	query := (&ProductMovementClient{config: pq.config}).Query()
+// QueryAccountingEntries chains the current query on the "accountingEntries" edge.
+func (pq *ProductQuery) QueryAccountingEntries() *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: pq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -127,8 +127,8 @@ func (pq *ProductQuery) QueryProductMovements() *ProductMovementQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, selector),
-			sqlgraph.To(productmovement.Table, productmovement.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductMovementsTable, product.ProductMovementsColumn),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.AccountingEntriesTable, product.AccountingEntriesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -323,14 +323,14 @@ func (pq *ProductQuery) Clone() *ProductQuery {
 		return nil
 	}
 	return &ProductQuery{
-		config:               pq.config,
-		ctx:                  pq.ctx.Clone(),
-		order:                append([]product.OrderOption{}, pq.order...),
-		inters:               append([]Interceptor{}, pq.inters...),
-		predicates:           append([]predicate.Product{}, pq.predicates...),
-		withCompany:          pq.withCompany.Clone(),
-		withPictures:         pq.withPictures.Clone(),
-		withProductMovements: pq.withProductMovements.Clone(),
+		config:                pq.config,
+		ctx:                   pq.ctx.Clone(),
+		order:                 append([]product.OrderOption{}, pq.order...),
+		inters:                append([]Interceptor{}, pq.inters...),
+		predicates:            append([]predicate.Product{}, pq.predicates...),
+		withCompany:           pq.withCompany.Clone(),
+		withPictures:          pq.withPictures.Clone(),
+		withAccountingEntries: pq.withAccountingEntries.Clone(),
 		// clone intermediate query.
 		sql:       pq.sql.Clone(),
 		path:      pq.path,
@@ -360,14 +360,14 @@ func (pq *ProductQuery) WithPictures(opts ...func(*FileQuery)) *ProductQuery {
 	return pq
 }
 
-// WithProductMovements tells the query-builder to eager-load the nodes that are connected to
-// the "productMovements" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithProductMovements(opts ...func(*ProductMovementQuery)) *ProductQuery {
-	query := (&ProductMovementClient{config: pq.config}).Query()
+// WithAccountingEntries tells the query-builder to eager-load the nodes that are connected to
+// the "accountingEntries" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *ProductQuery) WithAccountingEntries(opts ...func(*AccountingEntryQuery)) *ProductQuery {
+	query := (&AccountingEntryClient{config: pq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withProductMovements = query
+	pq.withAccountingEntries = query
 	return pq
 }
 
@@ -453,7 +453,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Prod
 		loadedTypes = [3]bool{
 			pq.withCompany != nil,
 			pq.withPictures != nil,
-			pq.withProductMovements != nil,
+			pq.withAccountingEntries != nil,
 		}
 	)
 	if pq.withCompany != nil {
@@ -496,10 +496,10 @@ func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Prod
 			return nil, err
 		}
 	}
-	if query := pq.withProductMovements; query != nil {
-		if err := pq.loadProductMovements(ctx, query, nodes,
-			func(n *Product) { n.Edges.ProductMovements = []*ProductMovement{} },
-			func(n *Product, e *ProductMovement) { n.Edges.ProductMovements = append(n.Edges.ProductMovements, e) }); err != nil {
+	if query := pq.withAccountingEntries; query != nil {
+		if err := pq.loadAccountingEntries(ctx, query, nodes,
+			func(n *Product) { n.Edges.AccountingEntries = []*AccountingEntry{} },
+			func(n *Product, e *AccountingEntry) { n.Edges.AccountingEntries = append(n.Edges.AccountingEntries, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -510,10 +510,10 @@ func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Prod
 			return nil, err
 		}
 	}
-	for name, query := range pq.withNamedProductMovements {
-		if err := pq.loadProductMovements(ctx, query, nodes,
-			func(n *Product) { n.appendNamedProductMovements(name) },
-			func(n *Product, e *ProductMovement) { n.appendNamedProductMovements(name, e) }); err != nil {
+	for name, query := range pq.withNamedAccountingEntries {
+		if err := pq.loadAccountingEntries(ctx, query, nodes,
+			func(n *Product) { n.appendNamedAccountingEntries(name) },
+			func(n *Product, e *AccountingEntry) { n.appendNamedAccountingEntries(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -588,7 +588,7 @@ func (pq *ProductQuery) loadPictures(ctx context.Context, query *FileQuery, node
 	}
 	return nil
 }
-func (pq *ProductQuery) loadProductMovements(ctx context.Context, query *ProductMovementQuery, nodes []*Product, init func(*Product), assign func(*Product, *ProductMovement)) error {
+func (pq *ProductQuery) loadAccountingEntries(ctx context.Context, query *AccountingEntryQuery, nodes []*Product, init func(*Product), assign func(*Product, *AccountingEntry)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*Product)
 	for i := range nodes {
@@ -599,21 +599,21 @@ func (pq *ProductQuery) loadProductMovements(ctx context.Context, query *Product
 		}
 	}
 	query.withFKs = true
-	query.Where(predicate.ProductMovement(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(product.ProductMovementsColumn), fks...))
+	query.Where(predicate.AccountingEntry(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(product.AccountingEntriesColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.product_product_movements
+		fk := n.product_accounting_entries
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "product_product_movements" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "product_accounting_entries" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "product_product_movements" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "product_accounting_entries" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -727,17 +727,17 @@ func (pq *ProductQuery) WithNamedPictures(name string, opts ...func(*FileQuery))
 	return pq
 }
 
-// WithNamedProductMovements tells the query-builder to eager-load the nodes that are connected to the "productMovements"
+// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accountingEntries"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithNamedProductMovements(name string, opts ...func(*ProductMovementQuery)) *ProductQuery {
-	query := (&ProductMovementClient{config: pq.config}).Query()
+func (pq *ProductQuery) WithNamedAccountingEntries(name string, opts ...func(*AccountingEntryQuery)) *ProductQuery {
+	query := (&AccountingEntryClient{config: pq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	if pq.withNamedProductMovements == nil {
-		pq.withNamedProductMovements = make(map[string]*ProductMovementQuery)
+	if pq.withNamedAccountingEntries == nil {
+		pq.withNamedAccountingEntries = make(map[string]*AccountingEntryQuery)
 	}
-	pq.withNamedProductMovements[name] = query
+	pq.withNamedAccountingEntries[name] = query
 	return pq
 }
 

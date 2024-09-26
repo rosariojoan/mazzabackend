@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/product"
+	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 	"time"
 
@@ -154,6 +156,20 @@ func (aec *AccountingEntryCreate) SetNillableReversed(b *bool) *AccountingEntryC
 	return aec
 }
 
+// SetQuantity sets the "quantity" field.
+func (aec *AccountingEntryCreate) SetQuantity(i int) *AccountingEntryCreate {
+	aec.mutation.SetQuantity(i)
+	return aec
+}
+
+// SetNillableQuantity sets the "quantity" field if the given value is not nil.
+func (aec *AccountingEntryCreate) SetNillableQuantity(i *int) *AccountingEntryCreate {
+	if i != nil {
+		aec.SetQuantity(*i)
+	}
+	return aec
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (aec *AccountingEntryCreate) SetCompanyID(id int) *AccountingEntryCreate {
 	aec.mutation.SetCompanyID(id)
@@ -190,6 +206,44 @@ func (aec *AccountingEntryCreate) SetNillableUserID(id *int) *AccountingEntryCre
 // SetUser sets the "user" edge to the User entity.
 func (aec *AccountingEntryCreate) SetUser(u *User) *AccountingEntryCreate {
 	return aec.SetUserID(u.ID)
+}
+
+// SetProductID sets the "product" edge to the Product entity by ID.
+func (aec *AccountingEntryCreate) SetProductID(id int) *AccountingEntryCreate {
+	aec.mutation.SetProductID(id)
+	return aec
+}
+
+// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
+func (aec *AccountingEntryCreate) SetNillableProductID(id *int) *AccountingEntryCreate {
+	if id != nil {
+		aec = aec.SetProductID(*id)
+	}
+	return aec
+}
+
+// SetProduct sets the "product" edge to the Product entity.
+func (aec *AccountingEntryCreate) SetProduct(p *Product) *AccountingEntryCreate {
+	return aec.SetProductID(p.ID)
+}
+
+// SetTreasuryID sets the "treasury" edge to the Treasury entity by ID.
+func (aec *AccountingEntryCreate) SetTreasuryID(id int) *AccountingEntryCreate {
+	aec.mutation.SetTreasuryID(id)
+	return aec
+}
+
+// SetNillableTreasuryID sets the "treasury" edge to the Treasury entity by ID if the given value is not nil.
+func (aec *AccountingEntryCreate) SetNillableTreasuryID(id *int) *AccountingEntryCreate {
+	if id != nil {
+		aec = aec.SetTreasuryID(*id)
+	}
+	return aec
+}
+
+// SetTreasury sets the "treasury" edge to the Treasury entity.
+func (aec *AccountingEntryCreate) SetTreasury(t *Treasury) *AccountingEntryCreate {
+	return aec.SetTreasuryID(t.ID)
 }
 
 // Mutation returns the AccountingEntryMutation object of the builder.
@@ -392,6 +446,10 @@ func (aec *AccountingEntryCreate) createSpec() (*AccountingEntry, *sqlgraph.Crea
 		_spec.SetField(accountingentry.FieldReversed, field.TypeBool, value)
 		_node.Reversed = value
 	}
+	if value, ok := aec.mutation.Quantity(); ok {
+		_spec.SetField(accountingentry.FieldQuantity, field.TypeInt, value)
+		_node.Quantity = value
+	}
 	if nodes := aec.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -424,6 +482,40 @@ func (aec *AccountingEntryCreate) createSpec() (*AccountingEntry, *sqlgraph.Crea
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.user_accounting_entries = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := aec.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.ProductTable,
+			Columns: []string{accountingentry.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.product_accounting_entries = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := aec.mutation.TreasuryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.TreasuryTable,
+			Columns: []string{accountingentry.TreasuryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.treasury_accounting_entries = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

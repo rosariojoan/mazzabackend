@@ -22,7 +22,7 @@ import (
 
 // RegisterPurchase is the resolver for the registerPurchase field.
 func (r *mutationResolver) RegisterPurchase(ctx context.Context, input model.PurchaseRegistrationInput) (string, error) {
-	// utils.PP(input)
+	// fmt.Println(input)
 	// accountingentry.AccountTypeASSET
 	return inventory.PurchaseRegistration(ctx, r.client, input)
 	// panic(fmt.Errorf("not implemented: RegisterPurchase - registerPurchase"))
@@ -30,6 +30,7 @@ func (r *mutationResolver) RegisterPurchase(ctx context.Context, input model.Pur
 
 // RegisterSales is the resolver for the registerSales field.
 func (r *mutationResolver) RegisterSales(ctx context.Context, input model.SalesRegistrationInput) (*model.FileDetailsOutput, error) {
+	fmt.Println("##")
 	if input.Invoice != nil {
 		input.IssueInvoice = true
 	} else {

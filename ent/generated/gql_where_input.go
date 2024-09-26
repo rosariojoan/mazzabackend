@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
@@ -14,7 +13,6 @@ import (
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -179,6 +177,18 @@ type AccountingEntryWhereInput struct {
 	Reversed    *bool `json:"reversed,omitempty"`
 	ReversedNEQ *bool `json:"reversedNEQ,omitempty"`
 
+	// "quantity" field predicates.
+	Quantity       *int  `json:"quantity,omitempty"`
+	QuantityNEQ    *int  `json:"quantityNEQ,omitempty"`
+	QuantityIn     []int `json:"quantityIn,omitempty"`
+	QuantityNotIn  []int `json:"quantityNotIn,omitempty"`
+	QuantityGT     *int  `json:"quantityGT,omitempty"`
+	QuantityGTE    *int  `json:"quantityGTE,omitempty"`
+	QuantityLT     *int  `json:"quantityLT,omitempty"`
+	QuantityLTE    *int  `json:"quantityLTE,omitempty"`
+	QuantityIsNil  bool  `json:"quantityIsNil,omitempty"`
+	QuantityNotNil bool  `json:"quantityNotNil,omitempty"`
+
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
@@ -186,6 +196,14 @@ type AccountingEntryWhereInput struct {
 	// "user" edge predicates.
 	HasUser     *bool             `json:"hasUser,omitempty"`
 	HasUserWith []*UserWhereInput `json:"hasUserWith,omitempty"`
+
+	// "product" edge predicates.
+	HasProduct     *bool                `json:"hasProduct,omitempty"`
+	HasProductWith []*ProductWhereInput `json:"hasProductWith,omitempty"`
+
+	// "treasury" edge predicates.
+	HasTreasury     *bool                 `json:"hasTreasury,omitempty"`
+	HasTreasuryWith []*TreasuryWhereInput `json:"hasTreasuryWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -604,6 +622,36 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 	if i.ReversedNEQ != nil {
 		predicates = append(predicates, accountingentry.ReversedNEQ(*i.ReversedNEQ))
 	}
+	if i.Quantity != nil {
+		predicates = append(predicates, accountingentry.QuantityEQ(*i.Quantity))
+	}
+	if i.QuantityNEQ != nil {
+		predicates = append(predicates, accountingentry.QuantityNEQ(*i.QuantityNEQ))
+	}
+	if len(i.QuantityIn) > 0 {
+		predicates = append(predicates, accountingentry.QuantityIn(i.QuantityIn...))
+	}
+	if len(i.QuantityNotIn) > 0 {
+		predicates = append(predicates, accountingentry.QuantityNotIn(i.QuantityNotIn...))
+	}
+	if i.QuantityGT != nil {
+		predicates = append(predicates, accountingentry.QuantityGT(*i.QuantityGT))
+	}
+	if i.QuantityGTE != nil {
+		predicates = append(predicates, accountingentry.QuantityGTE(*i.QuantityGTE))
+	}
+	if i.QuantityLT != nil {
+		predicates = append(predicates, accountingentry.QuantityLT(*i.QuantityLT))
+	}
+	if i.QuantityLTE != nil {
+		predicates = append(predicates, accountingentry.QuantityLTE(*i.QuantityLTE))
+	}
+	if i.QuantityIsNil {
+		predicates = append(predicates, accountingentry.QuantityIsNil())
+	}
+	if i.QuantityNotNil {
+		predicates = append(predicates, accountingentry.QuantityNotNil())
+	}
 
 	if i.HasCompany != nil {
 		p := accountingentry.HasCompany()
@@ -641,350 +689,28 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 		}
 		predicates = append(predicates, accountingentry.HasUserWith(with...))
 	}
-	switch len(predicates) {
-	case 0:
-		return nil, ErrEmptyAccountingEntryWhereInput
-	case 1:
-		return predicates[0], nil
-	default:
-		return accountingentry.And(predicates...), nil
-	}
-}
-
-// CashMovementWhereInput represents a where input for filtering CashMovement queries.
-type CashMovementWhereInput struct {
-	Predicates []predicate.CashMovement  `json:"-"`
-	Not        *CashMovementWhereInput   `json:"not,omitempty"`
-	Or         []*CashMovementWhereInput `json:"or,omitempty"`
-	And        []*CashMovementWhereInput `json:"and,omitempty"`
-
-	// "id" field predicates.
-	ID      *int  `json:"id,omitempty"`
-	IDNEQ   *int  `json:"idNEQ,omitempty"`
-	IDIn    []int `json:"idIn,omitempty"`
-	IDNotIn []int `json:"idNotIn,omitempty"`
-	IDGT    *int  `json:"idGT,omitempty"`
-	IDGTE   *int  `json:"idGTE,omitempty"`
-	IDLT    *int  `json:"idLT,omitempty"`
-	IDLTE   *int  `json:"idLTE,omitempty"`
-
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
-
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
-
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
-
-	// "amount" field predicates.
-	Amount      *float64  `json:"amount,omitempty"`
-	AmountNEQ   *float64  `json:"amountNEQ,omitempty"`
-	AmountIn    []float64 `json:"amountIn,omitempty"`
-	AmountNotIn []float64 `json:"amountNotIn,omitempty"`
-	AmountGT    *float64  `json:"amountGT,omitempty"`
-	AmountGTE   *float64  `json:"amountGTE,omitempty"`
-	AmountLT    *float64  `json:"amountLT,omitempty"`
-	AmountLTE   *float64  `json:"amountLTE,omitempty"`
-
-	// "date" field predicates.
-	Date      *time.Time  `json:"date,omitempty"`
-	DateNEQ   *time.Time  `json:"dateNEQ,omitempty"`
-	DateIn    []time.Time `json:"dateIn,omitempty"`
-	DateNotIn []time.Time `json:"dateNotIn,omitempty"`
-	DateGT    *time.Time  `json:"dateGT,omitempty"`
-	DateGTE   *time.Time  `json:"dateGTE,omitempty"`
-	DateLT    *time.Time  `json:"dateLT,omitempty"`
-	DateLTE   *time.Time  `json:"dateLTE,omitempty"`
-
-	// "entryGroup" field predicates.
-	EntryGroup      *int  `json:"entrygroup,omitempty"`
-	EntryGroupNEQ   *int  `json:"entrygroupNEQ,omitempty"`
-	EntryGroupIn    []int `json:"entrygroupIn,omitempty"`
-	EntryGroupNotIn []int `json:"entrygroupNotIn,omitempty"`
-	EntryGroupGT    *int  `json:"entrygroupGT,omitempty"`
-	EntryGroupGTE   *int  `json:"entrygroupGTE,omitempty"`
-	EntryGroupLT    *int  `json:"entrygroupLT,omitempty"`
-	EntryGroupLTE   *int  `json:"entrygroupLTE,omitempty"`
-
-	// "treasury" edge predicates.
-	HasTreasury     *bool                 `json:"hasTreasury,omitempty"`
-	HasTreasuryWith []*TreasuryWhereInput `json:"hasTreasuryWith,omitempty"`
-}
-
-// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
-func (i *CashMovementWhereInput) AddPredicates(predicates ...predicate.CashMovement) {
-	i.Predicates = append(i.Predicates, predicates...)
-}
-
-// Filter applies the CashMovementWhereInput filter on the CashMovementQuery builder.
-func (i *CashMovementWhereInput) Filter(q *CashMovementQuery) (*CashMovementQuery, error) {
-	if i == nil {
-		return q, nil
-	}
-	p, err := i.P()
-	if err != nil {
-		if err == ErrEmptyCashMovementWhereInput {
-			return q, nil
-		}
-		return nil, err
-	}
-	return q.Where(p), nil
-}
-
-// ErrEmptyCashMovementWhereInput is returned in case the CashMovementWhereInput is empty.
-var ErrEmptyCashMovementWhereInput = errors.New("generated: empty predicate CashMovementWhereInput")
-
-// P returns a predicate for filtering cashmovements.
-// An error is returned if the input is empty or invalid.
-func (i *CashMovementWhereInput) P() (predicate.CashMovement, error) {
-	var predicates []predicate.CashMovement
-	if i.Not != nil {
-		p, err := i.Not.P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'not'", err)
-		}
-		predicates = append(predicates, cashmovement.Not(p))
-	}
-	switch n := len(i.Or); {
-	case n == 1:
-		p, err := i.Or[0].P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'or'", err)
+	if i.HasProduct != nil {
+		p := accountingentry.HasProduct()
+		if !*i.HasProduct {
+			p = accountingentry.Not(p)
 		}
 		predicates = append(predicates, p)
-	case n > 1:
-		or := make([]predicate.CashMovement, 0, n)
-		for _, w := range i.Or {
+	}
+	if len(i.HasProductWith) > 0 {
+		with := make([]predicate.Product, 0, len(i.HasProductWith))
+		for _, w := range i.HasProductWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'or'", err)
+				return nil, fmt.Errorf("%w: field 'HasProductWith'", err)
 			}
-			or = append(or, p)
+			with = append(with, p)
 		}
-		predicates = append(predicates, cashmovement.Or(or...))
+		predicates = append(predicates, accountingentry.HasProductWith(with...))
 	}
-	switch n := len(i.And); {
-	case n == 1:
-		p, err := i.And[0].P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'and'", err)
-		}
-		predicates = append(predicates, p)
-	case n > 1:
-		and := make([]predicate.CashMovement, 0, n)
-		for _, w := range i.And {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'and'", err)
-			}
-			and = append(and, p)
-		}
-		predicates = append(predicates, cashmovement.And(and...))
-	}
-	predicates = append(predicates, i.Predicates...)
-	if i.ID != nil {
-		predicates = append(predicates, cashmovement.IDEQ(*i.ID))
-	}
-	if i.IDNEQ != nil {
-		predicates = append(predicates, cashmovement.IDNEQ(*i.IDNEQ))
-	}
-	if len(i.IDIn) > 0 {
-		predicates = append(predicates, cashmovement.IDIn(i.IDIn...))
-	}
-	if len(i.IDNotIn) > 0 {
-		predicates = append(predicates, cashmovement.IDNotIn(i.IDNotIn...))
-	}
-	if i.IDGT != nil {
-		predicates = append(predicates, cashmovement.IDGT(*i.IDGT))
-	}
-	if i.IDGTE != nil {
-		predicates = append(predicates, cashmovement.IDGTE(*i.IDGTE))
-	}
-	if i.IDLT != nil {
-		predicates = append(predicates, cashmovement.IDLT(*i.IDLT))
-	}
-	if i.IDLTE != nil {
-		predicates = append(predicates, cashmovement.IDLTE(*i.IDLTE))
-	}
-	if i.CreatedAt != nil {
-		predicates = append(predicates, cashmovement.CreatedAtEQ(*i.CreatedAt))
-	}
-	if i.CreatedAtNEQ != nil {
-		predicates = append(predicates, cashmovement.CreatedAtNEQ(*i.CreatedAtNEQ))
-	}
-	if len(i.CreatedAtIn) > 0 {
-		predicates = append(predicates, cashmovement.CreatedAtIn(i.CreatedAtIn...))
-	}
-	if len(i.CreatedAtNotIn) > 0 {
-		predicates = append(predicates, cashmovement.CreatedAtNotIn(i.CreatedAtNotIn...))
-	}
-	if i.CreatedAtGT != nil {
-		predicates = append(predicates, cashmovement.CreatedAtGT(*i.CreatedAtGT))
-	}
-	if i.CreatedAtGTE != nil {
-		predicates = append(predicates, cashmovement.CreatedAtGTE(*i.CreatedAtGTE))
-	}
-	if i.CreatedAtLT != nil {
-		predicates = append(predicates, cashmovement.CreatedAtLT(*i.CreatedAtLT))
-	}
-	if i.CreatedAtLTE != nil {
-		predicates = append(predicates, cashmovement.CreatedAtLTE(*i.CreatedAtLTE))
-	}
-	if i.UpdatedAt != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtEQ(*i.UpdatedAt))
-	}
-	if i.UpdatedAtNEQ != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtNEQ(*i.UpdatedAtNEQ))
-	}
-	if len(i.UpdatedAtIn) > 0 {
-		predicates = append(predicates, cashmovement.UpdatedAtIn(i.UpdatedAtIn...))
-	}
-	if len(i.UpdatedAtNotIn) > 0 {
-		predicates = append(predicates, cashmovement.UpdatedAtNotIn(i.UpdatedAtNotIn...))
-	}
-	if i.UpdatedAtGT != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtGT(*i.UpdatedAtGT))
-	}
-	if i.UpdatedAtGTE != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtGTE(*i.UpdatedAtGTE))
-	}
-	if i.UpdatedAtLT != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtLT(*i.UpdatedAtLT))
-	}
-	if i.UpdatedAtLTE != nil {
-		predicates = append(predicates, cashmovement.UpdatedAtLTE(*i.UpdatedAtLTE))
-	}
-	if i.DeletedAt != nil {
-		predicates = append(predicates, cashmovement.DeletedAtEQ(*i.DeletedAt))
-	}
-	if i.DeletedAtNEQ != nil {
-		predicates = append(predicates, cashmovement.DeletedAtNEQ(*i.DeletedAtNEQ))
-	}
-	if len(i.DeletedAtIn) > 0 {
-		predicates = append(predicates, cashmovement.DeletedAtIn(i.DeletedAtIn...))
-	}
-	if len(i.DeletedAtNotIn) > 0 {
-		predicates = append(predicates, cashmovement.DeletedAtNotIn(i.DeletedAtNotIn...))
-	}
-	if i.DeletedAtGT != nil {
-		predicates = append(predicates, cashmovement.DeletedAtGT(*i.DeletedAtGT))
-	}
-	if i.DeletedAtGTE != nil {
-		predicates = append(predicates, cashmovement.DeletedAtGTE(*i.DeletedAtGTE))
-	}
-	if i.DeletedAtLT != nil {
-		predicates = append(predicates, cashmovement.DeletedAtLT(*i.DeletedAtLT))
-	}
-	if i.DeletedAtLTE != nil {
-		predicates = append(predicates, cashmovement.DeletedAtLTE(*i.DeletedAtLTE))
-	}
-	if i.DeletedAtIsNil {
-		predicates = append(predicates, cashmovement.DeletedAtIsNil())
-	}
-	if i.DeletedAtNotNil {
-		predicates = append(predicates, cashmovement.DeletedAtNotNil())
-	}
-	if i.Amount != nil {
-		predicates = append(predicates, cashmovement.AmountEQ(*i.Amount))
-	}
-	if i.AmountNEQ != nil {
-		predicates = append(predicates, cashmovement.AmountNEQ(*i.AmountNEQ))
-	}
-	if len(i.AmountIn) > 0 {
-		predicates = append(predicates, cashmovement.AmountIn(i.AmountIn...))
-	}
-	if len(i.AmountNotIn) > 0 {
-		predicates = append(predicates, cashmovement.AmountNotIn(i.AmountNotIn...))
-	}
-	if i.AmountGT != nil {
-		predicates = append(predicates, cashmovement.AmountGT(*i.AmountGT))
-	}
-	if i.AmountGTE != nil {
-		predicates = append(predicates, cashmovement.AmountGTE(*i.AmountGTE))
-	}
-	if i.AmountLT != nil {
-		predicates = append(predicates, cashmovement.AmountLT(*i.AmountLT))
-	}
-	if i.AmountLTE != nil {
-		predicates = append(predicates, cashmovement.AmountLTE(*i.AmountLTE))
-	}
-	if i.Date != nil {
-		predicates = append(predicates, cashmovement.DateEQ(*i.Date))
-	}
-	if i.DateNEQ != nil {
-		predicates = append(predicates, cashmovement.DateNEQ(*i.DateNEQ))
-	}
-	if len(i.DateIn) > 0 {
-		predicates = append(predicates, cashmovement.DateIn(i.DateIn...))
-	}
-	if len(i.DateNotIn) > 0 {
-		predicates = append(predicates, cashmovement.DateNotIn(i.DateNotIn...))
-	}
-	if i.DateGT != nil {
-		predicates = append(predicates, cashmovement.DateGT(*i.DateGT))
-	}
-	if i.DateGTE != nil {
-		predicates = append(predicates, cashmovement.DateGTE(*i.DateGTE))
-	}
-	if i.DateLT != nil {
-		predicates = append(predicates, cashmovement.DateLT(*i.DateLT))
-	}
-	if i.DateLTE != nil {
-		predicates = append(predicates, cashmovement.DateLTE(*i.DateLTE))
-	}
-	if i.EntryGroup != nil {
-		predicates = append(predicates, cashmovement.EntryGroupEQ(*i.EntryGroup))
-	}
-	if i.EntryGroupNEQ != nil {
-		predicates = append(predicates, cashmovement.EntryGroupNEQ(*i.EntryGroupNEQ))
-	}
-	if len(i.EntryGroupIn) > 0 {
-		predicates = append(predicates, cashmovement.EntryGroupIn(i.EntryGroupIn...))
-	}
-	if len(i.EntryGroupNotIn) > 0 {
-		predicates = append(predicates, cashmovement.EntryGroupNotIn(i.EntryGroupNotIn...))
-	}
-	if i.EntryGroupGT != nil {
-		predicates = append(predicates, cashmovement.EntryGroupGT(*i.EntryGroupGT))
-	}
-	if i.EntryGroupGTE != nil {
-		predicates = append(predicates, cashmovement.EntryGroupGTE(*i.EntryGroupGTE))
-	}
-	if i.EntryGroupLT != nil {
-		predicates = append(predicates, cashmovement.EntryGroupLT(*i.EntryGroupLT))
-	}
-	if i.EntryGroupLTE != nil {
-		predicates = append(predicates, cashmovement.EntryGroupLTE(*i.EntryGroupLTE))
-	}
-
 	if i.HasTreasury != nil {
-		p := cashmovement.HasTreasury()
+		p := accountingentry.HasTreasury()
 		if !*i.HasTreasury {
-			p = cashmovement.Not(p)
+			p = accountingentry.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
@@ -997,15 +723,15 @@ func (i *CashMovementWhereInput) P() (predicate.CashMovement, error) {
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, cashmovement.HasTreasuryWith(with...))
+		predicates = append(predicates, accountingentry.HasTreasuryWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
-		return nil, ErrEmptyCashMovementWhereInput
+		return nil, ErrEmptyAccountingEntryWhereInput
 	case 1:
 		return predicates[0], nil
 	default:
-		return cashmovement.And(predicates...), nil
+		return accountingentry.And(predicates...), nil
 	}
 }
 
@@ -5061,9 +4787,9 @@ type ProductWhereInput struct {
 	HasPictures     *bool             `json:"hasPictures,omitempty"`
 	HasPicturesWith []*FileWhereInput `json:"hasPicturesWith,omitempty"`
 
-	// "productMovements" edge predicates.
-	HasProductMovements     *bool                        `json:"hasProductMovements,omitempty"`
-	HasProductMovementsWith []*ProductMovementWhereInput `json:"hasProductMovementsWith,omitempty"`
+	// "accountingEntries" edge predicates.
+	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
+	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -5507,23 +5233,23 @@ func (i *ProductWhereInput) P() (predicate.Product, error) {
 		}
 		predicates = append(predicates, product.HasPicturesWith(with...))
 	}
-	if i.HasProductMovements != nil {
-		p := product.HasProductMovements()
-		if !*i.HasProductMovements {
+	if i.HasAccountingEntries != nil {
+		p := product.HasAccountingEntries()
+		if !*i.HasAccountingEntries {
 			p = product.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasProductMovementsWith) > 0 {
-		with := make([]predicate.ProductMovement, 0, len(i.HasProductMovementsWith))
-		for _, w := range i.HasProductMovementsWith {
+	if len(i.HasAccountingEntriesWith) > 0 {
+		with := make([]predicate.AccountingEntry, 0, len(i.HasAccountingEntriesWith))
+		for _, w := range i.HasAccountingEntriesWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasProductMovementsWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasAccountingEntriesWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, product.HasProductMovementsWith(with...))
+		predicates = append(predicates, product.HasAccountingEntriesWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -5532,432 +5258,6 @@ func (i *ProductWhereInput) P() (predicate.Product, error) {
 		return predicates[0], nil
 	default:
 		return product.And(predicates...), nil
-	}
-}
-
-// ProductMovementWhereInput represents a where input for filtering ProductMovement queries.
-type ProductMovementWhereInput struct {
-	Predicates []predicate.ProductMovement  `json:"-"`
-	Not        *ProductMovementWhereInput   `json:"not,omitempty"`
-	Or         []*ProductMovementWhereInput `json:"or,omitempty"`
-	And        []*ProductMovementWhereInput `json:"and,omitempty"`
-
-	// "id" field predicates.
-	ID      *int  `json:"id,omitempty"`
-	IDNEQ   *int  `json:"idNEQ,omitempty"`
-	IDIn    []int `json:"idIn,omitempty"`
-	IDNotIn []int `json:"idNotIn,omitempty"`
-	IDGT    *int  `json:"idGT,omitempty"`
-	IDGTE   *int  `json:"idGTE,omitempty"`
-	IDLT    *int  `json:"idLT,omitempty"`
-	IDLTE   *int  `json:"idLTE,omitempty"`
-
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
-
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
-
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
-
-	// "entryGroup" field predicates.
-	EntryGroup      *int  `json:"entrygroup,omitempty"`
-	EntryGroupNEQ   *int  `json:"entrygroupNEQ,omitempty"`
-	EntryGroupIn    []int `json:"entrygroupIn,omitempty"`
-	EntryGroupNotIn []int `json:"entrygroupNotIn,omitempty"`
-	EntryGroupGT    *int  `json:"entrygroupGT,omitempty"`
-	EntryGroupGTE   *int  `json:"entrygroupGTE,omitempty"`
-	EntryGroupLT    *int  `json:"entrygroupLT,omitempty"`
-	EntryGroupLTE   *int  `json:"entrygroupLTE,omitempty"`
-
-	// "averageCost" field predicates.
-	AverageCost      *float64  `json:"averagecost,omitempty"`
-	AverageCostNEQ   *float64  `json:"averagecostNEQ,omitempty"`
-	AverageCostIn    []float64 `json:"averagecostIn,omitempty"`
-	AverageCostNotIn []float64 `json:"averagecostNotIn,omitempty"`
-	AverageCostGT    *float64  `json:"averagecostGT,omitempty"`
-	AverageCostGTE   *float64  `json:"averagecostGTE,omitempty"`
-	AverageCostLT    *float64  `json:"averagecostLT,omitempty"`
-	AverageCostLTE   *float64  `json:"averagecostLTE,omitempty"`
-
-	// "unitCost" field predicates.
-	UnitCost      *float64  `json:"unitcost,omitempty"`
-	UnitCostNEQ   *float64  `json:"unitcostNEQ,omitempty"`
-	UnitCostIn    []float64 `json:"unitcostIn,omitempty"`
-	UnitCostNotIn []float64 `json:"unitcostNotIn,omitempty"`
-	UnitCostGT    *float64  `json:"unitcostGT,omitempty"`
-	UnitCostGTE   *float64  `json:"unitcostGTE,omitempty"`
-	UnitCostLT    *float64  `json:"unitcostLT,omitempty"`
-	UnitCostLTE   *float64  `json:"unitcostLTE,omitempty"`
-
-	// "price" field predicates.
-	Price      *float64  `json:"price,omitempty"`
-	PriceNEQ   *float64  `json:"priceNEQ,omitempty"`
-	PriceIn    []float64 `json:"priceIn,omitempty"`
-	PriceNotIn []float64 `json:"priceNotIn,omitempty"`
-	PriceGT    *float64  `json:"priceGT,omitempty"`
-	PriceGTE   *float64  `json:"priceGTE,omitempty"`
-	PriceLT    *float64  `json:"priceLT,omitempty"`
-	PriceLTE   *float64  `json:"priceLTE,omitempty"`
-
-	// "quantity" field predicates.
-	Quantity      *int  `json:"quantity,omitempty"`
-	QuantityNEQ   *int  `json:"quantityNEQ,omitempty"`
-	QuantityIn    []int `json:"quantityIn,omitempty"`
-	QuantityNotIn []int `json:"quantityNotIn,omitempty"`
-	QuantityGT    *int  `json:"quantityGT,omitempty"`
-	QuantityGTE   *int  `json:"quantityGTE,omitempty"`
-	QuantityLT    *int  `json:"quantityLT,omitempty"`
-	QuantityLTE   *int  `json:"quantityLTE,omitempty"`
-
-	// "product" edge predicates.
-	HasProduct     *bool                `json:"hasProduct,omitempty"`
-	HasProductWith []*ProductWhereInput `json:"hasProductWith,omitempty"`
-}
-
-// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
-func (i *ProductMovementWhereInput) AddPredicates(predicates ...predicate.ProductMovement) {
-	i.Predicates = append(i.Predicates, predicates...)
-}
-
-// Filter applies the ProductMovementWhereInput filter on the ProductMovementQuery builder.
-func (i *ProductMovementWhereInput) Filter(q *ProductMovementQuery) (*ProductMovementQuery, error) {
-	if i == nil {
-		return q, nil
-	}
-	p, err := i.P()
-	if err != nil {
-		if err == ErrEmptyProductMovementWhereInput {
-			return q, nil
-		}
-		return nil, err
-	}
-	return q.Where(p), nil
-}
-
-// ErrEmptyProductMovementWhereInput is returned in case the ProductMovementWhereInput is empty.
-var ErrEmptyProductMovementWhereInput = errors.New("generated: empty predicate ProductMovementWhereInput")
-
-// P returns a predicate for filtering productmovements.
-// An error is returned if the input is empty or invalid.
-func (i *ProductMovementWhereInput) P() (predicate.ProductMovement, error) {
-	var predicates []predicate.ProductMovement
-	if i.Not != nil {
-		p, err := i.Not.P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'not'", err)
-		}
-		predicates = append(predicates, productmovement.Not(p))
-	}
-	switch n := len(i.Or); {
-	case n == 1:
-		p, err := i.Or[0].P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'or'", err)
-		}
-		predicates = append(predicates, p)
-	case n > 1:
-		or := make([]predicate.ProductMovement, 0, n)
-		for _, w := range i.Or {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'or'", err)
-			}
-			or = append(or, p)
-		}
-		predicates = append(predicates, productmovement.Or(or...))
-	}
-	switch n := len(i.And); {
-	case n == 1:
-		p, err := i.And[0].P()
-		if err != nil {
-			return nil, fmt.Errorf("%w: field 'and'", err)
-		}
-		predicates = append(predicates, p)
-	case n > 1:
-		and := make([]predicate.ProductMovement, 0, n)
-		for _, w := range i.And {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'and'", err)
-			}
-			and = append(and, p)
-		}
-		predicates = append(predicates, productmovement.And(and...))
-	}
-	predicates = append(predicates, i.Predicates...)
-	if i.ID != nil {
-		predicates = append(predicates, productmovement.IDEQ(*i.ID))
-	}
-	if i.IDNEQ != nil {
-		predicates = append(predicates, productmovement.IDNEQ(*i.IDNEQ))
-	}
-	if len(i.IDIn) > 0 {
-		predicates = append(predicates, productmovement.IDIn(i.IDIn...))
-	}
-	if len(i.IDNotIn) > 0 {
-		predicates = append(predicates, productmovement.IDNotIn(i.IDNotIn...))
-	}
-	if i.IDGT != nil {
-		predicates = append(predicates, productmovement.IDGT(*i.IDGT))
-	}
-	if i.IDGTE != nil {
-		predicates = append(predicates, productmovement.IDGTE(*i.IDGTE))
-	}
-	if i.IDLT != nil {
-		predicates = append(predicates, productmovement.IDLT(*i.IDLT))
-	}
-	if i.IDLTE != nil {
-		predicates = append(predicates, productmovement.IDLTE(*i.IDLTE))
-	}
-	if i.CreatedAt != nil {
-		predicates = append(predicates, productmovement.CreatedAtEQ(*i.CreatedAt))
-	}
-	if i.CreatedAtNEQ != nil {
-		predicates = append(predicates, productmovement.CreatedAtNEQ(*i.CreatedAtNEQ))
-	}
-	if len(i.CreatedAtIn) > 0 {
-		predicates = append(predicates, productmovement.CreatedAtIn(i.CreatedAtIn...))
-	}
-	if len(i.CreatedAtNotIn) > 0 {
-		predicates = append(predicates, productmovement.CreatedAtNotIn(i.CreatedAtNotIn...))
-	}
-	if i.CreatedAtGT != nil {
-		predicates = append(predicates, productmovement.CreatedAtGT(*i.CreatedAtGT))
-	}
-	if i.CreatedAtGTE != nil {
-		predicates = append(predicates, productmovement.CreatedAtGTE(*i.CreatedAtGTE))
-	}
-	if i.CreatedAtLT != nil {
-		predicates = append(predicates, productmovement.CreatedAtLT(*i.CreatedAtLT))
-	}
-	if i.CreatedAtLTE != nil {
-		predicates = append(predicates, productmovement.CreatedAtLTE(*i.CreatedAtLTE))
-	}
-	if i.UpdatedAt != nil {
-		predicates = append(predicates, productmovement.UpdatedAtEQ(*i.UpdatedAt))
-	}
-	if i.UpdatedAtNEQ != nil {
-		predicates = append(predicates, productmovement.UpdatedAtNEQ(*i.UpdatedAtNEQ))
-	}
-	if len(i.UpdatedAtIn) > 0 {
-		predicates = append(predicates, productmovement.UpdatedAtIn(i.UpdatedAtIn...))
-	}
-	if len(i.UpdatedAtNotIn) > 0 {
-		predicates = append(predicates, productmovement.UpdatedAtNotIn(i.UpdatedAtNotIn...))
-	}
-	if i.UpdatedAtGT != nil {
-		predicates = append(predicates, productmovement.UpdatedAtGT(*i.UpdatedAtGT))
-	}
-	if i.UpdatedAtGTE != nil {
-		predicates = append(predicates, productmovement.UpdatedAtGTE(*i.UpdatedAtGTE))
-	}
-	if i.UpdatedAtLT != nil {
-		predicates = append(predicates, productmovement.UpdatedAtLT(*i.UpdatedAtLT))
-	}
-	if i.UpdatedAtLTE != nil {
-		predicates = append(predicates, productmovement.UpdatedAtLTE(*i.UpdatedAtLTE))
-	}
-	if i.DeletedAt != nil {
-		predicates = append(predicates, productmovement.DeletedAtEQ(*i.DeletedAt))
-	}
-	if i.DeletedAtNEQ != nil {
-		predicates = append(predicates, productmovement.DeletedAtNEQ(*i.DeletedAtNEQ))
-	}
-	if len(i.DeletedAtIn) > 0 {
-		predicates = append(predicates, productmovement.DeletedAtIn(i.DeletedAtIn...))
-	}
-	if len(i.DeletedAtNotIn) > 0 {
-		predicates = append(predicates, productmovement.DeletedAtNotIn(i.DeletedAtNotIn...))
-	}
-	if i.DeletedAtGT != nil {
-		predicates = append(predicates, productmovement.DeletedAtGT(*i.DeletedAtGT))
-	}
-	if i.DeletedAtGTE != nil {
-		predicates = append(predicates, productmovement.DeletedAtGTE(*i.DeletedAtGTE))
-	}
-	if i.DeletedAtLT != nil {
-		predicates = append(predicates, productmovement.DeletedAtLT(*i.DeletedAtLT))
-	}
-	if i.DeletedAtLTE != nil {
-		predicates = append(predicates, productmovement.DeletedAtLTE(*i.DeletedAtLTE))
-	}
-	if i.DeletedAtIsNil {
-		predicates = append(predicates, productmovement.DeletedAtIsNil())
-	}
-	if i.DeletedAtNotNil {
-		predicates = append(predicates, productmovement.DeletedAtNotNil())
-	}
-	if i.EntryGroup != nil {
-		predicates = append(predicates, productmovement.EntryGroupEQ(*i.EntryGroup))
-	}
-	if i.EntryGroupNEQ != nil {
-		predicates = append(predicates, productmovement.EntryGroupNEQ(*i.EntryGroupNEQ))
-	}
-	if len(i.EntryGroupIn) > 0 {
-		predicates = append(predicates, productmovement.EntryGroupIn(i.EntryGroupIn...))
-	}
-	if len(i.EntryGroupNotIn) > 0 {
-		predicates = append(predicates, productmovement.EntryGroupNotIn(i.EntryGroupNotIn...))
-	}
-	if i.EntryGroupGT != nil {
-		predicates = append(predicates, productmovement.EntryGroupGT(*i.EntryGroupGT))
-	}
-	if i.EntryGroupGTE != nil {
-		predicates = append(predicates, productmovement.EntryGroupGTE(*i.EntryGroupGTE))
-	}
-	if i.EntryGroupLT != nil {
-		predicates = append(predicates, productmovement.EntryGroupLT(*i.EntryGroupLT))
-	}
-	if i.EntryGroupLTE != nil {
-		predicates = append(predicates, productmovement.EntryGroupLTE(*i.EntryGroupLTE))
-	}
-	if i.AverageCost != nil {
-		predicates = append(predicates, productmovement.AverageCostEQ(*i.AverageCost))
-	}
-	if i.AverageCostNEQ != nil {
-		predicates = append(predicates, productmovement.AverageCostNEQ(*i.AverageCostNEQ))
-	}
-	if len(i.AverageCostIn) > 0 {
-		predicates = append(predicates, productmovement.AverageCostIn(i.AverageCostIn...))
-	}
-	if len(i.AverageCostNotIn) > 0 {
-		predicates = append(predicates, productmovement.AverageCostNotIn(i.AverageCostNotIn...))
-	}
-	if i.AverageCostGT != nil {
-		predicates = append(predicates, productmovement.AverageCostGT(*i.AverageCostGT))
-	}
-	if i.AverageCostGTE != nil {
-		predicates = append(predicates, productmovement.AverageCostGTE(*i.AverageCostGTE))
-	}
-	if i.AverageCostLT != nil {
-		predicates = append(predicates, productmovement.AverageCostLT(*i.AverageCostLT))
-	}
-	if i.AverageCostLTE != nil {
-		predicates = append(predicates, productmovement.AverageCostLTE(*i.AverageCostLTE))
-	}
-	if i.UnitCost != nil {
-		predicates = append(predicates, productmovement.UnitCostEQ(*i.UnitCost))
-	}
-	if i.UnitCostNEQ != nil {
-		predicates = append(predicates, productmovement.UnitCostNEQ(*i.UnitCostNEQ))
-	}
-	if len(i.UnitCostIn) > 0 {
-		predicates = append(predicates, productmovement.UnitCostIn(i.UnitCostIn...))
-	}
-	if len(i.UnitCostNotIn) > 0 {
-		predicates = append(predicates, productmovement.UnitCostNotIn(i.UnitCostNotIn...))
-	}
-	if i.UnitCostGT != nil {
-		predicates = append(predicates, productmovement.UnitCostGT(*i.UnitCostGT))
-	}
-	if i.UnitCostGTE != nil {
-		predicates = append(predicates, productmovement.UnitCostGTE(*i.UnitCostGTE))
-	}
-	if i.UnitCostLT != nil {
-		predicates = append(predicates, productmovement.UnitCostLT(*i.UnitCostLT))
-	}
-	if i.UnitCostLTE != nil {
-		predicates = append(predicates, productmovement.UnitCostLTE(*i.UnitCostLTE))
-	}
-	if i.Price != nil {
-		predicates = append(predicates, productmovement.PriceEQ(*i.Price))
-	}
-	if i.PriceNEQ != nil {
-		predicates = append(predicates, productmovement.PriceNEQ(*i.PriceNEQ))
-	}
-	if len(i.PriceIn) > 0 {
-		predicates = append(predicates, productmovement.PriceIn(i.PriceIn...))
-	}
-	if len(i.PriceNotIn) > 0 {
-		predicates = append(predicates, productmovement.PriceNotIn(i.PriceNotIn...))
-	}
-	if i.PriceGT != nil {
-		predicates = append(predicates, productmovement.PriceGT(*i.PriceGT))
-	}
-	if i.PriceGTE != nil {
-		predicates = append(predicates, productmovement.PriceGTE(*i.PriceGTE))
-	}
-	if i.PriceLT != nil {
-		predicates = append(predicates, productmovement.PriceLT(*i.PriceLT))
-	}
-	if i.PriceLTE != nil {
-		predicates = append(predicates, productmovement.PriceLTE(*i.PriceLTE))
-	}
-	if i.Quantity != nil {
-		predicates = append(predicates, productmovement.QuantityEQ(*i.Quantity))
-	}
-	if i.QuantityNEQ != nil {
-		predicates = append(predicates, productmovement.QuantityNEQ(*i.QuantityNEQ))
-	}
-	if len(i.QuantityIn) > 0 {
-		predicates = append(predicates, productmovement.QuantityIn(i.QuantityIn...))
-	}
-	if len(i.QuantityNotIn) > 0 {
-		predicates = append(predicates, productmovement.QuantityNotIn(i.QuantityNotIn...))
-	}
-	if i.QuantityGT != nil {
-		predicates = append(predicates, productmovement.QuantityGT(*i.QuantityGT))
-	}
-	if i.QuantityGTE != nil {
-		predicates = append(predicates, productmovement.QuantityGTE(*i.QuantityGTE))
-	}
-	if i.QuantityLT != nil {
-		predicates = append(predicates, productmovement.QuantityLT(*i.QuantityLT))
-	}
-	if i.QuantityLTE != nil {
-		predicates = append(predicates, productmovement.QuantityLTE(*i.QuantityLTE))
-	}
-
-	if i.HasProduct != nil {
-		p := productmovement.HasProduct()
-		if !*i.HasProduct {
-			p = productmovement.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasProductWith) > 0 {
-		with := make([]predicate.Product, 0, len(i.HasProductWith))
-		for _, w := range i.HasProductWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasProductWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, productmovement.HasProductWith(with...))
-	}
-	switch len(predicates) {
-	case 0:
-		return nil, ErrEmptyProductMovementWhereInput
-	case 1:
-		return predicates[0], nil
-	default:
-		return productmovement.And(predicates...), nil
 	}
 }
 
@@ -7594,9 +6894,9 @@ type TreasuryWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "cashMovements" edge predicates.
-	HasCashMovements     *bool                     `json:"hasCashMovements,omitempty"`
-	HasCashMovementsWith []*CashMovementWhereInput `json:"hasCashMovementsWith,omitempty"`
+	// "accountingEntries" edge predicates.
+	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
+	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -8127,23 +7427,23 @@ func (i *TreasuryWhereInput) P() (predicate.Treasury, error) {
 		}
 		predicates = append(predicates, treasury.HasCompanyWith(with...))
 	}
-	if i.HasCashMovements != nil {
-		p := treasury.HasCashMovements()
-		if !*i.HasCashMovements {
+	if i.HasAccountingEntries != nil {
+		p := treasury.HasAccountingEntries()
+		if !*i.HasAccountingEntries {
 			p = treasury.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasCashMovementsWith) > 0 {
-		with := make([]predicate.CashMovement, 0, len(i.HasCashMovementsWith))
-		for _, w := range i.HasCashMovementsWith {
+	if len(i.HasAccountingEntriesWith) > 0 {
+		with := make([]predicate.AccountingEntry, 0, len(i.HasAccountingEntriesWith))
+		for _, w := range i.HasAccountingEntriesWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasCashMovementsWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasAccountingEntriesWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, treasury.HasCashMovementsWith(with...))
+		predicates = append(predicates, treasury.HasAccountingEntriesWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

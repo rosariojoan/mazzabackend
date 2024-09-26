@@ -45,6 +45,9 @@ type EntryItem struct {
 	Amount      float64                     `json:"amount"`
 	IsDebit     bool                        `json:"isDebit"`
 	Label       string                      `json:"label"`
+	Quantity    *int                        `json:"quantity,omitempty"`
+	ProductID   *int                        `json:"productID,omitempty"`
+	TreasuryID  *int                        `json:"treasuryID,omitempty"`
 }
 
 type EntryProductInput struct {
@@ -57,11 +60,6 @@ type EntrySupplierInput struct {
 	ID      int     `json:"id"`
 	Amount  float64 `json:"amount"`
 	DaysDue int     `json:"daysDue"`
-}
-
-type EntryTreasuryInput struct {
-	ID     int     `json:"id"`
-	Amount float64 `json:"amount"`
 }
 
 type Equity struct {
@@ -176,12 +174,10 @@ type Period struct {
 type PurchaseRegistrationInput struct {
 	Main                  []*EntryItem          `json:"main"`
 	Counterpart           []*EntryItem          `json:"counterpart"`
-	Cash                  []*EntryTreasuryInput `json:"cash,omitempty"`
 	Supplier              *EntrySupplierInput   `json:"supplier"`
 	Date                  time.Time             `json:"date"`
 	Description           *string               `json:"description,omitempty"`
 	OperationType         PurchaseOperationType `json:"operationType"`
-	Products              []*EntryProductInput  `json:"products"`
 	TotalTransactionValue float64               `json:"totalTransactionValue"`
 }
 
@@ -212,17 +208,15 @@ type SalesQuotationInput struct {
 }
 
 type SalesRegistrationInput struct {
-	Main                  []*EntryItem          `json:"main"`
-	Counterpart           []*EntryItem          `json:"counterpart"`
-	Cash                  []*EntryTreasuryInput `json:"cash,omitempty"`
-	Customer              *EntryCustomerInput   `json:"customer"`
-	Date                  time.Time             `json:"date"`
-	Description           *string               `json:"description,omitempty"`
-	OperationType         SalesOperationType    `json:"operationType"`
-	Products              []*EntryProductInput  `json:"products"`
-	TotalTransactionValue float64               `json:"totalTransactionValue"`
-	IssueInvoice          bool                  `json:"issueInvoice"`
-	Invoice               *Invoice              `json:"invoice,omitempty"`
+	Main                  []*EntryItem        `json:"main"`
+	Counterpart           []*EntryItem        `json:"counterpart"`
+	Customer              *EntryCustomerInput `json:"customer"`
+	Date                  time.Time           `json:"date"`
+	Description           *string             `json:"description,omitempty"`
+	OperationType         SalesOperationType  `json:"operationType"`
+	TotalTransactionValue float64             `json:"totalTransactionValue"`
+	IssueInvoice          bool                `json:"issueInvoice"`
+	Invoice               *Invoice            `json:"invoice,omitempty"`
 }
 
 type SignupInput struct {

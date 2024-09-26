@@ -47,8 +47,8 @@ const (
 	FieldSwiftCode = "swift_code"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeCashMovements holds the string denoting the cashmovements edge name in mutations.
-	EdgeCashMovements = "cashMovements"
+	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
+	EdgeAccountingEntries = "accountingEntries"
 	// Table holds the table name of the treasury in the database.
 	Table = "treasuries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -58,13 +58,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_treasuries"
-	// CashMovementsTable is the table that holds the cashMovements relation/edge.
-	CashMovementsTable = "cash_movements"
-	// CashMovementsInverseTable is the table name for the CashMovement entity.
-	// It exists in this package in order to avoid circular dependency with the "cashmovement" package.
-	CashMovementsInverseTable = "cash_movements"
-	// CashMovementsColumn is the table column denoting the cashMovements relation/edge.
-	CashMovementsColumn = "treasury_cash_movements"
+	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
+	AccountingEntriesTable = "accounting_entries"
+	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
+	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
+	AccountingEntriesInverseTable = "accounting_entries"
+	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
+	AccountingEntriesColumn = "treasury_accounting_entries"
 )
 
 // Columns holds all SQL columns for treasury fields.
@@ -252,17 +252,17 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByCashMovementsCount orders the results by cashMovements count.
-func ByCashMovementsCount(opts ...sql.OrderTermOption) OrderOption {
+// ByAccountingEntriesCount orders the results by accountingEntries count.
+func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newCashMovementsStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
 	}
 }
 
-// ByCashMovements orders the results by cashMovements terms.
-func ByCashMovements(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByAccountingEntries orders the results by accountingEntries terms.
+func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCashMovementsStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 func newCompanyStep() *sqlgraph.Step {
@@ -272,11 +272,11 @@ func newCompanyStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
 }
-func newCashMovementsStep() *sqlgraph.Step {
+func newAccountingEntriesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CashMovementsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, CashMovementsTable, CashMovementsColumn),
+		sqlgraph.To(AccountingEntriesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
 	)
 }
 

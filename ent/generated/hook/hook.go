@@ -20,18 +20,6 @@ func (f AccountingEntryFunc) Mutate(ctx context.Context, m generated.Mutation) (
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.AccountingEntryMutation", m)
 }
 
-// The CashMovementFunc type is an adapter to allow the use of ordinary
-// function as CashMovement mutator.
-type CashMovementFunc func(context.Context, *generated.CashMovementMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f CashMovementFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.CashMovementMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CashMovementMutation", m)
-}
-
 // The CompanyFunc type is an adapter to allow the use of ordinary
 // function as Company mutator.
 type CompanyFunc func(context.Context, *generated.CompanyMutation) (generated.Value, error)
@@ -102,18 +90,6 @@ func (f ProductFunc) Mutate(ctx context.Context, m generated.Mutation) (generate
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProductMutation", m)
-}
-
-// The ProductMovementFunc type is an adapter to allow the use of ordinary
-// function as ProductMovement mutator.
-type ProductMovementFunc func(context.Context, *generated.ProductMovementMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f ProductMovementFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.ProductMovementMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProductMovementMutation", m)
 }
 
 // The ReceivableFunc type is an adapter to allow the use of ordinary

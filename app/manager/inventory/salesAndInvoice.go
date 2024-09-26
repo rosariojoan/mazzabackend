@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"log"
 	"math"
 
@@ -33,6 +32,7 @@ Accounting entry: sales and sales return
 Returned quantities should be positive
 */
 func SalesRegistration(ctx context.Context, client *ent.Client, input model.SalesRegistrationInput) (*model.FileDetailsOutput, error) {
+	utils.PP(input)
 	if input.OperationType != model.SalesOperationTypeSales {
 		return nil, gqlerror.Errorf("operation not supported")
 	}
@@ -44,20 +44,20 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 		return nil, err
 	}
 
-	var entryCounter = entryPkg.GetEntryCounter(ctx, client, currentCompany.ID)
-
 	outputFile := struct {
 		Name string
 		File []byte
 		URI  string
 	}{}
-
+	utils.PP(input)
 	var retrievedTreasury = []*ent.Treasury{}
-	var treasuryMovements []*ent.CashMovementCreate
+	// var treasuryMovements []*ent.CashMovementCreate
 
 	cashIds := []int{}
-	for _, cashInput := range input.Cash {
-		cashIds = append(cashIds, cashInput.ID)
+	for _, p := range input.Counterpart {
+		if p.TreasuryID != nil {
+			cashIds = append(cashIds, *p.TreasuryID)
+		}
 	}
 
 	// Check if the sale was paid partially or fully paid via cash (or bank transfer)
@@ -74,30 +74,22 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 			return nil, gqlerror.Errorf("invalid treasury account input")
 		}
 
-		// Prepare treasury balances update
-		for _, cashInput := range input.Cash {
-			for i := range retrievedTreasury {
-				if retrievedTreasury[i].ID == cashInput.ID {
-					retrievedTreasury[i].Balance += cashInput.Amount
-
-					createObj := client.CashMovement.Create().
-						SetInput(ent.CreateCashMovementInput{
-							TreasuryID: &cashInput.ID,
-							Amount:     cashInput.Amount,
-							Date:       input.Date,
-							EntryGroup: entryCounter.Group,
-						})
-
-					treasuryMovements = append(treasuryMovements, createObj)
-					break
+		// Update cash balance
+		for _, account := range retrievedTreasury {
+			for _, p := range input.Counterpart {
+				if p.TreasuryID == &account.ID {
+					account.Balance += p.Amount
+					continue
 				}
 			}
 		}
 	}
 
 	productIDs := []int{}
-	for _, p := range input.Products {
-		productIDs = append(productIDs, p.ID)
+	for _, p := range input.Main {
+		if p.ProductID != nil {
+			productIDs = append(productIDs, *p.ProductID)
+		}
 	}
 
 	// Check if input products exist and have enough stock
@@ -122,88 +114,77 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 		IsDebit    bool
 		Type       accountingentry.AccountType
 	}
-	var entries = []entry{}
+	// var entries = []entry{}
 	var COGS = []entry{}
 
-	// Debit and credit entries are separated to be sorted: first debit then credit
-	debitEntries := []entry{}
-	creditEntries := []entry{}
+	// // Debit and credit entries are separated to be sorted: first debit then credit
+	// debitEntries := []entry{}
+	// creditEntries := []entry{}
 
-	for _, item := range input.Main {
-		accountType := accountingentry.AccountTypeREVENUE
-		isDebit := false
-		if input.OperationType == model.SalesOperationTypeSales {
-			item.Amount = -item.Amount
-			isDebit = true
-		}
+	// for _, item := range input.Main {
+	// 	accountType := accountingentry.AccountTypeREVENUE
+	// 	isDebit := false
+	// 	if input.OperationType == model.SalesOperationTypeSales {
+	// 		item.Amount = -item.Amount
+	// 		isDebit = true
+	// 	}
 
-		newEntry := entry{Account: item.Account, Amount: item.Amount, IsDebit: isDebit, Type: accountType}
-		if isDebit {
-			debitEntries = append(debitEntries, newEntry)
-		} else {
-			creditEntries = append(creditEntries, newEntry)
-		}
-	}
+	// 	newEntry := entry{Account: item.Account, Amount: item.Amount, IsDebit: isDebit, Type: accountType}
+	// 	if isDebit {
+	// 		debitEntries = append(debitEntries, newEntry)
+	// 	} else {
+	// 		creditEntries = append(creditEntries, newEntry)
+	// 	}
+	// }
 
-	for _, item := range input.Counterpart {
-		accountType := accountingentry.AccountTypeASSET
-		isDebit := true
-		if input.OperationType == model.SalesOperationTypeSalesReturn {
-			isDebit = false
-			item.Amount = -item.Amount
-		}
+	// for _, item := range input.Counterpart {
+	// 	accountType := accountingentry.AccountTypeASSET
+	// 	isDebit := true
+	// 	if input.OperationType == model.SalesOperationTypeSalesReturn {
+	// 		isDebit = false
+	// 		item.Amount = -item.Amount
+	// 	}
 
-		newEntry := entry{Account: item.Account, Amount: item.Amount, IsDebit: isDebit, Type: accountType}
-		if isDebit {
-			debitEntries = append(debitEntries, newEntry)
-		} else {
-			creditEntries = append(creditEntries, newEntry)
-		}
-	}
+	// 	newEntry := entry{Account: item.Account, Amount: item.Amount, IsDebit: isDebit, Type: accountType}
+	// 	if isDebit {
+	// 		debitEntries = append(debitEntries, newEntry)
+	// 	} else {
+	// 		creditEntries = append(creditEntries, newEntry)
+	// 	}
+	// }
 
-	// Sort entries: first debit then credit
-	entries = append(debitEntries, creditEntries...)
+	// // Sort entries: first debit then credit
+	// entries = append(debitEntries, creditEntries...)
 
 	isCountable := func(cat product.Category) bool {
 		return cat == product.CategoryMERCHANDISE
 	}
 
-	var productMovements []*ent.ProductMovementCreate
+	extraEntries := []*model.EntryItem{}
+	// var productMovements []*ent.ProductMovementCreate
 	for i, product := range retrievedProducts {
-		for _, inputProduct := range input.Products {
-			if product.ID != inputProduct.ID {
+		if product.IsDefault || !isCountable(product.Category) {
+			continue
+		}
+		for _, inp := range input.Main {
+			if product.ID != *inp.ProductID {
 				continue
 			}
 
 			// Update product movement
-			unitCost := product.UnitCost
-			price := math.Abs(math.Round(100*inputProduct.Amount/float64(inputProduct.Quantity))) / 100
-			newProdMove := client.ProductMovement.Create().SetInput(
-				ent.CreateProductMovementInput{
-					ProductID:   &product.ID,
-					EntryGroup:  entryCounter.Group,
-					AverageCost: product.UnitCost,
-					UnitCost:    unitCost,
-					Price:       &price,
-					Quantity:    inputProduct.Quantity,
-				})
-			productMovements = append(productMovements, newProdMove)
-
-			if !isCountable(product.Category) {
-				continue
+			// unitCost := product.UnitCost
+			inputQuantity := 1
+			if inp.Quantity != nil {
+				inputQuantity = *inp.Quantity
 			}
+			price := math.Abs(math.Round(100*inp.Amount/float64(inputQuantity))) / 100
 
 			// Update inventory: product price, stock, unit cost
 			retrievedProducts[i].Price = int(price)
-			retrievedProducts[i].Stock = product.Stock - float64(inputProduct.Quantity)
-			fmt.Println("product.Category.String():", product.Category.String())
+			retrievedProducts[i].Stock += -float64(inputQuantity)
 			inventoryAccount := inventoryAccounts[product.Category.String()]
 			costAccount := costOfSalesAccounts[product.Category.String()]
-			cost := product.UnitCost * float64(inputProduct.Quantity)
-
-			// Reset debit and credit entries. This is done to classify COGS
-			debitEntries = []entry{}
-			creditEntries = []entry{}
+			cost := product.UnitCost * float64(inputQuantity)
 
 			if input.OperationType == model.SalesOperationTypeSales {
 				// Sale: reduce inventory and increase cost of sales
@@ -219,10 +200,20 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 				}
 
 				if inventoryAccount != "" {
-					creditEntries = append(creditEntries, entry{Account: inventoryAccount, Amount: -cost, IsDebit: false, Type: accountingentry.AccountTypeASSET})
+					extraEntries = append(extraEntries, &model.EntryItem{
+						Account: inventoryAccount,
+						Amount:  -cost, IsDebit: false,
+						AccountType: accountingentry.AccountTypeASSET,
+						Label:       "",
+					})
 				}
 				if costAccount != "" {
-					debitEntries = append(debitEntries, entry{Account: costAccount, Amount: cost, IsDebit: true, Type: accountingentry.AccountTypeEXPENSE})
+					extraEntries = append(extraEntries, &model.EntryItem{
+						Account: costAccount,
+						Amount:  cost, IsDebit: true,
+						AccountType: accountingentry.AccountTypeEXPENSE,
+						Label:       "",
+					})
 				}
 			} else {
 				// Sales return: add back inventory and reduce cost of sales
@@ -237,19 +228,25 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 				}
 
 				if inventoryAccount != "" {
-					creditEntries = append(creditEntries, entry{Account: inventoryAccount, Amount: cost, IsDebit: false, Type: accountingentry.AccountTypeASSET})
+					quantity := 0
+					extraEntries = append(extraEntries, &model.EntryItem{
+						Account: inventoryAccount,
+						Amount:  cost, IsDebit: false,
+						AccountType: accountingentry.AccountTypeASSET,
+						Label:       "",
+						Quantity:    &quantity,
+					})
 				}
 				if costAccount != "" {
-					debitEntries = append(debitEntries, entry{Account: costAccount, Amount: -cost, IsDebit: true, Type: accountingentry.AccountTypeEXPENSE})
+					quantity := 0
+					extraEntries = append(extraEntries, &model.EntryItem{
+						Account: costAccount,
+						Amount:  -cost, IsDebit: true,
+						AccountType: accountingentry.AccountTypeEXPENSE,
+						Label:       "",
+						Quantity:    &quantity,
+					})
 				}
-			}
-
-			// Append classified COGS to the entries
-			if len(debitEntries) > 0 {
-				entries = append(entries, debitEntries...)
-			}
-			if len(creditEntries) > 0 {
-				entries = append(entries, creditEntries...)
 			}
 		}
 	}
@@ -266,6 +263,10 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 
 	// Prepare accounting entries
 	var accountingEntries []*ent.AccountingEntryCreate
+	var entryCounter = entryPkg.GetEntryCounter(ctx, client, currentCompany.ID)
+
+	entries := append(input.Main, input.Counterpart...)
+	entries = append(entries, extraEntries...)
 
 	for _, entry := range entries {
 		if entry.Amount == 0 {
@@ -284,8 +285,11 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 				Label:       accountNames[entry.Account],
 				Amount:      entry.Amount,
 				Description: *input.Description,
-				AccountType: entry.Type,
+				AccountType: entry.AccountType,
 				IsDebit:     entry.IsDebit,
+				Quantity:    entry.Quantity,
+				ProductID:   entry.ProductID,
+				TreasuryID:  entry.TreasuryID,
 				// Files:       files,
 			})
 		accountingEntries = append(accountingEntries, newEntry)
@@ -324,20 +328,8 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 		}
 	}
 
-	// 4. Product movements
-	_, err = client.ProductMovement.CreateBulk(productMovements...).Save(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(input.Cash) > 0 {
-		// 5. Create cash movements
-		_, err := client.CashMovement.CreateBulk(treasuryMovements...).Save(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		// 6. Cash and cash equivalent (treasury) balances
+	if len(retrievedTreasury) > 0 {
+		// 4. Cash and cash equivalent (treasury) balances
 		for _, treasury := range retrievedTreasury {
 			_, err := treasury.Update().Save(ctx)
 			if err != nil {
@@ -346,7 +338,7 @@ func SalesRegistration(ctx context.Context, client *ent.Client, input model.Sale
 		}
 	}
 
-	// 7. If invoice has been requested, issue and save it
+	// 5. If invoice has been requested, issue and save it
 	if input.IssueInvoice {
 		fileByte, size, err := GenerateInvoicePDF(input.Invoice)
 		if err != nil {

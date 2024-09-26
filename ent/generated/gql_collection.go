@@ -5,14 +5,12 @@ package generated
 import (
 	"context"
 	"mazza/ent/generated/accountingentry"
-	"mazza/ent/generated/cashmovement"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
-	"mazza/ent/generated/productmovement"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -69,6 +67,26 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			ae.withUser = query
+		case "product":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProductClient{config: ae.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ae.withProduct = query
+		case "treasury":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&TreasuryClient{config: ae.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ae.withTreasury = query
 		case "createdat":
 			if _, ok := fieldSeen[accountingentry.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldCreatedAt)
@@ -139,6 +157,11 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, accountingentry.FieldReversed)
 				fieldSeen[accountingentry.FieldReversed] = struct{}{}
 			}
+		case "quantity":
+			if _, ok := fieldSeen[accountingentry.FieldQuantity]; !ok {
+				selectedFields = append(selectedFields, accountingentry.FieldQuantity)
+				fieldSeen[accountingentry.FieldQuantity] = struct{}{}
+			}
 		case "id":
 		case "__typename":
 		default:
@@ -198,108 +221,6 @@ func newAccountingEntryPaginateArgs(rv map[string]any) *accountingentryPaginateA
 	}
 	if v, ok := rv[whereField].(*AccountingEntryWhereInput); ok {
 		args.opts = append(args.opts, WithAccountingEntryFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (cm *CashMovementQuery) CollectFields(ctx context.Context, satisfies ...string) (*CashMovementQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return cm, nil
-	}
-	if err := cm.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return cm, nil
-}
-
-func (cm *CashMovementQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(cashmovement.Columns))
-		selectedFields = []string{cashmovement.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "treasury":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&TreasuryClient{config: cm.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			cm.withTreasury = query
-		case "createdat":
-			if _, ok := fieldSeen[cashmovement.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldCreatedAt)
-				fieldSeen[cashmovement.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedat":
-			if _, ok := fieldSeen[cashmovement.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldUpdatedAt)
-				fieldSeen[cashmovement.FieldUpdatedAt] = struct{}{}
-			}
-		case "deletedat":
-			if _, ok := fieldSeen[cashmovement.FieldDeletedAt]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldDeletedAt)
-				fieldSeen[cashmovement.FieldDeletedAt] = struct{}{}
-			}
-		case "amount":
-			if _, ok := fieldSeen[cashmovement.FieldAmount]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldAmount)
-				fieldSeen[cashmovement.FieldAmount] = struct{}{}
-			}
-		case "date":
-			if _, ok := fieldSeen[cashmovement.FieldDate]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldDate)
-				fieldSeen[cashmovement.FieldDate] = struct{}{}
-			}
-		case "entrygroup":
-			if _, ok := fieldSeen[cashmovement.FieldEntryGroup]; !ok {
-				selectedFields = append(selectedFields, cashmovement.FieldEntryGroup)
-				fieldSeen[cashmovement.FieldEntryGroup] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		cm.Select(selectedFields...)
-	}
-	return nil
-}
-
-type cashmovementPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []CashMovementPaginateOption
-}
-
-func newCashMovementPaginateArgs(rv map[string]any) *cashmovementPaginateArgs {
-	args := &cashmovementPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[whereField].(*CashMovementWhereInput); ok {
-		args.opts = append(args.opts, WithCashMovementFilter(v.Filter))
 	}
 	return args
 }
@@ -1327,16 +1248,16 @@ func (pr *ProductQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			pr.WithNamedPictures(alias, func(wq *FileQuery) {
 				*wq = *query
 			})
-		case "productmovements":
+		case "accountingentries":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&ProductMovementClient{config: pr.config}).Query()
+				query = (&AccountingEntryClient{config: pr.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			pr.WithNamedProductMovements(alias, func(wq *ProductMovementQuery) {
+			pr.WithNamedAccountingEntries(alias, func(wq *AccountingEntryQuery) {
 				*wq = *query
 			})
 		case "createdat":
@@ -1458,118 +1379,6 @@ func newProductPaginateArgs(rv map[string]any) *productPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*ProductWhereInput); ok {
 		args.opts = append(args.opts, WithProductFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (pm *ProductMovementQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProductMovementQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return pm, nil
-	}
-	if err := pm.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return pm, nil
-}
-
-func (pm *ProductMovementQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(productmovement.Columns))
-		selectedFields = []string{productmovement.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "product":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProductClient{config: pm.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			pm.withProduct = query
-		case "createdat":
-			if _, ok := fieldSeen[productmovement.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldCreatedAt)
-				fieldSeen[productmovement.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedat":
-			if _, ok := fieldSeen[productmovement.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldUpdatedAt)
-				fieldSeen[productmovement.FieldUpdatedAt] = struct{}{}
-			}
-		case "deletedat":
-			if _, ok := fieldSeen[productmovement.FieldDeletedAt]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldDeletedAt)
-				fieldSeen[productmovement.FieldDeletedAt] = struct{}{}
-			}
-		case "entrygroup":
-			if _, ok := fieldSeen[productmovement.FieldEntryGroup]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldEntryGroup)
-				fieldSeen[productmovement.FieldEntryGroup] = struct{}{}
-			}
-		case "averagecost":
-			if _, ok := fieldSeen[productmovement.FieldAverageCost]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldAverageCost)
-				fieldSeen[productmovement.FieldAverageCost] = struct{}{}
-			}
-		case "unitcost":
-			if _, ok := fieldSeen[productmovement.FieldUnitCost]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldUnitCost)
-				fieldSeen[productmovement.FieldUnitCost] = struct{}{}
-			}
-		case "price":
-			if _, ok := fieldSeen[productmovement.FieldPrice]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldPrice)
-				fieldSeen[productmovement.FieldPrice] = struct{}{}
-			}
-		case "quantity":
-			if _, ok := fieldSeen[productmovement.FieldQuantity]; !ok {
-				selectedFields = append(selectedFields, productmovement.FieldQuantity)
-				fieldSeen[productmovement.FieldQuantity] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		pm.Select(selectedFields...)
-	}
-	return nil
-}
-
-type productmovementPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []ProductMovementPaginateOption
-}
-
-func newProductMovementPaginateArgs(rv map[string]any) *productmovementPaginateArgs {
-	args := &productmovementPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[whereField].(*ProductMovementWhereInput); ok {
-		args.opts = append(args.opts, WithProductMovementFilter(v.Filter))
 	}
 	return args
 }
@@ -1991,16 +1800,16 @@ func (t *TreasuryQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			t.withCompany = query
-		case "cashmovements":
+		case "accountingentries":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&CashMovementClient{config: t.config}).Query()
+				query = (&AccountingEntryClient{config: t.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			t.WithNamedCashMovements(alias, func(wq *CashMovementQuery) {
+			t.WithNamedAccountingEntries(alias, func(wq *AccountingEntryQuery) {
 				*wq = *query
 			})
 		case "createdat":

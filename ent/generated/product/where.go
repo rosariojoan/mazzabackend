@@ -671,21 +671,21 @@ func HasPicturesWith(preds ...predicate.File) predicate.Product {
 	})
 }
 
-// HasProductMovements applies the HasEdge predicate on the "productMovements" edge.
-func HasProductMovements() predicate.Product {
+// HasAccountingEntries applies the HasEdge predicate on the "accountingEntries" edge.
+func HasAccountingEntries() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProductMovementsTable, ProductMovementsColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductMovementsWith applies the HasEdge predicate on the "productMovements" edge with a given conditions (other predicates).
-func HasProductMovementsWith(preds ...predicate.ProductMovement) predicate.Product {
+// HasAccountingEntriesWith applies the HasEdge predicate on the "accountingEntries" edge with a given conditions (other predicates).
+func HasAccountingEntriesWith(preds ...predicate.AccountingEntry) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
-		step := newProductMovementsStep()
+		step := newAccountingEntriesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

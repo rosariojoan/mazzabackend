@@ -9,9 +9,6 @@ import (
 // AccountingEntry is the predicate function for accountingentry builders.
 type AccountingEntry func(*sql.Selector)
 
-// CashMovement is the predicate function for cashmovement builders.
-type CashMovement func(*sql.Selector)
-
 // Company is the predicate function for company builders.
 type Company func(*sql.Selector)
 
@@ -29,9 +26,6 @@ type Payable func(*sql.Selector)
 
 // Product is the predicate function for product builders.
 type Product func(*sql.Selector)
-
-// ProductMovement is the predicate function for productmovement builders.
-type ProductMovement func(*sql.Selector)
 
 // Receivable is the predicate function for receivable builders.
 type Receivable func(*sql.Selector)

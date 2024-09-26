@@ -55,16 +55,16 @@ type ProductEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// Pictures holds the value of the pictures edge.
 	Pictures []*File `json:"pictures,omitempty"`
-	// ProductMovements holds the value of the productMovements edge.
-	ProductMovements []*ProductMovement `json:"productMovements,omitempty"`
+	// AccountingEntries holds the value of the accountingEntries edge.
+	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
 	totalCount [3]map[string]int
 
-	namedPictures         map[string][]*File
-	namedProductMovements map[string][]*ProductMovement
+	namedPictures          map[string][]*File
+	namedAccountingEntries map[string][]*AccountingEntry
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -87,13 +87,13 @@ func (e ProductEdges) PicturesOrErr() ([]*File, error) {
 	return nil, &NotLoadedError{edge: "pictures"}
 }
 
-// ProductMovementsOrErr returns the ProductMovements value or an error if the edge
+// AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
 // was not loaded in eager-loading.
-func (e ProductEdges) ProductMovementsOrErr() ([]*ProductMovement, error) {
+func (e ProductEdges) AccountingEntriesOrErr() ([]*AccountingEntry, error) {
 	if e.loadedTypes[2] {
-		return e.ProductMovements, nil
+		return e.AccountingEntries, nil
 	}
-	return nil, &NotLoadedError{edge: "productMovements"}
+	return nil, &NotLoadedError{edge: "accountingEntries"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -237,9 +237,9 @@ func (pr *Product) QueryPictures() *FileQuery {
 	return NewProductClient(pr.config).QueryPictures(pr)
 }
 
-// QueryProductMovements queries the "productMovements" edge of the Product entity.
-func (pr *Product) QueryProductMovements() *ProductMovementQuery {
-	return NewProductClient(pr.config).QueryProductMovements(pr)
+// QueryAccountingEntries queries the "accountingEntries" edge of the Product entity.
+func (pr *Product) QueryAccountingEntries() *AccountingEntryQuery {
+	return NewProductClient(pr.config).QueryAccountingEntries(pr)
 }
 
 // Update returns a builder for updating this Product.
@@ -330,27 +330,27 @@ func (pr *Product) appendNamedPictures(name string, edges ...*File) {
 	}
 }
 
-// NamedProductMovements returns the ProductMovements named value or an error if the edge was not
+// NamedAccountingEntries returns the AccountingEntries named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (pr *Product) NamedProductMovements(name string) ([]*ProductMovement, error) {
-	if pr.Edges.namedProductMovements == nil {
+func (pr *Product) NamedAccountingEntries(name string) ([]*AccountingEntry, error) {
+	if pr.Edges.namedAccountingEntries == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := pr.Edges.namedProductMovements[name]
+	nodes, ok := pr.Edges.namedAccountingEntries[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (pr *Product) appendNamedProductMovements(name string, edges ...*ProductMovement) {
-	if pr.Edges.namedProductMovements == nil {
-		pr.Edges.namedProductMovements = make(map[string][]*ProductMovement)
+func (pr *Product) appendNamedAccountingEntries(name string, edges ...*AccountingEntry) {
+	if pr.Edges.namedAccountingEntries == nil {
+		pr.Edges.namedAccountingEntries = make(map[string][]*AccountingEntry)
 	}
 	if len(edges) == 0 {
-		pr.Edges.namedProductMovements[name] = []*ProductMovement{}
+		pr.Edges.namedAccountingEntries[name] = []*AccountingEntry{}
 	} else {
-		pr.Edges.namedProductMovements[name] = append(pr.Edges.namedProductMovements[name], edges...)
+		pr.Edges.namedAccountingEntries[name] = append(pr.Edges.namedAccountingEntries[name], edges...)
 	}
 }
 

@@ -115,6 +115,11 @@ func Reversed(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldReversed, v))
 }
 
+// Quantity applies equality check predicate on the "quantity" field. It's identical to QuantityEQ.
+func Quantity(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldQuantity, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
 func CreatedAtEQ(v time.Time) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldCreatedAt, v))
@@ -650,6 +655,56 @@ func ReversedNEQ(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldNEQ(FieldReversed, v))
 }
 
+// QuantityEQ applies the EQ predicate on the "quantity" field.
+func QuantityEQ(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldQuantity, v))
+}
+
+// QuantityNEQ applies the NEQ predicate on the "quantity" field.
+func QuantityNEQ(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNEQ(FieldQuantity, v))
+}
+
+// QuantityIn applies the In predicate on the "quantity" field.
+func QuantityIn(vs ...int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldIn(FieldQuantity, vs...))
+}
+
+// QuantityNotIn applies the NotIn predicate on the "quantity" field.
+func QuantityNotIn(vs ...int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNotIn(FieldQuantity, vs...))
+}
+
+// QuantityGT applies the GT predicate on the "quantity" field.
+func QuantityGT(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGT(FieldQuantity, v))
+}
+
+// QuantityGTE applies the GTE predicate on the "quantity" field.
+func QuantityGTE(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGTE(FieldQuantity, v))
+}
+
+// QuantityLT applies the LT predicate on the "quantity" field.
+func QuantityLT(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLT(FieldQuantity, v))
+}
+
+// QuantityLTE applies the LTE predicate on the "quantity" field.
+func QuantityLTE(v int) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLTE(FieldQuantity, v))
+}
+
+// QuantityIsNil applies the IsNil predicate on the "quantity" field.
+func QuantityIsNil() predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldIsNull(FieldQuantity))
+}
+
+// QuantityNotNil applies the NotNil predicate on the "quantity" field.
+func QuantityNotNil() predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNotNull(FieldQuantity))
+}
+
 // HasCompany applies the HasEdge predicate on the "company" edge.
 func HasCompany() predicate.AccountingEntry {
 	return predicate.AccountingEntry(func(s *sql.Selector) {
@@ -688,6 +743,52 @@ func HasUser() predicate.AccountingEntry {
 func HasUserWith(preds ...predicate.User) predicate.AccountingEntry {
 	return predicate.AccountingEntry(func(s *sql.Selector) {
 		step := newUserStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProduct applies the HasEdge predicate on the "product" edge.
+func HasProduct() predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProductWith applies the HasEdge predicate on the "product" edge with a given conditions (other predicates).
+func HasProductWith(preds ...predicate.Product) predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := newProductStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTreasury applies the HasEdge predicate on the "treasury" edge.
+func HasTreasury() predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, TreasuryTable, TreasuryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTreasuryWith applies the HasEdge predicate on the "treasury" edge with a given conditions (other predicates).
+func HasTreasuryWith(preds ...predicate.Treasury) predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := newTreasuryStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

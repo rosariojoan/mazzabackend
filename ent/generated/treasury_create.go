@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/cashmovement"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/treasury"
 	"time"
@@ -205,19 +205,19 @@ func (tc *TreasuryCreate) SetCompany(c *Company) *TreasuryCreate {
 	return tc.SetCompanyID(c.ID)
 }
 
-// AddCashMovementIDs adds the "cashMovements" edge to the CashMovement entity by IDs.
-func (tc *TreasuryCreate) AddCashMovementIDs(ids ...int) *TreasuryCreate {
-	tc.mutation.AddCashMovementIDs(ids...)
+// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+func (tc *TreasuryCreate) AddAccountingEntryIDs(ids ...int) *TreasuryCreate {
+	tc.mutation.AddAccountingEntryIDs(ids...)
 	return tc
 }
 
-// AddCashMovements adds the "cashMovements" edges to the CashMovement entity.
-func (tc *TreasuryCreate) AddCashMovements(c ...*CashMovement) *TreasuryCreate {
-	ids := make([]int, len(c))
-	for i := range c {
-		ids[i] = c[i].ID
+// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+func (tc *TreasuryCreate) AddAccountingEntries(a ...*AccountingEntry) *TreasuryCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
 	}
-	return tc.AddCashMovementIDs(ids...)
+	return tc.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the TreasuryMutation object of the builder.
@@ -407,15 +407,15 @@ func (tc *TreasuryCreate) createSpec() (*Treasury, *sqlgraph.CreateSpec) {
 		_node.company_treasuries = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := tc.mutation.CashMovementsIDs(); len(nodes) > 0 {
+	if nodes := tc.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   treasury.CashMovementsTable,
-			Columns: []string{treasury.CashMovementsColumn},
+			Table:   treasury.AccountingEntriesTable,
+			Columns: []string{treasury.AccountingEntriesColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(cashmovement.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

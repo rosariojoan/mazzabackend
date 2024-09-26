@@ -1,8 +1,8 @@
 
-input EntryTreasuryInput {
-    id:     ID!
-    amount: Float!
-}
+# input EntryTreasuryInput {
+#     id:     ID!
+#     amount: Float!
+# }
 
 input EntryProductInput {
     id:       ID!
@@ -28,6 +28,9 @@ input EntryItem {
     amount:      Float!
     isDebit:     Boolean!
     label:       String!
+	quantity:	 Int
+	productID: 	 ID
+	treasuryID:	 ID
 }
 
 input InvoiceIssuer {
@@ -105,24 +108,24 @@ enum AccountType {
 input PurchaseRegistrationInput {
 	main:                  [EntryItem!]!
 	counterpart:           [EntryItem!]!
-	cash:                  [EntryTreasuryInput!]
+	# cash:                  [EntryTreasuryInput!]
 	supplier:              EntrySupplierInput!
 	date:                  Time!
 	description:           String
 	operationType:         PurchaseOperationType!
-	products:              [EntryProductInput!]!
+	# products:              [EntryProductInput!]!
 	totalTransactionValue: Float!
 }
 
 input SalesRegistrationInput {
 	main:                  [EntryItem!]!
 	counterpart:           [EntryItem!]!
-	cash:                  [EntryTreasuryInput!]
+	# cash:                  [EntryTreasuryInput!]
 	customer:              EntryCustomerInput!
 	date:                  Time!
 	description:           String
 	operationType:         SalesOperationType!
-	products:              [EntryProductInput!]!
+	# products:              [EntryProductInput!]!
 	totalTransactionValue: Float!
 	issueInvoice:		   Boolean!
 	invoice:			   Invoice

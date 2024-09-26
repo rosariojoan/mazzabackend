@@ -76,7 +76,10 @@ type ComplexityRoot struct {
 		IsReversal  func(childComplexity int) int
 		Label       func(childComplexity int) int
 		Number      func(childComplexity int) int
+		Product     func(childComplexity int) int
+		Quantity    func(childComplexity int) int
 		Reversed    func(childComplexity int) int
+		Treasury    func(childComplexity int) int
 		UpdatedAt   func(childComplexity int) int
 		User        func(childComplexity int) int
 	}
@@ -107,28 +110,6 @@ type ComplexityRoot struct {
 		Liabilities             func(childComplexity int) int
 		Period                  func(childComplexity int) int
 		TotalLiabilityAndEquity func(childComplexity int) int
-	}
-
-	CashMovement struct {
-		Amount     func(childComplexity int) int
-		CreatedAt  func(childComplexity int) int
-		Date       func(childComplexity int) int
-		DeletedAt  func(childComplexity int) int
-		EntryGroup func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Treasury   func(childComplexity int) int
-		UpdatedAt  func(childComplexity int) int
-	}
-
-	CashMovementConnection struct {
-		Edges      func(childComplexity int) int
-		PageInfo   func(childComplexity int) int
-		TotalCount func(childComplexity int) int
-	}
-
-	CashMovementEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
 	}
 
 	Company struct {
@@ -351,46 +332,22 @@ type ComplexityRoot struct {
 	}
 
 	Product struct {
-		Category         func(childComplexity int) int
-		Company          func(childComplexity int) int
-		CreatedAt        func(childComplexity int) int
-		DeletedAt        func(childComplexity int) int
-		Description      func(childComplexity int) int
-		ID               func(childComplexity int) int
-		IsDefault        func(childComplexity int) int
-		MinimumStock     func(childComplexity int) int
-		Name             func(childComplexity int) int
-		Pictures         func(childComplexity int) int
-		Price            func(childComplexity int) int
-		ProductMovements func(childComplexity int) int
-		Sku              func(childComplexity int) int
-		Stock            func(childComplexity int) int
-		UnitCost         func(childComplexity int) int
-		UpdatedAt        func(childComplexity int) int
-	}
-
-	ProductMovement struct {
-		AverageCost func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		DeletedAt   func(childComplexity int) int
-		EntryGroup  func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Price       func(childComplexity int) int
-		Product     func(childComplexity int) int
-		Quantity    func(childComplexity int) int
-		UnitCost    func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-	}
-
-	ProductMovementConnection struct {
-		Edges      func(childComplexity int) int
-		PageInfo   func(childComplexity int) int
-		TotalCount func(childComplexity int) int
-	}
-
-	ProductMovementEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
+		AccountingEntries func(childComplexity int) int
+		Category          func(childComplexity int) int
+		Company           func(childComplexity int) int
+		CreatedAt         func(childComplexity int) int
+		DeletedAt         func(childComplexity int) int
+		Description       func(childComplexity int) int
+		ID                func(childComplexity int) int
+		IsDefault         func(childComplexity int) int
+		MinimumStock      func(childComplexity int) int
+		Name              func(childComplexity int) int
+		Pictures          func(childComplexity int) int
+		Price             func(childComplexity int) int
+		Sku               func(childComplexity int) int
+		Stock             func(childComplexity int) int
+		UnitCost          func(childComplexity int) int
+		UpdatedAt         func(childComplexity int) int
 	}
 
 	Query struct {
@@ -399,7 +356,6 @@ type ComplexityRoot struct {
 		AggregateReceivables     func(childComplexity int, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) int
 		AggregateWorkShift       func(childComplexity int, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) int
 		BalanceSheet             func(childComplexity int, date time.Time) int
-		CashMovements            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) int
 		Companies                func(childComplexity int, where *generated.CompanyWhereInput) int
 		Customers                func(childComplexity int, where *generated.CustomerWhereInput) int
 		DownloadBalanceSheet     func(childComplexity int, where model.ReportInput) int
@@ -416,7 +372,6 @@ type ComplexityRoot struct {
 		NumberOfOutOfStock       func(childComplexity int, where *generated.ProductWhereInput) int
 		NumberOfProducts         func(childComplexity int, where *generated.ProductWhereInput) int
 		Payables                 func(childComplexity int, where *generated.PayableWhereInput) int
-		ProductMovements         func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ProductMovementWhereInput) int
 		Products                 func(childComplexity int, where *generated.ProductWhereInput) int
 		Receivables              func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ReceivableOrder, where *generated.ReceivableWhereInput) int
 		Suppliers                func(childComplexity int, where *generated.SupplierWhereInput) int
@@ -497,23 +452,23 @@ type ComplexityRoot struct {
 	}
 
 	Treasury struct {
-		AccountNumber func(childComplexity int) int
-		Balance       func(childComplexity int) int
-		BankName      func(childComplexity int) int
-		CashMovements func(childComplexity int) int
-		Category      func(childComplexity int) int
-		Company       func(childComplexity int) int
-		CreatedAt     func(childComplexity int) int
-		Currency      func(childComplexity int) int
-		DeletedAt     func(childComplexity int) int
-		Description   func(childComplexity int) int
-		ID            func(childComplexity int) int
-		Iban          func(childComplexity int) int
-		IsDefault     func(childComplexity int) int
-		IsMainAccount func(childComplexity int) int
-		Name          func(childComplexity int) int
-		SwiftCode     func(childComplexity int) int
-		UpdatedAt     func(childComplexity int) int
+		AccountNumber     func(childComplexity int) int
+		AccountingEntries func(childComplexity int) int
+		Balance           func(childComplexity int) int
+		BankName          func(childComplexity int) int
+		Category          func(childComplexity int) int
+		Company           func(childComplexity int) int
+		CreatedAt         func(childComplexity int) int
+		Currency          func(childComplexity int) int
+		DeletedAt         func(childComplexity int) int
+		Description       func(childComplexity int) int
+		ID                func(childComplexity int) int
+		Iban              func(childComplexity int) int
+		IsDefault         func(childComplexity int) int
+		IsMainAccount     func(childComplexity int) int
+		Name              func(childComplexity int) int
+		SwiftCode         func(childComplexity int) int
+		UpdatedAt         func(childComplexity int) int
 	}
 
 	TrialBalanceRowItem struct {
@@ -651,9 +606,7 @@ type QueryResolver interface {
 	Node(ctx context.Context, id int) (generated.Noder, error)
 	Nodes(ctx context.Context, ids []int) ([]generated.Noder, error)
 	AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) (*generated.AccountingEntryConnection, error)
-	CashMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) (*generated.CashMovementConnection, error)
 	Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) (*generated.FileConnection, error)
-	ProductMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ProductMovementWhereInput) (*generated.ProductMovementConnection, error)
 	Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ReceivableOrder, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error)
 	Tokens(ctx context.Context) ([]*generated.Token, error)
 	Workshifts(ctx context.Context) ([]*generated.Workshift, error)
@@ -803,12 +756,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.AccountingEntry.Number(childComplexity), true
 
+	case "AccountingEntry.product":
+		if e.complexity.AccountingEntry.Product == nil {
+			break
+		}
+
+		return e.complexity.AccountingEntry.Product(childComplexity), true
+
+	case "AccountingEntry.quantity":
+		if e.complexity.AccountingEntry.Quantity == nil {
+			break
+		}
+
+		return e.complexity.AccountingEntry.Quantity(childComplexity), true
+
 	case "AccountingEntry.reversed":
 		if e.complexity.AccountingEntry.Reversed == nil {
 			break
 		}
 
 		return e.complexity.AccountingEntry.Reversed(childComplexity), true
+
+	case "AccountingEntry.treasury":
+		if e.complexity.AccountingEntry.Treasury == nil {
+			break
+		}
+
+		return e.complexity.AccountingEntry.Treasury(childComplexity), true
 
 	case "AccountingEntry.updatedat":
 		if e.complexity.AccountingEntry.UpdatedAt == nil {
@@ -935,97 +909,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.BalanceSheetOuput.TotalLiabilityAndEquity(childComplexity), true
-
-	case "CashMovement.amount":
-		if e.complexity.CashMovement.Amount == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.Amount(childComplexity), true
-
-	case "CashMovement.createdat":
-		if e.complexity.CashMovement.CreatedAt == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.CreatedAt(childComplexity), true
-
-	case "CashMovement.date":
-		if e.complexity.CashMovement.Date == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.Date(childComplexity), true
-
-	case "CashMovement.deletedat":
-		if e.complexity.CashMovement.DeletedAt == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.DeletedAt(childComplexity), true
-
-	case "CashMovement.entrygroup":
-		if e.complexity.CashMovement.EntryGroup == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.EntryGroup(childComplexity), true
-
-	case "CashMovement.id":
-		if e.complexity.CashMovement.ID == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.ID(childComplexity), true
-
-	case "CashMovement.treasury":
-		if e.complexity.CashMovement.Treasury == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.Treasury(childComplexity), true
-
-	case "CashMovement.updatedat":
-		if e.complexity.CashMovement.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.CashMovement.UpdatedAt(childComplexity), true
-
-	case "CashMovementConnection.edges":
-		if e.complexity.CashMovementConnection.Edges == nil {
-			break
-		}
-
-		return e.complexity.CashMovementConnection.Edges(childComplexity), true
-
-	case "CashMovementConnection.pageInfo":
-		if e.complexity.CashMovementConnection.PageInfo == nil {
-			break
-		}
-
-		return e.complexity.CashMovementConnection.PageInfo(childComplexity), true
-
-	case "CashMovementConnection.totalCount":
-		if e.complexity.CashMovementConnection.TotalCount == nil {
-			break
-		}
-
-		return e.complexity.CashMovementConnection.TotalCount(childComplexity), true
-
-	case "CashMovementEdge.cursor":
-		if e.complexity.CashMovementEdge.Cursor == nil {
-			break
-		}
-
-		return e.complexity.CashMovementEdge.Cursor(childComplexity), true
-
-	case "CashMovementEdge.node":
-		if e.complexity.CashMovementEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.CashMovementEdge.Node(childComplexity), true
 
 	case "Company.accountingentries":
 		if e.complexity.Company.AccountingEntries == nil {
@@ -2388,6 +2271,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Period.Start(childComplexity), true
 
+	case "Product.accountingentries":
+		if e.complexity.Product.AccountingEntries == nil {
+			break
+		}
+
+		return e.complexity.Product.AccountingEntries(childComplexity), true
+
 	case "Product.category":
 		if e.complexity.Product.Category == nil {
 			break
@@ -2465,13 +2355,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Product.Price(childComplexity), true
 
-	case "Product.productmovements":
-		if e.complexity.Product.ProductMovements == nil {
-			break
-		}
-
-		return e.complexity.Product.ProductMovements(childComplexity), true
-
 	case "Product.sku":
 		if e.complexity.Product.Sku == nil {
 			break
@@ -2499,111 +2382,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Product.UpdatedAt(childComplexity), true
-
-	case "ProductMovement.averagecost":
-		if e.complexity.ProductMovement.AverageCost == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.AverageCost(childComplexity), true
-
-	case "ProductMovement.createdat":
-		if e.complexity.ProductMovement.CreatedAt == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.CreatedAt(childComplexity), true
-
-	case "ProductMovement.deletedat":
-		if e.complexity.ProductMovement.DeletedAt == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.DeletedAt(childComplexity), true
-
-	case "ProductMovement.entrygroup":
-		if e.complexity.ProductMovement.EntryGroup == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.EntryGroup(childComplexity), true
-
-	case "ProductMovement.id":
-		if e.complexity.ProductMovement.ID == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.ID(childComplexity), true
-
-	case "ProductMovement.price":
-		if e.complexity.ProductMovement.Price == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.Price(childComplexity), true
-
-	case "ProductMovement.product":
-		if e.complexity.ProductMovement.Product == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.Product(childComplexity), true
-
-	case "ProductMovement.quantity":
-		if e.complexity.ProductMovement.Quantity == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.Quantity(childComplexity), true
-
-	case "ProductMovement.unitcost":
-		if e.complexity.ProductMovement.UnitCost == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.UnitCost(childComplexity), true
-
-	case "ProductMovement.updatedat":
-		if e.complexity.ProductMovement.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.ProductMovement.UpdatedAt(childComplexity), true
-
-	case "ProductMovementConnection.edges":
-		if e.complexity.ProductMovementConnection.Edges == nil {
-			break
-		}
-
-		return e.complexity.ProductMovementConnection.Edges(childComplexity), true
-
-	case "ProductMovementConnection.pageInfo":
-		if e.complexity.ProductMovementConnection.PageInfo == nil {
-			break
-		}
-
-		return e.complexity.ProductMovementConnection.PageInfo(childComplexity), true
-
-	case "ProductMovementConnection.totalCount":
-		if e.complexity.ProductMovementConnection.TotalCount == nil {
-			break
-		}
-
-		return e.complexity.ProductMovementConnection.TotalCount(childComplexity), true
-
-	case "ProductMovementEdge.cursor":
-		if e.complexity.ProductMovementEdge.Cursor == nil {
-			break
-		}
-
-		return e.complexity.ProductMovementEdge.Cursor(childComplexity), true
-
-	case "ProductMovementEdge.node":
-		if e.complexity.ProductMovementEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.ProductMovementEdge.Node(childComplexity), true
 
 	case "Query.accountingEntries":
 		if e.complexity.Query.AccountingEntries == nil {
@@ -2664,18 +2442,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.BalanceSheet(childComplexity, args["date"].(time.Time)), true
-
-	case "Query.cashMovements":
-		if e.complexity.Query.CashMovements == nil {
-			break
-		}
-
-		args, err := ec.field_Query_cashMovements_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.CashMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*generated.CashMovementWhereInput)), true
 
 	case "Query.companies":
 		if e.complexity.Query.Companies == nil {
@@ -2868,18 +2634,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Payables(childComplexity, args["where"].(*generated.PayableWhereInput)), true
-
-	case "Query.productMovements":
-		if e.complexity.Query.ProductMovements == nil {
-			break
-		}
-
-		args, err := ec.field_Query_productMovements_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.ProductMovements(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["where"].(*generated.ProductMovementWhereInput)), true
 
 	case "Query.products":
 		if e.complexity.Query.Products == nil {
@@ -3335,6 +3089,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Treasury.AccountNumber(childComplexity), true
 
+	case "Treasury.accountingentries":
+		if e.complexity.Treasury.AccountingEntries == nil {
+			break
+		}
+
+		return e.complexity.Treasury.AccountingEntries(childComplexity), true
+
 	case "Treasury.balance":
 		if e.complexity.Treasury.Balance == nil {
 			break
@@ -3348,13 +3109,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Treasury.BankName(childComplexity), true
-
-	case "Treasury.cashmovements":
-		if e.complexity.Treasury.CashMovements == nil {
-			break
-		}
-
-		return e.complexity.Treasury.CashMovements(childComplexity), true
 
 	case "Treasury.category":
 		if e.complexity.Treasury.Category == nil {
@@ -3947,18 +3701,15 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputAccountingEntryOrder,
 		ec.unmarshalInputAccountingEntryWhereInput,
-		ec.unmarshalInputCashMovementWhereInput,
 		ec.unmarshalInputCompanyOrder,
 		ec.unmarshalInputCompanyWhereInput,
 		ec.unmarshalInputCreateAccountingEntryInput,
-		ec.unmarshalInputCreateCashMovementInput,
 		ec.unmarshalInputCreateCompanyInput,
 		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateEmployeeInput,
 		ec.unmarshalInputCreateFileInput,
 		ec.unmarshalInputCreatePayableInput,
 		ec.unmarshalInputCreateProductInput,
-		ec.unmarshalInputCreateProductMovementInput,
 		ec.unmarshalInputCreateReceivableInput,
 		ec.unmarshalInputCreateSupplierInput,
 		ec.unmarshalInputCreateTreasuryInput,
@@ -3974,7 +3725,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputEntryItem,
 		ec.unmarshalInputEntryProductInput,
 		ec.unmarshalInputEntrySupplierInput,
-		ec.unmarshalInputEntryTreasuryInput,
 		ec.unmarshalInputFileOrder,
 		ec.unmarshalInputFileWhereInput,
 		ec.unmarshalInputInvoice,
@@ -3985,7 +3735,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputLoginInput,
 		ec.unmarshalInputPayableWhereInput,
 		ec.unmarshalInputPaymentDetails,
-		ec.unmarshalInputProductMovementWhereInput,
 		ec.unmarshalInputProductOrder,
 		ec.unmarshalInputProductWhereInput,
 		ec.unmarshalInputPurchaseRegistrationInput,
@@ -4000,14 +3749,12 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputTokenWhereInput,
 		ec.unmarshalInputTreasuryWhereInput,
 		ec.unmarshalInputUpdateAccountingEntryInput,
-		ec.unmarshalInputUpdateCashMovementInput,
 		ec.unmarshalInputUpdateCompanyInput,
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateEmployeeInput,
 		ec.unmarshalInputUpdateFileInput,
 		ec.unmarshalInputUpdatePayableInput,
 		ec.unmarshalInputUpdateProductInput,
-		ec.unmarshalInputUpdateProductMovementInput,
 		ec.unmarshalInputUpdateReceivableInput,
 		ec.unmarshalInputUpdateSupplierInput,
 		ec.unmarshalInputUpdateTreasuryInput,
@@ -6005,146 +5752,6 @@ func (ec *executionContext) field_Query_balanceSheet_argsDate(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Query_cashMovements_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_cashMovements_argsAfter(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["after"] = arg0
-	arg1, err := ec.field_Query_cashMovements_argsFirst(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["first"] = arg1
-	arg2, err := ec.field_Query_cashMovements_argsBefore(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["before"] = arg2
-	arg3, err := ec.field_Query_cashMovements_argsLast(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["last"] = arg3
-	arg4, err := ec.field_Query_cashMovements_argsWhere(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["where"] = arg4
-	return args, nil
-}
-func (ec *executionContext) field_Query_cashMovements_argsAfter(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*entgql.Cursor[int], error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["after"]
-	if !ok {
-		var zeroVal *entgql.Cursor[int]
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
-	if tmp, ok := rawArgs["after"]; ok {
-		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
-	}
-
-	var zeroVal *entgql.Cursor[int]
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_cashMovements_argsFirst(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["first"]
-	if !ok {
-		var zeroVal *int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
-	if tmp, ok := rawArgs["first"]; ok {
-		return ec.unmarshalOInt2ᚖint(ctx, tmp)
-	}
-
-	var zeroVal *int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_cashMovements_argsBefore(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*entgql.Cursor[int], error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["before"]
-	if !ok {
-		var zeroVal *entgql.Cursor[int]
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
-	if tmp, ok := rawArgs["before"]; ok {
-		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
-	}
-
-	var zeroVal *entgql.Cursor[int]
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_cashMovements_argsLast(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["last"]
-	if !ok {
-		var zeroVal *int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
-	if tmp, ok := rawArgs["last"]; ok {
-		return ec.unmarshalOInt2ᚖint(ctx, tmp)
-	}
-
-	var zeroVal *int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_cashMovements_argsWhere(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*generated.CashMovementWhereInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["where"]
-	if !ok {
-		var zeroVal *generated.CashMovementWhereInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
-	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, tmp)
-	}
-
-	var zeroVal *generated.CashMovementWhereInput
-	return zeroVal, nil
-}
-
 func (ec *executionContext) field_Query_companies_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -6789,146 +6396,6 @@ func (ec *executionContext) field_Query_payables_argsWhere(
 	}
 
 	var zeroVal *generated.PayableWhereInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_productMovements_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_productMovements_argsAfter(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["after"] = arg0
-	arg1, err := ec.field_Query_productMovements_argsFirst(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["first"] = arg1
-	arg2, err := ec.field_Query_productMovements_argsBefore(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["before"] = arg2
-	arg3, err := ec.field_Query_productMovements_argsLast(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["last"] = arg3
-	arg4, err := ec.field_Query_productMovements_argsWhere(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["where"] = arg4
-	return args, nil
-}
-func (ec *executionContext) field_Query_productMovements_argsAfter(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*entgql.Cursor[int], error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["after"]
-	if !ok {
-		var zeroVal *entgql.Cursor[int]
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
-	if tmp, ok := rawArgs["after"]; ok {
-		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
-	}
-
-	var zeroVal *entgql.Cursor[int]
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_productMovements_argsFirst(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["first"]
-	if !ok {
-		var zeroVal *int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
-	if tmp, ok := rawArgs["first"]; ok {
-		return ec.unmarshalOInt2ᚖint(ctx, tmp)
-	}
-
-	var zeroVal *int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_productMovements_argsBefore(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*entgql.Cursor[int], error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["before"]
-	if !ok {
-		var zeroVal *entgql.Cursor[int]
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
-	if tmp, ok := rawArgs["before"]; ok {
-		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
-	}
-
-	var zeroVal *entgql.Cursor[int]
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_productMovements_argsLast(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["last"]
-	if !ok {
-		var zeroVal *int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
-	if tmp, ok := rawArgs["last"]; ok {
-		return ec.unmarshalOInt2ᚖint(ctx, tmp)
-	}
-
-	var zeroVal *int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_productMovements_argsWhere(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*generated.ProductMovementWhereInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["where"]
-	if !ok {
-		var zeroVal *generated.ProductMovementWhereInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
-	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, tmp)
-	}
-
-	var zeroVal *generated.ProductMovementWhereInput
 	return zeroVal, nil
 }
 
@@ -8148,6 +7615,47 @@ func (ec *executionContext) fieldContext_AccountingEntry_reversed(_ context.Cont
 	return fc, nil
 }
 
+func (ec *executionContext) _AccountingEntry_quantity(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AccountingEntry_quantity(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Quantity, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalOInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AccountingEntry_quantity(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AccountingEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _AccountingEntry_company(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_company(ctx, field)
 	if err != nil {
@@ -8335,6 +7843,158 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_tokens(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AccountingEntry_product(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AccountingEntry_product(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Product(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.Product)
+	fc.Result = res
+	return ec.marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AccountingEntry_product(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AccountingEntry",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Product_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Product_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Product_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Product_deletedat(ctx, field)
+			case "description":
+				return ec.fieldContext_Product_description(ctx, field)
+			case "isdefault":
+				return ec.fieldContext_Product_isdefault(ctx, field)
+			case "minimumstock":
+				return ec.fieldContext_Product_minimumstock(ctx, field)
+			case "name":
+				return ec.fieldContext_Product_name(ctx, field)
+			case "price":
+				return ec.fieldContext_Product_price(ctx, field)
+			case "sku":
+				return ec.fieldContext_Product_sku(ctx, field)
+			case "stock":
+				return ec.fieldContext_Product_stock(ctx, field)
+			case "category":
+				return ec.fieldContext_Product_category(ctx, field)
+			case "unitcost":
+				return ec.fieldContext_Product_unitcost(ctx, field)
+			case "company":
+				return ec.fieldContext_Product_company(ctx, field)
+			case "pictures":
+				return ec.fieldContext_Product_pictures(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AccountingEntry_treasury(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AccountingEntry_treasury(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Treasury(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.Treasury)
+	fc.Result = res
+	return ec.marshalOTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AccountingEntry_treasury(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AccountingEntry",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Treasury_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Treasury_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Treasury_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Treasury_deletedat(ctx, field)
+			case "accountnumber":
+				return ec.fieldContext_Treasury_accountnumber(ctx, field)
+			case "balance":
+				return ec.fieldContext_Treasury_balance(ctx, field)
+			case "bankname":
+				return ec.fieldContext_Treasury_bankname(ctx, field)
+			case "currency":
+				return ec.fieldContext_Treasury_currency(ctx, field)
+			case "description":
+				return ec.fieldContext_Treasury_description(ctx, field)
+			case "iban":
+				return ec.fieldContext_Treasury_iban(ctx, field)
+			case "isdefault":
+				return ec.fieldContext_Treasury_isdefault(ctx, field)
+			case "ismainaccount":
+				return ec.fieldContext_Treasury_ismainaccount(ctx, field)
+			case "name":
+				return ec.fieldContext_Treasury_name(ctx, field)
+			case "category":
+				return ec.fieldContext_Treasury_category(ctx, field)
+			case "swiftcode":
+				return ec.fieldContext_Treasury_swiftcode(ctx, field)
+			case "company":
+				return ec.fieldContext_Treasury_company(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Treasury_accountingentries(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
 		},
 	}
 	return fc, nil
@@ -8551,10 +8211,16 @@ func (ec *executionContext) fieldContext_AccountingEntryEdge_node(_ context.Cont
 				return ec.fieldContext_AccountingEntry_isreversal(ctx, field)
 			case "reversed":
 				return ec.fieldContext_AccountingEntry_reversed(ctx, field)
+			case "quantity":
+				return ec.fieldContext_AccountingEntry_quantity(ctx, field)
 			case "company":
 				return ec.fieldContext_AccountingEntry_company(ctx, field)
 			case "user":
 				return ec.fieldContext_AccountingEntry_user(ctx, field)
+			case "product":
+				return ec.fieldContext_AccountingEntry_product(ctx, field)
+			case "treasury":
+				return ec.fieldContext_AccountingEntry_treasury(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AccountingEntry", field.Name)
 		},
@@ -9137,636 +8803,6 @@ func (ec *executionContext) fieldContext_BalanceSheetOuput_isProvisional(_ conte
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_id(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNID2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_createdat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_updatedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_updatedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_deletedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_deletedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_amount(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_amount(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Amount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_amount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_date(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_date(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Date, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_date(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_entrygroup(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.EntryGroup, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_entrygroup(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovement_treasury(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovement_treasury(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Treasury(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Treasury)
-	fc.Result = res
-	return ec.marshalOTreasury2ᚖmazzaᚋentᚋgeneratedᚐTreasury(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovement_treasury(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovement",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Treasury_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Treasury_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Treasury_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Treasury_deletedat(ctx, field)
-			case "accountnumber":
-				return ec.fieldContext_Treasury_accountnumber(ctx, field)
-			case "balance":
-				return ec.fieldContext_Treasury_balance(ctx, field)
-			case "bankname":
-				return ec.fieldContext_Treasury_bankname(ctx, field)
-			case "currency":
-				return ec.fieldContext_Treasury_currency(ctx, field)
-			case "description":
-				return ec.fieldContext_Treasury_description(ctx, field)
-			case "iban":
-				return ec.fieldContext_Treasury_iban(ctx, field)
-			case "isdefault":
-				return ec.fieldContext_Treasury_isdefault(ctx, field)
-			case "ismainaccount":
-				return ec.fieldContext_Treasury_ismainaccount(ctx, field)
-			case "name":
-				return ec.fieldContext_Treasury_name(ctx, field)
-			case "category":
-				return ec.fieldContext_Treasury_category(ctx, field)
-			case "swiftcode":
-				return ec.fieldContext_Treasury_swiftcode(ctx, field)
-			case "company":
-				return ec.fieldContext_Treasury_company(ctx, field)
-			case "cashmovements":
-				return ec.fieldContext_Treasury_cashmovements(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovementConnection_edges(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Edges, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.CashMovementEdge)
-	fc.Result = res
-	return ec.marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovementConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "node":
-				return ec.fieldContext_CashMovementEdge_node(ctx, field)
-			case "cursor":
-				return ec.fieldContext_CashMovementEdge_cursor(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CashMovementEdge", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovementConnection_pageInfo(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.PageInfo, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(entgql.PageInfo[int])
-	fc.Result = res
-	return ec.marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPageInfo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovementConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "hasNextPage":
-				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
-			case "hasPreviousPage":
-				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
-			case "startCursor":
-				return ec.fieldContext_PageInfo_startCursor(ctx, field)
-			case "endCursor":
-				return ec.fieldContext_PageInfo_endCursor(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovementConnection_totalCount(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TotalCount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovementConnection_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovementEdge_node(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Node, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.CashMovement)
-	fc.Result = res
-	return ec.marshalOCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovementEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovementEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_CashMovement_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_CashMovement_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_CashMovement_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_CashMovement_deletedat(ctx, field)
-			case "amount":
-				return ec.fieldContext_CashMovement_amount(ctx, field)
-			case "date":
-				return ec.fieldContext_CashMovement_date(ctx, field)
-			case "entrygroup":
-				return ec.fieldContext_CashMovement_entrygroup(ctx, field)
-			case "treasury":
-				return ec.fieldContext_CashMovement_treasury(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CashMovement", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CashMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.CashMovementEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CashMovementEdge_cursor(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Cursor, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(entgql.Cursor[int])
-	fc.Result = res
-	return ec.marshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CashMovementEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CashMovementEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Cursor does not have child fields")
 		},
 	}
 	return fc, nil
@@ -10827,10 +9863,16 @@ func (ec *executionContext) fieldContext_Company_accountingentries(_ context.Con
 				return ec.fieldContext_AccountingEntry_isreversal(ctx, field)
 			case "reversed":
 				return ec.fieldContext_AccountingEntry_reversed(ctx, field)
+			case "quantity":
+				return ec.fieldContext_AccountingEntry_quantity(ctx, field)
 			case "company":
 				return ec.fieldContext_AccountingEntry_company(ctx, field)
 			case "user":
 				return ec.fieldContext_AccountingEntry_user(ctx, field)
+			case "product":
+				return ec.fieldContext_AccountingEntry_product(ctx, field)
+			case "treasury":
+				return ec.fieldContext_AccountingEntry_treasury(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AccountingEntry", field.Name)
 		},
@@ -11117,8 +10159,8 @@ func (ec *executionContext) fieldContext_Company_products(_ context.Context, fie
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -11322,8 +10364,8 @@ func (ec *executionContext) fieldContext_Company_treasuries(_ context.Context, f
 				return ec.fieldContext_Treasury_swiftcode(ctx, field)
 			case "company":
 				return ec.fieldContext_Treasury_company(ctx, field)
-			case "cashmovements":
-				return ec.fieldContext_Treasury_cashmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Treasury_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
 		},
@@ -14307,8 +13349,8 @@ func (ec *executionContext) fieldContext_File_product(_ context.Context, field g
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -17203,8 +16245,8 @@ func (ec *executionContext) fieldContext_Mutation_createProduct(ctx context.Cont
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -17292,8 +16334,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProduct(ctx context.Cont
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -17661,8 +16703,8 @@ func (ec *executionContext) fieldContext_Mutation_createTreasury(ctx context.Con
 				return ec.fieldContext_Treasury_swiftcode(ctx, field)
 			case "company":
 				return ec.fieldContext_Treasury_company(ctx, field)
-			case "cashmovements":
-				return ec.fieldContext_Treasury_cashmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Treasury_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
 		},
@@ -17752,8 +16794,8 @@ func (ec *executionContext) fieldContext_Mutation_updateTreasury(ctx context.Con
 				return ec.fieldContext_Treasury_swiftcode(ctx, field)
 			case "company":
 				return ec.fieldContext_Treasury_company(ctx, field)
-			case "cashmovements":
-				return ec.fieldContext_Treasury_cashmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Treasury_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
 		},
@@ -20185,8 +19227,8 @@ func (ec *executionContext) fieldContext_Product_pictures(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Product_productmovements(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Product_productmovements(ctx, field)
+func (ec *executionContext) _Product_accountingentries(ctx context.Context, field graphql.CollectedField, obj *generated.Product) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Product_accountingentries(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -20199,7 +19241,7 @@ func (ec *executionContext) _Product_productmovements(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ProductMovements(ctx)
+		return obj.AccountingEntries(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -20208,12 +19250,12 @@ func (ec *executionContext) _Product_productmovements(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*generated.ProductMovement)
+	res := resTmp.([]*generated.AccountingEntry)
 	fc.Result = res
-	return ec.marshalOProductMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementᚄ(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Product_productmovements(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Product_accountingentries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Product",
 		Field:      field,
@@ -20222,747 +19264,47 @@ func (ec *executionContext) fieldContext_Product_productmovements(_ context.Cont
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_ProductMovement_id(ctx, field)
+				return ec.fieldContext_AccountingEntry_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_ProductMovement_createdat(ctx, field)
+				return ec.fieldContext_AccountingEntry_createdat(ctx, field)
 			case "updatedat":
-				return ec.fieldContext_ProductMovement_updatedat(ctx, field)
+				return ec.fieldContext_AccountingEntry_updatedat(ctx, field)
 			case "deletedat":
-				return ec.fieldContext_ProductMovement_deletedat(ctx, field)
-			case "entrygroup":
-				return ec.fieldContext_ProductMovement_entrygroup(ctx, field)
-			case "averagecost":
-				return ec.fieldContext_ProductMovement_averagecost(ctx, field)
-			case "unitcost":
-				return ec.fieldContext_ProductMovement_unitcost(ctx, field)
-			case "price":
-				return ec.fieldContext_ProductMovement_price(ctx, field)
-			case "quantity":
-				return ec.fieldContext_ProductMovement_quantity(ctx, field)
-			case "product":
-				return ec.fieldContext_ProductMovement_product(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ProductMovement", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_id(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNID2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_createdat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_updatedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_updatedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_deletedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_deletedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_entrygroup(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_entrygroup(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.EntryGroup, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_entrygroup(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_averagecost(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_averagecost(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.AverageCost, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_averagecost(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_unitcost(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_unitcost(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UnitCost, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_unitcost(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_price(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_price(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Price, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_price(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_quantity(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_quantity(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Quantity, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_quantity(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovement_product(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovement) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovement_product(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Product(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Product)
-	fc.Result = res
-	return ec.marshalOProduct2ᚖmazzaᚋentᚋgeneratedᚐProduct(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovement_product(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovement",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Product_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Product_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Product_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Product_deletedat(ctx, field)
+				return ec.fieldContext_AccountingEntry_deletedat(ctx, field)
+			case "number":
+				return ec.fieldContext_AccountingEntry_number(ctx, field)
+			case "group":
+				return ec.fieldContext_AccountingEntry_group(ctx, field)
+			case "date":
+				return ec.fieldContext_AccountingEntry_date(ctx, field)
+			case "account":
+				return ec.fieldContext_AccountingEntry_account(ctx, field)
+			case "label":
+				return ec.fieldContext_AccountingEntry_label(ctx, field)
+			case "amount":
+				return ec.fieldContext_AccountingEntry_amount(ctx, field)
 			case "description":
-				return ec.fieldContext_Product_description(ctx, field)
-			case "isdefault":
-				return ec.fieldContext_Product_isdefault(ctx, field)
-			case "minimumstock":
-				return ec.fieldContext_Product_minimumstock(ctx, field)
-			case "name":
-				return ec.fieldContext_Product_name(ctx, field)
-			case "price":
-				return ec.fieldContext_Product_price(ctx, field)
-			case "sku":
-				return ec.fieldContext_Product_sku(ctx, field)
-			case "stock":
-				return ec.fieldContext_Product_stock(ctx, field)
-			case "category":
-				return ec.fieldContext_Product_category(ctx, field)
-			case "unitcost":
-				return ec.fieldContext_Product_unitcost(ctx, field)
-			case "company":
-				return ec.fieldContext_Product_company(ctx, field)
-			case "pictures":
-				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovementConnection_edges(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Edges, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.ProductMovementEdge)
-	fc.Result = res
-	return ec.marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovementConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "node":
-				return ec.fieldContext_ProductMovementEdge_node(ctx, field)
-			case "cursor":
-				return ec.fieldContext_ProductMovementEdge_cursor(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ProductMovementEdge", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovementConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovementConnection_pageInfo(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.PageInfo, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(entgql.PageInfo[int])
-	fc.Result = res
-	return ec.marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPageInfo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovementConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "hasNextPage":
-				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
-			case "hasPreviousPage":
-				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
-			case "startCursor":
-				return ec.fieldContext_PageInfo_startCursor(ctx, field)
-			case "endCursor":
-				return ec.fieldContext_PageInfo_endCursor(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovementConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovementConnection_totalCount(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TotalCount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovementConnection_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovementEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovementEdge_node(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Node, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.ProductMovement)
-	fc.Result = res
-	return ec.marshalOProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovementEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovementEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_ProductMovement_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_ProductMovement_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_ProductMovement_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_ProductMovement_deletedat(ctx, field)
-			case "entrygroup":
-				return ec.fieldContext_ProductMovement_entrygroup(ctx, field)
-			case "averagecost":
-				return ec.fieldContext_ProductMovement_averagecost(ctx, field)
-			case "unitcost":
-				return ec.fieldContext_ProductMovement_unitcost(ctx, field)
-			case "price":
-				return ec.fieldContext_ProductMovement_price(ctx, field)
+				return ec.fieldContext_AccountingEntry_description(ctx, field)
+			case "accounttype":
+				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
+			case "isdebit":
+				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
+			case "isreversal":
+				return ec.fieldContext_AccountingEntry_isreversal(ctx, field)
+			case "reversed":
+				return ec.fieldContext_AccountingEntry_reversed(ctx, field)
 			case "quantity":
-				return ec.fieldContext_ProductMovement_quantity(ctx, field)
+				return ec.fieldContext_AccountingEntry_quantity(ctx, field)
+			case "company":
+				return ec.fieldContext_AccountingEntry_company(ctx, field)
+			case "user":
+				return ec.fieldContext_AccountingEntry_user(ctx, field)
 			case "product":
-				return ec.fieldContext_ProductMovement_product(ctx, field)
+				return ec.fieldContext_AccountingEntry_product(ctx, field)
+			case "treasury":
+				return ec.fieldContext_AccountingEntry_treasury(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type ProductMovement", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ProductMovementEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.ProductMovementEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProductMovementEdge_cursor(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Cursor, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(entgql.Cursor[int])
-	fc.Result = res
-	return ec.marshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ProductMovementEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ProductMovementEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Cursor does not have child fields")
+			return nil, fmt.Errorf("no field named %q was found under type AccountingEntry", field.Name)
 		},
 	}
 	return fc, nil
@@ -21138,69 +19480,6 @@ func (ec *executionContext) fieldContext_Query_accountingEntries(ctx context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_cashMovements(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_cashMovements(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().CashMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*generated.CashMovementWhereInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*generated.CashMovementConnection)
-	fc.Result = res
-	return ec.marshalNCashMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_cashMovements(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "edges":
-				return ec.fieldContext_CashMovementConnection_edges(ctx, field)
-			case "pageInfo":
-				return ec.fieldContext_CashMovementConnection_pageInfo(ctx, field)
-			case "totalCount":
-				return ec.fieldContext_CashMovementConnection_totalCount(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CashMovementConnection", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_cashMovements_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Query_files(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_files(ctx, field)
 	if err != nil {
@@ -21258,69 +19537,6 @@ func (ec *executionContext) fieldContext_Query_files(ctx context.Context, field 
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_files_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_productMovements(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_productMovements(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ProductMovements(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["where"].(*generated.ProductMovementWhereInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*generated.ProductMovementConnection)
-	fc.Result = res
-	return ec.marshalNProductMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_productMovements(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "edges":
-				return ec.fieldContext_ProductMovementConnection_edges(ctx, field)
-			case "pageInfo":
-				return ec.fieldContext_ProductMovementConnection_pageInfo(ctx, field)
-			case "totalCount":
-				return ec.fieldContext_ProductMovementConnection_totalCount(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ProductMovementConnection", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_productMovements_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -22619,8 +20835,8 @@ func (ec *executionContext) fieldContext_Query_products(ctx context.Context, fie
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -22708,8 +20924,8 @@ func (ec *executionContext) fieldContext_Query_lowStock(ctx context.Context, fie
 				return ec.fieldContext_Product_company(ctx, field)
 			case "pictures":
 				return ec.fieldContext_Product_pictures(ctx, field)
-			case "productmovements":
-				return ec.fieldContext_Product_productmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Product_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -23051,8 +21267,8 @@ func (ec *executionContext) fieldContext_Query_treasuries(ctx context.Context, f
 				return ec.fieldContext_Treasury_swiftcode(ctx, field)
 			case "company":
 				return ec.fieldContext_Treasury_company(ctx, field)
-			case "cashmovements":
-				return ec.fieldContext_Treasury_cashmovements(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Treasury_accountingentries(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Treasury", field.Name)
 		},
@@ -26560,8 +24776,8 @@ func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Treasury_cashmovements(ctx, field)
+func (ec *executionContext) _Treasury_accountingentries(ctx context.Context, field graphql.CollectedField, obj *generated.Treasury) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Treasury_accountingentries(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -26574,7 +24790,7 @@ func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CashMovements(ctx)
+		return obj.AccountingEntries(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -26583,12 +24799,12 @@ func (ec *executionContext) _Treasury_cashmovements(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*generated.CashMovement)
+	res := resTmp.([]*generated.AccountingEntry)
 	fc.Result = res
-	return ec.marshalOCashMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementᚄ(ctx, field.Selections, res)
+	return ec.marshalOAccountingEntry2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Treasury_cashmovements(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Treasury_accountingentries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Treasury",
 		Field:      field,
@@ -26597,23 +24813,47 @@ func (ec *executionContext) fieldContext_Treasury_cashmovements(_ context.Contex
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_CashMovement_id(ctx, field)
+				return ec.fieldContext_AccountingEntry_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_CashMovement_createdat(ctx, field)
+				return ec.fieldContext_AccountingEntry_createdat(ctx, field)
 			case "updatedat":
-				return ec.fieldContext_CashMovement_updatedat(ctx, field)
+				return ec.fieldContext_AccountingEntry_updatedat(ctx, field)
 			case "deletedat":
-				return ec.fieldContext_CashMovement_deletedat(ctx, field)
-			case "amount":
-				return ec.fieldContext_CashMovement_amount(ctx, field)
+				return ec.fieldContext_AccountingEntry_deletedat(ctx, field)
+			case "number":
+				return ec.fieldContext_AccountingEntry_number(ctx, field)
+			case "group":
+				return ec.fieldContext_AccountingEntry_group(ctx, field)
 			case "date":
-				return ec.fieldContext_CashMovement_date(ctx, field)
-			case "entrygroup":
-				return ec.fieldContext_CashMovement_entrygroup(ctx, field)
+				return ec.fieldContext_AccountingEntry_date(ctx, field)
+			case "account":
+				return ec.fieldContext_AccountingEntry_account(ctx, field)
+			case "label":
+				return ec.fieldContext_AccountingEntry_label(ctx, field)
+			case "amount":
+				return ec.fieldContext_AccountingEntry_amount(ctx, field)
+			case "description":
+				return ec.fieldContext_AccountingEntry_description(ctx, field)
+			case "accounttype":
+				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
+			case "isdebit":
+				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
+			case "isreversal":
+				return ec.fieldContext_AccountingEntry_isreversal(ctx, field)
+			case "reversed":
+				return ec.fieldContext_AccountingEntry_reversed(ctx, field)
+			case "quantity":
+				return ec.fieldContext_AccountingEntry_quantity(ctx, field)
+			case "company":
+				return ec.fieldContext_AccountingEntry_company(ctx, field)
+			case "user":
+				return ec.fieldContext_AccountingEntry_user(ctx, field)
+			case "product":
+				return ec.fieldContext_AccountingEntry_product(ctx, field)
 			case "treasury":
-				return ec.fieldContext_CashMovement_treasury(ctx, field)
+				return ec.fieldContext_AccountingEntry_treasury(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type CashMovement", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type AccountingEntry", field.Name)
 		},
 	}
 	return fc, nil
@@ -27330,10 +25570,16 @@ func (ec *executionContext) fieldContext_User_accountingentries(_ context.Contex
 				return ec.fieldContext_AccountingEntry_isreversal(ctx, field)
 			case "reversed":
 				return ec.fieldContext_AccountingEntry_reversed(ctx, field)
+			case "quantity":
+				return ec.fieldContext_AccountingEntry_quantity(ctx, field)
 			case "company":
 				return ec.fieldContext_AccountingEntry_company(ctx, field)
 			case "user":
 				return ec.fieldContext_AccountingEntry_user(ctx, field)
+			case "product":
+				return ec.fieldContext_AccountingEntry_product(ctx, field)
+			case "treasury":
+				return ec.fieldContext_AccountingEntry_treasury(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AccountingEntry", field.Name)
 		},
@@ -32275,7 +30521,7 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "number", "numberNEQ", "numberIn", "numberNotIn", "numberGT", "numberGTE", "numberLT", "numberLTE", "group", "groupNEQ", "groupIn", "groupNotIn", "groupGT", "groupGTE", "groupLT", "groupLTE", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "account", "accountNEQ", "accountIn", "accountNotIn", "accountGT", "accountGTE", "accountLT", "accountLTE", "accountContains", "accountHasPrefix", "accountHasSuffix", "accountEqualFold", "accountContainsFold", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "accounttype", "accounttypeNEQ", "accounttypeIn", "accounttypeNotIn", "isdebit", "isdebitNEQ", "isreversal", "isreversalNEQ", "reversed", "reversedNEQ", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "number", "numberNEQ", "numberIn", "numberNotIn", "numberGT", "numberGTE", "numberLT", "numberLTE", "group", "groupNEQ", "groupIn", "groupNotIn", "groupGT", "groupGTE", "groupLT", "groupLTE", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "account", "accountNEQ", "accountIn", "accountNotIn", "accountGT", "accountGTE", "accountLT", "accountLTE", "accountContains", "accountHasPrefix", "accountHasSuffix", "accountEqualFold", "accountContainsFold", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "accounttype", "accounttypeNEQ", "accounttypeIn", "accounttypeNotIn", "isdebit", "isdebitNEQ", "isreversal", "isreversalNEQ", "reversed", "reversedNEQ", "quantity", "quantityNEQ", "quantityIn", "quantityNotIn", "quantityGT", "quantityGTE", "quantityLT", "quantityLTE", "quantityIsNil", "quantityNotNil", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasProduct", "hasProductWith", "hasTreasury", "hasTreasuryWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -33108,6 +31354,76 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 				return it, err
 			}
 			it.ReversedNEQ = data
+		case "quantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Quantity = data
+		case "quantityNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityNEQ = data
+		case "quantityIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityIn = data
+		case "quantityNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityNotIn = data
+		case "quantityGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityGT = data
+		case "quantityGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityGTE = data
+		case "quantityLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityLT = data
+		case "quantityLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityLTE = data
+		case "quantityIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityIsNil = data
+		case "quantityNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.QuantityNotNil = data
 		case "hasCompany":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompany"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -33136,453 +31452,20 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 				return it, err
 			}
 			it.HasUserWith = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputCashMovementWhereInput(ctx context.Context, obj interface{}) (generated.CashMovementWhereInput, error) {
-	var it generated.CashMovementWhereInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "entrygroup", "entrygroupNEQ", "entrygroupIn", "entrygroupNotIn", "entrygroupGT", "entrygroupGTE", "entrygroupLT", "entrygroupLTE", "hasTreasury", "hasTreasuryWith"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "not":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, v)
+		case "hasProduct":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProduct"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Not = data
-		case "and":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
+			it.HasProduct = data
+		case "hasProductWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductWith"))
+			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.And = data
-		case "or":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Or = data
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "idNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNEQ = data
-		case "idIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDIn = data
-		case "idNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNotIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNotIn = data
-		case "idGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGT = data
-		case "idGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGTE = data
-		case "idLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLT = data
-		case "idLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLTE = data
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "createdatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNEQ = data
-		case "createdatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtIn = data
-		case "createdatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNotIn = data
-		case "createdatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGT = data
-		case "createdatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGTE = data
-		case "createdatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLT = data
-		case "createdatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLTE = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "updatedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNEQ = data
-		case "updatedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtIn = data
-		case "updatedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNotIn = data
-		case "updatedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGT = data
-		case "updatedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGTE = data
-		case "updatedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLT = data
-		case "updatedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLTE = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "deletedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNEQ = data
-		case "deletedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIn = data
-		case "deletedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotIn = data
-		case "deletedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGT = data
-		case "deletedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGTE = data
-		case "deletedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLT = data
-		case "deletedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLTE = data
-		case "deletedatIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIsNil = data
-		case "deletedatNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotNil = data
-		case "amount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Amount = data
-		case "amountNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountNEQ"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountNEQ = data
-		case "amountIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountIn = data
-		case "amountNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountNotIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountNotIn = data
-		case "amountGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountGT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountGT = data
-		case "amountGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountGTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountGTE = data
-		case "amountLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountLT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountLT = data
-		case "amountLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amountLTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AmountLTE = data
-		case "date":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Date = data
-		case "dateNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateNEQ = data
-		case "dateIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateIn = data
-		case "dateNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateNotIn = data
-		case "dateGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateGT = data
-		case "dateGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateGTE = data
-		case "dateLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateLT = data
-		case "dateLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dateLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DateLTE = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
-		case "entrygroupNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupNEQ"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupNEQ = data
-		case "entrygroupIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupIn = data
-		case "entrygroupNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupNotIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupNotIn = data
-		case "entrygroupGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupGT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupGT = data
-		case "entrygroupGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupGTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupGTE = data
-		case "entrygroupLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupLT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupLT = data
-		case "entrygroupLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupLTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupLTE = data
+			it.HasProductWith = data
 		case "hasTreasury":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTreasury"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -35726,7 +33609,7 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "companyID", "userID"}
+	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "companyID", "userID", "productID", "treasuryID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -35831,6 +33714,13 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.Reversed = data
+		case "quantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Quantity = data
 		case "companyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -35845,68 +33735,13 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.UserID = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputCreateCashMovementInput(ctx context.Context, obj interface{}) (generated.CreateCashMovementInput, error) {
-	var it generated.CreateCashMovementInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "amount", "date", "entrygroup", "treasuryID"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+		case "productID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "amount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Amount = data
-		case "date":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
-			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Date = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
+			it.ProductID = data
 		case "treasuryID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("treasuryID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -36629,7 +34464,7 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "pictureIDs", "productmovementIDs"}
+	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "pictureIDs", "accountingentryIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -36734,96 +34569,13 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 				return it, err
 			}
 			it.PictureIDs = data
-		case "productmovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productmovementIDs"))
+		case "accountingentryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountingentryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ProductMovementIDs = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputCreateProductMovementInput(ctx context.Context, obj interface{}) (generated.CreateProductMovementInput, error) {
-	var it generated.CreateProductMovementInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "entrygroup", "averagecost", "unitcost", "price", "quantity", "productID"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
-		case "averagecost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecost"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCost = data
-		case "unitcost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcost"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCost = data
-		case "price":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("price"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Price = data
-		case "quantity":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
-			data, err := ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Quantity = data
-		case "productID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ProductID = data
+			it.AccountingEntryIDs = data
 		}
 	}
 
@@ -37045,7 +34797,7 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "accountnumber", "balance", "bankname", "currency", "description", "iban", "isdefault", "ismainaccount", "name", "category", "swiftcode", "companyID", "cashmovementIDs"}
+	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "accountnumber", "balance", "bankname", "currency", "description", "iban", "isdefault", "ismainaccount", "name", "category", "swiftcode", "companyID", "accountingentryIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -37157,13 +34909,13 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 				return it, err
 			}
 			it.CompanyID = data
-		case "cashmovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cashmovementIDs"))
+		case "accountingentryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountingentryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CashMovementIDs = data
+			it.AccountingEntryIDs = data
 		}
 	}
 
@@ -39643,7 +37395,7 @@ func (ec *executionContext) unmarshalInputEntryItem(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"account", "accountType", "amount", "isDebit", "label"}
+	fieldsInOrder := [...]string{"account", "accountType", "amount", "isDebit", "label", "quantity", "productID", "treasuryID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -39685,6 +37437,27 @@ func (ec *executionContext) unmarshalInputEntryItem(ctx context.Context, obj int
 				return it, err
 			}
 			it.Label = data
+		case "quantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Quantity = data
+		case "productID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ProductID = data
+		case "treasuryID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("treasuryID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TreasuryID = data
 		}
 	}
 
@@ -39767,40 +37540,6 @@ func (ec *executionContext) unmarshalInputEntrySupplierInput(ctx context.Context
 				return it, err
 			}
 			it.DaysDue = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputEntryTreasuryInput(ctx context.Context, obj interface{}) (model.EntryTreasuryInput, error) {
-	var it model.EntryTreasuryInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"id", "amount"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalNID2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "amount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
-			data, err := ec.unmarshalNFloat2float64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Amount = data
 		}
 	}
 
@@ -41544,579 +39283,6 @@ func (ec *executionContext) unmarshalInputPaymentDetails(ctx context.Context, ob
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputProductMovementWhereInput(ctx context.Context, obj interface{}) (generated.ProductMovementWhereInput, error) {
-	var it generated.ProductMovementWhereInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "entrygroup", "entrygroupNEQ", "entrygroupIn", "entrygroupNotIn", "entrygroupGT", "entrygroupGTE", "entrygroupLT", "entrygroupLTE", "averagecost", "averagecostNEQ", "averagecostIn", "averagecostNotIn", "averagecostGT", "averagecostGTE", "averagecostLT", "averagecostLTE", "unitcost", "unitcostNEQ", "unitcostIn", "unitcostNotIn", "unitcostGT", "unitcostGTE", "unitcostLT", "unitcostLTE", "price", "priceNEQ", "priceIn", "priceNotIn", "priceGT", "priceGTE", "priceLT", "priceLTE", "quantity", "quantityNEQ", "quantityIn", "quantityNotIn", "quantityGT", "quantityGTE", "quantityLT", "quantityLTE", "hasProduct", "hasProductWith"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "not":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Not = data
-		case "and":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.And = data
-		case "or":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Or = data
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "idNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNEQ = data
-		case "idIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDIn = data
-		case "idNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNotIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNotIn = data
-		case "idGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGT = data
-		case "idGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGTE = data
-		case "idLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLT = data
-		case "idLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLTE = data
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "createdatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNEQ = data
-		case "createdatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtIn = data
-		case "createdatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNotIn = data
-		case "createdatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGT = data
-		case "createdatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGTE = data
-		case "createdatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLT = data
-		case "createdatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLTE = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "updatedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNEQ = data
-		case "updatedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtIn = data
-		case "updatedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNotIn = data
-		case "updatedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGT = data
-		case "updatedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGTE = data
-		case "updatedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLT = data
-		case "updatedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLTE = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "deletedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNEQ = data
-		case "deletedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIn = data
-		case "deletedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotIn = data
-		case "deletedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGT = data
-		case "deletedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGTE = data
-		case "deletedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLT = data
-		case "deletedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLTE = data
-		case "deletedatIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIsNil = data
-		case "deletedatNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotNil = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
-		case "entrygroupNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupNEQ"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupNEQ = data
-		case "entrygroupIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupIn = data
-		case "entrygroupNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupNotIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupNotIn = data
-		case "entrygroupGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupGT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupGT = data
-		case "entrygroupGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupGTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupGTE = data
-		case "entrygroupLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupLT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupLT = data
-		case "entrygroupLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroupLTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroupLTE = data
-		case "averagecost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecost"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCost = data
-		case "averagecostNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostNEQ"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostNEQ = data
-		case "averagecostIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostIn = data
-		case "averagecostNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostNotIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostNotIn = data
-		case "averagecostGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostGT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostGT = data
-		case "averagecostGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostGTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostGTE = data
-		case "averagecostLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostLT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostLT = data
-		case "averagecostLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecostLTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCostLTE = data
-		case "unitcost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcost"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCost = data
-		case "unitcostNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostNEQ"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostNEQ = data
-		case "unitcostIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostIn = data
-		case "unitcostNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostNotIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostNotIn = data
-		case "unitcostGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostGT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostGT = data
-		case "unitcostGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostGTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostGTE = data
-		case "unitcostLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostLT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostLT = data
-		case "unitcostLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcostLTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCostLTE = data
-		case "price":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("price"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Price = data
-		case "priceNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceNEQ"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceNEQ = data
-		case "priceIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceIn = data
-		case "priceNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceNotIn"))
-			data, err := ec.unmarshalOFloat2ᚕfloat64ᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceNotIn = data
-		case "priceGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceGT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceGT = data
-		case "priceGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceGTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceGTE = data
-		case "priceLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceLT"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceLT = data
-		case "priceLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("priceLTE"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.PriceLTE = data
-		case "quantity":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Quantity = data
-		case "quantityNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityNEQ"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityNEQ = data
-		case "quantityIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityIn = data
-		case "quantityNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityNotIn"))
-			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityNotIn = data
-		case "quantityGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityGT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityGT = data
-		case "quantityGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityGTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityGTE = data
-		case "quantityLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityLT"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityLT = data
-		case "quantityLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantityLTE"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.QuantityLTE = data
-		case "hasProduct":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProduct"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasProduct = data
-		case "hasProductWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductWith"))
-			data, err := ec.unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasProductWith = data
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputProductOrder(ctx context.Context, obj interface{}) (generated.ProductOrder, error) {
 	var it generated.ProductOrder
 	asMap := map[string]interface{}{}
@@ -42162,7 +39328,7 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "isdefault", "isdefaultNEQ", "minimumstock", "minimumstockNEQ", "minimumstockIn", "minimumstockNotIn", "minimumstockGT", "minimumstockGTE", "minimumstockLT", "minimumstockLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "price", "priceNEQ", "priceIn", "priceNotIn", "priceGT", "priceGTE", "priceLT", "priceLTE", "sku", "skuNEQ", "skuIn", "skuNotIn", "skuGT", "skuGTE", "skuLT", "skuLTE", "skuContains", "skuHasPrefix", "skuHasSuffix", "skuEqualFold", "skuContainsFold", "stock", "stockNEQ", "stockIn", "stockNotIn", "stockGT", "stockGTE", "stockLT", "stockLTE", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "unitcost", "unitcostNEQ", "unitcostIn", "unitcostNotIn", "unitcostGT", "unitcostGTE", "unitcostLT", "unitcostLTE", "hasCompany", "hasCompanyWith", "hasPictures", "hasPicturesWith", "hasProductMovements", "hasProductMovementsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "isdefault", "isdefaultNEQ", "minimumstock", "minimumstockNEQ", "minimumstockIn", "minimumstockNotIn", "minimumstockGT", "minimumstockGTE", "minimumstockLT", "minimumstockLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "price", "priceNEQ", "priceIn", "priceNotIn", "priceGT", "priceGTE", "priceLT", "priceLTE", "sku", "skuNEQ", "skuIn", "skuNotIn", "skuGT", "skuGTE", "skuLT", "skuLTE", "skuContains", "skuHasPrefix", "skuHasSuffix", "skuEqualFold", "skuContainsFold", "stock", "stockNEQ", "stockIn", "stockNotIn", "stockGT", "stockGTE", "stockLT", "stockLTE", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "unitcost", "unitcostNEQ", "unitcostIn", "unitcostNotIn", "unitcostGT", "unitcostGTE", "unitcostLT", "unitcostLTE", "hasCompany", "hasCompanyWith", "hasPictures", "hasPicturesWith", "hasAccountingEntries", "hasAccountingEntriesWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -42995,20 +40161,20 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.HasPicturesWith = data
-		case "hasProductMovements":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductMovements"))
+		case "hasAccountingEntries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntries"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasProductMovements = data
-		case "hasProductMovementsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProductMovementsWith"))
-			data, err := ec.unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx, v)
+			it.HasAccountingEntries = data
+		case "hasAccountingEntriesWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntriesWith"))
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasProductMovementsWith = data
+			it.HasAccountingEntriesWith = data
 		}
 	}
 
@@ -43022,7 +40188,7 @@ func (ec *executionContext) unmarshalInputPurchaseRegistrationInput(ctx context.
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"main", "counterpart", "cash", "supplier", "date", "description", "operationType", "products", "totalTransactionValue"}
+	fieldsInOrder := [...]string{"main", "counterpart", "supplier", "date", "description", "operationType", "totalTransactionValue"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -43043,13 +40209,6 @@ func (ec *executionContext) unmarshalInputPurchaseRegistrationInput(ctx context.
 				return it, err
 			}
 			it.Counterpart = data
-		case "cash":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cash"))
-			data, err := ec.unmarshalOEntryTreasuryInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Cash = data
 		case "supplier":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("supplier"))
 			data, err := ec.unmarshalNEntrySupplierInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntrySupplierInput(ctx, v)
@@ -43078,13 +40237,6 @@ func (ec *executionContext) unmarshalInputPurchaseRegistrationInput(ctx context.
 				return it, err
 			}
 			it.OperationType = data
-		case "products":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("products"))
-			data, err := ec.unmarshalNEntryProductInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Products = data
 		case "totalTransactionValue":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalTransactionValue"))
 			data, err := ec.unmarshalNFloat2float64(ctx, v)
@@ -43839,7 +40991,7 @@ func (ec *executionContext) unmarshalInputSalesRegistrationInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"main", "counterpart", "cash", "customer", "date", "description", "operationType", "products", "totalTransactionValue", "issueInvoice", "invoice"}
+	fieldsInOrder := [...]string{"main", "counterpart", "customer", "date", "description", "operationType", "totalTransactionValue", "issueInvoice", "invoice"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -43860,13 +41012,6 @@ func (ec *executionContext) unmarshalInputSalesRegistrationInput(ctx context.Con
 				return it, err
 			}
 			it.Counterpart = data
-		case "cash":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cash"))
-			data, err := ec.unmarshalOEntryTreasuryInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Cash = data
 		case "customer":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("customer"))
 			data, err := ec.unmarshalNEntryCustomerInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryCustomerInput(ctx, v)
@@ -43895,13 +41040,6 @@ func (ec *executionContext) unmarshalInputSalesRegistrationInput(ctx context.Con
 				return it, err
 			}
 			it.OperationType = data
-		case "products":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("products"))
-			data, err := ec.unmarshalNEntryProductInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Products = data
 		case "totalTransactionValue":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("totalTransactionValue"))
 			data, err := ec.unmarshalNFloat2float64(ctx, v)
@@ -45333,7 +42471,7 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "accountnumber", "accountnumberNEQ", "accountnumberIn", "accountnumberNotIn", "accountnumberGT", "accountnumberGTE", "accountnumberLT", "accountnumberLTE", "accountnumberContains", "accountnumberHasPrefix", "accountnumberHasSuffix", "accountnumberIsNil", "accountnumberNotNil", "accountnumberEqualFold", "accountnumberContainsFold", "balance", "balanceNEQ", "balanceIn", "balanceNotIn", "balanceGT", "balanceGTE", "balanceLT", "balanceLTE", "bankname", "banknameNEQ", "banknameIn", "banknameNotIn", "banknameGT", "banknameGTE", "banknameLT", "banknameLTE", "banknameContains", "banknameHasPrefix", "banknameHasSuffix", "banknameIsNil", "banknameNotNil", "banknameEqualFold", "banknameContainsFold", "currency", "currencyNEQ", "currencyIn", "currencyNotIn", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "iban", "ibanNEQ", "ibanIn", "ibanNotIn", "ibanGT", "ibanGTE", "ibanLT", "ibanLTE", "ibanContains", "ibanHasPrefix", "ibanHasSuffix", "ibanIsNil", "ibanNotNil", "ibanEqualFold", "ibanContainsFold", "isdefault", "isdefaultNEQ", "isdefaultIsNil", "isdefaultNotNil", "ismainaccount", "ismainaccountNEQ", "ismainaccountIsNil", "ismainaccountNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "swiftcode", "swiftcodeNEQ", "swiftcodeIn", "swiftcodeNotIn", "swiftcodeGT", "swiftcodeGTE", "swiftcodeLT", "swiftcodeLTE", "swiftcodeContains", "swiftcodeHasPrefix", "swiftcodeHasSuffix", "swiftcodeIsNil", "swiftcodeNotNil", "swiftcodeEqualFold", "swiftcodeContainsFold", "hasCompany", "hasCompanyWith", "hasCashMovements", "hasCashMovementsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "accountnumber", "accountnumberNEQ", "accountnumberIn", "accountnumberNotIn", "accountnumberGT", "accountnumberGTE", "accountnumberLT", "accountnumberLTE", "accountnumberContains", "accountnumberHasPrefix", "accountnumberHasSuffix", "accountnumberIsNil", "accountnumberNotNil", "accountnumberEqualFold", "accountnumberContainsFold", "balance", "balanceNEQ", "balanceIn", "balanceNotIn", "balanceGT", "balanceGTE", "balanceLT", "balanceLTE", "bankname", "banknameNEQ", "banknameIn", "banknameNotIn", "banknameGT", "banknameGTE", "banknameLT", "banknameLTE", "banknameContains", "banknameHasPrefix", "banknameHasSuffix", "banknameIsNil", "banknameNotNil", "banknameEqualFold", "banknameContainsFold", "currency", "currencyNEQ", "currencyIn", "currencyNotIn", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "iban", "ibanNEQ", "ibanIn", "ibanNotIn", "ibanGT", "ibanGTE", "ibanLT", "ibanLTE", "ibanContains", "ibanHasPrefix", "ibanHasSuffix", "ibanIsNil", "ibanNotNil", "ibanEqualFold", "ibanContainsFold", "isdefault", "isdefaultNEQ", "isdefaultIsNil", "isdefaultNotNil", "ismainaccount", "ismainaccountNEQ", "ismainaccountIsNil", "ismainaccountNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "swiftcode", "swiftcodeNEQ", "swiftcodeIn", "swiftcodeNotIn", "swiftcodeGT", "swiftcodeGTE", "swiftcodeLT", "swiftcodeLTE", "swiftcodeContains", "swiftcodeHasPrefix", "swiftcodeHasSuffix", "swiftcodeIsNil", "swiftcodeNotNil", "swiftcodeEqualFold", "swiftcodeContainsFold", "hasCompany", "hasCompanyWith", "hasAccountingEntries", "hasAccountingEntriesWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -46397,20 +43535,20 @@ func (ec *executionContext) unmarshalInputTreasuryWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasCompanyWith = data
-		case "hasCashMovements":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCashMovements"))
+		case "hasAccountingEntries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntries"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasCashMovements = data
-		case "hasCashMovementsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCashMovementsWith"))
-			data, err := ec.unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx, v)
+			it.HasAccountingEntries = data
+		case "hasAccountingEntriesWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntriesWith"))
+			data, err := ec.unmarshalOAccountingEntryWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐAccountingEntryWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasCashMovementsWith = data
+			it.HasAccountingEntriesWith = data
 		}
 	}
 
@@ -46424,7 +43562,7 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "companyID", "clearCompany", "userID", "clearUser"}
+	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "clearQuantity", "companyID", "clearCompany", "userID", "clearUser", "productID", "clearProduct", "treasuryID", "clearTreasury"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -46529,6 +43667,20 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.Reversed = data
+		case "quantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Quantity = data
+		case "clearQuantity":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearQuantity"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearQuantity = data
 		case "companyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -46557,68 +43709,20 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.ClearUser = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputUpdateCashMovementInput(ctx context.Context, obj interface{}) (generated.UpdateCashMovementInput, error) {
-	var it generated.UpdateCashMovementInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "amount", "date", "entrygroup", "treasuryID", "clearTreasury"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+		case "productID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
+			it.ProductID = data
+		case "clearProduct":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProduct"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearDeletedAt = data
-		case "amount":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("amount"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Amount = data
-		case "date":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Date = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
+			it.ClearProduct = data
 		case "treasuryID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("treasuryID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -47768,7 +44872,7 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "clearCompany", "addPictureIDs", "removePictureIDs", "clearPictures", "addProductMovementIDs", "removeProductMovementIDs", "clearProductMovements"}
+	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "clearCompany", "addPictureIDs", "removePictureIDs", "clearPictures", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -47894,117 +44998,27 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 				return it, err
 			}
 			it.ClearPictures = data
-		case "addProductMovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addProductMovementIDs"))
+		case "addAccountingEntryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAccountingEntryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.AddProductMovementIDs = data
-		case "removeProductMovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeProductMovementIDs"))
+			it.AddAccountingEntryIDs = data
+		case "removeAccountingEntryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAccountingEntryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.RemoveProductMovementIDs = data
-		case "clearProductMovements":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProductMovements"))
+			it.RemoveAccountingEntryIDs = data
+		case "clearAccountingEntries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccountingEntries"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearProductMovements = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputUpdateProductMovementInput(ctx context.Context, obj interface{}) (generated.UpdateProductMovementInput, error) {
-	var it generated.UpdateProductMovementInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "entrygroup", "averagecost", "unitcost", "price", "quantity", "productID", "clearProduct"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
-		case "entrygroup":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EntryGroup = data
-		case "averagecost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("averagecost"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AverageCost = data
-		case "unitcost":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("unitcost"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UnitCost = data
-		case "price":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("price"))
-			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Price = data
-		case "quantity":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("quantity"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Quantity = data
-		case "productID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ProductID = data
-		case "clearProduct":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearProduct"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearProduct = data
+			it.ClearAccountingEntries = data
 		}
 	}
 
@@ -48261,7 +45275,7 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "accountnumber", "clearAccountNumber", "balance", "bankname", "clearBankName", "currency", "description", "clearDescription", "iban", "clearIban", "isdefault", "clearIsDefault", "ismainaccount", "clearIsMainAccount", "name", "category", "swiftcode", "clearSwiftCode", "companyID", "clearCompany", "addCashMovementIDs", "removeCashMovementIDs", "clearCashMovements"}
+	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "accountnumber", "clearAccountNumber", "balance", "bankname", "clearBankName", "currency", "description", "clearDescription", "iban", "clearIban", "isdefault", "clearIsDefault", "ismainaccount", "clearIsMainAccount", "name", "category", "swiftcode", "clearSwiftCode", "companyID", "clearCompany", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -48429,27 +45443,27 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearCompany = data
-		case "addCashMovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addCashMovementIDs"))
+		case "addAccountingEntryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAccountingEntryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.AddCashMovementIDs = data
-		case "removeCashMovementIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeCashMovementIDs"))
+			it.AddAccountingEntryIDs = data
+		case "removeAccountingEntryIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAccountingEntryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.RemoveCashMovementIDs = data
-		case "clearCashMovements":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCashMovements"))
+			it.RemoveAccountingEntryIDs = data
+		case "clearAccountingEntries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAccountingEntries"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearCashMovements = data
+			it.ClearAccountingEntries = data
 		}
 	}
 
@@ -52562,11 +49576,6 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._AccountingEntry(ctx, sel, obj)
-	case *generated.CashMovement:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._CashMovement(ctx, sel, obj)
 	case *generated.Company:
 		if obj == nil {
 			return graphql.Null
@@ -52597,11 +49606,6 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._Product(ctx, sel, obj)
-	case *generated.ProductMovement:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._ProductMovement(ctx, sel, obj)
 	case *generated.Receivable:
 		if obj == nil {
 			return graphql.Null
@@ -52739,6 +49743,8 @@ func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.Select
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "quantity":
+			out.Values[i] = ec._AccountingEntry_quantity(ctx, field, obj)
 		case "company":
 			field := field
 
@@ -52782,6 +49788,72 @@ func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.Select
 					}
 				}()
 				res = ec._AccountingEntry_user(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "product":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AccountingEntry_product(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "treasury":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._AccountingEntry_treasury(ctx, field, obj)
 				return res
 			}
 
@@ -53012,192 +50084,6 @@ func (ec *executionContext) _BalanceSheetOuput(ctx context.Context, sel ast.Sele
 			}
 		case "isProvisional":
 			out.Values[i] = ec._BalanceSheetOuput_isProvisional(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var cashMovementImplementors = []string{"CashMovement", "Node"}
-
-func (ec *executionContext) _CashMovement(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovement) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CashMovement")
-		case "id":
-			out.Values[i] = ec._CashMovement_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "createdat":
-			out.Values[i] = ec._CashMovement_createdat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "updatedat":
-			out.Values[i] = ec._CashMovement_updatedat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "deletedat":
-			out.Values[i] = ec._CashMovement_deletedat(ctx, field, obj)
-		case "amount":
-			out.Values[i] = ec._CashMovement_amount(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "date":
-			out.Values[i] = ec._CashMovement_date(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "entrygroup":
-			out.Values[i] = ec._CashMovement_entrygroup(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "treasury":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._CashMovement_treasury(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var cashMovementConnectionImplementors = []string{"CashMovementConnection"}
-
-func (ec *executionContext) _CashMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovementConnection) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementConnectionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CashMovementConnection")
-		case "edges":
-			out.Values[i] = ec._CashMovementConnection_edges(ctx, field, obj)
-		case "pageInfo":
-			out.Values[i] = ec._CashMovementConnection_pageInfo(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "totalCount":
-			out.Values[i] = ec._CashMovementConnection_totalCount(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var cashMovementEdgeImplementors = []string{"CashMovementEdge"}
-
-func (ec *executionContext) _CashMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.CashMovementEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cashMovementEdgeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CashMovementEdge")
-		case "node":
-			out.Values[i] = ec._CashMovementEdge_node(ctx, field, obj)
-		case "cursor":
-			out.Values[i] = ec._CashMovementEdge_cursor(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -55511,7 +52397,7 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "productmovements":
+		case "accountingentries":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -55520,7 +52406,7 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Product_productmovements(ctx, field, obj)
+				res = ec._Product_accountingentries(ctx, field, obj)
 				return res
 			}
 
@@ -55544,202 +52430,6 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var productMovementImplementors = []string{"ProductMovement", "Node"}
-
-func (ec *executionContext) _ProductMovement(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovement) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ProductMovement")
-		case "id":
-			out.Values[i] = ec._ProductMovement_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "createdat":
-			out.Values[i] = ec._ProductMovement_createdat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "updatedat":
-			out.Values[i] = ec._ProductMovement_updatedat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "deletedat":
-			out.Values[i] = ec._ProductMovement_deletedat(ctx, field, obj)
-		case "entrygroup":
-			out.Values[i] = ec._ProductMovement_entrygroup(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "averagecost":
-			out.Values[i] = ec._ProductMovement_averagecost(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "unitcost":
-			out.Values[i] = ec._ProductMovement_unitcost(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "price":
-			out.Values[i] = ec._ProductMovement_price(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "quantity":
-			out.Values[i] = ec._ProductMovement_quantity(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "product":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._ProductMovement_product(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var productMovementConnectionImplementors = []string{"ProductMovementConnection"}
-
-func (ec *executionContext) _ProductMovementConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovementConnection) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementConnectionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ProductMovementConnection")
-		case "edges":
-			out.Values[i] = ec._ProductMovementConnection_edges(ctx, field, obj)
-		case "pageInfo":
-			out.Values[i] = ec._ProductMovementConnection_pageInfo(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "totalCount":
-			out.Values[i] = ec._ProductMovementConnection_totalCount(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var productMovementEdgeImplementors = []string{"ProductMovementEdge"}
-
-func (ec *executionContext) _ProductMovementEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.ProductMovementEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, productMovementEdgeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ProductMovementEdge")
-		case "node":
-			out.Values[i] = ec._ProductMovementEdge_node(ctx, field, obj)
-		case "cursor":
-			out.Values[i] = ec._ProductMovementEdge_cursor(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -55845,28 +52535,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "cashMovements":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_cashMovements(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "files":
 			field := field
 
@@ -55877,28 +52545,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_files(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "productMovements":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_productMovements(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -57266,7 +53912,7 @@ func (ec *executionContext) _Treasury(ctx context.Context, sel ast.SelectionSet,
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "cashmovements":
+		case "accountingentries":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -57275,7 +53921,7 @@ func (ec *executionContext) _Treasury(ctx context.Context, sel ast.SelectionSet,
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Treasury_cashmovements(ctx, field, obj)
+				res = ec._Treasury_accountingentries(ctx, field, obj)
 				return res
 			}
 
@@ -58877,35 +55523,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovement) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._CashMovement(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNCashMovementConnection2mazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v generated.CashMovementConnection) graphql.Marshaler {
-	return ec._CashMovementConnection(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNCashMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐCashMovementConnection(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovementConnection) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._CashMovementConnection(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*generated.CashMovementWhereInput, error) {
-	res, err := ec.unmarshalInputCashMovementWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalNCompany2mazzaᚋentᚋgeneratedᚐCompany(ctx context.Context, sel ast.SelectionSet, v generated.Company) graphql.Marshaler {
 	return ec._Company(ctx, sel, &v)
 }
@@ -59298,35 +55915,8 @@ func (ec *executionContext) unmarshalNEntryItem2ᚖmazzaᚋmazzaᚋgeneratedᚋm
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNEntryProductInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInputᚄ(ctx context.Context, v interface{}) ([]*model.EntryProductInput, error) {
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*model.EntryProductInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNEntryProductInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalNEntryProductInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryProductInput(ctx context.Context, v interface{}) (*model.EntryProductInput, error) {
-	res, err := ec.unmarshalInputEntryProductInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) unmarshalNEntrySupplierInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntrySupplierInput(ctx context.Context, v interface{}) (*model.EntrySupplierInput, error) {
 	res, err := ec.unmarshalInputEntrySupplierInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNEntryTreasuryInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInput(ctx context.Context, v interface{}) (*model.EntryTreasuryInput, error) {
-	res, err := ec.unmarshalInputEntryTreasuryInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -59766,35 +56356,6 @@ func (ec *executionContext) unmarshalNProductCategory2mazzaᚋentᚋgeneratedᚋ
 
 func (ec *executionContext) marshalNProductCategory2mazzaᚋentᚋgeneratedᚋproductᚐCategory(ctx context.Context, sel ast.SelectionSet, v product.Category) graphql.Marshaler {
 	return v
-}
-
-func (ec *executionContext) marshalNProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovement) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._ProductMovement(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNProductMovementConnection2mazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v generated.ProductMovementConnection) graphql.Marshaler {
-	return ec._ProductMovementConnection(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNProductMovementConnection2ᚖmazzaᚋentᚋgeneratedᚐProductMovementConnection(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovementConnection) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._ProductMovementConnection(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*generated.ProductMovementWhereInput, error) {
-	res, err := ec.unmarshalInputProductMovementWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNProductOrderField2ᚖmazzaᚋentᚋgeneratedᚐProductOrderField(ctx context.Context, v interface{}) (*generated.ProductOrderField, error) {
@@ -61488,136 +58049,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOCashMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.CashMovement) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalOCashMovement2ᚖmazzaᚋentᚋgeneratedᚐCashMovement(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovement) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._CashMovement(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOCashMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.CashMovementEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOCashMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
-func (ec *executionContext) marshalOCashMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐCashMovementEdge(ctx context.Context, sel ast.SelectionSet, v *generated.CashMovementEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._CashMovementEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.CashMovementWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*generated.CashMovementWhereInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalOCashMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐCashMovementWhereInput(ctx context.Context, v interface{}) (*generated.CashMovementWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputCashMovementWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalOCompany2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Company) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -62038,26 +58469,6 @@ func (ec *executionContext) unmarshalOEmployeeWhereInput2ᚖmazzaᚋentᚋgenera
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOEntryTreasuryInput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInputᚄ(ctx context.Context, v interface{}) ([]*model.EntryTreasuryInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*model.EntryTreasuryInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNEntryTreasuryInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐEntryTreasuryInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
 func (ec *executionContext) marshalOFile2ᚕᚖmazzaᚋentᚋgeneratedᚐFileᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.File) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -62391,6 +58802,16 @@ func (ec *executionContext) marshalOID2ᚖint(ctx context.Context, sel ast.Selec
 		return graphql.Null
 	}
 	res := graphql.MarshalIntID(*v)
+	return res
+}
+
+func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
 	return res
 }
 
@@ -62820,136 +59241,6 @@ func (ec *executionContext) marshalOProductCategory2ᚖmazzaᚋentᚋgenerated�
 		return graphql.Null
 	}
 	return v
-}
-
-func (ec *executionContext) marshalOProductMovement2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.ProductMovement) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalOProductMovement2ᚖmazzaᚋentᚋgeneratedᚐProductMovement(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovement) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._ProductMovement(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOProductMovementEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.ProductMovementEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOProductMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
-func (ec *executionContext) marshalOProductMovementEdge2ᚖmazzaᚋentᚋgeneratedᚐProductMovementEdge(ctx context.Context, sel ast.SelectionSet, v *generated.ProductMovementEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._ProductMovementEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.ProductMovementWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*generated.ProductMovementWhereInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalOProductMovementWhereInput2ᚖmazzaᚋentᚋgeneratedᚐProductMovementWhereInput(ctx context.Context, v interface{}) (*generated.ProductMovementWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputProductMovementWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOProductWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProductWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.ProductWhereInput, error) {
