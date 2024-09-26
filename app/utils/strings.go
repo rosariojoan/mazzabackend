@@ -21,3 +21,11 @@ func StartsWith(value string, prefixes []string) bool {
 	}
 	return false
 }
+
+// Check if the given pointer is nill. If yes, return the placeholder, otherwise, return the value of the variable.
+func GetValue(value *string, placeholder string) string {
+	if value == nil {
+		return placeholder
+	}
+	return *value
+}

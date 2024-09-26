@@ -25,8 +25,8 @@ type ProductMovementQuery struct {
 	predicates  []predicate.ProductMovement
 	withProduct *ProductQuery
 	withFKs     bool
-	modifiers   []func(*sql.Selector)
 	loadTotal   []func(context.Context, []*ProductMovement) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (pmq *ProductMovementQuery) Clone() *ProductMovementQuery {
 		predicates:  append([]predicate.ProductMovement{}, pmq.predicates...),
 		withProduct: pmq.withProduct.Clone(),
 		// clone intermediate query.
-		sql:  pmq.sql.Clone(),
-		path: pmq.path,
+		sql:       pmq.sql.Clone(),
+		path:      pmq.path,
+		modifiers: append([]func(*sql.Selector){}, pmq.modifiers...),
 	}
 }
 
@@ -519,6 +520,9 @@ func (pmq *ProductMovementQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pmq.ctx.Unique != nil && *pmq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range pmq.modifiers {
+		m(selector)
+	}
 	for _, p := range pmq.predicates {
 		p(selector)
 	}
@@ -534,6 +538,12 @@ func (pmq *ProductMovementQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pmq *ProductMovementQuery) Modify(modifiers ...func(s *sql.Selector)) *ProductMovementSelect {
+	pmq.modifiers = append(pmq.modifiers, modifiers...)
+	return pmq.Select()
 }
 
 // ProductMovementGroupBy is the group-by builder for ProductMovement entities.
@@ -624,4 +634,10 @@ func (pms *ProductMovementSelect) sqlScan(ctx context.Context, root *ProductMove
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pms *ProductMovementSelect) Modify(modifiers ...func(s *sql.Selector)) *ProductMovementSelect {
+	pms.modifiers = append(pms.modifiers, modifiers...)
+	return pms
 }

@@ -26,8 +26,8 @@ func (Receivable) Fields() []ent.Field {
 		field.Time("date"),
 		field.Float("outstandingBalance"),
 		field.Float("totalTransaction"),
-		field.Int("daysDue").NonNegative(),
-		field.Enum("status").Values("paid", "unpaid", "doubtful", "default"),
+		field.Int("daysDue").NonNegative().Annotations(entgql.OrderField("DAYSDUE")),
+		field.Enum("status").Values("paid", "unpaid", "doubtful", "default").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
@@ -44,5 +44,6 @@ func (Receivable) Annotations() []schema.Annotation {
 		entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+		entgql.MultiOrder(),
 	}
 }

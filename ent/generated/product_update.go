@@ -21,8 +21,9 @@ import (
 // ProductUpdate is the builder for updating Product entities.
 type ProductUpdate struct {
 	config
-	hooks    []Hook
-	mutation *ProductMutation
+	hooks     []Hook
+	mutation  *ProductMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the ProductUpdate builder.
@@ -389,6 +390,12 @@ func (pu *ProductUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (pu *ProductUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProductUpdate {
+	pu.modifiers = append(pu.modifiers, modifiers...)
+	return pu
+}
+
 func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
@@ -568,6 +575,7 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{product.Label}
@@ -583,9 +591,10 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // ProductUpdateOne is the builder for updating a single Product entity.
 type ProductUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *ProductMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *ProductMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -959,6 +968,12 @@ func (puo *ProductUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (puo *ProductUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProductUpdateOne {
+	puo.modifiers = append(puo.modifiers, modifiers...)
+	return puo
+}
+
 func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err error) {
 	if err := puo.check(); err != nil {
 		return _node, err
@@ -1155,6 +1170,7 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(puo.modifiers...)
 	_node = &Product{config: puo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

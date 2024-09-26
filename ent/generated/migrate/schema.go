@@ -137,8 +137,8 @@ var (
 		{Name: "address", Type: field.TypeString},
 		{Name: "city", Type: field.TypeString},
 		{Name: "country", Type: field.TypeString},
-		{Name: "description", Type: field.TypeString},
-		{Name: "email", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "is_default", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "name", Type: field.TypeString},
 		{Name: "phone", Type: field.TypeString},
@@ -221,6 +221,7 @@ var (
 		{Name: "category", Type: field.TypeEnum, Enums: []string{"INVOICE", "SALESQUOTATION"}},
 		{Name: "extension", Type: field.TypeString},
 		{Name: "size", Type: field.TypeString},
+		{Name: "uri", Type: field.TypeString},
 		{Name: "url", Type: field.TypeString, Unique: true},
 		{Name: "description", Type: field.TypeString},
 		{Name: "company_files", Type: field.TypeInt, Nullable: true},
@@ -234,13 +235,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "files_companies_files",
-				Columns:    []*schema.Column{FilesColumns[9]},
+				Columns:    []*schema.Column{FilesColumns[10]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "files_products_pictures",
-				Columns:    []*schema.Column{FilesColumns[10]},
+				Columns:    []*schema.Column{FilesColumns[11]},
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -287,7 +288,7 @@ var (
 		{Name: "price", Type: field.TypeInt, Default: 0},
 		{Name: "sku", Type: field.TypeString},
 		{Name: "stock", Type: field.TypeFloat64, Default: 0},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"merchandise", "other", "service"}},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"MERCHANDISE", "OTHER", "SERVICE"}},
 		{Name: "unit_cost", Type: field.TypeFloat64},
 		{Name: "company_products", Type: field.TypeInt, Nullable: true},
 	}
@@ -302,6 +303,18 @@ var (
 				Columns:    []*schema.Column{ProductsColumns[13]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "product_name_company_products",
+				Unique:  true,
+				Columns: []*schema.Column{ProductsColumns[7], ProductsColumns[13]},
+			},
+			{
+				Name:    "product_sku_company_products",
+				Unique:  true,
+				Columns: []*schema.Column{ProductsColumns[9], ProductsColumns[13]},
 			},
 		},
 	}
@@ -447,7 +460,7 @@ var (
 		{Name: "is_default", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "is_main_account", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "name", Type: field.TypeString},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"deposit", "cash"}},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"DEPOSIT", "CASH"}},
 		{Name: "swift_code", Type: field.TypeString, Nullable: true},
 		{Name: "company_treasuries", Type: field.TypeInt, Nullable: true},
 	}

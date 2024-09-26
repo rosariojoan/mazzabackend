@@ -2,28 +2,35 @@ package inits
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/migrate"
 
 	"entgo.io/ent/dialect"
-	_ "github.com/lib/pq"
+	entsql "entgo.io/ent/dialect/sql"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-var DB *ent.Client
+var Client *ent.Client
 
 /* Instantiate DB and run auto migration */
 func InitDB(ctx context.Context) {
-	db, err := ent.Open(dialect.Postgres, "host=localhost port=5432 user=arafate dbname=mazza2 sslmode=disable")
+	// db, err := ent.Open(dialect.Postgres, "host=localhost port=5432 user=arafate dbname=mazza2 sslmode=disable")
+	// os.Getenv("DATABASE_URL")
+	// Open new connection
+	databaseUrl := "postgres://arafate:@localhost:5432/mazza2"
+	db, err := sql.Open("pgx", databaseUrl)
 	if err != nil {
 		log.Fatalf("failed opening connection to the db: %v", err)
 	}
-	// defer db.Close()
-
+	
+	// Create an ent.Driver from `db`.
+	drv := entsql.OpenDB(dialect.Postgres, db)
+	Client = ent.NewClient(ent.Driver(drv))
+	
 	// Auto migration
-	if err := db.Schema.Create(ctx, migrate.WithGlobalUniqueID(true)); err != nil {
+	if err := Client.Schema.Create(ctx, migrate.WithGlobalUniqueID(true));err != nil {
 		log.Fatalf("Failed creating schema resources: %v", err)
 	}
-
-	DB = db
 }

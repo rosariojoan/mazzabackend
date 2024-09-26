@@ -23,7 +23,7 @@ const defaultPort = "8080"
 var ctx = context.Background()
 
 func main() {
-	defer inits.DB.Close()
+	defer inits.Client.Close()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -59,8 +59,8 @@ func init() {
 
 // Defining the Graphql handler
 func graphqlHandler() gin.HandlerFunc {
-	srv := handler.NewDefaultServer(mazza.NewSchema(inits.DB))
-	srv.Use(entgql.Transactioner{TxOpener: inits.DB})
+	srv := handler.NewDefaultServer(mazza.NewSchema(inits.Client))
+	srv.Use(entgql.Transactioner{TxOpener: inits.Client})
 
 	return func(c *gin.Context) {
 		srv.ServeHTTP(c.Writer, c.Request)

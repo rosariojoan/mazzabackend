@@ -38,14 +38,14 @@ func PurchaseRegistration(ctx context.Context, client *ent.Client, input model.P
 
 	country, lang := "mz", "pt"
 	currentUser, currentCompany, _ := u.GetSession(&ctx)
-	accountNames, err := utils.LoadAccountNames(&country, &lang)
+	accountNames, err := utils.LoadAccountNames(country, lang)
 	if err != nil {
 		return "", err
 	}
 
 	var entryCounter = entryPkg.GetEntryCounter(ctx, client, currentCompany.ID)
 
-	// Check if the purchase was paid partially or full via cash (or bank transfer)
+	// Check if the purchase was paid partially or fully paid via cash (or bank transfer)
 	var retrievedTreasury = []*ent.Treasury{}
 	var treasuryMovements []*ent.CashMovementCreate
 
@@ -79,15 +79,15 @@ func PurchaseRegistration(ctx context.Context, client *ent.Client, input model.P
 					}
 
 					retrievedTreasury[i].Balance += cashInput.Amount
-					var createObj ent.CashMovementCreate
-					createObj.SetInput(ent.CreateCashMovementInput{
-						TreasuryID: &cashInput.ID,
-						Amount:     cashInput.Amount,
-						Date:       input.Date,
-						EntryGroup: entryCounter.Group,
-					})
+					createObj := client.CashMovement.Create().
+						SetInput(ent.CreateCashMovementInput{
+							TreasuryID: &cashInput.ID,
+							Amount:     cashInput.Amount,
+							Date:       input.Date,
+							EntryGroup: entryCounter.Group,
+						})
 
-					treasuryMovements = append(treasuryMovements, &createObj)
+					treasuryMovements = append(treasuryMovements, createObj)
 					break
 				}
 			}
@@ -214,33 +214,32 @@ func PurchaseRegistration(ctx context.Context, client *ent.Client, input model.P
 	// Sort entries: first debit then credit
 	entries = append(debitEntries, creditEntries...)
 	var accountingEntries []*ent.AccountingEntryCreate
-	fmt.Println(" - ## ok")
+
 	for _, entry := range entries {
 		if entry.Amount == 0 {
 			continue
 		}
 		entryCounter.Number += 1
 
-		var newEntry = client.AccountingEntry.Create()
-		fmt.Println("!! ok g:", entryCounter.Group, " n:", entryCounter.Number)
-		newEntry.SetInput(ent.CreateAccountingEntryInput{
-			CompanyID:   &currentCompany.ID,
-			UserID:      &currentUser.ID,
-			Number:      entryCounter.Number,
-			Group:       entryCounter.Group,
-			Date:        &input.Date,
-			Account:     entry.Account,
-			Label:       accountNames[entry.Account],
-			Amount:      entry.Amount,
-			Description: *input.Description,
-			AccountType: accountingentry.AccountType(entry.Type),
-			IsDebit:     entry.IsDebit,
-			// Files:       files,
-		})
+		var newEntry = client.AccountingEntry.Create().
+			SetInput(ent.CreateAccountingEntryInput{
+				CompanyID:   &currentCompany.ID,
+				UserID:      &currentUser.ID,
+				Number:      entryCounter.Number,
+				Group:       entryCounter.Group,
+				Date:        &input.Date,
+				Account:     entry.Account,
+				Label:       accountNames[entry.Account],
+				Amount:      entry.Amount,
+				Description: *input.Description,
+				AccountType: accountingentry.AccountType(entry.Type),
+				IsDebit:     entry.IsDebit,
+				// Files:       files,
+			})
 
 		accountingEntries = append(accountingEntries, newEntry)
 	}
-	fmt.Println("*** ok")
+
 	// Save changes:
 	// 1. Accounting entries
 	_, err = client.AccountingEntry.CreateBulk(accountingEntries...).Save(ctx)
@@ -270,22 +269,14 @@ func PurchaseRegistration(ctx context.Context, client *ent.Client, input model.P
 		return "", err
 	}
 
-	// 5. Inventory stock
-	for _, product := range retrievedProducts {
-		_, err := product.Update().Save(ctx)
-		if err != nil {
-			return "", err
-		}
-	}
-
 	if len(input.Cash) > 0 {
-		// 6. Cash and cash equivalent movements
+		// 5. Cash and cash equivalent movements
 		_, err := client.CashMovement.CreateBulk(treasuryMovements...).Save(ctx)
 		if err != nil {
 			return "", err
 		}
 
-		// 7. Cash and cash equivalent (treasury) balances
+		// 6. Cash and cash equivalent (treasury) balances
 		for _, treasury := range retrievedTreasury {
 			_, err := treasury.Update().Save(ctx)
 			if err != nil {
@@ -294,7 +285,7 @@ func PurchaseRegistration(ctx context.Context, client *ent.Client, input model.P
 		}
 	}
 
-	// 8. Company: last entry date, last invoice number
+	// 7. Company: last entry date, last invoice number
 	_, err = currentCompany.Update().SetLastEntryDate(input.Date).Save(ctx)
 	if err != nil {
 		return "", err

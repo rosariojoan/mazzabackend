@@ -25,8 +25,8 @@ type ReceivableQuery struct {
 	predicates   []predicate.Receivable
 	withCustomer *CustomerQuery
 	withFKs      bool
-	modifiers    []func(*sql.Selector)
 	loadTotal    []func(context.Context, []*Receivable) error
+	modifiers    []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (rq *ReceivableQuery) Clone() *ReceivableQuery {
 		predicates:   append([]predicate.Receivable{}, rq.predicates...),
 		withCustomer: rq.withCustomer.Clone(),
 		// clone intermediate query.
-		sql:  rq.sql.Clone(),
-		path: rq.path,
+		sql:       rq.sql.Clone(),
+		path:      rq.path,
+		modifiers: append([]func(*sql.Selector){}, rq.modifiers...),
 	}
 }
 
@@ -519,6 +520,9 @@ func (rq *ReceivableQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if rq.ctx.Unique != nil && *rq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range rq.modifiers {
+		m(selector)
+	}
 	for _, p := range rq.predicates {
 		p(selector)
 	}
@@ -534,6 +538,12 @@ func (rq *ReceivableQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (rq *ReceivableQuery) Modify(modifiers ...func(s *sql.Selector)) *ReceivableSelect {
+	rq.modifiers = append(rq.modifiers, modifiers...)
+	return rq.Select()
 }
 
 // ReceivableGroupBy is the group-by builder for Receivable entities.
@@ -624,4 +634,10 @@ func (rs *ReceivableSelect) sqlScan(ctx context.Context, root *ReceivableQuery, 
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (rs *ReceivableSelect) Modify(modifiers ...func(s *sql.Selector)) *ReceivableSelect {
+	rs.modifiers = append(rs.modifiers, modifiers...)
+	return rs
 }

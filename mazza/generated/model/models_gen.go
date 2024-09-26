@@ -11,6 +11,34 @@ import (
 	"time"
 )
 
+type Assets struct {
+	CurrentAssets      []*ReportRowItem `json:"currentAssets"`
+	TotalCurrentAssets float64          `json:"totalCurrentAssets"`
+	FixedAssets        []*ReportRowItem `json:"fixedAssets"`
+	TotalFixedAssets   float64          `json:"totalFixedAssets"`
+	TotalAssets        float64          `json:"totalAssets"`
+}
+
+type BalanceSheetOuput struct {
+	Assets                  *Assets      `json:"assets"`
+	Liabilities             *Liabilities `json:"liabilities"`
+	Equity                  *Equity      `json:"equity"`
+	TotalLiabilityAndEquity float64      `json:"totalLiabilityAndEquity"`
+	Period                  *Period      `json:"period"`
+	IsProvisional           bool         `json:"isProvisional"`
+}
+
+type CustomerAggregationOutput struct {
+	Company *int `json:"company,omitempty"`
+	Count   *int `json:"count,omitempty"`
+}
+
+type EntryCustomerInput struct {
+	ID      int     `json:"id"`
+	Amount  float64 `json:"amount"`
+	DaysDue int     `json:"daysDue"`
+}
+
 type EntryItem struct {
 	Account     string                      `json:"account"`
 	AccountType accountingentry.AccountType `json:"accountType"`
@@ -36,13 +64,42 @@ type EntryTreasuryInput struct {
 	Amount float64 `json:"amount"`
 }
 
+type Equity struct {
+	Equity      []*ReportRowItem `json:"equity"`
+	TotalEquity float64          `json:"totalEquity"`
+}
+
+type FileDetailsOutput struct {
+	Message string      `json:"message"`
+	File    *FileOutput `json:"file,omitempty"`
+}
+
+type FileOutput struct {
+	Encoding string `json:"encoding"`
+	Kind     string `json:"kind"`
+	Name     string `json:"name"`
+	Data     string `json:"data"`
+}
+
+type IncomeStatementOuput struct {
+	Revenues          []*ReportRowItem `json:"revenues"`
+	NetRevenue        float64          `json:"netRevenue"`
+	Expenses          []*ReportRowItem `json:"expenses"`
+	TotalExpenses     float64          `json:"totalExpenses"`
+	EarningsBeforeTax float64          `json:"earningsBeforeTax"`
+	TaxExpense        float64          `json:"taxExpense"`
+	NetIncome         float64          `json:"netIncome"`
+	Period            *Period          `json:"period"`
+	IsProvisional     bool             `json:"isProvisional"`
+}
+
 type Invoice struct {
 	Date            string           `json:"date"`
 	Filename        string           `json:"filename"`
 	Keywords        string           `json:"keywords"`
 	Number          string           `json:"number"`
 	PaymentDetails  *PaymentDetails  `json:"paymentDetails"`
-	Title           string           `json:"title"`
+	Title           *string          `json:"title,omitempty"`
 	IssuerDetails   *InvoiceIssuer   `json:"issuerDetails"`
 	CustomerDetails *InvoiceCustomer `json:"customerDetails"`
 	Body            [][]string       `json:"body"`
@@ -50,23 +107,23 @@ type Invoice struct {
 }
 
 type InvoiceCustomer struct {
-	Name    string  `json:"name"`
-	TaxID   *string `json:"taxID,omitempty"`
-	Address *string `json:"address,omitempty"`
-	City    *string `json:"city,omitempty"`
-	Country *string `json:"country,omitempty"`
-	Phone   *string `json:"phone,omitempty"`
-	Email   *string `json:"email,omitempty"`
+	Name    string `json:"name"`
+	TaxID   string `json:"taxID"`
+	Address string `json:"address"`
+	City    string `json:"city"`
+	Country string `json:"country"`
+	Phone   string `json:"phone"`
+	Email   string `json:"email"`
 }
 
 type InvoiceIssuer struct {
-	Name    string  `json:"name"`
-	TaxID   string  `json:"taxID"`
-	Address string  `json:"address"`
-	City    *string `json:"city,omitempty"`
-	Country *string `json:"country,omitempty"`
-	Phone   *string `json:"phone,omitempty"`
-	Email   *string `json:"email,omitempty"`
+	Name    string `json:"name"`
+	TaxID   string `json:"taxID"`
+	Address string `json:"address"`
+	City    string `json:"city"`
+	Country string `json:"country"`
+	Phone   string `json:"phone"`
+	Email   string `json:"email"`
 }
 
 type InvoiceTotals struct {
@@ -74,6 +131,19 @@ type InvoiceTotals struct {
 	VatRate  string `json:"vatRate"`
 	Vat      string `json:"vat"`
 	Total    string `json:"total"`
+}
+
+type LedgerDownloadInput struct {
+	StartDate time.Time `json:"startDate"`
+	EndDate   time.Time `json:"endDate"`
+}
+
+type Liabilities struct {
+	CurrentLiabilities         []*ReportRowItem `json:"currentLiabilities"`
+	TotalCurrentLiabilities    float64          `json:"totalCurrentLiabilities"`
+	NonCurrentLiabilities      []*ReportRowItem `json:"nonCurrentLiabilities"`
+	TotalNonCurrentLiabilities float64          `json:"totalNonCurrentLiabilities"`
+	TotalLiabilities           float64          `json:"totalLiabilities"`
 }
 
 type LoginInput struct {
@@ -92,10 +162,15 @@ type LoginOutput struct {
 }
 
 type PaymentDetails struct {
-	BankName      *string `json:"bankName,omitempty"`
-	AccountNumber *string `json:"accountNumber,omitempty"`
-	Iban          *string `json:"iban,omitempty"`
-	DueDate       *string `json:"dueDate,omitempty"`
+	BankName      string `json:"bankName"`
+	AccountNumber string `json:"accountNumber"`
+	Iban          string `json:"iban"`
+	DueDate       string `json:"dueDate"`
+}
+
+type Period struct {
+	Start time.Time `json:"start"`
+	End   time.Time `json:"end"`
 }
 
 type PurchaseRegistrationInput struct {
@@ -110,14 +185,57 @@ type PurchaseRegistrationInput struct {
 	TotalTransactionValue float64               `json:"totalTransactionValue"`
 }
 
+type ReceivableAggregationOutput struct {
+	Company *int     `json:"company,omitempty"`
+	Count   *int     `json:"count,omitempty"`
+	Sum     *float64 `json:"sum,omitempty"`
+}
+
+type ReportInput struct {
+	CompanyID *int      `json:"companyID,omitempty"`
+	Date      time.Time `json:"date"`
+}
+
+type ReportRowItem struct {
+	Account string  `json:"account"`
+	Label   string  `json:"label"`
+	Value   float64 `json:"value"`
+}
+
 type ResetPasswordInput struct {
 	Token    string `json:"token"`
 	Password string `json:"password"`
 }
 
+type SalesQuotationInput struct {
+	Data *Invoice `json:"data"`
+}
+
+type SalesRegistrationInput struct {
+	Main                  []*EntryItem          `json:"main"`
+	Counterpart           []*EntryItem          `json:"counterpart"`
+	Cash                  []*EntryTreasuryInput `json:"cash,omitempty"`
+	Customer              *EntryCustomerInput   `json:"customer"`
+	Date                  time.Time             `json:"date"`
+	Description           *string               `json:"description,omitempty"`
+	OperationType         SalesOperationType    `json:"operationType"`
+	Products              []*EntryProductInput  `json:"products"`
+	TotalTransactionValue float64               `json:"totalTransactionValue"`
+	IssueInvoice          bool                  `json:"issueInvoice"`
+	Invoice               *Invoice              `json:"invoice,omitempty"`
+}
+
 type SignupInput struct {
 	CompanyInput *generated.CreateCompanyInput `json:"companyInput"`
 	UserInput    *generated.CreateUserInput    `json:"userInput"`
+}
+
+type TrialBalanceRowItem struct {
+	Account string  `json:"account"`
+	Label   string  `json:"label"`
+	Debit   float64 `json:"debit"`
+	Credit  float64 `json:"credit"`
+	Balance float64 `json:"balance"`
 }
 
 type WorkShiftAggregationPayload struct {
@@ -130,6 +248,47 @@ type WorkShiftAggregationPayload struct {
 type InvitedUserSignupInput struct {
 	UserInput       *generated.CreateUserInput `json:"userInput"`
 	InvitationToken string                     `json:"invitationToken"`
+}
+
+type CustomersGroupBy string
+
+const (
+	CustomersGroupByCompany CustomersGroupBy = "COMPANY"
+	CustomersGroupByCity    CustomersGroupBy = "CITY"
+)
+
+var AllCustomersGroupBy = []CustomersGroupBy{
+	CustomersGroupByCompany,
+	CustomersGroupByCity,
+}
+
+func (e CustomersGroupBy) IsValid() bool {
+	switch e {
+	case CustomersGroupByCompany, CustomersGroupByCity:
+		return true
+	}
+	return false
+}
+
+func (e CustomersGroupBy) String() string {
+	return string(e)
+}
+
+func (e *CustomersGroupBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CustomersGroupBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CustomersGroupBy", str)
+	}
+	return nil
+}
+
+func (e CustomersGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type PurchaseOperationType string
@@ -170,6 +329,94 @@ func (e *PurchaseOperationType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e PurchaseOperationType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type ReceivablesGroupBy string
+
+const (
+	ReceivablesGroupByAge      ReceivablesGroupBy = "AGE"
+	ReceivablesGroupByCompany  ReceivablesGroupBy = "COMPANY"
+	ReceivablesGroupByCustomer ReceivablesGroupBy = "CUSTOMER"
+	ReceivablesGroupByDaysdue  ReceivablesGroupBy = "DAYSDUE"
+	ReceivablesGroupByStatus   ReceivablesGroupBy = "STATUS"
+)
+
+var AllReceivablesGroupBy = []ReceivablesGroupBy{
+	ReceivablesGroupByAge,
+	ReceivablesGroupByCompany,
+	ReceivablesGroupByCustomer,
+	ReceivablesGroupByDaysdue,
+	ReceivablesGroupByStatus,
+}
+
+func (e ReceivablesGroupBy) IsValid() bool {
+	switch e {
+	case ReceivablesGroupByAge, ReceivablesGroupByCompany, ReceivablesGroupByCustomer, ReceivablesGroupByDaysdue, ReceivablesGroupByStatus:
+		return true
+	}
+	return false
+}
+
+func (e ReceivablesGroupBy) String() string {
+	return string(e)
+}
+
+func (e *ReceivablesGroupBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ReceivablesGroupBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ReceivablesGroupBy", str)
+	}
+	return nil
+}
+
+func (e ReceivablesGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type SalesOperationType string
+
+const (
+	SalesOperationTypeSales       SalesOperationType = "SALES"
+	SalesOperationTypeSalesReturn SalesOperationType = "SALES_RETURN"
+)
+
+var AllSalesOperationType = []SalesOperationType{
+	SalesOperationTypeSales,
+	SalesOperationTypeSalesReturn,
+}
+
+func (e SalesOperationType) IsValid() bool {
+	switch e {
+	case SalesOperationTypeSales, SalesOperationTypeSalesReturn:
+		return true
+	}
+	return false
+}
+
+func (e SalesOperationType) String() string {
+	return string(e)
+}
+
+func (e *SalesOperationType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = SalesOperationType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid SalesOperationType", str)
+	}
+	return nil
+}
+
+func (e SalesOperationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 

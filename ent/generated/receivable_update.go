@@ -19,8 +19,9 @@ import (
 // ReceivableUpdate is the builder for updating Receivable entities.
 type ReceivableUpdate struct {
 	config
-	hooks    []Hook
-	mutation *ReceivableMutation
+	hooks     []Hook
+	mutation  *ReceivableMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the ReceivableUpdate builder.
@@ -253,6 +254,12 @@ func (ru *ReceivableUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (ru *ReceivableUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ReceivableUpdate {
+	ru.modifiers = append(ru.modifiers, modifiers...)
+	return ru
+}
+
 func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := ru.check(); err != nil {
 		return n, err
@@ -333,6 +340,7 @@ func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(ru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{receivable.Label}
@@ -348,9 +356,10 @@ func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // ReceivableUpdateOne is the builder for updating a single Receivable entity.
 type ReceivableUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *ReceivableMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *ReceivableMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -590,6 +599,12 @@ func (ruo *ReceivableUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (ruo *ReceivableUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ReceivableUpdateOne {
+	ruo.modifiers = append(ruo.modifiers, modifiers...)
+	return ruo
+}
+
 func (ruo *ReceivableUpdateOne) sqlSave(ctx context.Context) (_node *Receivable, err error) {
 	if err := ruo.check(); err != nil {
 		return _node, err
@@ -687,6 +702,7 @@ func (ruo *ReceivableUpdateOne) sqlSave(ctx context.Context) (_node *Receivable,
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(ruo.modifiers...)
 	_node = &Receivable{config: ruo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

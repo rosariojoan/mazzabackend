@@ -46,7 +46,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 	}
 	// fmt.Println("\n ++ client:", input, *input.FcmToken)
-	currentUser, err := inits.DB.User.Query().
+	currentUser, err := inits.Client.User.Query().
 		Where(user.And(
 			user.UsernameEQ(input.Username),
 			user.DeletedAtIsNil(),
@@ -67,7 +67,7 @@ func Login(ctx *gin.Context) {
 	}
 
 	// Get the active company
-	companies, err := inits.DB.User.Query().Where(user.IDEQ(currentUser.ID)).QueryAssignedRoles().QueryCompany().All(ctx)
+	companies, err := inits.Client.User.Query().Where(user.IDEQ(currentUser.ID)).QueryAssignedRoles().QueryCompany().All(ctx)
 	if err != nil || len(companies) == 0 {
 		// return nil, fmt.Errorf("there are no companies associated with this user")
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
@@ -77,8 +77,8 @@ func Login(ctx *gin.Context) {
 	activeCompanyID := companies[0].ID
 
 	// Update user FCM token
-	inits.DB.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
-	inits.DB.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
+	inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
+	inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
 
 	// Generate JWT token
 	duration := time.Hour * 24 * 30

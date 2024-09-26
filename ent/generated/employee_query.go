@@ -35,8 +35,8 @@ type EmployeeQuery struct {
 	withApprovedWorkShifts      *WorkshiftQuery
 	withAssignedTasks           *WorktaskQuery
 	withFKs                     bool
-	modifiers                   []func(*sql.Selector)
 	loadTotal                   []func(context.Context, []*Employee) error
+	modifiers                   []func(*sql.Selector)
 	withNamedSubordinates       map[string]*EmployeeQuery
 	withNamedWorkShifts         map[string]*WorkshiftQuery
 	withNamedApprovedWorkShifts map[string]*WorkshiftQuery
@@ -431,8 +431,9 @@ func (eq *EmployeeQuery) Clone() *EmployeeQuery {
 		withApprovedWorkShifts: eq.withApprovedWorkShifts.Clone(),
 		withAssignedTasks:      eq.withAssignedTasks.Clone(),
 		// clone intermediate query.
-		sql:  eq.sql.Clone(),
-		path: eq.path,
+		sql:       eq.sql.Clone(),
+		path:      eq.path,
+		modifiers: append([]func(*sql.Selector){}, eq.modifiers...),
 	}
 }
 
@@ -1029,6 +1030,9 @@ func (eq *EmployeeQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if eq.ctx.Unique != nil && *eq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range eq.modifiers {
+		m(selector)
+	}
 	for _, p := range eq.predicates {
 		p(selector)
 	}
@@ -1044,6 +1048,12 @@ func (eq *EmployeeQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (eq *EmployeeQuery) Modify(modifiers ...func(s *sql.Selector)) *EmployeeSelect {
+	eq.modifiers = append(eq.modifiers, modifiers...)
+	return eq.Select()
 }
 
 // WithNamedSubordinates tells the query-builder to eager-load the nodes that are connected to the "subordinates"
@@ -1190,4 +1200,10 @@ func (es *EmployeeSelect) sqlScan(ctx context.Context, root *EmployeeQuery, v an
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (es *EmployeeSelect) Modify(modifiers ...func(s *sql.Selector)) *EmployeeSelect {
+	es.modifiers = append(es.modifiers, modifiers...)
+	return es
 }

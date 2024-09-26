@@ -20,8 +20,9 @@ import (
 // WorktagUpdate is the builder for updating Worktag entities.
 type WorktagUpdate struct {
 	config
-	hooks    []Hook
-	mutation *WorktagMutation
+	hooks     []Hook
+	mutation  *WorktagMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the WorktagUpdate builder.
@@ -196,6 +197,12 @@ func (wu *WorktagUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wu *WorktagUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorktagUpdate {
+	wu.modifiers = append(wu.modifiers, modifiers...)
+	return wu
+}
+
 func (wu *WorktagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := wu.check(); err != nil {
 		return n, err
@@ -297,6 +304,7 @@ func (wu *WorktagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, wu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{worktag.Label}
@@ -312,9 +320,10 @@ func (wu *WorktagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // WorktagUpdateOne is the builder for updating a single Worktag entity.
 type WorktagUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *WorktagMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *WorktagMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -496,6 +505,12 @@ func (wuo *WorktagUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wuo *WorktagUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorktagUpdateOne {
+	wuo.modifiers = append(wuo.modifiers, modifiers...)
+	return wuo
+}
+
 func (wuo *WorktagUpdateOne) sqlSave(ctx context.Context) (_node *Worktag, err error) {
 	if err := wuo.check(); err != nil {
 		return _node, err
@@ -614,6 +629,7 @@ func (wuo *WorktagUpdateOne) sqlSave(ctx context.Context) (_node *Worktag, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wuo.modifiers...)
 	_node = &Worktag{config: wuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

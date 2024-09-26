@@ -34,8 +34,8 @@ type WorktaskQuery struct {
 	withWorkShifts      *WorkshiftQuery
 	withWorkTags        *WorktagQuery
 	withFKs             bool
-	modifiers           []func(*sql.Selector)
 	loadTotal           []func(context.Context, []*Worktask) error
+	modifiers           []func(*sql.Selector)
 	withNamedAssignedTo map[string]*EmployeeQuery
 	withNamedWorkShifts map[string]*WorkshiftQuery
 	withNamedWorkTags   map[string]*WorktagQuery
@@ -383,8 +383,9 @@ func (wq *WorktaskQuery) Clone() *WorktaskQuery {
 		withWorkShifts: wq.withWorkShifts.Clone(),
 		withWorkTags:   wq.withWorkTags.Clone(),
 		// clone intermediate query.
-		sql:  wq.sql.Clone(),
-		path: wq.path,
+		sql:       wq.sql.Clone(),
+		path:      wq.path,
+		modifiers: append([]func(*sql.Selector){}, wq.modifiers...),
 	}
 }
 
@@ -904,6 +905,9 @@ func (wq *WorktaskQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if wq.ctx.Unique != nil && *wq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range wq.modifiers {
+		m(selector)
+	}
 	for _, p := range wq.predicates {
 		p(selector)
 	}
@@ -919,6 +923,12 @@ func (wq *WorktaskQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (wq *WorktaskQuery) Modify(modifiers ...func(s *sql.Selector)) *WorktaskSelect {
+	wq.modifiers = append(wq.modifiers, modifiers...)
+	return wq.Select()
 }
 
 // WithNamedAssignedTo tells the query-builder to eager-load the nodes that are connected to the "assignedTo"
@@ -1051,4 +1061,10 @@ func (ws *WorktaskSelect) sqlScan(ctx context.Context, root *WorktaskQuery, v an
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ws *WorktaskSelect) Modify(modifiers ...func(s *sql.Selector)) *WorktaskSelect {
+	ws.modifiers = append(ws.modifiers, modifiers...)
+	return ws
 }

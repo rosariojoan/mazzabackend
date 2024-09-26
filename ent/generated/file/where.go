@@ -80,6 +80,11 @@ func Size(v string) predicate.File {
 	return predicate.File(sql.FieldEQ(FieldSize, v))
 }
 
+// URI applies equality check predicate on the "uri" field. It's identical to URIEQ.
+func URI(v string) predicate.File {
+	return predicate.File(sql.FieldEQ(FieldURI, v))
+}
+
 // URL applies equality check predicate on the "url" field. It's identical to URLEQ.
 func URL(v string) predicate.File {
 	return predicate.File(sql.FieldEQ(FieldURL, v))
@@ -368,6 +373,71 @@ func SizeEqualFold(v string) predicate.File {
 // SizeContainsFold applies the ContainsFold predicate on the "size" field.
 func SizeContainsFold(v string) predicate.File {
 	return predicate.File(sql.FieldContainsFold(FieldSize, v))
+}
+
+// URIEQ applies the EQ predicate on the "uri" field.
+func URIEQ(v string) predicate.File {
+	return predicate.File(sql.FieldEQ(FieldURI, v))
+}
+
+// URINEQ applies the NEQ predicate on the "uri" field.
+func URINEQ(v string) predicate.File {
+	return predicate.File(sql.FieldNEQ(FieldURI, v))
+}
+
+// URIIn applies the In predicate on the "uri" field.
+func URIIn(vs ...string) predicate.File {
+	return predicate.File(sql.FieldIn(FieldURI, vs...))
+}
+
+// URINotIn applies the NotIn predicate on the "uri" field.
+func URINotIn(vs ...string) predicate.File {
+	return predicate.File(sql.FieldNotIn(FieldURI, vs...))
+}
+
+// URIGT applies the GT predicate on the "uri" field.
+func URIGT(v string) predicate.File {
+	return predicate.File(sql.FieldGT(FieldURI, v))
+}
+
+// URIGTE applies the GTE predicate on the "uri" field.
+func URIGTE(v string) predicate.File {
+	return predicate.File(sql.FieldGTE(FieldURI, v))
+}
+
+// URILT applies the LT predicate on the "uri" field.
+func URILT(v string) predicate.File {
+	return predicate.File(sql.FieldLT(FieldURI, v))
+}
+
+// URILTE applies the LTE predicate on the "uri" field.
+func URILTE(v string) predicate.File {
+	return predicate.File(sql.FieldLTE(FieldURI, v))
+}
+
+// URIContains applies the Contains predicate on the "uri" field.
+func URIContains(v string) predicate.File {
+	return predicate.File(sql.FieldContains(FieldURI, v))
+}
+
+// URIHasPrefix applies the HasPrefix predicate on the "uri" field.
+func URIHasPrefix(v string) predicate.File {
+	return predicate.File(sql.FieldHasPrefix(FieldURI, v))
+}
+
+// URIHasSuffix applies the HasSuffix predicate on the "uri" field.
+func URIHasSuffix(v string) predicate.File {
+	return predicate.File(sql.FieldHasSuffix(FieldURI, v))
+}
+
+// URIEqualFold applies the EqualFold predicate on the "uri" field.
+func URIEqualFold(v string) predicate.File {
+	return predicate.File(sql.FieldEqualFold(FieldURI, v))
+}
+
+// URIContainsFold applies the ContainsFold predicate on the "uri" field.
+func URIContainsFold(v string) predicate.File {
+	return predicate.File(sql.FieldContainsFold(FieldURI, v))
 }
 
 // URLEQ applies the EQ predicate on the "url" field.

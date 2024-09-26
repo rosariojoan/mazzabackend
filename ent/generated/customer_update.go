@@ -20,8 +20,9 @@ import (
 // CustomerUpdate is the builder for updating Customer entities.
 type CustomerUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CustomerMutation
+	hooks     []Hook
+	mutation  *CustomerMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CustomerUpdate builder.
@@ -112,6 +113,12 @@ func (cu *CustomerUpdate) SetNillableDescription(s *string) *CustomerUpdate {
 	return cu
 }
 
+// ClearDescription clears the value of the "description" field.
+func (cu *CustomerUpdate) ClearDescription() *CustomerUpdate {
+	cu.mutation.ClearDescription()
+	return cu
+}
+
 // SetEmail sets the "email" field.
 func (cu *CustomerUpdate) SetEmail(s string) *CustomerUpdate {
 	cu.mutation.SetEmail(s)
@@ -123,6 +130,12 @@ func (cu *CustomerUpdate) SetNillableEmail(s *string) *CustomerUpdate {
 	if s != nil {
 		cu.SetEmail(*s)
 	}
+	return cu
+}
+
+// ClearEmail clears the value of the "email" field.
+func (cu *CustomerUpdate) ClearEmail() *CustomerUpdate {
+	cu.mutation.ClearEmail()
 	return cu
 }
 
@@ -305,6 +318,12 @@ func (cu *CustomerUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cu *CustomerUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CustomerUpdate {
+	cu.modifiers = append(cu.modifiers, modifiers...)
+	return cu
+}
+
 func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := cu.check(); err != nil {
 		return n, err
@@ -338,8 +357,14 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
 	}
+	if cu.mutation.DescriptionCleared() {
+		_spec.ClearField(customer.FieldDescription, field.TypeString)
+	}
 	if value, ok := cu.mutation.Email(); ok {
 		_spec.SetField(customer.FieldEmail, field.TypeString, value)
+	}
+	if cu.mutation.EmailCleared() {
+		_spec.ClearField(customer.FieldEmail, field.TypeString)
 	}
 	if value, ok := cu.mutation.IsDefault(); ok {
 		_spec.SetField(customer.FieldIsDefault, field.TypeBool, value)
@@ -430,6 +455,7 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{customer.Label}
@@ -445,9 +471,10 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CustomerUpdateOne is the builder for updating a single Customer entity.
 type CustomerUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CustomerMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CustomerMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -532,6 +559,12 @@ func (cuo *CustomerUpdateOne) SetNillableDescription(s *string) *CustomerUpdateO
 	return cuo
 }
 
+// ClearDescription clears the value of the "description" field.
+func (cuo *CustomerUpdateOne) ClearDescription() *CustomerUpdateOne {
+	cuo.mutation.ClearDescription()
+	return cuo
+}
+
 // SetEmail sets the "email" field.
 func (cuo *CustomerUpdateOne) SetEmail(s string) *CustomerUpdateOne {
 	cuo.mutation.SetEmail(s)
@@ -543,6 +576,12 @@ func (cuo *CustomerUpdateOne) SetNillableEmail(s *string) *CustomerUpdateOne {
 	if s != nil {
 		cuo.SetEmail(*s)
 	}
+	return cuo
+}
+
+// ClearEmail clears the value of the "email" field.
+func (cuo *CustomerUpdateOne) ClearEmail() *CustomerUpdateOne {
+	cuo.mutation.ClearEmail()
 	return cuo
 }
 
@@ -738,6 +777,12 @@ func (cuo *CustomerUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cuo *CustomerUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CustomerUpdateOne {
+	cuo.modifiers = append(cuo.modifiers, modifiers...)
+	return cuo
+}
+
 func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err error) {
 	if err := cuo.check(); err != nil {
 		return _node, err
@@ -788,8 +833,14 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if value, ok := cuo.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
 	}
+	if cuo.mutation.DescriptionCleared() {
+		_spec.ClearField(customer.FieldDescription, field.TypeString)
+	}
 	if value, ok := cuo.mutation.Email(); ok {
 		_spec.SetField(customer.FieldEmail, field.TypeString, value)
+	}
+	if cuo.mutation.EmailCleared() {
+		_spec.ClearField(customer.FieldEmail, field.TypeString)
 	}
 	if value, ok := cuo.mutation.IsDefault(); ok {
 		_spec.SetField(customer.FieldIsDefault, field.TypeBool, value)
@@ -880,6 +931,7 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cuo.modifiers...)
 	_node = &Customer{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

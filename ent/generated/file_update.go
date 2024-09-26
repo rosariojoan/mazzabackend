@@ -20,8 +20,9 @@ import (
 // FileUpdate is the builder for updating File entities.
 type FileUpdate struct {
 	config
-	hooks    []Hook
-	mutation *FileMutation
+	hooks     []Hook
+	mutation  *FileMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the FileUpdate builder.
@@ -94,6 +95,20 @@ func (fu *FileUpdate) SetSize(s string) *FileUpdate {
 func (fu *FileUpdate) SetNillableSize(s *string) *FileUpdate {
 	if s != nil {
 		fu.SetSize(*s)
+	}
+	return fu
+}
+
+// SetURI sets the "uri" field.
+func (fu *FileUpdate) SetURI(s string) *FileUpdate {
+	fu.mutation.SetURI(s)
+	return fu
+}
+
+// SetNillableURI sets the "uri" field if the given value is not nil.
+func (fu *FileUpdate) SetNillableURI(s *string) *FileUpdate {
+	if s != nil {
+		fu.SetURI(*s)
 	}
 	return fu
 }
@@ -224,7 +239,18 @@ func (fu *FileUpdate) check() error {
 			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "File.category": %w`, err)}
 		}
 	}
+	if v, ok := fu.mutation.URI(); ok {
+		if err := file.URIValidator(v); err != nil {
+			return &ValidationError{Name: "uri", err: fmt.Errorf(`generated: validator failed for field "File.uri": %w`, err)}
+		}
+	}
 	return nil
+}
+
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (fu *FileUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *FileUpdate {
+	fu.modifiers = append(fu.modifiers, modifiers...)
+	return fu
 }
 
 func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -256,6 +282,9 @@ func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := fu.mutation.Size(); ok {
 		_spec.SetField(file.FieldSize, field.TypeString, value)
+	}
+	if value, ok := fu.mutation.URI(); ok {
+		_spec.SetField(file.FieldURI, field.TypeString, value)
 	}
 	if value, ok := fu.mutation.URL(); ok {
 		_spec.SetField(file.FieldURL, field.TypeString, value)
@@ -321,6 +350,7 @@ func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(fu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, fu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{file.Label}
@@ -336,9 +366,10 @@ func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // FileUpdateOne is the builder for updating a single File entity.
 type FileUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *FileMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *FileMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -405,6 +436,20 @@ func (fuo *FileUpdateOne) SetSize(s string) *FileUpdateOne {
 func (fuo *FileUpdateOne) SetNillableSize(s *string) *FileUpdateOne {
 	if s != nil {
 		fuo.SetSize(*s)
+	}
+	return fuo
+}
+
+// SetURI sets the "uri" field.
+func (fuo *FileUpdateOne) SetURI(s string) *FileUpdateOne {
+	fuo.mutation.SetURI(s)
+	return fuo
+}
+
+// SetNillableURI sets the "uri" field if the given value is not nil.
+func (fuo *FileUpdateOne) SetNillableURI(s *string) *FileUpdateOne {
+	if s != nil {
+		fuo.SetURI(*s)
 	}
 	return fuo
 }
@@ -548,7 +593,18 @@ func (fuo *FileUpdateOne) check() error {
 			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "File.category": %w`, err)}
 		}
 	}
+	if v, ok := fuo.mutation.URI(); ok {
+		if err := file.URIValidator(v); err != nil {
+			return &ValidationError{Name: "uri", err: fmt.Errorf(`generated: validator failed for field "File.uri": %w`, err)}
+		}
+	}
 	return nil
+}
+
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (fuo *FileUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *FileUpdateOne {
+	fuo.modifiers = append(fuo.modifiers, modifiers...)
+	return fuo
 }
 
 func (fuo *FileUpdateOne) sqlSave(ctx context.Context) (_node *File, err error) {
@@ -597,6 +653,9 @@ func (fuo *FileUpdateOne) sqlSave(ctx context.Context) (_node *File, err error) 
 	}
 	if value, ok := fuo.mutation.Size(); ok {
 		_spec.SetField(file.FieldSize, field.TypeString, value)
+	}
+	if value, ok := fuo.mutation.URI(); ok {
+		_spec.SetField(file.FieldURI, field.TypeString, value)
 	}
 	if value, ok := fuo.mutation.URL(); ok {
 		_spec.SetField(file.FieldURL, field.TypeString, value)
@@ -662,6 +721,7 @@ func (fuo *FileUpdateOne) sqlSave(ctx context.Context) (_node *File, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(fuo.modifiers...)
 	_node = &File{config: fuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

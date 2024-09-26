@@ -19,8 +19,9 @@ import (
 // CashMovementUpdate is the builder for updating CashMovement entities.
 type CashMovementUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CashMovementMutation
+	hooks     []Hook
+	mutation  *CashMovementMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CashMovementUpdate builder.
@@ -187,6 +188,12 @@ func (cmu *CashMovementUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cmu *CashMovementUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CashMovementUpdate {
+	cmu.modifiers = append(cmu.modifiers, modifiers...)
+	return cmu
+}
+
 func (cmu *CashMovementUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := cmu.check(); err != nil {
 		return n, err
@@ -252,6 +259,7 @@ func (cmu *CashMovementUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cmu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{cashmovement.Label}
@@ -267,9 +275,10 @@ func (cmu *CashMovementUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CashMovementUpdateOne is the builder for updating a single CashMovement entity.
 type CashMovementUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CashMovementMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CashMovementMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -443,6 +452,12 @@ func (cmuo *CashMovementUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cmuo *CashMovementUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CashMovementUpdateOne {
+	cmuo.modifiers = append(cmuo.modifiers, modifiers...)
+	return cmuo
+}
+
 func (cmuo *CashMovementUpdateOne) sqlSave(ctx context.Context) (_node *CashMovement, err error) {
 	if err := cmuo.check(); err != nil {
 		return _node, err
@@ -525,6 +540,7 @@ func (cmuo *CashMovementUpdateOne) sqlSave(ctx context.Context) (_node *CashMove
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cmuo.modifiers...)
 	_node = &CashMovement{config: cmuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

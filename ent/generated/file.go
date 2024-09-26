@@ -31,6 +31,8 @@ type File struct {
 	Extension string `json:"extension,omitempty"`
 	// Size holds the value of the "size" field.
 	Size string `json:"size,omitempty"`
+	// uri used to handle the file from the storage
+	URI string `json:"-"`
 	// URL holds the value of the "url" field.
 	URL string `json:"url,omitempty"`
 	// Description holds the value of the "description" field.
@@ -85,7 +87,7 @@ func (*File) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case file.FieldID:
 			values[i] = new(sql.NullInt64)
-		case file.FieldCategory, file.FieldExtension, file.FieldSize, file.FieldURL, file.FieldDescription:
+		case file.FieldCategory, file.FieldExtension, file.FieldSize, file.FieldURI, file.FieldURL, file.FieldDescription:
 			values[i] = new(sql.NullString)
 		case file.FieldCreatedAt, file.FieldUpdatedAt, file.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -150,6 +152,12 @@ func (f *File) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field size", values[i])
 			} else if value.Valid {
 				f.Size = value.String
+			}
+		case file.FieldURI:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field uri", values[i])
+			} else if value.Valid {
+				f.URI = value.String
 			}
 		case file.FieldURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -242,6 +250,8 @@ func (f *File) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("size=")
 	builder.WriteString(f.Size)
+	builder.WriteString(", ")
+	builder.WriteString("uri=<sensitive>")
 	builder.WriteString(", ")
 	builder.WriteString("url=")
 	builder.WriteString(f.URL)

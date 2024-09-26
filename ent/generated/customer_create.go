@@ -88,9 +88,25 @@ func (cc *CustomerCreate) SetDescription(s string) *CustomerCreate {
 	return cc
 }
 
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableDescription(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetDescription(*s)
+	}
+	return cc
+}
+
 // SetEmail sets the "email" field.
 func (cc *CustomerCreate) SetEmail(s string) *CustomerCreate {
 	cc.mutation.SetEmail(s)
+	return cc
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableEmail(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetEmail(*s)
+	}
 	return cc
 }
 
@@ -225,12 +241,6 @@ func (cc *CustomerCreate) check() error {
 	}
 	if _, ok := cc.mutation.Country(); !ok {
 		return &ValidationError{Name: "country", err: errors.New(`generated: missing required field "Customer.country"`)}
-	}
-	if _, ok := cc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`generated: missing required field "Customer.description"`)}
-	}
-	if _, ok := cc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`generated: missing required field "Customer.email"`)}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Customer.name"`)}

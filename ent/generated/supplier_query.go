@@ -28,8 +28,8 @@ type SupplierQuery struct {
 	withCompany       *CompanyQuery
 	withPayables      *PayableQuery
 	withFKs           bool
-	modifiers         []func(*sql.Selector)
 	loadTotal         []func(context.Context, []*Supplier) error
+	modifiers         []func(*sql.Selector)
 	withNamedPayables map[string]*PayableQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -306,8 +306,9 @@ func (sq *SupplierQuery) Clone() *SupplierQuery {
 		withCompany:  sq.withCompany.Clone(),
 		withPayables: sq.withPayables.Clone(),
 		// clone intermediate query.
-		sql:  sq.sql.Clone(),
-		path: sq.path,
+		sql:       sq.sql.Clone(),
+		path:      sq.path,
+		modifiers: append([]func(*sql.Selector){}, sq.modifiers...),
 	}
 }
 
@@ -603,6 +604,9 @@ func (sq *SupplierQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if sq.ctx.Unique != nil && *sq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range sq.modifiers {
+		m(selector)
+	}
 	for _, p := range sq.predicates {
 		p(selector)
 	}
@@ -618,6 +622,12 @@ func (sq *SupplierQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (sq *SupplierQuery) Modify(modifiers ...func(s *sql.Selector)) *SupplierSelect {
+	sq.modifiers = append(sq.modifiers, modifiers...)
+	return sq.Select()
 }
 
 // WithNamedPayables tells the query-builder to eager-load the nodes that are connected to the "payables"
@@ -722,4 +732,10 @@ func (ss *SupplierSelect) sqlScan(ctx context.Context, root *SupplierQuery, v an
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ss *SupplierSelect) Modify(modifiers ...func(s *sql.Selector)) *SupplierSelect {
+	ss.modifiers = append(ss.modifiers, modifiers...)
+	return ss
 }

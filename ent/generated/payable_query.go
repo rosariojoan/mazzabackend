@@ -25,8 +25,8 @@ type PayableQuery struct {
 	predicates   []predicate.Payable
 	withSupplier *SupplierQuery
 	withFKs      bool
-	modifiers    []func(*sql.Selector)
 	loadTotal    []func(context.Context, []*Payable) error
+	modifiers    []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (pq *PayableQuery) Clone() *PayableQuery {
 		predicates:   append([]predicate.Payable{}, pq.predicates...),
 		withSupplier: pq.withSupplier.Clone(),
 		// clone intermediate query.
-		sql:  pq.sql.Clone(),
-		path: pq.path,
+		sql:       pq.sql.Clone(),
+		path:      pq.path,
+		modifiers: append([]func(*sql.Selector){}, pq.modifiers...),
 	}
 }
 
@@ -519,6 +520,9 @@ func (pq *PayableQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pq.ctx.Unique != nil && *pq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range pq.modifiers {
+		m(selector)
+	}
 	for _, p := range pq.predicates {
 		p(selector)
 	}
@@ -534,6 +538,12 @@ func (pq *PayableQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pq *PayableQuery) Modify(modifiers ...func(s *sql.Selector)) *PayableSelect {
+	pq.modifiers = append(pq.modifiers, modifiers...)
+	return pq.Select()
 }
 
 // PayableGroupBy is the group-by builder for Payable entities.
@@ -624,4 +634,10 @@ func (ps *PayableSelect) sqlScan(ctx context.Context, root *PayableQuery, v any)
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ps *PayableSelect) Modify(modifiers ...func(s *sql.Selector)) *PayableSelect {
+	ps.modifiers = append(ps.modifiers, modifiers...)
+	return ps
 }

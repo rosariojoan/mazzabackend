@@ -19,8 +19,9 @@ import (
 // PayableUpdate is the builder for updating Payable entities.
 type PayableUpdate struct {
 	config
-	hooks    []Hook
-	mutation *PayableMutation
+	hooks     []Hook
+	mutation  *PayableMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the PayableUpdate builder.
@@ -253,6 +254,12 @@ func (pu *PayableUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (pu *PayableUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PayableUpdate {
+	pu.modifiers = append(pu.modifiers, modifiers...)
+	return pu
+}
+
 func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pu.check(); err != nil {
 		return n, err
@@ -333,6 +340,7 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{payable.Label}
@@ -348,9 +356,10 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // PayableUpdateOne is the builder for updating a single Payable entity.
 type PayableUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *PayableMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *PayableMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -590,6 +599,12 @@ func (puo *PayableUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (puo *PayableUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PayableUpdateOne {
+	puo.modifiers = append(puo.modifiers, modifiers...)
+	return puo
+}
+
 func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err error) {
 	if err := puo.check(); err != nil {
 		return _node, err
@@ -687,6 +702,7 @@ func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(puo.modifiers...)
 	_node = &Payable{config: puo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

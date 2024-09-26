@@ -2623,6 +2623,8 @@ type CustomerWhereInput struct {
 	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
 	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
 	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
+	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
+	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
 	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
 	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
 
@@ -2638,6 +2640,8 @@ type CustomerWhereInput struct {
 	EmailContains     *string  `json:"emailContains,omitempty"`
 	EmailHasPrefix    *string  `json:"emailHasPrefix,omitempty"`
 	EmailHasSuffix    *string  `json:"emailHasSuffix,omitempty"`
+	EmailIsNil        bool     `json:"emailIsNil,omitempty"`
+	EmailNotNil       bool     `json:"emailNotNil,omitempty"`
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
@@ -3024,6 +3028,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.DescriptionHasSuffix != nil {
 		predicates = append(predicates, customer.DescriptionHasSuffix(*i.DescriptionHasSuffix))
 	}
+	if i.DescriptionIsNil {
+		predicates = append(predicates, customer.DescriptionIsNil())
+	}
+	if i.DescriptionNotNil {
+		predicates = append(predicates, customer.DescriptionNotNil())
+	}
 	if i.DescriptionEqualFold != nil {
 		predicates = append(predicates, customer.DescriptionEqualFold(*i.DescriptionEqualFold))
 	}
@@ -3062,6 +3072,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	}
 	if i.EmailHasSuffix != nil {
 		predicates = append(predicates, customer.EmailHasSuffix(*i.EmailHasSuffix))
+	}
+	if i.EmailIsNil {
+		predicates = append(predicates, customer.EmailIsNil())
+	}
+	if i.EmailNotNil {
+		predicates = append(predicates, customer.EmailNotNil())
 	}
 	if i.EmailEqualFold != nil {
 		predicates = append(predicates, customer.EmailEqualFold(*i.EmailEqualFold))
@@ -3968,6 +3984,21 @@ type FileWhereInput struct {
 	SizeEqualFold    *string  `json:"sizeEqualFold,omitempty"`
 	SizeContainsFold *string  `json:"sizeContainsFold,omitempty"`
 
+	// "uri" field predicates.
+	URI             *string  `json:"uri,omitempty"`
+	URINEQ          *string  `json:"uriNEQ,omitempty"`
+	URIIn           []string `json:"uriIn,omitempty"`
+	URINotIn        []string `json:"uriNotIn,omitempty"`
+	URIGT           *string  `json:"uriGT,omitempty"`
+	URIGTE          *string  `json:"uriGTE,omitempty"`
+	URILT           *string  `json:"uriLT,omitempty"`
+	URILTE          *string  `json:"uriLTE,omitempty"`
+	URIContains     *string  `json:"uriContains,omitempty"`
+	URIHasPrefix    *string  `json:"uriHasPrefix,omitempty"`
+	URIHasSuffix    *string  `json:"uriHasSuffix,omitempty"`
+	URIEqualFold    *string  `json:"uriEqualFold,omitempty"`
+	URIContainsFold *string  `json:"uriContainsFold,omitempty"`
+
 	// "url" field predicates.
 	URL             *string  `json:"url,omitempty"`
 	URLNEQ          *string  `json:"urlNEQ,omitempty"`
@@ -4269,6 +4300,45 @@ func (i *FileWhereInput) P() (predicate.File, error) {
 	}
 	if i.SizeContainsFold != nil {
 		predicates = append(predicates, file.SizeContainsFold(*i.SizeContainsFold))
+	}
+	if i.URI != nil {
+		predicates = append(predicates, file.URIEQ(*i.URI))
+	}
+	if i.URINEQ != nil {
+		predicates = append(predicates, file.URINEQ(*i.URINEQ))
+	}
+	if len(i.URIIn) > 0 {
+		predicates = append(predicates, file.URIIn(i.URIIn...))
+	}
+	if len(i.URINotIn) > 0 {
+		predicates = append(predicates, file.URINotIn(i.URINotIn...))
+	}
+	if i.URIGT != nil {
+		predicates = append(predicates, file.URIGT(*i.URIGT))
+	}
+	if i.URIGTE != nil {
+		predicates = append(predicates, file.URIGTE(*i.URIGTE))
+	}
+	if i.URILT != nil {
+		predicates = append(predicates, file.URILT(*i.URILT))
+	}
+	if i.URILTE != nil {
+		predicates = append(predicates, file.URILTE(*i.URILTE))
+	}
+	if i.URIContains != nil {
+		predicates = append(predicates, file.URIContains(*i.URIContains))
+	}
+	if i.URIHasPrefix != nil {
+		predicates = append(predicates, file.URIHasPrefix(*i.URIHasPrefix))
+	}
+	if i.URIHasSuffix != nil {
+		predicates = append(predicates, file.URIHasSuffix(*i.URIHasSuffix))
+	}
+	if i.URIEqualFold != nil {
+		predicates = append(predicates, file.URIEqualFold(*i.URIEqualFold))
+	}
+	if i.URIContainsFold != nil {
+		predicates = append(predicates, file.URIContainsFold(*i.URIContainsFold))
 	}
 	if i.URL != nil {
 		predicates = append(predicates, file.URLEQ(*i.URL))

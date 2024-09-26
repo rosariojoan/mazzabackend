@@ -25,10 +25,10 @@ func (Customer) Mixin() []ent.Mixin {
 func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("address"),
-		field.String("city"),
+		field.String("city").Annotations(entgql.OrderField("CITY")),
 		field.String("country"),
-		field.String("description"),
-		field.String("email"),
+		field.String("description").Optional(),
+		field.String("email").Optional(),
 		field.Bool("isDefault").Default(false).Optional(),
 		field.String("name").NotEmpty(),
 		field.String("phone"),
@@ -59,5 +59,6 @@ func (Customer) Annotations() []schema.Annotation {
 		// entgql.RelayConnection(),
 		// entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+		entgql.MultiOrder(),
 	}
 }

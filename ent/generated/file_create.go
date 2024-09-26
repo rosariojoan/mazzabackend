@@ -82,6 +82,12 @@ func (fc *FileCreate) SetSize(s string) *FileCreate {
 	return fc
 }
 
+// SetURI sets the "uri" field.
+func (fc *FileCreate) SetURI(s string) *FileCreate {
+	fc.mutation.SetURI(s)
+	return fc
+}
+
 // SetURL sets the "url" field.
 func (fc *FileCreate) SetURL(s string) *FileCreate {
 	fc.mutation.SetURL(s)
@@ -199,6 +205,14 @@ func (fc *FileCreate) check() error {
 	if _, ok := fc.mutation.Size(); !ok {
 		return &ValidationError{Name: "size", err: errors.New(`generated: missing required field "File.size"`)}
 	}
+	if _, ok := fc.mutation.URI(); !ok {
+		return &ValidationError{Name: "uri", err: errors.New(`generated: missing required field "File.uri"`)}
+	}
+	if v, ok := fc.mutation.URI(); ok {
+		if err := file.URIValidator(v); err != nil {
+			return &ValidationError{Name: "uri", err: fmt.Errorf(`generated: validator failed for field "File.uri": %w`, err)}
+		}
+	}
 	if _, ok := fc.mutation.URL(); !ok {
 		return &ValidationError{Name: "url", err: errors.New(`generated: missing required field "File.url"`)}
 	}
@@ -254,6 +268,10 @@ func (fc *FileCreate) createSpec() (*File, *sqlgraph.CreateSpec) {
 	if value, ok := fc.mutation.Size(); ok {
 		_spec.SetField(file.FieldSize, field.TypeString, value)
 		_node.Size = value
+	}
+	if value, ok := fc.mutation.URI(); ok {
+		_spec.SetField(file.FieldURI, field.TypeString, value)
+		_node.URI = value
 	}
 	if value, ok := fc.mutation.URL(); ok {
 		_spec.SetField(file.FieldURL, field.TypeString, value)

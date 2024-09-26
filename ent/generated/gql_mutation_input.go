@@ -728,8 +728,8 @@ type CreateCustomerInput struct {
 	Address       string
 	City          string
 	Country       string
-	Description   string
-	Email         string
+	Description   *string
+	Email         *string
 	IsDefault     *bool
 	Name          string
 	Phone         string
@@ -752,8 +752,12 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	m.SetAddress(i.Address)
 	m.SetCity(i.City)
 	m.SetCountry(i.Country)
-	m.SetDescription(i.Description)
-	m.SetEmail(i.Email)
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
+	}
 	if v := i.IsDefault; v != nil {
 		m.SetIsDefault(*v)
 	}
@@ -782,7 +786,9 @@ type UpdateCustomerInput struct {
 	Address             *string
 	City                *string
 	Country             *string
+	ClearDescription    bool
 	Description         *string
+	ClearEmail          bool
 	Email               *string
 	ClearIsDefault      bool
 	IsDefault           *bool
@@ -816,8 +822,14 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Country; v != nil {
 		m.SetCountry(*v)
 	}
+	if i.ClearDescription {
+		m.ClearDescription()
+	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
+	}
+	if i.ClearEmail {
+		m.ClearEmail()
 	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
@@ -1074,6 +1086,7 @@ type CreateFileInput struct {
 	Category    file.Category
 	Extension   string
 	Size        string
+	URI         string
 	URL         string
 	Description string
 	CompanyID   *int
@@ -1094,6 +1107,7 @@ func (i *CreateFileInput) Mutate(m *FileMutation) {
 	m.SetCategory(i.Category)
 	m.SetExtension(i.Extension)
 	m.SetSize(i.Size)
+	m.SetURI(i.URI)
 	m.SetURL(i.URL)
 	m.SetDescription(i.Description)
 	if v := i.CompanyID; v != nil {
@@ -1118,6 +1132,7 @@ type UpdateFileInput struct {
 	Category       *file.Category
 	Extension      *string
 	Size           *string
+	URI            *string
 	URL            *string
 	Description    *string
 	ClearCompany   bool
@@ -1145,6 +1160,9 @@ func (i *UpdateFileInput) Mutate(m *FileMutation) {
 	}
 	if v := i.Size; v != nil {
 		m.SetSize(*v)
+	}
+	if v := i.URI; v != nil {
+		m.SetURI(*v)
 	}
 	if v := i.URL; v != nil {
 		m.SetURL(*v)

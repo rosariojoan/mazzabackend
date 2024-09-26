@@ -27,8 +27,8 @@ type AccountingEntryQuery struct {
 	withCompany *CompanyQuery
 	withUser    *UserQuery
 	withFKs     bool
-	modifiers   []func(*sql.Selector)
 	loadTotal   []func(context.Context, []*AccountingEntry) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -304,8 +304,9 @@ func (aeq *AccountingEntryQuery) Clone() *AccountingEntryQuery {
 		withCompany: aeq.withCompany.Clone(),
 		withUser:    aeq.withUser.Clone(),
 		// clone intermediate query.
-		sql:  aeq.sql.Clone(),
-		path: aeq.path,
+		sql:       aeq.sql.Clone(),
+		path:      aeq.path,
+		modifiers: append([]func(*sql.Selector){}, aeq.modifiers...),
 	}
 }
 
@@ -594,6 +595,9 @@ func (aeq *AccountingEntryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if aeq.ctx.Unique != nil && *aeq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range aeq.modifiers {
+		m(selector)
+	}
 	for _, p := range aeq.predicates {
 		p(selector)
 	}
@@ -609,6 +613,12 @@ func (aeq *AccountingEntryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (aeq *AccountingEntryQuery) Modify(modifiers ...func(s *sql.Selector)) *AccountingEntrySelect {
+	aeq.modifiers = append(aeq.modifiers, modifiers...)
+	return aeq.Select()
 }
 
 // AccountingEntryGroupBy is the group-by builder for AccountingEntry entities.
@@ -699,4 +709,10 @@ func (aes *AccountingEntrySelect) sqlScan(ctx context.Context, root *AccountingE
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (aes *AccountingEntrySelect) Modify(modifiers ...func(s *sql.Selector)) *AccountingEntrySelect {
+	aes.modifiers = append(aes.modifiers, modifiers...)
+	return aes
 }

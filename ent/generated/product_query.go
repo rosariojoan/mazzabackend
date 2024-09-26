@@ -30,8 +30,8 @@ type ProductQuery struct {
 	withPictures              *FileQuery
 	withProductMovements      *ProductMovementQuery
 	withFKs                   bool
-	modifiers                 []func(*sql.Selector)
 	loadTotal                 []func(context.Context, []*Product) error
+	modifiers                 []func(*sql.Selector)
 	withNamedPictures         map[string]*FileQuery
 	withNamedProductMovements map[string]*ProductMovementQuery
 	// intermediate query (i.e. traversal path).
@@ -332,8 +332,9 @@ func (pq *ProductQuery) Clone() *ProductQuery {
 		withPictures:         pq.withPictures.Clone(),
 		withProductMovements: pq.withProductMovements.Clone(),
 		// clone intermediate query.
-		sql:  pq.sql.Clone(),
-		path: pq.path,
+		sql:       pq.sql.Clone(),
+		path:      pq.path,
+		modifiers: append([]func(*sql.Selector){}, pq.modifiers...),
 	}
 }
 
@@ -686,6 +687,9 @@ func (pq *ProductQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if pq.ctx.Unique != nil && *pq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range pq.modifiers {
+		m(selector)
+	}
 	for _, p := range pq.predicates {
 		p(selector)
 	}
@@ -701,6 +705,12 @@ func (pq *ProductQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (pq *ProductQuery) Modify(modifiers ...func(s *sql.Selector)) *ProductSelect {
+	pq.modifiers = append(pq.modifiers, modifiers...)
+	return pq.Select()
 }
 
 // WithNamedPictures tells the query-builder to eager-load the nodes that are connected to the "pictures"
@@ -819,4 +829,10 @@ func (ps *ProductSelect) sqlScan(ctx context.Context, root *ProductQuery, v any)
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ps *ProductSelect) Modify(modifiers ...func(s *sql.Selector)) *ProductSelect {
+	ps.modifiers = append(ps.modifiers, modifiers...)
+	return ps
 }

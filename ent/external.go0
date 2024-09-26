@@ -1,0 +1,10 @@
+package ent
+
+import (
+	"database/sql"
+	"mazza/ent/generated"
+)
+
+func (c *generated.Client) DB() *sql.DB {
+	return c.driver.(*entsql.Driver).DB()
+}

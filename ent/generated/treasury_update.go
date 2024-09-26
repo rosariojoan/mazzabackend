@@ -20,8 +20,9 @@ import (
 // TreasuryUpdate is the builder for updating Treasury entities.
 type TreasuryUpdate struct {
 	config
-	hooks    []Hook
-	mutation *TreasuryMutation
+	hooks     []Hook
+	mutation  *TreasuryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the TreasuryUpdate builder.
@@ -381,6 +382,12 @@ func (tu *TreasuryUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tu *TreasuryUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TreasuryUpdate {
+	tu.modifiers = append(tu.modifiers, modifiers...)
+	return tu
+}
+
 func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := tu.check(); err != nil {
 		return n, err
@@ -533,6 +540,7 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(tu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{treasury.Label}
@@ -548,9 +556,10 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // TreasuryUpdateOne is the builder for updating a single Treasury entity.
 type TreasuryUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *TreasuryMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *TreasuryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -917,6 +926,12 @@ func (tuo *TreasuryUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (tuo *TreasuryUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TreasuryUpdateOne {
+	tuo.modifiers = append(tuo.modifiers, modifiers...)
+	return tuo
+}
+
 func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err error) {
 	if err := tuo.check(); err != nil {
 		return _node, err
@@ -1086,6 +1101,7 @@ func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(tuo.modifiers...)
 	_node = &Treasury{config: tuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

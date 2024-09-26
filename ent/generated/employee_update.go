@@ -22,8 +22,9 @@ import (
 // EmployeeUpdate is the builder for updating Employee entities.
 type EmployeeUpdate struct {
 	config
-	hooks    []Hook
-	mutation *EmployeeMutation
+	hooks     []Hook
+	mutation  *EmployeeMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the EmployeeUpdate builder.
@@ -415,6 +416,12 @@ func (eu *EmployeeUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (eu *EmployeeUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *EmployeeUpdate {
+	eu.modifiers = append(eu.modifiers, modifiers...)
+	return eu
+}
+
 func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := eu.check(); err != nil {
 		return n, err
@@ -724,6 +731,7 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(eu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, eu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{employee.Label}
@@ -739,9 +747,10 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // EmployeeUpdateOne is the builder for updating a single Employee entity.
 type EmployeeUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *EmployeeMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *EmployeeMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -1140,6 +1149,12 @@ func (euo *EmployeeUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (euo *EmployeeUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *EmployeeUpdateOne {
+	euo.modifiers = append(euo.modifiers, modifiers...)
+	return euo
+}
+
 func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err error) {
 	if err := euo.check(); err != nil {
 		return _node, err
@@ -1466,6 +1481,7 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(euo.modifiers...)
 	_node = &Employee{config: euo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

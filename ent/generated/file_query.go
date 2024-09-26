@@ -27,8 +27,8 @@ type FileQuery struct {
 	withCompany *CompanyQuery
 	withProduct *ProductQuery
 	withFKs     bool
-	modifiers   []func(*sql.Selector)
 	loadTotal   []func(context.Context, []*File) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -304,8 +304,9 @@ func (fq *FileQuery) Clone() *FileQuery {
 		withCompany: fq.withCompany.Clone(),
 		withProduct: fq.withProduct.Clone(),
 		// clone intermediate query.
-		sql:  fq.sql.Clone(),
-		path: fq.path,
+		sql:       fq.sql.Clone(),
+		path:      fq.path,
+		modifiers: append([]func(*sql.Selector){}, fq.modifiers...),
 	}
 }
 
@@ -594,6 +595,9 @@ func (fq *FileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if fq.ctx.Unique != nil && *fq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range fq.modifiers {
+		m(selector)
+	}
 	for _, p := range fq.predicates {
 		p(selector)
 	}
@@ -609,6 +613,12 @@ func (fq *FileQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (fq *FileQuery) Modify(modifiers ...func(s *sql.Selector)) *FileSelect {
+	fq.modifiers = append(fq.modifiers, modifiers...)
+	return fq.Select()
 }
 
 // FileGroupBy is the group-by builder for File entities.
@@ -699,4 +709,10 @@ func (fs *FileSelect) sqlScan(ctx context.Context, root *FileQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (fs *FileSelect) Modify(modifiers ...func(s *sql.Selector)) *FileSelect {
+	fs.modifiers = append(fs.modifiers, modifiers...)
+	return fs
 }

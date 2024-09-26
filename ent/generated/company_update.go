@@ -31,8 +31,9 @@ import (
 // CompanyUpdate is the builder for updating Company entities.
 type CompanyUpdate struct {
 	config
-	hooks    []Hook
-	mutation *CompanyMutation
+	hooks     []Hook
+	mutation  *CompanyMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the CompanyUpdate builder.
@@ -979,6 +980,12 @@ func (cu *CompanyUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cu *CompanyUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CompanyUpdate {
+	cu.modifiers = append(cu.modifiers, modifiers...)
+	return cu
+}
+
 func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := cu.check(); err != nil {
 		return n, err
@@ -1749,6 +1756,7 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{company.Label}
@@ -1764,9 +1772,10 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // CompanyUpdateOne is the builder for updating a single Company entity.
 type CompanyUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *CompanyMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *CompanyMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -2720,6 +2729,12 @@ func (cuo *CompanyUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (cuo *CompanyUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *CompanyUpdateOne {
+	cuo.modifiers = append(cuo.modifiers, modifiers...)
+	return cuo
+}
+
 func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err error) {
 	if err := cuo.check(); err != nil {
 		return _node, err
@@ -3507,6 +3522,7 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(cuo.modifiers...)
 	_node = &Company{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

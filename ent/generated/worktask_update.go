@@ -24,8 +24,9 @@ import (
 // WorktaskUpdate is the builder for updating Worktask entities.
 type WorktaskUpdate struct {
 	config
-	hooks    []Hook
-	mutation *WorktaskMutation
+	hooks     []Hook
+	mutation  *WorktaskMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the WorktaskUpdate builder.
@@ -375,6 +376,12 @@ func (wu *WorktaskUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wu *WorktaskUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorktaskUpdate {
+	wu.modifiers = append(wu.modifiers, modifiers...)
+	return wu
+}
+
 func (wu *WorktaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := wu.check(); err != nil {
 		return n, err
@@ -621,6 +628,7 @@ func (wu *WorktaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, wu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{worktask.Label}
@@ -636,9 +644,10 @@ func (wu *WorktaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // WorktaskUpdateOne is the builder for updating a single Worktask entity.
 type WorktaskUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *WorktaskMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *WorktaskMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -995,6 +1004,12 @@ func (wuo *WorktaskUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wuo *WorktaskUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorktaskUpdateOne {
+	wuo.modifiers = append(wuo.modifiers, modifiers...)
+	return wuo
+}
+
 func (wuo *WorktaskUpdateOne) sqlSave(ctx context.Context) (_node *Worktask, err error) {
 	if err := wuo.check(); err != nil {
 		return _node, err
@@ -1258,6 +1273,7 @@ func (wuo *WorktaskUpdateOne) sqlSave(ctx context.Context) (_node *Worktask, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wuo.modifiers...)
 	_node = &Worktask{config: wuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -20,8 +20,9 @@ import (
 // SupplierUpdate is the builder for updating Supplier entities.
 type SupplierUpdate struct {
 	config
-	hooks    []Hook
-	mutation *SupplierMutation
+	hooks     []Hook
+	mutation  *SupplierMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the SupplierUpdate builder.
@@ -305,6 +306,12 @@ func (su *SupplierUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (su *SupplierUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SupplierUpdate {
+	su.modifiers = append(su.modifiers, modifiers...)
+	return su
+}
+
 func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := su.check(); err != nil {
 		return n, err
@@ -430,6 +437,7 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(su.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{supplier.Label}
@@ -445,9 +453,10 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // SupplierUpdateOne is the builder for updating a single Supplier entity.
 type SupplierUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *SupplierMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *SupplierMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -738,6 +747,12 @@ func (suo *SupplierUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (suo *SupplierUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SupplierUpdateOne {
+	suo.modifiers = append(suo.modifiers, modifiers...)
+	return suo
+}
+
 func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err error) {
 	if err := suo.check(); err != nil {
 		return _node, err
@@ -880,6 +895,7 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(suo.modifiers...)
 	_node = &Supplier{config: suo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

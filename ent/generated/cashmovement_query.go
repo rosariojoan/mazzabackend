@@ -25,8 +25,8 @@ type CashMovementQuery struct {
 	predicates   []predicate.CashMovement
 	withTreasury *TreasuryQuery
 	withFKs      bool
-	modifiers    []func(*sql.Selector)
 	loadTotal    []func(context.Context, []*CashMovement) error
+	modifiers    []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -279,8 +279,9 @@ func (cmq *CashMovementQuery) Clone() *CashMovementQuery {
 		predicates:   append([]predicate.CashMovement{}, cmq.predicates...),
 		withTreasury: cmq.withTreasury.Clone(),
 		// clone intermediate query.
-		sql:  cmq.sql.Clone(),
-		path: cmq.path,
+		sql:       cmq.sql.Clone(),
+		path:      cmq.path,
+		modifiers: append([]func(*sql.Selector){}, cmq.modifiers...),
 	}
 }
 
@@ -519,6 +520,9 @@ func (cmq *CashMovementQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cmq.ctx.Unique != nil && *cmq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range cmq.modifiers {
+		m(selector)
+	}
 	for _, p := range cmq.predicates {
 		p(selector)
 	}
@@ -534,6 +538,12 @@ func (cmq *CashMovementQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cmq *CashMovementQuery) Modify(modifiers ...func(s *sql.Selector)) *CashMovementSelect {
+	cmq.modifiers = append(cmq.modifiers, modifiers...)
+	return cmq.Select()
 }
 
 // CashMovementGroupBy is the group-by builder for CashMovement entities.
@@ -624,4 +634,10 @@ func (cms *CashMovementSelect) sqlScan(ctx context.Context, root *CashMovementQu
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cms *CashMovementSelect) Modify(modifiers ...func(s *sql.Selector)) *CashMovementSelect {
+	cms.modifiers = append(cms.modifiers, modifiers...)
+	return cms
 }

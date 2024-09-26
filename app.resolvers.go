@@ -15,6 +15,7 @@ import (
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
@@ -24,9 +25,11 @@ import (
 	"mazza/ent/generated/worktask"
 	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
+	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // Signup is the resolver for the signup field.
@@ -191,7 +194,18 @@ func (r *mutationResolver) DeleteEmployee(ctx context.Context, id int) (bool, er
 // CreateProduct is the resolver for the createProduct field.
 func (r *mutationResolver) CreateProduct(ctx context.Context, input generated.CreateProductInput) (*generated.Product, error) {
 	_, currentCompany, _ := utils.GetSession(&ctx)
-	return r.client.Product.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
+	product, err := r.client.Product.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
+	if err != nil {
+		errStr := err.Error()
+		if strings.Contains(errStr, "unique") && strings.Contains(errStr, "product_name_company_products") {
+			return product, gqlerror.Errorf("name is not unique")
+		} else if strings.Contains(errStr, "unique") && strings.Contains(errStr, "product_sku_company_products") {
+			return product, gqlerror.Errorf("sku is not unique")
+		}
+		fmt.Println("err:", errStr)
+	}
+
+	return product, err
 }
 
 // UpdateProduct is the resolver for the updateProduct field.
@@ -239,7 +253,15 @@ func (r *mutationResolver) DeleteSupplier(ctx context.Context, id int) (bool, er
 // CreateTreasury is the resolver for the createTreasury field.
 func (r *mutationResolver) CreateTreasury(ctx context.Context, input generated.CreateTreasuryInput) (*generated.Treasury, error) {
 	_, currentCompany, _ := utils.GetSession(&ctx)
-	return r.client.Treasury.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
+	output, err := r.client.Treasury.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
+	if err != nil {
+		errStr := err.Error()
+		if strings.Contains(errStr, "unique") && strings.Contains(errStr, "treasury_name_company_treasuries") {
+			return output, gqlerror.Errorf("name is not unique")
+		}
+		fmt.Println("err:", errStr)
+	}
+	return output, err
 }
 
 // UpdateTreasury is the resolver for the updateTreasury field.
@@ -378,6 +400,66 @@ func (r *queryResolver) Customers(ctx context.Context, where *generated.Customer
 	return query.All(ctx)
 }
 
+// AggregateCustomers is the resolver for the aggregateCustomers field.
+func (r *queryResolver) AggregateCustomers(ctx context.Context, where *generated.CustomerWhereInput, groupBy []model.CustomersGroupBy) ([]*model.CustomerAggregationOutput, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	var result []*model.CustomerAggregationOutput
+	var agg []struct {
+		Company int `json:"company_customers"`
+		Count   int `json:"count"`
+	}
+
+	query, err := where.Filter(r.client.Customer.Query())
+	if err != nil {
+		return nil, err
+	}
+	err = query.Where(customer.HasCompanyWith(company.IDEQ(currentCompany.ID))).
+		GroupBy(customer.CompanyColumn).
+		Aggregate(generated.Count()).Scan(ctx, &agg)
+
+	if err == nil {
+		for _, item := range agg {
+			result = append(result, &model.CustomerAggregationOutput{
+				Company: &item.Company,
+				Count:   &item.Count,
+			})
+		}
+	}
+
+	return result, err
+}
+
+// AggregateReceivables is the resolver for the aggregateReceivables field.
+func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	var result []*model.ReceivableAggregationOutput
+	var agg []struct {
+		Company int     `json:"company_customers"`
+		Count   int     `json:"count"`
+		Sum     float64 `json:"sum"`
+	}
+
+	query, err := where.Filter(r.client.Receivable.Query())
+	if err != nil {
+		return nil, err
+	}
+	err = query.Where(receivable.HasCustomerWith(customer.HasCompanyWith(company.IDEQ(currentCompany.ID)))).
+		// GroupBy().
+		Aggregate(generated.Count(), generated.Sum(receivable.FieldOutstandingBalance)).Scan(ctx, &agg)
+
+	if err == nil {
+		for _, item := range agg {
+			result = append(result, &model.ReceivableAggregationOutput{
+				Company: &item.Company,
+				Count:   &item.Count,
+				Sum:     &item.Sum,
+			})
+		}
+	}
+
+	return result, err
+}
+
 // Employees is the resolver for the employees field.
 func (r *queryResolver) Employees(ctx context.Context, where *generated.EmployeeWhereInput) ([]*generated.Employee, error) {
 	companyQ := utils.CurrentCompanyQuery(&ctx)
@@ -445,7 +527,7 @@ func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.P
 // NumberOfOutOfStock is the resolver for the numberOfOutOfStock field.
 func (r *queryResolver) NumberOfOutOfStock(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
 	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	productQ := product.And(product.CategoryEQ(product.CategoryMerchandise))
+	productQ := product.And(product.CategoryEQ(product.CategoryMERCHANDISE))
 	query, err := where.Filter(r.client.Product.Query().Where(companyQ, productQ))
 	if err != nil {
 		return 0, err

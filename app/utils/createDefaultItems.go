@@ -14,7 +14,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	descr := "Gerado automaticamente"
 	isDefault := true
 	defaultProduct, err := client.Product.Create().SetInput(ent.CreateProductInput{
-		Category:    product.CategoryOther,
+		Category:    product.CategoryOTHER,
 		Description: descr,
 		IsDefault:   &isDefault,
 		Name:        "Produtos/serviços diversos",
@@ -26,7 +26,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	}
 
 	defaultCustomer, err := client.Customer.Create().SetInput(ent.CreateCustomerInput{
-		Description: descr,
+		Description: &descr,
 		IsDefault:   &isDefault,
 		Name:        "Clientes diversos",
 		TaxId:       "----",
@@ -46,7 +46,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	}
 
 	defaultTreasury, err := client.Treasury.Create().SetInput(ent.CreateTreasuryInput{
-		Category:      treasury.CategoryCash,
+		Category:      treasury.CategoryCASH,
 		Currency:      treasury.CurrencyMzn,
 		Description:   &descr,
 		IsDefault:     &isDefault,

@@ -1146,19 +1146,14 @@ func (c *CustomerConnection) build(nodes []*Customer, pager *customerPager, afte
 type CustomerPaginateOption func(*customerPager) error
 
 // WithCustomerOrder configures pagination ordering.
-func WithCustomerOrder(order *CustomerOrder) CustomerPaginateOption {
-	if order == nil {
-		order = DefaultCustomerOrder
-	}
-	o := *order
+func WithCustomerOrder(order []*CustomerOrder) CustomerPaginateOption {
 	return func(pager *customerPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultCustomerOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -1176,7 +1171,7 @@ func WithCustomerFilter(filter func(*CustomerQuery) (*CustomerQuery, error)) Cus
 
 type customerPager struct {
 	reverse bool
-	order   *CustomerOrder
+	order   []*CustomerOrder
 	filter  func(*CustomerQuery) (*CustomerQuery, error)
 }
 
@@ -1187,8 +1182,10 @@ func newCustomerPager(opts []CustomerPaginateOption, reverse bool) (*customerPag
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultCustomerOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -1201,48 +1198,87 @@ func (p *customerPager) applyFilter(query *CustomerQuery) (*CustomerQuery, error
 }
 
 func (p *customerPager) toCursor(c *Customer) Cursor {
-	return p.order.Field.toCursor(c)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(c).Value)
+	}
+	return Cursor{ID: c.ID, Value: cs}
 }
 
 func (p *customerPager) applyCursors(query *CustomerQuery, after, before *Cursor) (*CustomerQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultCustomerOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultCustomerOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *customerPager) applyOrder(query *CustomerQuery) *CustomerQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultCustomerOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultCustomerOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultCustomerOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *customerPager) orderExpr(query *CustomerQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultCustomerOrder.Field {
-			b.Comma().Ident(DefaultCustomerOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultCustomerOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -1294,6 +1330,53 @@ func (c *CustomerQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// CustomerOrderFieldCity orders Customer by city.
+	CustomerOrderFieldCity = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.City, nil
+		},
+		column: customer.FieldCity,
+		toTerm: customer.ByCity,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.City,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f CustomerOrderField) String() string {
+	var str string
+	switch f.column {
+	case CustomerOrderFieldCity.column:
+		str = "CITY"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f CustomerOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("CustomerOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CITY":
+		*f = *CustomerOrderFieldCity
+	default:
+		return fmt.Errorf("%s is not a valid CustomerOrderField", str)
+	}
+	return nil
 }
 
 // CustomerOrderField defines the ordering field of Customer.
@@ -2734,19 +2817,14 @@ func (c *ReceivableConnection) build(nodes []*Receivable, pager *receivablePager
 type ReceivablePaginateOption func(*receivablePager) error
 
 // WithReceivableOrder configures pagination ordering.
-func WithReceivableOrder(order *ReceivableOrder) ReceivablePaginateOption {
-	if order == nil {
-		order = DefaultReceivableOrder
-	}
-	o := *order
+func WithReceivableOrder(order []*ReceivableOrder) ReceivablePaginateOption {
 	return func(pager *receivablePager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultReceivableOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -2764,7 +2842,7 @@ func WithReceivableFilter(filter func(*ReceivableQuery) (*ReceivableQuery, error
 
 type receivablePager struct {
 	reverse bool
-	order   *ReceivableOrder
+	order   []*ReceivableOrder
 	filter  func(*ReceivableQuery) (*ReceivableQuery, error)
 }
 
@@ -2775,8 +2853,10 @@ func newReceivablePager(opts []ReceivablePaginateOption, reverse bool) (*receiva
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultReceivableOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -2789,48 +2869,87 @@ func (p *receivablePager) applyFilter(query *ReceivableQuery) (*ReceivableQuery,
 }
 
 func (p *receivablePager) toCursor(r *Receivable) Cursor {
-	return p.order.Field.toCursor(r)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(r).Value)
+	}
+	return Cursor{ID: r.ID, Value: cs}
 }
 
 func (p *receivablePager) applyCursors(query *ReceivableQuery, after, before *Cursor) (*ReceivableQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultReceivableOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultReceivableOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *receivablePager) applyOrder(query *ReceivableQuery) *ReceivableQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultReceivableOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultReceivableOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultReceivableOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *receivablePager) orderExpr(query *ReceivableQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultReceivableOrder.Field {
-			b.Comma().Ident(DefaultReceivableOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultReceivableOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -2882,6 +3001,71 @@ func (r *ReceivableQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// ReceivableOrderFieldDaysDue orders Receivable by daysDue.
+	ReceivableOrderFieldDaysDue = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.DaysDue, nil
+		},
+		column: receivable.FieldDaysDue,
+		toTerm: receivable.ByDaysDue,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.DaysDue,
+			}
+		},
+	}
+	// ReceivableOrderFieldStatus orders Receivable by status.
+	ReceivableOrderFieldStatus = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.Status, nil
+		},
+		column: receivable.FieldStatus,
+		toTerm: receivable.ByStatus,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.Status,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f ReceivableOrderField) String() string {
+	var str string
+	switch f.column {
+	case ReceivableOrderFieldDaysDue.column:
+		str = "DAYSDUE"
+	case ReceivableOrderFieldStatus.column:
+		str = "STATUS"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f ReceivableOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *ReceivableOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("ReceivableOrderField %T must be a string", v)
+	}
+	switch str {
+	case "DAYSDUE":
+		*f = *ReceivableOrderFieldDaysDue
+	case "STATUS":
+		*f = *ReceivableOrderFieldStatus
+	default:
+		return fmt.Errorf("%s is not a valid ReceivableOrderField", str)
+	}
+	return nil
 }
 
 // ReceivableOrderField defines the ordering field of Receivable.

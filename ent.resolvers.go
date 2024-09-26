@@ -30,7 +30,7 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []int) ([]generated.Noder
 
 // AccountingEntries is the resolver for the accountingEntries field.
 func (r *queryResolver) AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) (*generated.AccountingEntryConnection, error) {
-	currentCompany, _, _ := utils.GetSession(&ctx)
+	_, currentCompany, _ := utils.GetSession(&ctx)
 	compFilter := accountingentry.HasCompanyWith(company.IDEQ(currentCompany.ID))
 	return r.client.AccountingEntry.Query().Where(compFilter).Paginate(
 		ctx, after, first, before, last,
@@ -41,7 +41,7 @@ func (r *queryResolver) AccountingEntries(ctx context.Context, after *entgql.Cur
 
 // CashMovements is the resolver for the cashMovements field.
 func (r *queryResolver) CashMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.CashMovementWhereInput) (*generated.CashMovementConnection, error) {
-	currentCompany, _, _ := utils.GetSession(&ctx)
+	_, currentCompany, _ := utils.GetSession(&ctx)
 	compFilter := cashmovement.HasTreasuryWith(treasury.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 
 	return r.client.CashMovement.Query().Where(compFilter).Paginate(
@@ -75,14 +75,17 @@ func (r *queryResolver) ProductMovements(ctx context.Context, after *entgql.Curs
 }
 
 // Receivables is the resolver for the receivables field.
-func (r *queryResolver) Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error) {
-	currentUser, _, _ := utils.GetSession(&ctx)
+func (r *queryResolver) Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ReceivableOrder, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error) {
+	currentUser, currentCompany, _ := utils.GetSession(&ctx)
 	userQ := user.IDEQ(currentUser.ID)
 
-	return r.client.User.Query().Where(userQ).QueryAssignedRoles().QueryCompany().QueryCustomers().QueryReceivables().Paginate(
-		ctx, after, first, before, last,
-		generated.WithReceivableFilter(where.Filter),
-	)
+	return r.client.User.Query().Where(userQ).
+		QueryCompany().Where(company.IDEQ(currentCompany.ID)).
+		QueryCustomers().QueryReceivables().
+		Paginate(
+			ctx, after, first, before, last,
+			generated.WithReceivableFilter(where.Filter),
+		)
 }
 
 // Tokens is the resolver for the tokens field.

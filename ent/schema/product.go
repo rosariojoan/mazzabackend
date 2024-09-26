@@ -7,6 +7,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // Product holds the schema definition for the Product entity.
@@ -30,7 +31,7 @@ func (Product) Fields() []ent.Field {
 		field.Int("price").NonNegative().Default(0),
 		field.String("sku").NotEmpty(),
 		field.Float("stock").Min(0).Default(0),
-		field.Enum("category").Values("merchandise", "other", "service").Annotations(entgql.OrderField("CATEGORY")),
+		field.Enum("category").Values("MERCHANDISE", "OTHER", "SERVICE").Annotations(entgql.OrderField("CATEGORY")),
 		field.Float("unitCost").Min(0),
 	}
 }
@@ -50,5 +51,13 @@ func (Product) Annotations() []schema.Annotation {
 		// entgql.RelayConnection(),
 		// entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+	}
+}
+
+// Create indexes
+func (Product) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("name").Edges("company").Unique(),
+		index.Fields("sku").Edges("company").Unique(),
 	}
 }

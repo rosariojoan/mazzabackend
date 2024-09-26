@@ -19,8 +19,9 @@ import (
 // ProductMovementUpdate is the builder for updating ProductMovement entities.
 type ProductMovementUpdate struct {
 	config
-	hooks    []Hook
-	mutation *ProductMovementMutation
+	hooks     []Hook
+	mutation  *ProductMovementMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the ProductMovementUpdate builder.
@@ -251,6 +252,12 @@ func (pmu *ProductMovementUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (pmu *ProductMovementUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProductMovementUpdate {
+	pmu.modifiers = append(pmu.modifiers, modifiers...)
+	return pmu
+}
+
 func (pmu *ProductMovementUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := pmu.check(); err != nil {
 		return n, err
@@ -331,6 +338,7 @@ func (pmu *ProductMovementUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(pmu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{productmovement.Label}
@@ -346,9 +354,10 @@ func (pmu *ProductMovementUpdate) sqlSave(ctx context.Context) (n int, err error
 // ProductMovementUpdateOne is the builder for updating a single ProductMovement entity.
 type ProductMovementUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *ProductMovementMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *ProductMovementMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -586,6 +595,12 @@ func (pmuo *ProductMovementUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (pmuo *ProductMovementUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *ProductMovementUpdateOne {
+	pmuo.modifiers = append(pmuo.modifiers, modifiers...)
+	return pmuo
+}
+
 func (pmuo *ProductMovementUpdateOne) sqlSave(ctx context.Context) (_node *ProductMovement, err error) {
 	if err := pmuo.check(); err != nil {
 		return _node, err
@@ -683,6 +698,7 @@ func (pmuo *ProductMovementUpdateOne) sqlSave(ctx context.Context) (_node *Produ
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(pmuo.modifiers...)
 	_node = &ProductMovement{config: pmuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

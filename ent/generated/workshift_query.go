@@ -32,8 +32,8 @@ type WorkshiftQuery struct {
 	withEditRequest *WorkshiftQuery
 	withWorkShift   *WorkshiftQuery
 	withFKs         bool
-	modifiers       []func(*sql.Selector)
 	loadTotal       []func(context.Context, []*Workshift) error
+	modifiers       []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -401,8 +401,9 @@ func (wq *WorkshiftQuery) Clone() *WorkshiftQuery {
 		withEditRequest: wq.withEditRequest.Clone(),
 		withWorkShift:   wq.withWorkShift.Clone(),
 		// clone intermediate query.
-		sql:  wq.sql.Clone(),
-		path: wq.path,
+		sql:       wq.sql.Clone(),
+		path:      wq.path,
+		modifiers: append([]func(*sql.Selector){}, wq.modifiers...),
 	}
 }
 
@@ -891,6 +892,9 @@ func (wq *WorkshiftQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if wq.ctx.Unique != nil && *wq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range wq.modifiers {
+		m(selector)
+	}
 	for _, p := range wq.predicates {
 		p(selector)
 	}
@@ -906,6 +910,12 @@ func (wq *WorkshiftQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (wq *WorkshiftQuery) Modify(modifiers ...func(s *sql.Selector)) *WorkshiftSelect {
+	wq.modifiers = append(wq.modifiers, modifiers...)
+	return wq.Select()
 }
 
 // WorkshiftGroupBy is the group-by builder for Workshift entities.
@@ -996,4 +1006,10 @@ func (ws *WorkshiftSelect) sqlScan(ctx context.Context, root *WorkshiftQuery, v 
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (ws *WorkshiftSelect) Modify(modifiers ...func(s *sql.Selector)) *WorkshiftSelect {
+	ws.modifiers = append(ws.modifiers, modifiers...)
+	return ws
 }

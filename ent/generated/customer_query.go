@@ -28,8 +28,8 @@ type CustomerQuery struct {
 	withCompany          *CompanyQuery
 	withReceivables      *ReceivableQuery
 	withFKs              bool
-	modifiers            []func(*sql.Selector)
 	loadTotal            []func(context.Context, []*Customer) error
+	modifiers            []func(*sql.Selector)
 	withNamedReceivables map[string]*ReceivableQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -306,8 +306,9 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		withCompany:     cq.withCompany.Clone(),
 		withReceivables: cq.withReceivables.Clone(),
 		// clone intermediate query.
-		sql:  cq.sql.Clone(),
-		path: cq.path,
+		sql:       cq.sql.Clone(),
+		path:      cq.path,
+		modifiers: append([]func(*sql.Selector){}, cq.modifiers...),
 	}
 }
 
@@ -603,6 +604,9 @@ func (cq *CustomerQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if cq.ctx.Unique != nil && *cq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range cq.modifiers {
+		m(selector)
+	}
 	for _, p := range cq.predicates {
 		p(selector)
 	}
@@ -618,6 +622,12 @@ func (cq *CustomerQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cq *CustomerQuery) Modify(modifiers ...func(s *sql.Selector)) *CustomerSelect {
+	cq.modifiers = append(cq.modifiers, modifiers...)
+	return cq.Select()
 }
 
 // WithNamedReceivables tells the query-builder to eager-load the nodes that are connected to the "receivables"
@@ -722,4 +732,10 @@ func (cs *CustomerSelect) sqlScan(ctx context.Context, root *CustomerQuery, v an
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (cs *CustomerSelect) Modify(modifiers ...func(s *sql.Selector)) *CustomerSelect {
+	cs.modifiers = append(cs.modifiers, modifiers...)
+	return cs
 }

@@ -21,8 +21,9 @@ import (
 // WorkshiftUpdate is the builder for updating Workshift entities.
 type WorkshiftUpdate struct {
 	config
-	hooks    []Hook
-	mutation *WorkshiftMutation
+	hooks     []Hook
+	mutation  *WorkshiftMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the WorkshiftUpdate builder.
@@ -406,6 +407,12 @@ func (wu *WorkshiftUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wu *WorkshiftUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorkshiftUpdate {
+	wu.modifiers = append(wu.modifiers, modifiers...)
+	return wu
+}
+
 func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := wu.check(); err != nil {
 		return n, err
@@ -640,6 +647,7 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, wu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{workshift.Label}
@@ -655,9 +663,10 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 // WorkshiftUpdateOne is the builder for updating a single Workshift entity.
 type WorkshiftUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *WorkshiftMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *WorkshiftMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -1048,6 +1057,12 @@ func (wuo *WorkshiftUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (wuo *WorkshiftUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *WorkshiftUpdateOne {
+	wuo.modifiers = append(wuo.modifiers, modifiers...)
+	return wuo
+}
+
 func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, err error) {
 	if err := wuo.check(); err != nil {
 		return _node, err
@@ -1299,6 +1314,7 @@ func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(wuo.modifiers...)
 	_node = &Workshift{config: wuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -10,6 +10,12 @@ input EntryProductInput {
     quantity: Int!
 }
 
+input EntryCustomerInput {
+    id:      ID!
+    amount:  Float!
+    daysDue: Int!
+}
+
 input EntrySupplierInput {
     id:      ID!
     amount:  Float!
@@ -24,47 +30,47 @@ input EntryItem {
     label:       String!
 }
 
-type InvoiceIssuer {
+input InvoiceIssuer {
 	name:    String!
 	taxID:   String!
 	address: String!
-	city:    String
-	country: String
-	phone:   String
-	email:   String
+	city:    String!
+	country: String!
+	phone:   String!
+	email:   String!
 }
 
-type InvoiceCustomer {
+input InvoiceCustomer {
     name:    String!
-	taxID:   String
-	address: String
-	city:    String
-	country: String
-	phone:   String
-	email:   String
+	taxID:   String!
+	address: String!
+	city:    String!
+	country: String!
+	phone:   String!
+	email:   String!
 }
 
-type InvoiceTotals {
+input InvoiceTotals {
 	subtotal: String!
 	vatRate:  String!
 	vat:      String!
 	total:    String!
 }
 
-type PaymentDetails {
-	bankName:      String
-	accountNumber: String
-	iban:          String
-	dueDate:       String
+input PaymentDetails {
+	bankName:      String!
+	accountNumber: String!
+	iban:          String!
+	dueDate:       String!
 }
 
-type Invoice {
+input Invoice {
     date:            String!
     filename:        String!
     keywords:        String!
     number:          String!
     paymentDetails:  PaymentDetails!
-    title:           String!
+    title:           String
     issuerDetails:   InvoiceIssuer!
     customerDetails: InvoiceCustomer!
     body:            [[String!]!]!
@@ -74,6 +80,11 @@ type Invoice {
 enum PurchaseOperationType {
     PURCHASE
     PURCHASE_RETURN
+}
+
+enum SalesOperationType {
+    SALES
+    SALES_RETURN
 }
 
 enum AccountType {
@@ -103,7 +114,125 @@ input PurchaseRegistrationInput {
 	totalTransactionValue: Float!
 }
 
+input SalesRegistrationInput {
+	main:                  [EntryItem!]!
+	counterpart:           [EntryItem!]!
+	cash:                  [EntryTreasuryInput!]
+	customer:              EntryCustomerInput!
+	date:                  Time!
+	description:           String
+	operationType:         SalesOperationType!
+	products:              [EntryProductInput!]!
+	totalTransactionValue: Float!
+	issueInvoice:		   Boolean!
+	invoice:			   Invoice
+}
+
+input SalesQuotationInput {
+	data: Invoice!
+}
+
+input LedgerDownloadInput {
+	startDate: Time!
+	endDate: Time!
+}
+
+input ReportInput {
+	companyID: ID
+	date: Time!
+}
+
+type TrialBalanceRowItem {
+	account: String!
+    label:   String!
+    debit:   Float!
+    credit:  Float!
+    balance: Float!
+}
+
+type ReportRowItem {
+	account: String!
+	label:   String!
+	value:   Float!
+}
+
+type Period {
+	start: Time!
+	end:   Time!
+}
+
+type Assets {
+	currentAssets:      [ReportRowItem]!
+	totalCurrentAssets: Float!
+	fixedAssets:        [ReportRowItem]!
+	totalFixedAssets:   Float!
+	totalAssets:        Float!
+}
+
+type Liabilities {
+	currentLiabilities:         [ReportRowItem]!
+	totalCurrentLiabilities:    Float!
+	nonCurrentLiabilities:      [ReportRowItem]!
+	totalNonCurrentLiabilities: Float!
+	totalLiabilities:           Float!
+}
+
+type Equity {
+	equity:      [ReportRowItem]!
+	totalEquity: Float!
+}
+
+
+type IncomeStatementOuput {
+	revenues:          [ReportRowItem]!
+    netRevenue:        Float!
+    expenses:          [ReportRowItem]!
+    totalExpenses:     Float!
+    earningsBeforeTax: Float!
+    taxExpense:        Float!
+    netIncome:         Float!
+    period:            Period!
+    isProvisional:     Boolean!
+}
+
+type BalanceSheetOuput {
+	assets:                  Assets!
+    liabilities:             Liabilities!
+    equity:                  Equity!
+    totalLiabilityAndEquity: Float!
+    period:                  Period!
+    isProvisional:           Boolean!
+}
+
+type FileOutput {
+	encoding: String!
+	kind: String!
+	name: String!
+	data: String!
+}
+
+# Graphql output from sales and sales quotation entry
+type FileDetailsOutput {
+	message: String!
+	file: FileOutput
+}
+
 # -------------------------------------------------
 extend type Mutation {
     registerPurchase(input: PurchaseRegistrationInput!): String!
+	registerSales(input: SalesRegistrationInput!): FileDetailsOutput!
+	salesQuotation(input: SalesQuotationInput!): FileDetailsOutput!
+}
+
+extend type Query {
+	trialBalance(date: Time!): [TrialBalanceRowItem]!
+	incomeStatement(date: Time!): IncomeStatementOuput!
+	balanceSheet(date: Time!): BalanceSheetOuput!
+	# cashFlow(date: Time!): CashFlowRowItem!
+
+	downloadLedger(where: LedgerDownloadInput!): FileDetailsOutput!
+	downloadTrialBalance(where: ReportInput!): FileDetailsOutput!
+	downloadIncomeStatement(where: ReportInput!): FileDetailsOutput!
+	downloadBalanceSheet(where: ReportInput!): FileDetailsOutput!
+	# downloadCashFlow(where: CashFlowDownloadInput!): FileDetailsOutput!
 }

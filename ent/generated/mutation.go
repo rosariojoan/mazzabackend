@@ -5413,9 +5413,22 @@ func (m *CustomerMutation) OldDescription(ctx context.Context) (v string, err er
 	return oldValue.Description, nil
 }
 
+// ClearDescription clears the value of the "description" field.
+func (m *CustomerMutation) ClearDescription() {
+	m.description = nil
+	m.clearedFields[customer.FieldDescription] = struct{}{}
+}
+
+// DescriptionCleared returns if the "description" field was cleared in this mutation.
+func (m *CustomerMutation) DescriptionCleared() bool {
+	_, ok := m.clearedFields[customer.FieldDescription]
+	return ok
+}
+
 // ResetDescription resets all changes to the "description" field.
 func (m *CustomerMutation) ResetDescription() {
 	m.description = nil
+	delete(m.clearedFields, customer.FieldDescription)
 }
 
 // SetEmail sets the "email" field.
@@ -5449,9 +5462,22 @@ func (m *CustomerMutation) OldEmail(ctx context.Context) (v string, err error) {
 	return oldValue.Email, nil
 }
 
+// ClearEmail clears the value of the "email" field.
+func (m *CustomerMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[customer.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *CustomerMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[customer.FieldEmail]
+	return ok
+}
+
 // ResetEmail resets all changes to the "email" field.
 func (m *CustomerMutation) ResetEmail() {
 	m.email = nil
+	delete(m.clearedFields, customer.FieldEmail)
 }
 
 // SetIsDefault sets the "isDefault" field.
@@ -5966,6 +5992,12 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldDeletedAt) {
 		fields = append(fields, customer.FieldDeletedAt)
 	}
+	if m.FieldCleared(customer.FieldDescription) {
+		fields = append(fields, customer.FieldDescription)
+	}
+	if m.FieldCleared(customer.FieldEmail) {
+		fields = append(fields, customer.FieldEmail)
+	}
 	if m.FieldCleared(customer.FieldIsDefault) {
 		fields = append(fields, customer.FieldIsDefault)
 	}
@@ -5985,6 +6017,12 @@ func (m *CustomerMutation) ClearField(name string) error {
 	switch name {
 	case customer.FieldDeletedAt:
 		m.ClearDeletedAt()
+		return nil
+	case customer.FieldDescription:
+		m.ClearDescription()
+		return nil
+	case customer.FieldEmail:
+		m.ClearEmail()
 		return nil
 	case customer.FieldIsDefault:
 		m.ClearIsDefault()
@@ -7434,6 +7472,7 @@ type FileMutation struct {
 	category       *file.Category
 	extension      *string
 	size           *string
+	uri            *string
 	url            *string
 	description    *string
 	clearedFields  map[string]struct{}
@@ -7773,6 +7812,42 @@ func (m *FileMutation) ResetSize() {
 	m.size = nil
 }
 
+// SetURI sets the "uri" field.
+func (m *FileMutation) SetURI(s string) {
+	m.uri = &s
+}
+
+// URI returns the value of the "uri" field in the mutation.
+func (m *FileMutation) URI() (r string, exists bool) {
+	v := m.uri
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldURI returns the old "uri" field's value of the File entity.
+// If the File object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FileMutation) OldURI(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldURI is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldURI requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldURI: %w", err)
+	}
+	return oldValue.URI, nil
+}
+
+// ResetURI resets all changes to the "uri" field.
+func (m *FileMutation) ResetURI() {
+	m.uri = nil
+}
+
 // SetURL sets the "url" field.
 func (m *FileMutation) SetURL(s string) {
 	m.url = &s
@@ -7957,7 +8032,7 @@ func (m *FileMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *FileMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.createdAt != nil {
 		fields = append(fields, file.FieldCreatedAt)
 	}
@@ -7975,6 +8050,9 @@ func (m *FileMutation) Fields() []string {
 	}
 	if m.size != nil {
 		fields = append(fields, file.FieldSize)
+	}
+	if m.uri != nil {
+		fields = append(fields, file.FieldURI)
 	}
 	if m.url != nil {
 		fields = append(fields, file.FieldURL)
@@ -8002,6 +8080,8 @@ func (m *FileMutation) Field(name string) (ent.Value, bool) {
 		return m.Extension()
 	case file.FieldSize:
 		return m.Size()
+	case file.FieldURI:
+		return m.URI()
 	case file.FieldURL:
 		return m.URL()
 	case file.FieldDescription:
@@ -8027,6 +8107,8 @@ func (m *FileMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldExtension(ctx)
 	case file.FieldSize:
 		return m.OldSize(ctx)
+	case file.FieldURI:
+		return m.OldURI(ctx)
 	case file.FieldURL:
 		return m.OldURL(ctx)
 	case file.FieldDescription:
@@ -8081,6 +8163,13 @@ func (m *FileMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSize(v)
+		return nil
+	case file.FieldURI:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetURI(v)
 		return nil
 	case file.FieldURL:
 		v, ok := value.(string)
@@ -8171,6 +8260,9 @@ func (m *FileMutation) ResetField(name string) error {
 		return nil
 	case file.FieldSize:
 		m.ResetSize()
+		return nil
+	case file.FieldURI:
+		m.ResetURI()
 		return nil
 	case file.FieldURL:
 		m.ResetURL()

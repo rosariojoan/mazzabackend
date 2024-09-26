@@ -962,8 +962,8 @@ input CreateCustomerInput {
   address: String!
   city: String!
   country: String!
-  description: String!
-  email: String!
+  description: String
+  email: String
   isdefault: Boolean
   name: String!
   phone: String!
@@ -1003,6 +1003,10 @@ input CreateFileInput {
   category: FileCategory!
   extension: String!
   size: String!
+  """
+  uri used to handle the file from the storage
+  """
+  uri: String!
   url: String!
   description: String!
   companyID: ID
@@ -1234,14 +1238,33 @@ type Customer implements Node {
   address: String!
   city: String!
   country: String!
-  description: String!
-  email: String!
+  description: String
+  email: String
   isdefault: Boolean @goField(name: "IsDefault", forceResolver: false)
   name: String!
   phone: String!
   taxid: String! @goField(name: "TaxId", forceResolver: false)
   company: Company
   receivables: [Receivable!]
+}
+"""
+Ordering options for Customer connections
+"""
+input CustomerOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Customers.
+  """
+  field: CustomerOrderField!
+}
+"""
+Properties by which Customer connections can be ordered.
+"""
+enum CustomerOrderField {
+  CITY
 }
 """
 CustomerWhereInput is used for filtering Customer objects.
@@ -1359,6 +1382,8 @@ input CustomerWhereInput {
   descriptionContains: String
   descriptionHasPrefix: String
   descriptionHasSuffix: String
+  descriptionIsNil: Boolean
+  descriptionNotNil: Boolean
   descriptionEqualFold: String
   descriptionContainsFold: String
   """
@@ -1375,6 +1400,8 @@ input CustomerWhereInput {
   emailContains: String
   emailHasPrefix: String
   emailHasSuffix: String
+  emailIsNil: Boolean
+  emailNotNil: Boolean
   emailEqualFold: String
   emailContainsFold: String
   """
@@ -2049,9 +2076,9 @@ type Product implements Node {
 ProductCategory is enum for the field category
 """
 enum ProductCategory @goModel(model: "mazza/ent/generated/product.Category") {
-  merchandise
-  other
-  service
+  MERCHANDISE
+  OTHER
+  SERVICE
 }
 type ProductMovement implements Node {
   id: ID!
@@ -2559,6 +2586,11 @@ type Query {
     last: Int
 
     """
+    Ordering options for Receivables returned from the connection.
+    """
+    orderBy: [ReceivableOrder!]
+
+    """
     Filtering options for Receivables returned from the connection.
     """
     where: ReceivableWhereInput
@@ -2608,6 +2640,26 @@ type ReceivableEdge {
   A cursor for use in pagination.
   """
   cursor: Cursor!
+}
+"""
+Ordering options for Receivable connections
+"""
+input ReceivableOrder {
+  """
+  The ordering direction.
+  """
+  direction: OrderDirection! = ASC
+  """
+  The field by which to order Receivables.
+  """
+  field: ReceivableOrderField!
+}
+"""
+Properties by which Receivable connections can be ordered.
+"""
+enum ReceivableOrderField {
+  DAYSDUE
+  STATUS
 }
 """
 ReceivableStatus is enum for the field status
@@ -3063,8 +3115,8 @@ type Treasury implements Node {
 TreasuryCategory is enum for the field category
 """
 enum TreasuryCategory @goModel(model: "mazza/ent/generated/treasury.Category") {
-  deposit
-  cash
+  DEPOSIT
+  CASH
 }
 """
 TreasuryCurrency is enum for the field currency
@@ -3412,7 +3464,9 @@ input UpdateCustomerInput {
   city: String
   country: String
   description: String
+  clearDescription: Boolean
   email: String
+  clearEmail: Boolean
   isdefault: Boolean
   clearIsDefault: Boolean
   name: String
@@ -3469,6 +3523,10 @@ input UpdateFileInput {
   category: FileCategory
   extension: String
   size: String
+  """
+  uri used to handle the file from the storage
+  """
+  uri: String
   url: String
   description: String
   companyID: ID

@@ -33,7 +33,7 @@ func (Treasury) Fields() []ent.Field {
 		field.Bool("isDefault").Optional().Default(false),
 		field.Bool("isMainAccount").Optional().Default(false),
 		field.String("name").NotEmpty(),
-		field.Enum("category").Values("deposit", "cash"),
+		field.Enum("category").Values("DEPOSIT", "CASH"),
 		field.String("swiftCode").Optional(),
 	}
 }

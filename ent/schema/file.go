@@ -30,6 +30,7 @@ func (File) Fields() []ent.Field {
 		field.Enum("category").Values(fileCategory...).Annotations(entgql.OrderField("CATEGORY")),
 		field.String("extension"),
 		field.String("size"),
+		field.String("uri").NotEmpty().Sensitive().Comment("uri used to handle the file from the storage"),
 		field.String("url").Unique(),
 		field.String("description"),
 	}

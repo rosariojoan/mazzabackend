@@ -182,6 +182,10 @@ func init() {
 	file.DefaultUpdatedAt = fileDescUpdatedAt.Default.(func() time.Time)
 	// file.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	file.UpdateDefaultUpdatedAt = fileDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// fileDescURI is the schema descriptor for uri field.
+	fileDescURI := fileFields[3].Descriptor()
+	// file.URIValidator is a validator for the "uri" field. It is called by the builders before save.
+	file.URIValidator = fileDescURI.Validators[0].(func(string) error)
 	payableMixin := schema.Payable{}.Mixin()
 	payableMixinFields0 := payableMixin[0].Fields()
 	_ = payableMixinFields0

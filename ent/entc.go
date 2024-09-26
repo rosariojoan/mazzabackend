@@ -26,7 +26,13 @@ func main() {
 		entc.Extensions(ex),
 		entc.TemplateDir("./ent/template"),
 	}
+
+	// https://entgo.io/docs/feature-flags/#modify-example-1
 	config := gen.Config{
+		Features: []gen.Feature{
+			gen.FeatureModifier,
+			gen.FeatureExecQuery,
+		},
 		Package: "mazza/ent/generated",
 		Target: "./ent/generated",
 	}

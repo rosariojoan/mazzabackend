@@ -20,8 +20,9 @@ import (
 // AccountingEntryUpdate is the builder for updating AccountingEntry entities.
 type AccountingEntryUpdate struct {
 	config
-	hooks    []Hook
-	mutation *AccountingEntryMutation
+	hooks     []Hook
+	mutation  *AccountingEntryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the AccountingEntryUpdate builder.
@@ -347,6 +348,12 @@ func (aeu *AccountingEntryUpdate) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (aeu *AccountingEntryUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AccountingEntryUpdate {
+	aeu.modifiers = append(aeu.modifiers, modifiers...)
+	return aeu
+}
+
 func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := aeu.check(); err != nil {
 		return n, err
@@ -468,6 +475,7 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(aeu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, aeu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{accountingentry.Label}
@@ -483,9 +491,10 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 // AccountingEntryUpdateOne is the builder for updating a single AccountingEntry entity.
 type AccountingEntryUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *AccountingEntryMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *AccountingEntryMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updatedAt" field.
@@ -818,6 +827,12 @@ func (aeuo *AccountingEntryUpdateOne) check() error {
 	return nil
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (aeuo *AccountingEntryUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AccountingEntryUpdateOne {
+	aeuo.modifiers = append(aeuo.modifiers, modifiers...)
+	return aeuo
+}
+
 func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *AccountingEntry, err error) {
 	if err := aeuo.check(); err != nil {
 		return _node, err
@@ -956,6 +971,7 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	_spec.AddModifiers(aeuo.modifiers...)
 	_node = &AccountingEntry{config: aeuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

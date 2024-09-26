@@ -46,14 +46,14 @@ func LoginRequired(c *gin.Context) {
 			return
 		}
 
-		user, err := inits.DB.User.Get(c, int(claims["id"].(float64)))
+		user, err := inits.Client.User.Get(c, int(claims["id"].(float64)))
 		if user.ID == 0 || err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
-		company, err := inits.DB.Company.Get(c, int(claims["companyID"].(float64)))
+		company, err := inits.Client.Company.Get(c, int(claims["companyID"].(float64)))
 		if company.ID == 0 || err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)

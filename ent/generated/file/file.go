@@ -29,6 +29,8 @@ const (
 	FieldExtension = "extension"
 	// FieldSize holds the string denoting the size field in the database.
 	FieldSize = "size"
+	// FieldURI holds the string denoting the uri field in the database.
+	FieldURI = "uri"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
 	// FieldDescription holds the string denoting the description field in the database.
@@ -64,6 +66,7 @@ var Columns = []string{
 	FieldCategory,
 	FieldExtension,
 	FieldSize,
+	FieldURI,
 	FieldURL,
 	FieldDescription,
 }
@@ -97,6 +100,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// URIValidator is a validator for the "uri" field. It is called by the builders before save.
+	URIValidator func(string) error
 )
 
 // Category defines the type for the "category" enum field.
@@ -158,6 +163,11 @@ func ByExtension(opts ...sql.OrderTermOption) OrderOption {
 // BySize orders the results by the size field.
 func BySize(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSize, opts...).ToFunc()
+}
+
+// ByURI orders the results by the uri field.
+func ByURI(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldURI, opts...).ToFunc()
 }
 
 // ByURL orders the results by the url field.

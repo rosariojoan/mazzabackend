@@ -7,7 +7,7 @@ import (
 )
 
 // Load account names from the "app/assets/account_names.json" file
-func LoadAccountNames(country *string, lang *string) (accountNames map[string]string, err error) {
+func LoadAccountNames(country string, lang string) (accountNames map[string]string, err error) {
 	jsonFile, err := os.Open("app/assets/account_names.json")
 	if err != nil {
 		return
@@ -21,7 +21,6 @@ func LoadAccountNames(country *string, lang *string) (accountNames map[string]st
 		return
 	}
 
-	accountNames = _accountNames[*country][*lang]
-
+	accountNames = _accountNames[country][lang]
 	return accountNames, nil
 }

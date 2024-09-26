@@ -28,11 +28,35 @@ type LoginOutput {
     ttl: Int!
 }
 
+enum CustomersGroupBy {
+    COMPANY
+    CITY
+}
+
+enum ReceivablesGroupBy {
+    AGE
+    COMPANY
+    CUSTOMER
+    DAYSDUE
+    STATUS
+}
+
 enum ShiftGroupBy {
   APPROVED_AT
   CLOCK_IN
   CLOCK_OUT
   STATUS
+}
+
+type CustomerAggregationOutput {
+    company: ID
+    count: Int
+}
+
+type ReceivableAggregationOutput {
+    company: ID
+    count: Int
+    sum: Float
 }
 
 type WorkShiftAggregationPayload {
@@ -46,9 +70,13 @@ type WorkShiftAggregationPayload {
 
 extend type Query {
     verifyPasswordResetToken(token: String!): Boolean!
-
     companies(where: CompanyWhereInput): [Company!]!
+
     customers(where: CustomerWhereInput): [Customer!]!
+    aggregateCustomers(where: CustomerWhereInput, groupBy: [CustomersGroupBy!]): [CustomerAggregationOutput!]!
+
+    aggregateReceivables(where: ReceivableWhereInput, groupBy: [ReceivablesGroupBy!]): [ReceivableAggregationOutput!]!
+
     employees(where: EmployeeWhereInput): [Employee!]!
     payables(where: PayableWhereInput): [Payable!]!
     products(where: ProductWhereInput): [Product!]!
@@ -64,8 +92,7 @@ extend type Query {
 
     workShifts(where: WorkshiftWhereInput): [Workshift!]!
     aggregateWorkShift(where: WorkshiftWhereInput, groupBy: [ShiftGroupBy!]!): [WorkShiftAggregationPayload!]!
-    # workshiftGroupBy(where: WorkshiftWhereInput): [WorkshiftGroupByPayload!]!
-
+    
     workTags(where: WorktagWhereInput): [Worktag!]!
     workTasks(where: WorktaskWhereInput): [Worktask!]!
 }

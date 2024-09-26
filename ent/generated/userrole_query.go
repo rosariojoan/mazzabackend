@@ -28,8 +28,8 @@ type UserRoleQuery struct {
 	withCompany   *CompanyQuery
 	withUser      *UserQuery
 	withFKs       bool
-	modifiers     []func(*sql.Selector)
 	loadTotal     []func(context.Context, []*UserRole) error
+	modifiers     []func(*sql.Selector)
 	withNamedUser map[string]*UserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -306,8 +306,9 @@ func (urq *UserRoleQuery) Clone() *UserRoleQuery {
 		withCompany: urq.withCompany.Clone(),
 		withUser:    urq.withUser.Clone(),
 		// clone intermediate query.
-		sql:  urq.sql.Clone(),
-		path: urq.path,
+		sql:       urq.sql.Clone(),
+		path:      urq.path,
+		modifiers: append([]func(*sql.Selector){}, urq.modifiers...),
 	}
 }
 
@@ -633,6 +634,9 @@ func (urq *UserRoleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if urq.ctx.Unique != nil && *urq.ctx.Unique {
 		selector.Distinct()
 	}
+	for _, m := range urq.modifiers {
+		m(selector)
+	}
 	for _, p := range urq.predicates {
 		p(selector)
 	}
@@ -648,6 +652,12 @@ func (urq *UserRoleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (urq *UserRoleQuery) Modify(modifiers ...func(s *sql.Selector)) *UserRoleSelect {
+	urq.modifiers = append(urq.modifiers, modifiers...)
+	return urq.Select()
 }
 
 // WithNamedUser tells the query-builder to eager-load the nodes that are connected to the "user"
@@ -752,4 +762,10 @@ func (urs *UserRoleSelect) sqlScan(ctx context.Context, root *UserRoleQuery, v a
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (urs *UserRoleSelect) Modify(modifiers ...func(s *sql.Selector)) *UserRoleSelect {
+	urs.modifiers = append(urs.modifiers, modifiers...)
+	return urs
 }
