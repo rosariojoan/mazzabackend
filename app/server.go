@@ -15,7 +15,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-gonic/gin"
 
-	_ "mazza/ent/generated/runtime"  // to avoid import cycle error. See: entgo.io/docs/hooks
+	_ "mazza/ent/generated/runtime" // to avoid import cycle error. See: entgo.io/docs/hooks
 )
 
 const defaultPort = "8080"
@@ -35,7 +35,7 @@ func main() {
 	// This router group do not require the user to be logged in
 	authRouter := router.Group("/account")
 	{
-		authRouter.POST("/signup")
+		authRouter.POST("/signup", auth.Signup)
 		authRouter.POST("/login", auth.Login)
 		authRouter.POST("/forgot-password")
 		authRouter.POST("/verify-password")

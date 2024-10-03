@@ -4,3 +4,11 @@ extended input CreateCompanyInput {
     createUser: [CreateUserInput!]
     createDaughterCompany: [CreateDaughterCompanyInput!]
 }
+
+extended input UpdateProjectInput {
+    addTask: [CreateProjectTaskInput!]
+    addMilestone: [CreateProjectMilestoneInput!]
+
+    updateTask: [UpdateProjectTaskInput!]
+    updateMilestone: [UpdateProjectMilestoneInput!]
+}

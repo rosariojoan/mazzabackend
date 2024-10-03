@@ -8,6 +8,8 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/userrole"
@@ -229,12 +231,14 @@ type CreateCompanyInput struct {
 	TaxId              string
 	VatRate            *float64
 	Website            *string
+	IncompleteSetup    *bool
 	AvailableRoleIDs   []int
 	AccountingEntryIDs []int
 	CustomerIDs        []int
 	EmployeeIDs        []int
 	FileIDs            []int
 	ProductIDs         []int
+	ProjectIDs         []int
 	SupplierIDs        []int
 	TokenIDs           []int
 	TreasuryIDs        []int
@@ -299,6 +303,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Website; v != nil {
 		m.SetWebsite(*v)
 	}
+	if v := i.IncompleteSetup; v != nil {
+		m.SetIncompleteSetup(*v)
+	}
 	if v := i.AvailableRoleIDs; len(v) > 0 {
 		m.AddAvailableRoleIDs(v...)
 	}
@@ -316,6 +323,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.ProductIDs; len(v) > 0 {
 		m.AddProductIDs(v...)
+	}
+	if v := i.ProjectIDs; len(v) > 0 {
+		m.AddProjectIDs(v...)
 	}
 	if v := i.SupplierIDs; len(v) > 0 {
 		m.AddSupplierIDs(v...)
@@ -384,6 +394,8 @@ type UpdateCompanyInput struct {
 	VatRate                  *float64
 	ClearWebsite             bool
 	Website                  *string
+	ClearIncompleteSetup     bool
+	IncompleteSetup          *bool
 	ClearAvailableRoles      bool
 	AddAvailableRoleIDs      []int
 	RemoveAvailableRoleIDs   []int
@@ -402,6 +414,9 @@ type UpdateCompanyInput struct {
 	ClearProducts            bool
 	AddProductIDs            []int
 	RemoveProductIDs         []int
+	ClearProjects            bool
+	AddProjectIDs            []int
+	RemoveProjectIDs         []int
 	ClearSuppliers           bool
 	AddSupplierIDs           []int
 	RemoveSupplierIDs        []int
@@ -522,6 +537,12 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Website; v != nil {
 		m.SetWebsite(*v)
 	}
+	if i.ClearIncompleteSetup {
+		m.ClearIncompleteSetup()
+	}
+	if v := i.IncompleteSetup; v != nil {
+		m.SetIncompleteSetup(*v)
+	}
 	if i.ClearAvailableRoles {
 		m.ClearAvailableRoles()
 	}
@@ -575,6 +596,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveProductIDs; len(v) > 0 {
 		m.RemoveProductIDs(v...)
+	}
+	if i.ClearProjects {
+		m.ClearProjects()
+	}
+	if v := i.AddProjectIDs; len(v) > 0 {
+		m.AddProjectIDs(v...)
+	}
+	if v := i.RemoveProjectIDs; len(v) > 0 {
+		m.RemoveProjectIDs(v...)
 	}
 	if i.ClearSuppliers {
 		m.ClearSuppliers()
@@ -1414,6 +1444,352 @@ func (c *ProductUpdateOne) SetInput(i UpdateProductInput) *ProductUpdateOne {
 	return c
 }
 
+// CreateProjectInput represents a mutation input for creating projects.
+type CreateProjectInput struct {
+	CreatedAt    *time.Time
+	UpdatedAt    *time.Time
+	DeletedAt    *time.Time
+	Name         string
+	Description  string
+	StartDate    time.Time
+	EndDate      time.Time
+	Progress     *float64
+	Status       *project.Status
+	CompanyID    *int
+	CreatedByID  *int
+	LeaderID     *int
+	TaskIDs      []int
+	MilestoneIDs []int
+}
+
+// Mutate applies the CreateProjectInput on the ProjectMutation builder.
+func (i *CreateProjectInput) Mutate(m *ProjectMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.DeletedAt; v != nil {
+		m.SetDeletedAt(*v)
+	}
+	m.SetName(i.Name)
+	m.SetDescription(i.Description)
+	m.SetStartDate(i.StartDate)
+	m.SetEndDate(i.EndDate)
+	if v := i.Progress; v != nil {
+		m.SetProgress(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
+	}
+	if v := i.TaskIDs; len(v) > 0 {
+		m.AddTaskIDs(v...)
+	}
+	if v := i.MilestoneIDs; len(v) > 0 {
+		m.AddMilestoneIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateProjectInput on the ProjectCreate builder.
+func (c *ProjectCreate) SetInput(i CreateProjectInput) *ProjectCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateProjectInput represents a mutation input for updating projects.
+type UpdateProjectInput struct {
+	UpdatedAt          *time.Time
+	ClearDeletedAt     bool
+	DeletedAt          *time.Time
+	Name               *string
+	Description        *string
+	StartDate          *time.Time
+	EndDate            *time.Time
+	Progress           *float64
+	Status             *project.Status
+	ClearCompany       bool
+	CompanyID          *int
+	ClearCreatedBy     bool
+	CreatedByID        *int
+	ClearLeader        bool
+	LeaderID           *int
+	ClearTasks         bool
+	AddTaskIDs         []int
+	RemoveTaskIDs      []int
+	ClearMilestones    bool
+	AddMilestoneIDs    []int
+	RemoveMilestoneIDs []int
+}
+
+// Mutate applies the UpdateProjectInput on the ProjectMutation builder.
+func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if i.ClearDeletedAt {
+		m.ClearDeletedAt()
+	}
+	if v := i.DeletedAt; v != nil {
+		m.SetDeletedAt(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.StartDate; v != nil {
+		m.SetStartDate(*v)
+	}
+	if v := i.EndDate; v != nil {
+		m.SetEndDate(*v)
+	}
+	if v := i.Progress; v != nil {
+		m.SetProgress(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearCompany {
+		m.ClearCompany()
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if i.ClearCreatedBy {
+		m.ClearCreatedBy()
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if i.ClearLeader {
+		m.ClearLeader()
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
+	}
+	if i.ClearTasks {
+		m.ClearTasks()
+	}
+	if v := i.AddTaskIDs; len(v) > 0 {
+		m.AddTaskIDs(v...)
+	}
+	if v := i.RemoveTaskIDs; len(v) > 0 {
+		m.RemoveTaskIDs(v...)
+	}
+	if i.ClearMilestones {
+		m.ClearMilestones()
+	}
+	if v := i.AddMilestoneIDs; len(v) > 0 {
+		m.AddMilestoneIDs(v...)
+	}
+	if v := i.RemoveMilestoneIDs; len(v) > 0 {
+		m.RemoveMilestoneIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateProjectInput on the ProjectUpdate builder.
+func (c *ProjectUpdate) SetInput(i UpdateProjectInput) *ProjectUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateProjectInput on the ProjectUpdateOne builder.
+func (c *ProjectUpdateOne) SetInput(i UpdateProjectInput) *ProjectUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateProjectMilestoneInput represents a mutation input for creating projectmilestones.
+type CreateProjectMilestoneInput struct {
+	Name      string
+	DueDate   time.Time
+	ProjectID int
+}
+
+// Mutate applies the CreateProjectMilestoneInput on the ProjectMilestoneMutation builder.
+func (i *CreateProjectMilestoneInput) Mutate(m *ProjectMilestoneMutation) {
+	m.SetName(i.Name)
+	m.SetDueDate(i.DueDate)
+	m.SetProjectID(i.ProjectID)
+}
+
+// SetInput applies the change-set in the CreateProjectMilestoneInput on the ProjectMilestoneCreate builder.
+func (c *ProjectMilestoneCreate) SetInput(i CreateProjectMilestoneInput) *ProjectMilestoneCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateProjectMilestoneInput represents a mutation input for updating projectmilestones.
+type UpdateProjectMilestoneInput struct {
+	Name      *string
+	DueDate   *time.Time
+	ProjectID *int
+}
+
+// Mutate applies the UpdateProjectMilestoneInput on the ProjectMilestoneMutation builder.
+func (i *UpdateProjectMilestoneInput) Mutate(m *ProjectMilestoneMutation) {
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.DueDate; v != nil {
+		m.SetDueDate(*v)
+	}
+	if v := i.ProjectID; v != nil {
+		m.SetProjectID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateProjectMilestoneInput on the ProjectMilestoneUpdate builder.
+func (c *ProjectMilestoneUpdate) SetInput(i UpdateProjectMilestoneInput) *ProjectMilestoneUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateProjectMilestoneInput on the ProjectMilestoneUpdateOne builder.
+func (c *ProjectMilestoneUpdateOne) SetInput(i UpdateProjectMilestoneInput) *ProjectMilestoneUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateProjectTaskInput represents a mutation input for creating projecttasks.
+type CreateProjectTaskInput struct {
+	Name           string
+	AssigneeName   string
+	Location       *string
+	DueDate        time.Time
+	StartDate      time.Time
+	EndDate        time.Time
+	Description    *string
+	Status         projecttask.Status
+	ProjectID      int
+	AssigneeID     *int
+	ParticipantIDs []int
+}
+
+// Mutate applies the CreateProjectTaskInput on the ProjectTaskMutation builder.
+func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
+	m.SetName(i.Name)
+	m.SetAssigneeName(i.AssigneeName)
+	if v := i.Location; v != nil {
+		m.SetLocation(*v)
+	}
+	m.SetDueDate(i.DueDate)
+	m.SetStartDate(i.StartDate)
+	m.SetEndDate(i.EndDate)
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	m.SetStatus(i.Status)
+	m.SetProjectID(i.ProjectID)
+	if v := i.AssigneeID; v != nil {
+		m.SetAssigneeID(*v)
+	}
+	if v := i.ParticipantIDs; len(v) > 0 {
+		m.AddParticipantIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateProjectTaskInput on the ProjectTaskCreate builder.
+func (c *ProjectTaskCreate) SetInput(i CreateProjectTaskInput) *ProjectTaskCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateProjectTaskInput represents a mutation input for updating projecttasks.
+type UpdateProjectTaskInput struct {
+	Name                 *string
+	AssigneeName         *string
+	ClearLocation        bool
+	Location             *string
+	DueDate              *time.Time
+	StartDate            *time.Time
+	EndDate              *time.Time
+	ClearDescription     bool
+	Description          *string
+	Status               *projecttask.Status
+	ProjectID            *int
+	ClearAssignee        bool
+	AssigneeID           *int
+	ClearParticipants    bool
+	AddParticipantIDs    []int
+	RemoveParticipantIDs []int
+}
+
+// Mutate applies the UpdateProjectTaskInput on the ProjectTaskMutation builder.
+func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.AssigneeName; v != nil {
+		m.SetAssigneeName(*v)
+	}
+	if i.ClearLocation {
+		m.ClearLocation()
+	}
+	if v := i.Location; v != nil {
+		m.SetLocation(*v)
+	}
+	if v := i.DueDate; v != nil {
+		m.SetDueDate(*v)
+	}
+	if v := i.StartDate; v != nil {
+		m.SetStartDate(*v)
+	}
+	if v := i.EndDate; v != nil {
+		m.SetEndDate(*v)
+	}
+	if i.ClearDescription {
+		m.ClearDescription()
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.ProjectID; v != nil {
+		m.SetProjectID(*v)
+	}
+	if i.ClearAssignee {
+		m.ClearAssignee()
+	}
+	if v := i.AssigneeID; v != nil {
+		m.SetAssigneeID(*v)
+	}
+	if i.ClearParticipants {
+		m.ClearParticipants()
+	}
+	if v := i.AddParticipantIDs; len(v) > 0 {
+		m.AddParticipantIDs(v...)
+	}
+	if v := i.RemoveParticipantIDs; len(v) > 0 {
+		m.RemoveParticipantIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateProjectTaskInput on the ProjectTaskUpdate builder.
+func (c *ProjectTaskUpdate) SetInput(i UpdateProjectTaskInput) *ProjectTaskUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateProjectTaskInput on the ProjectTaskUpdateOne builder.
+func (c *ProjectTaskUpdateOne) SetInput(i UpdateProjectTaskInput) *ProjectTaskUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateReceivableInput represents a mutation input for creating receivables.
 type CreateReceivableInput struct {
 	CreatedAt          *time.Time
@@ -1862,22 +2238,26 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
-	FcmToken           *string
-	Email              *string
-	Name               string
-	Password           string
-	Username           string
-	Disabled           *bool
-	NotVerified        *bool
-	AccountingEntryIDs []int
-	CompanyIDs         []int
-	AssignedRoleIDs    []int
-	CreatedTaskIDs     []int
-	EmployeeID         *int
-	TokenIDs           []int
+	CreatedAt                  *time.Time
+	UpdatedAt                  *time.Time
+	DeletedAt                  *time.Time
+	FcmToken                   *string
+	Email                      *string
+	Name                       string
+	Password                   string
+	Username                   string
+	Disabled                   *bool
+	NotVerified                *bool
+	AccountingEntryIDs         []int
+	CompanyIDs                 []int
+	AssignedRoleIDs            []int
+	CreatedTaskIDs             []int
+	EmployeeID                 *int
+	CreatedProjectIDs          []int
+	LeaderedProjectIDs         []int
+	AssignedProjectTaskIDs     []int
+	ParticipatedProjectTaskIDs []int
+	TokenIDs                   []int
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -1921,6 +2301,18 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
 	}
+	if v := i.CreatedProjectIDs; len(v) > 0 {
+		m.AddCreatedProjectIDs(v...)
+	}
+	if v := i.LeaderedProjectIDs; len(v) > 0 {
+		m.AddLeaderedProjectIDs(v...)
+	}
+	if v := i.AssignedProjectTaskIDs; len(v) > 0 {
+		m.AddAssignedProjectTaskIDs(v...)
+	}
+	if v := i.ParticipatedProjectTaskIDs; len(v) > 0 {
+		m.AddParticipatedProjectTaskIDs(v...)
+	}
 	if v := i.TokenIDs; len(v) > 0 {
 		m.AddTokenIDs(v...)
 	}
@@ -1934,36 +2326,48 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
-	UpdatedAt                *time.Time
-	ClearDeletedAt           bool
-	DeletedAt                *time.Time
-	ClearFcmToken            bool
-	FcmToken                 *string
-	ClearEmail               bool
-	Email                    *string
-	Name                     *string
-	Password                 *string
-	Username                 *string
-	ClearDisabled            bool
-	Disabled                 *bool
-	ClearNotVerified         bool
-	NotVerified              *bool
-	ClearAccountingEntries   bool
-	AddAccountingEntryIDs    []int
-	RemoveAccountingEntryIDs []int
-	AddCompanyIDs            []int
-	RemoveCompanyIDs         []int
-	ClearAssignedRoles       bool
-	AddAssignedRoleIDs       []int
-	RemoveAssignedRoleIDs    []int
-	ClearCreatedTasks        bool
-	AddCreatedTaskIDs        []int
-	RemoveCreatedTaskIDs     []int
-	ClearEmployee            bool
-	EmployeeID               *int
-	ClearTokens              bool
-	AddTokenIDs              []int
-	RemoveTokenIDs           []int
+	UpdatedAt                        *time.Time
+	ClearDeletedAt                   bool
+	DeletedAt                        *time.Time
+	ClearFcmToken                    bool
+	FcmToken                         *string
+	ClearEmail                       bool
+	Email                            *string
+	Name                             *string
+	Password                         *string
+	Username                         *string
+	ClearDisabled                    bool
+	Disabled                         *bool
+	ClearNotVerified                 bool
+	NotVerified                      *bool
+	ClearAccountingEntries           bool
+	AddAccountingEntryIDs            []int
+	RemoveAccountingEntryIDs         []int
+	AddCompanyIDs                    []int
+	RemoveCompanyIDs                 []int
+	ClearAssignedRoles               bool
+	AddAssignedRoleIDs               []int
+	RemoveAssignedRoleIDs            []int
+	ClearCreatedTasks                bool
+	AddCreatedTaskIDs                []int
+	RemoveCreatedTaskIDs             []int
+	ClearEmployee                    bool
+	EmployeeID                       *int
+	ClearCreatedProjects             bool
+	AddCreatedProjectIDs             []int
+	RemoveCreatedProjectIDs          []int
+	ClearLeaderedProjects            bool
+	AddLeaderedProjectIDs            []int
+	RemoveLeaderedProjectIDs         []int
+	ClearAssignedProjectTasks        bool
+	AddAssignedProjectTaskIDs        []int
+	RemoveAssignedProjectTaskIDs     []int
+	ClearParticipatedProjectTasks    bool
+	AddParticipatedProjectTaskIDs    []int
+	RemoveParticipatedProjectTaskIDs []int
+	ClearTokens                      bool
+	AddTokenIDs                      []int
+	RemoveTokenIDs                   []int
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -2048,6 +2452,42 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
+	}
+	if i.ClearCreatedProjects {
+		m.ClearCreatedProjects()
+	}
+	if v := i.AddCreatedProjectIDs; len(v) > 0 {
+		m.AddCreatedProjectIDs(v...)
+	}
+	if v := i.RemoveCreatedProjectIDs; len(v) > 0 {
+		m.RemoveCreatedProjectIDs(v...)
+	}
+	if i.ClearLeaderedProjects {
+		m.ClearLeaderedProjects()
+	}
+	if v := i.AddLeaderedProjectIDs; len(v) > 0 {
+		m.AddLeaderedProjectIDs(v...)
+	}
+	if v := i.RemoveLeaderedProjectIDs; len(v) > 0 {
+		m.RemoveLeaderedProjectIDs(v...)
+	}
+	if i.ClearAssignedProjectTasks {
+		m.ClearAssignedProjectTasks()
+	}
+	if v := i.AddAssignedProjectTaskIDs; len(v) > 0 {
+		m.AddAssignedProjectTaskIDs(v...)
+	}
+	if v := i.RemoveAssignedProjectTaskIDs; len(v) > 0 {
+		m.RemoveAssignedProjectTaskIDs(v...)
+	}
+	if i.ClearParticipatedProjectTasks {
+		m.ClearParticipatedProjectTasks()
+	}
+	if v := i.AddParticipatedProjectTaskIDs; len(v) > 0 {
+		m.AddParticipatedProjectTaskIDs(v...)
+	}
+	if v := i.RemoveParticipatedProjectTaskIDs; len(v) > 0 {
+		m.RemoveParticipatedProjectTaskIDs(v...)
 	}
 	if i.ClearTokens {
 		m.ClearTokens()

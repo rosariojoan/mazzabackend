@@ -27,6 +27,15 @@ type Payable func(*sql.Selector)
 // Product is the predicate function for product builders.
 type Product func(*sql.Selector)
 
+// Project is the predicate function for project builders.
+type Project func(*sql.Selector)
+
+// ProjectMilestone is the predicate function for projectmilestone builders.
+type ProjectMilestone func(*sql.Selector)
+
+// ProjectTask is the predicate function for projecttask builders.
+type ProjectTask func(*sql.Selector)
+
 // Receivable is the predicate function for receivable builders.
 type Receivable func(*sql.Selector)
 

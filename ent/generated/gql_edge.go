@@ -112,6 +112,18 @@ func (c *Company) Products(ctx context.Context) (result []*Product, err error) {
 	return result, err
 }
 
+func (c *Company) Projects(ctx context.Context) (result []*Project, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedProjects(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.ProjectsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryProjects().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) Suppliers(ctx context.Context) (result []*Supplier, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedSuppliers(graphql.GetFieldContext(ctx).Field.Alias)
@@ -364,6 +376,90 @@ func (pr *Product) AccountingEntries(ctx context.Context) (result []*AccountingE
 	return result, err
 }
 
+func (pr *Project) Company(ctx context.Context) (*Company, error) {
+	result, err := pr.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = pr.QueryCompany().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pr *Project) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := pr.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = pr.QueryCreatedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pr *Project) Leader(ctx context.Context) (*User, error) {
+	result, err := pr.Edges.LeaderOrErr()
+	if IsNotLoaded(err) {
+		result, err = pr.QueryLeader().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pr *Project) Tasks(ctx context.Context) (result []*ProjectTask, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedTasks(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.TasksOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryTasks().All(ctx)
+	}
+	return result, err
+}
+
+func (pr *Project) Milestones(ctx context.Context) (result []*ProjectMilestone, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pr.NamedMilestones(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pr.Edges.MilestonesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pr.QueryMilestones().All(ctx)
+	}
+	return result, err
+}
+
+func (pm *ProjectMilestone) Project(ctx context.Context) (*Project, error) {
+	result, err := pm.Edges.ProjectOrErr()
+	if IsNotLoaded(err) {
+		result, err = pm.QueryProject().Only(ctx)
+	}
+	return result, err
+}
+
+func (pt *ProjectTask) Project(ctx context.Context) (*Project, error) {
+	result, err := pt.Edges.ProjectOrErr()
+	if IsNotLoaded(err) {
+		result, err = pt.QueryProject().Only(ctx)
+	}
+	return result, err
+}
+
+func (pt *ProjectTask) Assignee(ctx context.Context) (*User, error) {
+	result, err := pt.Edges.AssigneeOrErr()
+	if IsNotLoaded(err) {
+		result, err = pt.QueryAssignee().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pt *ProjectTask) Participants(ctx context.Context) (result []*User, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pt.NamedParticipants(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pt.Edges.ParticipantsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pt.QueryParticipants().All(ctx)
+	}
+	return result, err
+}
+
 func (r *Receivable) Customer(ctx context.Context) (*Customer, error) {
 	result, err := r.Edges.CustomerOrErr()
 	if IsNotLoaded(err) {
@@ -482,6 +578,54 @@ func (u *User) Employee(ctx context.Context) (*Employee, error) {
 		result, err = u.QueryEmployee().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (u *User) CreatedProjects(ctx context.Context) (result []*Project, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedCreatedProjects(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.CreatedProjectsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryCreatedProjects().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) LeaderedProjects(ctx context.Context) (result []*Project, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedLeaderedProjects(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.LeaderedProjectsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryLeaderedProjects().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) AssignedProjectTasks(ctx context.Context) (result []*ProjectTask, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedAssignedProjectTasks(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.AssignedProjectTasksOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryAssignedProjectTasks().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) ParticipatedProjectTasks(ctx context.Context) (result []*ProjectTask, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedParticipatedProjectTasks(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.ParticipatedProjectTasksOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryParticipatedProjectTasks().All(ctx)
+	}
+	return result, err
 }
 
 func (u *User) Tokens(ctx context.Context) (result []*Token, err error) {

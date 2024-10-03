@@ -42,6 +42,7 @@ func (Company) Fields() []ent.Field {
 		field.String("taxId").Unique().Nillable(),
 		field.Float("vatRate").Default(0.16),
 		field.String("website").Nillable().Optional(),
+		field.Bool("incompleteSetup").Optional().Default(true),
 	}
 }
 
@@ -54,6 +55,7 @@ func (Company) Edges() []ent.Edge {
 		edge.To("employees", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("files", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("products", Product.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("projects", Project.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("suppliers", Supplier.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("tokens", Token.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a company can have many tokens
 		edge.To("treasuries", Treasury.Type).Annotations(entsql.OnDelete(entsql.Cascade)),

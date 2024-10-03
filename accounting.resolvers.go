@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	accountingentry "mazza/app/accountingEntry"
 	balancesheet "mazza/app/financial-reports/balance-sheet"
 	incomestatement "mazza/app/financial-reports/income-statement"
 	"mazza/app/financial-reports/ledger"
@@ -61,6 +62,12 @@ func (r *mutationResolver) SalesQuotation(ctx context.Context, input model.Sales
 	}
 
 	return output, nil
+}
+
+// RegisterOtherAccountingEntries is the resolver for the registerOtherAccountingEntries field.
+func (r *mutationResolver) RegisterOtherAccountingEntries(ctx context.Context, input model.BaseEntryRegistrationInput) (*string, error) {
+	output, err := accountingentry.RegisterOtherEntries(ctx, r.client, input)
+	return output, err
 }
 
 // TrialBalance is the resolver for the trialBalance field.

@@ -95,6 +95,7 @@ var (
 		{Name: "tax_id", Type: field.TypeString, Unique: true},
 		{Name: "vat_rate", Type: field.TypeFloat64, Default: 0.16},
 		{Name: "website", Type: field.TypeString, Nullable: true},
+		{Name: "incomplete_setup", Type: field.TypeBool, Nullable: true, Default: true},
 		{Name: "company_daughter_companies", Type: field.TypeInt, Nullable: true},
 	}
 	// CompaniesTable holds the schema information for the "companies" table.
@@ -105,7 +106,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "companies_companies_daughterCompanies",
-				Columns:    []*schema.Column{CompaniesColumns[22]},
+				Columns:    []*schema.Column{CompaniesColumns[23]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -305,6 +306,124 @@ var (
 				Name:    "product_sku_company_products",
 				Unique:  true,
 				Columns: []*schema.Column{ProductsColumns[9], ProductsColumns[13]},
+			},
+		},
+	}
+	// ProjectsColumns holds the columns for the "projects" table.
+	ProjectsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString},
+		{Name: "start_date", Type: field.TypeTime},
+		{Name: "end_date", Type: field.TypeTime},
+		{Name: "progress", Type: field.TypeFloat64, Default: 0},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}, Default: "notStarted"},
+		{Name: "company_projects", Type: field.TypeInt, Nullable: true},
+		{Name: "user_created_projects", Type: field.TypeInt, Nullable: true},
+		{Name: "user_leadered_projects", Type: field.TypeInt, Nullable: true},
+	}
+	// ProjectsTable holds the schema information for the "projects" table.
+	ProjectsTable = &schema.Table{
+		Name:       "projects",
+		Columns:    ProjectsColumns,
+		PrimaryKey: []*schema.Column{ProjectsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "projects_companies_projects",
+				Columns:    []*schema.Column{ProjectsColumns[10]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "projects_users_createdProjects",
+				Columns:    []*schema.Column{ProjectsColumns[11]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "projects_users_leaderedProjects",
+				Columns:    []*schema.Column{ProjectsColumns[12]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "project_name_company_projects",
+				Unique:  true,
+				Columns: []*schema.Column{ProjectsColumns[4], ProjectsColumns[10]},
+			},
+		},
+	}
+	// ProjectMilestonesColumns holds the columns for the "project_milestones" table.
+	ProjectMilestonesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "project_milestones", Type: field.TypeInt},
+	}
+	// ProjectMilestonesTable holds the schema information for the "project_milestones" table.
+	ProjectMilestonesTable = &schema.Table{
+		Name:       "project_milestones",
+		Columns:    ProjectMilestonesColumns,
+		PrimaryKey: []*schema.Column{ProjectMilestonesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_milestones_projects_milestones",
+				Columns:    []*schema.Column{ProjectMilestonesColumns[3]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "projectmilestone_name_project_milestones",
+				Unique:  true,
+				Columns: []*schema.Column{ProjectMilestonesColumns[1], ProjectMilestonesColumns[3]},
+			},
+		},
+	}
+	// ProjectTasksColumns holds the columns for the "project_tasks" table.
+	ProjectTasksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "assignee_name", Type: field.TypeString},
+		{Name: "location", Type: field.TypeString, Nullable: true},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "start_date", Type: field.TypeTime},
+		{Name: "end_date", Type: field.TypeTime},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}},
+		{Name: "project_tasks", Type: field.TypeInt},
+		{Name: "user_assigned_project_tasks", Type: field.TypeInt, Nullable: true},
+	}
+	// ProjectTasksTable holds the schema information for the "project_tasks" table.
+	ProjectTasksTable = &schema.Table{
+		Name:       "project_tasks",
+		Columns:    ProjectTasksColumns,
+		PrimaryKey: []*schema.Column{ProjectTasksColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "project_tasks_projects_tasks",
+				Columns:    []*schema.Column{ProjectTasksColumns[9]},
+				RefColumns: []*schema.Column{ProjectsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "project_tasks_users_assignedProjectTasks",
+				Columns:    []*schema.Column{ProjectTasksColumns[10]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "projecttask_name_project_tasks",
+				Unique:  true,
+				Columns: []*schema.Column{ProjectTasksColumns[1], ProjectTasksColumns[9]},
 			},
 		},
 	}
@@ -687,6 +806,31 @@ var (
 			},
 		},
 	}
+	// UserParticipatedProjectTasksColumns holds the columns for the "user_participatedProjectTasks" table.
+	UserParticipatedProjectTasksColumns = []*schema.Column{
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "project_task_id", Type: field.TypeInt},
+	}
+	// UserParticipatedProjectTasksTable holds the schema information for the "user_participatedProjectTasks" table.
+	UserParticipatedProjectTasksTable = &schema.Table{
+		Name:       "user_participatedProjectTasks",
+		Columns:    UserParticipatedProjectTasksColumns,
+		PrimaryKey: []*schema.Column{UserParticipatedProjectTasksColumns[0], UserParticipatedProjectTasksColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_participatedProjectTasks_user_id",
+				Columns:    []*schema.Column{UserParticipatedProjectTasksColumns[0]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "user_participatedProjectTasks_project_task_id",
+				Columns:    []*schema.Column{UserParticipatedProjectTasksColumns[1]},
+				RefColumns: []*schema.Column{ProjectTasksColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// WorktaskWorkTagsColumns holds the columns for the "worktask_workTags" table.
 	WorktaskWorkTagsColumns = []*schema.Column{
 		{Name: "worktask_id", Type: field.TypeInt},
@@ -721,6 +865,9 @@ var (
 		FilesTable,
 		PayablesTable,
 		ProductsTable,
+		ProjectsTable,
+		ProjectMilestonesTable,
+		ProjectTasksTable,
 		ReceivablesTable,
 		SuppliersTable,
 		TokensTable,
@@ -733,6 +880,7 @@ var (
 		CompanyUsersTable,
 		EmployeeAssignedTasksTable,
 		UserAssignedRolesTable,
+		UserParticipatedProjectTasksTable,
 		WorktaskWorkTagsTable,
 	}
 )
@@ -751,6 +899,12 @@ func init() {
 	FilesTable.ForeignKeys[1].RefTable = ProductsTable
 	PayablesTable.ForeignKeys[0].RefTable = SuppliersTable
 	ProductsTable.ForeignKeys[0].RefTable = CompaniesTable
+	ProjectsTable.ForeignKeys[0].RefTable = CompaniesTable
+	ProjectsTable.ForeignKeys[1].RefTable = UsersTable
+	ProjectsTable.ForeignKeys[2].RefTable = UsersTable
+	ProjectMilestonesTable.ForeignKeys[0].RefTable = ProjectsTable
+	ProjectTasksTable.ForeignKeys[0].RefTable = ProjectsTable
+	ProjectTasksTable.ForeignKeys[1].RefTable = UsersTable
 	ReceivablesTable.ForeignKeys[0].RefTable = CustomersTable
 	SuppliersTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[0].RefTable = CompaniesTable
@@ -773,6 +927,9 @@ func init() {
 	UserAssignedRolesTable.ForeignKeys[0].RefTable = UsersTable
 	UserAssignedRolesTable.ForeignKeys[1].RefTable = UserRolesTable
 	UserAssignedRolesTable.Annotation = &entsql.Annotation{}
+	UserParticipatedProjectTasksTable.ForeignKeys[0].RefTable = UsersTable
+	UserParticipatedProjectTasksTable.ForeignKeys[1].RefTable = ProjectTasksTable
+	UserParticipatedProjectTasksTable.Annotation = &entsql.Annotation{}
 	WorktaskWorkTagsTable.ForeignKeys[0].RefTable = WorktasksTable
 	WorktaskWorkTagsTable.ForeignKeys[1].RefTable = WorktagsTable
 	WorktaskWorkTagsTable.Annotation = &entsql.Annotation{}

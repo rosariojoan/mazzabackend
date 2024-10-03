@@ -44,6 +44,14 @@ const (
 	EdgeCreatedTasks = "createdTasks"
 	// EdgeEmployee holds the string denoting the employee edge name in mutations.
 	EdgeEmployee = "employee"
+	// EdgeCreatedProjects holds the string denoting the createdprojects edge name in mutations.
+	EdgeCreatedProjects = "createdProjects"
+	// EdgeLeaderedProjects holds the string denoting the leaderedprojects edge name in mutations.
+	EdgeLeaderedProjects = "leaderedProjects"
+	// EdgeAssignedProjectTasks holds the string denoting the assignedprojecttasks edge name in mutations.
+	EdgeAssignedProjectTasks = "assignedProjectTasks"
+	// EdgeParticipatedProjectTasks holds the string denoting the participatedprojecttasks edge name in mutations.
+	EdgeParticipatedProjectTasks = "participatedProjectTasks"
 	// EdgeTokens holds the string denoting the tokens edge name in mutations.
 	EdgeTokens = "tokens"
 	// Table holds the table name of the user in the database.
@@ -79,6 +87,32 @@ const (
 	EmployeeInverseTable = "employees"
 	// EmployeeColumn is the table column denoting the employee relation/edge.
 	EmployeeColumn = "user_employee"
+	// CreatedProjectsTable is the table that holds the createdProjects relation/edge.
+	CreatedProjectsTable = "projects"
+	// CreatedProjectsInverseTable is the table name for the Project entity.
+	// It exists in this package in order to avoid circular dependency with the "project" package.
+	CreatedProjectsInverseTable = "projects"
+	// CreatedProjectsColumn is the table column denoting the createdProjects relation/edge.
+	CreatedProjectsColumn = "user_created_projects"
+	// LeaderedProjectsTable is the table that holds the leaderedProjects relation/edge.
+	LeaderedProjectsTable = "projects"
+	// LeaderedProjectsInverseTable is the table name for the Project entity.
+	// It exists in this package in order to avoid circular dependency with the "project" package.
+	LeaderedProjectsInverseTable = "projects"
+	// LeaderedProjectsColumn is the table column denoting the leaderedProjects relation/edge.
+	LeaderedProjectsColumn = "user_leadered_projects"
+	// AssignedProjectTasksTable is the table that holds the assignedProjectTasks relation/edge.
+	AssignedProjectTasksTable = "project_tasks"
+	// AssignedProjectTasksInverseTable is the table name for the ProjectTask entity.
+	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
+	AssignedProjectTasksInverseTable = "project_tasks"
+	// AssignedProjectTasksColumn is the table column denoting the assignedProjectTasks relation/edge.
+	AssignedProjectTasksColumn = "user_assigned_project_tasks"
+	// ParticipatedProjectTasksTable is the table that holds the participatedProjectTasks relation/edge. The primary key declared below.
+	ParticipatedProjectTasksTable = "user_participatedProjectTasks"
+	// ParticipatedProjectTasksInverseTable is the table name for the ProjectTask entity.
+	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
+	ParticipatedProjectTasksInverseTable = "project_tasks"
 	// TokensTable is the table that holds the tokens relation/edge.
 	TokensTable = "tokens"
 	// TokensInverseTable is the table name for the Token entity.
@@ -110,6 +144,9 @@ var (
 	// AssignedRolesPrimaryKey and AssignedRolesColumn2 are the table columns denoting the
 	// primary key for the assignedRoles relation (M2M).
 	AssignedRolesPrimaryKey = []string{"user_id", "user_role_id"}
+	// ParticipatedProjectTasksPrimaryKey and ParticipatedProjectTasksColumn2 are the table columns denoting the
+	// primary key for the participatedProjectTasks relation (M2M).
+	ParticipatedProjectTasksPrimaryKey = []string{"user_id", "project_task_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -256,6 +293,62 @@ func ByEmployeeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
+// ByCreatedProjectsCount orders the results by createdProjects count.
+func ByCreatedProjectsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCreatedProjectsStep(), opts...)
+	}
+}
+
+// ByCreatedProjects orders the results by createdProjects terms.
+func ByCreatedProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreatedProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByLeaderedProjectsCount orders the results by leaderedProjects count.
+func ByLeaderedProjectsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLeaderedProjectsStep(), opts...)
+	}
+}
+
+// ByLeaderedProjects orders the results by leaderedProjects terms.
+func ByLeaderedProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLeaderedProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByAssignedProjectTasksCount orders the results by assignedProjectTasks count.
+func ByAssignedProjectTasksCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newAssignedProjectTasksStep(), opts...)
+	}
+}
+
+// ByAssignedProjectTasks orders the results by assignedProjectTasks terms.
+func ByAssignedProjectTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAssignedProjectTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByParticipatedProjectTasksCount orders the results by participatedProjectTasks count.
+func ByParticipatedProjectTasksCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newParticipatedProjectTasksStep(), opts...)
+	}
+}
+
+// ByParticipatedProjectTasks orders the results by participatedProjectTasks terms.
+func ByParticipatedProjectTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newParticipatedProjectTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByTokensCount orders the results by tokens count.
 func ByTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -302,6 +395,34 @@ func newEmployeeStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(EmployeeInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2O, false, EmployeeTable, EmployeeColumn),
+	)
+}
+func newCreatedProjectsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreatedProjectsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CreatedProjectsTable, CreatedProjectsColumn),
+	)
+}
+func newLeaderedProjectsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LeaderedProjectsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LeaderedProjectsTable, LeaderedProjectsColumn),
+	)
+}
+func newAssignedProjectTasksStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AssignedProjectTasksInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AssignedProjectTasksTable, AssignedProjectTasksColumn),
+	)
+}
+func newParticipatedProjectTasksStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ParticipatedProjectTasksInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, ParticipatedProjectTasksTable, ParticipatedProjectTasksPrimaryKey...),
 	)
 }
 func newTokensStep() *sqlgraph.Step {

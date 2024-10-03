@@ -47,7 +47,7 @@ func LoginRequired(c *gin.Context) {
 		}
 
 		user, err := inits.Client.User.Get(c, int(claims["id"].(float64)))
-		if user.ID == 0 || err != nil {
+		if err != nil || user.ID == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return

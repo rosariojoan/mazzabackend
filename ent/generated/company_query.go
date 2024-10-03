@@ -14,6 +14,7 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -42,6 +43,7 @@ type CompanyQuery struct {
 	withEmployees              *EmployeeQuery
 	withFiles                  *FileQuery
 	withProducts               *ProductQuery
+	withProjects               *ProjectQuery
 	withSuppliers              *SupplierQuery
 	withTokens                 *TokenQuery
 	withTreasuries             *TreasuryQuery
@@ -60,6 +62,7 @@ type CompanyQuery struct {
 	withNamedEmployees         map[string]*EmployeeQuery
 	withNamedFiles             map[string]*FileQuery
 	withNamedProducts          map[string]*ProductQuery
+	withNamedProjects          map[string]*ProjectQuery
 	withNamedSuppliers         map[string]*SupplierQuery
 	withNamedTokens            map[string]*TokenQuery
 	withNamedTreasuries        map[string]*TreasuryQuery
@@ -229,6 +232,28 @@ func (cq *CompanyQuery) QueryProducts() *ProductQuery {
 			sqlgraph.From(company.Table, company.FieldID, selector),
 			sqlgraph.To(product.Table, product.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.ProductsTable, company.ProductsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProjects chains the current query on the "projects" edge.
+func (cq *CompanyQuery) QueryProjects() *ProjectQuery {
+	query := (&ProjectClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(project.Table, project.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.ProjectsTable, company.ProjectsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -632,6 +657,7 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		withEmployees:         cq.withEmployees.Clone(),
 		withFiles:             cq.withFiles.Clone(),
 		withProducts:          cq.withProducts.Clone(),
+		withProjects:          cq.withProjects.Clone(),
 		withSuppliers:         cq.withSuppliers.Clone(),
 		withTokens:            cq.withTokens.Clone(),
 		withTreasuries:        cq.withTreasuries.Clone(),
@@ -711,6 +737,17 @@ func (cq *CompanyQuery) WithProducts(opts ...func(*ProductQuery)) *CompanyQuery 
 		opt(query)
 	}
 	cq.withProducts = query
+	return cq
+}
+
+// WithProjects tells the query-builder to eager-load the nodes that are connected to
+// the "projects" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithProjects(opts ...func(*ProjectQuery)) *CompanyQuery {
+	query := (&ProjectClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withProjects = query
 	return cq
 }
 
@@ -892,13 +929,14 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [15]bool{
+		loadedTypes = [16]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
 			cq.withEmployees != nil,
 			cq.withFiles != nil,
 			cq.withProducts != nil,
+			cq.withProjects != nil,
 			cq.withSuppliers != nil,
 			cq.withTokens != nil,
 			cq.withTreasuries != nil,
@@ -976,6 +1014,13 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadProducts(ctx, query, nodes,
 			func(n *Company) { n.Edges.Products = []*Product{} },
 			func(n *Company, e *Product) { n.Edges.Products = append(n.Edges.Products, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withProjects; query != nil {
+		if err := cq.loadProjects(ctx, query, nodes,
+			func(n *Company) { n.Edges.Projects = []*Project{} },
+			func(n *Company, e *Project) { n.Edges.Projects = append(n.Edges.Projects, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1080,6 +1125,13 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadProducts(ctx, query, nodes,
 			func(n *Company) { n.appendNamedProducts(name) },
 			func(n *Company, e *Product) { n.appendNamedProducts(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedProjects {
+		if err := cq.loadProjects(ctx, query, nodes,
+			func(n *Company) { n.appendNamedProjects(name) },
+			func(n *Company, e *Project) { n.appendNamedProjects(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1328,6 +1380,37 @@ func (cq *CompanyQuery) loadProducts(ctx context.Context, query *ProductQuery, n
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_products" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CompanyQuery) loadProjects(ctx context.Context, query *ProjectQuery, nodes []*Company, init func(*Company), assign func(*Company, *Project)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Company)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Project(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(company.ProjectsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.company_projects
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "company_projects" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "company_projects" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1818,6 +1901,20 @@ func (cq *CompanyQuery) WithNamedProducts(name string, opts ...func(*ProductQuer
 		cq.withNamedProducts = make(map[string]*ProductQuery)
 	}
 	cq.withNamedProducts[name] = query
+	return cq
+}
+
+// WithNamedProjects tells the query-builder to eager-load the nodes that are connected to the "projects"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithNamedProjects(name string, opts ...func(*ProjectQuery)) *CompanyQuery {
+	query := (&ProjectClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedProjects == nil {
+		cq.withNamedProjects = make(map[string]*ProjectQuery)
+	}
+	cq.withNamedProjects[name] = query
 	return cq
 }
 

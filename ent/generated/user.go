@@ -56,19 +56,31 @@ type UserEdges struct {
 	CreatedTasks []*Worktask `json:"createdTasks,omitempty"`
 	// Employee holds the value of the employee edge.
 	Employee *Employee `json:"employee,omitempty"`
+	// Represent the projects created by the user
+	CreatedProjects []*Project `json:"createdProjects,omitempty"`
+	// Represent the projects leadered or supervised by the user
+	LeaderedProjects []*Project `json:"leaderedProjects,omitempty"`
+	// These are the project tasks assigned to the user and he is responsible for them
+	AssignedProjectTasks []*ProjectTask `json:"assignedProjectTasks,omitempty"`
+	// These are the project tasks in which the user is a member. E.g. a meeting
+	ParticipatedProjectTasks []*ProjectTask `json:"participatedProjectTasks,omitempty"`
 	// Tokens holds the value of the tokens edge.
 	Tokens []*Token `json:"tokens,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [6]bool
+	loadedTypes [10]bool
 	// totalCount holds the count of the edges above.
-	totalCount [6]map[string]int
+	totalCount [10]map[string]int
 
-	namedAccountingEntries map[string][]*AccountingEntry
-	namedCompany           map[string][]*Company
-	namedAssignedRoles     map[string][]*UserRole
-	namedCreatedTasks      map[string][]*Worktask
-	namedTokens            map[string][]*Token
+	namedAccountingEntries        map[string][]*AccountingEntry
+	namedCompany                  map[string][]*Company
+	namedAssignedRoles            map[string][]*UserRole
+	namedCreatedTasks             map[string][]*Worktask
+	namedCreatedProjects          map[string][]*Project
+	namedLeaderedProjects         map[string][]*Project
+	namedAssignedProjectTasks     map[string][]*ProjectTask
+	namedParticipatedProjectTasks map[string][]*ProjectTask
+	namedTokens                   map[string][]*Token
 }
 
 // AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
@@ -118,10 +130,46 @@ func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 	return nil, &NotLoadedError{edge: "employee"}
 }
 
+// CreatedProjectsOrErr returns the CreatedProjects value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
+	if e.loadedTypes[5] {
+		return e.CreatedProjects, nil
+	}
+	return nil, &NotLoadedError{edge: "createdProjects"}
+}
+
+// LeaderedProjectsOrErr returns the LeaderedProjects value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
+	if e.loadedTypes[6] {
+		return e.LeaderedProjects, nil
+	}
+	return nil, &NotLoadedError{edge: "leaderedProjects"}
+}
+
+// AssignedProjectTasksOrErr returns the AssignedProjectTasks value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
+	if e.loadedTypes[7] {
+		return e.AssignedProjectTasks, nil
+	}
+	return nil, &NotLoadedError{edge: "assignedProjectTasks"}
+}
+
+// ParticipatedProjectTasksOrErr returns the ParticipatedProjectTasks value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
+	if e.loadedTypes[8] {
+		return e.ParticipatedProjectTasks, nil
+	}
+	return nil, &NotLoadedError{edge: "participatedProjectTasks"}
+}
+
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[9] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -262,6 +310,26 @@ func (u *User) QueryCreatedTasks() *WorktaskQuery {
 // QueryEmployee queries the "employee" edge of the User entity.
 func (u *User) QueryEmployee() *EmployeeQuery {
 	return NewUserClient(u.config).QueryEmployee(u)
+}
+
+// QueryCreatedProjects queries the "createdProjects" edge of the User entity.
+func (u *User) QueryCreatedProjects() *ProjectQuery {
+	return NewUserClient(u.config).QueryCreatedProjects(u)
+}
+
+// QueryLeaderedProjects queries the "leaderedProjects" edge of the User entity.
+func (u *User) QueryLeaderedProjects() *ProjectQuery {
+	return NewUserClient(u.config).QueryLeaderedProjects(u)
+}
+
+// QueryAssignedProjectTasks queries the "assignedProjectTasks" edge of the User entity.
+func (u *User) QueryAssignedProjectTasks() *ProjectTaskQuery {
+	return NewUserClient(u.config).QueryAssignedProjectTasks(u)
+}
+
+// QueryParticipatedProjectTasks queries the "participatedProjectTasks" edge of the User entity.
+func (u *User) QueryParticipatedProjectTasks() *ProjectTaskQuery {
+	return NewUserClient(u.config).QueryParticipatedProjectTasks(u)
 }
 
 // QueryTokens queries the "tokens" edge of the User entity.
@@ -427,6 +495,102 @@ func (u *User) appendNamedCreatedTasks(name string, edges ...*Worktask) {
 		u.Edges.namedCreatedTasks[name] = []*Worktask{}
 	} else {
 		u.Edges.namedCreatedTasks[name] = append(u.Edges.namedCreatedTasks[name], edges...)
+	}
+}
+
+// NamedCreatedProjects returns the CreatedProjects named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedCreatedProjects(name string) ([]*Project, error) {
+	if u.Edges.namedCreatedProjects == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedCreatedProjects[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedCreatedProjects(name string, edges ...*Project) {
+	if u.Edges.namedCreatedProjects == nil {
+		u.Edges.namedCreatedProjects = make(map[string][]*Project)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedCreatedProjects[name] = []*Project{}
+	} else {
+		u.Edges.namedCreatedProjects[name] = append(u.Edges.namedCreatedProjects[name], edges...)
+	}
+}
+
+// NamedLeaderedProjects returns the LeaderedProjects named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedLeaderedProjects(name string) ([]*Project, error) {
+	if u.Edges.namedLeaderedProjects == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedLeaderedProjects[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedLeaderedProjects(name string, edges ...*Project) {
+	if u.Edges.namedLeaderedProjects == nil {
+		u.Edges.namedLeaderedProjects = make(map[string][]*Project)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedLeaderedProjects[name] = []*Project{}
+	} else {
+		u.Edges.namedLeaderedProjects[name] = append(u.Edges.namedLeaderedProjects[name], edges...)
+	}
+}
+
+// NamedAssignedProjectTasks returns the AssignedProjectTasks named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedAssignedProjectTasks(name string) ([]*ProjectTask, error) {
+	if u.Edges.namedAssignedProjectTasks == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedAssignedProjectTasks[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedAssignedProjectTasks(name string, edges ...*ProjectTask) {
+	if u.Edges.namedAssignedProjectTasks == nil {
+		u.Edges.namedAssignedProjectTasks = make(map[string][]*ProjectTask)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedAssignedProjectTasks[name] = []*ProjectTask{}
+	} else {
+		u.Edges.namedAssignedProjectTasks[name] = append(u.Edges.namedAssignedProjectTasks[name], edges...)
+	}
+}
+
+// NamedParticipatedProjectTasks returns the ParticipatedProjectTasks named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedParticipatedProjectTasks(name string) ([]*ProjectTask, error) {
+	if u.Edges.namedParticipatedProjectTasks == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedParticipatedProjectTasks[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedParticipatedProjectTasks(name string, edges ...*ProjectTask) {
+	if u.Edges.namedParticipatedProjectTasks == nil {
+		u.Edges.namedParticipatedProjectTasks = make(map[string][]*ProjectTask)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedParticipatedProjectTasks[name] = []*ProjectTask{}
+	} else {
+		u.Edges.namedParticipatedProjectTasks[name] = append(u.Edges.namedParticipatedProjectTasks[name], edges...)
 	}
 }
 

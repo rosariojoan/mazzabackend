@@ -41,6 +41,10 @@ func (User) Edges() []ent.Edge {
 		edge.To("assignedRoles", UserRole.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Comment("a user should be assigned to at least one role in the company"),
 		edge.To("createdTasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Tasks created by this user"),
 		edge.To("employee", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Unique(),
+		edge.To("createdProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represent the projects created by the user"),
+		edge.To("leaderedProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represent the projects leadered or supervised by the user"),
+		edge.To("assignedProjectTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("These are the project tasks assigned to the user and he is responsible for them"),
+		edge.To("participatedProjectTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("These are the project tasks in which the user is a member. E.g. a meeting"),
 		edge.To("tokens", Token.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a user can have more than one token. E.g. of token: pwd reset token
 	}
 }

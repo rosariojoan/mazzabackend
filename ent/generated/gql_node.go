@@ -12,6 +12,9 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projectmilestone"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -58,6 +61,15 @@ func (n *Payable) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Product) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *Project) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *ProjectMilestone) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *ProjectTask) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Receivable) IsNode() {}
@@ -220,6 +232,42 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Product.Query().
 			Where(product.ID(id))
 		query, err := query.CollectFields(ctx, "Product")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case project.Table:
+		query := c.Project.Query().
+			Where(project.ID(id))
+		query, err := query.CollectFields(ctx, "Project")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case projectmilestone.Table:
+		query := c.ProjectMilestone.Query().
+			Where(projectmilestone.ID(id))
+		query, err := query.CollectFields(ctx, "ProjectMilestone")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case projecttask.Table:
+		query := c.ProjectTask.Query().
+			Where(projecttask.ID(id))
+		query, err := query.CollectFields(ctx, "ProjectTask")
 		if err != nil {
 			return nil, err
 		}
@@ -509,6 +557,54 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Product.Query().
 			Where(product.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Product")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case project.Table:
+		query := c.Project.Query().
+			Where(project.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "Project")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case projectmilestone.Table:
+		query := c.ProjectMilestone.Query().
+			Where(projectmilestone.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "ProjectMilestone")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case projecttask.Table:
+		query := c.ProjectTask.Query().
+			Where(projecttask.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "ProjectTask")
 		if err != nil {
 			return nil, err
 		}

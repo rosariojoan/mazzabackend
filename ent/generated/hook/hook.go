@@ -92,6 +92,42 @@ func (f ProductFunc) Mutate(ctx context.Context, m generated.Mutation) (generate
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProductMutation", m)
 }
 
+// The ProjectFunc type is an adapter to allow the use of ordinary
+// function as Project mutator.
+type ProjectFunc func(context.Context, *generated.ProjectMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProjectFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.ProjectMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProjectMutation", m)
+}
+
+// The ProjectMilestoneFunc type is an adapter to allow the use of ordinary
+// function as ProjectMilestone mutator.
+type ProjectMilestoneFunc func(context.Context, *generated.ProjectMilestoneMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProjectMilestoneFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.ProjectMilestoneMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProjectMilestoneMutation", m)
+}
+
+// The ProjectTaskFunc type is an adapter to allow the use of ordinary
+// function as ProjectTask mutator.
+type ProjectTaskFunc func(context.Context, *generated.ProjectTaskMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProjectTaskFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.ProjectTaskMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProjectTaskMutation", m)
+}
+
 // The ReceivableFunc type is an adapter to allow the use of ordinary
 // function as Receivable mutator.
 type ReceivableFunc func(context.Context, *generated.ReceivableMutation) (generated.Value, error)

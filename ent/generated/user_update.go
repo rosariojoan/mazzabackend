@@ -10,6 +10,8 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
@@ -262,6 +264,66 @@ func (uu *UserUpdate) SetEmployee(e *Employee) *UserUpdate {
 	return uu.SetEmployeeID(e.ID)
 }
 
+// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+func (uu *UserUpdate) AddCreatedProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddCreatedProjectIDs(ids...)
+	return uu
+}
+
+// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+func (uu *UserUpdate) AddCreatedProjects(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddCreatedProjectIDs(ids...)
+}
+
+// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+func (uu *UserUpdate) AddLeaderedProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddLeaderedProjectIDs(ids...)
+	return uu
+}
+
+// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+func (uu *UserUpdate) AddLeaderedProjects(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddLeaderedProjectIDs(ids...)
+}
+
+// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uu *UserUpdate) AddAssignedProjectTaskIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddAssignedProjectTaskIDs(ids...)
+	return uu
+}
+
+// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+func (uu *UserUpdate) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddAssignedProjectTaskIDs(ids...)
+}
+
+// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uu *UserUpdate) AddParticipatedProjectTaskIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddParticipatedProjectTaskIDs(ids...)
+	return uu
+}
+
+// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+func (uu *UserUpdate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.AddParticipatedProjectTaskIDs(ids...)
+}
+
 // AddTokenIDs adds the "tokens" edge to the Token entity by IDs.
 func (uu *UserUpdate) AddTokenIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddTokenIDs(ids...)
@@ -370,6 +432,90 @@ func (uu *UserUpdate) RemoveCreatedTasks(w ...*Worktask) *UserUpdate {
 func (uu *UserUpdate) ClearEmployee() *UserUpdate {
 	uu.mutation.ClearEmployee()
 	return uu
+}
+
+// ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
+func (uu *UserUpdate) ClearCreatedProjects() *UserUpdate {
+	uu.mutation.ClearCreatedProjects()
+	return uu
+}
+
+// RemoveCreatedProjectIDs removes the "createdProjects" edge to Project entities by IDs.
+func (uu *UserUpdate) RemoveCreatedProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveCreatedProjectIDs(ids...)
+	return uu
+}
+
+// RemoveCreatedProjects removes "createdProjects" edges to Project entities.
+func (uu *UserUpdate) RemoveCreatedProjects(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveCreatedProjectIDs(ids...)
+}
+
+// ClearLeaderedProjects clears all "leaderedProjects" edges to the Project entity.
+func (uu *UserUpdate) ClearLeaderedProjects() *UserUpdate {
+	uu.mutation.ClearLeaderedProjects()
+	return uu
+}
+
+// RemoveLeaderedProjectIDs removes the "leaderedProjects" edge to Project entities by IDs.
+func (uu *UserUpdate) RemoveLeaderedProjectIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveLeaderedProjectIDs(ids...)
+	return uu
+}
+
+// RemoveLeaderedProjects removes "leaderedProjects" edges to Project entities.
+func (uu *UserUpdate) RemoveLeaderedProjects(p ...*Project) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveLeaderedProjectIDs(ids...)
+}
+
+// ClearAssignedProjectTasks clears all "assignedProjectTasks" edges to the ProjectTask entity.
+func (uu *UserUpdate) ClearAssignedProjectTasks() *UserUpdate {
+	uu.mutation.ClearAssignedProjectTasks()
+	return uu
+}
+
+// RemoveAssignedProjectTaskIDs removes the "assignedProjectTasks" edge to ProjectTask entities by IDs.
+func (uu *UserUpdate) RemoveAssignedProjectTaskIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveAssignedProjectTaskIDs(ids...)
+	return uu
+}
+
+// RemoveAssignedProjectTasks removes "assignedProjectTasks" edges to ProjectTask entities.
+func (uu *UserUpdate) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveAssignedProjectTaskIDs(ids...)
+}
+
+// ClearParticipatedProjectTasks clears all "participatedProjectTasks" edges to the ProjectTask entity.
+func (uu *UserUpdate) ClearParticipatedProjectTasks() *UserUpdate {
+	uu.mutation.ClearParticipatedProjectTasks()
+	return uu
+}
+
+// RemoveParticipatedProjectTaskIDs removes the "participatedProjectTasks" edge to ProjectTask entities by IDs.
+func (uu *UserUpdate) RemoveParticipatedProjectTaskIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveParticipatedProjectTaskIDs(ids...)
+	return uu
+}
+
+// RemoveParticipatedProjectTasks removes "participatedProjectTasks" edges to ProjectTask entities.
+func (uu *UserUpdate) RemoveParticipatedProjectTasks(p ...*ProjectTask) *UserUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uu.RemoveParticipatedProjectTaskIDs(ids...)
 }
 
 // ClearTokens clears all "tokens" edges to the Token entity.
@@ -695,6 +841,186 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.CreatedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedCreatedProjectsIDs(); len(nodes) > 0 && !uu.mutation.CreatedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.CreatedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.LeaderedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedLeaderedProjectsIDs(); len(nodes) > 0 && !uu.mutation.LeaderedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.LeaderedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.AssignedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedAssignedProjectTasksIDs(); len(nodes) > 0 && !uu.mutation.AssignedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.AssignedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.ParticipatedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedParticipatedProjectTasksIDs(); len(nodes) > 0 && !uu.mutation.ParticipatedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.ParticipatedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if uu.mutation.TokensCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -989,6 +1315,66 @@ func (uuo *UserUpdateOne) SetEmployee(e *Employee) *UserUpdateOne {
 	return uuo.SetEmployeeID(e.ID)
 }
 
+// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+func (uuo *UserUpdateOne) AddCreatedProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddCreatedProjectIDs(ids...)
+	return uuo
+}
+
+// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+func (uuo *UserUpdateOne) AddCreatedProjects(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddCreatedProjectIDs(ids...)
+}
+
+// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+func (uuo *UserUpdateOne) AddLeaderedProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddLeaderedProjectIDs(ids...)
+	return uuo
+}
+
+// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+func (uuo *UserUpdateOne) AddLeaderedProjects(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddLeaderedProjectIDs(ids...)
+}
+
+// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uuo *UserUpdateOne) AddAssignedProjectTaskIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddAssignedProjectTaskIDs(ids...)
+	return uuo
+}
+
+// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+func (uuo *UserUpdateOne) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddAssignedProjectTaskIDs(ids...)
+}
+
+// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uuo *UserUpdateOne) AddParticipatedProjectTaskIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddParticipatedProjectTaskIDs(ids...)
+	return uuo
+}
+
+// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+func (uuo *UserUpdateOne) AddParticipatedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.AddParticipatedProjectTaskIDs(ids...)
+}
+
 // AddTokenIDs adds the "tokens" edge to the Token entity by IDs.
 func (uuo *UserUpdateOne) AddTokenIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddTokenIDs(ids...)
@@ -1097,6 +1483,90 @@ func (uuo *UserUpdateOne) RemoveCreatedTasks(w ...*Worktask) *UserUpdateOne {
 func (uuo *UserUpdateOne) ClearEmployee() *UserUpdateOne {
 	uuo.mutation.ClearEmployee()
 	return uuo
+}
+
+// ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
+func (uuo *UserUpdateOne) ClearCreatedProjects() *UserUpdateOne {
+	uuo.mutation.ClearCreatedProjects()
+	return uuo
+}
+
+// RemoveCreatedProjectIDs removes the "createdProjects" edge to Project entities by IDs.
+func (uuo *UserUpdateOne) RemoveCreatedProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveCreatedProjectIDs(ids...)
+	return uuo
+}
+
+// RemoveCreatedProjects removes "createdProjects" edges to Project entities.
+func (uuo *UserUpdateOne) RemoveCreatedProjects(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveCreatedProjectIDs(ids...)
+}
+
+// ClearLeaderedProjects clears all "leaderedProjects" edges to the Project entity.
+func (uuo *UserUpdateOne) ClearLeaderedProjects() *UserUpdateOne {
+	uuo.mutation.ClearLeaderedProjects()
+	return uuo
+}
+
+// RemoveLeaderedProjectIDs removes the "leaderedProjects" edge to Project entities by IDs.
+func (uuo *UserUpdateOne) RemoveLeaderedProjectIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveLeaderedProjectIDs(ids...)
+	return uuo
+}
+
+// RemoveLeaderedProjects removes "leaderedProjects" edges to Project entities.
+func (uuo *UserUpdateOne) RemoveLeaderedProjects(p ...*Project) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveLeaderedProjectIDs(ids...)
+}
+
+// ClearAssignedProjectTasks clears all "assignedProjectTasks" edges to the ProjectTask entity.
+func (uuo *UserUpdateOne) ClearAssignedProjectTasks() *UserUpdateOne {
+	uuo.mutation.ClearAssignedProjectTasks()
+	return uuo
+}
+
+// RemoveAssignedProjectTaskIDs removes the "assignedProjectTasks" edge to ProjectTask entities by IDs.
+func (uuo *UserUpdateOne) RemoveAssignedProjectTaskIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveAssignedProjectTaskIDs(ids...)
+	return uuo
+}
+
+// RemoveAssignedProjectTasks removes "assignedProjectTasks" edges to ProjectTask entities.
+func (uuo *UserUpdateOne) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveAssignedProjectTaskIDs(ids...)
+}
+
+// ClearParticipatedProjectTasks clears all "participatedProjectTasks" edges to the ProjectTask entity.
+func (uuo *UserUpdateOne) ClearParticipatedProjectTasks() *UserUpdateOne {
+	uuo.mutation.ClearParticipatedProjectTasks()
+	return uuo
+}
+
+// RemoveParticipatedProjectTaskIDs removes the "participatedProjectTasks" edge to ProjectTask entities by IDs.
+func (uuo *UserUpdateOne) RemoveParticipatedProjectTaskIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveParticipatedProjectTaskIDs(ids...)
+	return uuo
+}
+
+// RemoveParticipatedProjectTasks removes "participatedProjectTasks" edges to ProjectTask entities.
+func (uuo *UserUpdateOne) RemoveParticipatedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uuo.RemoveParticipatedProjectTaskIDs(ids...)
 }
 
 // ClearTokens clears all "tokens" edges to the Token entity.
@@ -1445,6 +1915,186 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.CreatedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedCreatedProjectsIDs(); len(nodes) > 0 && !uuo.mutation.CreatedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.CreatedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.LeaderedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedLeaderedProjectsIDs(); len(nodes) > 0 && !uuo.mutation.LeaderedProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.LeaderedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.AssignedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedAssignedProjectTasksIDs(); len(nodes) > 0 && !uuo.mutation.AssignedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.AssignedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.ParticipatedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedParticipatedProjectTasksIDs(); len(nodes) > 0 && !uuo.mutation.ParticipatedProjectTasksCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.ParticipatedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

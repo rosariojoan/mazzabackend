@@ -80,6 +80,11 @@ input Invoice {
     totals:          InvoiceTotals!
 }
 
+enum BaseOperationType {
+    OTHER
+	INITIAL_SETUP
+}
+
 enum PurchaseOperationType {
     PURCHASE
     PURCHASE_RETURN
@@ -105,27 +110,34 @@ enum AccountType {
 	CONTRA_EXPENSE
 }
 
+input BaseEntryRegistrationInput {
+	main:                  [EntryItem!]!
+	counterpart:           [EntryItem!]!
+	customer:              EntryCustomerInput
+	supplier:              EntrySupplierInput
+	date:                  Time!
+	description:           String
+	operationType:         BaseOperationType!
+	totalTransactionValue: Float!
+}
+
 input PurchaseRegistrationInput {
 	main:                  [EntryItem!]!
 	counterpart:           [EntryItem!]!
-	# cash:                  [EntryTreasuryInput!]
 	supplier:              EntrySupplierInput!
 	date:                  Time!
 	description:           String
 	operationType:         PurchaseOperationType!
-	# products:              [EntryProductInput!]!
 	totalTransactionValue: Float!
 }
 
 input SalesRegistrationInput {
 	main:                  [EntryItem!]!
 	counterpart:           [EntryItem!]!
-	# cash:                  [EntryTreasuryInput!]
 	customer:              EntryCustomerInput!
 	date:                  Time!
 	description:           String
 	operationType:         SalesOperationType!
-	# products:              [EntryProductInput!]!
 	totalTransactionValue: Float!
 	issueInvoice:		   Boolean!
 	invoice:			   Invoice
@@ -225,6 +237,7 @@ extend type Mutation {
     registerPurchase(input: PurchaseRegistrationInput!): String!
 	registerSales(input: SalesRegistrationInput!): FileDetailsOutput!
 	salesQuotation(input: SalesQuotationInput!): FileDetailsOutput!
+	registerOtherAccountingEntries(input: BaseEntryRegistrationInput!): String
 }
 
 extend type Query {

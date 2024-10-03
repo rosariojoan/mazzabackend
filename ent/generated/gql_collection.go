@@ -11,6 +11,9 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projectmilestone"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -318,6 +321,18 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedProducts(alias, func(wq *ProductQuery) {
 				*wq = *query
 			})
+		case "projects":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedProjects(alias, func(wq *ProjectQuery) {
+				*wq = *query
+			})
 		case "suppliers":
 			var (
 				alias = field.Alias
@@ -528,6 +543,11 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			if _, ok := fieldSeen[company.FieldWebsite]; !ok {
 				selectedFields = append(selectedFields, company.FieldWebsite)
 				fieldSeen[company.FieldWebsite] = struct{}{}
+			}
+		case "incompletesetup":
+			if _, ok := fieldSeen[company.FieldIncompleteSetup]; !ok {
+				selectedFields = append(selectedFields, company.FieldIncompleteSetup)
+				fieldSeen[company.FieldIncompleteSetup] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -1384,6 +1404,405 @@ func newProductPaginateArgs(rv map[string]any) *productPaginateArgs {
 }
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (pr *ProjectQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return pr, nil
+	}
+	if err := pr.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return pr, nil
+}
+
+func (pr *ProjectQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(project.Columns))
+		selectedFields = []string{project.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pr.withCompany = query
+		case "createdby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pr.withCreatedBy = query
+		case "leader":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pr.withLeader = query
+		case "tasks":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectTaskClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pr.WithNamedTasks(alias, func(wq *ProjectTaskQuery) {
+				*wq = *query
+			})
+		case "milestones":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectMilestoneClient{config: pr.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pr.WithNamedMilestones(alias, func(wq *ProjectMilestoneQuery) {
+				*wq = *query
+			})
+		case "createdat":
+			if _, ok := fieldSeen[project.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, project.FieldCreatedAt)
+				fieldSeen[project.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[project.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, project.FieldUpdatedAt)
+				fieldSeen[project.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[project.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, project.FieldDeletedAt)
+				fieldSeen[project.FieldDeletedAt] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[project.FieldName]; !ok {
+				selectedFields = append(selectedFields, project.FieldName)
+				fieldSeen[project.FieldName] = struct{}{}
+			}
+		case "description":
+			if _, ok := fieldSeen[project.FieldDescription]; !ok {
+				selectedFields = append(selectedFields, project.FieldDescription)
+				fieldSeen[project.FieldDescription] = struct{}{}
+			}
+		case "startdate":
+			if _, ok := fieldSeen[project.FieldStartDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldStartDate)
+				fieldSeen[project.FieldStartDate] = struct{}{}
+			}
+		case "enddate":
+			if _, ok := fieldSeen[project.FieldEndDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldEndDate)
+				fieldSeen[project.FieldEndDate] = struct{}{}
+			}
+		case "progress":
+			if _, ok := fieldSeen[project.FieldProgress]; !ok {
+				selectedFields = append(selectedFields, project.FieldProgress)
+				fieldSeen[project.FieldProgress] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[project.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, project.FieldStatus)
+				fieldSeen[project.FieldStatus] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		pr.Select(selectedFields...)
+	}
+	return nil
+}
+
+type projectPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []ProjectPaginateOption
+}
+
+func newProjectPaginateArgs(rv map[string]any) *projectPaginateArgs {
+	args := &projectPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*ProjectWhereInput); ok {
+		args.opts = append(args.opts, WithProjectFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (pm *ProjectMilestoneQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectMilestoneQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return pm, nil
+	}
+	if err := pm.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return pm, nil
+}
+
+func (pm *ProjectMilestoneQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(projectmilestone.Columns))
+		selectedFields = []string{projectmilestone.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "project":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: pm.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pm.withProject = query
+		case "name":
+			if _, ok := fieldSeen[projectmilestone.FieldName]; !ok {
+				selectedFields = append(selectedFields, projectmilestone.FieldName)
+				fieldSeen[projectmilestone.FieldName] = struct{}{}
+			}
+		case "duedate":
+			if _, ok := fieldSeen[projectmilestone.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, projectmilestone.FieldDueDate)
+				fieldSeen[projectmilestone.FieldDueDate] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		pm.Select(selectedFields...)
+	}
+	return nil
+}
+
+type projectmilestonePaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []ProjectMilestonePaginateOption
+}
+
+func newProjectMilestonePaginateArgs(rv map[string]any) *projectmilestonePaginateArgs {
+	args := &projectmilestonePaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*ProjectMilestoneWhereInput); ok {
+		args.opts = append(args.opts, WithProjectMilestoneFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (pt *ProjectTaskQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProjectTaskQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return pt, nil
+	}
+	if err := pt.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return pt, nil
+}
+
+func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(projecttask.Columns))
+		selectedFields = []string{projecttask.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "project":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: pt.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pt.withProject = query
+		case "assignee":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pt.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pt.withAssignee = query
+		case "participants":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pt.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pt.WithNamedParticipants(alias, func(wq *UserQuery) {
+				*wq = *query
+			})
+		case "name":
+			if _, ok := fieldSeen[projecttask.FieldName]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldName)
+				fieldSeen[projecttask.FieldName] = struct{}{}
+			}
+		case "assigneename":
+			if _, ok := fieldSeen[projecttask.FieldAssigneeName]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldAssigneeName)
+				fieldSeen[projecttask.FieldAssigneeName] = struct{}{}
+			}
+		case "location":
+			if _, ok := fieldSeen[projecttask.FieldLocation]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldLocation)
+				fieldSeen[projecttask.FieldLocation] = struct{}{}
+			}
+		case "duedate":
+			if _, ok := fieldSeen[projecttask.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldDueDate)
+				fieldSeen[projecttask.FieldDueDate] = struct{}{}
+			}
+		case "startdate":
+			if _, ok := fieldSeen[projecttask.FieldStartDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldStartDate)
+				fieldSeen[projecttask.FieldStartDate] = struct{}{}
+			}
+		case "enddate":
+			if _, ok := fieldSeen[projecttask.FieldEndDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldEndDate)
+				fieldSeen[projecttask.FieldEndDate] = struct{}{}
+			}
+		case "description":
+			if _, ok := fieldSeen[projecttask.FieldDescription]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldDescription)
+				fieldSeen[projecttask.FieldDescription] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[projecttask.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldStatus)
+				fieldSeen[projecttask.FieldStatus] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		pt.Select(selectedFields...)
+	}
+	return nil
+}
+
+type projecttaskPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []ProjectTaskPaginateOption
+}
+
+func newProjectTaskPaginateArgs(rv map[string]any) *projecttaskPaginateArgs {
+	args := &projecttaskPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &ProjectTaskOrder{Field: &ProjectTaskOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithProjectTaskOrder(order))
+			}
+		case *ProjectTaskOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithProjectTaskOrder(v))
+			}
+		}
+	}
+	if v, ok := rv[whereField].(*ProjectTaskWhereInput); ok {
+		args.opts = append(args.opts, WithProjectTaskFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
 func (r *ReceivableQuery) CollectFields(ctx context.Context, satisfies ...string) (*ReceivableQuery, error) {
 	fc := graphql.GetFieldContext(ctx)
 	if fc == nil {
@@ -2002,6 +2421,54 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.withEmployee = query
+		case "createdprojects":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedCreatedProjects(alias, func(wq *ProjectQuery) {
+				*wq = *query
+			})
+		case "leaderedprojects":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedLeaderedProjects(alias, func(wq *ProjectQuery) {
+				*wq = *query
+			})
+		case "assignedprojecttasks":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectTaskClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedAssignedProjectTasks(alias, func(wq *ProjectTaskQuery) {
+				*wq = *query
+			})
+		case "participatedprojecttasks":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectTaskClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedParticipatedProjectTasks(alias, func(wq *ProjectTaskQuery) {
+				*wq = *query
+			})
 		case "tokens":
 			var (
 				alias = field.Alias

@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -395,6 +396,26 @@ func (cu *CompanyUpdate) ClearWebsite() *CompanyUpdate {
 	return cu
 }
 
+// SetIncompleteSetup sets the "incompleteSetup" field.
+func (cu *CompanyUpdate) SetIncompleteSetup(b bool) *CompanyUpdate {
+	cu.mutation.SetIncompleteSetup(b)
+	return cu
+}
+
+// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableIncompleteSetup(b *bool) *CompanyUpdate {
+	if b != nil {
+		cu.SetIncompleteSetup(*b)
+	}
+	return cu
+}
+
+// ClearIncompleteSetup clears the value of the "incompleteSetup" field.
+func (cu *CompanyUpdate) ClearIncompleteSetup() *CompanyUpdate {
+	cu.mutation.ClearIncompleteSetup()
+	return cu
+}
+
 // AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
 func (cu *CompanyUpdate) AddAvailableRoleIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddAvailableRoleIDs(ids...)
@@ -483,6 +504,21 @@ func (cu *CompanyUpdate) AddProducts(p ...*Product) *CompanyUpdate {
 		ids[i] = p[i].ID
 	}
 	return cu.AddProductIDs(ids...)
+}
+
+// AddProjectIDs adds the "projects" edge to the Project entity by IDs.
+func (cu *CompanyUpdate) AddProjectIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddProjectIDs(ids...)
+	return cu
+}
+
+// AddProjects adds the "projects" edges to the Project entity.
+func (cu *CompanyUpdate) AddProjects(p ...*Project) *CompanyUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cu.AddProjectIDs(ids...)
 }
 
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
@@ -753,6 +789,27 @@ func (cu *CompanyUpdate) RemoveProducts(p ...*Product) *CompanyUpdate {
 		ids[i] = p[i].ID
 	}
 	return cu.RemoveProductIDs(ids...)
+}
+
+// ClearProjects clears all "projects" edges to the Project entity.
+func (cu *CompanyUpdate) ClearProjects() *CompanyUpdate {
+	cu.mutation.ClearProjects()
+	return cu
+}
+
+// RemoveProjectIDs removes the "projects" edge to Project entities by IDs.
+func (cu *CompanyUpdate) RemoveProjectIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveProjectIDs(ids...)
+	return cu
+}
+
+// RemoveProjects removes "projects" edges to Project entities.
+func (cu *CompanyUpdate) RemoveProjects(p ...*Project) *CompanyUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cu.RemoveProjectIDs(ids...)
 }
 
 // ClearSuppliers clears all "suppliers" edges to the Supplier entity.
@@ -1097,6 +1154,12 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.WebsiteCleared() {
 		_spec.ClearField(company.FieldWebsite, field.TypeString)
 	}
+	if value, ok := cu.mutation.IncompleteSetup(); ok {
+		_spec.SetField(company.FieldIncompleteSetup, field.TypeBool, value)
+	}
+	if cu.mutation.IncompleteSetupCleared() {
+		_spec.ClearField(company.FieldIncompleteSetup, field.TypeBool)
+	}
 	if cu.mutation.AvailableRolesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -1360,6 +1423,51 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.ProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedProjectsIDs(); len(nodes) > 0 && !cu.mutation.ProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2131,6 +2239,26 @@ func (cuo *CompanyUpdateOne) ClearWebsite() *CompanyUpdateOne {
 	return cuo
 }
 
+// SetIncompleteSetup sets the "incompleteSetup" field.
+func (cuo *CompanyUpdateOne) SetIncompleteSetup(b bool) *CompanyUpdateOne {
+	cuo.mutation.SetIncompleteSetup(b)
+	return cuo
+}
+
+// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableIncompleteSetup(b *bool) *CompanyUpdateOne {
+	if b != nil {
+		cuo.SetIncompleteSetup(*b)
+	}
+	return cuo
+}
+
+// ClearIncompleteSetup clears the value of the "incompleteSetup" field.
+func (cuo *CompanyUpdateOne) ClearIncompleteSetup() *CompanyUpdateOne {
+	cuo.mutation.ClearIncompleteSetup()
+	return cuo
+}
+
 // AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
 func (cuo *CompanyUpdateOne) AddAvailableRoleIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddAvailableRoleIDs(ids...)
@@ -2219,6 +2347,21 @@ func (cuo *CompanyUpdateOne) AddProducts(p ...*Product) *CompanyUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return cuo.AddProductIDs(ids...)
+}
+
+// AddProjectIDs adds the "projects" edge to the Project entity by IDs.
+func (cuo *CompanyUpdateOne) AddProjectIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddProjectIDs(ids...)
+	return cuo
+}
+
+// AddProjects adds the "projects" edges to the Project entity.
+func (cuo *CompanyUpdateOne) AddProjects(p ...*Project) *CompanyUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cuo.AddProjectIDs(ids...)
 }
 
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
@@ -2489,6 +2632,27 @@ func (cuo *CompanyUpdateOne) RemoveProducts(p ...*Product) *CompanyUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return cuo.RemoveProductIDs(ids...)
+}
+
+// ClearProjects clears all "projects" edges to the Project entity.
+func (cuo *CompanyUpdateOne) ClearProjects() *CompanyUpdateOne {
+	cuo.mutation.ClearProjects()
+	return cuo
+}
+
+// RemoveProjectIDs removes the "projects" edge to Project entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveProjectIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveProjectIDs(ids...)
+	return cuo
+}
+
+// RemoveProjects removes "projects" edges to Project entities.
+func (cuo *CompanyUpdateOne) RemoveProjects(p ...*Project) *CompanyUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cuo.RemoveProjectIDs(ids...)
 }
 
 // ClearSuppliers clears all "suppliers" edges to the Supplier entity.
@@ -2863,6 +3027,12 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if cuo.mutation.WebsiteCleared() {
 		_spec.ClearField(company.FieldWebsite, field.TypeString)
 	}
+	if value, ok := cuo.mutation.IncompleteSetup(); ok {
+		_spec.SetField(company.FieldIncompleteSetup, field.TypeBool, value)
+	}
+	if cuo.mutation.IncompleteSetupCleared() {
+		_spec.ClearField(company.FieldIncompleteSetup, field.TypeBool)
+	}
 	if cuo.mutation.AvailableRolesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -3126,6 +3296,51 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedProjectsIDs(); len(nodes) > 0 && !cuo.mutation.ProjectsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

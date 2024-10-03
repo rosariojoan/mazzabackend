@@ -9,6 +9,8 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/employee"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
@@ -219,6 +221,66 @@ func (uc *UserCreate) SetNillableEmployeeID(id *int) *UserCreate {
 // SetEmployee sets the "employee" edge to the Employee entity.
 func (uc *UserCreate) SetEmployee(e *Employee) *UserCreate {
 	return uc.SetEmployeeID(e.ID)
+}
+
+// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+func (uc *UserCreate) AddCreatedProjectIDs(ids ...int) *UserCreate {
+	uc.mutation.AddCreatedProjectIDs(ids...)
+	return uc
+}
+
+// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+func (uc *UserCreate) AddCreatedProjects(p ...*Project) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddCreatedProjectIDs(ids...)
+}
+
+// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+func (uc *UserCreate) AddLeaderedProjectIDs(ids ...int) *UserCreate {
+	uc.mutation.AddLeaderedProjectIDs(ids...)
+	return uc
+}
+
+// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+func (uc *UserCreate) AddLeaderedProjects(p ...*Project) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddLeaderedProjectIDs(ids...)
+}
+
+// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uc *UserCreate) AddAssignedProjectTaskIDs(ids ...int) *UserCreate {
+	uc.mutation.AddAssignedProjectTaskIDs(ids...)
+	return uc
+}
+
+// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+func (uc *UserCreate) AddAssignedProjectTasks(p ...*ProjectTask) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddAssignedProjectTaskIDs(ids...)
+}
+
+// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+func (uc *UserCreate) AddParticipatedProjectTaskIDs(ids ...int) *UserCreate {
+	uc.mutation.AddParticipatedProjectTaskIDs(ids...)
+	return uc
+}
+
+// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+func (uc *UserCreate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddParticipatedProjectTaskIDs(ids...)
 }
 
 // AddTokenIDs adds the "tokens" edge to the Token entity by IDs.
@@ -448,6 +510,70 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.CreatedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedProjectsTable,
+			Columns: []string{user.CreatedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.LeaderedProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.LeaderedProjectsTable,
+			Columns: []string{user.LeaderedProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.AssignedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.AssignedProjectTasksTable,
+			Columns: []string{user.AssignedProjectTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.ParticipatedProjectTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   user.ParticipatedProjectTasksTable,
+			Columns: user.ParticipatedProjectTasksPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

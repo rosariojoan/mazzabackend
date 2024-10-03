@@ -44,6 +44,7 @@ func Login(ctx *gin.Context) {
 	if err := ctx.BindJSON(&input); err != nil {
 		fmt.Println("err:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		return
 	}
 	// fmt.Println("\n ++ client:", input, *input.FcmToken)
 	currentUser, err := inits.Client.User.Query().
@@ -59,15 +60,17 @@ func Login(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		return
 	}
 
 	err = utils.CompareHashAndPassword(currentUser.Password, input.Password)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		return
 	}
 
 	// Get the active company
-	companies, err := inits.Client.User.Query().Where(user.IDEQ(currentUser.ID)).QueryAssignedRoles().QueryCompany().All(ctx)
+	companies, err := inits.Client.User.Query().Where(user.IDEQ(currentUser.ID)).QueryCompany().All(ctx)
 	if err != nil || len(companies) == 0 {
 		// return nil, fmt.Errorf("there are no companies associated with this user")
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
@@ -77,7 +80,21 @@ func Login(ctx *gin.Context) {
 	activeCompanyID := companies[0].ID
 
 	// Update user FCM token
-	inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
+	if input.FcmToken != nil {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
+		if err != nil {
+			fmt.Println("err:", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			return
+		}
+	} else {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearFcmToken().Exec(ctx)
+		if err != nil {
+			fmt.Println("err:", err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			return
+		}
+	}
 	inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
 
 	// Generate JWT token
@@ -107,7 +124,10 @@ func Login(ctx *gin.Context) {
 
 	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.IDEQ(activeCompanyID))).All(ctx)
 	if err != nil {
+		fmt.Println("roles err:",err)
 		roles = []*ent.UserRole{}
+		// ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		// return
 	}
 
 	response := LoginOutput{

@@ -59,6 +59,12 @@ type ReceivableAggregationOutput {
     sum: Float
 }
 
+type TreasuryAggregatePayload {
+    companyID: ID!
+    count: Int!
+    totalBalance: Float!
+}
+
 type WorkShiftAggregationPayload {
   date: String!
   count: Int!
@@ -85,8 +91,14 @@ extend type Query {
     numberOfLowStock(where: ProductWhereInput): Int!
     numberOfOutOfStock(where: ProductWhereInput): Int!
 
+    projects(where: ProjectWhereInput): [Project!]!
+    projectTasks(where: ProjectTaskWhereInput): [ProjectTask!]!
+
     suppliers(where: SupplierWhereInput): [Supplier!]!
+
     treasuries(where: TreasuryWhereInput): [Treasury!]!
+    aggregateTreasury(where: TreasuryWhereInput): [TreasuryAggregatePayload!]!
+    
     users(where: UserWhereInput): [User!]!
     userRoles(where: UserRoleWhereInput): [UserRole!]!
 
@@ -131,6 +143,18 @@ type Mutation {
     createProduct(input: CreateProductInput!): Product
     updateProduct(id: ID!, input: UpdateProductInput!): Product!
     deleteProduct(id: ID!): Boolean!
+
+    createProject(input: CreateProjectInput!): Project
+    updateProject(id: ID!, input: UpdateProjectInput!): Project!
+    deleteProject(id: ID!): Boolean!
+
+    createProjectTask(input: CreateProjectTaskInput!): ProjectTask
+    updateProjectTask(id: ID!, input: UpdateProjectTaskInput!): ProjectTask!
+    deleteProjectTask(id: ID!): Boolean!
+
+    createProjectMilestone(input: CreateProjectMilestoneInput!): ProjectMilestone
+    updateProjectMilestone(id: ID!, input: UpdateProjectMilestoneInput!): ProjectMilestone!
+    deleteProjectMilestone(id: ID!): Boolean!
 
     createSupplier(input: CreateSupplierInput!): Supplier
     updateSupplier(id: ID!, input: UpdateSupplierInput!): Supplier!

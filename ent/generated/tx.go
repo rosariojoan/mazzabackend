@@ -28,6 +28,12 @@ type Tx struct {
 	Payable *PayableClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
+	// Project is the client for interacting with the Project builders.
+	Project *ProjectClient
+	// ProjectMilestone is the client for interacting with the ProjectMilestone builders.
+	ProjectMilestone *ProjectMilestoneClient
+	// ProjectTask is the client for interacting with the ProjectTask builders.
+	ProjectTask *ProjectTaskClient
 	// Receivable is the client for interacting with the Receivable builders.
 	Receivable *ReceivableClient
 	// Supplier is the client for interacting with the Supplier builders.
@@ -184,6 +190,9 @@ func (tx *Tx) init() {
 	tx.File = NewFileClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
+	tx.Project = NewProjectClient(tx.config)
+	tx.ProjectMilestone = NewProjectMilestoneClient(tx.config)
+	tx.ProjectTask = NewProjectTaskClient(tx.config)
 	tx.Receivable = NewReceivableClient(tx.config)
 	tx.Supplier = NewSupplierClient(tx.config)
 	tx.Token = NewTokenClient(tx.config)

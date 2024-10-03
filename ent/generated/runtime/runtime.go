@@ -10,6 +10,9 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projectmilestone"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -100,6 +103,10 @@ func init() {
 	companyDescVatRate := companyFields[16].Descriptor()
 	// company.DefaultVatRate holds the default value on creation for the vatRate field.
 	company.DefaultVatRate = companyDescVatRate.Default.(float64)
+	// companyDescIncompleteSetup is the schema descriptor for incompleteSetup field.
+	companyDescIncompleteSetup := companyFields[18].Descriptor()
+	// company.DefaultIncompleteSetup holds the default value on creation for the incompleteSetup field.
+	company.DefaultIncompleteSetup = companyDescIncompleteSetup.Default.(bool)
 	customerMixin := schema.Customer{}.Mixin()
 	customerMixinFields0 := customerMixin[0].Fields()
 	_ = customerMixinFields0
@@ -237,6 +244,67 @@ func init() {
 	productDescUnitCost := productFields[8].Descriptor()
 	// product.UnitCostValidator is a validator for the "unitCost" field. It is called by the builders before save.
 	product.UnitCostValidator = productDescUnitCost.Validators[0].(func(float64) error)
+	projectMixin := schema.Project{}.Mixin()
+	projectMixinFields0 := projectMixin[0].Fields()
+	_ = projectMixinFields0
+	projectFields := schema.Project{}.Fields()
+	_ = projectFields
+	// projectDescCreatedAt is the schema descriptor for createdAt field.
+	projectDescCreatedAt := projectMixinFields0[0].Descriptor()
+	// project.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	project.DefaultCreatedAt = projectDescCreatedAt.Default.(func() time.Time)
+	// projectDescUpdatedAt is the schema descriptor for updatedAt field.
+	projectDescUpdatedAt := projectMixinFields0[1].Descriptor()
+	// project.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	project.DefaultUpdatedAt = projectDescUpdatedAt.Default.(func() time.Time)
+	// project.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	project.UpdateDefaultUpdatedAt = projectDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// projectDescName is the schema descriptor for name field.
+	projectDescName := projectFields[0].Descriptor()
+	// project.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	project.NameValidator = projectDescName.Validators[0].(func(string) error)
+	// projectDescDescription is the schema descriptor for description field.
+	projectDescDescription := projectFields[1].Descriptor()
+	// project.DescriptionValidator is a validator for the "description" field. It is called by the builders before save.
+	project.DescriptionValidator = projectDescDescription.Validators[0].(func(string) error)
+	// projectDescProgress is the schema descriptor for progress field.
+	projectDescProgress := projectFields[4].Descriptor()
+	// project.DefaultProgress holds the default value on creation for the progress field.
+	project.DefaultProgress = projectDescProgress.Default.(float64)
+	// project.ProgressValidator is a validator for the "progress" field. It is called by the builders before save.
+	project.ProgressValidator = func() func(float64) error {
+		validators := projectDescProgress.Validators
+		fns := [...]func(float64) error{
+			validators[0].(func(float64) error),
+			validators[1].(func(float64) error),
+		}
+		return func(progress float64) error {
+			for _, fn := range fns {
+				if err := fn(progress); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	projectmilestoneFields := schema.ProjectMilestone{}.Fields()
+	_ = projectmilestoneFields
+	// projectmilestoneDescName is the schema descriptor for name field.
+	projectmilestoneDescName := projectmilestoneFields[0].Descriptor()
+	// projectmilestone.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	projectmilestone.NameValidator = projectmilestoneDescName.Validators[0].(func(string) error)
+	projecttaskHooks := schema.ProjectTask{}.Hooks()
+	projecttask.Hooks[0] = projecttaskHooks[0]
+	projecttaskFields := schema.ProjectTask{}.Fields()
+	_ = projecttaskFields
+	// projecttaskDescName is the schema descriptor for name field.
+	projecttaskDescName := projecttaskFields[0].Descriptor()
+	// projecttask.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	projecttask.NameValidator = projecttaskDescName.Validators[0].(func(string) error)
+	// projecttaskDescAssigneeName is the schema descriptor for assigneeName field.
+	projecttaskDescAssigneeName := projecttaskFields[1].Descriptor()
+	// projecttask.AssigneeNameValidator is a validator for the "assigneeName" field. It is called by the builders before save.
+	projecttask.AssigneeNameValidator = projecttaskDescAssigneeName.Validators[0].(func(string) error)
 	receivableMixin := schema.Receivable{}.Mixin()
 	receivableMixinFields0 := receivableMixin[0].Fields()
 	_ = receivableMixinFields0

@@ -59,6 +59,8 @@ type Company struct {
 	VatRate float64 `json:"vatRate,omitempty"`
 	// Website holds the value of the "website" field.
 	Website *string `json:"website,omitempty"`
+	// IncompleteSetup holds the value of the "incompleteSetup" field.
+	IncompleteSetup bool `json:"incompleteSetup,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CompanyQuery when eager-loading is set.
 	Edges                      CompanyEdges `json:"edges"`
@@ -80,6 +82,8 @@ type CompanyEdges struct {
 	Files []*File `json:"files,omitempty"`
 	// Products holds the value of the products edge.
 	Products []*Product `json:"products,omitempty"`
+	// Projects holds the value of the projects edge.
+	Projects []*Project `json:"projects,omitempty"`
 	// Suppliers holds the value of the suppliers edge.
 	Suppliers []*Supplier `json:"suppliers,omitempty"`
 	// Tokens holds the value of the tokens edge.
@@ -100,9 +104,9 @@ type CompanyEdges struct {
 	ParentCompany *Company `json:"parentCompany,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [15]bool
+	loadedTypes [16]bool
 	// totalCount holds the count of the edges above.
-	totalCount [15]map[string]int
+	totalCount [16]map[string]int
 
 	namedAvailableRoles    map[string][]*UserRole
 	namedAccountingEntries map[string][]*AccountingEntry
@@ -110,6 +114,7 @@ type CompanyEdges struct {
 	namedEmployees         map[string][]*Employee
 	namedFiles             map[string][]*File
 	namedProducts          map[string][]*Product
+	namedProjects          map[string][]*Project
 	namedSuppliers         map[string][]*Supplier
 	namedTokens            map[string][]*Token
 	namedTreasuries        map[string][]*Treasury
@@ -174,10 +179,19 @@ func (e CompanyEdges) ProductsOrErr() ([]*Product, error) {
 	return nil, &NotLoadedError{edge: "products"}
 }
 
+// ProjectsOrErr returns the Projects value or an error if the edge
+// was not loaded in eager-loading.
+func (e CompanyEdges) ProjectsOrErr() ([]*Project, error) {
+	if e.loadedTypes[6] {
+		return e.Projects, nil
+	}
+	return nil, &NotLoadedError{edge: "projects"}
+}
+
 // SuppliersOrErr returns the Suppliers value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[7] {
 		return e.Suppliers, nil
 	}
 	return nil, &NotLoadedError{edge: "suppliers"}
@@ -186,7 +200,7 @@ func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[8] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -195,7 +209,7 @@ func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
 // TreasuriesOrErr returns the Treasuries value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[9] {
 		return e.Treasuries, nil
 	}
 	return nil, &NotLoadedError{edge: "treasuries"}
@@ -204,7 +218,7 @@ func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[10] {
 		return e.WorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "workShifts"}
@@ -213,7 +227,7 @@ func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 // WorkTasksOrErr returns the WorkTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) WorkTasksOrErr() ([]*Worktask, error) {
-	if e.loadedTypes[10] {
+	if e.loadedTypes[11] {
 		return e.WorkTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "workTasks"}
@@ -222,7 +236,7 @@ func (e CompanyEdges) WorkTasksOrErr() ([]*Worktask, error) {
 // WorkTagsOrErr returns the WorkTags value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) WorkTagsOrErr() ([]*Worktag, error) {
-	if e.loadedTypes[11] {
+	if e.loadedTypes[12] {
 		return e.WorkTags, nil
 	}
 	return nil, &NotLoadedError{edge: "workTags"}
@@ -231,7 +245,7 @@ func (e CompanyEdges) WorkTagsOrErr() ([]*Worktag, error) {
 // UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[12] {
+	if e.loadedTypes[13] {
 		return e.Users, nil
 	}
 	return nil, &NotLoadedError{edge: "users"}
@@ -240,7 +254,7 @@ func (e CompanyEdges) UsersOrErr() ([]*User, error) {
 // DaughterCompaniesOrErr returns the DaughterCompanies value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[14] {
 		return e.DaughterCompanies, nil
 	}
 	return nil, &NotLoadedError{edge: "daughterCompanies"}
@@ -251,7 +265,7 @@ func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
 func (e CompanyEdges) ParentCompanyOrErr() (*Company, error) {
 	if e.ParentCompany != nil {
 		return e.ParentCompany, nil
-	} else if e.loadedTypes[14] {
+	} else if e.loadedTypes[15] {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "parentCompany"}
@@ -262,6 +276,8 @@ func (*Company) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case company.FieldIncompleteSetup:
+			values[i] = new(sql.NullBool)
 		case company.FieldVatRate:
 			values[i] = new(sql.NullFloat64)
 		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldNumberOfEmployees:
@@ -430,6 +446,12 @@ func (c *Company) assignValues(columns []string, values []any) error {
 				c.Website = new(string)
 				*c.Website = value.String
 			}
+		case company.FieldIncompleteSetup:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field incompleteSetup", values[i])
+			} else if value.Valid {
+				c.IncompleteSetup = value.Bool
+			}
 		case company.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field company_daughter_companies", value)
@@ -478,6 +500,11 @@ func (c *Company) QueryFiles() *FileQuery {
 // QueryProducts queries the "products" edge of the Company entity.
 func (c *Company) QueryProducts() *ProductQuery {
 	return NewCompanyClient(c.config).QueryProducts(c)
+}
+
+// QueryProjects queries the "projects" edge of the Company entity.
+func (c *Company) QueryProjects() *ProjectQuery {
+	return NewCompanyClient(c.config).QueryProjects(c)
 }
 
 // QuerySuppliers queries the "suppliers" edge of the Company entity.
@@ -632,6 +659,9 @@ func (c *Company) String() string {
 		builder.WriteString("website=")
 		builder.WriteString(*v)
 	}
+	builder.WriteString(", ")
+	builder.WriteString("incompleteSetup=")
+	builder.WriteString(fmt.Sprintf("%v", c.IncompleteSetup))
 	builder.WriteByte(')')
 	return builder.String()
 }
@@ -777,6 +807,30 @@ func (c *Company) appendNamedProducts(name string, edges ...*Product) {
 		c.Edges.namedProducts[name] = []*Product{}
 	} else {
 		c.Edges.namedProducts[name] = append(c.Edges.namedProducts[name], edges...)
+	}
+}
+
+// NamedProjects returns the Projects named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Company) NamedProjects(name string) ([]*Project, error) {
+	if c.Edges.namedProjects == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedProjects[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Company) appendNamedProjects(name string, edges ...*Project) {
+	if c.Edges.namedProjects == nil {
+		c.Edges.namedProjects = make(map[string][]*Project)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedProjects[name] = []*Project{}
+	} else {
+		c.Edges.namedProjects[name] = append(c.Edges.namedProjects[name], edges...)
 	}
 }
 

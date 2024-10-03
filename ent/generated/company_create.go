@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -279,6 +280,20 @@ func (cc *CompanyCreate) SetNillableWebsite(s *string) *CompanyCreate {
 	return cc
 }
 
+// SetIncompleteSetup sets the "incompleteSetup" field.
+func (cc *CompanyCreate) SetIncompleteSetup(b bool) *CompanyCreate {
+	cc.mutation.SetIncompleteSetup(b)
+	return cc
+}
+
+// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableIncompleteSetup(b *bool) *CompanyCreate {
+	if b != nil {
+		cc.SetIncompleteSetup(*b)
+	}
+	return cc
+}
+
 // AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
 func (cc *CompanyCreate) AddAvailableRoleIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddAvailableRoleIDs(ids...)
@@ -367,6 +382,21 @@ func (cc *CompanyCreate) AddProducts(p ...*Product) *CompanyCreate {
 		ids[i] = p[i].ID
 	}
 	return cc.AddProductIDs(ids...)
+}
+
+// AddProjectIDs adds the "projects" edge to the Project entity by IDs.
+func (cc *CompanyCreate) AddProjectIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddProjectIDs(ids...)
+	return cc
+}
+
+// AddProjects adds the "projects" edges to the Project entity.
+func (cc *CompanyCreate) AddProjects(p ...*Project) *CompanyCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cc.AddProjectIDs(ids...)
 }
 
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
@@ -567,6 +597,10 @@ func (cc *CompanyCreate) defaults() {
 		v := company.DefaultVatRate
 		cc.mutation.SetVatRate(v)
 	}
+	if _, ok := cc.mutation.IncompleteSetup(); !ok {
+		v := company.DefaultIncompleteSetup
+		cc.mutation.SetIncompleteSetup(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -724,6 +758,10 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldWebsite, field.TypeString, value)
 		_node.Website = &value
 	}
+	if value, ok := cc.mutation.IncompleteSetup(); ok {
+		_spec.SetField(company.FieldIncompleteSetup, field.TypeBool, value)
+		_node.IncompleteSetup = value
+	}
 	if nodes := cc.mutation.AvailableRolesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -813,6 +851,22 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ProjectsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ProjectsTable,
+			Columns: []string{company.ProjectsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

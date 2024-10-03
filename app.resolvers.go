@@ -15,6 +15,9 @@ import (
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projectmilestone"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/treasury"
@@ -94,7 +97,11 @@ func (r *mutationResolver) InvitedUserSignup(ctx context.Context, input model.In
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input generated.CreateUserInput) (*generated.User, error) {
 	client := generated.FromContext(ctx)
-	input.Password = appUtils.HashPwd(&input.Password)
+	pwd, err := appUtils.HashPwd(&input.Password)
+	if err != nil {
+		return nil, gqlerror.Errorf("ocorreu um erro ao criar o usuário")
+	}
+	input.Password = pwd
 	return client.User.Create().SetInput(input).Save(ctx)
 }
 
@@ -221,7 +228,106 @@ func (r *mutationResolver) DeleteProduct(ctx context.Context, id int) (bool, err
 	filter := product.HasCompanyWith(companyQ)
 
 	if err := generated.FromContext(ctx).Product.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
-		return false, fmt.Errorf("")
+		return false, fmt.Errorf("there was an error deleting the product")
+	}
+	return true, nil
+}
+
+// CreateProject is the resolver for the createProject field.
+func (r *mutationResolver) CreateProject(ctx context.Context, input generated.CreateProjectInput) (*generated.Project, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	return r.client.Project.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
+}
+
+// UpdateProject is the resolver for the updateProject field.
+func (r *mutationResolver) UpdateProject(ctx context.Context, id int, input generated.UpdateProjectInput) (*generated.Project, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
+	return generated.FromContext(ctx).Project.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
+}
+
+// DeleteProject is the resolver for the deleteProject field.
+func (r *mutationResolver) DeleteProject(ctx context.Context, id int) (bool, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
+
+	if err := generated.FromContext(ctx).Project.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
+		return false, fmt.Errorf("there was an error deleting the project")
+	}
+	return true, nil
+}
+
+// CreateProjectTask is the resolver for the createProjectTask field.
+func (r *mutationResolver) CreateProjectTask(ctx context.Context, input generated.CreateProjectTaskInput) (*generated.ProjectTask, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	if _, err := r.client.Project.Query().Where(project.IDEQ(input.ProjectID), project.HasCompanyWith(company.IDEQ(currentCompany.ID))).First(ctx); err != nil {
+		fmt.Println("err 1:", err)
+		return nil, gqlerror.Errorf("invalid project input")
+	}
+	// Check if the task assignee belongs to the company
+	if input.AssigneeID != nil {
+		if _, err := r.client.Company.Query().Where(company.IDEQ(currentCompany.ID), company.HasUsersWith(user.IDEQ(*input.AssigneeID))).First(ctx); err != nil {
+			fmt.Println("err 2:", err)
+			return nil, gqlerror.Errorf("invalid user input")
+		}
+	}
+
+	newTask, err := r.client.ProjectTask.Create().SetInput(input).Save(ctx)
+	if err != nil {
+		fmt.Println("err 3:", err)
+		return nil, err
+	}
+
+	return newTask, err
+}
+
+// UpdateProjectTask is the resolver for the updateProjectTask field.
+func (r *mutationResolver) UpdateProjectTask(ctx context.Context, id int, input generated.UpdateProjectTaskInput) (*generated.ProjectTask, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
+	updatedTask, err := generated.FromContext(ctx).ProjectTask.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return updatedTask, nil
+}
+
+// DeleteProjectTask is the resolver for the deleteProjectTask field.
+func (r *mutationResolver) DeleteProjectTask(ctx context.Context, id int) (bool, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
+
+	if err := generated.FromContext(ctx).ProjectTask.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
+		fmt.Println("err:", err)
+		return false, fmt.Errorf("there was an error deleting the project task")
+	}
+	return true, nil
+}
+
+// CreateProjectMilestone is the resolver for the createProjectMilestone field.
+func (r *mutationResolver) CreateProjectMilestone(ctx context.Context, input generated.CreateProjectMilestoneInput) (*generated.ProjectMilestone, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	if _, err := r.client.Project.Query().Where(project.IDEQ(input.ProjectID), project.HasCompanyWith(company.IDEQ(currentCompany.ID))).First(ctx); err != nil {
+		return nil, gqlerror.Errorf("invalid project input")
+	}
+
+	return r.client.ProjectMilestone.Create().SetInput(input).Save(ctx)
+}
+
+// UpdateProjectMilestone is the resolver for the updateProjectMilestone field.
+func (r *mutationResolver) UpdateProjectMilestone(ctx context.Context, id int, input generated.UpdateProjectMilestoneInput) (*generated.ProjectMilestone, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := projectmilestone.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
+	return generated.FromContext(ctx).ProjectMilestone.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
+}
+
+// DeleteProjectMilestone is the resolver for the deleteProjectMilestone field.
+func (r *mutationResolver) DeleteProjectMilestone(ctx context.Context, id int) (bool, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	filter := projectmilestone.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
+
+	if err := generated.FromContext(ctx).ProjectMilestone.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
+		return false, fmt.Errorf("there was an error deleting the project milestone")
 	}
 	return true, nil
 }
@@ -245,7 +351,7 @@ func (r *mutationResolver) DeleteSupplier(ctx context.Context, id int) (bool, er
 	filter := supplier.HasCompanyWith(companyQ)
 
 	if err := generated.FromContext(ctx).Supplier.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
-		return false, fmt.Errorf("")
+		return false, fmt.Errorf("the supplier could not be deleted")
 	}
 	return true, nil
 }
@@ -277,7 +383,7 @@ func (r *mutationResolver) DeleteTreasury(ctx context.Context, id int) (bool, er
 	filter := treasury.HasCompanyWith(companyQ)
 
 	if err := generated.FromContext(ctx).Treasury.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
-		return false, fmt.Errorf("")
+		return false, fmt.Errorf("the treasury account could not be delete")
 	}
 	return true, nil
 }
@@ -365,7 +471,7 @@ func (r *mutationResolver) DeleteWorkTag(ctx context.Context, id int) (bool, err
 	filter := worktag.HasCompanyWith(companyQ)
 
 	if err := generated.FromContext(ctx).Worktag.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
-		return false, fmt.Errorf("")
+		return false, fmt.Errorf("worktag could not be deleted")
 	}
 	return true, nil
 }
@@ -535,6 +641,32 @@ func (r *queryResolver) NumberOfOutOfStock(ctx context.Context, where *generated
 	return query.Count(ctx)
 }
 
+// Projects is the resolver for the projects field.
+func (r *queryResolver) Projects(ctx context.Context, where *generated.ProjectWhereInput) ([]*generated.Project, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	companyQ := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
+	query, err := where.Filter(r.client.Project.Query().Where(companyQ))
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil, err
+	}
+
+	return query.All(ctx)
+}
+
+// ProjectTasks is the resolver for the projectTasks field.
+func (r *queryResolver) ProjectTasks(ctx context.Context, where *generated.ProjectTaskWhereInput) ([]*generated.ProjectTask, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	companyQ := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
+	query, err := where.Filter(r.client.ProjectTask.Query().Where(companyQ))
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil, err
+	}
+
+	return query.All(ctx)
+}
+
 // Suppliers is the resolver for the suppliers field.
 func (r *queryResolver) Suppliers(ctx context.Context, where *generated.SupplierWhereInput) ([]*generated.Supplier, error) {
 	filter := supplier.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
@@ -553,6 +685,38 @@ func (r *queryResolver) Treasuries(ctx context.Context, where *generated.Treasur
 		return nil, err
 	}
 	return query.All(ctx)
+}
+
+// AggregateTreasury is the resolver for the aggregateTreasury field.
+func (r *queryResolver) AggregateTreasury(ctx context.Context, where *generated.TreasuryWhereInput) ([]*model.TreasuryAggregatePayload, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+	var result []*struct {
+		CompanyID    int     `json:"company_treasuries"`
+		Count        int     `json:"count"`
+		TotalBalance float64 `json:"sum"`
+	}
+
+	query, err := where.Filter(r.client.Treasury.Query().Where(treasury.HasCompanyWith(company.IDEQ(currentCompany.ID))))
+	if err != nil {
+		return nil, err
+	}
+	err = query.GroupBy(treasury.CompanyColumn).
+		Aggregate(generated.Count(), generated.Sum(treasury.FieldBalance)).
+		Scan(ctx, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	var output []*model.TreasuryAggregatePayload
+	for _, res := range result {
+		output = append(output, &model.TreasuryAggregatePayload{
+			CompanyID:    res.CompanyID,
+			Count:        res.Count,
+			TotalBalance: res.TotalBalance,
+		})
+	}
+
+	return output, err
 }
 
 // Users is the resolver for the users field.

@@ -160,6 +160,11 @@ func Website(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldWebsite, v))
 }
 
+// IncompleteSetup applies equality check predicate on the "incompleteSetup" field. It's identical to IncompleteSetupEQ.
+func IncompleteSetup(v bool) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldIncompleteSetup, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
 func CreatedAtEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCreatedAt, v))
@@ -1425,6 +1430,26 @@ func WebsiteContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldWebsite, v))
 }
 
+// IncompleteSetupEQ applies the EQ predicate on the "incompleteSetup" field.
+func IncompleteSetupEQ(v bool) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldIncompleteSetup, v))
+}
+
+// IncompleteSetupNEQ applies the NEQ predicate on the "incompleteSetup" field.
+func IncompleteSetupNEQ(v bool) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldIncompleteSetup, v))
+}
+
+// IncompleteSetupIsNil applies the IsNil predicate on the "incompleteSetup" field.
+func IncompleteSetupIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldIncompleteSetup))
+}
+
+// IncompleteSetupNotNil applies the NotNil predicate on the "incompleteSetup" field.
+func IncompleteSetupNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldIncompleteSetup))
+}
+
 // HasAvailableRoles applies the HasEdge predicate on the "availableRoles" edge.
 func HasAvailableRoles() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
@@ -1555,6 +1580,29 @@ func HasProducts() predicate.Company {
 func HasProductsWith(preds ...predicate.Product) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newProductsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProjects applies the HasEdge predicate on the "projects" edge.
+func HasProjects() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProjectsTable, ProjectsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProjectsWith applies the HasEdge predicate on the "projects" edge with a given conditions (other predicates).
+func HasProjectsWith(preds ...predicate.Project) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newProjectsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

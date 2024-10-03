@@ -77,8 +77,8 @@ func ResetPassword(ctx *context.Context, tokenInput string, passwordInput string
 	}
 
 	// Hash password
-	newPwd := utils.HashPwd(&passwordInput)
-	if newPwd == "" {
+	newPwd, err := utils.HashPwd(&passwordInput)
+	if err != nil {
 		return fmt.Errorf("error generating password")
 	}
 

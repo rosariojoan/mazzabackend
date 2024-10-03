@@ -11,6 +11,8 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
@@ -25,23 +27,31 @@ import (
 // UserQuery is the builder for querying User entities.
 type UserQuery struct {
 	config
-	ctx                        *QueryContext
-	order                      []user.OrderOption
-	inters                     []Interceptor
-	predicates                 []predicate.User
-	withAccountingEntries      *AccountingEntryQuery
-	withCompany                *CompanyQuery
-	withAssignedRoles          *UserRoleQuery
-	withCreatedTasks           *WorktaskQuery
-	withEmployee               *EmployeeQuery
-	withTokens                 *TokenQuery
-	loadTotal                  []func(context.Context, []*User) error
-	modifiers                  []func(*sql.Selector)
-	withNamedAccountingEntries map[string]*AccountingEntryQuery
-	withNamedCompany           map[string]*CompanyQuery
-	withNamedAssignedRoles     map[string]*UserRoleQuery
-	withNamedCreatedTasks      map[string]*WorktaskQuery
-	withNamedTokens            map[string]*TokenQuery
+	ctx                               *QueryContext
+	order                             []user.OrderOption
+	inters                            []Interceptor
+	predicates                        []predicate.User
+	withAccountingEntries             *AccountingEntryQuery
+	withCompany                       *CompanyQuery
+	withAssignedRoles                 *UserRoleQuery
+	withCreatedTasks                  *WorktaskQuery
+	withEmployee                      *EmployeeQuery
+	withCreatedProjects               *ProjectQuery
+	withLeaderedProjects              *ProjectQuery
+	withAssignedProjectTasks          *ProjectTaskQuery
+	withParticipatedProjectTasks      *ProjectTaskQuery
+	withTokens                        *TokenQuery
+	loadTotal                         []func(context.Context, []*User) error
+	modifiers                         []func(*sql.Selector)
+	withNamedAccountingEntries        map[string]*AccountingEntryQuery
+	withNamedCompany                  map[string]*CompanyQuery
+	withNamedAssignedRoles            map[string]*UserRoleQuery
+	withNamedCreatedTasks             map[string]*WorktaskQuery
+	withNamedCreatedProjects          map[string]*ProjectQuery
+	withNamedLeaderedProjects         map[string]*ProjectQuery
+	withNamedAssignedProjectTasks     map[string]*ProjectTaskQuery
+	withNamedParticipatedProjectTasks map[string]*ProjectTaskQuery
+	withNamedTokens                   map[string]*TokenQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -181,6 +191,94 @@ func (uq *UserQuery) QueryEmployee() *EmployeeQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(employee.Table, employee.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, user.EmployeeTable, user.EmployeeColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCreatedProjects chains the current query on the "createdProjects" edge.
+func (uq *UserQuery) QueryCreatedProjects() *ProjectQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(project.Table, project.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedProjectsTable, user.CreatedProjectsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLeaderedProjects chains the current query on the "leaderedProjects" edge.
+func (uq *UserQuery) QueryLeaderedProjects() *ProjectQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(project.Table, project.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.LeaderedProjectsTable, user.LeaderedProjectsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAssignedProjectTasks chains the current query on the "assignedProjectTasks" edge.
+func (uq *UserQuery) QueryAssignedProjectTasks() *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.AssignedProjectTasksTable, user.AssignedProjectTasksColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryParticipatedProjectTasks chains the current query on the "participatedProjectTasks" edge.
+func (uq *UserQuery) QueryParticipatedProjectTasks() *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, user.ParticipatedProjectTasksTable, user.ParticipatedProjectTasksPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -397,17 +495,21 @@ func (uq *UserQuery) Clone() *UserQuery {
 		return nil
 	}
 	return &UserQuery{
-		config:                uq.config,
-		ctx:                   uq.ctx.Clone(),
-		order:                 append([]user.OrderOption{}, uq.order...),
-		inters:                append([]Interceptor{}, uq.inters...),
-		predicates:            append([]predicate.User{}, uq.predicates...),
-		withAccountingEntries: uq.withAccountingEntries.Clone(),
-		withCompany:           uq.withCompany.Clone(),
-		withAssignedRoles:     uq.withAssignedRoles.Clone(),
-		withCreatedTasks:      uq.withCreatedTasks.Clone(),
-		withEmployee:          uq.withEmployee.Clone(),
-		withTokens:            uq.withTokens.Clone(),
+		config:                       uq.config,
+		ctx:                          uq.ctx.Clone(),
+		order:                        append([]user.OrderOption{}, uq.order...),
+		inters:                       append([]Interceptor{}, uq.inters...),
+		predicates:                   append([]predicate.User{}, uq.predicates...),
+		withAccountingEntries:        uq.withAccountingEntries.Clone(),
+		withCompany:                  uq.withCompany.Clone(),
+		withAssignedRoles:            uq.withAssignedRoles.Clone(),
+		withCreatedTasks:             uq.withCreatedTasks.Clone(),
+		withEmployee:                 uq.withEmployee.Clone(),
+		withCreatedProjects:          uq.withCreatedProjects.Clone(),
+		withLeaderedProjects:         uq.withLeaderedProjects.Clone(),
+		withAssignedProjectTasks:     uq.withAssignedProjectTasks.Clone(),
+		withParticipatedProjectTasks: uq.withParticipatedProjectTasks.Clone(),
+		withTokens:                   uq.withTokens.Clone(),
 		// clone intermediate query.
 		sql:       uq.sql.Clone(),
 		path:      uq.path,
@@ -467,6 +569,50 @@ func (uq *UserQuery) WithEmployee(opts ...func(*EmployeeQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withEmployee = query
+	return uq
+}
+
+// WithCreatedProjects tells the query-builder to eager-load the nodes that are connected to
+// the "createdProjects" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithCreatedProjects(opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withCreatedProjects = query
+	return uq
+}
+
+// WithLeaderedProjects tells the query-builder to eager-load the nodes that are connected to
+// the "leaderedProjects" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithLeaderedProjects(opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withLeaderedProjects = query
+	return uq
+}
+
+// WithAssignedProjectTasks tells the query-builder to eager-load the nodes that are connected to
+// the "assignedProjectTasks" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithAssignedProjectTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withAssignedProjectTasks = query
+	return uq
+}
+
+// WithParticipatedProjectTasks tells the query-builder to eager-load the nodes that are connected to
+// the "participatedProjectTasks" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithParticipatedProjectTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withParticipatedProjectTasks = query
 	return uq
 }
 
@@ -559,12 +705,16 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [10]bool{
 			uq.withAccountingEntries != nil,
 			uq.withCompany != nil,
 			uq.withAssignedRoles != nil,
 			uq.withCreatedTasks != nil,
 			uq.withEmployee != nil,
+			uq.withCreatedProjects != nil,
+			uq.withLeaderedProjects != nil,
+			uq.withAssignedProjectTasks != nil,
+			uq.withParticipatedProjectTasks != nil,
 			uq.withTokens != nil,
 		}
 	)
@@ -623,6 +773,36 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withCreatedProjects; query != nil {
+		if err := uq.loadCreatedProjects(ctx, query, nodes,
+			func(n *User) { n.Edges.CreatedProjects = []*Project{} },
+			func(n *User, e *Project) { n.Edges.CreatedProjects = append(n.Edges.CreatedProjects, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withLeaderedProjects; query != nil {
+		if err := uq.loadLeaderedProjects(ctx, query, nodes,
+			func(n *User) { n.Edges.LeaderedProjects = []*Project{} },
+			func(n *User, e *Project) { n.Edges.LeaderedProjects = append(n.Edges.LeaderedProjects, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withAssignedProjectTasks; query != nil {
+		if err := uq.loadAssignedProjectTasks(ctx, query, nodes,
+			func(n *User) { n.Edges.AssignedProjectTasks = []*ProjectTask{} },
+			func(n *User, e *ProjectTask) { n.Edges.AssignedProjectTasks = append(n.Edges.AssignedProjectTasks, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withParticipatedProjectTasks; query != nil {
+		if err := uq.loadParticipatedProjectTasks(ctx, query, nodes,
+			func(n *User) { n.Edges.ParticipatedProjectTasks = []*ProjectTask{} },
+			func(n *User, e *ProjectTask) {
+				n.Edges.ParticipatedProjectTasks = append(n.Edges.ParticipatedProjectTasks, e)
+			}); err != nil {
+			return nil, err
+		}
+	}
 	if query := uq.withTokens; query != nil {
 		if err := uq.loadTokens(ctx, query, nodes,
 			func(n *User) { n.Edges.Tokens = []*Token{} },
@@ -655,6 +835,34 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadCreatedTasks(ctx, query, nodes,
 			func(n *User) { n.appendNamedCreatedTasks(name) },
 			func(n *User, e *Worktask) { n.appendNamedCreatedTasks(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedCreatedProjects {
+		if err := uq.loadCreatedProjects(ctx, query, nodes,
+			func(n *User) { n.appendNamedCreatedProjects(name) },
+			func(n *User, e *Project) { n.appendNamedCreatedProjects(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedLeaderedProjects {
+		if err := uq.loadLeaderedProjects(ctx, query, nodes,
+			func(n *User) { n.appendNamedLeaderedProjects(name) },
+			func(n *User, e *Project) { n.appendNamedLeaderedProjects(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedAssignedProjectTasks {
+		if err := uq.loadAssignedProjectTasks(ctx, query, nodes,
+			func(n *User) { n.appendNamedAssignedProjectTasks(name) },
+			func(n *User, e *ProjectTask) { n.appendNamedAssignedProjectTasks(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedParticipatedProjectTasks {
+		if err := uq.loadParticipatedProjectTasks(ctx, query, nodes,
+			func(n *User) { n.appendNamedParticipatedProjectTasks(name) },
+			func(n *User, e *ProjectTask) { n.appendNamedParticipatedProjectTasks(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -885,6 +1093,160 @@ func (uq *UserQuery) loadEmployee(ctx context.Context, query *EmployeeQuery, nod
 	}
 	return nil
 }
+func (uq *UserQuery) loadCreatedProjects(ctx context.Context, query *ProjectQuery, nodes []*User, init func(*User), assign func(*User, *Project)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Project(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.CreatedProjectsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_created_projects
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_created_projects" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_created_projects" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadLeaderedProjects(ctx context.Context, query *ProjectQuery, nodes []*User, init func(*User), assign func(*User, *Project)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Project(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.LeaderedProjectsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_leadered_projects
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_leadered_projects" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_leadered_projects" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadAssignedProjectTasks(ctx context.Context, query *ProjectTaskQuery, nodes []*User, init func(*User), assign func(*User, *ProjectTask)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.ProjectTask(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.AssignedProjectTasksColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_assigned_project_tasks
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_assigned_project_tasks" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_assigned_project_tasks" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadParticipatedProjectTasks(ctx context.Context, query *ProjectTaskQuery, nodes []*User, init func(*User), assign func(*User, *ProjectTask)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int]*User)
+	nids := make(map[int]map[*User]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(user.ParticipatedProjectTasksTable)
+		s.Join(joinT).On(s.C(projecttask.FieldID), joinT.C(user.ParticipatedProjectTasksPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(user.ParticipatedProjectTasksPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(user.ParticipatedProjectTasksPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := int(values[0].(*sql.NullInt64).Int64)
+				inValue := int(values[1].(*sql.NullInt64).Int64)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*User]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*ProjectTask](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "participatedProjectTasks" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
 func (uq *UserQuery) loadTokens(ctx context.Context, query *TokenQuery, nodes []*User, init func(*User), assign func(*User, *Token)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*User)
@@ -1063,6 +1425,62 @@ func (uq *UserQuery) WithNamedCreatedTasks(name string, opts ...func(*WorktaskQu
 		uq.withNamedCreatedTasks = make(map[string]*WorktaskQuery)
 	}
 	uq.withNamedCreatedTasks[name] = query
+	return uq
+}
+
+// WithNamedCreatedProjects tells the query-builder to eager-load the nodes that are connected to the "createdProjects"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedCreatedProjects(name string, opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedCreatedProjects == nil {
+		uq.withNamedCreatedProjects = make(map[string]*ProjectQuery)
+	}
+	uq.withNamedCreatedProjects[name] = query
+	return uq
+}
+
+// WithNamedLeaderedProjects tells the query-builder to eager-load the nodes that are connected to the "leaderedProjects"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedLeaderedProjects(name string, opts ...func(*ProjectQuery)) *UserQuery {
+	query := (&ProjectClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedLeaderedProjects == nil {
+		uq.withNamedLeaderedProjects = make(map[string]*ProjectQuery)
+	}
+	uq.withNamedLeaderedProjects[name] = query
+	return uq
+}
+
+// WithNamedAssignedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "assignedProjectTasks"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedAssignedProjectTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedAssignedProjectTasks == nil {
+		uq.withNamedAssignedProjectTasks = make(map[string]*ProjectTaskQuery)
+	}
+	uq.withNamedAssignedProjectTasks[name] = query
+	return uq
+}
+
+// WithNamedParticipatedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "participatedProjectTasks"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedParticipatedProjectTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedParticipatedProjectTasks == nil {
+		uq.withNamedParticipatedProjectTasks = make(map[string]*ProjectTaskQuery)
+	}
+	uq.withNamedParticipatedProjectTasks[name] = query
 	return uq
 }
 

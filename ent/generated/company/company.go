@@ -56,6 +56,8 @@ const (
 	FieldVatRate = "vat_rate"
 	// FieldWebsite holds the string denoting the website field in the database.
 	FieldWebsite = "website"
+	// FieldIncompleteSetup holds the string denoting the incompletesetup field in the database.
+	FieldIncompleteSetup = "incomplete_setup"
 	// EdgeAvailableRoles holds the string denoting the availableroles edge name in mutations.
 	EdgeAvailableRoles = "availableRoles"
 	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
@@ -68,6 +70,8 @@ const (
 	EdgeFiles = "files"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
 	EdgeProducts = "products"
+	// EdgeProjects holds the string denoting the projects edge name in mutations.
+	EdgeProjects = "projects"
 	// EdgeSuppliers holds the string denoting the suppliers edge name in mutations.
 	EdgeSuppliers = "suppliers"
 	// EdgeTokens holds the string denoting the tokens edge name in mutations.
@@ -130,6 +134,13 @@ const (
 	ProductsInverseTable = "products"
 	// ProductsColumn is the table column denoting the products relation/edge.
 	ProductsColumn = "company_products"
+	// ProjectsTable is the table that holds the projects relation/edge.
+	ProjectsTable = "projects"
+	// ProjectsInverseTable is the table name for the Project entity.
+	// It exists in this package in order to avoid circular dependency with the "project" package.
+	ProjectsInverseTable = "projects"
+	// ProjectsColumn is the table column denoting the projects relation/edge.
+	ProjectsColumn = "company_projects"
 	// SuppliersTable is the table that holds the suppliers relation/edge.
 	SuppliersTable = "suppliers"
 	// SuppliersInverseTable is the table name for the Supplier entity.
@@ -211,6 +222,7 @@ var Columns = []string{
 	FieldTaxId,
 	FieldVatRate,
 	FieldWebsite,
+	FieldIncompleteSetup,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "companies"
@@ -259,6 +271,8 @@ var (
 	NumberOfEmployeesValidator func(int32) error
 	// DefaultVatRate holds the default value on creation for the "vatRate" field.
 	DefaultVatRate float64
+	// DefaultIncompleteSetup holds the default value on creation for the "incompleteSetup" field.
+	DefaultIncompleteSetup bool
 )
 
 // OrderOption defines the ordering options for the Company queries.
@@ -374,6 +388,11 @@ func ByWebsite(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWebsite, opts...).ToFunc()
 }
 
+// ByIncompleteSetup orders the results by the incompleteSetup field.
+func ByIncompleteSetup(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIncompleteSetup, opts...).ToFunc()
+}
+
 // ByAvailableRolesCount orders the results by availableRoles count.
 func ByAvailableRolesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -455,6 +474,20 @@ func ByProductsCount(opts ...sql.OrderTermOption) OrderOption {
 func ByProducts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByProjectsCount orders the results by projects count.
+func ByProjectsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProjectsStep(), opts...)
+	}
+}
+
+// ByProjects orders the results by projects terms.
+func ByProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -616,6 +649,13 @@ func newProductsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProductsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
+	)
+}
+func newProjectsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProjectsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProjectsTable, ProjectsColumn),
 	)
 }
 func newSuppliersStep() *sqlgraph.Step {

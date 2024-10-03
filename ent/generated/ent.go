@@ -13,6 +13,9 @@ import (
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
+	"mazza/ent/generated/project"
+	"mazza/ent/generated/projectmilestone"
+	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
@@ -88,22 +91,25 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			accountingentry.Table: accountingentry.ValidColumn,
-			company.Table:         company.ValidColumn,
-			customer.Table:        customer.ValidColumn,
-			employee.Table:        employee.ValidColumn,
-			file.Table:            file.ValidColumn,
-			payable.Table:         payable.ValidColumn,
-			product.Table:         product.ValidColumn,
-			receivable.Table:      receivable.ValidColumn,
-			supplier.Table:        supplier.ValidColumn,
-			token.Table:           token.ValidColumn,
-			treasury.Table:        treasury.ValidColumn,
-			user.Table:            user.ValidColumn,
-			userrole.Table:        userrole.ValidColumn,
-			workshift.Table:       workshift.ValidColumn,
-			worktag.Table:         worktag.ValidColumn,
-			worktask.Table:        worktask.ValidColumn,
+			accountingentry.Table:  accountingentry.ValidColumn,
+			company.Table:          company.ValidColumn,
+			customer.Table:         customer.ValidColumn,
+			employee.Table:         employee.ValidColumn,
+			file.Table:             file.ValidColumn,
+			payable.Table:          payable.ValidColumn,
+			product.Table:          product.ValidColumn,
+			project.Table:          project.ValidColumn,
+			projectmilestone.Table: projectmilestone.ValidColumn,
+			projecttask.Table:      projecttask.ValidColumn,
+			receivable.Table:       receivable.ValidColumn,
+			supplier.Table:         supplier.ValidColumn,
+			token.Table:            token.ValidColumn,
+			treasury.Table:         treasury.ValidColumn,
+			user.Table:             user.ValidColumn,
+			userrole.Table:         userrole.ValidColumn,
+			workshift.Table:        workshift.ValidColumn,
+			worktag.Table:          worktag.ValidColumn,
+			worktask.Table:         worktask.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

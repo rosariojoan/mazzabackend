@@ -28,6 +28,17 @@ type BalanceSheetOuput struct {
 	IsProvisional           bool         `json:"isProvisional"`
 }
 
+type BaseEntryRegistrationInput struct {
+	Main                  []*EntryItem        `json:"main"`
+	Counterpart           []*EntryItem        `json:"counterpart"`
+	Customer              *EntryCustomerInput `json:"customer,omitempty"`
+	Supplier              *EntrySupplierInput `json:"supplier,omitempty"`
+	Date                  time.Time           `json:"date"`
+	Description           *string             `json:"description,omitempty"`
+	OperationType         BaseOperationType   `json:"operationType"`
+	TotalTransactionValue float64             `json:"totalTransactionValue"`
+}
+
 type CustomerAggregationOutput struct {
 	Company *int `json:"company,omitempty"`
 	Count   *int `json:"count,omitempty"`
@@ -224,6 +235,12 @@ type SignupInput struct {
 	UserInput    *generated.CreateUserInput    `json:"userInput"`
 }
 
+type TreasuryAggregatePayload struct {
+	CompanyID    int     `json:"companyID"`
+	Count        int     `json:"count"`
+	TotalBalance float64 `json:"totalBalance"`
+}
+
 type TrialBalanceRowItem struct {
 	Account string  `json:"account"`
 	Label   string  `json:"label"`
@@ -242,6 +259,47 @@ type WorkShiftAggregationPayload struct {
 type InvitedUserSignupInput struct {
 	UserInput       *generated.CreateUserInput `json:"userInput"`
 	InvitationToken string                     `json:"invitationToken"`
+}
+
+type BaseOperationType string
+
+const (
+	BaseOperationTypeOther        BaseOperationType = "OTHER"
+	BaseOperationTypeInitialSetup BaseOperationType = "INITIAL_SETUP"
+)
+
+var AllBaseOperationType = []BaseOperationType{
+	BaseOperationTypeOther,
+	BaseOperationTypeInitialSetup,
+}
+
+func (e BaseOperationType) IsValid() bool {
+	switch e {
+	case BaseOperationTypeOther, BaseOperationTypeInitialSetup:
+		return true
+	}
+	return false
+}
+
+func (e BaseOperationType) String() string {
+	return string(e)
+}
+
+func (e *BaseOperationType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = BaseOperationType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid BaseOperationType", str)
+	}
+	return nil
+}
+
+func (e BaseOperationType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type CustomersGroupBy string
