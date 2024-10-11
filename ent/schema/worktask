@@ -53,7 +53,7 @@ func (Worktask) Edges() []ent.Edge {
 		edge.From("assignedTo", Employee.Type).Ref("assignedTasks"),
 		// edge.To("subtasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a task can have many subtasks
 		// edge.From("workTask", Worktask.Type).Ref("subtasks").Unique(),                   // a subtask can only belong to one task
-		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+		// edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 		edge.To("workTags", Worktag.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 	}
 }

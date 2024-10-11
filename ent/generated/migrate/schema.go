@@ -174,7 +174,6 @@ var (
 		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString},
 		{Name: "company_employees", Type: field.TypeInt, Nullable: true},
-		{Name: "employee_subordinates", Type: field.TypeInt, Nullable: true},
 		{Name: "user_employee", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// EmployeesTable holds the schema information for the "employees" table.
@@ -190,14 +189,8 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "employees_employees_subordinates",
-				Columns:    []*schema.Column{EmployeesColumns[10]},
-				RefColumns: []*schema.Column{EmployeesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
 				Symbol:     "employees_users_employee",
-				Columns:    []*schema.Column{EmployeesColumns[11]},
+				Columns:    []*schema.Column{EmployeesColumns[10]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -389,6 +382,7 @@ var (
 	// ProjectTasksColumns holds the columns for the "project_tasks" table.
 	ProjectTasksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "assignee_name", Type: field.TypeString},
 		{Name: "location", Type: field.TypeString, Nullable: true},
@@ -399,6 +393,7 @@ var (
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}},
 		{Name: "project_tasks", Type: field.TypeInt},
 		{Name: "user_assigned_project_tasks", Type: field.TypeInt, Nullable: true},
+		{Name: "user_created_tasks", Type: field.TypeInt, Nullable: true},
 	}
 	// ProjectTasksTable holds the schema information for the "project_tasks" table.
 	ProjectTasksTable = &schema.Table{
@@ -408,13 +403,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "project_tasks_projects_tasks",
-				Columns:    []*schema.Column{ProjectTasksColumns[9]},
+				Columns:    []*schema.Column{ProjectTasksColumns[10]},
 				RefColumns: []*schema.Column{ProjectsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "project_tasks_users_assignedProjectTasks",
-				Columns:    []*schema.Column{ProjectTasksColumns[10]},
+				Columns:    []*schema.Column{ProjectTasksColumns[11]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "project_tasks_users_createdTasks",
+				Columns:    []*schema.Column{ProjectTasksColumns[12]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -423,7 +424,7 @@ var (
 			{
 				Name:    "projecttask_name_project_tasks",
 				Unique:  true,
-				Columns: []*schema.Column{ProjectTasksColumns[1], ProjectTasksColumns[9]},
+				Columns: []*schema.Column{ProjectTasksColumns[2], ProjectTasksColumns[10]},
 			},
 		},
 	}
@@ -580,12 +581,21 @@ var (
 		{Name: "username", Type: field.TypeString, Unique: true},
 		{Name: "disabled", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "not_verified", Type: field.TypeBool, Nullable: true, Default: false},
+		{Name: "user_subordinates", Type: field.TypeInt, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "users_users_subordinates",
+				Columns:    []*schema.Column{UsersColumns[11]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// UserRolesColumns holds the columns for the "user_roles" table.
 	UserRolesColumns = []*schema.Column{
@@ -622,10 +632,10 @@ var (
 		{Name: "note", Type: field.TypeString, Nullable: true},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"APPROVED", "PENDING"}, Default: "PENDING"},
 		{Name: "company_work_shifts", Type: field.TypeInt, Nullable: true},
-		{Name: "employee_work_shifts", Type: field.TypeInt, Nullable: true},
-		{Name: "employee_approved_work_shifts", Type: field.TypeInt, Nullable: true},
+		{Name: "project_task_work_shifts", Type: field.TypeInt, Nullable: true},
+		{Name: "user_approved_work_shifts", Type: field.TypeInt, Nullable: true},
+		{Name: "user_work_shifts", Type: field.TypeInt, Nullable: true},
 		{Name: "workshift_edit_request", Type: field.TypeInt, Unique: true, Nullable: true},
-		{Name: "worktask_work_shifts", Type: field.TypeInt, Nullable: true},
 	}
 	// WorkshiftsTable holds the schema information for the "workshifts" table.
 	WorkshiftsTable = &schema.Table{
@@ -640,93 +650,27 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "workshifts_employees_workShifts",
+				Symbol:     "workshifts_project_tasks_workShifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[13]},
-				RefColumns: []*schema.Column{EmployeesColumns[0]},
+				RefColumns: []*schema.Column{ProjectTasksColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "workshifts_employees_approvedWorkShifts",
+				Symbol:     "workshifts_users_approvedWorkShifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[14]},
-				RefColumns: []*schema.Column{EmployeesColumns[0]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "workshifts_users_workShifts",
+				Columns:    []*schema.Column{WorkshiftsColumns[15]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "workshifts_workshifts_editRequest",
-				Columns:    []*schema.Column{WorkshiftsColumns[15]},
-				RefColumns: []*schema.Column{WorkshiftsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "workshifts_worktasks_workShifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[16]},
-				RefColumns: []*schema.Column{WorktasksColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
-	}
-	// WorktagsColumns holds the columns for the "worktags" table.
-	WorktagsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "name", Type: field.TypeString, Unique: true},
-		{Name: "color", Type: field.TypeString},
-		{Name: "company_work_tags", Type: field.TypeInt, Nullable: true},
-	}
-	// WorktagsTable holds the schema information for the "worktags" table.
-	WorktagsTable = &schema.Table{
-		Name:       "worktags",
-		Columns:    WorktagsColumns,
-		PrimaryKey: []*schema.Column{WorktagsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "worktags_companies_workTags",
-				Columns:    []*schema.Column{WorktagsColumns[6]},
-				RefColumns: []*schema.Column{CompaniesColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-		},
-		Indexes: []*schema.Index{
-			{
-				Name:    "worktag_name_company_work_tags",
-				Unique:  true,
-				Columns: []*schema.Column{WorktagsColumns[4], WorktagsColumns[6]},
-			},
-		},
-	}
-	// WorktasksColumns holds the columns for the "worktasks" table.
-	WorktasksColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "description", Type: field.TypeString, Nullable: true},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"DRAFT", "ASSIGNED", "DONE"}},
-		{Name: "subtasks", Type: field.TypeJSON, Nullable: true},
-		{Name: "title", Type: field.TypeString},
-		{Name: "start_time", Type: field.TypeTime},
-		{Name: "end_time", Type: field.TypeTime, Nullable: true},
-		{Name: "company_work_tasks", Type: field.TypeInt, Nullable: true},
-		{Name: "user_created_tasks", Type: field.TypeInt, Nullable: true},
-	}
-	// WorktasksTable holds the schema information for the "worktasks" table.
-	WorktasksTable = &schema.Table{
-		Name:       "worktasks",
-		Columns:    WorktasksColumns,
-		PrimaryKey: []*schema.Column{WorktasksColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "worktasks_companies_workTasks",
-				Columns:    []*schema.Column{WorktasksColumns[10]},
-				RefColumns: []*schema.Column{CompaniesColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-			{
-				Symbol:     "worktasks_users_createdTasks",
-				Columns:    []*schema.Column{WorktasksColumns[11]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
+				RefColumns: []*schema.Column{WorkshiftsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -752,31 +696,6 @@ var (
 				Symbol:     "company_users_user_id",
 				Columns:    []*schema.Column{CompanyUsersColumns[1]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-		},
-	}
-	// EmployeeAssignedTasksColumns holds the columns for the "employee_assignedTasks" table.
-	EmployeeAssignedTasksColumns = []*schema.Column{
-		{Name: "employee_id", Type: field.TypeInt},
-		{Name: "worktask_id", Type: field.TypeInt},
-	}
-	// EmployeeAssignedTasksTable holds the schema information for the "employee_assignedTasks" table.
-	EmployeeAssignedTasksTable = &schema.Table{
-		Name:       "employee_assignedTasks",
-		Columns:    EmployeeAssignedTasksColumns,
-		PrimaryKey: []*schema.Column{EmployeeAssignedTasksColumns[0], EmployeeAssignedTasksColumns[1]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "employee_assignedTasks_employee_id",
-				Columns:    []*schema.Column{EmployeeAssignedTasksColumns[0]},
-				RefColumns: []*schema.Column{EmployeesColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-			{
-				Symbol:     "employee_assignedTasks_worktask_id",
-				Columns:    []*schema.Column{EmployeeAssignedTasksColumns[1]},
-				RefColumns: []*schema.Column{WorktasksColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -831,31 +750,6 @@ var (
 			},
 		},
 	}
-	// WorktaskWorkTagsColumns holds the columns for the "worktask_workTags" table.
-	WorktaskWorkTagsColumns = []*schema.Column{
-		{Name: "worktask_id", Type: field.TypeInt},
-		{Name: "worktag_id", Type: field.TypeInt},
-	}
-	// WorktaskWorkTagsTable holds the schema information for the "worktask_workTags" table.
-	WorktaskWorkTagsTable = &schema.Table{
-		Name:       "worktask_workTags",
-		Columns:    WorktaskWorkTagsColumns,
-		PrimaryKey: []*schema.Column{WorktaskWorkTagsColumns[0], WorktaskWorkTagsColumns[1]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "worktask_workTags_worktask_id",
-				Columns:    []*schema.Column{WorktaskWorkTagsColumns[0]},
-				RefColumns: []*schema.Column{WorktasksColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-			{
-				Symbol:     "worktask_workTags_worktag_id",
-				Columns:    []*schema.Column{WorktaskWorkTagsColumns[1]},
-				RefColumns: []*schema.Column{WorktagsColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-		},
-	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AccountingEntriesTable,
@@ -875,13 +769,9 @@ var (
 		UsersTable,
 		UserRolesTable,
 		WorkshiftsTable,
-		WorktagsTable,
-		WorktasksTable,
 		CompanyUsersTable,
-		EmployeeAssignedTasksTable,
 		UserAssignedRolesTable,
 		UserParticipatedProjectTasksTable,
-		WorktaskWorkTagsTable,
 	}
 )
 
@@ -893,8 +783,7 @@ func init() {
 	CompaniesTable.ForeignKeys[0].RefTable = CompaniesTable
 	CustomersTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
-	EmployeesTable.ForeignKeys[1].RefTable = EmployeesTable
-	EmployeesTable.ForeignKeys[2].RefTable = UsersTable
+	EmployeesTable.ForeignKeys[1].RefTable = UsersTable
 	FilesTable.ForeignKeys[0].RefTable = CompaniesTable
 	FilesTable.ForeignKeys[1].RefTable = ProductsTable
 	PayablesTable.ForeignKeys[0].RefTable = SuppliersTable
@@ -905,32 +794,25 @@ func init() {
 	ProjectMilestonesTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProjectTasksTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProjectTasksTable.ForeignKeys[1].RefTable = UsersTable
+	ProjectTasksTable.ForeignKeys[2].RefTable = UsersTable
 	ReceivablesTable.ForeignKeys[0].RefTable = CustomersTable
 	SuppliersTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[1].RefTable = UsersTable
 	TreasuriesTable.ForeignKeys[0].RefTable = CompaniesTable
+	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	UserRolesTable.ForeignKeys[0].RefTable = CompaniesTable
 	WorkshiftsTable.ForeignKeys[0].RefTable = CompaniesTable
-	WorkshiftsTable.ForeignKeys[1].RefTable = EmployeesTable
-	WorkshiftsTable.ForeignKeys[2].RefTable = EmployeesTable
-	WorkshiftsTable.ForeignKeys[3].RefTable = WorkshiftsTable
-	WorkshiftsTable.ForeignKeys[4].RefTable = WorktasksTable
-	WorktagsTable.ForeignKeys[0].RefTable = CompaniesTable
-	WorktasksTable.ForeignKeys[0].RefTable = CompaniesTable
-	WorktasksTable.ForeignKeys[1].RefTable = UsersTable
+	WorkshiftsTable.ForeignKeys[1].RefTable = ProjectTasksTable
+	WorkshiftsTable.ForeignKeys[2].RefTable = UsersTable
+	WorkshiftsTable.ForeignKeys[3].RefTable = UsersTable
+	WorkshiftsTable.ForeignKeys[4].RefTable = WorkshiftsTable
 	CompanyUsersTable.ForeignKeys[0].RefTable = CompaniesTable
 	CompanyUsersTable.ForeignKeys[1].RefTable = UsersTable
-	EmployeeAssignedTasksTable.ForeignKeys[0].RefTable = EmployeesTable
-	EmployeeAssignedTasksTable.ForeignKeys[1].RefTable = WorktasksTable
-	EmployeeAssignedTasksTable.Annotation = &entsql.Annotation{}
 	UserAssignedRolesTable.ForeignKeys[0].RefTable = UsersTable
 	UserAssignedRolesTable.ForeignKeys[1].RefTable = UserRolesTable
 	UserAssignedRolesTable.Annotation = &entsql.Annotation{}
 	UserParticipatedProjectTasksTable.ForeignKeys[0].RefTable = UsersTable
 	UserParticipatedProjectTasksTable.ForeignKeys[1].RefTable = ProjectTasksTable
 	UserParticipatedProjectTasksTable.Annotation = &entsql.Annotation{}
-	WorktaskWorkTagsTable.ForeignKeys[0].RefTable = WorktasksTable
-	WorktaskWorkTagsTable.ForeignKeys[1].RefTable = WorktagsTable
-	WorktaskWorkTagsTable.Annotation = &entsql.Annotation{}
 }

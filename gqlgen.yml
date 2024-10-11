@@ -38,8 +38,6 @@ autobind:
   - mazza/ent/generated/user
   - mazza/ent/generated/userrole
   - mazza/ent/generated/workshift
-  - mazza/ent/generated/worktag
-  - mazza/ent/generated/worktask
 
 # This section declares type mapping between the GraphQL and Go type systems.
 models:

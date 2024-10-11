@@ -172,30 +172,6 @@ func (c *Company) WorkShifts(ctx context.Context) (result []*Workshift, err erro
 	return result, err
 }
 
-func (c *Company) WorkTasks(ctx context.Context) (result []*Worktask, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedWorkTasks(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.WorkTasksOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryWorkTasks().All(ctx)
-	}
-	return result, err
-}
-
-func (c *Company) WorkTags(ctx context.Context) (result []*Worktag, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = c.NamedWorkTags(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = c.Edges.WorkTagsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = c.QueryWorkTags().All(ctx)
-	}
-	return result, err
-}
-
 func (c *Company) Users(ctx context.Context) (result []*User, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedUsers(graphql.GetFieldContext(ctx).Field.Alias)
@@ -262,62 +238,6 @@ func (e *Employee) User(ctx context.Context) (*User, error) {
 		result, err = e.QueryUser().Only(ctx)
 	}
 	return result, MaskNotFound(err)
-}
-
-func (e *Employee) Subordinates(ctx context.Context) (result []*Employee, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = e.NamedSubordinates(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = e.Edges.SubordinatesOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = e.QuerySubordinates().All(ctx)
-	}
-	return result, err
-}
-
-func (e *Employee) Leader(ctx context.Context) (*Employee, error) {
-	result, err := e.Edges.LeaderOrErr()
-	if IsNotLoaded(err) {
-		result, err = e.QueryLeader().Only(ctx)
-	}
-	return result, MaskNotFound(err)
-}
-
-func (e *Employee) WorkShifts(ctx context.Context) (result []*Workshift, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = e.NamedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = e.Edges.WorkShiftsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = e.QueryWorkShifts().All(ctx)
-	}
-	return result, err
-}
-
-func (e *Employee) ApprovedWorkShifts(ctx context.Context) (result []*Workshift, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = e.NamedApprovedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = e.Edges.ApprovedWorkShiftsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = e.QueryApprovedWorkShifts().All(ctx)
-	}
-	return result, err
-}
-
-func (e *Employee) AssignedTasks(ctx context.Context) (result []*Worktask, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = e.NamedAssignedTasks(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = e.Edges.AssignedTasksOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = e.QueryAssignedTasks().All(ctx)
-	}
-	return result, err
 }
 
 func (f *File) Company(ctx context.Context) (*Company, error) {
@@ -460,6 +380,26 @@ func (pt *ProjectTask) Participants(ctx context.Context) (result []*User, err er
 	return result, err
 }
 
+func (pt *ProjectTask) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := pt.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = pt.QueryCreatedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (pt *ProjectTask) WorkShifts(ctx context.Context) (result []*Workshift, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = pt.NamedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = pt.Edges.WorkShiftsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = pt.QueryWorkShifts().All(ctx)
+	}
+	return result, err
+}
+
 func (r *Receivable) Customer(ctx context.Context) (*Customer, error) {
 	result, err := r.Edges.CustomerOrErr()
 	if IsNotLoaded(err) {
@@ -560,16 +500,24 @@ func (u *User) AssignedRoles(ctx context.Context) (result []*UserRole, err error
 	return result, err
 }
 
-func (u *User) CreatedTasks(ctx context.Context) (result []*Worktask, err error) {
+func (u *User) Subordinates(ctx context.Context) (result []*User, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = u.NamedCreatedTasks(graphql.GetFieldContext(ctx).Field.Alias)
+		result, err = u.NamedSubordinates(graphql.GetFieldContext(ctx).Field.Alias)
 	} else {
-		result, err = u.Edges.CreatedTasksOrErr()
+		result, err = u.Edges.SubordinatesOrErr()
 	}
 	if IsNotLoaded(err) {
-		result, err = u.QueryCreatedTasks().All(ctx)
+		result, err = u.QuerySubordinates().All(ctx)
 	}
 	return result, err
+}
+
+func (u *User) Leader(ctx context.Context) (*User, error) {
+	result, err := u.Edges.LeaderOrErr()
+	if IsNotLoaded(err) {
+		result, err = u.QueryLeader().Only(ctx)
+	}
+	return result, MaskNotFound(err)
 }
 
 func (u *User) Employee(ctx context.Context) (*Employee, error) {
@@ -628,6 +576,18 @@ func (u *User) ParticipatedProjectTasks(ctx context.Context) (result []*ProjectT
 	return result, err
 }
 
+func (u *User) CreatedTasks(ctx context.Context) (result []*ProjectTask, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedCreatedTasks(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.CreatedTasksOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryCreatedTasks().All(ctx)
+	}
+	return result, err
+}
+
 func (u *User) Tokens(ctx context.Context) (result []*Token, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = u.NamedTokens(graphql.GetFieldContext(ctx).Field.Alias)
@@ -636,6 +596,30 @@ func (u *User) Tokens(ctx context.Context) (result []*Token, err error) {
 	}
 	if IsNotLoaded(err) {
 		result, err = u.QueryTokens().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) ApprovedWorkShifts(ctx context.Context) (result []*Workshift, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedApprovedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.ApprovedWorkShiftsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryApprovedWorkShifts().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) WorkShifts(ctx context.Context) (result []*Workshift, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.WorkShiftsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryWorkShifts().All(ctx)
 	}
 	return result, err
 }
@@ -668,15 +652,15 @@ func (w *Workshift) Company(ctx context.Context) (*Company, error) {
 	return result, MaskNotFound(err)
 }
 
-func (w *Workshift) Employee(ctx context.Context) (*Employee, error) {
-	result, err := w.Edges.EmployeeOrErr()
+func (w *Workshift) User(ctx context.Context) (*User, error) {
+	result, err := w.Edges.UserOrErr()
 	if IsNotLoaded(err) {
-		result, err = w.QueryEmployee().Only(ctx)
+		result, err = w.QueryUser().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
 
-func (w *Workshift) ApprovedBy(ctx context.Context) (*Employee, error) {
+func (w *Workshift) ApprovedBy(ctx context.Context) (*User, error) {
 	result, err := w.Edges.ApprovedByOrErr()
 	if IsNotLoaded(err) {
 		result, err = w.QueryApprovedBy().Only(ctx)
@@ -684,10 +668,10 @@ func (w *Workshift) ApprovedBy(ctx context.Context) (*Employee, error) {
 	return result, MaskNotFound(err)
 }
 
-func (w *Workshift) WorkTask(ctx context.Context) (*Worktask, error) {
-	result, err := w.Edges.WorkTaskOrErr()
+func (w *Workshift) Task(ctx context.Context) (*ProjectTask, error) {
+	result, err := w.Edges.TaskOrErr()
 	if IsNotLoaded(err) {
-		result, err = w.QueryWorkTask().Only(ctx)
+		result, err = w.QueryTask().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
@@ -706,76 +690,4 @@ func (w *Workshift) WorkShift(ctx context.Context) (*Workshift, error) {
 		result, err = w.QueryWorkShift().Only(ctx)
 	}
 	return result, MaskNotFound(err)
-}
-
-func (w *Worktag) Company(ctx context.Context) (*Company, error) {
-	result, err := w.Edges.CompanyOrErr()
-	if IsNotLoaded(err) {
-		result, err = w.QueryCompany().Only(ctx)
-	}
-	return result, MaskNotFound(err)
-}
-
-func (w *Worktag) WorkTasks(ctx context.Context) (result []*Worktask, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = w.NamedWorkTasks(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = w.Edges.WorkTasksOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = w.QueryWorkTasks().All(ctx)
-	}
-	return result, err
-}
-
-func (w *Worktask) Company(ctx context.Context) (*Company, error) {
-	result, err := w.Edges.CompanyOrErr()
-	if IsNotLoaded(err) {
-		result, err = w.QueryCompany().Only(ctx)
-	}
-	return result, MaskNotFound(err)
-}
-
-func (w *Worktask) CreatedBy(ctx context.Context) (*User, error) {
-	result, err := w.Edges.CreatedByOrErr()
-	if IsNotLoaded(err) {
-		result, err = w.QueryCreatedBy().Only(ctx)
-	}
-	return result, MaskNotFound(err)
-}
-
-func (w *Worktask) AssignedTo(ctx context.Context) (result []*Employee, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = w.NamedAssignedTo(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = w.Edges.AssignedToOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = w.QueryAssignedTo().All(ctx)
-	}
-	return result, err
-}
-
-func (w *Worktask) WorkShifts(ctx context.Context) (result []*Workshift, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = w.NamedWorkShifts(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = w.Edges.WorkShiftsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = w.QueryWorkShifts().All(ctx)
-	}
-	return result, err
-}
-
-func (w *Worktask) WorkTags(ctx context.Context) (result []*Worktag, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = w.NamedWorkTags(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = w.Edges.WorkTagsOrErr()
-	}
-	if IsNotLoaded(err) {
-		result, err = w.QueryWorkTags().All(ctx)
-	}
-	return result, err
 }

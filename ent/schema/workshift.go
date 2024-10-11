@@ -4,7 +4,6 @@ import (
 	"context"
 	"mazza/app/notifications"
 	gen "mazza/ent/generated"
-	"mazza/ent/generated/employee"
 	"mazza/ent/generated/hook"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
@@ -53,9 +52,9 @@ func (Workshift) Fields() []ent.Field {
 func (Workshift) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("workShifts").Unique(),
-		edge.From("employee", Employee.Type).Ref("workShifts").Unique(),
-		edge.From("approvedBy", Employee.Type).Ref("approvedWorkShifts").Unique(),
-		edge.From("workTask", Worktask.Type).Ref("workShifts").Unique(),
+		edge.From("user", User.Type).Ref("workShifts").Unique(),
+		edge.From("approvedBy", User.Type).Ref("approvedWorkShifts").Unique(),
+		edge.From("task", ProjectTask.Type).Ref("workShifts").Unique(),
 		edge.To("editRequest", Workshift.Type).Unique(),
 		edge.From("workShift", Workshift.Type).Ref("editRequest").Unique(),
 	}
@@ -80,22 +79,22 @@ func (Workshift) Hooks() []ent.Hook {
 			func(next ent.Mutator) ent.Mutator {
 				return hook.WorkshiftFunc(func(ctx context.Context, m *gen.WorkshiftMutation) (ent.Value, error) {
 					// On clock-out, if the employee has a leader, set status to "PENDING", otherwise set status "APPROVED"
-					employeeID, exists := m.EmployeeID()
+					userID, exists := m.UserID()
 					if !exists {
-						_, _, employeeID_ := utils.GetSession(&ctx)
-						employeeID = *employeeID_
+						currentUser, _, _ := utils.GetSession(&ctx)
+						userID = currentUser.ID
 						// return next.Mutate(ctx, m)
 					}
 
-					leader, err := m.Client().Employee.Query().Where(employee.IDEQ(employeeID)).
-						QueryLeader().QueryUser().Select(user.FieldID, user.FieldFcmToken).First(ctx)
+					leader, err := m.Client().User.Query().Where(user.IDEQ(userID)).
+						QueryLeader().Select(user.FieldID, user.FieldFcmToken).First(ctx)
 
 					if err != nil {
 						// This employee does not have a leader, so his workshift status is automatically approved.
 						// Proceed with the mutation operation and return.
 						m.SetStatus(workshift.StatusAPPROVED)
 						m.SetApprovedAt(time.Now())
-						m.SetApprovedByID(employeeID)
+						m.SetApprovedByID(userID)
 						return next.Mutate(ctx, m)
 					}
 					v, err := next.Mutate(ctx, m)
@@ -122,7 +121,7 @@ func (Workshift) Hooks() []ent.Hook {
 							notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
 						}()
 					}
-					
+
 					return v, err
 				})
 			},
@@ -142,7 +141,7 @@ func (Workshift) Hooks() []ent.Hook {
 					}
 
 					leader, err := m.Client().Workshift.Query().Where(workshift.IDEQ(workshiftID)).
-						QueryEmployee().QueryLeader().QueryUser().
+						QueryUser().QueryLeader().
 						Select(user.FieldID, user.FieldFcmToken).First(ctx)
 
 					if err != nil {

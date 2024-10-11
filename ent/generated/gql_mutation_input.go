@@ -14,15 +14,11 @@ import (
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"time"
 )
 
 // CreateAccountingEntryInput represents a mutation input for creating accountingentries.
 type CreateAccountingEntryInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	DeletedAt   *time.Time
 	Number      int
 	Group       int
 	Date        *time.Time
@@ -43,15 +39,6 @@ type CreateAccountingEntryInput struct {
 
 // Mutate applies the CreateAccountingEntryInput on the AccountingEntryMutation builder.
 func (i *CreateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetNumber(i.Number)
 	m.SetGroup(i.Group)
 	if v := i.Date; v != nil {
@@ -94,43 +81,31 @@ func (c *AccountingEntryCreate) SetInput(i CreateAccountingEntryInput) *Accounti
 
 // UpdateAccountingEntryInput represents a mutation input for updating accountingentries.
 type UpdateAccountingEntryInput struct {
-	UpdatedAt      *time.Time
-	ClearDeletedAt bool
-	DeletedAt      *time.Time
-	Number         *int
-	Group          *int
-	Date           *time.Time
-	Account        *string
-	Label          *string
-	Amount         *float64
-	Description    *string
-	AccountType    *accountingentry.AccountType
-	IsDebit        *bool
-	IsReversal     *bool
-	Reversed       *bool
-	ClearQuantity  bool
-	Quantity       *int
-	ClearCompany   bool
-	CompanyID      *int
-	ClearUser      bool
-	UserID         *int
-	ClearProduct   bool
-	ProductID      *int
-	ClearTreasury  bool
-	TreasuryID     *int
+	Number        *int
+	Group         *int
+	Date          *time.Time
+	Account       *string
+	Label         *string
+	Amount        *float64
+	Description   *string
+	AccountType   *accountingentry.AccountType
+	IsDebit       *bool
+	IsReversal    *bool
+	Reversed      *bool
+	ClearQuantity bool
+	Quantity      *int
+	ClearCompany  bool
+	CompanyID     *int
+	ClearUser     bool
+	UserID        *int
+	ClearProduct  bool
+	ProductID     *int
+	ClearTreasury bool
+	TreasuryID    *int
 }
 
 // Mutate applies the UpdateAccountingEntryInput on the AccountingEntryMutation builder.
 func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Number; v != nil {
 		m.SetNumber(*v)
 	}
@@ -210,9 +185,6 @@ func (c *AccountingEntryUpdateOne) SetInput(i UpdateAccountingEntryInput) *Accou
 
 // CreateCompanyInput represents a mutation input for creating companies.
 type CreateCompanyInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
 	Address            *string
 	BaseCurrency       *string
 	CeoName            *string
@@ -243,8 +215,6 @@ type CreateCompanyInput struct {
 	TokenIDs           []int
 	TreasuryIDs        []int
 	WorkShiftIDs       []int
-	WorkTaskIDs        []int
-	WorkTagIDs         []int
 	UserIDs            []int
 	DaughterCompanyIDs []int
 	ParentCompanyID    *int
@@ -252,15 +222,6 @@ type CreateCompanyInput struct {
 
 // Mutate applies the CreateCompanyInput on the CompanyMutation builder.
 func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
 	}
@@ -339,12 +300,6 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.WorkShiftIDs; len(v) > 0 {
 		m.AddWorkShiftIDs(v...)
 	}
-	if v := i.WorkTaskIDs; len(v) > 0 {
-		m.AddWorkTaskIDs(v...)
-	}
-	if v := i.WorkTagIDs; len(v) > 0 {
-		m.AddWorkTagIDs(v...)
-	}
 	if v := i.UserIDs; len(v) > 0 {
 		m.AddUserIDs(v...)
 	}
@@ -364,9 +319,6 @@ func (c *CompanyCreate) SetInput(i CreateCompanyInput) *CompanyCreate {
 
 // UpdateCompanyInput represents a mutation input for updating companies.
 type UpdateCompanyInput struct {
-	UpdatedAt                *time.Time
-	ClearDeletedAt           bool
-	DeletedAt                *time.Time
 	ClearAddress             bool
 	Address                  *string
 	BaseCurrency             *string
@@ -429,12 +381,6 @@ type UpdateCompanyInput struct {
 	ClearWorkShifts          bool
 	AddWorkShiftIDs          []int
 	RemoveWorkShiftIDs       []int
-	ClearWorkTasks           bool
-	AddWorkTaskIDs           []int
-	RemoveWorkTaskIDs        []int
-	ClearWorkTags            bool
-	AddWorkTagIDs            []int
-	RemoveWorkTagIDs         []int
 	ClearUsers               bool
 	AddUserIDs               []int
 	RemoveUserIDs            []int
@@ -447,15 +393,6 @@ type UpdateCompanyInput struct {
 
 // Mutate applies the UpdateCompanyInput on the CompanyMutation builder.
 func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if i.ClearAddress {
 		m.ClearAddress()
 	}
@@ -642,24 +579,6 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
 		m.RemoveWorkShiftIDs(v...)
 	}
-	if i.ClearWorkTasks {
-		m.ClearWorkTasks()
-	}
-	if v := i.AddWorkTaskIDs; len(v) > 0 {
-		m.AddWorkTaskIDs(v...)
-	}
-	if v := i.RemoveWorkTaskIDs; len(v) > 0 {
-		m.RemoveWorkTaskIDs(v...)
-	}
-	if i.ClearWorkTags {
-		m.ClearWorkTags()
-	}
-	if v := i.AddWorkTagIDs; len(v) > 0 {
-		m.AddWorkTagIDs(v...)
-	}
-	if v := i.RemoveWorkTagIDs; len(v) > 0 {
-		m.RemoveWorkTagIDs(v...)
-	}
 	if i.ClearUsers {
 		m.ClearUsers()
 	}
@@ -700,9 +619,6 @@ func (c *CompanyUpdateOne) SetInput(i UpdateCompanyInput) *CompanyUpdateOne {
 
 // CreateCustomerInput represents a mutation input for creating customers.
 type CreateCustomerInput struct {
-	CreatedAt     *time.Time
-	UpdatedAt     *time.Time
-	DeletedAt     *time.Time
 	Address       string
 	City          string
 	Country       string
@@ -718,15 +634,6 @@ type CreateCustomerInput struct {
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
 func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetAddress(i.Address)
 	m.SetCity(i.City)
 	m.SetCountry(i.Country)
@@ -758,9 +665,6 @@ func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
 
 // UpdateCustomerInput represents a mutation input for updating customers.
 type UpdateCustomerInput struct {
-	UpdatedAt           *time.Time
-	ClearDeletedAt      bool
-	DeletedAt           *time.Time
 	Address             *string
 	City                *string
 	Country             *string
@@ -782,15 +686,6 @@ type UpdateCustomerInput struct {
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
 func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
 	}
@@ -858,34 +753,17 @@ func (c *CustomerUpdateOne) SetInput(i UpdateCustomerInput) *CustomerUpdateOne {
 
 // CreateEmployeeInput represents a mutation input for creating employees.
 type CreateEmployeeInput struct {
-	CreatedAt            *time.Time
-	UpdatedAt            *time.Time
-	DeletedAt            *time.Time
-	Name                 string
-	Gender               employee.Gender
-	Position             *string
-	Email                *string
-	Phone                string
-	CompanyID            *int
-	UserID               *int
-	SubordinateIDs       []int
-	LeaderID             *int
-	WorkShiftIDs         []int
-	ApprovedWorkShiftIDs []int
-	AssignedTaskIDs      []int
+	Name      string
+	Gender    employee.Gender
+	Position  *string
+	Email     *string
+	Phone     string
+	CompanyID *int
+	UserID    *int
 }
 
 // Mutate applies the CreateEmployeeInput on the EmployeeMutation builder.
 func (i *CreateEmployeeInput) Mutate(m *EmployeeMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetName(i.Name)
 	m.SetGender(i.Gender)
 	if v := i.Position; v != nil {
@@ -901,21 +779,6 @@ func (i *CreateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
-	if v := i.SubordinateIDs; len(v) > 0 {
-		m.AddSubordinateIDs(v...)
-	}
-	if v := i.LeaderID; v != nil {
-		m.SetLeaderID(*v)
-	}
-	if v := i.WorkShiftIDs; len(v) > 0 {
-		m.AddWorkShiftIDs(v...)
-	}
-	if v := i.ApprovedWorkShiftIDs; len(v) > 0 {
-		m.AddApprovedWorkShiftIDs(v...)
-	}
-	if v := i.AssignedTaskIDs; len(v) > 0 {
-		m.AddAssignedTaskIDs(v...)
-	}
 }
 
 // SetInput applies the change-set in the CreateEmployeeInput on the EmployeeCreate builder.
@@ -926,47 +789,21 @@ func (c *EmployeeCreate) SetInput(i CreateEmployeeInput) *EmployeeCreate {
 
 // UpdateEmployeeInput represents a mutation input for updating employees.
 type UpdateEmployeeInput struct {
-	UpdatedAt                  *time.Time
-	ClearDeletedAt             bool
-	DeletedAt                  *time.Time
-	Name                       *string
-	Gender                     *employee.Gender
-	ClearPosition              bool
-	Position                   *string
-	ClearEmail                 bool
-	Email                      *string
-	Phone                      *string
-	ClearCompany               bool
-	CompanyID                  *int
-	ClearUser                  bool
-	UserID                     *int
-	ClearSubordinates          bool
-	AddSubordinateIDs          []int
-	RemoveSubordinateIDs       []int
-	ClearLeader                bool
-	LeaderID                   *int
-	ClearWorkShifts            bool
-	AddWorkShiftIDs            []int
-	RemoveWorkShiftIDs         []int
-	ClearApprovedWorkShifts    bool
-	AddApprovedWorkShiftIDs    []int
-	RemoveApprovedWorkShiftIDs []int
-	ClearAssignedTasks         bool
-	AddAssignedTaskIDs         []int
-	RemoveAssignedTaskIDs      []int
+	Name          *string
+	Gender        *employee.Gender
+	ClearPosition bool
+	Position      *string
+	ClearEmail    bool
+	Email         *string
+	Phone         *string
+	ClearCompany  bool
+	CompanyID     *int
+	ClearUser     bool
+	UserID        *int
 }
 
 // Mutate applies the UpdateEmployeeInput on the EmployeeMutation builder.
 func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
@@ -1000,48 +837,6 @@ func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
-	if i.ClearSubordinates {
-		m.ClearSubordinates()
-	}
-	if v := i.AddSubordinateIDs; len(v) > 0 {
-		m.AddSubordinateIDs(v...)
-	}
-	if v := i.RemoveSubordinateIDs; len(v) > 0 {
-		m.RemoveSubordinateIDs(v...)
-	}
-	if i.ClearLeader {
-		m.ClearLeader()
-	}
-	if v := i.LeaderID; v != nil {
-		m.SetLeaderID(*v)
-	}
-	if i.ClearWorkShifts {
-		m.ClearWorkShifts()
-	}
-	if v := i.AddWorkShiftIDs; len(v) > 0 {
-		m.AddWorkShiftIDs(v...)
-	}
-	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
-		m.RemoveWorkShiftIDs(v...)
-	}
-	if i.ClearApprovedWorkShifts {
-		m.ClearApprovedWorkShifts()
-	}
-	if v := i.AddApprovedWorkShiftIDs; len(v) > 0 {
-		m.AddApprovedWorkShiftIDs(v...)
-	}
-	if v := i.RemoveApprovedWorkShiftIDs; len(v) > 0 {
-		m.RemoveApprovedWorkShiftIDs(v...)
-	}
-	if i.ClearAssignedTasks {
-		m.ClearAssignedTasks()
-	}
-	if v := i.AddAssignedTaskIDs; len(v) > 0 {
-		m.AddAssignedTaskIDs(v...)
-	}
-	if v := i.RemoveAssignedTaskIDs; len(v) > 0 {
-		m.RemoveAssignedTaskIDs(v...)
-	}
 }
 
 // SetInput applies the change-set in the UpdateEmployeeInput on the EmployeeUpdate builder.
@@ -1058,9 +853,6 @@ func (c *EmployeeUpdateOne) SetInput(i UpdateEmployeeInput) *EmployeeUpdateOne {
 
 // CreateFileInput represents a mutation input for creating files.
 type CreateFileInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	DeletedAt   *time.Time
 	Category    file.Category
 	Extension   string
 	Size        string
@@ -1073,15 +865,6 @@ type CreateFileInput struct {
 
 // Mutate applies the CreateFileInput on the FileMutation builder.
 func (i *CreateFileInput) Mutate(m *FileMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetCategory(i.Category)
 	m.SetExtension(i.Extension)
 	m.SetSize(i.Size)
@@ -1104,32 +887,20 @@ func (c *FileCreate) SetInput(i CreateFileInput) *FileCreate {
 
 // UpdateFileInput represents a mutation input for updating files.
 type UpdateFileInput struct {
-	UpdatedAt      *time.Time
-	ClearDeletedAt bool
-	DeletedAt      *time.Time
-	Category       *file.Category
-	Extension      *string
-	Size           *string
-	URI            *string
-	URL            *string
-	Description    *string
-	ClearCompany   bool
-	CompanyID      *int
-	ClearProduct   bool
-	ProductID      *int
+	Category     *file.Category
+	Extension    *string
+	Size         *string
+	URI          *string
+	URL          *string
+	Description  *string
+	ClearCompany bool
+	CompanyID    *int
+	ClearProduct bool
+	ProductID    *int
 }
 
 // Mutate applies the UpdateFileInput on the FileMutation builder.
 func (i *UpdateFileInput) Mutate(m *FileMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Category; v != nil {
 		m.SetCategory(*v)
 	}
@@ -1176,9 +947,6 @@ func (c *FileUpdateOne) SetInput(i UpdateFileInput) *FileUpdateOne {
 
 // CreatePayableInput represents a mutation input for creating payables.
 type CreatePayableInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
 	EntryGroup         int
 	Date               time.Time
 	OutstandingBalance float64
@@ -1190,15 +958,6 @@ type CreatePayableInput struct {
 
 // Mutate applies the CreatePayableInput on the PayableMutation builder.
 func (i *CreatePayableInput) Mutate(m *PayableMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetEntryGroup(i.EntryGroup)
 	m.SetDate(i.Date)
 	m.SetOutstandingBalance(i.OutstandingBalance)
@@ -1218,9 +977,6 @@ func (c *PayableCreate) SetInput(i CreatePayableInput) *PayableCreate {
 
 // UpdatePayableInput represents a mutation input for updating payables.
 type UpdatePayableInput struct {
-	UpdatedAt          *time.Time
-	ClearDeletedAt     bool
-	DeletedAt          *time.Time
 	EntryGroup         *int
 	Date               *time.Time
 	OutstandingBalance *float64
@@ -1233,15 +989,6 @@ type UpdatePayableInput struct {
 
 // Mutate applies the UpdatePayableInput on the PayableMutation builder.
 func (i *UpdatePayableInput) Mutate(m *PayableMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.EntryGroup; v != nil {
 		m.SetEntryGroup(*v)
 	}
@@ -1282,9 +1029,6 @@ func (c *PayableUpdateOne) SetInput(i UpdatePayableInput) *PayableUpdateOne {
 
 // CreateProductInput represents a mutation input for creating products.
 type CreateProductInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
 	Description        string
 	IsDefault          *bool
 	MinimumStock       *int
@@ -1301,15 +1045,6 @@ type CreateProductInput struct {
 
 // Mutate applies the CreateProductInput on the ProductMutation builder.
 func (i *CreateProductInput) Mutate(m *ProductMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetDescription(i.Description)
 	if v := i.IsDefault; v != nil {
 		m.SetIsDefault(*v)
@@ -1346,9 +1081,6 @@ func (c *ProductCreate) SetInput(i CreateProductInput) *ProductCreate {
 
 // UpdateProductInput represents a mutation input for updating products.
 type UpdateProductInput struct {
-	UpdatedAt                *time.Time
-	ClearDeletedAt           bool
-	DeletedAt                *time.Time
 	Description              *string
 	IsDefault                *bool
 	MinimumStock             *int
@@ -1370,15 +1102,6 @@ type UpdateProductInput struct {
 
 // Mutate applies the UpdateProductInput on the ProductMutation builder.
 func (i *UpdateProductInput) Mutate(m *ProductMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
@@ -1446,9 +1169,6 @@ func (c *ProductUpdateOne) SetInput(i UpdateProductInput) *ProductUpdateOne {
 
 // CreateProjectInput represents a mutation input for creating projects.
 type CreateProjectInput struct {
-	CreatedAt    *time.Time
-	UpdatedAt    *time.Time
-	DeletedAt    *time.Time
 	Name         string
 	Description  string
 	StartDate    time.Time
@@ -1464,15 +1184,6 @@ type CreateProjectInput struct {
 
 // Mutate applies the CreateProjectInput on the ProjectMutation builder.
 func (i *CreateProjectInput) Mutate(m *ProjectMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetName(i.Name)
 	m.SetDescription(i.Description)
 	m.SetStartDate(i.StartDate)
@@ -1508,9 +1219,6 @@ func (c *ProjectCreate) SetInput(i CreateProjectInput) *ProjectCreate {
 
 // UpdateProjectInput represents a mutation input for updating projects.
 type UpdateProjectInput struct {
-	UpdatedAt          *time.Time
-	ClearDeletedAt     bool
-	DeletedAt          *time.Time
 	Name               *string
 	Description        *string
 	StartDate          *time.Time
@@ -1533,15 +1241,6 @@ type UpdateProjectInput struct {
 
 // Mutate applies the UpdateProjectInput on the ProjectMutation builder.
 func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
@@ -1664,6 +1363,7 @@ func (c *ProjectMilestoneUpdateOne) SetInput(i UpdateProjectMilestoneInput) *Pro
 
 // CreateProjectTaskInput represents a mutation input for creating projecttasks.
 type CreateProjectTaskInput struct {
+	CreatedAt      *time.Time
 	Name           string
 	AssigneeName   string
 	Location       *string
@@ -1675,10 +1375,15 @@ type CreateProjectTaskInput struct {
 	ProjectID      int
 	AssigneeID     *int
 	ParticipantIDs []int
+	CreatedByID    *int
+	WorkShiftIDs   []int
 }
 
 // Mutate applies the CreateProjectTaskInput on the ProjectTaskMutation builder.
 func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
 	m.SetName(i.Name)
 	m.SetAssigneeName(i.AssigneeName)
 	if v := i.Location; v != nil {
@@ -1697,6 +1402,12 @@ func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	}
 	if v := i.ParticipantIDs; len(v) > 0 {
 		m.AddParticipantIDs(v...)
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+	if v := i.WorkShiftIDs; len(v) > 0 {
+		m.AddWorkShiftIDs(v...)
 	}
 }
 
@@ -1724,6 +1435,9 @@ type UpdateProjectTaskInput struct {
 	ClearParticipants    bool
 	AddParticipantIDs    []int
 	RemoveParticipantIDs []int
+	ClearWorkShifts      bool
+	AddWorkShiftIDs      []int
+	RemoveWorkShiftIDs   []int
 }
 
 // Mutate applies the UpdateProjectTaskInput on the ProjectTaskMutation builder.
@@ -1776,6 +1490,15 @@ func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	if v := i.RemoveParticipantIDs; len(v) > 0 {
 		m.RemoveParticipantIDs(v...)
 	}
+	if i.ClearWorkShifts {
+		m.ClearWorkShifts()
+	}
+	if v := i.AddWorkShiftIDs; len(v) > 0 {
+		m.AddWorkShiftIDs(v...)
+	}
+	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
+		m.RemoveWorkShiftIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateProjectTaskInput on the ProjectTaskUpdate builder.
@@ -1792,9 +1515,6 @@ func (c *ProjectTaskUpdateOne) SetInput(i UpdateProjectTaskInput) *ProjectTaskUp
 
 // CreateReceivableInput represents a mutation input for creating receivables.
 type CreateReceivableInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
 	EntryGroup         int
 	Date               time.Time
 	OutstandingBalance float64
@@ -1806,15 +1526,6 @@ type CreateReceivableInput struct {
 
 // Mutate applies the CreateReceivableInput on the ReceivableMutation builder.
 func (i *CreateReceivableInput) Mutate(m *ReceivableMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetEntryGroup(i.EntryGroup)
 	m.SetDate(i.Date)
 	m.SetOutstandingBalance(i.OutstandingBalance)
@@ -1834,9 +1545,6 @@ func (c *ReceivableCreate) SetInput(i CreateReceivableInput) *ReceivableCreate {
 
 // UpdateReceivableInput represents a mutation input for updating receivables.
 type UpdateReceivableInput struct {
-	UpdatedAt          *time.Time
-	ClearDeletedAt     bool
-	DeletedAt          *time.Time
 	EntryGroup         *int
 	Date               *time.Time
 	OutstandingBalance *float64
@@ -1849,15 +1557,6 @@ type UpdateReceivableInput struct {
 
 // Mutate applies the UpdateReceivableInput on the ReceivableMutation builder.
 func (i *UpdateReceivableInput) Mutate(m *ReceivableMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.EntryGroup; v != nil {
 		m.SetEntryGroup(*v)
 	}
@@ -1898,9 +1597,6 @@ func (c *ReceivableUpdateOne) SetInput(i UpdateReceivableInput) *ReceivableUpdat
 
 // CreateSupplierInput represents a mutation input for creating suppliers.
 type CreateSupplierInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	DeletedAt   *time.Time
 	Address     string
 	City        string
 	Country     string
@@ -1916,15 +1612,6 @@ type CreateSupplierInput struct {
 
 // Mutate applies the CreateSupplierInput on the SupplierMutation builder.
 func (i *CreateSupplierInput) Mutate(m *SupplierMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	m.SetAddress(i.Address)
 	m.SetCity(i.City)
 	m.SetCountry(i.Country)
@@ -1952,9 +1639,6 @@ func (c *SupplierCreate) SetInput(i CreateSupplierInput) *SupplierCreate {
 
 // UpdateSupplierInput represents a mutation input for updating suppliers.
 type UpdateSupplierInput struct {
-	UpdatedAt        *time.Time
-	ClearDeletedAt   bool
-	DeletedAt        *time.Time
 	Address          *string
 	City             *string
 	Country          *string
@@ -1974,15 +1658,6 @@ type UpdateSupplierInput struct {
 
 // Mutate applies the UpdateSupplierInput on the SupplierMutation builder.
 func (i *UpdateSupplierInput) Mutate(m *SupplierMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
 	}
@@ -2044,9 +1719,6 @@ func (c *SupplierUpdateOne) SetInput(i UpdateSupplierInput) *SupplierUpdateOne {
 
 // CreateTreasuryInput represents a mutation input for creating treasuries.
 type CreateTreasuryInput struct {
-	CreatedAt          *time.Time
-	UpdatedAt          *time.Time
-	DeletedAt          *time.Time
 	AccountNumber      *string
 	Balance            float64
 	BankName           *string
@@ -2064,15 +1736,6 @@ type CreateTreasuryInput struct {
 
 // Mutate applies the CreateTreasuryInput on the TreasuryMutation builder.
 func (i *CreateTreasuryInput) Mutate(m *TreasuryMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.AccountNumber; v != nil {
 		m.SetAccountNumber(*v)
 	}
@@ -2114,9 +1777,6 @@ func (c *TreasuryCreate) SetInput(i CreateTreasuryInput) *TreasuryCreate {
 
 // UpdateTreasuryInput represents a mutation input for updating treasuries.
 type UpdateTreasuryInput struct {
-	UpdatedAt                *time.Time
-	ClearDeletedAt           bool
-	DeletedAt                *time.Time
 	ClearAccountNumber       bool
 	AccountNumber            *string
 	Balance                  *float64
@@ -2144,15 +1804,6 @@ type UpdateTreasuryInput struct {
 
 // Mutate applies the UpdateTreasuryInput on the TreasuryMutation builder.
 func (i *UpdateTreasuryInput) Mutate(m *TreasuryMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if i.ClearAccountNumber {
 		m.ClearAccountNumber()
 	}
@@ -2238,9 +1889,6 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
-	CreatedAt                  *time.Time
-	UpdatedAt                  *time.Time
-	DeletedAt                  *time.Time
 	FcmToken                   *string
 	Email                      *string
 	Name                       string
@@ -2251,26 +1899,21 @@ type CreateUserInput struct {
 	AccountingEntryIDs         []int
 	CompanyIDs                 []int
 	AssignedRoleIDs            []int
-	CreatedTaskIDs             []int
+	SubordinateIDs             []int
+	LeaderID                   *int
 	EmployeeID                 *int
 	CreatedProjectIDs          []int
 	LeaderedProjectIDs         []int
 	AssignedProjectTaskIDs     []int
 	ParticipatedProjectTaskIDs []int
+	CreatedTaskIDs             []int
 	TokenIDs                   []int
+	ApprovedWorkShiftIDs       []int
+	WorkShiftIDs               []int
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
 func (i *CreateUserInput) Mutate(m *UserMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
 	}
@@ -2295,8 +1938,11 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.AssignedRoleIDs; len(v) > 0 {
 		m.AddAssignedRoleIDs(v...)
 	}
-	if v := i.CreatedTaskIDs; len(v) > 0 {
-		m.AddCreatedTaskIDs(v...)
+	if v := i.SubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
@@ -2313,8 +1959,17 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.ParticipatedProjectTaskIDs; len(v) > 0 {
 		m.AddParticipatedProjectTaskIDs(v...)
 	}
+	if v := i.CreatedTaskIDs; len(v) > 0 {
+		m.AddCreatedTaskIDs(v...)
+	}
 	if v := i.TokenIDs; len(v) > 0 {
 		m.AddTokenIDs(v...)
+	}
+	if v := i.ApprovedWorkShiftIDs; len(v) > 0 {
+		m.AddApprovedWorkShiftIDs(v...)
+	}
+	if v := i.WorkShiftIDs; len(v) > 0 {
+		m.AddWorkShiftIDs(v...)
 	}
 }
 
@@ -2326,9 +1981,6 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
-	UpdatedAt                        *time.Time
-	ClearDeletedAt                   bool
-	DeletedAt                        *time.Time
 	ClearFcmToken                    bool
 	FcmToken                         *string
 	ClearEmail                       bool
@@ -2348,9 +2000,11 @@ type UpdateUserInput struct {
 	ClearAssignedRoles               bool
 	AddAssignedRoleIDs               []int
 	RemoveAssignedRoleIDs            []int
-	ClearCreatedTasks                bool
-	AddCreatedTaskIDs                []int
-	RemoveCreatedTaskIDs             []int
+	ClearSubordinates                bool
+	AddSubordinateIDs                []int
+	RemoveSubordinateIDs             []int
+	ClearLeader                      bool
+	LeaderID                         *int
 	ClearEmployee                    bool
 	EmployeeID                       *int
 	ClearCreatedProjects             bool
@@ -2368,19 +2022,16 @@ type UpdateUserInput struct {
 	ClearTokens                      bool
 	AddTokenIDs                      []int
 	RemoveTokenIDs                   []int
+	ClearApprovedWorkShifts          bool
+	AddApprovedWorkShiftIDs          []int
+	RemoveApprovedWorkShiftIDs       []int
+	ClearWorkShifts                  bool
+	AddWorkShiftIDs                  []int
+	RemoveWorkShiftIDs               []int
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
 func (i *UpdateUserInput) Mutate(m *UserMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if i.ClearFcmToken {
 		m.ClearFcmToken()
 	}
@@ -2438,14 +2089,20 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.RemoveAssignedRoleIDs; len(v) > 0 {
 		m.RemoveAssignedRoleIDs(v...)
 	}
-	if i.ClearCreatedTasks {
-		m.ClearCreatedTasks()
+	if i.ClearSubordinates {
+		m.ClearSubordinates()
 	}
-	if v := i.AddCreatedTaskIDs; len(v) > 0 {
-		m.AddCreatedTaskIDs(v...)
+	if v := i.AddSubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
 	}
-	if v := i.RemoveCreatedTaskIDs; len(v) > 0 {
-		m.RemoveCreatedTaskIDs(v...)
+	if v := i.RemoveSubordinateIDs; len(v) > 0 {
+		m.RemoveSubordinateIDs(v...)
+	}
+	if i.ClearLeader {
+		m.ClearLeader()
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 	if i.ClearEmployee {
 		m.ClearEmployee()
@@ -2497,6 +2154,24 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.RemoveTokenIDs; len(v) > 0 {
 		m.RemoveTokenIDs(v...)
+	}
+	if i.ClearApprovedWorkShifts {
+		m.ClearApprovedWorkShifts()
+	}
+	if v := i.AddApprovedWorkShiftIDs; len(v) > 0 {
+		m.AddApprovedWorkShiftIDs(v...)
+	}
+	if v := i.RemoveApprovedWorkShiftIDs; len(v) > 0 {
+		m.RemoveApprovedWorkShiftIDs(v...)
+	}
+	if i.ClearWorkShifts {
+		m.ClearWorkShifts()
+	}
+	if v := i.AddWorkShiftIDs; len(v) > 0 {
+		m.AddWorkShiftIDs(v...)
+	}
+	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
+		m.RemoveWorkShiftIDs(v...)
 	}
 }
 
@@ -2582,9 +2257,6 @@ func (c *UserRoleUpdateOne) SetInput(i UpdateUserRoleInput) *UserRoleUpdateOne {
 
 // CreateWorkshiftInput represents a mutation input for creating workshifts.
 type CreateWorkshiftInput struct {
-	CreatedAt        *time.Time
-	UpdatedAt        *time.Time
-	DeletedAt        *time.Time
 	ApprovedAt       *time.Time
 	ClockIn          *time.Time
 	ClockOut         *time.Time
@@ -2594,24 +2266,15 @@ type CreateWorkshiftInput struct {
 	Note             *string
 	Status           *workshift.Status
 	CompanyID        *int
-	EmployeeID       *int
+	UserID           *int
 	ApprovedByID     *int
-	WorkTaskID       *int
+	TaskID           *int
 	EditRequestID    *int
 	WorkShiftID      *int
 }
 
 // Mutate applies the CreateWorkshiftInput on the WorkshiftMutation builder.
 func (i *CreateWorkshiftInput) Mutate(m *WorkshiftMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if v := i.ApprovedAt; v != nil {
 		m.SetApprovedAt(*v)
 	}
@@ -2637,14 +2300,14 @@ func (i *CreateWorkshiftInput) Mutate(m *WorkshiftMutation) {
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
-	if v := i.EmployeeID; v != nil {
-		m.SetEmployeeID(*v)
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
 	}
 	if v := i.ApprovedByID; v != nil {
 		m.SetApprovedByID(*v)
 	}
-	if v := i.WorkTaskID; v != nil {
-		m.SetWorkTaskID(*v)
+	if v := i.TaskID; v != nil {
+		m.SetTaskID(*v)
 	}
 	if v := i.EditRequestID; v != nil {
 		m.SetEditRequestID(*v)
@@ -2662,9 +2325,6 @@ func (c *WorkshiftCreate) SetInput(i CreateWorkshiftInput) *WorkshiftCreate {
 
 // UpdateWorkshiftInput represents a mutation input for updating workshifts.
 type UpdateWorkshiftInput struct {
-	UpdatedAt             *time.Time
-	ClearDeletedAt        bool
-	DeletedAt             *time.Time
 	ClearApprovedAt       bool
 	ApprovedAt            *time.Time
 	ClockIn               *time.Time
@@ -2680,12 +2340,12 @@ type UpdateWorkshiftInput struct {
 	Status                *workshift.Status
 	ClearCompany          bool
 	CompanyID             *int
-	ClearEmployee         bool
-	EmployeeID            *int
+	ClearUser             bool
+	UserID                *int
 	ClearApprovedBy       bool
 	ApprovedByID          *int
-	ClearWorkTask         bool
-	WorkTaskID            *int
+	ClearTask             bool
+	TaskID                *int
 	ClearEditRequest      bool
 	EditRequestID         *int
 	ClearWorkShift        bool
@@ -2694,15 +2354,6 @@ type UpdateWorkshiftInput struct {
 
 // Mutate applies the UpdateWorkshiftInput on the WorkshiftMutation builder.
 func (i *UpdateWorkshiftInput) Mutate(m *WorkshiftMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
 	if i.ClearApprovedAt {
 		m.ClearApprovedAt()
 	}
@@ -2748,11 +2399,11 @@ func (i *UpdateWorkshiftInput) Mutate(m *WorkshiftMutation) {
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
-	if i.ClearEmployee {
-		m.ClearEmployee()
+	if i.ClearUser {
+		m.ClearUser()
 	}
-	if v := i.EmployeeID; v != nil {
-		m.SetEmployeeID(*v)
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
 	}
 	if i.ClearApprovedBy {
 		m.ClearApprovedBy()
@@ -2760,11 +2411,11 @@ func (i *UpdateWorkshiftInput) Mutate(m *WorkshiftMutation) {
 	if v := i.ApprovedByID; v != nil {
 		m.SetApprovedByID(*v)
 	}
-	if i.ClearWorkTask {
-		m.ClearWorkTask()
+	if i.ClearTask {
+		m.ClearTask()
 	}
-	if v := i.WorkTaskID; v != nil {
-		m.SetWorkTaskID(*v)
+	if v := i.TaskID; v != nil {
+		m.SetTaskID(*v)
 	}
 	if i.ClearEditRequest {
 		m.ClearEditRequest()
@@ -2788,292 +2439,6 @@ func (c *WorkshiftUpdate) SetInput(i UpdateWorkshiftInput) *WorkshiftUpdate {
 
 // SetInput applies the change-set in the UpdateWorkshiftInput on the WorkshiftUpdateOne builder.
 func (c *WorkshiftUpdateOne) SetInput(i UpdateWorkshiftInput) *WorkshiftUpdateOne {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// CreateWorktagInput represents a mutation input for creating worktags.
-type CreateWorktagInput struct {
-	CreatedAt   *time.Time
-	UpdatedAt   *time.Time
-	DeletedAt   *time.Time
-	Name        string
-	Color       string
-	CompanyID   *int
-	WorkTaskIDs []int
-}
-
-// Mutate applies the CreateWorktagInput on the WorktagMutation builder.
-func (i *CreateWorktagInput) Mutate(m *WorktagMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	m.SetName(i.Name)
-	m.SetColor(i.Color)
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if v := i.WorkTaskIDs; len(v) > 0 {
-		m.AddWorkTaskIDs(v...)
-	}
-}
-
-// SetInput applies the change-set in the CreateWorktagInput on the WorktagCreate builder.
-func (c *WorktagCreate) SetInput(i CreateWorktagInput) *WorktagCreate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// UpdateWorktagInput represents a mutation input for updating worktags.
-type UpdateWorktagInput struct {
-	UpdatedAt         *time.Time
-	ClearDeletedAt    bool
-	DeletedAt         *time.Time
-	Name              *string
-	Color             *string
-	ClearCompany      bool
-	CompanyID         *int
-	ClearWorkTasks    bool
-	AddWorkTaskIDs    []int
-	RemoveWorkTaskIDs []int
-}
-
-// Mutate applies the UpdateWorktagInput on the WorktagMutation builder.
-func (i *UpdateWorktagInput) Mutate(m *WorktagMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if v := i.Name; v != nil {
-		m.SetName(*v)
-	}
-	if v := i.Color; v != nil {
-		m.SetColor(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if i.ClearWorkTasks {
-		m.ClearWorkTasks()
-	}
-	if v := i.AddWorkTaskIDs; len(v) > 0 {
-		m.AddWorkTaskIDs(v...)
-	}
-	if v := i.RemoveWorkTaskIDs; len(v) > 0 {
-		m.RemoveWorkTaskIDs(v...)
-	}
-}
-
-// SetInput applies the change-set in the UpdateWorktagInput on the WorktagUpdate builder.
-func (c *WorktagUpdate) SetInput(i UpdateWorktagInput) *WorktagUpdate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// SetInput applies the change-set in the UpdateWorktagInput on the WorktagUpdateOne builder.
-func (c *WorktagUpdateOne) SetInput(i UpdateWorktagInput) *WorktagUpdateOne {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// CreateWorktaskInput represents a mutation input for creating worktasks.
-type CreateWorktaskInput struct {
-	CreatedAt     *time.Time
-	UpdatedAt     *time.Time
-	DeletedAt     *time.Time
-	Description   *string
-	Status        worktask.Status
-	Subtasks      []string
-	Title         string
-	StartTime     time.Time
-	EndTime       *time.Time
-	CompanyID     *int
-	CreatedByID   *int
-	AssignedToIDs []int
-	WorkShiftIDs  []int
-	WorkTagIDs    []int
-}
-
-// Mutate applies the CreateWorktaskInput on the WorktaskMutation builder.
-func (i *CreateWorktaskInput) Mutate(m *WorktaskMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if v := i.Description; v != nil {
-		m.SetDescription(*v)
-	}
-	m.SetStatus(i.Status)
-	if v := i.Subtasks; v != nil {
-		m.SetSubtasks(v)
-	}
-	m.SetTitle(i.Title)
-	m.SetStartTime(i.StartTime)
-	if v := i.EndTime; v != nil {
-		m.SetEndTime(*v)
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if v := i.CreatedByID; v != nil {
-		m.SetCreatedByID(*v)
-	}
-	if v := i.AssignedToIDs; len(v) > 0 {
-		m.AddAssignedToIDs(v...)
-	}
-	if v := i.WorkShiftIDs; len(v) > 0 {
-		m.AddWorkShiftIDs(v...)
-	}
-	if v := i.WorkTagIDs; len(v) > 0 {
-		m.AddWorkTagIDs(v...)
-	}
-}
-
-// SetInput applies the change-set in the CreateWorktaskInput on the WorktaskCreate builder.
-func (c *WorktaskCreate) SetInput(i CreateWorktaskInput) *WorktaskCreate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// UpdateWorktaskInput represents a mutation input for updating worktasks.
-type UpdateWorktaskInput struct {
-	UpdatedAt           *time.Time
-	ClearDeletedAt      bool
-	DeletedAt           *time.Time
-	ClearDescription    bool
-	Description         *string
-	Status              *worktask.Status
-	ClearSubtasks       bool
-	Subtasks            []string
-	AppendSubtasks      []string
-	Title               *string
-	StartTime           *time.Time
-	ClearEndTime        bool
-	EndTime             *time.Time
-	ClearCompany        bool
-	CompanyID           *int
-	ClearCreatedBy      bool
-	CreatedByID         *int
-	ClearAssignedTo     bool
-	AddAssignedToIDs    []int
-	RemoveAssignedToIDs []int
-	ClearWorkShifts     bool
-	AddWorkShiftIDs     []int
-	RemoveWorkShiftIDs  []int
-	ClearWorkTags       bool
-	AddWorkTagIDs       []int
-	RemoveWorkTagIDs    []int
-}
-
-// Mutate applies the UpdateWorktaskInput on the WorktaskMutation builder.
-func (i *UpdateWorktaskInput) Mutate(m *WorktaskMutation) {
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if i.ClearDescription {
-		m.ClearDescription()
-	}
-	if v := i.Description; v != nil {
-		m.SetDescription(*v)
-	}
-	if v := i.Status; v != nil {
-		m.SetStatus(*v)
-	}
-	if i.ClearSubtasks {
-		m.ClearSubtasks()
-	}
-	if v := i.Subtasks; v != nil {
-		m.SetSubtasks(v)
-	}
-	if i.AppendSubtasks != nil {
-		m.AppendSubtasks(i.Subtasks)
-	}
-	if v := i.Title; v != nil {
-		m.SetTitle(*v)
-	}
-	if v := i.StartTime; v != nil {
-		m.SetStartTime(*v)
-	}
-	if i.ClearEndTime {
-		m.ClearEndTime()
-	}
-	if v := i.EndTime; v != nil {
-		m.SetEndTime(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if i.ClearCreatedBy {
-		m.ClearCreatedBy()
-	}
-	if v := i.CreatedByID; v != nil {
-		m.SetCreatedByID(*v)
-	}
-	if i.ClearAssignedTo {
-		m.ClearAssignedTo()
-	}
-	if v := i.AddAssignedToIDs; len(v) > 0 {
-		m.AddAssignedToIDs(v...)
-	}
-	if v := i.RemoveAssignedToIDs; len(v) > 0 {
-		m.RemoveAssignedToIDs(v...)
-	}
-	if i.ClearWorkShifts {
-		m.ClearWorkShifts()
-	}
-	if v := i.AddWorkShiftIDs; len(v) > 0 {
-		m.AddWorkShiftIDs(v...)
-	}
-	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
-		m.RemoveWorkShiftIDs(v...)
-	}
-	if i.ClearWorkTags {
-		m.ClearWorkTags()
-	}
-	if v := i.AddWorkTagIDs; len(v) > 0 {
-		m.AddWorkTagIDs(v...)
-	}
-	if v := i.RemoveWorkTagIDs; len(v) > 0 {
-		m.RemoveWorkTagIDs(v...)
-	}
-}
-
-// SetInput applies the change-set in the UpdateWorktaskInput on the WorktaskUpdate builder.
-func (c *WorktaskUpdate) SetInput(i UpdateWorktaskInput) *WorktaskUpdate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// SetInput applies the change-set in the UpdateWorktaskInput on the WorktaskUpdateOne builder.
-func (c *WorktaskUpdateOne) SetInput(i UpdateWorktaskInput) *WorktaskUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

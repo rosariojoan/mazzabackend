@@ -19,8 +19,6 @@ import (
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"mazza/ent/schema"
 	"time"
 )
@@ -297,12 +295,16 @@ func init() {
 	projecttask.Hooks[0] = projecttaskHooks[0]
 	projecttaskFields := schema.ProjectTask{}.Fields()
 	_ = projecttaskFields
+	// projecttaskDescCreatedAt is the schema descriptor for createdAt field.
+	projecttaskDescCreatedAt := projecttaskFields[0].Descriptor()
+	// projecttask.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	projecttask.DefaultCreatedAt = projecttaskDescCreatedAt.Default.(func() time.Time)
 	// projecttaskDescName is the schema descriptor for name field.
-	projecttaskDescName := projecttaskFields[0].Descriptor()
+	projecttaskDescName := projecttaskFields[1].Descriptor()
 	// projecttask.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	projecttask.NameValidator = projecttaskDescName.Validators[0].(func(string) error)
 	// projecttaskDescAssigneeName is the schema descriptor for assigneeName field.
-	projecttaskDescAssigneeName := projecttaskFields[1].Descriptor()
+	projecttaskDescAssigneeName := projecttaskFields[2].Descriptor()
 	// projecttask.AssigneeNameValidator is a validator for the "assigneeName" field. It is called by the builders before save.
 	projecttask.AssigneeNameValidator = projecttaskDescAssigneeName.Validators[0].(func(string) error)
 	receivableMixin := schema.Receivable{}.Mixin()
@@ -433,42 +435,6 @@ func init() {
 	workshiftDescClockIn := workshiftFields[1].Descriptor()
 	// workshift.DefaultClockIn holds the default value on creation for the clockIn field.
 	workshift.DefaultClockIn = workshiftDescClockIn.Default.(func() time.Time)
-	worktagMixin := schema.Worktag{}.Mixin()
-	worktagMixinFields0 := worktagMixin[0].Fields()
-	_ = worktagMixinFields0
-	worktagFields := schema.Worktag{}.Fields()
-	_ = worktagFields
-	// worktagDescCreatedAt is the schema descriptor for createdAt field.
-	worktagDescCreatedAt := worktagMixinFields0[0].Descriptor()
-	// worktag.DefaultCreatedAt holds the default value on creation for the createdAt field.
-	worktag.DefaultCreatedAt = worktagDescCreatedAt.Default.(func() time.Time)
-	// worktagDescUpdatedAt is the schema descriptor for updatedAt field.
-	worktagDescUpdatedAt := worktagMixinFields0[1].Descriptor()
-	// worktag.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
-	worktag.DefaultUpdatedAt = worktagDescUpdatedAt.Default.(func() time.Time)
-	// worktag.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
-	worktag.UpdateDefaultUpdatedAt = worktagDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// worktagDescName is the schema descriptor for name field.
-	worktagDescName := worktagFields[0].Descriptor()
-	// worktag.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	worktag.NameValidator = worktagDescName.Validators[0].(func(string) error)
-	worktaskMixin := schema.Worktask{}.Mixin()
-	worktaskHooks := schema.Worktask{}.Hooks()
-	worktask.Hooks[0] = worktaskHooks[0]
-	worktaskMixinFields0 := worktaskMixin[0].Fields()
-	_ = worktaskMixinFields0
-	worktaskFields := schema.Worktask{}.Fields()
-	_ = worktaskFields
-	// worktaskDescCreatedAt is the schema descriptor for createdAt field.
-	worktaskDescCreatedAt := worktaskMixinFields0[0].Descriptor()
-	// worktask.DefaultCreatedAt holds the default value on creation for the createdAt field.
-	worktask.DefaultCreatedAt = worktaskDescCreatedAt.Default.(func() time.Time)
-	// worktaskDescUpdatedAt is the schema descriptor for updatedAt field.
-	worktaskDescUpdatedAt := worktaskMixinFields0[1].Descriptor()
-	// worktask.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
-	worktask.DefaultUpdatedAt = worktaskDescUpdatedAt.Default.(func() time.Time)
-	// worktask.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
-	worktask.UpdateDefaultUpdatedAt = worktaskDescUpdatedAt.UpdateDefault.(func() time.Time)
 }
 
 const (

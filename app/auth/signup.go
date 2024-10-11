@@ -29,7 +29,6 @@ func Signup(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "houve um erro ao registar usuário"})
 		return
 	}
-	_ = tx
 
 	if err := ctx.BindJSON(&body); err != nil {
 		fmt.Println("err:", err)

@@ -56,9 +56,3 @@ type UserRole func(*sql.Selector)
 
 // Workshift is the predicate function for workshift builders.
 type Workshift func(*sql.Selector)
-
-// Worktag is the predicate function for worktag builders.
-type Worktag func(*sql.Selector)
-
-// Worktask is the predicate function for worktask builders.
-type Worktask func(*sql.Selector)

@@ -21,8 +21,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -48,8 +46,6 @@ type CompanyQuery struct {
 	withTokens                 *TokenQuery
 	withTreasuries             *TreasuryQuery
 	withWorkShifts             *WorkshiftQuery
-	withWorkTasks              *WorktaskQuery
-	withWorkTags               *WorktagQuery
 	withUsers                  *UserQuery
 	withDaughterCompanies      *CompanyQuery
 	withParentCompany          *CompanyQuery
@@ -67,8 +63,6 @@ type CompanyQuery struct {
 	withNamedTokens            map[string]*TokenQuery
 	withNamedTreasuries        map[string]*TreasuryQuery
 	withNamedWorkShifts        map[string]*WorkshiftQuery
-	withNamedWorkTasks         map[string]*WorktaskQuery
-	withNamedWorkTags          map[string]*WorktagQuery
 	withNamedUsers             map[string]*UserQuery
 	withNamedDaughterCompanies map[string]*CompanyQuery
 	// intermediate query (i.e. traversal path).
@@ -349,50 +343,6 @@ func (cq *CompanyQuery) QueryWorkShifts() *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkTasks chains the current query on the "workTasks" edge.
-func (cq *CompanyQuery) QueryWorkTasks() *WorktaskQuery {
-	query := (&WorktaskClient{config: cq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := cq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := cq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(company.Table, company.FieldID, selector),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, company.WorkTasksTable, company.WorkTasksColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryWorkTags chains the current query on the "workTags" edge.
-func (cq *CompanyQuery) QueryWorkTags() *WorktagQuery {
-	query := (&WorktagClient{config: cq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := cq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := cq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(company.Table, company.FieldID, selector),
-			sqlgraph.To(worktag.Table, worktag.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, company.WorkTagsTable, company.WorkTagsColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
 // QueryUsers chains the current query on the "users" edge.
 func (cq *CompanyQuery) QueryUsers() *UserQuery {
 	query := (&UserClient{config: cq.config}).Query()
@@ -662,8 +612,6 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		withTokens:            cq.withTokens.Clone(),
 		withTreasuries:        cq.withTreasuries.Clone(),
 		withWorkShifts:        cq.withWorkShifts.Clone(),
-		withWorkTasks:         cq.withWorkTasks.Clone(),
-		withWorkTags:          cq.withWorkTags.Clone(),
 		withUsers:             cq.withUsers.Clone(),
 		withDaughterCompanies: cq.withDaughterCompanies.Clone(),
 		withParentCompany:     cq.withParentCompany.Clone(),
@@ -795,28 +743,6 @@ func (cq *CompanyQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *CompanyQu
 	return cq
 }
 
-// WithWorkTasks tells the query-builder to eager-load the nodes that are connected to
-// the "workTasks" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithWorkTasks(opts ...func(*WorktaskQuery)) *CompanyQuery {
-	query := (&WorktaskClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	cq.withWorkTasks = query
-	return cq
-}
-
-// WithWorkTags tells the query-builder to eager-load the nodes that are connected to
-// the "workTags" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithWorkTags(opts ...func(*WorktagQuery)) *CompanyQuery {
-	query := (&WorktagClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	cq.withWorkTags = query
-	return cq
-}
-
 // WithUsers tells the query-builder to eager-load the nodes that are connected to
 // the "users" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithUsers(opts ...func(*UserQuery)) *CompanyQuery {
@@ -929,7 +855,7 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [16]bool{
+		loadedTypes = [14]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
@@ -941,8 +867,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 			cq.withTokens != nil,
 			cq.withTreasuries != nil,
 			cq.withWorkShifts != nil,
-			cq.withWorkTasks != nil,
-			cq.withWorkTags != nil,
 			cq.withUsers != nil,
 			cq.withDaughterCompanies != nil,
 			cq.withParentCompany != nil,
@@ -1052,20 +976,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 			return nil, err
 		}
 	}
-	if query := cq.withWorkTasks; query != nil {
-		if err := cq.loadWorkTasks(ctx, query, nodes,
-			func(n *Company) { n.Edges.WorkTasks = []*Worktask{} },
-			func(n *Company, e *Worktask) { n.Edges.WorkTasks = append(n.Edges.WorkTasks, e) }); err != nil {
-			return nil, err
-		}
-	}
-	if query := cq.withWorkTags; query != nil {
-		if err := cq.loadWorkTags(ctx, query, nodes,
-			func(n *Company) { n.Edges.WorkTags = []*Worktag{} },
-			func(n *Company, e *Worktag) { n.Edges.WorkTags = append(n.Edges.WorkTags, e) }); err != nil {
-			return nil, err
-		}
-	}
 	if query := cq.withUsers; query != nil {
 		if err := cq.loadUsers(ctx, query, nodes,
 			func(n *Company) { n.Edges.Users = []*User{} },
@@ -1160,20 +1070,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadWorkShifts(ctx, query, nodes,
 			func(n *Company) { n.appendNamedWorkShifts(name) },
 			func(n *Company, e *Workshift) { n.appendNamedWorkShifts(name, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range cq.withNamedWorkTasks {
-		if err := cq.loadWorkTasks(ctx, query, nodes,
-			func(n *Company) { n.appendNamedWorkTasks(name) },
-			func(n *Company, e *Worktask) { n.appendNamedWorkTasks(name, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range cq.withNamedWorkTags {
-		if err := cq.loadWorkTags(ctx, query, nodes,
-			func(n *Company) { n.appendNamedWorkTags(name) },
-			func(n *Company, e *Worktag) { n.appendNamedWorkTags(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1535,68 +1431,6 @@ func (cq *CompanyQuery) loadWorkShifts(ctx context.Context, query *WorkshiftQuer
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_work_shifts" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (cq *CompanyQuery) loadWorkTasks(ctx context.Context, query *WorktaskQuery, nodes []*Company, init func(*Company), assign func(*Company, *Worktask)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Company)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.Worktask(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(company.WorkTasksColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.company_work_tasks
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "company_work_tasks" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "company_work_tasks" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (cq *CompanyQuery) loadWorkTags(ctx context.Context, query *WorktagQuery, nodes []*Company, init func(*Company), assign func(*Company, *Worktag)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Company)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.Worktag(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(company.WorkTagsColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.company_work_tags
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "company_work_tags" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "company_work_tags" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1971,34 +1805,6 @@ func (cq *CompanyQuery) WithNamedWorkShifts(name string, opts ...func(*Workshift
 		cq.withNamedWorkShifts = make(map[string]*WorkshiftQuery)
 	}
 	cq.withNamedWorkShifts[name] = query
-	return cq
-}
-
-// WithNamedWorkTasks tells the query-builder to eager-load the nodes that are connected to the "workTasks"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithNamedWorkTasks(name string, opts ...func(*WorktaskQuery)) *CompanyQuery {
-	query := (&WorktaskClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if cq.withNamedWorkTasks == nil {
-		cq.withNamedWorkTasks = make(map[string]*WorktaskQuery)
-	}
-	cq.withNamedWorkTasks[name] = query
-	return cq
-}
-
-// WithNamedWorkTags tells the query-builder to eager-load the nodes that are connected to the "workTags"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithNamedWorkTags(name string, opts ...func(*WorktagQuery)) *CompanyQuery {
-	query := (&WorktagClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if cq.withNamedWorkTags == nil {
-		cq.withNamedWorkTags = make(map[string]*WorktagQuery)
-	}
-	cq.withNamedWorkTags[name] = query
 	return cq
 }
 

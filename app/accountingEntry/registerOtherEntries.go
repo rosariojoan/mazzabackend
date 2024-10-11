@@ -127,10 +127,12 @@ func RegisterOtherEntries(ctx context.Context, client *ent.Client, input model.B
 	}
 
 	// This the operation is part of the initial setup, remove the incomplete setup flag from the company
-	if input.OperationType != model.BaseOperationTypeInitialSetup {
+	if input.OperationType == model.BaseOperationTypeInitialSetup {
 		_, err = client.Company.UpdateOneID(currentCompany.ID).SetIncompleteSetup(false).Save(ctx)
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred while processing the entry")
+		fmt.Println("* err:", err, input.OperationType, model.BaseOperationTypeInitialSetup)
+		if err != nil {
+			return nil, fmt.Errorf("an error occurred while processing the entry")
+		}
 	}
 
 	output := "registration successful"

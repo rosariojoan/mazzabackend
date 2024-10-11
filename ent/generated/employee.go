@@ -37,11 +37,10 @@ type Employee struct {
 	Phone string `json:"phone,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EmployeeQuery when eager-loading is set.
-	Edges                 EmployeeEdges `json:"edges"`
-	company_employees     *int
-	employee_subordinates *int
-	user_employee         *int
-	selectValues          sql.SelectValues
+	Edges             EmployeeEdges `json:"edges"`
+	company_employees *int
+	user_employee     *int
+	selectValues      sql.SelectValues
 }
 
 // EmployeeEdges holds the relations/edges for other nodes in the graph.
@@ -50,26 +49,11 @@ type EmployeeEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
-	// Subordinates holds the value of the subordinates edge.
-	Subordinates []*Employee `json:"subordinates,omitempty"`
-	// Leader holds the value of the leader edge.
-	Leader *Employee `json:"leader,omitempty"`
-	// WorkShifts holds the value of the workShifts edge.
-	WorkShifts []*Workshift `json:"workShifts,omitempty"`
-	// ApprovedWorkShifts holds the value of the approvedWorkShifts edge.
-	ApprovedWorkShifts []*Workshift `json:"approvedWorkShifts,omitempty"`
-	// AssignedTasks holds the value of the assignedTasks edge.
-	AssignedTasks []*Worktask `json:"assignedTasks,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [7]bool
+	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
-	totalCount [7]map[string]int
-
-	namedSubordinates       map[string][]*Employee
-	namedWorkShifts         map[string][]*Workshift
-	namedApprovedWorkShifts map[string][]*Workshift
-	namedAssignedTasks      map[string][]*Worktask
+	totalCount [2]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -94,53 +78,6 @@ func (e EmployeeEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
-// SubordinatesOrErr returns the Subordinates value or an error if the edge
-// was not loaded in eager-loading.
-func (e EmployeeEdges) SubordinatesOrErr() ([]*Employee, error) {
-	if e.loadedTypes[2] {
-		return e.Subordinates, nil
-	}
-	return nil, &NotLoadedError{edge: "subordinates"}
-}
-
-// LeaderOrErr returns the Leader value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e EmployeeEdges) LeaderOrErr() (*Employee, error) {
-	if e.Leader != nil {
-		return e.Leader, nil
-	} else if e.loadedTypes[3] {
-		return nil, &NotFoundError{label: employee.Label}
-	}
-	return nil, &NotLoadedError{edge: "leader"}
-}
-
-// WorkShiftsOrErr returns the WorkShifts value or an error if the edge
-// was not loaded in eager-loading.
-func (e EmployeeEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[4] {
-		return e.WorkShifts, nil
-	}
-	return nil, &NotLoadedError{edge: "workShifts"}
-}
-
-// ApprovedWorkShiftsOrErr returns the ApprovedWorkShifts value or an error if the edge
-// was not loaded in eager-loading.
-func (e EmployeeEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[5] {
-		return e.ApprovedWorkShifts, nil
-	}
-	return nil, &NotLoadedError{edge: "approvedWorkShifts"}
-}
-
-// AssignedTasksOrErr returns the AssignedTasks value or an error if the edge
-// was not loaded in eager-loading.
-func (e EmployeeEdges) AssignedTasksOrErr() ([]*Worktask, error) {
-	if e.loadedTypes[6] {
-		return e.AssignedTasks, nil
-	}
-	return nil, &NotLoadedError{edge: "assignedTasks"}
-}
-
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Employee) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -154,9 +91,7 @@ func (*Employee) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case employee.ForeignKeys[0]: // company_employees
 			values[i] = new(sql.NullInt64)
-		case employee.ForeignKeys[1]: // employee_subordinates
-			values[i] = new(sql.NullInt64)
-		case employee.ForeignKeys[2]: // user_employee
+		case employee.ForeignKeys[1]: // user_employee
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -239,13 +174,6 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			}
 		case employee.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field employee_subordinates", value)
-			} else if value.Valid {
-				e.employee_subordinates = new(int)
-				*e.employee_subordinates = int(value.Int64)
-			}
-		case employee.ForeignKeys[2]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_employee", value)
 			} else if value.Valid {
 				e.user_employee = new(int)
@@ -272,31 +200,6 @@ func (e *Employee) QueryCompany() *CompanyQuery {
 // QueryUser queries the "user" edge of the Employee entity.
 func (e *Employee) QueryUser() *UserQuery {
 	return NewEmployeeClient(e.config).QueryUser(e)
-}
-
-// QuerySubordinates queries the "subordinates" edge of the Employee entity.
-func (e *Employee) QuerySubordinates() *EmployeeQuery {
-	return NewEmployeeClient(e.config).QuerySubordinates(e)
-}
-
-// QueryLeader queries the "leader" edge of the Employee entity.
-func (e *Employee) QueryLeader() *EmployeeQuery {
-	return NewEmployeeClient(e.config).QueryLeader(e)
-}
-
-// QueryWorkShifts queries the "workShifts" edge of the Employee entity.
-func (e *Employee) QueryWorkShifts() *WorkshiftQuery {
-	return NewEmployeeClient(e.config).QueryWorkShifts(e)
-}
-
-// QueryApprovedWorkShifts queries the "approvedWorkShifts" edge of the Employee entity.
-func (e *Employee) QueryApprovedWorkShifts() *WorkshiftQuery {
-	return NewEmployeeClient(e.config).QueryApprovedWorkShifts(e)
-}
-
-// QueryAssignedTasks queries the "assignedTasks" edge of the Employee entity.
-func (e *Employee) QueryAssignedTasks() *WorktaskQuery {
-	return NewEmployeeClient(e.config).QueryAssignedTasks(e)
 }
 
 // Update returns a builder for updating this Employee.
@@ -353,102 +256,6 @@ func (e *Employee) String() string {
 	builder.WriteString(e.Phone)
 	builder.WriteByte(')')
 	return builder.String()
-}
-
-// NamedSubordinates returns the Subordinates named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (e *Employee) NamedSubordinates(name string) ([]*Employee, error) {
-	if e.Edges.namedSubordinates == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := e.Edges.namedSubordinates[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (e *Employee) appendNamedSubordinates(name string, edges ...*Employee) {
-	if e.Edges.namedSubordinates == nil {
-		e.Edges.namedSubordinates = make(map[string][]*Employee)
-	}
-	if len(edges) == 0 {
-		e.Edges.namedSubordinates[name] = []*Employee{}
-	} else {
-		e.Edges.namedSubordinates[name] = append(e.Edges.namedSubordinates[name], edges...)
-	}
-}
-
-// NamedWorkShifts returns the WorkShifts named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (e *Employee) NamedWorkShifts(name string) ([]*Workshift, error) {
-	if e.Edges.namedWorkShifts == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := e.Edges.namedWorkShifts[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (e *Employee) appendNamedWorkShifts(name string, edges ...*Workshift) {
-	if e.Edges.namedWorkShifts == nil {
-		e.Edges.namedWorkShifts = make(map[string][]*Workshift)
-	}
-	if len(edges) == 0 {
-		e.Edges.namedWorkShifts[name] = []*Workshift{}
-	} else {
-		e.Edges.namedWorkShifts[name] = append(e.Edges.namedWorkShifts[name], edges...)
-	}
-}
-
-// NamedApprovedWorkShifts returns the ApprovedWorkShifts named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (e *Employee) NamedApprovedWorkShifts(name string) ([]*Workshift, error) {
-	if e.Edges.namedApprovedWorkShifts == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := e.Edges.namedApprovedWorkShifts[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (e *Employee) appendNamedApprovedWorkShifts(name string, edges ...*Workshift) {
-	if e.Edges.namedApprovedWorkShifts == nil {
-		e.Edges.namedApprovedWorkShifts = make(map[string][]*Workshift)
-	}
-	if len(edges) == 0 {
-		e.Edges.namedApprovedWorkShifts[name] = []*Workshift{}
-	} else {
-		e.Edges.namedApprovedWorkShifts[name] = append(e.Edges.namedApprovedWorkShifts[name], edges...)
-	}
-}
-
-// NamedAssignedTasks returns the AssignedTasks named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (e *Employee) NamedAssignedTasks(name string) ([]*Worktask, error) {
-	if e.Edges.namedAssignedTasks == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := e.Edges.namedAssignedTasks[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (e *Employee) appendNamedAssignedTasks(name string, edges ...*Worktask) {
-	if e.Edges.namedAssignedTasks == nil {
-		e.Edges.namedAssignedTasks = make(map[string][]*Worktask)
-	}
-	if len(edges) == 0 {
-		e.Edges.namedAssignedTasks[name] = []*Worktask{}
-	} else {
-		e.Edges.namedAssignedTasks[name] = append(e.Edges.namedAssignedTasks[name], edges...)
-	}
 }
 
 // Employees is a parsable slice of Employee.

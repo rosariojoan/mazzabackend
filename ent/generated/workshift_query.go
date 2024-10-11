@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"math"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/projecttask"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -26,9 +26,9 @@ type WorkshiftQuery struct {
 	inters          []Interceptor
 	predicates      []predicate.Workshift
 	withCompany     *CompanyQuery
-	withEmployee    *EmployeeQuery
-	withApprovedBy  *EmployeeQuery
-	withWorkTask    *WorktaskQuery
+	withUser        *UserQuery
+	withApprovedBy  *UserQuery
+	withTask        *ProjectTaskQuery
 	withEditRequest *WorkshiftQuery
 	withWorkShift   *WorkshiftQuery
 	withFKs         bool
@@ -92,9 +92,9 @@ func (wq *WorkshiftQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryEmployee chains the current query on the "employee" edge.
-func (wq *WorkshiftQuery) QueryEmployee() *EmployeeQuery {
-	query := (&EmployeeClient{config: wq.config}).Query()
+// QueryUser chains the current query on the "user" edge.
+func (wq *WorkshiftQuery) QueryUser() *UserQuery {
+	query := (&UserClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := wq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -105,8 +105,8 @@ func (wq *WorkshiftQuery) QueryEmployee() *EmployeeQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, selector),
-			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, workshift.EmployeeTable, workshift.EmployeeColumn),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, workshift.UserTable, workshift.UserColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(wq.driver.Dialect(), step)
 		return fromU, nil
@@ -115,8 +115,8 @@ func (wq *WorkshiftQuery) QueryEmployee() *EmployeeQuery {
 }
 
 // QueryApprovedBy chains the current query on the "approvedBy" edge.
-func (wq *WorkshiftQuery) QueryApprovedBy() *EmployeeQuery {
-	query := (&EmployeeClient{config: wq.config}).Query()
+func (wq *WorkshiftQuery) QueryApprovedBy() *UserQuery {
+	query := (&UserClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := wq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -127,7 +127,7 @@ func (wq *WorkshiftQuery) QueryApprovedBy() *EmployeeQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, selector),
-			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, workshift.ApprovedByTable, workshift.ApprovedByColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(wq.driver.Dialect(), step)
@@ -136,9 +136,9 @@ func (wq *WorkshiftQuery) QueryApprovedBy() *EmployeeQuery {
 	return query
 }
 
-// QueryWorkTask chains the current query on the "workTask" edge.
-func (wq *WorkshiftQuery) QueryWorkTask() *WorktaskQuery {
-	query := (&WorktaskClient{config: wq.config}).Query()
+// QueryTask chains the current query on the "task" edge.
+func (wq *WorkshiftQuery) QueryTask() *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := wq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -149,8 +149,8 @@ func (wq *WorkshiftQuery) QueryWorkTask() *WorktaskQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, selector),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, workshift.WorkTaskTable, workshift.WorkTaskColumn),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, workshift.TaskTable, workshift.TaskColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(wq.driver.Dialect(), step)
 		return fromU, nil
@@ -395,9 +395,9 @@ func (wq *WorkshiftQuery) Clone() *WorkshiftQuery {
 		inters:          append([]Interceptor{}, wq.inters...),
 		predicates:      append([]predicate.Workshift{}, wq.predicates...),
 		withCompany:     wq.withCompany.Clone(),
-		withEmployee:    wq.withEmployee.Clone(),
+		withUser:        wq.withUser.Clone(),
 		withApprovedBy:  wq.withApprovedBy.Clone(),
-		withWorkTask:    wq.withWorkTask.Clone(),
+		withTask:        wq.withTask.Clone(),
 		withEditRequest: wq.withEditRequest.Clone(),
 		withWorkShift:   wq.withWorkShift.Clone(),
 		// clone intermediate query.
@@ -418,21 +418,21 @@ func (wq *WorkshiftQuery) WithCompany(opts ...func(*CompanyQuery)) *WorkshiftQue
 	return wq
 }
 
-// WithEmployee tells the query-builder to eager-load the nodes that are connected to
-// the "employee" edge. The optional arguments are used to configure the query builder of the edge.
-func (wq *WorkshiftQuery) WithEmployee(opts ...func(*EmployeeQuery)) *WorkshiftQuery {
-	query := (&EmployeeClient{config: wq.config}).Query()
+// WithUser tells the query-builder to eager-load the nodes that are connected to
+// the "user" edge. The optional arguments are used to configure the query builder of the edge.
+func (wq *WorkshiftQuery) WithUser(opts ...func(*UserQuery)) *WorkshiftQuery {
+	query := (&UserClient{config: wq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	wq.withEmployee = query
+	wq.withUser = query
 	return wq
 }
 
 // WithApprovedBy tells the query-builder to eager-load the nodes that are connected to
 // the "approvedBy" edge. The optional arguments are used to configure the query builder of the edge.
-func (wq *WorkshiftQuery) WithApprovedBy(opts ...func(*EmployeeQuery)) *WorkshiftQuery {
-	query := (&EmployeeClient{config: wq.config}).Query()
+func (wq *WorkshiftQuery) WithApprovedBy(opts ...func(*UserQuery)) *WorkshiftQuery {
+	query := (&UserClient{config: wq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
@@ -440,14 +440,14 @@ func (wq *WorkshiftQuery) WithApprovedBy(opts ...func(*EmployeeQuery)) *Workshif
 	return wq
 }
 
-// WithWorkTask tells the query-builder to eager-load the nodes that are connected to
-// the "workTask" edge. The optional arguments are used to configure the query builder of the edge.
-func (wq *WorkshiftQuery) WithWorkTask(opts ...func(*WorktaskQuery)) *WorkshiftQuery {
-	query := (&WorktaskClient{config: wq.config}).Query()
+// WithTask tells the query-builder to eager-load the nodes that are connected to
+// the "task" edge. The optional arguments are used to configure the query builder of the edge.
+func (wq *WorkshiftQuery) WithTask(opts ...func(*ProjectTaskQuery)) *WorkshiftQuery {
+	query := (&ProjectTaskClient{config: wq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	wq.withWorkTask = query
+	wq.withTask = query
 	return wq
 }
 
@@ -554,14 +554,14 @@ func (wq *WorkshiftQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Wo
 		_spec       = wq.querySpec()
 		loadedTypes = [6]bool{
 			wq.withCompany != nil,
-			wq.withEmployee != nil,
+			wq.withUser != nil,
 			wq.withApprovedBy != nil,
-			wq.withWorkTask != nil,
+			wq.withTask != nil,
 			wq.withEditRequest != nil,
 			wq.withWorkShift != nil,
 		}
 	)
-	if wq.withCompany != nil || wq.withEmployee != nil || wq.withApprovedBy != nil || wq.withWorkTask != nil || wq.withEditRequest != nil || wq.withWorkShift != nil {
+	if wq.withCompany != nil || wq.withUser != nil || wq.withApprovedBy != nil || wq.withTask != nil || wq.withEditRequest != nil || wq.withWorkShift != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -594,21 +594,21 @@ func (wq *WorkshiftQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Wo
 			return nil, err
 		}
 	}
-	if query := wq.withEmployee; query != nil {
-		if err := wq.loadEmployee(ctx, query, nodes, nil,
-			func(n *Workshift, e *Employee) { n.Edges.Employee = e }); err != nil {
+	if query := wq.withUser; query != nil {
+		if err := wq.loadUser(ctx, query, nodes, nil,
+			func(n *Workshift, e *User) { n.Edges.User = e }); err != nil {
 			return nil, err
 		}
 	}
 	if query := wq.withApprovedBy; query != nil {
 		if err := wq.loadApprovedBy(ctx, query, nodes, nil,
-			func(n *Workshift, e *Employee) { n.Edges.ApprovedBy = e }); err != nil {
+			func(n *Workshift, e *User) { n.Edges.ApprovedBy = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := wq.withWorkTask; query != nil {
-		if err := wq.loadWorkTask(ctx, query, nodes, nil,
-			func(n *Workshift, e *Worktask) { n.Edges.WorkTask = e }); err != nil {
+	if query := wq.withTask; query != nil {
+		if err := wq.loadTask(ctx, query, nodes, nil,
+			func(n *Workshift, e *ProjectTask) { n.Edges.Task = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -664,14 +664,14 @@ func (wq *WorkshiftQuery) loadCompany(ctx context.Context, query *CompanyQuery, 
 	}
 	return nil
 }
-func (wq *WorkshiftQuery) loadEmployee(ctx context.Context, query *EmployeeQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *Employee)) error {
+func (wq *WorkshiftQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *User)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Workshift)
 	for i := range nodes {
-		if nodes[i].employee_work_shifts == nil {
+		if nodes[i].user_work_shifts == nil {
 			continue
 		}
-		fk := *nodes[i].employee_work_shifts
+		fk := *nodes[i].user_work_shifts
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -680,7 +680,7 @@ func (wq *WorkshiftQuery) loadEmployee(ctx context.Context, query *EmployeeQuery
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(employee.IDIn(ids...))
+	query.Where(user.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -688,7 +688,7 @@ func (wq *WorkshiftQuery) loadEmployee(ctx context.Context, query *EmployeeQuery
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "employee_work_shifts" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "user_work_shifts" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -696,14 +696,14 @@ func (wq *WorkshiftQuery) loadEmployee(ctx context.Context, query *EmployeeQuery
 	}
 	return nil
 }
-func (wq *WorkshiftQuery) loadApprovedBy(ctx context.Context, query *EmployeeQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *Employee)) error {
+func (wq *WorkshiftQuery) loadApprovedBy(ctx context.Context, query *UserQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *User)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Workshift)
 	for i := range nodes {
-		if nodes[i].employee_approved_work_shifts == nil {
+		if nodes[i].user_approved_work_shifts == nil {
 			continue
 		}
-		fk := *nodes[i].employee_approved_work_shifts
+		fk := *nodes[i].user_approved_work_shifts
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -712,7 +712,7 @@ func (wq *WorkshiftQuery) loadApprovedBy(ctx context.Context, query *EmployeeQue
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(employee.IDIn(ids...))
+	query.Where(user.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -720,7 +720,7 @@ func (wq *WorkshiftQuery) loadApprovedBy(ctx context.Context, query *EmployeeQue
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "employee_approved_work_shifts" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "user_approved_work_shifts" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -728,14 +728,14 @@ func (wq *WorkshiftQuery) loadApprovedBy(ctx context.Context, query *EmployeeQue
 	}
 	return nil
 }
-func (wq *WorkshiftQuery) loadWorkTask(ctx context.Context, query *WorktaskQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *Worktask)) error {
+func (wq *WorkshiftQuery) loadTask(ctx context.Context, query *ProjectTaskQuery, nodes []*Workshift, init func(*Workshift), assign func(*Workshift, *ProjectTask)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Workshift)
 	for i := range nodes {
-		if nodes[i].worktask_work_shifts == nil {
+		if nodes[i].project_task_work_shifts == nil {
 			continue
 		}
-		fk := *nodes[i].worktask_work_shifts
+		fk := *nodes[i].project_task_work_shifts
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -744,7 +744,7 @@ func (wq *WorkshiftQuery) loadWorkTask(ctx context.Context, query *WorktaskQuery
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(worktask.IDIn(ids...))
+	query.Where(projecttask.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -752,7 +752,7 @@ func (wq *WorkshiftQuery) loadWorkTask(ctx context.Context, query *WorktaskQuery
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "worktask_work_shifts" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "project_task_work_shifts" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

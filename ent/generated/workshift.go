@@ -5,9 +5,9 @@ package generated
 import (
 	"fmt"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/employee"
+	"mazza/ent/generated/projecttask"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"strings"
 	"time"
 
@@ -44,25 +44,25 @@ type Workshift struct {
 	Status workshift.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the WorkshiftQuery when eager-loading is set.
-	Edges                         WorkshiftEdges `json:"edges"`
-	company_work_shifts           *int
-	employee_work_shifts          *int
-	employee_approved_work_shifts *int
-	workshift_edit_request        *int
-	worktask_work_shifts          *int
-	selectValues                  sql.SelectValues
+	Edges                     WorkshiftEdges `json:"edges"`
+	company_work_shifts       *int
+	project_task_work_shifts  *int
+	user_approved_work_shifts *int
+	user_work_shifts          *int
+	workshift_edit_request    *int
+	selectValues              sql.SelectValues
 }
 
 // WorkshiftEdges holds the relations/edges for other nodes in the graph.
 type WorkshiftEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// Employee holds the value of the employee edge.
-	Employee *Employee `json:"employee,omitempty"`
+	// User holds the value of the user edge.
+	User *User `json:"user,omitempty"`
 	// ApprovedBy holds the value of the approvedBy edge.
-	ApprovedBy *Employee `json:"approvedBy,omitempty"`
-	// WorkTask holds the value of the workTask edge.
-	WorkTask *Worktask `json:"workTask,omitempty"`
+	ApprovedBy *User `json:"approvedBy,omitempty"`
+	// Task holds the value of the task edge.
+	Task *ProjectTask `json:"task,omitempty"`
 	// EditRequest holds the value of the editRequest edge.
 	EditRequest *Workshift `json:"editRequest,omitempty"`
 	// WorkShift holds the value of the workShift edge.
@@ -85,37 +85,37 @@ func (e WorkshiftEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
-// EmployeeOrErr returns the Employee value or an error if the edge
+// UserOrErr returns the User value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e WorkshiftEdges) EmployeeOrErr() (*Employee, error) {
-	if e.Employee != nil {
-		return e.Employee, nil
+func (e WorkshiftEdges) UserOrErr() (*User, error) {
+	if e.User != nil {
+		return e.User, nil
 	} else if e.loadedTypes[1] {
-		return nil, &NotFoundError{label: employee.Label}
+		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "employee"}
+	return nil, &NotLoadedError{edge: "user"}
 }
 
 // ApprovedByOrErr returns the ApprovedBy value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e WorkshiftEdges) ApprovedByOrErr() (*Employee, error) {
+func (e WorkshiftEdges) ApprovedByOrErr() (*User, error) {
 	if e.ApprovedBy != nil {
 		return e.ApprovedBy, nil
 	} else if e.loadedTypes[2] {
-		return nil, &NotFoundError{label: employee.Label}
+		return nil, &NotFoundError{label: user.Label}
 	}
 	return nil, &NotLoadedError{edge: "approvedBy"}
 }
 
-// WorkTaskOrErr returns the WorkTask value or an error if the edge
+// TaskOrErr returns the Task value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e WorkshiftEdges) WorkTaskOrErr() (*Worktask, error) {
-	if e.WorkTask != nil {
-		return e.WorkTask, nil
+func (e WorkshiftEdges) TaskOrErr() (*ProjectTask, error) {
+	if e.Task != nil {
+		return e.Task, nil
 	} else if e.loadedTypes[3] {
-		return nil, &NotFoundError{label: worktask.Label}
+		return nil, &NotFoundError{label: projecttask.Label}
 	}
-	return nil, &NotLoadedError{edge: "workTask"}
+	return nil, &NotLoadedError{edge: "task"}
 }
 
 // EditRequestOrErr returns the EditRequest value or an error if the edge
@@ -153,13 +153,13 @@ func (*Workshift) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case workshift.ForeignKeys[0]: // company_work_shifts
 			values[i] = new(sql.NullInt64)
-		case workshift.ForeignKeys[1]: // employee_work_shifts
+		case workshift.ForeignKeys[1]: // project_task_work_shifts
 			values[i] = new(sql.NullInt64)
-		case workshift.ForeignKeys[2]: // employee_approved_work_shifts
+		case workshift.ForeignKeys[2]: // user_approved_work_shifts
 			values[i] = new(sql.NullInt64)
-		case workshift.ForeignKeys[3]: // workshift_edit_request
+		case workshift.ForeignKeys[3]: // user_work_shifts
 			values[i] = new(sql.NullInt64)
-		case workshift.ForeignKeys[4]: // worktask_work_shifts
+		case workshift.ForeignKeys[4]: // workshift_edit_request
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -260,31 +260,31 @@ func (w *Workshift) assignValues(columns []string, values []any) error {
 			}
 		case workshift.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field employee_work_shifts", value)
+				return fmt.Errorf("unexpected type %T for edge-field project_task_work_shifts", value)
 			} else if value.Valid {
-				w.employee_work_shifts = new(int)
-				*w.employee_work_shifts = int(value.Int64)
+				w.project_task_work_shifts = new(int)
+				*w.project_task_work_shifts = int(value.Int64)
 			}
 		case workshift.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field employee_approved_work_shifts", value)
+				return fmt.Errorf("unexpected type %T for edge-field user_approved_work_shifts", value)
 			} else if value.Valid {
-				w.employee_approved_work_shifts = new(int)
-				*w.employee_approved_work_shifts = int(value.Int64)
+				w.user_approved_work_shifts = new(int)
+				*w.user_approved_work_shifts = int(value.Int64)
 			}
 		case workshift.ForeignKeys[3]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field user_work_shifts", value)
+			} else if value.Valid {
+				w.user_work_shifts = new(int)
+				*w.user_work_shifts = int(value.Int64)
+			}
+		case workshift.ForeignKeys[4]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field workshift_edit_request", value)
 			} else if value.Valid {
 				w.workshift_edit_request = new(int)
 				*w.workshift_edit_request = int(value.Int64)
-			}
-		case workshift.ForeignKeys[4]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field worktask_work_shifts", value)
-			} else if value.Valid {
-				w.worktask_work_shifts = new(int)
-				*w.worktask_work_shifts = int(value.Int64)
 			}
 		default:
 			w.selectValues.Set(columns[i], values[i])
@@ -304,19 +304,19 @@ func (w *Workshift) QueryCompany() *CompanyQuery {
 	return NewWorkshiftClient(w.config).QueryCompany(w)
 }
 
-// QueryEmployee queries the "employee" edge of the Workshift entity.
-func (w *Workshift) QueryEmployee() *EmployeeQuery {
-	return NewWorkshiftClient(w.config).QueryEmployee(w)
+// QueryUser queries the "user" edge of the Workshift entity.
+func (w *Workshift) QueryUser() *UserQuery {
+	return NewWorkshiftClient(w.config).QueryUser(w)
 }
 
 // QueryApprovedBy queries the "approvedBy" edge of the Workshift entity.
-func (w *Workshift) QueryApprovedBy() *EmployeeQuery {
+func (w *Workshift) QueryApprovedBy() *UserQuery {
 	return NewWorkshiftClient(w.config).QueryApprovedBy(w)
 }
 
-// QueryWorkTask queries the "workTask" edge of the Workshift entity.
-func (w *Workshift) QueryWorkTask() *WorktaskQuery {
-	return NewWorkshiftClient(w.config).QueryWorkTask(w)
+// QueryTask queries the "task" edge of the Workshift entity.
+func (w *Workshift) QueryTask() *ProjectTaskQuery {
+	return NewWorkshiftClient(w.config).QueryTask(w)
 }
 
 // QueryEditRequest queries the "editRequest" edge of the Workshift entity.

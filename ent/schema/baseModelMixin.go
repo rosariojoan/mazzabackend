@@ -3,6 +3,7 @@ package schema
 import (
 	"time"
 
+	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
@@ -15,8 +16,14 @@ type BaseModelMixin struct {
 
 func (BaseModelMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("createdAt").Default(time.Now).Immutable(),
-		field.Time("updatedAt").Default(time.Now).UpdateDefault(time.Now),
-		field.Time("deletedAt").Nillable().Optional(),
+		field.Time("createdAt").Default(time.Now).Immutable().Annotations(entgql.Skip(
+			entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput,
+		)),
+		field.Time("updatedAt").Default(time.Now).UpdateDefault(time.Now).Annotations(entgql.Skip(
+			entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput,
+		)),
+		field.Time("deletedAt").Nillable().Optional().Annotations(entgql.Skip(
+			entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput,
+		)),
 	}
 }

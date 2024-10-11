@@ -9,8 +9,6 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/user"
-	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -148,85 +146,6 @@ func (ec *EmployeeCreate) SetNillableUserID(id *int) *EmployeeCreate {
 // SetUser sets the "user" edge to the User entity.
 func (ec *EmployeeCreate) SetUser(u *User) *EmployeeCreate {
 	return ec.SetUserID(u.ID)
-}
-
-// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
-func (ec *EmployeeCreate) AddSubordinateIDs(ids ...int) *EmployeeCreate {
-	ec.mutation.AddSubordinateIDs(ids...)
-	return ec
-}
-
-// AddSubordinates adds the "subordinates" edges to the Employee entity.
-func (ec *EmployeeCreate) AddSubordinates(e ...*Employee) *EmployeeCreate {
-	ids := make([]int, len(e))
-	for i := range e {
-		ids[i] = e[i].ID
-	}
-	return ec.AddSubordinateIDs(ids...)
-}
-
-// SetLeaderID sets the "leader" edge to the Employee entity by ID.
-func (ec *EmployeeCreate) SetLeaderID(id int) *EmployeeCreate {
-	ec.mutation.SetLeaderID(id)
-	return ec
-}
-
-// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
-func (ec *EmployeeCreate) SetNillableLeaderID(id *int) *EmployeeCreate {
-	if id != nil {
-		ec = ec.SetLeaderID(*id)
-	}
-	return ec
-}
-
-// SetLeader sets the "leader" edge to the Employee entity.
-func (ec *EmployeeCreate) SetLeader(e *Employee) *EmployeeCreate {
-	return ec.SetLeaderID(e.ID)
-}
-
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
-func (ec *EmployeeCreate) AddWorkShiftIDs(ids ...int) *EmployeeCreate {
-	ec.mutation.AddWorkShiftIDs(ids...)
-	return ec
-}
-
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
-func (ec *EmployeeCreate) AddWorkShifts(w ...*Workshift) *EmployeeCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return ec.AddWorkShiftIDs(ids...)
-}
-
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
-func (ec *EmployeeCreate) AddApprovedWorkShiftIDs(ids ...int) *EmployeeCreate {
-	ec.mutation.AddApprovedWorkShiftIDs(ids...)
-	return ec
-}
-
-// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
-func (ec *EmployeeCreate) AddApprovedWorkShifts(w ...*Workshift) *EmployeeCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return ec.AddApprovedWorkShiftIDs(ids...)
-}
-
-// AddAssignedTaskIDs adds the "assignedTasks" edge to the Worktask entity by IDs.
-func (ec *EmployeeCreate) AddAssignedTaskIDs(ids ...int) *EmployeeCreate {
-	ec.mutation.AddAssignedTaskIDs(ids...)
-	return ec
-}
-
-// AddAssignedTasks adds the "assignedTasks" edges to the Worktask entity.
-func (ec *EmployeeCreate) AddAssignedTasks(w ...*Worktask) *EmployeeCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return ec.AddAssignedTaskIDs(ids...)
 }
 
 // Mutation returns the EmployeeMutation object of the builder.
@@ -391,87 +310,6 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.user_employee = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ec.mutation.SubordinatesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   employee.SubordinatesTable,
-			Columns: []string{employee.SubordinatesColumn},
-			Bidi:    true,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ec.mutation.LeaderIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   employee.LeaderTable,
-			Columns: []string{employee.LeaderColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.employee_subordinates = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ec.mutation.WorkShiftsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   employee.WorkShiftsTable,
-			Columns: []string{employee.WorkShiftsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ec.mutation.ApprovedWorkShiftsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   employee.ApprovedWorkShiftsTable,
-			Columns: []string{employee.ApprovedWorkShiftsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := ec.mutation.AssignedTasksIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   employee.AssignedTasksTable,
-			Columns: employee.AssignedTasksPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

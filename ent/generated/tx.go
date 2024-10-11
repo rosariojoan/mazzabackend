@@ -48,10 +48,6 @@ type Tx struct {
 	UserRole *UserRoleClient
 	// Workshift is the client for interacting with the Workshift builders.
 	Workshift *WorkshiftClient
-	// Worktag is the client for interacting with the Worktag builders.
-	Worktag *WorktagClient
-	// Worktask is the client for interacting with the Worktask builders.
-	Worktask *WorktaskClient
 
 	// lazily loaded.
 	client     *Client
@@ -200,8 +196,6 @@ func (tx *Tx) init() {
 	tx.User = NewUserClient(tx.config)
 	tx.UserRole = NewUserRoleClient(tx.config)
 	tx.Workshift = NewWorkshiftClient(tx.config)
-	tx.Worktag = NewWorktagClient(tx.config)
-	tx.Worktask = NewWorktaskClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

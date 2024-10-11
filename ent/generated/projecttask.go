@@ -19,6 +19,8 @@ type ProjectTask struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// AssigneeName holds the value of the "assigneeName" field.
@@ -40,6 +42,7 @@ type ProjectTask struct {
 	Edges                       ProjectTaskEdges `json:"edges"`
 	project_tasks               *int
 	user_assigned_project_tasks *int
+	user_created_tasks          *int
 	selectValues                sql.SelectValues
 }
 
@@ -51,13 +54,18 @@ type ProjectTaskEdges struct {
 	Assignee *User `json:"assignee,omitempty"`
 	// Participants holds the value of the participants edge.
 	Participants []*User `json:"participants,omitempty"`
+	// CreatedBy holds the value of the createdBy edge.
+	CreatedBy *User `json:"createdBy,omitempty"`
+	// WorkShifts holds the value of the workShifts edge.
+	WorkShifts []*Workshift `json:"workShifts,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [5]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [5]map[string]int
 
 	namedParticipants map[string][]*User
+	namedWorkShifts   map[string][]*Workshift
 }
 
 // ProjectOrErr returns the Project value or an error if the edge
@@ -91,6 +99,26 @@ func (e ProjectTaskEdges) ParticipantsOrErr() ([]*User, error) {
 	return nil, &NotLoadedError{edge: "participants"}
 }
 
+// CreatedByOrErr returns the CreatedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e ProjectTaskEdges) CreatedByOrErr() (*User, error) {
+	if e.CreatedBy != nil {
+		return e.CreatedBy, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "createdBy"}
+}
+
+// WorkShiftsOrErr returns the WorkShifts value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProjectTaskEdges) WorkShiftsOrErr() ([]*Workshift, error) {
+	if e.loadedTypes[4] {
+		return e.WorkShifts, nil
+	}
+	return nil, &NotLoadedError{edge: "workShifts"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*ProjectTask) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -100,11 +128,13 @@ func (*ProjectTask) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case projecttask.FieldName, projecttask.FieldAssigneeName, projecttask.FieldLocation, projecttask.FieldDescription, projecttask.FieldStatus:
 			values[i] = new(sql.NullString)
-		case projecttask.FieldDueDate, projecttask.FieldStartDate, projecttask.FieldEndDate:
+		case projecttask.FieldCreatedAt, projecttask.FieldDueDate, projecttask.FieldStartDate, projecttask.FieldEndDate:
 			values[i] = new(sql.NullTime)
 		case projecttask.ForeignKeys[0]: // project_tasks
 			values[i] = new(sql.NullInt64)
 		case projecttask.ForeignKeys[1]: // user_assigned_project_tasks
+			values[i] = new(sql.NullInt64)
+		case projecttask.ForeignKeys[2]: // user_created_tasks
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -127,6 +157,12 @@ func (pt *ProjectTask) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			pt.ID = int(value.Int64)
+		case projecttask.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				pt.CreatedAt = value.Time
+			}
 		case projecttask.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -189,6 +225,13 @@ func (pt *ProjectTask) assignValues(columns []string, values []any) error {
 				pt.user_assigned_project_tasks = new(int)
 				*pt.user_assigned_project_tasks = int(value.Int64)
 			}
+		case projecttask.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field user_created_tasks", value)
+			} else if value.Valid {
+				pt.user_created_tasks = new(int)
+				*pt.user_created_tasks = int(value.Int64)
+			}
 		default:
 			pt.selectValues.Set(columns[i], values[i])
 		}
@@ -217,6 +260,16 @@ func (pt *ProjectTask) QueryParticipants() *UserQuery {
 	return NewProjectTaskClient(pt.config).QueryParticipants(pt)
 }
 
+// QueryCreatedBy queries the "createdBy" edge of the ProjectTask entity.
+func (pt *ProjectTask) QueryCreatedBy() *UserQuery {
+	return NewProjectTaskClient(pt.config).QueryCreatedBy(pt)
+}
+
+// QueryWorkShifts queries the "workShifts" edge of the ProjectTask entity.
+func (pt *ProjectTask) QueryWorkShifts() *WorkshiftQuery {
+	return NewProjectTaskClient(pt.config).QueryWorkShifts(pt)
+}
+
 // Update returns a builder for updating this ProjectTask.
 // Note that you need to call ProjectTask.Unwrap() before calling this method if this ProjectTask
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -240,6 +293,9 @@ func (pt *ProjectTask) String() string {
 	var builder strings.Builder
 	builder.WriteString("ProjectTask(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", pt.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(pt.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(pt.Name)
 	builder.WriteString(", ")
@@ -288,6 +344,30 @@ func (pt *ProjectTask) appendNamedParticipants(name string, edges ...*User) {
 		pt.Edges.namedParticipants[name] = []*User{}
 	} else {
 		pt.Edges.namedParticipants[name] = append(pt.Edges.namedParticipants[name], edges...)
+	}
+}
+
+// NamedWorkShifts returns the WorkShifts named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (pt *ProjectTask) NamedWorkShifts(name string) ([]*Workshift, error) {
+	if pt.Edges.namedWorkShifts == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := pt.Edges.namedWorkShifts[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (pt *ProjectTask) appendNamedWorkShifts(name string, edges ...*Workshift) {
+	if pt.Edges.namedWorkShifts == nil {
+		pt.Edges.namedWorkShifts = make(map[string][]*Workshift)
+	}
+	if len(edges) == 0 {
+		pt.Edges.namedWorkShifts[name] = []*Workshift{}
+	} else {
+		pt.Edges.namedWorkShifts[name] = append(pt.Edges.namedWorkShifts[name], edges...)
 	}
 }
 

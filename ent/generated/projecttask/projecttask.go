@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -17,6 +18,8 @@ const (
 	Label = "project_task"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldAssigneeName holds the string denoting the assigneename field in the database.
@@ -39,6 +42,10 @@ const (
 	EdgeAssignee = "assignee"
 	// EdgeParticipants holds the string denoting the participants edge name in mutations.
 	EdgeParticipants = "participants"
+	// EdgeCreatedBy holds the string denoting the createdby edge name in mutations.
+	EdgeCreatedBy = "createdBy"
+	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
+	EdgeWorkShifts = "workShifts"
 	// Table holds the table name of the projecttask in the database.
 	Table = "project_tasks"
 	// ProjectTable is the table that holds the project relation/edge.
@@ -60,11 +67,26 @@ const (
 	// ParticipantsInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	ParticipantsInverseTable = "users"
+	// CreatedByTable is the table that holds the createdBy relation/edge.
+	CreatedByTable = "project_tasks"
+	// CreatedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	CreatedByInverseTable = "users"
+	// CreatedByColumn is the table column denoting the createdBy relation/edge.
+	CreatedByColumn = "user_created_tasks"
+	// WorkShiftsTable is the table that holds the workShifts relation/edge.
+	WorkShiftsTable = "workshifts"
+	// WorkShiftsInverseTable is the table name for the Workshift entity.
+	// It exists in this package in order to avoid circular dependency with the "workshift" package.
+	WorkShiftsInverseTable = "workshifts"
+	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
+	WorkShiftsColumn = "project_task_work_shifts"
 )
 
 // Columns holds all SQL columns for projecttask fields.
 var Columns = []string{
 	FieldID,
+	FieldCreatedAt,
 	FieldName,
 	FieldAssigneeName,
 	FieldLocation,
@@ -80,6 +102,7 @@ var Columns = []string{
 var ForeignKeys = []string{
 	"project_tasks",
 	"user_assigned_project_tasks",
+	"user_created_tasks",
 }
 
 var (
@@ -110,6 +133,8 @@ func ValidColumn(column string) bool {
 //	import _ "mazza/ent/generated/runtime"
 var (
 	Hooks [1]ent.Hook
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// AssigneeNameValidator is a validator for the "assigneeName" field. It is called by the builders before save.
@@ -146,6 +171,11 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByCreatedAt orders the results by the createdAt field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.
@@ -215,6 +245,27 @@ func ByParticipants(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newParticipantsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByCreatedByField orders the results by createdBy field.
+func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByWorkShiftsCount orders the results by workShifts count.
+func ByWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newWorkShiftsStep(), opts...)
+	}
+}
+
+// ByWorkShifts orders the results by workShifts terms.
+func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newProjectStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -234,6 +285,20 @@ func newParticipantsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ParticipantsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2M, true, ParticipantsTable, ParticipantsPrimaryKey...),
+	)
+}
+func newCreatedByStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreatedByInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, CreatedByTable, CreatedByColumn),
+	)
+}
+func newWorkShiftsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(WorkShiftsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, WorkShiftsTable, WorkShiftsColumn),
 	)
 }
 

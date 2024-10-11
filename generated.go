@@ -21,7 +21,6 @@ import (
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"mazza/mazza/generated/model"
 	"strconv"
 	"sync"
@@ -152,8 +151,6 @@ type ComplexityRoot struct {
 		VatRate           func(childComplexity int) int
 		Website           func(childComplexity int) int
 		WorkShifts        func(childComplexity int) int
-		WorkTags          func(childComplexity int) int
-		WorkTasks         func(childComplexity int) int
 	}
 
 	Customer struct {
@@ -180,22 +177,17 @@ type ComplexityRoot struct {
 	}
 
 	Employee struct {
-		ApprovedWorkShifts func(childComplexity int) int
-		AssignedTasks      func(childComplexity int) int
-		Company            func(childComplexity int) int
-		CreatedAt          func(childComplexity int) int
-		DeletedAt          func(childComplexity int) int
-		Email              func(childComplexity int) int
-		Gender             func(childComplexity int) int
-		ID                 func(childComplexity int) int
-		Leader             func(childComplexity int) int
-		Name               func(childComplexity int) int
-		Phone              func(childComplexity int) int
-		Position           func(childComplexity int) int
-		Subordinates       func(childComplexity int) int
-		UpdatedAt          func(childComplexity int) int
-		User               func(childComplexity int) int
-		WorkShifts         func(childComplexity int) int
+		Company   func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		Email     func(childComplexity int) int
+		Gender    func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Phone     func(childComplexity int) int
+		Position  func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+		User      func(childComplexity int) int
 	}
 
 	Equity struct {
@@ -282,8 +274,6 @@ type ComplexityRoot struct {
 		CreateUser                     func(childComplexity int, input generated.CreateUserInput) int
 		CreateUserRole                 func(childComplexity int, input generated.CreateUserRoleInput) int
 		CreateWorkShift                func(childComplexity int, input generated.CreateWorkshiftInput) int
-		CreateWorkTag                  func(childComplexity int, input generated.CreateWorktagInput) int
-		CreateWorkTask                 func(childComplexity int, input generated.CreateWorktaskInput) int
 		DeleteCustomer                 func(childComplexity int, id int) int
 		DeleteEmployee                 func(childComplexity int, id int) int
 		DeleteProduct                  func(childComplexity int, id int) int
@@ -293,8 +283,6 @@ type ComplexityRoot struct {
 		DeleteSupplier                 func(childComplexity int, id int) int
 		DeleteTreasury                 func(childComplexity int, id int) int
 		DeleteWorkShift                func(childComplexity int, id int) int
-		DeleteWorkTag                  func(childComplexity int, id int) int
-		DeleteWorkTask                 func(childComplexity int, id int) int
 		ForgotPassword                 func(childComplexity int, username string) int
 		InvitedUserSignup              func(childComplexity int, input model.InvitedUserSignupInput) int
 		RegisterOtherAccountingEntries func(childComplexity int, input model.BaseEntryRegistrationInput) int
@@ -315,8 +303,6 @@ type ComplexityRoot struct {
 		UpdateTreasury                 func(childComplexity int, id int, input generated.UpdateTreasuryInput) int
 		UpdateUser                     func(childComplexity int, id int, input generated.UpdateUserInput) int
 		UpdateWorkShift                func(childComplexity int, id int, input generated.UpdateWorkshiftInput) int
-		UpdateWorkTag                  func(childComplexity int, id int, input generated.UpdateWorktagInput) int
-		UpdateWorkTask                 func(childComplexity int, id int, input generated.UpdateWorktaskInput) int
 	}
 
 	PageInfo struct {
@@ -392,6 +378,8 @@ type ComplexityRoot struct {
 	ProjectTask struct {
 		Assignee     func(childComplexity int) int
 		AssigneeName func(childComplexity int) int
+		CreatedAt    func(childComplexity int) int
+		CreatedBy    func(childComplexity int) int
 		Description  func(childComplexity int) int
 		DueDate      func(childComplexity int) int
 		EndDate      func(childComplexity int) int
@@ -402,6 +390,7 @@ type ComplexityRoot struct {
 		Project      func(childComplexity int) int
 		StartDate    func(childComplexity int) int
 		Status       func(childComplexity int) int
+		WorkShifts   func(childComplexity int) int
 	}
 
 	Query struct {
@@ -439,8 +428,6 @@ type ComplexityRoot struct {
 		Users                    func(childComplexity int, where *generated.UserWhereInput) int
 		VerifyPasswordResetToken func(childComplexity int, token string) int
 		WorkShifts               func(childComplexity int, where *generated.WorkshiftWhereInput) int
-		WorkTags                 func(childComplexity int, where *generated.WorktagWhereInput) int
-		WorkTasks                func(childComplexity int, where *generated.WorktaskWhereInput) int
 		Workshifts               func(childComplexity int) int
 	}
 
@@ -544,6 +531,7 @@ type ComplexityRoot struct {
 
 	User struct {
 		AccountingEntries        func(childComplexity int) int
+		ApprovedWorkShifts       func(childComplexity int) int
 		AssignedProjectTasks     func(childComplexity int) int
 		AssignedRoles            func(childComplexity int) int
 		Company                  func(childComplexity int) int
@@ -554,15 +542,17 @@ type ComplexityRoot struct {
 		Disabled                 func(childComplexity int) int
 		Email                    func(childComplexity int) int
 		Employee                 func(childComplexity int) int
-		FcmToken                 func(childComplexity int) int
 		ID                       func(childComplexity int) int
+		Leader                   func(childComplexity int) int
 		LeaderedProjects         func(childComplexity int) int
 		Name                     func(childComplexity int) int
 		NotVerified              func(childComplexity int) int
 		ParticipatedProjectTasks func(childComplexity int) int
+		Subordinates             func(childComplexity int) int
 		Tokens                   func(childComplexity int) int
 		UpdatedAt                func(childComplexity int) int
 		Username                 func(childComplexity int) int
+		WorkShifts               func(childComplexity int) int
 	}
 
 	UserRole struct {
@@ -591,42 +581,13 @@ type ComplexityRoot struct {
 		DeletedAt        func(childComplexity int) int
 		Description      func(childComplexity int) int
 		EditRequest      func(childComplexity int) int
-		Employee         func(childComplexity int) int
 		ID               func(childComplexity int) int
 		Note             func(childComplexity int) int
 		Status           func(childComplexity int) int
+		Task             func(childComplexity int) int
 		UpdatedAt        func(childComplexity int) int
+		User             func(childComplexity int) int
 		WorkShift        func(childComplexity int) int
-		WorkTask         func(childComplexity int) int
-	}
-
-	Worktag struct {
-		Color     func(childComplexity int) int
-		Company   func(childComplexity int) int
-		CreatedAt func(childComplexity int) int
-		DeletedAt func(childComplexity int) int
-		ID        func(childComplexity int) int
-		Name      func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
-		WorkTasks func(childComplexity int) int
-	}
-
-	Worktask struct {
-		AssignedTo  func(childComplexity int) int
-		Company     func(childComplexity int) int
-		CreatedAt   func(childComplexity int) int
-		CreatedBy   func(childComplexity int) int
-		DeletedAt   func(childComplexity int) int
-		Description func(childComplexity int) int
-		EndTime     func(childComplexity int) int
-		ID          func(childComplexity int) int
-		StartTime   func(childComplexity int) int
-		Status      func(childComplexity int) int
-		Subtasks    func(childComplexity int) int
-		Title       func(childComplexity int) int
-		UpdatedAt   func(childComplexity int) int
-		WorkShifts  func(childComplexity int) int
-		WorkTags    func(childComplexity int) int
 	}
 }
 
@@ -668,12 +629,6 @@ type MutationResolver interface {
 	CreateWorkShift(ctx context.Context, input generated.CreateWorkshiftInput) (*generated.Workshift, error)
 	UpdateWorkShift(ctx context.Context, id int, input generated.UpdateWorkshiftInput) (*generated.Workshift, error)
 	DeleteWorkShift(ctx context.Context, id int) (bool, error)
-	CreateWorkTask(ctx context.Context, input generated.CreateWorktaskInput) (*generated.Worktask, error)
-	UpdateWorkTask(ctx context.Context, id int, input generated.UpdateWorktaskInput) (*generated.Worktask, error)
-	DeleteWorkTask(ctx context.Context, id int) (bool, error)
-	CreateWorkTag(ctx context.Context, input generated.CreateWorktagInput) (*generated.Worktag, error)
-	UpdateWorkTag(ctx context.Context, id int, input generated.UpdateWorktagInput) (*generated.Worktag, error)
-	DeleteWorkTag(ctx context.Context, id int) (bool, error)
 	RegisterPurchase(ctx context.Context, input model.PurchaseRegistrationInput) (string, error)
 	RegisterSales(ctx context.Context, input model.SalesRegistrationInput) (*model.FileDetailsOutput, error)
 	SalesQuotation(ctx context.Context, input model.SalesQuotationInput) (*model.FileDetailsOutput, error)
@@ -715,8 +670,6 @@ type QueryResolver interface {
 	UserRoles(ctx context.Context, where *generated.UserRoleWhereInput) ([]*generated.UserRole, error)
 	WorkShifts(ctx context.Context, where *generated.WorkshiftWhereInput) ([]*generated.Workshift, error)
 	AggregateWorkShift(ctx context.Context, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) ([]*model.WorkShiftAggregationPayload, error)
-	WorkTags(ctx context.Context, where *generated.WorktagWhereInput) ([]*generated.Worktag, error)
-	WorkTasks(ctx context.Context, where *generated.WorktaskWhereInput) ([]*generated.Worktask, error)
 }
 
 type executableSchema struct {
@@ -1249,20 +1202,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Company.WorkShifts(childComplexity), true
 
-	case "Company.worktags":
-		if e.complexity.Company.WorkTags == nil {
-			break
-		}
-
-		return e.complexity.Company.WorkTags(childComplexity), true
-
-	case "Company.worktasks":
-		if e.complexity.Company.WorkTasks == nil {
-			break
-		}
-
-		return e.complexity.Company.WorkTasks(childComplexity), true
-
 	case "Customer.address":
 		if e.complexity.Customer.Address == nil {
 			break
@@ -1382,20 +1321,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.CustomerAggregationOutput.Count(childComplexity), true
 
-	case "Employee.approvedworkshifts":
-		if e.complexity.Employee.ApprovedWorkShifts == nil {
-			break
-		}
-
-		return e.complexity.Employee.ApprovedWorkShifts(childComplexity), true
-
-	case "Employee.assignedtasks":
-		if e.complexity.Employee.AssignedTasks == nil {
-			break
-		}
-
-		return e.complexity.Employee.AssignedTasks(childComplexity), true
-
 	case "Employee.company":
 		if e.complexity.Employee.Company == nil {
 			break
@@ -1438,13 +1363,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Employee.ID(childComplexity), true
 
-	case "Employee.leader":
-		if e.complexity.Employee.Leader == nil {
-			break
-		}
-
-		return e.complexity.Employee.Leader(childComplexity), true
-
 	case "Employee.name":
 		if e.complexity.Employee.Name == nil {
 			break
@@ -1466,13 +1384,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Employee.Position(childComplexity), true
 
-	case "Employee.subordinates":
-		if e.complexity.Employee.Subordinates == nil {
-			break
-		}
-
-		return e.complexity.Employee.Subordinates(childComplexity), true
-
 	case "Employee.updatedat":
 		if e.complexity.Employee.UpdatedAt == nil {
 			break
@@ -1486,13 +1397,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Employee.User(childComplexity), true
-
-	case "Employee.workshifts":
-		if e.complexity.Employee.WorkShifts == nil {
-			break
-		}
-
-		return e.complexity.Employee.WorkShifts(childComplexity), true
 
 	case "Equity.equity":
 		if e.complexity.Equity.Equity == nil {
@@ -1946,30 +1850,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateWorkShift(childComplexity, args["input"].(generated.CreateWorkshiftInput)), true
 
-	case "Mutation.createWorkTag":
-		if e.complexity.Mutation.CreateWorkTag == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createWorkTag_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.CreateWorkTag(childComplexity, args["input"].(generated.CreateWorktagInput)), true
-
-	case "Mutation.createWorkTask":
-		if e.complexity.Mutation.CreateWorkTask == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createWorkTask_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.CreateWorkTask(childComplexity, args["input"].(generated.CreateWorktaskInput)), true
-
 	case "Mutation.deleteCustomer":
 		if e.complexity.Mutation.DeleteCustomer == nil {
 			break
@@ -2077,30 +1957,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeleteWorkShift(childComplexity, args["id"].(int)), true
-
-	case "Mutation.deleteWorkTag":
-		if e.complexity.Mutation.DeleteWorkTag == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_deleteWorkTag_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.DeleteWorkTag(childComplexity, args["id"].(int)), true
-
-	case "Mutation.deleteWorkTask":
-		if e.complexity.Mutation.DeleteWorkTask == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_deleteWorkTask_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.DeleteWorkTask(childComplexity, args["id"].(int)), true
 
 	case "Mutation.forgotPassword":
 		if e.complexity.Mutation.ForgotPassword == nil {
@@ -2341,30 +2197,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateWorkShift(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorkshiftInput)), true
-
-	case "Mutation.updateWorkTag":
-		if e.complexity.Mutation.UpdateWorkTag == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_updateWorkTag_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.UpdateWorkTag(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorktagInput)), true
-
-	case "Mutation.updateWorkTask":
-		if e.complexity.Mutation.UpdateWorkTask == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_updateWorkTask_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.UpdateWorkTask(childComplexity, args["id"].(int), args["input"].(generated.UpdateWorktaskInput)), true
 
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
@@ -2744,6 +2576,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProjectTask.AssigneeName(childComplexity), true
 
+	case "ProjectTask.createdat":
+		if e.complexity.ProjectTask.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.CreatedAt(childComplexity), true
+
+	case "ProjectTask.createdby":
+		if e.complexity.ProjectTask.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.CreatedBy(childComplexity), true
+
 	case "ProjectTask.description":
 		if e.complexity.ProjectTask.Description == nil {
 			break
@@ -2813,6 +2659,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ProjectTask.Status(childComplexity), true
+
+	case "ProjectTask.workshifts":
+		if e.complexity.ProjectTask.WorkShifts == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.WorkShifts(childComplexity), true
 
 	case "Query.accountingEntries":
 		if e.complexity.Query.AccountingEntries == nil {
@@ -3216,30 +3069,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.WorkShifts(childComplexity, args["where"].(*generated.WorkshiftWhereInput)), true
-
-	case "Query.workTags":
-		if e.complexity.Query.WorkTags == nil {
-			break
-		}
-
-		args, err := ec.field_Query_workTags_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.WorkTags(childComplexity, args["where"].(*generated.WorktagWhereInput)), true
-
-	case "Query.workTasks":
-		if e.complexity.Query.WorkTasks == nil {
-			break
-		}
-
-		args, err := ec.field_Query_workTasks_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.WorkTasks(childComplexity, args["where"].(*generated.WorktaskWhereInput)), true
 
 	case "Query.workshifts":
 		if e.complexity.Query.Workshifts == nil {
@@ -3731,6 +3560,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.AccountingEntries(childComplexity), true
 
+	case "User.approvedworkshifts":
+		if e.complexity.User.ApprovedWorkShifts == nil {
+			break
+		}
+
+		return e.complexity.User.ApprovedWorkShifts(childComplexity), true
+
 	case "User.assignedprojecttasks":
 		if e.complexity.User.AssignedProjectTasks == nil {
 			break
@@ -3801,19 +3637,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Employee(childComplexity), true
 
-	case "User.fcmtoken":
-		if e.complexity.User.FcmToken == nil {
-			break
-		}
-
-		return e.complexity.User.FcmToken(childComplexity), true
-
 	case "User.id":
 		if e.complexity.User.ID == nil {
 			break
 		}
 
 		return e.complexity.User.ID(childComplexity), true
+
+	case "User.leader":
+		if e.complexity.User.Leader == nil {
+			break
+		}
+
+		return e.complexity.User.Leader(childComplexity), true
 
 	case "User.leaderedprojects":
 		if e.complexity.User.LeaderedProjects == nil {
@@ -3843,6 +3679,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.ParticipatedProjectTasks(childComplexity), true
 
+	case "User.subordinates":
+		if e.complexity.User.Subordinates == nil {
+			break
+		}
+
+		return e.complexity.User.Subordinates(childComplexity), true
+
 	case "User.tokens":
 		if e.complexity.User.Tokens == nil {
 			break
@@ -3863,6 +3706,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Username(childComplexity), true
+
+	case "User.workshifts":
+		if e.complexity.User.WorkShifts == nil {
+			break
+		}
+
+		return e.complexity.User.WorkShifts(childComplexity), true
 
 	case "UserRole.company":
 		if e.complexity.UserRole.Company == nil {
@@ -3997,13 +3847,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Workshift.EditRequest(childComplexity), true
 
-	case "Workshift.employee":
-		if e.complexity.Workshift.Employee == nil {
-			break
-		}
-
-		return e.complexity.Workshift.Employee(childComplexity), true
-
 	case "Workshift.id":
 		if e.complexity.Workshift.ID == nil {
 			break
@@ -4025,6 +3868,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Workshift.Status(childComplexity), true
 
+	case "Workshift.task":
+		if e.complexity.Workshift.Task == nil {
+			break
+		}
+
+		return e.complexity.Workshift.Task(childComplexity), true
+
 	case "Workshift.updatedat":
 		if e.complexity.Workshift.UpdatedAt == nil {
 			break
@@ -4032,180 +3882,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Workshift.UpdatedAt(childComplexity), true
 
+	case "Workshift.user":
+		if e.complexity.Workshift.User == nil {
+			break
+		}
+
+		return e.complexity.Workshift.User(childComplexity), true
+
 	case "Workshift.workshift":
 		if e.complexity.Workshift.WorkShift == nil {
 			break
 		}
 
 		return e.complexity.Workshift.WorkShift(childComplexity), true
-
-	case "Workshift.worktask":
-		if e.complexity.Workshift.WorkTask == nil {
-			break
-		}
-
-		return e.complexity.Workshift.WorkTask(childComplexity), true
-
-	case "Worktag.color":
-		if e.complexity.Worktag.Color == nil {
-			break
-		}
-
-		return e.complexity.Worktag.Color(childComplexity), true
-
-	case "Worktag.company":
-		if e.complexity.Worktag.Company == nil {
-			break
-		}
-
-		return e.complexity.Worktag.Company(childComplexity), true
-
-	case "Worktag.createdat":
-		if e.complexity.Worktag.CreatedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktag.CreatedAt(childComplexity), true
-
-	case "Worktag.deletedat":
-		if e.complexity.Worktag.DeletedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktag.DeletedAt(childComplexity), true
-
-	case "Worktag.id":
-		if e.complexity.Worktag.ID == nil {
-			break
-		}
-
-		return e.complexity.Worktag.ID(childComplexity), true
-
-	case "Worktag.name":
-		if e.complexity.Worktag.Name == nil {
-			break
-		}
-
-		return e.complexity.Worktag.Name(childComplexity), true
-
-	case "Worktag.updatedat":
-		if e.complexity.Worktag.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktag.UpdatedAt(childComplexity), true
-
-	case "Worktag.worktasks":
-		if e.complexity.Worktag.WorkTasks == nil {
-			break
-		}
-
-		return e.complexity.Worktag.WorkTasks(childComplexity), true
-
-	case "Worktask.assignedto":
-		if e.complexity.Worktask.AssignedTo == nil {
-			break
-		}
-
-		return e.complexity.Worktask.AssignedTo(childComplexity), true
-
-	case "Worktask.company":
-		if e.complexity.Worktask.Company == nil {
-			break
-		}
-
-		return e.complexity.Worktask.Company(childComplexity), true
-
-	case "Worktask.createdat":
-		if e.complexity.Worktask.CreatedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktask.CreatedAt(childComplexity), true
-
-	case "Worktask.createdby":
-		if e.complexity.Worktask.CreatedBy == nil {
-			break
-		}
-
-		return e.complexity.Worktask.CreatedBy(childComplexity), true
-
-	case "Worktask.deletedat":
-		if e.complexity.Worktask.DeletedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktask.DeletedAt(childComplexity), true
-
-	case "Worktask.description":
-		if e.complexity.Worktask.Description == nil {
-			break
-		}
-
-		return e.complexity.Worktask.Description(childComplexity), true
-
-	case "Worktask.endtime":
-		if e.complexity.Worktask.EndTime == nil {
-			break
-		}
-
-		return e.complexity.Worktask.EndTime(childComplexity), true
-
-	case "Worktask.id":
-		if e.complexity.Worktask.ID == nil {
-			break
-		}
-
-		return e.complexity.Worktask.ID(childComplexity), true
-
-	case "Worktask.starttime":
-		if e.complexity.Worktask.StartTime == nil {
-			break
-		}
-
-		return e.complexity.Worktask.StartTime(childComplexity), true
-
-	case "Worktask.status":
-		if e.complexity.Worktask.Status == nil {
-			break
-		}
-
-		return e.complexity.Worktask.Status(childComplexity), true
-
-	case "Worktask.subtasks":
-		if e.complexity.Worktask.Subtasks == nil {
-			break
-		}
-
-		return e.complexity.Worktask.Subtasks(childComplexity), true
-
-	case "Worktask.title":
-		if e.complexity.Worktask.Title == nil {
-			break
-		}
-
-		return e.complexity.Worktask.Title(childComplexity), true
-
-	case "Worktask.updatedat":
-		if e.complexity.Worktask.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.Worktask.UpdatedAt(childComplexity), true
-
-	case "Worktask.workshifts":
-		if e.complexity.Worktask.WorkShifts == nil {
-			break
-		}
-
-		return e.complexity.Worktask.WorkShifts(childComplexity), true
-
-	case "Worktask.worktags":
-		if e.complexity.Worktask.WorkTags == nil {
-			break
-		}
-
-		return e.complexity.Worktask.WorkTags(childComplexity), true
 
 	}
 	return 0, false
@@ -4236,8 +3925,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateUserRoleInput,
 		ec.unmarshalInputCreateWorkshiftInput,
-		ec.unmarshalInputCreateWorktagInput,
-		ec.unmarshalInputCreateWorktaskInput,
 		ec.unmarshalInputCustomerOrder,
 		ec.unmarshalInputCustomerWhereInput,
 		ec.unmarshalInputEmployeeWhereInput,
@@ -4288,16 +3975,12 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUpdateUserRoleInput,
 		ec.unmarshalInputUpdateWorkshiftInput,
-		ec.unmarshalInputUpdateWorktagInput,
-		ec.unmarshalInputUpdateWorktaskInput,
 		ec.unmarshalInputUserOrder,
 		ec.unmarshalInputUserRoleOrder,
 		ec.unmarshalInputUserRoleWhereInput,
 		ec.unmarshalInputUserWhereInput,
 		ec.unmarshalInputWorkshiftOrder,
 		ec.unmarshalInputWorkshiftWhereInput,
-		ec.unmarshalInputWorktagWhereInput,
-		ec.unmarshalInputWorktaskWhereInput,
 		ec.unmarshalInputinvitedUserSignupInput,
 	)
 	first := true
@@ -4801,70 +4484,6 @@ func (ec *executionContext) field_Mutation_createWorkShift_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_createWorkTag_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_createWorkTag_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_createWorkTag_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (generated.CreateWorktagInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal generated.CreateWorktagInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateWorktagInput2mazzaᚋentᚋgeneratedᚐCreateWorktagInput(ctx, tmp)
-	}
-
-	var zeroVal generated.CreateWorktagInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createWorkTask_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_createWorkTask_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_createWorkTask_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (generated.CreateWorktaskInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal generated.CreateWorktaskInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateWorktaskInput2mazzaᚋentᚋgeneratedᚐCreateWorktaskInput(ctx, tmp)
-	}
-
-	var zeroVal generated.CreateWorktaskInput
-	return zeroVal, nil
-}
-
 func (ec *executionContext) field_Mutation_deleteCustomer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5132,70 +4751,6 @@ func (ec *executionContext) field_Mutation_deleteWorkShift_args(ctx context.Cont
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_deleteWorkShift_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2int(ctx, tmp)
-	}
-
-	var zeroVal int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_deleteWorkTag_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_deleteWorkTag_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_deleteWorkTag_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2int(ctx, tmp)
-	}
-
-	var zeroVal int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_deleteWorkTask_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_deleteWorkTask_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_deleteWorkTask_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (int, error) {
@@ -6151,124 +5706,6 @@ func (ec *executionContext) field_Mutation_updateWorkShift_argsInput(
 	}
 
 	var zeroVal generated.UpdateWorkshiftInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateWorkTag_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_updateWorkTag_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	arg1, err := ec.field_Mutation_updateWorkTag_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg1
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_updateWorkTag_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2int(ctx, tmp)
-	}
-
-	var zeroVal int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateWorkTag_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (generated.UpdateWorktagInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal generated.UpdateWorktagInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateWorktagInput2mazzaᚋentᚋgeneratedᚐUpdateWorktagInput(ctx, tmp)
-	}
-
-	var zeroVal generated.UpdateWorktagInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateWorkTask_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_updateWorkTask_argsID(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["id"] = arg0
-	arg1, err := ec.field_Mutation_updateWorkTask_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg1
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_updateWorkTask_argsID(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (int, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["id"]
-	if !ok {
-		var zeroVal int
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-	if tmp, ok := rawArgs["id"]; ok {
-		return ec.unmarshalNID2int(ctx, tmp)
-	}
-
-	var zeroVal int
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_updateWorkTask_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (generated.UpdateWorktaskInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal generated.UpdateWorktaskInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNUpdateWorktaskInput2mazzaᚋentᚋgeneratedᚐUpdateWorktaskInput(ctx, tmp)
-	}
-
-	var zeroVal generated.UpdateWorktaskInput
 	return zeroVal, nil
 }
 
@@ -7846,70 +7283,6 @@ func (ec *executionContext) field_Query_workShifts_argsWhere(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Query_workTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_workTags_argsWhere(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["where"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_workTags_argsWhere(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*generated.WorktagWhereInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["where"]
-	if !ok {
-		var zeroVal *generated.WorktagWhereInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
-	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, tmp)
-	}
-
-	var zeroVal *generated.WorktagWhereInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Query_workTasks_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_workTasks_argsWhere(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["where"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Query_workTasks_argsWhere(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*generated.WorktaskWhereInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["where"]
-	if !ok {
-		var zeroVal *generated.WorktaskWhereInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
-	if tmp, ok := rawArgs["where"]; ok {
-		return ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, tmp)
-	}
-
-	var zeroVal *generated.WorktaskWhereInput
-	return zeroVal, nil
-}
-
 func (ec *executionContext) field___Type_enumValues_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -8784,10 +8157,6 @@ func (ec *executionContext) fieldContext_AccountingEntry_company(_ context.Conte
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -8845,8 +8214,6 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -8863,8 +8230,10 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -8875,8 +8244,14 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -11088,16 +10463,6 @@ func (ec *executionContext) fieldContext_Company_employees(_ context.Context, fi
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
 		},
@@ -11585,150 +10950,18 @@ func (ec *executionContext) fieldContext_Company_workshifts(_ context.Context, f
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
 				return ec.fieldContext_Workshift_workshift(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Company_worktasks(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Company_worktasks(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkTasks(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktask)
-	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Company_worktasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Company",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Company_worktags(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Company_worktags(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkTags(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktag)
-	fc.Result = res
-	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Company_worktags(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Company",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktag_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktag_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktag_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktag_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Worktag_name(ctx, field)
-			case "color":
-				return ec.fieldContext_Worktag_color(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktag_company(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Worktag_worktasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktag", field.Name)
 		},
 	}
 	return fc, nil
@@ -11778,8 +11011,6 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -11796,8 +11027,10 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -11808,8 +11041,14 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -11921,10 +11160,6 @@ func (ec *executionContext) fieldContext_Company_daughtercompanies(_ context.Con
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -12042,10 +11277,6 @@ func (ec *executionContext) fieldContext_Company_parentcompany(_ context.Context
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -12723,10 +11954,6 @@ func (ec *executionContext) fieldContext_Customer_company(_ context.Context, fie
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -13378,10 +12605,6 @@ func (ec *executionContext) fieldContext_Employee_company(_ context.Context, fie
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -13439,8 +12662,6 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -13457,8 +12678,10 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -13469,391 +12692,16 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Employee_subordinates(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_subordinates(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Subordinates(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Employee)
-	fc.Result = res
-	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Employee_subordinates(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Employee",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Employee_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Employee_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Employee_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Employee_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Employee_name(ctx, field)
-			case "gender":
-				return ec.fieldContext_Employee_gender(ctx, field)
-			case "position":
-				return ec.fieldContext_Employee_position(ctx, field)
-			case "email":
-				return ec.fieldContext_Employee_email(ctx, field)
-			case "phone":
-				return ec.fieldContext_Employee_phone(ctx, field)
-			case "company":
-				return ec.fieldContext_Employee_company(ctx, field)
-			case "user":
-				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Employee_leader(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_leader(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Leader(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Employee)
-	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Employee_leader(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Employee",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Employee_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Employee_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Employee_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Employee_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Employee_name(ctx, field)
-			case "gender":
-				return ec.fieldContext_Employee_gender(ctx, field)
-			case "position":
-				return ec.fieldContext_Employee_position(ctx, field)
-			case "email":
-				return ec.fieldContext_Employee_email(ctx, field)
-			case "phone":
-				return ec.fieldContext_Employee_phone(ctx, field)
-			case "company":
-				return ec.fieldContext_Employee_company(ctx, field)
-			case "user":
-				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Employee_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_workshifts(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkShifts(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Workshift)
-	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Employee_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Employee",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Workshift_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Workshift_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Workshift_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Workshift_deletedat(ctx, field)
-			case "approvedat":
-				return ec.fieldContext_Workshift_approvedat(ctx, field)
-			case "clockin":
-				return ec.fieldContext_Workshift_clockin(ctx, field)
-			case "clockout":
-				return ec.fieldContext_Workshift_clockout(ctx, field)
-			case "clockinlocation":
-				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
-			case "clockoutlocation":
-				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
-			case "description":
-				return ec.fieldContext_Workshift_description(ctx, field)
-			case "note":
-				return ec.fieldContext_Workshift_note(ctx, field)
-			case "status":
-				return ec.fieldContext_Workshift_status(ctx, field)
-			case "company":
-				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
-			case "approvedby":
-				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
-			case "editrequest":
-				return ec.fieldContext_Workshift_editrequest(ctx, field)
-			case "workshift":
-				return ec.fieldContext_Workshift_workshift(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Employee_approvedworkshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ApprovedWorkShifts(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Workshift)
-	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Employee_approvedworkshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Employee",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Workshift_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Workshift_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Workshift_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Workshift_deletedat(ctx, field)
-			case "approvedat":
-				return ec.fieldContext_Workshift_approvedat(ctx, field)
-			case "clockin":
-				return ec.fieldContext_Workshift_clockin(ctx, field)
-			case "clockout":
-				return ec.fieldContext_Workshift_clockout(ctx, field)
-			case "clockinlocation":
-				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
-			case "clockoutlocation":
-				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
-			case "description":
-				return ec.fieldContext_Workshift_description(ctx, field)
-			case "note":
-				return ec.fieldContext_Workshift_note(ctx, field)
-			case "status":
-				return ec.fieldContext_Workshift_status(ctx, field)
-			case "company":
-				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
-			case "approvedby":
-				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
-			case "editrequest":
-				return ec.fieldContext_Workshift_editrequest(ctx, field)
-			case "workshift":
-				return ec.fieldContext_Workshift_workshift(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Employee_assignedtasks(ctx context.Context, field graphql.CollectedField, obj *generated.Employee) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Employee_assignedtasks(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.AssignedTasks(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktask)
-	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Employee_assignedtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Employee",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
 		},
 	}
 	return fc, nil
@@ -14452,10 +13300,6 @@ func (ec *executionContext) fieldContext_File_company(_ context.Context, field g
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -15770,8 +14614,6 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -15788,8 +14630,10 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -15800,8 +14644,14 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -15960,10 +14810,6 @@ func (ec *executionContext) fieldContext_LoginOutput_companies(_ context.Context
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -16282,10 +15128,6 @@ func (ec *executionContext) fieldContext_Mutation_createCompany(ctx context.Cont
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -16417,10 +15259,6 @@ func (ec *executionContext) fieldContext_Mutation_updateCompany(ctx context.Cont
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -16492,8 +15330,6 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -16510,8 +15346,10 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -16522,8 +15360,14 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -16586,8 +15430,6 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -16604,8 +15446,10 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -16616,8 +15460,14 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -16683,8 +15533,6 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -16701,8 +15549,10 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -16713,8 +15563,14 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -17237,16 +16093,6 @@ func (ec *executionContext) fieldContext_Mutation_createEmployee(ctx context.Con
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
 		},
@@ -17326,16 +16172,6 @@ func (ec *executionContext) fieldContext_Mutation_updateEmployee(ctx context.Con
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
 		},
@@ -17903,6 +16739,8 @@ func (ec *executionContext) fieldContext_Mutation_createProjectTask(ctx context.
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -17925,6 +16763,10 @@ func (ec *executionContext) fieldContext_Mutation_createProjectTask(ctx context.
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -17984,6 +16826,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProjectTask(ctx context.
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -18006,6 +16850,10 @@ func (ec *executionContext) fieldContext_Mutation_updateProjectTask(ctx context.
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -18783,12 +17631,12 @@ func (ec *executionContext) fieldContext_Mutation_createWorkShift(ctx context.Co
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
@@ -18876,12 +17724,12 @@ func (ec *executionContext) fieldContext_Mutation_updateWorkShift(ctx context.Co
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
@@ -18953,430 +17801,6 @@ func (ec *executionContext) fieldContext_Mutation_deleteWorkShift(ctx context.Co
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_deleteWorkShift_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_createWorkTask(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createWorkTask(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWorkTask(rctx, fc.Args["input"].(generated.CreateWorktaskInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Worktask)
-	fc.Result = res
-	return ec.marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_createWorkTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createWorkTask_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_updateWorkTask(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_updateWorkTask(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkTask(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateWorktaskInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Worktask)
-	fc.Result = res
-	return ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_updateWorkTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_updateWorkTask_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_deleteWorkTask(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_deleteWorkTask(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteWorkTask(rctx, fc.Args["id"].(int))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_deleteWorkTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_deleteWorkTask_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_createWorkTag(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createWorkTag(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWorkTag(rctx, fc.Args["input"].(generated.CreateWorktagInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Worktag)
-	fc.Result = res
-	return ec.marshalOWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_createWorkTag(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktag_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktag_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktag_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktag_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Worktag_name(ctx, field)
-			case "color":
-				return ec.fieldContext_Worktag_color(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktag_company(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Worktag_worktasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktag", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createWorkTag_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_updateWorkTag(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_updateWorkTag(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkTag(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateWorktagInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Worktag)
-	fc.Result = res
-	return ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_updateWorkTag(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktag_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktag_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktag_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktag_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Worktag_name(ctx, field)
-			case "color":
-				return ec.fieldContext_Worktag_color(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktag_company(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Worktag_worktasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktag", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_updateWorkTag_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_deleteWorkTag(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_deleteWorkTag(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteWorkTag(rctx, fc.Args["id"].(int))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_deleteWorkTag(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_deleteWorkTag_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -21053,10 +19477,6 @@ func (ec *executionContext) fieldContext_Product_company(_ context.Context, fiel
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -21759,10 +20179,6 @@ func (ec *executionContext) fieldContext_Project_company(_ context.Context, fiel
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -21820,8 +20236,6 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -21838,8 +20252,10 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -21850,8 +20266,14 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -21903,8 +20325,6 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -21921,8 +20341,10 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -21933,8 +20355,14 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -21980,6 +20408,8 @@ func (ec *executionContext) fieldContext_Project_tasks(_ context.Context, field 
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -22002,6 +20432,10 @@ func (ec *executionContext) fieldContext_Project_tasks(_ context.Context, field 
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -22307,6 +20741,47 @@ func (ec *executionContext) fieldContext_ProjectTask_id(_ context.Context, field
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectTask_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_createdat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectTask_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectTask",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
 		},
 	}
 	return fc, nil
@@ -22778,8 +21253,6 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -22796,8 +21269,10 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -22808,8 +21283,14 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -22861,8 +21342,6 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -22879,8 +21358,10 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -22891,10 +21372,184 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectTask_createdby(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_createdby(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectTask_createdby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectTask",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_User_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_User_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_User_deletedat(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "notverified":
+				return ec.fieldContext_User_notverified(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
+			case "company":
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectTask_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_workshifts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WorkShifts(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.Workshift)
+	fc.Result = res
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectTask_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectTask",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Workshift_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Workshift_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Workshift_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Workshift_deletedat(ctx, field)
+			case "approvedat":
+				return ec.fieldContext_Workshift_approvedat(ctx, field)
+			case "clockin":
+				return ec.fieldContext_Workshift_clockin(ctx, field)
+			case "clockout":
+				return ec.fieldContext_Workshift_clockout(ctx, field)
+			case "clockinlocation":
+				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
+			case "clockoutlocation":
+				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
+			case "description":
+				return ec.fieldContext_Workshift_description(ctx, field)
+			case "note":
+				return ec.fieldContext_Workshift_note(ctx, field)
+			case "status":
+				return ec.fieldContext_Workshift_status(ctx, field)
+			case "company":
+				return ec.fieldContext_Workshift_company(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
+			case "approvedby":
+				return ec.fieldContext_Workshift_approvedby(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
+			case "editrequest":
+				return ec.fieldContext_Workshift_editrequest(ctx, field)
+			case "workshift":
+				return ec.fieldContext_Workshift_workshift(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
 		},
 	}
 	return fc, nil
@@ -23319,12 +21974,12 @@ func (ec *executionContext) fieldContext_Query_workshifts(_ context.Context, fie
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
@@ -23953,10 +22608,6 @@ func (ec *executionContext) fieldContext_Query_companies(ctx context.Context, fi
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -24253,16 +22904,6 @@ func (ec *executionContext) fieldContext_Query_employees(ctx context.Context, fi
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
 		},
@@ -24831,6 +23472,8 @@ func (ec *executionContext) fieldContext_Query_projectTasks(ctx context.Context,
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -24853,6 +23496,10 @@ func (ec *executionContext) fieldContext_Query_projectTasks(ctx context.Context,
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -25159,8 +23806,6 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -25177,8 +23822,10 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -25189,8 +23836,14 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -25339,12 +23992,12 @@ func (ec *executionContext) fieldContext_Query_workShifts(ctx context.Context, f
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
@@ -25426,166 +24079,6 @@ func (ec *executionContext) fieldContext_Query_aggregateWorkShift(ctx context.Co
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_aggregateWorkShift_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_workTags(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_workTags(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WorkTags(rctx, fc.Args["where"].(*generated.WorktagWhereInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktag)
-	fc.Result = res
-	return ec.marshalNWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_workTags(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktag_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktag_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktag_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktag_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Worktag_name(ctx, field)
-			case "color":
-				return ec.fieldContext_Worktag_color(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktag_company(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Worktag_worktasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktag", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_workTags_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_workTasks(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_workTasks(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WorkTasks(rctx, fc.Args["where"].(*generated.WorktaskWhereInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktask)
-	fc.Result = res
-	return ec.marshalNWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_workTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_workTasks_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -27410,10 +25903,6 @@ func (ec *executionContext) fieldContext_Supplier_company(_ context.Context, fie
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -27772,10 +26261,6 @@ func (ec *executionContext) fieldContext_Token_company(_ context.Context, field 
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -27833,8 +26318,6 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -27851,8 +26334,10 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -27863,8 +26348,14 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -28612,10 +27103,6 @@ func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, fie
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -29237,47 +27724,6 @@ func (ec *executionContext) fieldContext_User_deletedat(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _User_fcmtoken(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_fcmtoken(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.FcmToken, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_User_fcmtoken(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "User",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_email(ctx, field)
 	if err != nil {
@@ -29679,10 +28125,6 @@ func (ec *executionContext) fieldContext_User_company(_ context.Context, field g
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -29747,8 +28189,8 @@ func (ec *executionContext) fieldContext_User_assignedroles(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_createdtasks(ctx, field)
+func (ec *executionContext) _User_subordinates(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_subordinates(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -29761,7 +28203,7 @@ func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedTasks(ctx)
+		return obj.Subordinates(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -29770,12 +28212,12 @@ func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*generated.Worktask)
+	res := resTmp.([]*generated.User)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_subordinates(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -29784,37 +28226,142 @@ func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, fi
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
+				return ec.fieldContext_User_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
+				return ec.fieldContext_User_createdat(ctx, field)
 			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
+				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
+				return ec.fieldContext_User_deletedat(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "notverified":
+				return ec.fieldContext_User_notverified(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
 			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_leader(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_leader(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Leader(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_leader(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_User_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_User_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_User_deletedat(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "notverified":
+				return ec.fieldContext_User_notverified(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
+			case "company":
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
 	}
 	return fc, nil
@@ -29878,16 +28425,6 @@ func (ec *executionContext) fieldContext_User_employee(_ context.Context, field 
 				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
 				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
 		},
@@ -30079,6 +28616,8 @@ func (ec *executionContext) fieldContext_User_assignedprojecttasks(_ context.Con
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -30101,6 +28640,10 @@ func (ec *executionContext) fieldContext_User_assignedprojecttasks(_ context.Con
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -30146,6 +28689,8 @@ func (ec *executionContext) fieldContext_User_participatedprojecttasks(_ context
 			switch field.Name {
 			case "id":
 				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
 			case "name":
 				return ec.fieldContext_ProjectTask_name(ctx, field)
 			case "assigneename":
@@ -30168,6 +28713,83 @@ func (ec *executionContext) fieldContext_User_participatedprojecttasks(_ context
 				return ec.fieldContext_ProjectTask_assignee(ctx, field)
 			case "participants":
 				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_createdtasks(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_createdtasks(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedTasks(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.ProjectTask)
+	fc.Result = res
+	return ec.marshalOProjectTask2ᚕᚖmazzaᚋentᚋgeneratedᚐProjectTaskᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_ProjectTask_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
+			case "name":
+				return ec.fieldContext_ProjectTask_name(ctx, field)
+			case "assigneename":
+				return ec.fieldContext_ProjectTask_assigneename(ctx, field)
+			case "location":
+				return ec.fieldContext_ProjectTask_location(ctx, field)
+			case "duedate":
+				return ec.fieldContext_ProjectTask_duedate(ctx, field)
+			case "startdate":
+				return ec.fieldContext_ProjectTask_startdate(ctx, field)
+			case "enddate":
+				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "description":
+				return ec.fieldContext_ProjectTask_description(ctx, field)
+			case "status":
+				return ec.fieldContext_ProjectTask_status(ctx, field)
+			case "project":
+				return ec.fieldContext_ProjectTask_project(ctx, field)
+			case "assignee":
+				return ec.fieldContext_ProjectTask_assignee(ctx, field)
+			case "participants":
+				return ec.fieldContext_ProjectTask_participants(ctx, field)
+			case "createdby":
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
@@ -30225,6 +28847,164 @@ func (ec *executionContext) fieldContext_User_tokens(_ context.Context, field gr
 				return ec.fieldContext_Token_user(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Token", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_approvedworkshifts(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_approvedworkshifts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApprovedWorkShifts(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.Workshift)
+	fc.Result = res
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_approvedworkshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Workshift_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Workshift_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Workshift_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Workshift_deletedat(ctx, field)
+			case "approvedat":
+				return ec.fieldContext_Workshift_approvedat(ctx, field)
+			case "clockin":
+				return ec.fieldContext_Workshift_clockin(ctx, field)
+			case "clockout":
+				return ec.fieldContext_Workshift_clockout(ctx, field)
+			case "clockinlocation":
+				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
+			case "clockoutlocation":
+				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
+			case "description":
+				return ec.fieldContext_Workshift_description(ctx, field)
+			case "note":
+				return ec.fieldContext_Workshift_note(ctx, field)
+			case "status":
+				return ec.fieldContext_Workshift_status(ctx, field)
+			case "company":
+				return ec.fieldContext_Workshift_company(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
+			case "approvedby":
+				return ec.fieldContext_Workshift_approvedby(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
+			case "editrequest":
+				return ec.fieldContext_Workshift_editrequest(ctx, field)
+			case "workshift":
+				return ec.fieldContext_Workshift_workshift(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_workshifts(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WorkShifts(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.Workshift)
+	fc.Result = res
+	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Workshift_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Workshift_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Workshift_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Workshift_deletedat(ctx, field)
+			case "approvedat":
+				return ec.fieldContext_Workshift_approvedat(ctx, field)
+			case "clockin":
+				return ec.fieldContext_Workshift_clockin(ctx, field)
+			case "clockout":
+				return ec.fieldContext_Workshift_clockout(ctx, field)
+			case "clockinlocation":
+				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
+			case "clockoutlocation":
+				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
+			case "description":
+				return ec.fieldContext_Workshift_description(ctx, field)
+			case "note":
+				return ec.fieldContext_Workshift_note(ctx, field)
+			case "status":
+				return ec.fieldContext_Workshift_status(ctx, field)
+			case "company":
+				return ec.fieldContext_Workshift_company(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
+			case "approvedby":
+				return ec.fieldContext_Workshift_approvedby(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
+			case "editrequest":
+				return ec.fieldContext_Workshift_editrequest(ctx, field)
+			case "workshift":
+				return ec.fieldContext_Workshift_workshift(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
 		},
 	}
 	return fc, nil
@@ -30422,10 +29202,6 @@ func (ec *executionContext) fieldContext_UserRole_company(_ context.Context, fie
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -30483,8 +29259,6 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -30501,8 +29275,10 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_company(ctx, field)
 			case "assignedroles":
 				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -30513,8 +29289,14 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
 			case "participatedprojecttasks":
 				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
 			case "tokens":
 				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
@@ -31306,10 +30088,6 @@ func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, fi
 				return ec.fieldContext_Company_treasuries(ctx, field)
 			case "workshifts":
 				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
 			case "users":
 				return ec.fieldContext_Company_users(ctx, field)
 			case "daughtercompanies":
@@ -31323,8 +30101,8 @@ func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_employee(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Workshift_employee(ctx, field)
+func (ec *executionContext) _Workshift_user(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Workshift_user(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -31337,7 +30115,7 @@ func (ec *executionContext) _Workshift_employee(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Employee(ctx)
+		return obj.User(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -31346,12 +30124,12 @@ func (ec *executionContext) _Workshift_employee(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*generated.Employee)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Workshift_employee(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Workshift_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Workshift",
 		Field:      field,
@@ -31360,39 +30138,53 @@ func (ec *executionContext) fieldContext_Workshift_employee(_ context.Context, f
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Employee_id(ctx, field)
+				return ec.fieldContext_User_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_Employee_createdat(ctx, field)
+				return ec.fieldContext_User_createdat(ctx, field)
 			case "updatedat":
-				return ec.fieldContext_Employee_updatedat(ctx, field)
+				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
-				return ec.fieldContext_Employee_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Employee_name(ctx, field)
-			case "gender":
-				return ec.fieldContext_Employee_gender(ctx, field)
-			case "position":
-				return ec.fieldContext_Employee_position(ctx, field)
+				return ec.fieldContext_User_deletedat(ctx, field)
 			case "email":
-				return ec.fieldContext_Employee_email(ctx, field)
-			case "phone":
-				return ec.fieldContext_Employee_phone(ctx, field)
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "notverified":
+				return ec.fieldContext_User_notverified(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
-				return ec.fieldContext_Employee_company(ctx, field)
-			case "user":
-				return ec.fieldContext_Employee_user(ctx, field)
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
 			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
+				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
+				return ec.fieldContext_User_leader(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
 			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
 	}
 	return fc, nil
@@ -31421,9 +30213,9 @@ func (ec *executionContext) _Workshift_approvedby(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*generated.Employee)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOEmployee2ᚖmazzaᚋentᚋgeneratedᚐEmployee(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -31435,46 +30227,60 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Employee_id(ctx, field)
+				return ec.fieldContext_User_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_Employee_createdat(ctx, field)
+				return ec.fieldContext_User_createdat(ctx, field)
 			case "updatedat":
-				return ec.fieldContext_Employee_updatedat(ctx, field)
+				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
-				return ec.fieldContext_Employee_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Employee_name(ctx, field)
-			case "gender":
-				return ec.fieldContext_Employee_gender(ctx, field)
-			case "position":
-				return ec.fieldContext_Employee_position(ctx, field)
+				return ec.fieldContext_User_deletedat(ctx, field)
 			case "email":
-				return ec.fieldContext_Employee_email(ctx, field)
-			case "phone":
-				return ec.fieldContext_Employee_phone(ctx, field)
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "disabled":
+				return ec.fieldContext_User_disabled(ctx, field)
+			case "notverified":
+				return ec.fieldContext_User_notverified(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
-				return ec.fieldContext_Employee_company(ctx, field)
-			case "user":
-				return ec.fieldContext_Employee_user(ctx, field)
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
 			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
+				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
+				return ec.fieldContext_User_leader(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
 			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Workshift_worktask(ctx, field)
+func (ec *executionContext) _Workshift_task(ctx context.Context, field graphql.CollectedField, obj *generated.Workshift) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Workshift_task(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -31487,7 +30293,7 @@ func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.WorkTask(ctx)
+		return obj.Task(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -31496,12 +30302,12 @@ func (ec *executionContext) _Workshift_worktask(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*generated.Worktask)
+	res := resTmp.(*generated.ProjectTask)
 	fc.Result = res
-	return ec.marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, field.Selections, res)
+	return ec.marshalOProjectTask2ᚖmazzaᚋentᚋgeneratedᚐProjectTask(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Workshift_worktask(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Workshift_task(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Workshift",
 		Field:      field,
@@ -31510,37 +30316,37 @@ func (ec *executionContext) fieldContext_Workshift_worktask(_ context.Context, f
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
+				return ec.fieldContext_ProjectTask_id(ctx, field)
 			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
+				return ec.fieldContext_ProjectTask_createdat(ctx, field)
+			case "name":
+				return ec.fieldContext_ProjectTask_name(ctx, field)
+			case "assigneename":
+				return ec.fieldContext_ProjectTask_assigneename(ctx, field)
+			case "location":
+				return ec.fieldContext_ProjectTask_location(ctx, field)
+			case "duedate":
+				return ec.fieldContext_ProjectTask_duedate(ctx, field)
+			case "startdate":
+				return ec.fieldContext_ProjectTask_startdate(ctx, field)
+			case "enddate":
+				return ec.fieldContext_ProjectTask_enddate(ctx, field)
 			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
+				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
+				return ec.fieldContext_ProjectTask_status(ctx, field)
+			case "project":
+				return ec.fieldContext_ProjectTask_project(ctx, field)
+			case "assignee":
+				return ec.fieldContext_ProjectTask_assignee(ctx, field)
+			case "participants":
+				return ec.fieldContext_ProjectTask_participants(ctx, field)
 			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
+				return ec.fieldContext_ProjectTask_createdby(ctx, field)
 			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
+				return ec.fieldContext_ProjectTask_workshifts(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type ProjectTask", field.Name)
 		},
 	}
 	return fc, nil
@@ -31608,12 +30414,12 @@ func (ec *executionContext) fieldContext_Workshift_editrequest(_ context.Context
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+			case "user":
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
@@ -31687,1318 +30493,18 @@ func (ec *executionContext) fieldContext_Workshift_workshift(_ context.Context, 
 				return ec.fieldContext_Workshift_status(ctx, field)
 			case "company":
 				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
-			case "approvedby":
-				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
-			case "editrequest":
-				return ec.fieldContext_Workshift_editrequest(ctx, field)
-			case "workshift":
-				return ec.fieldContext_Workshift_workshift(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_id(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNID2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_createdat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_updatedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_updatedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_deletedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_deletedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_name(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_color(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_color(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Color, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_color(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_company(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_company(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Company(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Company)
-	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Company_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Company_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Company_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Company_deletedat(ctx, field)
-			case "address":
-				return ec.fieldContext_Company_address(ctx, field)
-			case "basecurrency":
-				return ec.fieldContext_Company_basecurrency(ctx, field)
-			case "ceoname":
-				return ec.fieldContext_Company_ceoname(ctx, field)
-			case "city":
-				return ec.fieldContext_Company_city(ctx, field)
-			case "country":
-				return ec.fieldContext_Company_country(ctx, field)
-			case "establishedat":
-				return ec.fieldContext_Company_establishedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Company_description(ctx, field)
-			case "email":
-				return ec.fieldContext_Company_email(ctx, field)
-			case "lastentrydate":
-				return ec.fieldContext_Company_lastentrydate(ctx, field)
-			case "lastinvoicenumber":
-				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
-			case "name":
-				return ec.fieldContext_Company_name(ctx, field)
-			case "numberofemployees":
-				return ec.fieldContext_Company_numberofemployees(ctx, field)
-			case "phone":
-				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
-			case "taxid":
-				return ec.fieldContext_Company_taxid(ctx, field)
-			case "vatrate":
-				return ec.fieldContext_Company_vatrate(ctx, field)
-			case "website":
-				return ec.fieldContext_Company_website(ctx, field)
-			case "incompletesetup":
-				return ec.fieldContext_Company_incompletesetup(ctx, field)
-			case "availableroles":
-				return ec.fieldContext_Company_availableroles(ctx, field)
-			case "accountingentries":
-				return ec.fieldContext_Company_accountingentries(ctx, field)
-			case "customers":
-				return ec.fieldContext_Company_customers(ctx, field)
-			case "employees":
-				return ec.fieldContext_Company_employees(ctx, field)
-			case "files":
-				return ec.fieldContext_Company_files(ctx, field)
-			case "products":
-				return ec.fieldContext_Company_products(ctx, field)
-			case "projects":
-				return ec.fieldContext_Company_projects(ctx, field)
-			case "suppliers":
-				return ec.fieldContext_Company_suppliers(ctx, field)
-			case "tokens":
-				return ec.fieldContext_Company_tokens(ctx, field)
-			case "treasuries":
-				return ec.fieldContext_Company_treasuries(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
-			case "users":
-				return ec.fieldContext_Company_users(ctx, field)
-			case "daughtercompanies":
-				return ec.fieldContext_Company_daughtercompanies(ctx, field)
-			case "parentcompany":
-				return ec.fieldContext_Company_parentcompany(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Company", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktag_worktasks(ctx context.Context, field graphql.CollectedField, obj *generated.Worktag) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktag_worktasks(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkTasks(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktask)
-	fc.Result = res
-	return ec.marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktag_worktasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktag",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktask_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktask_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktask_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktask_deletedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Worktask_description(ctx, field)
-			case "status":
-				return ec.fieldContext_Worktask_status(ctx, field)
-			case "subtasks":
-				return ec.fieldContext_Worktask_subtasks(ctx, field)
-			case "title":
-				return ec.fieldContext_Worktask_title(ctx, field)
-			case "starttime":
-				return ec.fieldContext_Worktask_starttime(ctx, field)
-			case "endtime":
-				return ec.fieldContext_Worktask_endtime(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktask_company(ctx, field)
-			case "createdby":
-				return ec.fieldContext_Worktask_createdby(ctx, field)
-			case "assignedto":
-				return ec.fieldContext_Worktask_assignedto(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Worktask_workshifts(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Worktask_worktags(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktask", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_id(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNID2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_createdat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_updatedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_updatedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_deletedat(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_deletedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_description(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_description(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalOString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_status(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_status(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Status, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(worktask.Status)
-	fc.Result = res
-	return ec.marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type WorktaskStatus does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_subtasks(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_subtasks(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Subtasks, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]string)
-	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_subtasks(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_title(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_title(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Title, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_starttime(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_starttime(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.StartTime, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_starttime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_endtime(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_endtime(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.EndTime, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_endtime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_company(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_company(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Company(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.Company)
-	fc.Result = res
-	return ec.marshalOCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Company_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Company_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Company_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Company_deletedat(ctx, field)
-			case "address":
-				return ec.fieldContext_Company_address(ctx, field)
-			case "basecurrency":
-				return ec.fieldContext_Company_basecurrency(ctx, field)
-			case "ceoname":
-				return ec.fieldContext_Company_ceoname(ctx, field)
-			case "city":
-				return ec.fieldContext_Company_city(ctx, field)
-			case "country":
-				return ec.fieldContext_Company_country(ctx, field)
-			case "establishedat":
-				return ec.fieldContext_Company_establishedat(ctx, field)
-			case "description":
-				return ec.fieldContext_Company_description(ctx, field)
-			case "email":
-				return ec.fieldContext_Company_email(ctx, field)
-			case "lastentrydate":
-				return ec.fieldContext_Company_lastentrydate(ctx, field)
-			case "lastinvoicenumber":
-				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
-			case "name":
-				return ec.fieldContext_Company_name(ctx, field)
-			case "numberofemployees":
-				return ec.fieldContext_Company_numberofemployees(ctx, field)
-			case "phone":
-				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
-			case "taxid":
-				return ec.fieldContext_Company_taxid(ctx, field)
-			case "vatrate":
-				return ec.fieldContext_Company_vatrate(ctx, field)
-			case "website":
-				return ec.fieldContext_Company_website(ctx, field)
-			case "incompletesetup":
-				return ec.fieldContext_Company_incompletesetup(ctx, field)
-			case "availableroles":
-				return ec.fieldContext_Company_availableroles(ctx, field)
-			case "accountingentries":
-				return ec.fieldContext_Company_accountingentries(ctx, field)
-			case "customers":
-				return ec.fieldContext_Company_customers(ctx, field)
-			case "employees":
-				return ec.fieldContext_Company_employees(ctx, field)
-			case "files":
-				return ec.fieldContext_Company_files(ctx, field)
-			case "products":
-				return ec.fieldContext_Company_products(ctx, field)
-			case "projects":
-				return ec.fieldContext_Company_projects(ctx, field)
-			case "suppliers":
-				return ec.fieldContext_Company_suppliers(ctx, field)
-			case "tokens":
-				return ec.fieldContext_Company_tokens(ctx, field)
-			case "treasuries":
-				return ec.fieldContext_Company_treasuries(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Company_workshifts(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Company_worktasks(ctx, field)
-			case "worktags":
-				return ec.fieldContext_Company_worktags(ctx, field)
-			case "users":
-				return ec.fieldContext_Company_users(ctx, field)
-			case "daughtercompanies":
-				return ec.fieldContext_Company_daughtercompanies(ctx, field)
-			case "parentcompany":
-				return ec.fieldContext_Company_parentcompany(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Company", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_createdby(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_createdby(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*generated.User)
-	fc.Result = res
-	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_createdby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_User_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_User_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_User_deletedat(ctx, field)
-			case "fcmtoken":
-				return ec.fieldContext_User_fcmtoken(ctx, field)
-			case "email":
-				return ec.fieldContext_User_email(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
-			case "username":
-				return ec.fieldContext_User_username(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
-			case "accountingentries":
-				return ec.fieldContext_User_accountingentries(ctx, field)
-			case "company":
-				return ec.fieldContext_User_company(ctx, field)
-			case "assignedroles":
-				return ec.fieldContext_User_assignedroles(ctx, field)
-			case "createdtasks":
-				return ec.fieldContext_User_createdtasks(ctx, field)
-			case "employee":
-				return ec.fieldContext_User_employee(ctx, field)
-			case "createdprojects":
-				return ec.fieldContext_User_createdprojects(ctx, field)
-			case "leaderedprojects":
-				return ec.fieldContext_User_leaderedprojects(ctx, field)
-			case "assignedprojecttasks":
-				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
-			case "participatedprojecttasks":
-				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
-			case "tokens":
-				return ec.fieldContext_User_tokens(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_assignedto(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_assignedto(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.AssignedTo(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Employee)
-	fc.Result = res
-	return ec.marshalOEmployee2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_assignedto(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Employee_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Employee_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Employee_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Employee_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Employee_name(ctx, field)
-			case "gender":
-				return ec.fieldContext_Employee_gender(ctx, field)
-			case "position":
-				return ec.fieldContext_Employee_position(ctx, field)
-			case "email":
-				return ec.fieldContext_Employee_email(ctx, field)
-			case "phone":
-				return ec.fieldContext_Employee_phone(ctx, field)
-			case "company":
-				return ec.fieldContext_Employee_company(ctx, field)
 			case "user":
-				return ec.fieldContext_Employee_user(ctx, field)
-			case "subordinates":
-				return ec.fieldContext_Employee_subordinates(ctx, field)
-			case "leader":
-				return ec.fieldContext_Employee_leader(ctx, field)
-			case "workshifts":
-				return ec.fieldContext_Employee_workshifts(ctx, field)
-			case "approvedworkshifts":
-				return ec.fieldContext_Employee_approvedworkshifts(ctx, field)
-			case "assignedtasks":
-				return ec.fieldContext_Employee_assignedtasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Employee", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_workshifts(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_workshifts(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkShifts(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Workshift)
-	fc.Result = res
-	return ec.marshalOWorkshift2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_workshifts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Workshift_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Workshift_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Workshift_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Workshift_deletedat(ctx, field)
-			case "approvedat":
-				return ec.fieldContext_Workshift_approvedat(ctx, field)
-			case "clockin":
-				return ec.fieldContext_Workshift_clockin(ctx, field)
-			case "clockout":
-				return ec.fieldContext_Workshift_clockout(ctx, field)
-			case "clockinlocation":
-				return ec.fieldContext_Workshift_clockinlocation(ctx, field)
-			case "clockoutlocation":
-				return ec.fieldContext_Workshift_clockoutlocation(ctx, field)
-			case "description":
-				return ec.fieldContext_Workshift_description(ctx, field)
-			case "note":
-				return ec.fieldContext_Workshift_note(ctx, field)
-			case "status":
-				return ec.fieldContext_Workshift_status(ctx, field)
-			case "company":
-				return ec.fieldContext_Workshift_company(ctx, field)
-			case "employee":
-				return ec.fieldContext_Workshift_employee(ctx, field)
+				return ec.fieldContext_Workshift_user(ctx, field)
 			case "approvedby":
 				return ec.fieldContext_Workshift_approvedby(ctx, field)
-			case "worktask":
-				return ec.fieldContext_Workshift_worktask(ctx, field)
+			case "task":
+				return ec.fieldContext_Workshift_task(ctx, field)
 			case "editrequest":
 				return ec.fieldContext_Workshift_editrequest(ctx, field)
 			case "workshift":
 				return ec.fieldContext_Workshift_workshift(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Workshift", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Worktask_worktags(ctx context.Context, field graphql.CollectedField, obj *generated.Worktask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Worktask_worktags(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkTags(ctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*generated.Worktag)
-	fc.Result = res
-	return ec.marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Worktask_worktags(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Worktask",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_Worktag_id(ctx, field)
-			case "createdat":
-				return ec.fieldContext_Worktag_createdat(ctx, field)
-			case "updatedat":
-				return ec.fieldContext_Worktag_updatedat(ctx, field)
-			case "deletedat":
-				return ec.fieldContext_Worktag_deletedat(ctx, field)
-			case "name":
-				return ec.fieldContext_Worktag_name(ctx, field)
-			case "color":
-				return ec.fieldContext_Worktag_color(ctx, field)
-			case "company":
-				return ec.fieldContext_Worktag_company(ctx, field)
-			case "worktasks":
-				return ec.fieldContext_Worktag_worktasks(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Worktag", field.Name)
 		},
 	}
 	return fc, nil
@@ -35908,7 +33414,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logo", "logoNEQ", "logoIn", "logoNotIn", "logoGT", "logoGTE", "logoLT", "logoLTE", "logoContains", "logoHasPrefix", "logoHasSuffix", "logoIsNil", "logoNotNil", "logoEqualFold", "logoContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "sector", "sectorNEQ", "sectorIn", "sectorNotIn", "sectorGT", "sectorGTE", "sectorLT", "sectorLTE", "sectorContains", "sectorHasPrefix", "sectorHasSuffix", "sectorIsNil", "sectorNotNil", "sectorEqualFold", "sectorContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasWorkTasks", "hasWorkTasksWith", "hasWorkTags", "hasWorkTagsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logo", "logoNEQ", "logoIn", "logoNotIn", "logoGT", "logoGTE", "logoLT", "logoLTE", "logoContains", "logoHasPrefix", "logoHasSuffix", "logoIsNil", "logoNotNil", "logoEqualFold", "logoContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "sector", "sectorNEQ", "sectorIn", "sectorNotIn", "sectorGT", "sectorGTE", "sectorLT", "sectorLTE", "sectorContains", "sectorHasPrefix", "sectorHasSuffix", "sectorIsNil", "sectorNotNil", "sectorEqualFold", "sectorContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -37945,34 +35451,6 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.HasWorkShiftsWith = data
-		case "hasWorkTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasks"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTasks = data
-		case "hasWorkTasksWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTasksWith = data
-		case "hasWorkTags":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTags"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTags = data
-		case "hasWorkTagsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTagsWith"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTagsWith = data
 		case "hasUsers":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUsers"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -38028,34 +35506,13 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "companyID", "userID", "productID", "treasuryID"}
+	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "companyID", "userID", "productID", "treasuryID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "number":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number"))
 			data, err := ec.unmarshalNInt2int(ctx, v)
@@ -38181,34 +35638,13 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "address", "basecurrency", "ceoname", "city", "country", "establishedat", "description", "email", "lastentrydate", "lastinvoicenumber", "logo", "name", "numberofemployees", "phone", "sector", "taxid", "vatrate", "website", "incompletesetup", "availableroleIDs", "accountingentryIDs", "customerIDs", "employeeIDs", "fileIDs", "productIDs", "projectIDs", "supplierIDs", "tokenIDs", "treasuryIDs", "workshiftIDs", "worktaskIDs", "worktagIDs", "userIDs", "daughtercompanyIDs", "parentcompanyID"}
+	fieldsInOrder := [...]string{"address", "basecurrency", "ceoname", "city", "country", "establishedat", "description", "email", "lastentrydate", "lastinvoicenumber", "logo", "name", "numberofemployees", "phone", "sector", "taxid", "vatrate", "website", "incompletesetup", "availableroleIDs", "accountingentryIDs", "customerIDs", "employeeIDs", "fileIDs", "productIDs", "projectIDs", "supplierIDs", "tokenIDs", "treasuryIDs", "workshiftIDs", "userIDs", "daughtercompanyIDs", "parentcompanyID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -38419,20 +35855,6 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.WorkShiftIDs = data
-		case "worktaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkTaskIDs = data
-		case "worktagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkTagIDs = data
 		case "userIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -38467,34 +35889,13 @@ func (ec *executionContext) unmarshalInputCreateCustomerInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "address", "city", "country", "description", "email", "isdefault", "name", "phone", "taxid", "companyID", "receivableIDs"}
+	fieldsInOrder := [...]string{"address", "city", "country", "description", "email", "isdefault", "name", "phone", "taxid", "companyID", "receivableIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -38585,34 +35986,13 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "name", "gender", "position", "email", "phone", "companyID", "userID", "subordinateIDs", "leaderID", "workshiftIDs", "approvedworkshiftIDs", "assignedtaskIDs"}
+	fieldsInOrder := [...]string{"name", "gender", "position", "email", "phone", "companyID", "userID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -38662,41 +36042,6 @@ func (ec *executionContext) unmarshalInputCreateEmployeeInput(ctx context.Contex
 				return it, err
 			}
 			it.UserID = data
-		case "subordinateIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("subordinateIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SubordinateIDs = data
-		case "leaderID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.LeaderID = data
-		case "workshiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workshiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkShiftIDs = data
-		case "approvedworkshiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedworkshiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ApprovedWorkShiftIDs = data
-		case "assignedtaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("assignedtaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AssignedTaskIDs = data
 		}
 	}
 
@@ -38710,34 +36055,13 @@ func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "category", "extension", "size", "uri", "url", "description", "companyID", "productID"}
+	fieldsInOrder := [...]string{"category", "extension", "size", "uri", "url", "description", "companyID", "productID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
 			data, err := ec.unmarshalNFileCategory2mazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
@@ -38807,34 +36131,13 @@ func (ec *executionContext) unmarshalInputCreatePayableInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "supplierID"}
+	fieldsInOrder := [...]string{"entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "supplierID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "entrygroup":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
 			data, err := ec.unmarshalNInt2int(ctx, v)
@@ -38897,34 +36200,13 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "pictureIDs", "accountingentryIDs"}
+	fieldsInOrder := [...]string{"description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "pictureIDs", "accountingentryIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -39022,34 +36304,13 @@ func (ec *executionContext) unmarshalInputCreateProjectInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "name", "description", "startdate", "enddate", "progress", "status", "companyID", "createdbyID", "leaderID", "taskIDs", "milestoneIDs"}
+	fieldsInOrder := [...]string{"name", "description", "startdate", "enddate", "progress", "status", "companyID", "createdbyID", "leaderID", "taskIDs", "milestoneIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -39181,13 +36442,20 @@ func (ec *executionContext) unmarshalInputCreateProjectTaskInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "assigneename", "location", "duedate", "startdate", "enddate", "description", "status", "projectID", "assigneeID", "participantIDs"}
+	fieldsInOrder := [...]string{"createdat", "name", "assigneename", "location", "duedate", "startdate", "enddate", "description", "status", "projectID", "assigneeID", "participantIDs", "createdbyID", "workshiftIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "createdat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAt = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -39265,6 +36533,20 @@ func (ec *executionContext) unmarshalInputCreateProjectTaskInput(ctx context.Con
 				return it, err
 			}
 			it.ParticipantIDs = data
+		case "createdbyID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdbyID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "workshiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workshiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.WorkShiftIDs = data
 		}
 	}
 
@@ -39278,34 +36560,13 @@ func (ec *executionContext) unmarshalInputCreateReceivableInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "customerID"}
+	fieldsInOrder := [...]string{"entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "customerID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "entrygroup":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
 			data, err := ec.unmarshalNInt2int(ctx, v)
@@ -39368,34 +36629,13 @@ func (ec *executionContext) unmarshalInputCreateSupplierInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "address", "city", "country", "description", "email", "isdefault", "name", "phone", "taxid", "companyID", "payableIDs"}
+	fieldsInOrder := [...]string{"address", "city", "country", "description", "email", "isdefault", "name", "phone", "taxid", "companyID", "payableIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -39486,34 +36726,13 @@ func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "accountnumber", "balance", "bankname", "currency", "description", "iban", "isdefault", "ismainaccount", "name", "category", "swiftcode", "companyID", "accountingentryIDs"}
+	fieldsInOrder := [...]string{"accountnumber", "balance", "bankname", "currency", "description", "iban", "isdefault", "ismainaccount", "name", "category", "swiftcode", "companyID", "accountingentryIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "accountnumber":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountnumber"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -39618,34 +36837,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "fcmtoken", "email", "name", "password", "username", "disabled", "notverified", "accountingentryIDs", "companyIDs", "assignedroleIDs", "createdtaskIDs", "employeeID", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "tokenIDs"}
+	fieldsInOrder := [...]string{"fcmtoken", "email", "name", "password", "username", "disabled", "notverified", "accountingentryIDs", "companyIDs", "assignedroleIDs", "subordinateIDs", "leaderID", "employeeID", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "createdtaskIDs", "tokenIDs", "approvedworkshiftIDs", "workshiftIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "fcmtoken":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtoken"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -39716,13 +36914,20 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.AssignedRoleIDs = data
-		case "createdtaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdtaskIDs"))
+		case "subordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("subordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.CreatedTaskIDs = data
+			it.SubordinateIDs = data
+		case "leaderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderID = data
 		case "employeeID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -39758,6 +36963,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ParticipatedProjectTaskIDs = data
+		case "createdtaskIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdtaskIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedTaskIDs = data
 		case "tokenIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -39765,6 +36977,20 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.TokenIDs = data
+		case "approvedworkshiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedworkshiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ApprovedWorkShiftIDs = data
+		case "workshiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workshiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.WorkShiftIDs = data
 		}
 	}
 
@@ -39819,34 +37045,13 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "approvedat", "clockin", "clockout", "clockinlocation", "clockoutlocation", "description", "note", "status", "companyID", "employeeID", "approvedbyID", "worktaskID", "editrequestID", "workshiftID"}
+	fieldsInOrder := [...]string{"approvedat", "clockin", "clockout", "clockinlocation", "clockoutlocation", "description", "note", "status", "companyID", "userID", "approvedbyID", "taskID", "editrequestID", "workshiftID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
 		case "approvedat":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedat"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
@@ -39910,13 +37115,13 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.CompanyID = data
-		case "employeeID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EmployeeID = data
+			it.UserID = data
 		case "approvedbyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedbyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -39924,13 +37129,13 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.ApprovedByID = data
-		case "worktaskID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktaskID"))
+		case "taskID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taskID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.WorkTaskID = data
+			it.TaskID = data
 		case "editrequestID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("editrequestID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -39945,193 +37150,6 @@ func (ec *executionContext) unmarshalInputCreateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.WorkShiftID = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputCreateWorktagInput(ctx context.Context, obj interface{}) (generated.CreateWorktagInput, error) {
-	var it generated.CreateWorktagInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "name", "color", "companyID", "worktaskIDs"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "name":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Name = data
-		case "color":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("color"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Color = data
-		case "companyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CompanyID = data
-		case "worktaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkTaskIDs = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputCreateWorktaskInput(ctx context.Context, obj interface{}) (generated.CreateWorktaskInput, error) {
-	var it generated.CreateWorktaskInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"createdat", "updatedat", "deletedat", "description", "status", "subtasks", "title", "starttime", "endtime", "companyID", "createdbyID", "assignedtoIDs", "workshiftIDs", "worktagIDs"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "description":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Description = data
-		case "status":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Status = data
-		case "subtasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("subtasks"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Subtasks = data
-		case "title":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Title = data
-		case "starttime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttime"))
-			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTime = data
-		case "endtime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtime"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTime = data
-		case "companyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CompanyID = data
-		case "createdbyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdbyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedByID = data
-		case "assignedtoIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("assignedtoIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AssignedToIDs = data
-		case "workshiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workshiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkShiftIDs = data
-		case "worktagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.WorkTagIDs = data
 		}
 	}
 
@@ -41274,7 +38292,7 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "gender", "genderNEQ", "genderIn", "genderNotIn", "position", "positionNEQ", "positionIn", "positionNotIn", "positionGT", "positionGTE", "positionLT", "positionLTE", "positionContains", "positionHasPrefix", "positionHasSuffix", "positionIsNil", "positionNotNil", "positionEqualFold", "positionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneEqualFold", "phoneContainsFold", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasWorkShifts", "hasWorkShiftsWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasAssignedTasks", "hasAssignedTasksWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "gender", "genderNEQ", "genderIn", "genderNotIn", "position", "positionNEQ", "positionIn", "positionNotIn", "positionGT", "positionGTE", "positionLT", "positionLTE", "positionContains", "positionHasPrefix", "positionHasSuffix", "positionIsNil", "positionNotNil", "positionEqualFold", "positionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneEqualFold", "phoneContainsFold", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -41988,76 +39006,6 @@ func (ec *executionContext) unmarshalInputEmployeeWhereInput(ctx context.Context
 				return it, err
 			}
 			it.HasUserWith = data
-		case "hasSubordinates":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinates"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasSubordinates = data
-		case "hasSubordinatesWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinatesWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasSubordinatesWith = data
-		case "hasLeader":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeader"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasLeader = data
-		case "hasLeaderWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeaderWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasLeaderWith = data
-		case "hasWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShifts"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkShifts = data
-		case "hasWorkShiftsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkShiftsWith = data
-		case "hasApprovedWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedWorkShifts"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasApprovedWorkShifts = data
-		case "hasApprovedWorkShiftsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasApprovedWorkShiftsWith = data
-		case "hasAssignedTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedTasks"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasAssignedTasks = data
-		case "hasAssignedTasksWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasAssignedTasksWith = data
 		}
 	}
 
@@ -45201,7 +42149,7 @@ func (ec *executionContext) unmarshalInputProjectTaskWhereInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "assigneename", "assigneenameNEQ", "assigneenameIn", "assigneenameNotIn", "assigneenameGT", "assigneenameGTE", "assigneenameLT", "assigneenameLTE", "assigneenameContains", "assigneenameHasPrefix", "assigneenameHasSuffix", "assigneenameEqualFold", "assigneenameContainsFold", "location", "locationNEQ", "locationIn", "locationNotIn", "locationGT", "locationGTE", "locationLT", "locationLTE", "locationContains", "locationHasPrefix", "locationHasSuffix", "locationIsNil", "locationNotNil", "locationEqualFold", "locationContainsFold", "duedate", "duedateNEQ", "duedateIn", "duedateNotIn", "duedateGT", "duedateGTE", "duedateLT", "duedateLTE", "startdate", "startdateNEQ", "startdateIn", "startdateNotIn", "startdateGT", "startdateGTE", "startdateLT", "startdateLTE", "enddate", "enddateNEQ", "enddateIn", "enddateNotIn", "enddateGT", "enddateGTE", "enddateLT", "enddateLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasProject", "hasProjectWith", "hasAssignee", "hasAssigneeWith", "hasParticipants", "hasParticipantsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "createdatIsNil", "createdatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "assigneename", "assigneenameNEQ", "assigneenameIn", "assigneenameNotIn", "assigneenameGT", "assigneenameGTE", "assigneenameLT", "assigneenameLTE", "assigneenameContains", "assigneenameHasPrefix", "assigneenameHasSuffix", "assigneenameEqualFold", "assigneenameContainsFold", "location", "locationNEQ", "locationIn", "locationNotIn", "locationGT", "locationGTE", "locationLT", "locationLTE", "locationContains", "locationHasPrefix", "locationHasSuffix", "locationIsNil", "locationNotNil", "locationEqualFold", "locationContainsFold", "duedate", "duedateNEQ", "duedateIn", "duedateNotIn", "duedateGT", "duedateGTE", "duedateLT", "duedateLTE", "startdate", "startdateNEQ", "startdateIn", "startdateNotIn", "startdateGT", "startdateGTE", "startdateLT", "startdateLTE", "enddate", "enddateNEQ", "enddateIn", "enddateNotIn", "enddateGT", "enddateGTE", "enddateLT", "enddateLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasProject", "hasProjectWith", "hasAssignee", "hasAssigneeWith", "hasParticipants", "hasParticipantsWith", "hasCreatedBy", "hasCreatedByWith", "hasWorkShifts", "hasWorkShiftsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -45285,6 +42233,76 @@ func (ec *executionContext) unmarshalInputProjectTaskWhereInput(ctx context.Cont
 				return it, err
 			}
 			it.IDLTE = data
+		case "createdat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAt = data
+		case "createdatNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtNEQ = data
+		case "createdatIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtIn = data
+		case "createdatNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtNotIn = data
+		case "createdatGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtGT = data
+		case "createdatGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtGTE = data
+		case "createdatLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtLT = data
+		case "createdatLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtLTE = data
+		case "createdatIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtIsNil = data
+		case "createdatNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtNotNil = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -45915,6 +42933,34 @@ func (ec *executionContext) unmarshalInputProjectTaskWhereInput(ctx context.Cont
 				return it, err
 			}
 			it.HasParticipantsWith = data
+		case "hasCreatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedBy"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedBy = data
+		case "hasCreatedByWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedByWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedByWith = data
+		case "hasWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShifts"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasWorkShifts = data
+		case "hasWorkShiftsWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasWorkShiftsWith = data
 		}
 	}
 
@@ -50029,34 +47075,13 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "clearQuantity", "companyID", "clearCompany", "userID", "clearUser", "productID", "clearProduct", "treasuryID", "clearTreasury"}
+	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "isdebit", "isreversal", "reversed", "quantity", "clearQuantity", "companyID", "clearCompany", "userID", "clearUser", "productID", "clearProduct", "treasuryID", "clearTreasury"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "number":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -50217,34 +47242,13 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "lastentrydate", "lastinvoicenumber", "clearLastInvoiceNumber", "logo", "clearLogo", "name", "numberofemployees", "phone", "clearPhone", "sector", "clearSector", "taxid", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addWorkTaskIDs", "removeWorkTaskIDs", "clearWorkTasks", "addWorkTagIDs", "removeWorkTagIDs", "clearWorkTags", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
+	fieldsInOrder := [...]string{"address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "lastentrydate", "lastinvoicenumber", "clearLastInvoiceNumber", "logo", "clearLogo", "name", "numberofemployees", "phone", "clearPhone", "sector", "clearSector", "taxid", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -50679,48 +47683,6 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.ClearWorkShifts = data
-		case "addWorkTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkTaskIDs = data
-		case "removeWorkTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkTaskIDs = data
-		case "clearWorkTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkTasks"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkTasks = data
-		case "addWorkTagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkTagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkTagIDs = data
-		case "removeWorkTagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkTagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkTagIDs = data
-		case "clearWorkTags":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkTags"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkTags = data
 		case "addUserIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addUserIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -50790,34 +47752,13 @@ func (ec *executionContext) unmarshalInputUpdateCustomerInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "address", "city", "country", "description", "clearDescription", "email", "clearEmail", "isdefault", "clearIsDefault", "name", "phone", "taxid", "companyID", "clearCompany", "addReceivableIDs", "removeReceivableIDs", "clearReceivables"}
+	fieldsInOrder := [...]string{"address", "city", "country", "description", "clearDescription", "email", "clearEmail", "isdefault", "clearIsDefault", "name", "phone", "taxid", "companyID", "clearCompany", "addReceivableIDs", "removeReceivableIDs", "clearReceivables"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -50950,34 +47891,13 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "name", "gender", "position", "clearPosition", "email", "clearEmail", "phone", "companyID", "clearCompany", "userID", "clearUser", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addAssignedTaskIDs", "removeAssignedTaskIDs", "clearAssignedTasks"}
+	fieldsInOrder := [...]string{"name", "gender", "position", "clearPosition", "email", "clearEmail", "phone", "companyID", "clearCompany", "userID", "clearUser"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -51055,104 +47975,6 @@ func (ec *executionContext) unmarshalInputUpdateEmployeeInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearUser = data
-		case "addSubordinateIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addSubordinateIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddSubordinateIDs = data
-		case "removeSubordinateIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeSubordinateIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveSubordinateIDs = data
-		case "clearSubordinates":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSubordinates"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearSubordinates = data
-		case "leaderID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.LeaderID = data
-		case "clearLeader":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearLeader"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearLeader = data
-		case "addWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkShiftIDs = data
-		case "removeWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkShiftIDs = data
-		case "clearWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkShifts"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkShifts = data
-		case "addApprovedWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addApprovedWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddApprovedWorkShiftIDs = data
-		case "removeApprovedWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeApprovedWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveApprovedWorkShiftIDs = data
-		case "clearApprovedWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearApprovedWorkShifts"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearApprovedWorkShifts = data
-		case "addAssignedTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAssignedTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddAssignedTaskIDs = data
-		case "removeAssignedTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAssignedTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveAssignedTaskIDs = data
-		case "clearAssignedTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAssignedTasks"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearAssignedTasks = data
 		}
 	}
 
@@ -51166,34 +47988,13 @@ func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "category", "extension", "size", "uri", "url", "description", "companyID", "clearCompany", "productID", "clearProduct"}
+	fieldsInOrder := [...]string{"category", "extension", "size", "uri", "url", "description", "companyID", "clearCompany", "productID", "clearProduct"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "category":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
 			data, err := ec.unmarshalOFileCategory2ᚖmazzaᚋentᚋgeneratedᚋfileᚐCategory(ctx, v)
@@ -51277,34 +48078,13 @@ func (ec *executionContext) unmarshalInputUpdatePayableInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "supplierID", "clearSupplier"}
+	fieldsInOrder := [...]string{"entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "supplierID", "clearSupplier"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "entrygroup":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -51374,34 +48154,13 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "clearCompany", "addPictureIDs", "removePictureIDs", "clearPictures", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
+	fieldsInOrder := [...]string{"description", "isdefault", "minimumstock", "name", "price", "sku", "stock", "category", "unitcost", "companyID", "clearCompany", "addPictureIDs", "removePictureIDs", "clearPictures", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -51534,34 +48293,13 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "name", "description", "startdate", "enddate", "progress", "status", "companyID", "clearCompany", "createdbyID", "clearCreatedBy", "leaderID", "clearLeader", "addTaskIDs", "removeTaskIDs", "clearTasks", "addMilestoneIDs", "removeMilestoneIDs", "clearMilestones"}
+	fieldsInOrder := [...]string{"name", "description", "startdate", "enddate", "progress", "status", "companyID", "clearCompany", "createdbyID", "clearCreatedBy", "leaderID", "clearLeader", "addTaskIDs", "removeTaskIDs", "clearTasks", "addMilestoneIDs", "removeMilestoneIDs", "clearMilestones"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -51742,7 +48480,7 @@ func (ec *executionContext) unmarshalInputUpdateProjectTaskInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "assigneename", "location", "clearLocation", "duedate", "startdate", "enddate", "description", "clearDescription", "status", "projectID", "assigneeID", "clearAssignee", "addParticipantIDs", "removeParticipantIDs", "clearParticipants"}
+	fieldsInOrder := [...]string{"name", "assigneename", "location", "clearLocation", "duedate", "startdate", "enddate", "description", "clearDescription", "status", "projectID", "assigneeID", "clearAssignee", "addParticipantIDs", "removeParticipantIDs", "clearParticipants", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -51861,6 +48599,27 @@ func (ec *executionContext) unmarshalInputUpdateProjectTaskInput(ctx context.Con
 				return it, err
 			}
 			it.ClearParticipants = data
+		case "addWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddWorkShiftIDs = data
+		case "removeWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveWorkShiftIDs = data
+		case "clearWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkShifts"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearWorkShifts = data
 		}
 	}
 
@@ -51874,34 +48633,13 @@ func (ec *executionContext) unmarshalInputUpdateReceivableInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "customerID", "clearCustomer"}
+	fieldsInOrder := [...]string{"entrygroup", "date", "outstandingbalance", "totaltransaction", "daysdue", "status", "customerID", "clearCustomer"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "entrygroup":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("entrygroup"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -51971,34 +48709,13 @@ func (ec *executionContext) unmarshalInputUpdateSupplierInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "address", "city", "country", "description", "email", "isdefault", "clearIsDefault", "name", "phone", "taxid", "companyID", "clearCompany", "addPayableIDs", "removePayableIDs", "clearPayables"}
+	fieldsInOrder := [...]string{"address", "city", "country", "description", "email", "isdefault", "clearIsDefault", "name", "phone", "taxid", "companyID", "clearCompany", "addPayableIDs", "removePayableIDs", "clearPayables"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "address":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -52117,34 +48834,13 @@ func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "accountnumber", "clearAccountNumber", "balance", "bankname", "clearBankName", "currency", "description", "clearDescription", "iban", "clearIban", "isdefault", "clearIsDefault", "ismainaccount", "clearIsMainAccount", "name", "category", "swiftcode", "clearSwiftCode", "companyID", "clearCompany", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
+	fieldsInOrder := [...]string{"accountnumber", "clearAccountNumber", "balance", "bankname", "clearBankName", "currency", "description", "clearDescription", "iban", "clearIban", "isdefault", "clearIsDefault", "ismainaccount", "clearIsMainAccount", "name", "category", "swiftcode", "clearSwiftCode", "companyID", "clearCompany", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "accountnumber":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountnumber"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -52319,34 +49015,13 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "fcmtoken", "clearFcmToken", "email", "clearEmail", "name", "password", "username", "disabled", "clearDisabled", "notverified", "clearNotVerified", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addCreatedTaskIDs", "removeCreatedTaskIDs", "clearCreatedTasks", "employeeID", "clearEmployee", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens"}
+	fieldsInOrder := [...]string{"fcmtoken", "clearFcmToken", "email", "clearEmail", "name", "password", "username", "disabled", "clearDisabled", "notverified", "clearNotVerified", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "employeeID", "clearEmployee", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "fcmtoken":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtoken"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -52480,27 +49155,41 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearAssignedRoles = data
-		case "addCreatedTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addCreatedTaskIDs"))
+		case "addSubordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addSubordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.AddCreatedTaskIDs = data
-		case "removeCreatedTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeCreatedTaskIDs"))
+			it.AddSubordinateIDs = data
+		case "removeSubordinateIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeSubordinateIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.RemoveCreatedTaskIDs = data
-		case "clearCreatedTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCreatedTasks"))
+			it.RemoveSubordinateIDs = data
+		case "clearSubordinates":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSubordinates"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearCreatedTasks = data
+			it.ClearSubordinates = data
+		case "leaderID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("leaderID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LeaderID = data
+		case "clearLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearLeader"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearLeader = data
 		case "employeeID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -52620,6 +49309,48 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearTokens = data
+		case "addApprovedWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addApprovedWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddApprovedWorkShiftIDs = data
+		case "removeApprovedWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeApprovedWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveApprovedWorkShiftIDs = data
+		case "clearApprovedWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearApprovedWorkShifts"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearApprovedWorkShifts = data
+		case "addWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddWorkShiftIDs = data
+		case "removeWorkShiftIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkShiftIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveWorkShiftIDs = data
+		case "clearWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkShifts"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearWorkShifts = data
 		}
 	}
 
@@ -52695,34 +49426,13 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "approvedat", "clearApprovedAt", "clockin", "clockout", "clearClockOut", "clockinlocation", "clockoutlocation", "clearClockOutLocation", "description", "clearDescription", "note", "clearNote", "status", "companyID", "clearCompany", "employeeID", "clearEmployee", "approvedbyID", "clearApprovedBy", "worktaskID", "clearWorkTask", "editrequestID", "clearEditRequest", "workshiftID", "clearWorkShift"}
+	fieldsInOrder := [...]string{"approvedat", "clearApprovedAt", "clockin", "clockout", "clearClockOut", "clockinlocation", "clockoutlocation", "clearClockOutLocation", "description", "clearDescription", "note", "clearNote", "status", "companyID", "clearCompany", "userID", "clearUser", "approvedbyID", "clearApprovedBy", "taskID", "clearTask", "editrequestID", "clearEditRequest", "workshiftID", "clearWorkShift"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
 		case "approvedat":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedat"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
@@ -52828,20 +49538,20 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.ClearCompany = data
-		case "employeeID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EmployeeID = data
-		case "clearEmployee":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEmployee"))
+			it.UserID = data
+		case "clearUser":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUser"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearEmployee = data
+			it.ClearUser = data
 		case "approvedbyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("approvedbyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -52856,20 +49566,20 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.ClearApprovedBy = data
-		case "worktaskID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("worktaskID"))
+		case "taskID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taskID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.WorkTaskID = data
-		case "clearWorkTask":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkTask"))
+			it.TaskID = data
+		case "clearTask":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTask"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearWorkTask = data
+			it.ClearTask = data
 		case "editrequestID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("editrequestID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -52898,298 +49608,6 @@ func (ec *executionContext) unmarshalInputUpdateWorkshiftInput(ctx context.Conte
 				return it, err
 			}
 			it.ClearWorkShift = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputUpdateWorktagInput(ctx context.Context, obj interface{}) (generated.UpdateWorktagInput, error) {
-	var it generated.UpdateWorktagInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "name", "color", "companyID", "clearCompany", "addWorkTaskIDs", "removeWorkTaskIDs", "clearWorkTasks"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
-		case "name":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Name = data
-		case "color":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("color"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Color = data
-		case "companyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CompanyID = data
-		case "clearCompany":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCompany"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearCompany = data
-		case "addWorkTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkTaskIDs = data
-		case "removeWorkTaskIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkTaskIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkTaskIDs = data
-		case "clearWorkTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkTasks"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkTasks = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputUpdateWorktaskInput(ctx context.Context, obj interface{}) (generated.UpdateWorktaskInput, error) {
-	var it generated.UpdateWorktaskInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"updatedat", "deletedat", "clearDeletedAt", "description", "clearDescription", "status", "subtasks", "appendSubtasks", "clearSubtasks", "title", "starttime", "endtime", "clearEndTime", "companyID", "clearCompany", "createdbyID", "clearCreatedBy", "addAssignedToIDs", "removeAssignedToIDs", "clearAssignedTo", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addWorkTagIDs", "removeWorkTagIDs", "clearWorkTags"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "clearDeletedAt":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDeletedAt"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDeletedAt = data
-		case "description":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Description = data
-		case "clearDescription":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDescription"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDescription = data
-		case "status":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Status = data
-		case "subtasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("subtasks"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Subtasks = data
-		case "appendSubtasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("appendSubtasks"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AppendSubtasks = data
-		case "clearSubtasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSubtasks"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearSubtasks = data
-		case "title":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Title = data
-		case "starttime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttime"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTime = data
-		case "endtime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtime"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTime = data
-		case "clearEndTime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEndTime"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearEndTime = data
-		case "companyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CompanyID = data
-		case "clearCompany":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCompany"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearCompany = data
-		case "createdbyID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdbyID"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedByID = data
-		case "clearCreatedBy":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCreatedBy"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearCreatedBy = data
-		case "addAssignedToIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAssignedToIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddAssignedToIDs = data
-		case "removeAssignedToIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeAssignedToIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveAssignedToIDs = data
-		case "clearAssignedTo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAssignedTo"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearAssignedTo = data
-		case "addWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkShiftIDs = data
-		case "removeWorkShiftIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkShiftIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkShiftIDs = data
-		case "clearWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkShifts"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkShifts = data
-		case "addWorkTagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addWorkTagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.AddWorkTagIDs = data
-		case "removeWorkTagIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeWorkTagIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveWorkTagIDs = data
-		case "clearWorkTags":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearWorkTags"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearWorkTags = data
 		}
 	}
 
@@ -53432,7 +49850,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "fcmtoken", "fcmtokenNEQ", "fcmtokenIn", "fcmtokenNotIn", "fcmtokenGT", "fcmtokenGTE", "fcmtokenLT", "fcmtokenLTE", "fcmtokenContains", "fcmtokenHasPrefix", "fcmtokenHasSuffix", "fcmtokenIsNil", "fcmtokenNotNil", "fcmtokenEqualFold", "fcmtokenContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "disabled", "disabledNEQ", "disabledIsNil", "disabledNotNil", "notverified", "notverifiedNEQ", "notverifiedIsNil", "notverifiedNotNil", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasEmployee", "hasEmployeeWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasTokens", "hasTokensWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "username", "usernameNEQ", "usernameIn", "usernameNotIn", "usernameGT", "usernameGTE", "usernameLT", "usernameLTE", "usernameContains", "usernameHasPrefix", "usernameHasSuffix", "usernameEqualFold", "usernameContainsFold", "disabled", "disabledNEQ", "disabledIsNil", "disabledNotNil", "notverified", "notverifiedNEQ", "notverifiedIsNil", "notverifiedNotNil", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasEmployee", "hasEmployeeWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasTokens", "hasTokensWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasWorkShifts", "hasWorkShiftsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53698,111 +50116,6 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.DeletedAtNotNil = data
-		case "fcmtoken":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtoken"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmToken = data
-		case "fcmtokenNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenNEQ = data
-		case "fcmtokenIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenIn = data
-		case "fcmtokenNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenNotIn = data
-		case "fcmtokenGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenGT = data
-		case "fcmtokenGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenGTE = data
-		case "fcmtokenLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenLT = data
-		case "fcmtokenLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenLTE = data
-		case "fcmtokenContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenContains = data
-		case "fcmtokenHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenHasPrefix = data
-		case "fcmtokenHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenHasSuffix = data
-		case "fcmtokenIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenIsNil = data
-		case "fcmtokenNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenNotNil = data
-		case "fcmtokenEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenEqualFold = data
-		case "fcmtokenContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fcmtokenContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FcmTokenContainsFold = data
 		case "email":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -54188,20 +50501,34 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasAssignedRolesWith = data
-		case "hasCreatedTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedTasks"))
+		case "hasSubordinates":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinates"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasCreatedTasks = data
-		case "hasCreatedTasksWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
+			it.HasSubordinates = data
+		case "hasSubordinatesWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasSubordinatesWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasCreatedTasksWith = data
+			it.HasSubordinatesWith = data
+		case "hasLeader":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeader"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasLeader = data
+		case "hasLeaderWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasLeaderWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasLeaderWith = data
 		case "hasEmployee":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployee"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -54272,6 +50599,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasParticipatedProjectTasksWith = data
+		case "hasCreatedTasks":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedTasks"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedTasks = data
+		case "hasCreatedTasksWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedTasksWith"))
+			data, err := ec.unmarshalOProjectTaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProjectTaskWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedTasksWith = data
 		case "hasTokens":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTokens"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -54286,6 +50627,34 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasTokensWith = data
+		case "hasApprovedWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedWorkShifts"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasApprovedWorkShifts = data
+		case "hasApprovedWorkShiftsWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedWorkShiftsWith"))
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasApprovedWorkShiftsWith = data
+		case "hasWorkShifts":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShifts"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasWorkShifts = data
+		case "hasWorkShiftsWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
+			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasWorkShiftsWith = data
 		}
 	}
 
@@ -54337,7 +50706,7 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "approvedat", "approvedatNEQ", "approvedatIn", "approvedatNotIn", "approvedatGT", "approvedatGTE", "approvedatLT", "approvedatLTE", "approvedatIsNil", "approvedatNotNil", "clockin", "clockinNEQ", "clockinIn", "clockinNotIn", "clockinGT", "clockinGTE", "clockinLT", "clockinLTE", "clockout", "clockoutNEQ", "clockoutIn", "clockoutNotIn", "clockoutGT", "clockoutGTE", "clockoutLT", "clockoutLTE", "clockoutIsNil", "clockoutNotNil", "clockinlocation", "clockinlocationNEQ", "clockinlocationIn", "clockinlocationNotIn", "clockinlocationGT", "clockinlocationGTE", "clockinlocationLT", "clockinlocationLTE", "clockinlocationContains", "clockinlocationHasPrefix", "clockinlocationHasSuffix", "clockinlocationEqualFold", "clockinlocationContainsFold", "clockoutlocation", "clockoutlocationNEQ", "clockoutlocationIn", "clockoutlocationNotIn", "clockoutlocationGT", "clockoutlocationGTE", "clockoutlocationLT", "clockoutlocationLTE", "clockoutlocationContains", "clockoutlocationHasPrefix", "clockoutlocationHasSuffix", "clockoutlocationIsNil", "clockoutlocationNotNil", "clockoutlocationEqualFold", "clockoutlocationContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "note", "noteNEQ", "noteIn", "noteNotIn", "noteGT", "noteGTE", "noteLT", "noteLTE", "noteContains", "noteHasPrefix", "noteHasSuffix", "noteIsNil", "noteNotNil", "noteEqualFold", "noteContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasCompany", "hasCompanyWith", "hasEmployee", "hasEmployeeWith", "hasApprovedBy", "hasApprovedByWith", "hasWorkTask", "hasWorkTaskWith", "hasEditRequest", "hasEditRequestWith", "hasWorkShift", "hasWorkShiftWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "approvedat", "approvedatNEQ", "approvedatIn", "approvedatNotIn", "approvedatGT", "approvedatGTE", "approvedatLT", "approvedatLTE", "approvedatIsNil", "approvedatNotNil", "clockin", "clockinNEQ", "clockinIn", "clockinNotIn", "clockinGT", "clockinGTE", "clockinLT", "clockinLTE", "clockout", "clockoutNEQ", "clockoutIn", "clockoutNotIn", "clockoutGT", "clockoutGTE", "clockoutLT", "clockoutLTE", "clockoutIsNil", "clockoutNotNil", "clockinlocation", "clockinlocationNEQ", "clockinlocationIn", "clockinlocationNotIn", "clockinlocationGT", "clockinlocationGTE", "clockinlocationLT", "clockinlocationLTE", "clockinlocationContains", "clockinlocationHasPrefix", "clockinlocationHasSuffix", "clockinlocationEqualFold", "clockinlocationContainsFold", "clockoutlocation", "clockoutlocationNEQ", "clockoutlocationIn", "clockoutlocationNotIn", "clockoutlocationGT", "clockoutlocationGTE", "clockoutlocationLT", "clockoutlocationLTE", "clockoutlocationContains", "clockoutlocationHasPrefix", "clockoutlocationHasSuffix", "clockoutlocationIsNil", "clockoutlocationNotNil", "clockoutlocationEqualFold", "clockoutlocationContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "note", "noteNEQ", "noteIn", "noteNotIn", "noteGT", "noteGTE", "noteLT", "noteLTE", "noteContains", "noteHasPrefix", "noteHasSuffix", "noteIsNil", "noteNotNil", "noteEqualFold", "noteContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasApprovedBy", "hasApprovedByWith", "hasTask", "hasTaskWith", "hasEditRequest", "hasEditRequestWith", "hasWorkShift", "hasWorkShiftWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -55247,20 +51616,20 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 				return it, err
 			}
 			it.HasCompanyWith = data
-		case "hasEmployee":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployee"))
+		case "hasUser":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUser"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasEmployee = data
-		case "hasEmployeeWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployeeWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
+			it.HasUser = data
+		case "hasUserWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasUserWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasEmployeeWith = data
+			it.HasUserWith = data
 		case "hasApprovedBy":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedBy"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -55270,25 +51639,25 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 			it.HasApprovedBy = data
 		case "hasApprovedByWith":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasApprovedByWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.HasApprovedByWith = data
-		case "hasWorkTask":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTask"))
+		case "hasTask":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTask"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasWorkTask = data
-		case "hasWorkTaskWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTaskWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
+			it.HasTask = data
+		case "hasTaskWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasTaskWith"))
+			data, err := ec.unmarshalOProjectTaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐProjectTaskWhereInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.HasWorkTaskWith = data
+			it.HasTaskWith = data
 		case "hasEditRequest":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEditRequest"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -55317,1194 +51686,6 @@ func (ec *executionContext) unmarshalInputWorkshiftWhereInput(ctx context.Contex
 				return it, err
 			}
 			it.HasWorkShiftWith = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputWorktagWhereInput(ctx context.Context, obj interface{}) (generated.WorktagWhereInput, error) {
-	var it generated.WorktagWhereInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "color", "colorNEQ", "colorIn", "colorNotIn", "colorGT", "colorGTE", "colorLT", "colorLTE", "colorContains", "colorHasPrefix", "colorHasSuffix", "colorEqualFold", "colorContainsFold", "hasCompany", "hasCompanyWith", "hasWorkTasks", "hasWorkTasksWith"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "not":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Not = data
-		case "and":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.And = data
-		case "or":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Or = data
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "idNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNEQ = data
-		case "idIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDIn = data
-		case "idNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNotIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNotIn = data
-		case "idGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGT = data
-		case "idGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGTE = data
-		case "idLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLT = data
-		case "idLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLTE = data
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "createdatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNEQ = data
-		case "createdatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtIn = data
-		case "createdatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNotIn = data
-		case "createdatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGT = data
-		case "createdatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGTE = data
-		case "createdatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLT = data
-		case "createdatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLTE = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "updatedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNEQ = data
-		case "updatedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtIn = data
-		case "updatedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNotIn = data
-		case "updatedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGT = data
-		case "updatedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGTE = data
-		case "updatedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLT = data
-		case "updatedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLTE = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "deletedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNEQ = data
-		case "deletedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIn = data
-		case "deletedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotIn = data
-		case "deletedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGT = data
-		case "deletedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGTE = data
-		case "deletedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLT = data
-		case "deletedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLTE = data
-		case "deletedatIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIsNil = data
-		case "deletedatNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotNil = data
-		case "name":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Name = data
-		case "nameNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameNEQ = data
-		case "nameIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameIn = data
-		case "nameNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameNotIn = data
-		case "nameGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameGT = data
-		case "nameGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameGTE = data
-		case "nameLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameLT = data
-		case "nameLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameLTE = data
-		case "nameContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameContains = data
-		case "nameHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameHasPrefix = data
-		case "nameHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameHasSuffix = data
-		case "nameEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameEqualFold = data
-		case "nameContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NameContainsFold = data
-		case "color":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("color"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Color = data
-		case "colorNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorNEQ = data
-		case "colorIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorIn = data
-		case "colorNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorNotIn = data
-		case "colorGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorGT = data
-		case "colorGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorGTE = data
-		case "colorLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorLT = data
-		case "colorLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorLTE = data
-		case "colorContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorContains = data
-		case "colorHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorHasPrefix = data
-		case "colorHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorHasSuffix = data
-		case "colorEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorEqualFold = data
-		case "colorContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("colorContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ColorContainsFold = data
-		case "hasCompany":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompany"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCompany = data
-		case "hasCompanyWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCompanyWith = data
-		case "hasWorkTasks":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasks"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTasks = data
-		case "hasWorkTasksWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTasksWith"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTasksWith = data
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputWorktaskWhereInput(ctx context.Context, obj interface{}) (generated.WorktaskWhereInput, error) {
-	var it generated.WorktaskWhereInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "title", "titleNEQ", "titleIn", "titleNotIn", "titleGT", "titleGTE", "titleLT", "titleLTE", "titleContains", "titleHasPrefix", "titleHasSuffix", "titleEqualFold", "titleContainsFold", "starttime", "starttimeNEQ", "starttimeIn", "starttimeNotIn", "starttimeGT", "starttimeGTE", "starttimeLT", "starttimeLTE", "endtime", "endtimeNEQ", "endtimeIn", "endtimeNotIn", "endtimeGT", "endtimeGTE", "endtimeLT", "endtimeLTE", "endtimeIsNil", "endtimeNotNil", "hasCompany", "hasCompanyWith", "hasCreatedBy", "hasCreatedByWith", "hasAssignedTo", "hasAssignedToWith", "hasWorkShifts", "hasWorkShiftsWith", "hasWorkTags", "hasWorkTagsWith"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "not":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Not = data
-		case "and":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.And = data
-		case "or":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
-			data, err := ec.unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Or = data
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		case "idNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNEQ = data
-		case "idIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDIn = data
-		case "idNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNotIn"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDNotIn = data
-		case "idGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGT = data
-		case "idGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDGTE = data
-		case "idLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLT"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLT = data
-		case "idLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLTE"))
-			data, err := ec.unmarshalOID2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.IDLTE = data
-		case "createdat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAt = data
-		case "createdatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNEQ = data
-		case "createdatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtIn = data
-		case "createdatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtNotIn = data
-		case "createdatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGT = data
-		case "createdatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtGTE = data
-		case "createdatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLT = data
-		case "createdatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CreatedAtLTE = data
-		case "updatedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAt = data
-		case "updatedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNEQ = data
-		case "updatedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtIn = data
-		case "updatedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtNotIn = data
-		case "updatedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGT = data
-		case "updatedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtGTE = data
-		case "updatedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLT = data
-		case "updatedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.UpdatedAtLTE = data
-		case "deletedat":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAt = data
-		case "deletedatNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNEQ = data
-		case "deletedatIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIn = data
-		case "deletedatNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotIn = data
-		case "deletedatGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGT = data
-		case "deletedatGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtGTE = data
-		case "deletedatLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLT = data
-		case "deletedatLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtLTE = data
-		case "deletedatIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtIsNil = data
-		case "deletedatNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DeletedAtNotNil = data
-		case "description":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Description = data
-		case "descriptionNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionNEQ = data
-		case "descriptionIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionIn = data
-		case "descriptionNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionNotIn = data
-		case "descriptionGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionGT = data
-		case "descriptionGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionGTE = data
-		case "descriptionLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionLT = data
-		case "descriptionLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionLTE = data
-		case "descriptionContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionContains = data
-		case "descriptionHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionHasPrefix = data
-		case "descriptionHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionHasSuffix = data
-		case "descriptionIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionIsNil = data
-		case "descriptionNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionNotNil = data
-		case "descriptionEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionEqualFold = data
-		case "descriptionContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DescriptionContainsFold = data
-		case "status":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Status = data
-		case "statusNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNEQ"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StatusNEQ = data
-		case "statusIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusIn"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StatusIn = data
-		case "statusNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("statusNotIn"))
-			data, err := ec.unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StatusNotIn = data
-		case "title":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Title = data
-		case "titleNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleNEQ = data
-		case "titleIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleIn = data
-		case "titleNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleNotIn = data
-		case "titleGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleGT = data
-		case "titleGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleGTE = data
-		case "titleLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleLT = data
-		case "titleLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleLTE = data
-		case "titleContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleContains = data
-		case "titleHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleHasPrefix = data
-		case "titleHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleHasSuffix = data
-		case "titleEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleEqualFold = data
-		case "titleContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("titleContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.TitleContainsFold = data
-		case "starttime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttime"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTime = data
-		case "starttimeNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeNEQ = data
-		case "starttimeIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeIn = data
-		case "starttimeNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeNotIn = data
-		case "starttimeGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeGT = data
-		case "starttimeGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeGTE = data
-		case "starttimeLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeLT = data
-		case "starttimeLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("starttimeLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.StartTimeLTE = data
-		case "endtime":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtime"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTime = data
-		case "endtimeNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeNEQ"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeNEQ = data
-		case "endtimeIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeIn = data
-		case "endtimeNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeNotIn"))
-			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeNotIn = data
-		case "endtimeGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeGT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeGT = data
-		case "endtimeGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeGTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeGTE = data
-		case "endtimeLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeLT"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeLT = data
-		case "endtimeLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeLTE"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeLTE = data
-		case "endtimeIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeIsNil = data
-		case "endtimeNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endtimeNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EndTimeNotNil = data
-		case "hasCompany":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompany"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCompany = data
-		case "hasCompanyWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
-			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCompanyWith = data
-		case "hasCreatedBy":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedBy"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCreatedBy = data
-		case "hasCreatedByWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedByWith"))
-			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasCreatedByWith = data
-		case "hasAssignedTo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedTo"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasAssignedTo = data
-		case "hasAssignedToWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAssignedToWith"))
-			data, err := ec.unmarshalOEmployeeWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐEmployeeWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasAssignedToWith = data
-		case "hasWorkShifts":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShifts"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkShifts = data
-		case "hasWorkShiftsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkShiftsWith"))
-			data, err := ec.unmarshalOWorkshiftWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkShiftsWith = data
-		case "hasWorkTags":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTags"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTags = data
-		case "hasWorkTagsWith":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasWorkTagsWith"))
-			data, err := ec.unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.HasWorkTagsWith = data
 		}
 	}
 
@@ -56638,16 +51819,6 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._Workshift(ctx, sel, obj)
-	case *generated.Worktag:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._Worktag(ctx, sel, obj)
-	case *generated.Worktask:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._Worktask(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -57563,72 +52734,6 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "worktasks":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Company_worktasks(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "worktags":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Company_worktags(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "users":
 			field := field
 
@@ -58032,171 +53137,6 @@ func (ec *executionContext) _Employee(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Employee_user(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "subordinates":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Employee_subordinates(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "leader":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Employee_leader(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "workshifts":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Employee_workshifts(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "approvedworkshifts":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Employee_approvedworkshifts(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "assignedtasks":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Employee_assignedtasks(ctx, field, obj)
 				return res
 			}
 
@@ -59058,42 +53998,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "createWorkTask":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createWorkTask(ctx, field)
-			})
-		case "updateWorkTask":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_updateWorkTask(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "deleteWorkTask":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_deleteWorkTask(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "createWorkTag":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createWorkTag(ctx, field)
-			})
-		case "updateWorkTag":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_updateWorkTag(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "deleteWorkTag":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_deleteWorkTag(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		case "registerPurchase":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_registerPurchase(ctx, field)
@@ -59890,6 +54794,8 @@ func (ec *executionContext) _ProjectTask(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "createdat":
+			out.Values[i] = ec._ProjectTask_createdat(ctx, field, obj)
 		case "name":
 			out.Values[i] = ec._ProjectTask_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -60003,6 +54909,72 @@ func (ec *executionContext) _ProjectTask(ctx context.Context, sel ast.SelectionS
 					}
 				}()
 				res = ec._ProjectTask_participants(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "createdby":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ProjectTask_createdby(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "workshifts":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ProjectTask_workshifts(ctx, field, obj)
 				return res
 			}
 
@@ -60823,50 +55795,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_aggregateWorkShift(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "workTags":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_workTags(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "workTasks":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_workTasks(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -61766,8 +56694,6 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "deletedat":
 			out.Values[i] = ec._User_deletedat(ctx, field, obj)
-		case "fcmtoken":
-			out.Values[i] = ec._User_fcmtoken(ctx, field, obj)
 		case "email":
 			out.Values[i] = ec._User_email(ctx, field, obj)
 		case "name":
@@ -61886,7 +56812,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "createdtasks":
+		case "subordinates":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -61895,7 +56821,40 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._User_createdtasks(ctx, field, obj)
+				res = ec._User_subordinates(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "leader":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_leader(ctx, field, obj)
 				return res
 			}
 
@@ -62084,6 +57043,39 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "createdtasks":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_createdtasks(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "tokens":
 			field := field
 
@@ -62094,6 +57086,72 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_tokens(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "approvedworkshifts":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_approvedworkshifts(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "workshifts":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_workshifts(ctx, field, obj)
 				return res
 			}
 
@@ -62384,7 +57442,7 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "employee":
+		case "user":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -62393,7 +57451,7 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Workshift_employee(ctx, field, obj)
+				res = ec._Workshift_user(ctx, field, obj)
 				return res
 			}
 
@@ -62450,7 +57508,7 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "worktask":
+		case "task":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -62459,7 +57517,7 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Workshift_worktask(ctx, field, obj)
+				res = ec._Workshift_task(ctx, field, obj)
 				return res
 			}
 
@@ -62526,370 +57584,6 @@ func (ec *executionContext) _Workshift(ctx context.Context, sel ast.SelectionSet
 					}
 				}()
 				res = ec._Workshift_workshift(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var worktagImplementors = []string{"Worktag", "Node"}
-
-func (ec *executionContext) _Worktag(ctx context.Context, sel ast.SelectionSet, obj *generated.Worktag) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, worktagImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("Worktag")
-		case "id":
-			out.Values[i] = ec._Worktag_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "createdat":
-			out.Values[i] = ec._Worktag_createdat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "updatedat":
-			out.Values[i] = ec._Worktag_updatedat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "deletedat":
-			out.Values[i] = ec._Worktag_deletedat(ctx, field, obj)
-		case "name":
-			out.Values[i] = ec._Worktag_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "color":
-			out.Values[i] = ec._Worktag_color(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "company":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktag_company(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "worktasks":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktag_worktasks(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var worktaskImplementors = []string{"Worktask", "Node"}
-
-func (ec *executionContext) _Worktask(ctx context.Context, sel ast.SelectionSet, obj *generated.Worktask) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, worktaskImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("Worktask")
-		case "id":
-			out.Values[i] = ec._Worktask_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "createdat":
-			out.Values[i] = ec._Worktask_createdat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "updatedat":
-			out.Values[i] = ec._Worktask_updatedat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "deletedat":
-			out.Values[i] = ec._Worktask_deletedat(ctx, field, obj)
-		case "description":
-			out.Values[i] = ec._Worktask_description(ctx, field, obj)
-		case "status":
-			out.Values[i] = ec._Worktask_status(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "subtasks":
-			out.Values[i] = ec._Worktask_subtasks(ctx, field, obj)
-		case "title":
-			out.Values[i] = ec._Worktask_title(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "starttime":
-			out.Values[i] = ec._Worktask_starttime(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
-		case "endtime":
-			out.Values[i] = ec._Worktask_endtime(ctx, field, obj)
-		case "company":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktask_company(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "createdby":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktask_createdby(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "assignedto":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktask_assignedto(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "workshifts":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktask_workshifts(ctx, field, obj)
-				return res
-			}
-
-			if field.Deferrable != nil {
-				dfs, ok := deferred[field.Deferrable.Label]
-				di := 0
-				if ok {
-					dfs.AddField(field)
-					di = len(dfs.Values) - 1
-				} else {
-					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
-					deferred[field.Deferrable.Label] = dfs
-				}
-				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
-					return innerFunc(ctx, dfs)
-				})
-
-				// don't run the out.Concurrently() call below
-				out.Values[i] = graphql.Null
-				continue
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-		case "worktags":
-			field := field
-
-			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Worktask_worktags(ctx, field, obj)
 				return res
 			}
 
@@ -63522,16 +58216,6 @@ func (ec *executionContext) unmarshalNCreateUserRoleInput2mazzaᚋentᚋgenerate
 
 func (ec *executionContext) unmarshalNCreateWorkshiftInput2mazzaᚋentᚋgeneratedᚐCreateWorkshiftInput(ctx context.Context, v interface{}) (generated.CreateWorkshiftInput, error) {
 	res, err := ec.unmarshalInputCreateWorkshiftInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNCreateWorktagInput2mazzaᚋentᚋgeneratedᚐCreateWorktagInput(ctx context.Context, v interface{}) (generated.CreateWorktagInput, error) {
-	res, err := ec.unmarshalInputCreateWorktagInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNCreateWorktaskInput2mazzaᚋentᚋgeneratedᚐCreateWorktaskInput(ctx context.Context, v interface{}) (generated.CreateWorktaskInput, error) {
-	res, err := ec.unmarshalInputCreateWorktaskInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -65214,16 +59898,6 @@ func (ec *executionContext) unmarshalNUpdateWorkshiftInput2mazzaᚋentᚋgenerat
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateWorktagInput2mazzaᚋentᚋgeneratedᚐUpdateWorktagInput(ctx context.Context, v interface{}) (generated.UpdateWorktagInput, error) {
-	res, err := ec.unmarshalInputUpdateWorktagInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNUpdateWorktaskInput2mazzaᚋentᚋgeneratedᚐUpdateWorktaskInput(ctx context.Context, v interface{}) (generated.UpdateWorktaskInput, error) {
-	res, err := ec.unmarshalInputUpdateWorktaskInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
 func (ec *executionContext) marshalNUser2mazzaᚋentᚋgeneratedᚐUser(ctx context.Context, sel ast.SelectionSet, v generated.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
@@ -65528,142 +60202,6 @@ func (ec *executionContext) marshalNWorkshiftStatus2mazzaᚋentᚋgeneratedᚋwo
 
 func (ec *executionContext) unmarshalNWorkshiftWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorkshiftWhereInput(ctx context.Context, v interface{}) (*generated.WorkshiftWhereInput, error) {
 	res, err := ec.unmarshalInputWorkshiftWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNWorktag2mazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v generated.Worktag) graphql.Marshaler {
-	return ec._Worktag(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktag) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *generated.Worktag) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._Worktag(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx context.Context, v interface{}) (*generated.WorktagWhereInput, error) {
-	res, err := ec.unmarshalInputWorktagWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNWorktask2mazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v generated.Worktask) graphql.Marshaler {
-	return ec._Worktask(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktask) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *generated.Worktask) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._Worktask(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, v interface{}) (worktask.Status, error) {
-	var res worktask.Status
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v worktask.Status) graphql.Marshaler {
-	return v
-}
-
-func (ec *executionContext) unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*generated.WorktaskWhereInput, error) {
-	res, err := ec.unmarshalInputWorktaskWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -69154,253 +63692,6 @@ func (ec *executionContext) unmarshalOWorkshiftWhereInput2ᚖmazzaᚋentᚋgener
 		return nil, nil
 	}
 	res, err := ec.unmarshalInputWorkshiftWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOWorktag2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktag) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalOWorktag2ᚖmazzaᚋentᚋgeneratedᚐWorktag(ctx context.Context, sel ast.SelectionSet, v *generated.Worktag) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Worktag(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOWorktagWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.WorktagWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*generated.WorktagWhereInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalOWorktagWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktagWhereInput(ctx context.Context, v interface{}) (*generated.WorktagWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputWorktagWhereInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOWorktask2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Worktask) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalOWorktask2ᚖmazzaᚋentᚋgeneratedᚐWorktask(ctx context.Context, sel ast.SelectionSet, v *generated.Worktask) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Worktask(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx context.Context, v interface{}) ([]worktask.Status, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]worktask.Status, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) marshalOWorktaskStatus2ᚕmazzaᚋentᚋgeneratedᚋworktaskᚐStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []worktask.Status) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNWorktaskStatus2mazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) unmarshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, v interface{}) (*worktask.Status, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var res = new(worktask.Status)
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOWorktaskStatus2ᚖmazzaᚋentᚋgeneratedᚋworktaskᚐStatus(ctx context.Context, sel ast.SelectionSet, v *worktask.Status) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return v
-}
-
-func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.WorktaskWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]*generated.WorktaskWhereInput, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) unmarshalOWorktaskWhereInput2ᚖmazzaᚋentᚋgeneratedᚐWorktaskWhereInput(ctx context.Context, v interface{}) (*generated.WorktaskWhereInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputWorktaskWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 

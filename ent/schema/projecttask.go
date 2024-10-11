@@ -8,9 +8,11 @@ import (
 	"mazza/ent/generated/hook"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
+	"time"
 
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
@@ -25,6 +27,7 @@ type ProjectTask struct {
 // Fields of the ProjectTask.
 func (ProjectTask) Fields() []ent.Field {
 	return []ent.Field{
+		field.Time("createdAt").Default(time.Now).Immutable().Optional(),
 		field.String("name").NotEmpty(),
 		field.String("assigneeName").NotEmpty(),
 		field.String("location").Optional().Comment("Where is task will be executed"),
@@ -42,6 +45,8 @@ func (ProjectTask) Edges() []ent.Edge {
 		edge.From("project", Project.Type).Ref("tasks").Unique().Required(),   // a task can belong to only one project
 		edge.From("assignee", User.Type).Ref("assignedProjectTasks").Unique(), // only one user responds for a task
 		edge.From("participants", User.Type).Ref("participatedProjectTasks"),  // more than one user can participate in a task. E.g. meeting
+		edge.From("createdBy", User.Type).Ref("createdTasks").Unique().Immutable(),
+		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 	}
 }
 

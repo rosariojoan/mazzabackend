@@ -22,8 +22,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"sync"
 	"sync/atomic"
 
@@ -91,12 +89,6 @@ func (n *UserRole) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Workshift) IsNode() {}
-
-// IsNode implements the Node interface check for GQLGen.
-func (n *Worktag) IsNode() {}
-
-// IsNode implements the Node interface check for GQLGen.
-func (n *Worktask) IsNode() {}
 
 var errNodeInvalidID = &NotFoundError{"node"}
 
@@ -352,30 +344,6 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Workshift.Query().
 			Where(workshift.ID(id))
 		query, err := query.CollectFields(ctx, "Workshift")
-		if err != nil {
-			return nil, err
-		}
-		n, err := query.Only(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return n, nil
-	case worktag.Table:
-		query := c.Worktag.Query().
-			Where(worktag.ID(id))
-		query, err := query.CollectFields(ctx, "Worktag")
-		if err != nil {
-			return nil, err
-		}
-		n, err := query.Only(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return n, nil
-	case worktask.Table:
-		query := c.Worktask.Query().
-			Where(worktask.ID(id))
-		query, err := query.CollectFields(ctx, "Worktask")
 		if err != nil {
 			return nil, err
 		}
@@ -717,38 +685,6 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Workshift.Query().
 			Where(workshift.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Workshift")
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case worktag.Table:
-		query := c.Worktag.Query().
-			Where(worktag.IDIn(ids...))
-		query, err := query.CollectFields(ctx, "Worktag")
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case worktask.Table:
-		query := c.Worktask.Query().
-			Where(worktask.IDIn(ids...))
-		query, err := query.CollectFields(ctx, "Worktask")
 		if err != nil {
 			return nil, err
 		}

@@ -25,7 +25,7 @@ type User struct {
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// FcmToken holds the value of the "fcmToken" field.
-	FcmToken *string `json:"fcmToken,omitempty"`
+	FcmToken *string `json:"-"`
 	// Email holds the value of the "email" field.
 	Email *string `json:"email,omitempty"`
 	// Name holds the value of the "name" field.
@@ -40,8 +40,9 @@ type User struct {
 	NotVerified *bool `json:"notVerified,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
-	Edges        UserEdges `json:"edges"`
-	selectValues sql.SelectValues
+	Edges             UserEdges `json:"edges"`
+	user_subordinates *int
+	selectValues      sql.SelectValues
 }
 
 // UserEdges holds the relations/edges for other nodes in the graph.
@@ -52,8 +53,10 @@ type UserEdges struct {
 	Company []*Company `json:"company,omitempty"`
 	// a user should be assigned to at least one role in the company
 	AssignedRoles []*UserRole `json:"assignedRoles,omitempty"`
-	// Tasks created by this user
-	CreatedTasks []*Worktask `json:"createdTasks,omitempty"`
+	// Subordinates holds the value of the subordinates edge.
+	Subordinates []*User `json:"subordinates,omitempty"`
+	// Leader holds the value of the leader edge.
+	Leader *User `json:"leader,omitempty"`
 	// Employee holds the value of the employee edge.
 	Employee *Employee `json:"employee,omitempty"`
 	// Represent the projects created by the user
@@ -64,23 +67,32 @@ type UserEdges struct {
 	AssignedProjectTasks []*ProjectTask `json:"assignedProjectTasks,omitempty"`
 	// These are the project tasks in which the user is a member. E.g. a meeting
 	ParticipatedProjectTasks []*ProjectTask `json:"participatedProjectTasks,omitempty"`
+	// Represents the tasks created by a user
+	CreatedTasks []*ProjectTask `json:"createdTasks,omitempty"`
 	// Tokens holds the value of the tokens edge.
 	Tokens []*Token `json:"tokens,omitempty"`
+	// ApprovedWorkShifts holds the value of the approvedWorkShifts edge.
+	ApprovedWorkShifts []*Workshift `json:"approvedWorkShifts,omitempty"`
+	// WorkShifts holds the value of the workShifts edge.
+	WorkShifts []*Workshift `json:"workShifts,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [10]bool
+	loadedTypes [14]bool
 	// totalCount holds the count of the edges above.
-	totalCount [10]map[string]int
+	totalCount [14]map[string]int
 
 	namedAccountingEntries        map[string][]*AccountingEntry
 	namedCompany                  map[string][]*Company
 	namedAssignedRoles            map[string][]*UserRole
-	namedCreatedTasks             map[string][]*Worktask
+	namedSubordinates             map[string][]*User
 	namedCreatedProjects          map[string][]*Project
 	namedLeaderedProjects         map[string][]*Project
 	namedAssignedProjectTasks     map[string][]*ProjectTask
 	namedParticipatedProjectTasks map[string][]*ProjectTask
+	namedCreatedTasks             map[string][]*ProjectTask
 	namedTokens                   map[string][]*Token
+	namedApprovedWorkShifts       map[string][]*Workshift
+	namedWorkShifts               map[string][]*Workshift
 }
 
 // AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
@@ -110,13 +122,24 @@ func (e UserEdges) AssignedRolesOrErr() ([]*UserRole, error) {
 	return nil, &NotLoadedError{edge: "assignedRoles"}
 }
 
-// CreatedTasksOrErr returns the CreatedTasks value or an error if the edge
+// SubordinatesOrErr returns the Subordinates value or an error if the edge
 // was not loaded in eager-loading.
-func (e UserEdges) CreatedTasksOrErr() ([]*Worktask, error) {
+func (e UserEdges) SubordinatesOrErr() ([]*User, error) {
 	if e.loadedTypes[3] {
-		return e.CreatedTasks, nil
+		return e.Subordinates, nil
 	}
-	return nil, &NotLoadedError{edge: "createdTasks"}
+	return nil, &NotLoadedError{edge: "subordinates"}
+}
+
+// LeaderOrErr returns the Leader value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e UserEdges) LeaderOrErr() (*User, error) {
+	if e.Leader != nil {
+		return e.Leader, nil
+	} else if e.loadedTypes[4] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "leader"}
 }
 
 // EmployeeOrErr returns the Employee value or an error if the edge
@@ -124,7 +147,7 @@ func (e UserEdges) CreatedTasksOrErr() ([]*Worktask, error) {
 func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 	if e.Employee != nil {
 		return e.Employee, nil
-	} else if e.loadedTypes[4] {
+	} else if e.loadedTypes[5] {
 		return nil, &NotFoundError{label: employee.Label}
 	}
 	return nil, &NotLoadedError{edge: "employee"}
@@ -133,7 +156,7 @@ func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 // CreatedProjectsOrErr returns the CreatedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[6] {
 		return e.CreatedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "createdProjects"}
@@ -142,7 +165,7 @@ func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
 // LeaderedProjectsOrErr returns the LeaderedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[7] {
 		return e.LeaderedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "leaderedProjects"}
@@ -151,7 +174,7 @@ func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
 // AssignedProjectTasksOrErr returns the AssignedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[8] {
 		return e.AssignedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "assignedProjectTasks"}
@@ -160,19 +183,46 @@ func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
 // ParticipatedProjectTasksOrErr returns the ParticipatedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[9] {
 		return e.ParticipatedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "participatedProjectTasks"}
 }
 
+// CreatedTasksOrErr returns the CreatedTasks value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
+	if e.loadedTypes[10] {
+		return e.CreatedTasks, nil
+	}
+	return nil, &NotLoadedError{edge: "createdTasks"}
+}
+
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[11] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
+}
+
+// ApprovedWorkShiftsOrErr returns the ApprovedWorkShifts value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
+	if e.loadedTypes[12] {
+		return e.ApprovedWorkShifts, nil
+	}
+	return nil, &NotLoadedError{edge: "approvedWorkShifts"}
+}
+
+// WorkShiftsOrErr returns the WorkShifts value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
+	if e.loadedTypes[13] {
+		return e.WorkShifts, nil
+	}
+	return nil, &NotLoadedError{edge: "workShifts"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -188,6 +238,8 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
+		case user.ForeignKeys[0]: // user_subordinates
+			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -274,6 +326,13 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.NotVerified = new(bool)
 				*u.NotVerified = value.Bool
 			}
+		case user.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field user_subordinates", value)
+			} else if value.Valid {
+				u.user_subordinates = new(int)
+				*u.user_subordinates = int(value.Int64)
+			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -302,9 +361,14 @@ func (u *User) QueryAssignedRoles() *UserRoleQuery {
 	return NewUserClient(u.config).QueryAssignedRoles(u)
 }
 
-// QueryCreatedTasks queries the "createdTasks" edge of the User entity.
-func (u *User) QueryCreatedTasks() *WorktaskQuery {
-	return NewUserClient(u.config).QueryCreatedTasks(u)
+// QuerySubordinates queries the "subordinates" edge of the User entity.
+func (u *User) QuerySubordinates() *UserQuery {
+	return NewUserClient(u.config).QuerySubordinates(u)
+}
+
+// QueryLeader queries the "leader" edge of the User entity.
+func (u *User) QueryLeader() *UserQuery {
+	return NewUserClient(u.config).QueryLeader(u)
 }
 
 // QueryEmployee queries the "employee" edge of the User entity.
@@ -332,9 +396,24 @@ func (u *User) QueryParticipatedProjectTasks() *ProjectTaskQuery {
 	return NewUserClient(u.config).QueryParticipatedProjectTasks(u)
 }
 
+// QueryCreatedTasks queries the "createdTasks" edge of the User entity.
+func (u *User) QueryCreatedTasks() *ProjectTaskQuery {
+	return NewUserClient(u.config).QueryCreatedTasks(u)
+}
+
 // QueryTokens queries the "tokens" edge of the User entity.
 func (u *User) QueryTokens() *TokenQuery {
 	return NewUserClient(u.config).QueryTokens(u)
+}
+
+// QueryApprovedWorkShifts queries the "approvedWorkShifts" edge of the User entity.
+func (u *User) QueryApprovedWorkShifts() *WorkshiftQuery {
+	return NewUserClient(u.config).QueryApprovedWorkShifts(u)
+}
+
+// QueryWorkShifts queries the "workShifts" edge of the User entity.
+func (u *User) QueryWorkShifts() *WorkshiftQuery {
+	return NewUserClient(u.config).QueryWorkShifts(u)
 }
 
 // Update returns a builder for updating this User.
@@ -371,10 +450,7 @@ func (u *User) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	if v := u.FcmToken; v != nil {
-		builder.WriteString("fcmToken=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("fcmToken=<sensitive>")
 	builder.WriteString(", ")
 	if v := u.Email; v != nil {
 		builder.WriteString("email=")
@@ -474,27 +550,27 @@ func (u *User) appendNamedAssignedRoles(name string, edges ...*UserRole) {
 	}
 }
 
-// NamedCreatedTasks returns the CreatedTasks named value or an error if the edge was not
+// NamedSubordinates returns the Subordinates named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (u *User) NamedCreatedTasks(name string) ([]*Worktask, error) {
-	if u.Edges.namedCreatedTasks == nil {
+func (u *User) NamedSubordinates(name string) ([]*User, error) {
+	if u.Edges.namedSubordinates == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := u.Edges.namedCreatedTasks[name]
+	nodes, ok := u.Edges.namedSubordinates[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (u *User) appendNamedCreatedTasks(name string, edges ...*Worktask) {
-	if u.Edges.namedCreatedTasks == nil {
-		u.Edges.namedCreatedTasks = make(map[string][]*Worktask)
+func (u *User) appendNamedSubordinates(name string, edges ...*User) {
+	if u.Edges.namedSubordinates == nil {
+		u.Edges.namedSubordinates = make(map[string][]*User)
 	}
 	if len(edges) == 0 {
-		u.Edges.namedCreatedTasks[name] = []*Worktask{}
+		u.Edges.namedSubordinates[name] = []*User{}
 	} else {
-		u.Edges.namedCreatedTasks[name] = append(u.Edges.namedCreatedTasks[name], edges...)
+		u.Edges.namedSubordinates[name] = append(u.Edges.namedSubordinates[name], edges...)
 	}
 }
 
@@ -594,6 +670,30 @@ func (u *User) appendNamedParticipatedProjectTasks(name string, edges ...*Projec
 	}
 }
 
+// NamedCreatedTasks returns the CreatedTasks named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedCreatedTasks(name string) ([]*ProjectTask, error) {
+	if u.Edges.namedCreatedTasks == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedCreatedTasks[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedCreatedTasks(name string, edges ...*ProjectTask) {
+	if u.Edges.namedCreatedTasks == nil {
+		u.Edges.namedCreatedTasks = make(map[string][]*ProjectTask)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedCreatedTasks[name] = []*ProjectTask{}
+	} else {
+		u.Edges.namedCreatedTasks[name] = append(u.Edges.namedCreatedTasks[name], edges...)
+	}
+}
+
 // NamedTokens returns the Tokens named value or an error if the edge was not
 // loaded in eager-loading with this name.
 func (u *User) NamedTokens(name string) ([]*Token, error) {
@@ -615,6 +715,54 @@ func (u *User) appendNamedTokens(name string, edges ...*Token) {
 		u.Edges.namedTokens[name] = []*Token{}
 	} else {
 		u.Edges.namedTokens[name] = append(u.Edges.namedTokens[name], edges...)
+	}
+}
+
+// NamedApprovedWorkShifts returns the ApprovedWorkShifts named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedApprovedWorkShifts(name string) ([]*Workshift, error) {
+	if u.Edges.namedApprovedWorkShifts == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedApprovedWorkShifts[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedApprovedWorkShifts(name string, edges ...*Workshift) {
+	if u.Edges.namedApprovedWorkShifts == nil {
+		u.Edges.namedApprovedWorkShifts = make(map[string][]*Workshift)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedApprovedWorkShifts[name] = []*Workshift{}
+	} else {
+		u.Edges.namedApprovedWorkShifts[name] = append(u.Edges.namedApprovedWorkShifts[name], edges...)
+	}
+}
+
+// NamedWorkShifts returns the WorkShifts named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedWorkShifts(name string) ([]*Workshift, error) {
+	if u.Edges.namedWorkShifts == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedWorkShifts[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedWorkShifts(name string, edges ...*Workshift) {
+	if u.Edges.namedWorkShifts == nil {
+		u.Edges.namedWorkShifts = make(map[string][]*Workshift)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedWorkShifts[name] = []*Workshift{}
+	} else {
+		u.Edges.namedWorkShifts[name] = append(u.Edges.namedWorkShifts[name], edges...)
 	}
 }
 

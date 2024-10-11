@@ -19,8 +19,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -457,36 +455,6 @@ func (cc *CompanyCreate) AddWorkShifts(w ...*Workshift) *CompanyCreate {
 		ids[i] = w[i].ID
 	}
 	return cc.AddWorkShiftIDs(ids...)
-}
-
-// AddWorkTaskIDs adds the "workTasks" edge to the Worktask entity by IDs.
-func (cc *CompanyCreate) AddWorkTaskIDs(ids ...int) *CompanyCreate {
-	cc.mutation.AddWorkTaskIDs(ids...)
-	return cc
-}
-
-// AddWorkTasks adds the "workTasks" edges to the Worktask entity.
-func (cc *CompanyCreate) AddWorkTasks(w ...*Worktask) *CompanyCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cc.AddWorkTaskIDs(ids...)
-}
-
-// AddWorkTagIDs adds the "workTags" edge to the Worktag entity by IDs.
-func (cc *CompanyCreate) AddWorkTagIDs(ids ...int) *CompanyCreate {
-	cc.mutation.AddWorkTagIDs(ids...)
-	return cc
-}
-
-// AddWorkTags adds the "workTags" edges to the Worktag entity.
-func (cc *CompanyCreate) AddWorkTags(w ...*Worktag) *CompanyCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cc.AddWorkTagIDs(ids...)
 }
 
 // AddUserIDs adds the "users" edge to the User entity by IDs.
@@ -931,38 +899,6 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := cc.mutation.WorkTasksIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := cc.mutation.WorkTagsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

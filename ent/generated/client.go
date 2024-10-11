@@ -28,8 +28,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -78,10 +76,6 @@ type Client struct {
 	UserRole *UserRoleClient
 	// Workshift is the client for interacting with the Workshift builders.
 	Workshift *WorkshiftClient
-	// Worktag is the client for interacting with the Worktag builders.
-	Worktag *WorktagClient
-	// Worktask is the client for interacting with the Worktask builders.
-	Worktask *WorktaskClient
 	// additional fields for node api
 	tables tables
 }
@@ -112,8 +106,6 @@ func (c *Client) init() {
 	c.User = NewUserClient(c.config)
 	c.UserRole = NewUserRoleClient(c.config)
 	c.Workshift = NewWorkshiftClient(c.config)
-	c.Worktag = NewWorktagClient(c.config)
-	c.Worktask = NewWorktaskClient(c.config)
 }
 
 type (
@@ -223,8 +215,6 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		User:             NewUserClient(cfg),
 		UserRole:         NewUserRoleClient(cfg),
 		Workshift:        NewWorkshiftClient(cfg),
-		Worktag:          NewWorktagClient(cfg),
-		Worktask:         NewWorktaskClient(cfg),
 	}, nil
 }
 
@@ -261,8 +251,6 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		User:             NewUserClient(cfg),
 		UserRole:         NewUserRoleClient(cfg),
 		Workshift:        NewWorkshiftClient(cfg),
-		Worktag:          NewWorktagClient(cfg),
-		Worktask:         NewWorktaskClient(cfg),
 	}, nil
 }
 
@@ -294,8 +282,7 @@ func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
 		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift, c.Worktag,
-		c.Worktask,
+		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -307,8 +294,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
 		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift, c.Worktag,
-		c.Worktask,
+		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -351,10 +337,6 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.UserRole.mutate(ctx, m)
 	case *WorkshiftMutation:
 		return c.Workshift.mutate(ctx, m)
-	case *WorktagMutation:
-		return c.Worktag.mutate(ctx, m)
-	case *WorktaskMutation:
-		return c.Worktask.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("generated: unknown mutation type %T", m)
 	}
@@ -841,38 +823,6 @@ func (c *CompanyClient) QueryWorkShifts(co *Company) *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkTasks queries the workTasks edge of a Company.
-func (c *CompanyClient) QueryWorkTasks(co *Company) *WorktaskQuery {
-	query := (&WorktaskClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := co.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(company.Table, company.FieldID, id),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, company.WorkTasksTable, company.WorkTasksColumn),
-		)
-		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryWorkTags queries the workTags edge of a Company.
-func (c *CompanyClient) QueryWorkTags(co *Company) *WorktagQuery {
-	query := (&WorktagClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := co.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(company.Table, company.FieldID, id),
-			sqlgraph.To(worktag.Table, worktag.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, company.WorkTagsTable, company.WorkTagsColumn),
-		)
-		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryUsers queries the users edge of a Company.
 func (c *CompanyClient) QueryUsers(co *Company) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
@@ -1244,86 +1194,6 @@ func (c *EmployeeClient) QueryUser(e *Employee) *UserQuery {
 			sqlgraph.From(employee.Table, employee.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, employee.UserTable, employee.UserColumn),
-		)
-		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QuerySubordinates queries the subordinates edge of a Employee.
-func (c *EmployeeClient) QuerySubordinates(e *Employee) *EmployeeQuery {
-	query := (&EmployeeClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := e.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(employee.Table, employee.FieldID, id),
-			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, employee.SubordinatesTable, employee.SubordinatesColumn),
-		)
-		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryLeader queries the leader edge of a Employee.
-func (c *EmployeeClient) QueryLeader(e *Employee) *EmployeeQuery {
-	query := (&EmployeeClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := e.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(employee.Table, employee.FieldID, id),
-			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, employee.LeaderTable, employee.LeaderColumn),
-		)
-		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryWorkShifts queries the workShifts edge of a Employee.
-func (c *EmployeeClient) QueryWorkShifts(e *Employee) *WorkshiftQuery {
-	query := (&WorkshiftClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := e.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(employee.Table, employee.FieldID, id),
-			sqlgraph.To(workshift.Table, workshift.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, employee.WorkShiftsTable, employee.WorkShiftsColumn),
-		)
-		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryApprovedWorkShifts queries the approvedWorkShifts edge of a Employee.
-func (c *EmployeeClient) QueryApprovedWorkShifts(e *Employee) *WorkshiftQuery {
-	query := (&WorkshiftClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := e.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(employee.Table, employee.FieldID, id),
-			sqlgraph.To(workshift.Table, workshift.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, employee.ApprovedWorkShiftsTable, employee.ApprovedWorkShiftsColumn),
-		)
-		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryAssignedTasks queries the assignedTasks edge of a Employee.
-func (c *EmployeeClient) QueryAssignedTasks(e *Employee) *WorktaskQuery {
-	query := (&WorktaskClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := e.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(employee.Table, employee.FieldID, id),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, employee.AssignedTasksTable, employee.AssignedTasksPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
 		return fromV, nil
@@ -2369,6 +2239,38 @@ func (c *ProjectTaskClient) QueryParticipants(pt *ProjectTask) *UserQuery {
 	return query
 }
 
+// QueryCreatedBy queries the createdBy edge of a ProjectTask.
+func (c *ProjectTaskClient) QueryCreatedBy(pt *ProjectTask) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pt.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(projecttask.Table, projecttask.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, projecttask.CreatedByTable, projecttask.CreatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(pt.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryWorkShifts queries the workShifts edge of a ProjectTask.
+func (c *ProjectTaskClient) QueryWorkShifts(pt *ProjectTask) *WorkshiftQuery {
+	query := (&WorkshiftClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := pt.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(projecttask.Table, projecttask.FieldID, id),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, projecttask.WorkShiftsTable, projecttask.WorkShiftsColumn),
+		)
+		fromV = sqlgraph.Neighbors(pt.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *ProjectTaskClient) Hooks() []Hook {
 	hooks := c.hooks.ProjectTask
@@ -3195,15 +3097,31 @@ func (c *UserClient) QueryAssignedRoles(u *User) *UserRoleQuery {
 	return query
 }
 
-// QueryCreatedTasks queries the createdTasks edge of a User.
-func (c *UserClient) QueryCreatedTasks(u *User) *WorktaskQuery {
-	query := (&WorktaskClient{config: c.config}).Query()
+// QuerySubordinates queries the subordinates edge of a User.
+func (c *UserClient) QuerySubordinates(u *User) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := u.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedTasksTable, user.CreatedTasksColumn),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.SubordinatesTable, user.SubordinatesColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryLeader queries the leader edge of a User.
+func (c *UserClient) QueryLeader(u *User) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, user.LeaderTable, user.LeaderColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -3291,6 +3209,22 @@ func (c *UserClient) QueryParticipatedProjectTasks(u *User) *ProjectTaskQuery {
 	return query
 }
 
+// QueryCreatedTasks queries the createdTasks edge of a User.
+func (c *UserClient) QueryCreatedTasks(u *User) *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedTasksTable, user.CreatedTasksColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryTokens queries the tokens edge of a User.
 func (c *UserClient) QueryTokens(u *User) *TokenQuery {
 	query := (&TokenClient{config: c.config}).Query()
@@ -3300,6 +3234,38 @@ func (c *UserClient) QueryTokens(u *User) *TokenQuery {
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(token.Table, token.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.TokensTable, user.TokensColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprovedWorkShifts queries the approvedWorkShifts edge of a User.
+func (c *UserClient) QueryApprovedWorkShifts(u *User) *WorkshiftQuery {
+	query := (&WorkshiftClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.ApprovedWorkShiftsTable, user.ApprovedWorkShiftsColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryWorkShifts queries the workShifts edge of a User.
+func (c *UserClient) QueryWorkShifts(u *User) *WorkshiftQuery {
+	query := (&WorkshiftClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.WorkShiftsTable, user.WorkShiftsColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -3621,15 +3587,15 @@ func (c *WorkshiftClient) QueryCompany(w *Workshift) *CompanyQuery {
 	return query
 }
 
-// QueryEmployee queries the employee edge of a Workshift.
-func (c *WorkshiftClient) QueryEmployee(w *Workshift) *EmployeeQuery {
-	query := (&EmployeeClient{config: c.config}).Query()
+// QueryUser queries the user edge of a Workshift.
+func (c *WorkshiftClient) QueryUser(w *Workshift) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := w.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, id),
-			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, workshift.EmployeeTable, workshift.EmployeeColumn),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, workshift.UserTable, workshift.UserColumn),
 		)
 		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
 		return fromV, nil
@@ -3638,13 +3604,13 @@ func (c *WorkshiftClient) QueryEmployee(w *Workshift) *EmployeeQuery {
 }
 
 // QueryApprovedBy queries the approvedBy edge of a Workshift.
-func (c *WorkshiftClient) QueryApprovedBy(w *Workshift) *EmployeeQuery {
-	query := (&EmployeeClient{config: c.config}).Query()
+func (c *WorkshiftClient) QueryApprovedBy(w *Workshift) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := w.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, id),
-			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, workshift.ApprovedByTable, workshift.ApprovedByColumn),
 		)
 		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
@@ -3653,15 +3619,15 @@ func (c *WorkshiftClient) QueryApprovedBy(w *Workshift) *EmployeeQuery {
 	return query
 }
 
-// QueryWorkTask queries the workTask edge of a Workshift.
-func (c *WorkshiftClient) QueryWorkTask(w *Workshift) *WorktaskQuery {
-	query := (&WorktaskClient{config: c.config}).Query()
+// QueryTask queries the task edge of a Workshift.
+func (c *WorkshiftClient) QueryTask(w *Workshift) *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := w.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(workshift.Table, workshift.FieldID, id),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, workshift.WorkTaskTable, workshift.WorkTaskColumn),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, workshift.TaskTable, workshift.TaskColumn),
 		)
 		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
 		return fromV, nil
@@ -3727,396 +3693,17 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 	}
 }
 
-// WorktagClient is a client for the Worktag schema.
-type WorktagClient struct {
-	config
-}
-
-// NewWorktagClient returns a client for the Worktag from the given config.
-func NewWorktagClient(c config) *WorktagClient {
-	return &WorktagClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `worktag.Hooks(f(g(h())))`.
-func (c *WorktagClient) Use(hooks ...Hook) {
-	c.hooks.Worktag = append(c.hooks.Worktag, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `worktag.Intercept(f(g(h())))`.
-func (c *WorktagClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Worktag = append(c.inters.Worktag, interceptors...)
-}
-
-// Create returns a builder for creating a Worktag entity.
-func (c *WorktagClient) Create() *WorktagCreate {
-	mutation := newWorktagMutation(c.config, OpCreate)
-	return &WorktagCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Worktag entities.
-func (c *WorktagClient) CreateBulk(builders ...*WorktagCreate) *WorktagCreateBulk {
-	return &WorktagCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *WorktagClient) MapCreateBulk(slice any, setFunc func(*WorktagCreate, int)) *WorktagCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &WorktagCreateBulk{err: fmt.Errorf("calling to WorktagClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*WorktagCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &WorktagCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Worktag.
-func (c *WorktagClient) Update() *WorktagUpdate {
-	mutation := newWorktagMutation(c.config, OpUpdate)
-	return &WorktagUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *WorktagClient) UpdateOne(w *Worktag) *WorktagUpdateOne {
-	mutation := newWorktagMutation(c.config, OpUpdateOne, withWorktag(w))
-	return &WorktagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *WorktagClient) UpdateOneID(id int) *WorktagUpdateOne {
-	mutation := newWorktagMutation(c.config, OpUpdateOne, withWorktagID(id))
-	return &WorktagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Worktag.
-func (c *WorktagClient) Delete() *WorktagDelete {
-	mutation := newWorktagMutation(c.config, OpDelete)
-	return &WorktagDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *WorktagClient) DeleteOne(w *Worktag) *WorktagDeleteOne {
-	return c.DeleteOneID(w.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *WorktagClient) DeleteOneID(id int) *WorktagDeleteOne {
-	builder := c.Delete().Where(worktag.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &WorktagDeleteOne{builder}
-}
-
-// Query returns a query builder for Worktag.
-func (c *WorktagClient) Query() *WorktagQuery {
-	return &WorktagQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeWorktag},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a Worktag entity by its id.
-func (c *WorktagClient) Get(ctx context.Context, id int) (*Worktag, error) {
-	return c.Query().Where(worktag.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *WorktagClient) GetX(ctx context.Context, id int) *Worktag {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryCompany queries the company edge of a Worktag.
-func (c *WorktagClient) QueryCompany(w *Worktag) *CompanyQuery {
-	query := (&CompanyClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktag.Table, worktag.FieldID, id),
-			sqlgraph.To(company.Table, company.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, worktag.CompanyTable, worktag.CompanyColumn),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryWorkTasks queries the workTasks edge of a Worktag.
-func (c *WorktagClient) QueryWorkTasks(w *Worktag) *WorktaskQuery {
-	query := (&WorktaskClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktag.Table, worktag.FieldID, id),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, worktag.WorkTasksTable, worktag.WorkTasksPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *WorktagClient) Hooks() []Hook {
-	return c.hooks.Worktag
-}
-
-// Interceptors returns the client interceptors.
-func (c *WorktagClient) Interceptors() []Interceptor {
-	return c.inters.Worktag
-}
-
-func (c *WorktagClient) mutate(ctx context.Context, m *WorktagMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&WorktagCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&WorktagUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&WorktagUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&WorktagDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("generated: unknown Worktag mutation op: %q", m.Op())
-	}
-}
-
-// WorktaskClient is a client for the Worktask schema.
-type WorktaskClient struct {
-	config
-}
-
-// NewWorktaskClient returns a client for the Worktask from the given config.
-func NewWorktaskClient(c config) *WorktaskClient {
-	return &WorktaskClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `worktask.Hooks(f(g(h())))`.
-func (c *WorktaskClient) Use(hooks ...Hook) {
-	c.hooks.Worktask = append(c.hooks.Worktask, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `worktask.Intercept(f(g(h())))`.
-func (c *WorktaskClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Worktask = append(c.inters.Worktask, interceptors...)
-}
-
-// Create returns a builder for creating a Worktask entity.
-func (c *WorktaskClient) Create() *WorktaskCreate {
-	mutation := newWorktaskMutation(c.config, OpCreate)
-	return &WorktaskCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Worktask entities.
-func (c *WorktaskClient) CreateBulk(builders ...*WorktaskCreate) *WorktaskCreateBulk {
-	return &WorktaskCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *WorktaskClient) MapCreateBulk(slice any, setFunc func(*WorktaskCreate, int)) *WorktaskCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &WorktaskCreateBulk{err: fmt.Errorf("calling to WorktaskClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*WorktaskCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &WorktaskCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Worktask.
-func (c *WorktaskClient) Update() *WorktaskUpdate {
-	mutation := newWorktaskMutation(c.config, OpUpdate)
-	return &WorktaskUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *WorktaskClient) UpdateOne(w *Worktask) *WorktaskUpdateOne {
-	mutation := newWorktaskMutation(c.config, OpUpdateOne, withWorktask(w))
-	return &WorktaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *WorktaskClient) UpdateOneID(id int) *WorktaskUpdateOne {
-	mutation := newWorktaskMutation(c.config, OpUpdateOne, withWorktaskID(id))
-	return &WorktaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Worktask.
-func (c *WorktaskClient) Delete() *WorktaskDelete {
-	mutation := newWorktaskMutation(c.config, OpDelete)
-	return &WorktaskDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *WorktaskClient) DeleteOne(w *Worktask) *WorktaskDeleteOne {
-	return c.DeleteOneID(w.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *WorktaskClient) DeleteOneID(id int) *WorktaskDeleteOne {
-	builder := c.Delete().Where(worktask.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &WorktaskDeleteOne{builder}
-}
-
-// Query returns a query builder for Worktask.
-func (c *WorktaskClient) Query() *WorktaskQuery {
-	return &WorktaskQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeWorktask},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a Worktask entity by its id.
-func (c *WorktaskClient) Get(ctx context.Context, id int) (*Worktask, error) {
-	return c.Query().Where(worktask.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *WorktaskClient) GetX(ctx context.Context, id int) *Worktask {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryCompany queries the company edge of a Worktask.
-func (c *WorktaskClient) QueryCompany(w *Worktask) *CompanyQuery {
-	query := (&CompanyClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktask.Table, worktask.FieldID, id),
-			sqlgraph.To(company.Table, company.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, worktask.CompanyTable, worktask.CompanyColumn),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryCreatedBy queries the createdBy edge of a Worktask.
-func (c *WorktaskClient) QueryCreatedBy(w *Worktask) *UserQuery {
-	query := (&UserClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktask.Table, worktask.FieldID, id),
-			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, worktask.CreatedByTable, worktask.CreatedByColumn),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryAssignedTo queries the assignedTo edge of a Worktask.
-func (c *WorktaskClient) QueryAssignedTo(w *Worktask) *EmployeeQuery {
-	query := (&EmployeeClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktask.Table, worktask.FieldID, id),
-			sqlgraph.To(employee.Table, employee.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, worktask.AssignedToTable, worktask.AssignedToPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryWorkShifts queries the workShifts edge of a Worktask.
-func (c *WorktaskClient) QueryWorkShifts(w *Worktask) *WorkshiftQuery {
-	query := (&WorkshiftClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktask.Table, worktask.FieldID, id),
-			sqlgraph.To(workshift.Table, workshift.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, worktask.WorkShiftsTable, worktask.WorkShiftsColumn),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryWorkTags queries the workTags edge of a Worktask.
-func (c *WorktaskClient) QueryWorkTags(w *Worktask) *WorktagQuery {
-	query := (&WorktagClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := w.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(worktask.Table, worktask.FieldID, id),
-			sqlgraph.To(worktag.Table, worktag.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, worktask.WorkTagsTable, worktask.WorkTagsPrimaryKey...),
-		)
-		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *WorktaskClient) Hooks() []Hook {
-	hooks := c.hooks.Worktask
-	return append(hooks[:len(hooks):len(hooks)], worktask.Hooks[:]...)
-}
-
-// Interceptors returns the client interceptors.
-func (c *WorktaskClient) Interceptors() []Interceptor {
-	return c.inters.Worktask
-}
-
-func (c *WorktaskClient) mutate(ctx context.Context, m *WorktaskMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&WorktaskCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&WorktaskUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&WorktaskUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&WorktaskDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("generated: unknown Worktask mutation op: %q", m.Op())
-	}
-}
-
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
 		AccountingEntry, Company, Customer, Employee, File, Payable, Product, Project,
 		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift, Worktag, Worktask []ent.Hook
+		UserRole, Workshift []ent.Hook
 	}
 	inters struct {
 		AccountingEntry, Company, Customer, Employee, File, Payable, Product, Project,
 		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift, Worktag, Worktask []ent.Interceptor
+		UserRole, Workshift []ent.Interceptor
 	}
 )
 

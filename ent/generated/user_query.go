@@ -16,7 +16,7 @@ import (
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
-	"mazza/ent/generated/worktask"
+	"mazza/ent/generated/workshift"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -34,24 +34,32 @@ type UserQuery struct {
 	withAccountingEntries             *AccountingEntryQuery
 	withCompany                       *CompanyQuery
 	withAssignedRoles                 *UserRoleQuery
-	withCreatedTasks                  *WorktaskQuery
+	withSubordinates                  *UserQuery
+	withLeader                        *UserQuery
 	withEmployee                      *EmployeeQuery
 	withCreatedProjects               *ProjectQuery
 	withLeaderedProjects              *ProjectQuery
 	withAssignedProjectTasks          *ProjectTaskQuery
 	withParticipatedProjectTasks      *ProjectTaskQuery
+	withCreatedTasks                  *ProjectTaskQuery
 	withTokens                        *TokenQuery
+	withApprovedWorkShifts            *WorkshiftQuery
+	withWorkShifts                    *WorkshiftQuery
+	withFKs                           bool
 	loadTotal                         []func(context.Context, []*User) error
 	modifiers                         []func(*sql.Selector)
 	withNamedAccountingEntries        map[string]*AccountingEntryQuery
 	withNamedCompany                  map[string]*CompanyQuery
 	withNamedAssignedRoles            map[string]*UserRoleQuery
-	withNamedCreatedTasks             map[string]*WorktaskQuery
+	withNamedSubordinates             map[string]*UserQuery
 	withNamedCreatedProjects          map[string]*ProjectQuery
 	withNamedLeaderedProjects         map[string]*ProjectQuery
 	withNamedAssignedProjectTasks     map[string]*ProjectTaskQuery
 	withNamedParticipatedProjectTasks map[string]*ProjectTaskQuery
+	withNamedCreatedTasks             map[string]*ProjectTaskQuery
 	withNamedTokens                   map[string]*TokenQuery
+	withNamedApprovedWorkShifts       map[string]*WorkshiftQuery
+	withNamedWorkShifts               map[string]*WorkshiftQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -154,9 +162,9 @@ func (uq *UserQuery) QueryAssignedRoles() *UserRoleQuery {
 	return query
 }
 
-// QueryCreatedTasks chains the current query on the "createdTasks" edge.
-func (uq *UserQuery) QueryCreatedTasks() *WorktaskQuery {
-	query := (&WorktaskClient{config: uq.config}).Query()
+// QuerySubordinates chains the current query on the "subordinates" edge.
+func (uq *UserQuery) QuerySubordinates() *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := uq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -167,8 +175,30 @@ func (uq *UserQuery) QueryCreatedTasks() *WorktaskQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(worktask.Table, worktask.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedTasksTable, user.CreatedTasksColumn),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.SubordinatesTable, user.SubordinatesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLeader chains the current query on the "leader" edge.
+func (uq *UserQuery) QueryLeader() *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, user.LeaderTable, user.LeaderColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -286,6 +316,28 @@ func (uq *UserQuery) QueryParticipatedProjectTasks() *ProjectTaskQuery {
 	return query
 }
 
+// QueryCreatedTasks chains the current query on the "createdTasks" edge.
+func (uq *UserQuery) QueryCreatedTasks() *ProjectTaskQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(projecttask.Table, projecttask.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedTasksTable, user.CreatedTasksColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // QueryTokens chains the current query on the "tokens" edge.
 func (uq *UserQuery) QueryTokens() *TokenQuery {
 	query := (&TokenClient{config: uq.config}).Query()
@@ -301,6 +353,50 @@ func (uq *UserQuery) QueryTokens() *TokenQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(token.Table, token.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, user.TokensTable, user.TokensColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryApprovedWorkShifts chains the current query on the "approvedWorkShifts" edge.
+func (uq *UserQuery) QueryApprovedWorkShifts() *WorkshiftQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.ApprovedWorkShiftsTable, user.ApprovedWorkShiftsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryWorkShifts chains the current query on the "workShifts" edge.
+func (uq *UserQuery) QueryWorkShifts() *WorkshiftQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.WorkShiftsTable, user.WorkShiftsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -503,13 +599,17 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withAccountingEntries:        uq.withAccountingEntries.Clone(),
 		withCompany:                  uq.withCompany.Clone(),
 		withAssignedRoles:            uq.withAssignedRoles.Clone(),
-		withCreatedTasks:             uq.withCreatedTasks.Clone(),
+		withSubordinates:             uq.withSubordinates.Clone(),
+		withLeader:                   uq.withLeader.Clone(),
 		withEmployee:                 uq.withEmployee.Clone(),
 		withCreatedProjects:          uq.withCreatedProjects.Clone(),
 		withLeaderedProjects:         uq.withLeaderedProjects.Clone(),
 		withAssignedProjectTasks:     uq.withAssignedProjectTasks.Clone(),
 		withParticipatedProjectTasks: uq.withParticipatedProjectTasks.Clone(),
+		withCreatedTasks:             uq.withCreatedTasks.Clone(),
 		withTokens:                   uq.withTokens.Clone(),
+		withApprovedWorkShifts:       uq.withApprovedWorkShifts.Clone(),
+		withWorkShifts:               uq.withWorkShifts.Clone(),
 		// clone intermediate query.
 		sql:       uq.sql.Clone(),
 		path:      uq.path,
@@ -550,14 +650,25 @@ func (uq *UserQuery) WithAssignedRoles(opts ...func(*UserRoleQuery)) *UserQuery 
 	return uq
 }
 
-// WithCreatedTasks tells the query-builder to eager-load the nodes that are connected to
-// the "createdTasks" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithCreatedTasks(opts ...func(*WorktaskQuery)) *UserQuery {
-	query := (&WorktaskClient{config: uq.config}).Query()
+// WithSubordinates tells the query-builder to eager-load the nodes that are connected to
+// the "subordinates" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithSubordinates(opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	uq.withCreatedTasks = query
+	uq.withSubordinates = query
+	return uq
+}
+
+// WithLeader tells the query-builder to eager-load the nodes that are connected to
+// the "leader" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithLeader(opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withLeader = query
 	return uq
 }
 
@@ -616,6 +727,17 @@ func (uq *UserQuery) WithParticipatedProjectTasks(opts ...func(*ProjectTaskQuery
 	return uq
 }
 
+// WithCreatedTasks tells the query-builder to eager-load the nodes that are connected to
+// the "createdTasks" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithCreatedTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withCreatedTasks = query
+	return uq
+}
+
 // WithTokens tells the query-builder to eager-load the nodes that are connected to
 // the "tokens" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithTokens(opts ...func(*TokenQuery)) *UserQuery {
@@ -624,6 +746,28 @@ func (uq *UserQuery) WithTokens(opts ...func(*TokenQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withTokens = query
+	return uq
+}
+
+// WithApprovedWorkShifts tells the query-builder to eager-load the nodes that are connected to
+// the "approvedWorkShifts" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithApprovedWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withApprovedWorkShifts = query
+	return uq
+}
+
+// WithWorkShifts tells the query-builder to eager-load the nodes that are connected to
+// the "workShifts" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withWorkShifts = query
 	return uq
 }
 
@@ -704,20 +848,31 @@ func (uq *UserQuery) prepareQuery(ctx context.Context) error {
 func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, error) {
 	var (
 		nodes       = []*User{}
+		withFKs     = uq.withFKs
 		_spec       = uq.querySpec()
-		loadedTypes = [10]bool{
+		loadedTypes = [14]bool{
 			uq.withAccountingEntries != nil,
 			uq.withCompany != nil,
 			uq.withAssignedRoles != nil,
-			uq.withCreatedTasks != nil,
+			uq.withSubordinates != nil,
+			uq.withLeader != nil,
 			uq.withEmployee != nil,
 			uq.withCreatedProjects != nil,
 			uq.withLeaderedProjects != nil,
 			uq.withAssignedProjectTasks != nil,
 			uq.withParticipatedProjectTasks != nil,
+			uq.withCreatedTasks != nil,
 			uq.withTokens != nil,
+			uq.withApprovedWorkShifts != nil,
+			uq.withWorkShifts != nil,
 		}
 	)
+	if uq.withLeader != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, user.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*User).scanValues(nil, columns)
 	}
@@ -760,10 +915,16 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
-	if query := uq.withCreatedTasks; query != nil {
-		if err := uq.loadCreatedTasks(ctx, query, nodes,
-			func(n *User) { n.Edges.CreatedTasks = []*Worktask{} },
-			func(n *User, e *Worktask) { n.Edges.CreatedTasks = append(n.Edges.CreatedTasks, e) }); err != nil {
+	if query := uq.withSubordinates; query != nil {
+		if err := uq.loadSubordinates(ctx, query, nodes,
+			func(n *User) { n.Edges.Subordinates = []*User{} },
+			func(n *User, e *User) { n.Edges.Subordinates = append(n.Edges.Subordinates, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withLeader; query != nil {
+		if err := uq.loadLeader(ctx, query, nodes, nil,
+			func(n *User, e *User) { n.Edges.Leader = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -803,10 +964,31 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withCreatedTasks; query != nil {
+		if err := uq.loadCreatedTasks(ctx, query, nodes,
+			func(n *User) { n.Edges.CreatedTasks = []*ProjectTask{} },
+			func(n *User, e *ProjectTask) { n.Edges.CreatedTasks = append(n.Edges.CreatedTasks, e) }); err != nil {
+			return nil, err
+		}
+	}
 	if query := uq.withTokens; query != nil {
 		if err := uq.loadTokens(ctx, query, nodes,
 			func(n *User) { n.Edges.Tokens = []*Token{} },
 			func(n *User, e *Token) { n.Edges.Tokens = append(n.Edges.Tokens, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withApprovedWorkShifts; query != nil {
+		if err := uq.loadApprovedWorkShifts(ctx, query, nodes,
+			func(n *User) { n.Edges.ApprovedWorkShifts = []*Workshift{} },
+			func(n *User, e *Workshift) { n.Edges.ApprovedWorkShifts = append(n.Edges.ApprovedWorkShifts, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withWorkShifts; query != nil {
+		if err := uq.loadWorkShifts(ctx, query, nodes,
+			func(n *User) { n.Edges.WorkShifts = []*Workshift{} },
+			func(n *User, e *Workshift) { n.Edges.WorkShifts = append(n.Edges.WorkShifts, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -831,10 +1013,10 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
-	for name, query := range uq.withNamedCreatedTasks {
-		if err := uq.loadCreatedTasks(ctx, query, nodes,
-			func(n *User) { n.appendNamedCreatedTasks(name) },
-			func(n *User, e *Worktask) { n.appendNamedCreatedTasks(name, e) }); err != nil {
+	for name, query := range uq.withNamedSubordinates {
+		if err := uq.loadSubordinates(ctx, query, nodes,
+			func(n *User) { n.appendNamedSubordinates(name) },
+			func(n *User, e *User) { n.appendNamedSubordinates(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -866,10 +1048,31 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	for name, query := range uq.withNamedCreatedTasks {
+		if err := uq.loadCreatedTasks(ctx, query, nodes,
+			func(n *User) { n.appendNamedCreatedTasks(name) },
+			func(n *User, e *ProjectTask) { n.appendNamedCreatedTasks(name, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range uq.withNamedTokens {
 		if err := uq.loadTokens(ctx, query, nodes,
 			func(n *User) { n.appendNamedTokens(name) },
 			func(n *User, e *Token) { n.appendNamedTokens(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedApprovedWorkShifts {
+		if err := uq.loadApprovedWorkShifts(ctx, query, nodes,
+			func(n *User) { n.appendNamedApprovedWorkShifts(name) },
+			func(n *User, e *Workshift) { n.appendNamedApprovedWorkShifts(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedWorkShifts {
+		if err := uq.loadWorkShifts(ctx, query, nodes,
+			func(n *User) { n.appendNamedWorkShifts(name) },
+			func(n *User, e *Workshift) { n.appendNamedWorkShifts(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1034,7 +1237,7 @@ func (uq *UserQuery) loadAssignedRoles(ctx context.Context, query *UserRoleQuery
 	}
 	return nil
 }
-func (uq *UserQuery) loadCreatedTasks(ctx context.Context, query *WorktaskQuery, nodes []*User, init func(*User), assign func(*User, *Worktask)) error {
+func (uq *UserQuery) loadSubordinates(ctx context.Context, query *UserQuery, nodes []*User, init func(*User), assign func(*User, *User)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*User)
 	for i := range nodes {
@@ -1045,23 +1248,55 @@ func (uq *UserQuery) loadCreatedTasks(ctx context.Context, query *WorktaskQuery,
 		}
 	}
 	query.withFKs = true
-	query.Where(predicate.Worktask(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(user.CreatedTasksColumn), fks...))
+	query.Where(predicate.User(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.SubordinatesColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.user_created_tasks
+		fk := n.user_subordinates
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "user_created_tasks" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "user_subordinates" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "user_created_tasks" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "user_subordinates" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadLeader(ctx context.Context, query *UserQuery, nodes []*User, init func(*User), assign func(*User, *User)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*User)
+	for i := range nodes {
+		if nodes[i].user_subordinates == nil {
+			continue
+		}
+		fk := *nodes[i].user_subordinates
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_subordinates" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
 	}
 	return nil
 }
@@ -1247,6 +1482,37 @@ func (uq *UserQuery) loadParticipatedProjectTasks(ctx context.Context, query *Pr
 	}
 	return nil
 }
+func (uq *UserQuery) loadCreatedTasks(ctx context.Context, query *ProjectTaskQuery, nodes []*User, init func(*User), assign func(*User, *ProjectTask)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.ProjectTask(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.CreatedTasksColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_created_tasks
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_created_tasks" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_created_tasks" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 func (uq *UserQuery) loadTokens(ctx context.Context, query *TokenQuery, nodes []*User, init func(*User), assign func(*User, *Token)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*User)
@@ -1273,6 +1539,68 @@ func (uq *UserQuery) loadTokens(ctx context.Context, query *TokenQuery, nodes []
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "user_tokens" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadApprovedWorkShifts(ctx context.Context, query *WorkshiftQuery, nodes []*User, init func(*User), assign func(*User, *Workshift)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Workshift(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.ApprovedWorkShiftsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_approved_work_shifts
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_approved_work_shifts" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_approved_work_shifts" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadWorkShifts(ctx context.Context, query *WorkshiftQuery, nodes []*User, init func(*User), assign func(*User, *Workshift)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Workshift(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.WorkShiftsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_work_shifts
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_work_shifts" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_work_shifts" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1414,17 +1742,17 @@ func (uq *UserQuery) WithNamedAssignedRoles(name string, opts ...func(*UserRoleQ
 	return uq
 }
 
-// WithNamedCreatedTasks tells the query-builder to eager-load the nodes that are connected to the "createdTasks"
+// WithNamedSubordinates tells the query-builder to eager-load the nodes that are connected to the "subordinates"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithNamedCreatedTasks(name string, opts ...func(*WorktaskQuery)) *UserQuery {
-	query := (&WorktaskClient{config: uq.config}).Query()
+func (uq *UserQuery) WithNamedSubordinates(name string, opts ...func(*UserQuery)) *UserQuery {
+	query := (&UserClient{config: uq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	if uq.withNamedCreatedTasks == nil {
-		uq.withNamedCreatedTasks = make(map[string]*WorktaskQuery)
+	if uq.withNamedSubordinates == nil {
+		uq.withNamedSubordinates = make(map[string]*UserQuery)
 	}
-	uq.withNamedCreatedTasks[name] = query
+	uq.withNamedSubordinates[name] = query
 	return uq
 }
 
@@ -1484,6 +1812,20 @@ func (uq *UserQuery) WithNamedParticipatedProjectTasks(name string, opts ...func
 	return uq
 }
 
+// WithNamedCreatedTasks tells the query-builder to eager-load the nodes that are connected to the "createdTasks"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedCreatedTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
+	query := (&ProjectTaskClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedCreatedTasks == nil {
+		uq.withNamedCreatedTasks = make(map[string]*ProjectTaskQuery)
+	}
+	uq.withNamedCreatedTasks[name] = query
+	return uq
+}
+
 // WithNamedTokens tells the query-builder to eager-load the nodes that are connected to the "tokens"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedTokens(name string, opts ...func(*TokenQuery)) *UserQuery {
@@ -1495,6 +1837,34 @@ func (uq *UserQuery) WithNamedTokens(name string, opts ...func(*TokenQuery)) *Us
 		uq.withNamedTokens = make(map[string]*TokenQuery)
 	}
 	uq.withNamedTokens[name] = query
+	return uq
+}
+
+// WithNamedApprovedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "approvedWorkShifts"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedApprovedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *UserQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedApprovedWorkShifts == nil {
+		uq.withNamedApprovedWorkShifts = make(map[string]*WorkshiftQuery)
+	}
+	uq.withNamedApprovedWorkShifts[name] = query
+	return uq
+}
+
+// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "workShifts"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *UserQuery {
+	query := (&WorkshiftClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedWorkShifts == nil {
+		uq.withNamedWorkShifts = make(map[string]*WorkshiftQuery)
+	}
+	uq.withNamedWorkShifts[name] = query
 	return uq
 }
 

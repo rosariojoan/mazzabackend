@@ -24,8 +24,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"sync"
 	"time"
 
@@ -59,8 +57,6 @@ const (
 	TypeUser             = "User"
 	TypeUserRole         = "UserRole"
 	TypeWorkshift        = "Workshift"
-	TypeWorktag          = "Worktag"
-	TypeWorktask         = "Worktask"
 )
 
 // AccountingEntryMutation represents an operation that mutates the AccountingEntry nodes in the graph.
@@ -1631,12 +1627,6 @@ type CompanyMutation struct {
 	workShifts               map[int]struct{}
 	removedworkShifts        map[int]struct{}
 	clearedworkShifts        bool
-	workTasks                map[int]struct{}
-	removedworkTasks         map[int]struct{}
-	clearedworkTasks         bool
-	workTags                 map[int]struct{}
-	removedworkTags          map[int]struct{}
-	clearedworkTags          bool
 	users                    map[int]struct{}
 	removedusers             map[int]struct{}
 	clearedusers             bool
@@ -3338,114 +3328,6 @@ func (m *CompanyMutation) ResetWorkShifts() {
 	m.removedworkShifts = nil
 }
 
-// AddWorkTaskIDs adds the "workTasks" edge to the Worktask entity by ids.
-func (m *CompanyMutation) AddWorkTaskIDs(ids ...int) {
-	if m.workTasks == nil {
-		m.workTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workTasks[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkTasks clears the "workTasks" edge to the Worktask entity.
-func (m *CompanyMutation) ClearWorkTasks() {
-	m.clearedworkTasks = true
-}
-
-// WorkTasksCleared reports if the "workTasks" edge to the Worktask entity was cleared.
-func (m *CompanyMutation) WorkTasksCleared() bool {
-	return m.clearedworkTasks
-}
-
-// RemoveWorkTaskIDs removes the "workTasks" edge to the Worktask entity by IDs.
-func (m *CompanyMutation) RemoveWorkTaskIDs(ids ...int) {
-	if m.removedworkTasks == nil {
-		m.removedworkTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workTasks, ids[i])
-		m.removedworkTasks[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkTasks returns the removed IDs of the "workTasks" edge to the Worktask entity.
-func (m *CompanyMutation) RemovedWorkTasksIDs() (ids []int) {
-	for id := range m.removedworkTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkTasksIDs returns the "workTasks" edge IDs in the mutation.
-func (m *CompanyMutation) WorkTasksIDs() (ids []int) {
-	for id := range m.workTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkTasks resets all changes to the "workTasks" edge.
-func (m *CompanyMutation) ResetWorkTasks() {
-	m.workTasks = nil
-	m.clearedworkTasks = false
-	m.removedworkTasks = nil
-}
-
-// AddWorkTagIDs adds the "workTags" edge to the Worktag entity by ids.
-func (m *CompanyMutation) AddWorkTagIDs(ids ...int) {
-	if m.workTags == nil {
-		m.workTags = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workTags[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkTags clears the "workTags" edge to the Worktag entity.
-func (m *CompanyMutation) ClearWorkTags() {
-	m.clearedworkTags = true
-}
-
-// WorkTagsCleared reports if the "workTags" edge to the Worktag entity was cleared.
-func (m *CompanyMutation) WorkTagsCleared() bool {
-	return m.clearedworkTags
-}
-
-// RemoveWorkTagIDs removes the "workTags" edge to the Worktag entity by IDs.
-func (m *CompanyMutation) RemoveWorkTagIDs(ids ...int) {
-	if m.removedworkTags == nil {
-		m.removedworkTags = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workTags, ids[i])
-		m.removedworkTags[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkTags returns the removed IDs of the "workTags" edge to the Worktag entity.
-func (m *CompanyMutation) RemovedWorkTagsIDs() (ids []int) {
-	for id := range m.removedworkTags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkTagsIDs returns the "workTags" edge IDs in the mutation.
-func (m *CompanyMutation) WorkTagsIDs() (ids []int) {
-	for id := range m.workTags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkTags resets all changes to the "workTags" edge.
-func (m *CompanyMutation) ResetWorkTags() {
-	m.workTags = nil
-	m.clearedworkTags = false
-	m.removedworkTags = nil
-}
-
 // AddUserIDs adds the "users" edge to the User entity by ids.
 func (m *CompanyMutation) AddUserIDs(ids ...int) {
 	if m.users == nil {
@@ -4191,7 +4073,7 @@ func (m *CompanyMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CompanyMutation) AddedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 14)
 	if m.availableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4224,12 +4106,6 @@ func (m *CompanyMutation) AddedEdges() []string {
 	}
 	if m.workShifts != nil {
 		edges = append(edges, company.EdgeWorkShifts)
-	}
-	if m.workTasks != nil {
-		edges = append(edges, company.EdgeWorkTasks)
-	}
-	if m.workTags != nil {
-		edges = append(edges, company.EdgeWorkTags)
 	}
 	if m.users != nil {
 		edges = append(edges, company.EdgeUsers)
@@ -4313,18 +4189,6 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case company.EdgeWorkTasks:
-		ids := make([]ent.Value, 0, len(m.workTasks))
-		for id := range m.workTasks {
-			ids = append(ids, id)
-		}
-		return ids
-	case company.EdgeWorkTags:
-		ids := make([]ent.Value, 0, len(m.workTags))
-		for id := range m.workTags {
-			ids = append(ids, id)
-		}
-		return ids
 	case company.EdgeUsers:
 		ids := make([]ent.Value, 0, len(m.users))
 		for id := range m.users {
@@ -4347,7 +4211,7 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CompanyMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 14)
 	if m.removedavailableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4380,12 +4244,6 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	}
 	if m.removedworkShifts != nil {
 		edges = append(edges, company.EdgeWorkShifts)
-	}
-	if m.removedworkTasks != nil {
-		edges = append(edges, company.EdgeWorkTasks)
-	}
-	if m.removedworkTags != nil {
-		edges = append(edges, company.EdgeWorkTags)
 	}
 	if m.removedusers != nil {
 		edges = append(edges, company.EdgeUsers)
@@ -4466,18 +4324,6 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case company.EdgeWorkTasks:
-		ids := make([]ent.Value, 0, len(m.removedworkTasks))
-		for id := range m.removedworkTasks {
-			ids = append(ids, id)
-		}
-		return ids
-	case company.EdgeWorkTags:
-		ids := make([]ent.Value, 0, len(m.removedworkTags))
-		for id := range m.removedworkTags {
-			ids = append(ids, id)
-		}
-		return ids
 	case company.EdgeUsers:
 		ids := make([]ent.Value, 0, len(m.removedusers))
 		for id := range m.removedusers {
@@ -4496,7 +4342,7 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CompanyMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 14)
 	if m.clearedavailableRoles {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4529,12 +4375,6 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	}
 	if m.clearedworkShifts {
 		edges = append(edges, company.EdgeWorkShifts)
-	}
-	if m.clearedworkTasks {
-		edges = append(edges, company.EdgeWorkTasks)
-	}
-	if m.clearedworkTags {
-		edges = append(edges, company.EdgeWorkTags)
 	}
 	if m.clearedusers {
 		edges = append(edges, company.EdgeUsers)
@@ -4574,10 +4414,6 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 		return m.clearedtreasuries
 	case company.EdgeWorkShifts:
 		return m.clearedworkShifts
-	case company.EdgeWorkTasks:
-		return m.clearedworkTasks
-	case company.EdgeWorkTags:
-		return m.clearedworkTags
 	case company.EdgeUsers:
 		return m.clearedusers
 	case company.EdgeDaughterCompanies:
@@ -4635,12 +4471,6 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 		return nil
 	case company.EdgeWorkShifts:
 		m.ResetWorkShifts()
-		return nil
-	case company.EdgeWorkTasks:
-		m.ResetWorkTasks()
-		return nil
-	case company.EdgeWorkTags:
-		m.ResetWorkTags()
 		return nil
 	case company.EdgeUsers:
 		m.ResetUsers()
@@ -5809,39 +5639,25 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 // EmployeeMutation represents an operation that mutates the Employee nodes in the graph.
 type EmployeeMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	createdAt                 *time.Time
-	updatedAt                 *time.Time
-	deletedAt                 *time.Time
-	name                      *string
-	gender                    *employee.Gender
-	position                  *string
-	email                     *string
-	phone                     *string
-	clearedFields             map[string]struct{}
-	company                   *int
-	clearedcompany            bool
-	user                      *int
-	cleareduser               bool
-	subordinates              map[int]struct{}
-	removedsubordinates       map[int]struct{}
-	clearedsubordinates       bool
-	leader                    *int
-	clearedleader             bool
-	workShifts                map[int]struct{}
-	removedworkShifts         map[int]struct{}
-	clearedworkShifts         bool
-	approvedWorkShifts        map[int]struct{}
-	removedapprovedWorkShifts map[int]struct{}
-	clearedapprovedWorkShifts bool
-	assignedTasks             map[int]struct{}
-	removedassignedTasks      map[int]struct{}
-	clearedassignedTasks      bool
-	done                      bool
-	oldValue                  func(context.Context) (*Employee, error)
-	predicates                []predicate.Employee
+	op             Op
+	typ            string
+	id             *int
+	createdAt      *time.Time
+	updatedAt      *time.Time
+	deletedAt      *time.Time
+	name           *string
+	gender         *employee.Gender
+	position       *string
+	email          *string
+	phone          *string
+	clearedFields  map[string]struct{}
+	company        *int
+	clearedcompany bool
+	user           *int
+	cleareduser    bool
+	done           bool
+	oldValue       func(context.Context) (*Employee, error)
+	predicates     []predicate.Employee
 }
 
 var _ ent.Mutation = (*EmployeeMutation)(nil)
@@ -6347,261 +6163,6 @@ func (m *EmployeeMutation) ResetUser() {
 	m.cleareduser = false
 }
 
-// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by ids.
-func (m *EmployeeMutation) AddSubordinateIDs(ids ...int) {
-	if m.subordinates == nil {
-		m.subordinates = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.subordinates[ids[i]] = struct{}{}
-	}
-}
-
-// ClearSubordinates clears the "subordinates" edge to the Employee entity.
-func (m *EmployeeMutation) ClearSubordinates() {
-	m.clearedsubordinates = true
-}
-
-// SubordinatesCleared reports if the "subordinates" edge to the Employee entity was cleared.
-func (m *EmployeeMutation) SubordinatesCleared() bool {
-	return m.clearedsubordinates
-}
-
-// RemoveSubordinateIDs removes the "subordinates" edge to the Employee entity by IDs.
-func (m *EmployeeMutation) RemoveSubordinateIDs(ids ...int) {
-	if m.removedsubordinates == nil {
-		m.removedsubordinates = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.subordinates, ids[i])
-		m.removedsubordinates[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedSubordinates returns the removed IDs of the "subordinates" edge to the Employee entity.
-func (m *EmployeeMutation) RemovedSubordinatesIDs() (ids []int) {
-	for id := range m.removedsubordinates {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// SubordinatesIDs returns the "subordinates" edge IDs in the mutation.
-func (m *EmployeeMutation) SubordinatesIDs() (ids []int) {
-	for id := range m.subordinates {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetSubordinates resets all changes to the "subordinates" edge.
-func (m *EmployeeMutation) ResetSubordinates() {
-	m.subordinates = nil
-	m.clearedsubordinates = false
-	m.removedsubordinates = nil
-}
-
-// SetLeaderID sets the "leader" edge to the Employee entity by id.
-func (m *EmployeeMutation) SetLeaderID(id int) {
-	m.leader = &id
-}
-
-// ClearLeader clears the "leader" edge to the Employee entity.
-func (m *EmployeeMutation) ClearLeader() {
-	m.clearedleader = true
-}
-
-// LeaderCleared reports if the "leader" edge to the Employee entity was cleared.
-func (m *EmployeeMutation) LeaderCleared() bool {
-	return m.clearedleader
-}
-
-// LeaderID returns the "leader" edge ID in the mutation.
-func (m *EmployeeMutation) LeaderID() (id int, exists bool) {
-	if m.leader != nil {
-		return *m.leader, true
-	}
-	return
-}
-
-// LeaderIDs returns the "leader" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// LeaderID instead. It exists only for internal usage by the builders.
-func (m *EmployeeMutation) LeaderIDs() (ids []int) {
-	if id := m.leader; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetLeader resets all changes to the "leader" edge.
-func (m *EmployeeMutation) ResetLeader() {
-	m.leader = nil
-	m.clearedleader = false
-}
-
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
-func (m *EmployeeMutation) AddWorkShiftIDs(ids ...int) {
-	if m.workShifts == nil {
-		m.workShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workShifts[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
-func (m *EmployeeMutation) ClearWorkShifts() {
-	m.clearedworkShifts = true
-}
-
-// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
-func (m *EmployeeMutation) WorkShiftsCleared() bool {
-	return m.clearedworkShifts
-}
-
-// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
-func (m *EmployeeMutation) RemoveWorkShiftIDs(ids ...int) {
-	if m.removedworkShifts == nil {
-		m.removedworkShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workShifts, ids[i])
-		m.removedworkShifts[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
-func (m *EmployeeMutation) RemovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedworkShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
-func (m *EmployeeMutation) WorkShiftsIDs() (ids []int) {
-	for id := range m.workShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkShifts resets all changes to the "workShifts" edge.
-func (m *EmployeeMutation) ResetWorkShifts() {
-	m.workShifts = nil
-	m.clearedworkShifts = false
-	m.removedworkShifts = nil
-}
-
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by ids.
-func (m *EmployeeMutation) AddApprovedWorkShiftIDs(ids ...int) {
-	if m.approvedWorkShifts == nil {
-		m.approvedWorkShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.approvedWorkShifts[ids[i]] = struct{}{}
-	}
-}
-
-// ClearApprovedWorkShifts clears the "approvedWorkShifts" edge to the Workshift entity.
-func (m *EmployeeMutation) ClearApprovedWorkShifts() {
-	m.clearedapprovedWorkShifts = true
-}
-
-// ApprovedWorkShiftsCleared reports if the "approvedWorkShifts" edge to the Workshift entity was cleared.
-func (m *EmployeeMutation) ApprovedWorkShiftsCleared() bool {
-	return m.clearedapprovedWorkShifts
-}
-
-// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to the Workshift entity by IDs.
-func (m *EmployeeMutation) RemoveApprovedWorkShiftIDs(ids ...int) {
-	if m.removedapprovedWorkShifts == nil {
-		m.removedapprovedWorkShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.approvedWorkShifts, ids[i])
-		m.removedapprovedWorkShifts[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedApprovedWorkShifts returns the removed IDs of the "approvedWorkShifts" edge to the Workshift entity.
-func (m *EmployeeMutation) RemovedApprovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedapprovedWorkShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ApprovedWorkShiftsIDs returns the "approvedWorkShifts" edge IDs in the mutation.
-func (m *EmployeeMutation) ApprovedWorkShiftsIDs() (ids []int) {
-	for id := range m.approvedWorkShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetApprovedWorkShifts resets all changes to the "approvedWorkShifts" edge.
-func (m *EmployeeMutation) ResetApprovedWorkShifts() {
-	m.approvedWorkShifts = nil
-	m.clearedapprovedWorkShifts = false
-	m.removedapprovedWorkShifts = nil
-}
-
-// AddAssignedTaskIDs adds the "assignedTasks" edge to the Worktask entity by ids.
-func (m *EmployeeMutation) AddAssignedTaskIDs(ids ...int) {
-	if m.assignedTasks == nil {
-		m.assignedTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.assignedTasks[ids[i]] = struct{}{}
-	}
-}
-
-// ClearAssignedTasks clears the "assignedTasks" edge to the Worktask entity.
-func (m *EmployeeMutation) ClearAssignedTasks() {
-	m.clearedassignedTasks = true
-}
-
-// AssignedTasksCleared reports if the "assignedTasks" edge to the Worktask entity was cleared.
-func (m *EmployeeMutation) AssignedTasksCleared() bool {
-	return m.clearedassignedTasks
-}
-
-// RemoveAssignedTaskIDs removes the "assignedTasks" edge to the Worktask entity by IDs.
-func (m *EmployeeMutation) RemoveAssignedTaskIDs(ids ...int) {
-	if m.removedassignedTasks == nil {
-		m.removedassignedTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.assignedTasks, ids[i])
-		m.removedassignedTasks[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedAssignedTasks returns the removed IDs of the "assignedTasks" edge to the Worktask entity.
-func (m *EmployeeMutation) RemovedAssignedTasksIDs() (ids []int) {
-	for id := range m.removedassignedTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// AssignedTasksIDs returns the "assignedTasks" edge IDs in the mutation.
-func (m *EmployeeMutation) AssignedTasksIDs() (ids []int) {
-	for id := range m.assignedTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetAssignedTasks resets all changes to the "assignedTasks" edge.
-func (m *EmployeeMutation) ResetAssignedTasks() {
-	m.assignedTasks = nil
-	m.clearedassignedTasks = false
-	m.removedassignedTasks = nil
-}
-
 // Where appends a list predicates to the EmployeeMutation builder.
 func (m *EmployeeMutation) Where(ps ...predicate.Employee) {
 	m.predicates = append(m.predicates, ps...)
@@ -6875,27 +6436,12 @@ func (m *EmployeeMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EmployeeMutation) AddedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 2)
 	if m.company != nil {
 		edges = append(edges, employee.EdgeCompany)
 	}
 	if m.user != nil {
 		edges = append(edges, employee.EdgeUser)
-	}
-	if m.subordinates != nil {
-		edges = append(edges, employee.EdgeSubordinates)
-	}
-	if m.leader != nil {
-		edges = append(edges, employee.EdgeLeader)
-	}
-	if m.workShifts != nil {
-		edges = append(edges, employee.EdgeWorkShifts)
-	}
-	if m.approvedWorkShifts != nil {
-		edges = append(edges, employee.EdgeApprovedWorkShifts)
-	}
-	if m.assignedTasks != nil {
-		edges = append(edges, employee.EdgeAssignedTasks)
 	}
 	return edges
 }
@@ -6912,111 +6458,30 @@ func (m *EmployeeMutation) AddedIDs(name string) []ent.Value {
 		if id := m.user; id != nil {
 			return []ent.Value{*id}
 		}
-	case employee.EdgeSubordinates:
-		ids := make([]ent.Value, 0, len(m.subordinates))
-		for id := range m.subordinates {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeLeader:
-		if id := m.leader; id != nil {
-			return []ent.Value{*id}
-		}
-	case employee.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.workShifts))
-		for id := range m.workShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeApprovedWorkShifts:
-		ids := make([]ent.Value, 0, len(m.approvedWorkShifts))
-		for id := range m.approvedWorkShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeAssignedTasks:
-		ids := make([]ent.Value, 0, len(m.assignedTasks))
-		for id := range m.assignedTasks {
-			ids = append(ids, id)
-		}
-		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EmployeeMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 7)
-	if m.removedsubordinates != nil {
-		edges = append(edges, employee.EdgeSubordinates)
-	}
-	if m.removedworkShifts != nil {
-		edges = append(edges, employee.EdgeWorkShifts)
-	}
-	if m.removedapprovedWorkShifts != nil {
-		edges = append(edges, employee.EdgeApprovedWorkShifts)
-	}
-	if m.removedassignedTasks != nil {
-		edges = append(edges, employee.EdgeAssignedTasks)
-	}
+	edges := make([]string, 0, 2)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *EmployeeMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case employee.EdgeSubordinates:
-		ids := make([]ent.Value, 0, len(m.removedsubordinates))
-		for id := range m.removedsubordinates {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedworkShifts))
-		for id := range m.removedworkShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeApprovedWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedapprovedWorkShifts))
-		for id := range m.removedapprovedWorkShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case employee.EdgeAssignedTasks:
-		ids := make([]ent.Value, 0, len(m.removedassignedTasks))
-		for id := range m.removedassignedTasks {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EmployeeMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 2)
 	if m.clearedcompany {
 		edges = append(edges, employee.EdgeCompany)
 	}
 	if m.cleareduser {
 		edges = append(edges, employee.EdgeUser)
-	}
-	if m.clearedsubordinates {
-		edges = append(edges, employee.EdgeSubordinates)
-	}
-	if m.clearedleader {
-		edges = append(edges, employee.EdgeLeader)
-	}
-	if m.clearedworkShifts {
-		edges = append(edges, employee.EdgeWorkShifts)
-	}
-	if m.clearedapprovedWorkShifts {
-		edges = append(edges, employee.EdgeApprovedWorkShifts)
-	}
-	if m.clearedassignedTasks {
-		edges = append(edges, employee.EdgeAssignedTasks)
 	}
 	return edges
 }
@@ -7029,16 +6494,6 @@ func (m *EmployeeMutation) EdgeCleared(name string) bool {
 		return m.clearedcompany
 	case employee.EdgeUser:
 		return m.cleareduser
-	case employee.EdgeSubordinates:
-		return m.clearedsubordinates
-	case employee.EdgeLeader:
-		return m.clearedleader
-	case employee.EdgeWorkShifts:
-		return m.clearedworkShifts
-	case employee.EdgeApprovedWorkShifts:
-		return m.clearedapprovedWorkShifts
-	case employee.EdgeAssignedTasks:
-		return m.clearedassignedTasks
 	}
 	return false
 }
@@ -7053,9 +6508,6 @@ func (m *EmployeeMutation) ClearEdge(name string) error {
 	case employee.EdgeUser:
 		m.ClearUser()
 		return nil
-	case employee.EdgeLeader:
-		m.ClearLeader()
-		return nil
 	}
 	return fmt.Errorf("unknown Employee unique edge %s", name)
 }
@@ -7069,21 +6521,6 @@ func (m *EmployeeMutation) ResetEdge(name string) error {
 		return nil
 	case employee.EdgeUser:
 		m.ResetUser()
-		return nil
-	case employee.EdgeSubordinates:
-		m.ResetSubordinates()
-		return nil
-	case employee.EdgeLeader:
-		m.ResetLeader()
-		return nil
-	case employee.EdgeWorkShifts:
-		m.ResetWorkShifts()
-		return nil
-	case employee.EdgeApprovedWorkShifts:
-		m.ResetApprovedWorkShifts()
-		return nil
-	case employee.EdgeAssignedTasks:
-		m.ResetAssignedTasks()
 		return nil
 	}
 	return fmt.Errorf("unknown Employee edge %s", name)
@@ -11911,6 +11348,7 @@ type ProjectTaskMutation struct {
 	op                  Op
 	typ                 string
 	id                  *int
+	createdAt           *time.Time
 	name                *string
 	assigneeName        *string
 	location            *string
@@ -11927,6 +11365,11 @@ type ProjectTaskMutation struct {
 	participants        map[int]struct{}
 	removedparticipants map[int]struct{}
 	clearedparticipants bool
+	createdBy           *int
+	clearedcreatedBy    bool
+	workShifts          map[int]struct{}
+	removedworkShifts   map[int]struct{}
+	clearedworkShifts   bool
 	done                bool
 	oldValue            func(context.Context) (*ProjectTask, error)
 	predicates          []predicate.ProjectTask
@@ -12028,6 +11471,55 @@ func (m *ProjectTaskMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetCreatedAt sets the "createdAt" field.
+func (m *ProjectTaskMutation) SetCreatedAt(t time.Time) {
+	m.createdAt = &t
+}
+
+// CreatedAt returns the value of the "createdAt" field in the mutation.
+func (m *ProjectTaskMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.createdAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "createdAt" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "createdAt" field.
+func (m *ProjectTaskMutation) ClearCreatedAt() {
+	m.createdAt = nil
+	m.clearedFields[projecttask.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "createdAt" field was cleared in this mutation.
+func (m *ProjectTaskMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "createdAt" field.
+func (m *ProjectTaskMutation) ResetCreatedAt() {
+	m.createdAt = nil
+	delete(m.clearedFields, projecttask.FieldCreatedAt)
 }
 
 // SetName sets the "name" field.
@@ -12476,6 +11968,99 @@ func (m *ProjectTaskMutation) ResetParticipants() {
 	m.removedparticipants = nil
 }
 
+// SetCreatedByID sets the "createdBy" edge to the User entity by id.
+func (m *ProjectTaskMutation) SetCreatedByID(id int) {
+	m.createdBy = &id
+}
+
+// ClearCreatedBy clears the "createdBy" edge to the User entity.
+func (m *ProjectTaskMutation) ClearCreatedBy() {
+	m.clearedcreatedBy = true
+}
+
+// CreatedByCleared reports if the "createdBy" edge to the User entity was cleared.
+func (m *ProjectTaskMutation) CreatedByCleared() bool {
+	return m.clearedcreatedBy
+}
+
+// CreatedByID returns the "createdBy" edge ID in the mutation.
+func (m *ProjectTaskMutation) CreatedByID() (id int, exists bool) {
+	if m.createdBy != nil {
+		return *m.createdBy, true
+	}
+	return
+}
+
+// CreatedByIDs returns the "createdBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CreatedByID instead. It exists only for internal usage by the builders.
+func (m *ProjectTaskMutation) CreatedByIDs() (ids []int) {
+	if id := m.createdBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCreatedBy resets all changes to the "createdBy" edge.
+func (m *ProjectTaskMutation) ResetCreatedBy() {
+	m.createdBy = nil
+	m.clearedcreatedBy = false
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
+func (m *ProjectTaskMutation) AddWorkShiftIDs(ids ...int) {
+	if m.workShifts == nil {
+		m.workShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.workShifts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
+func (m *ProjectTaskMutation) ClearWorkShifts() {
+	m.clearedworkShifts = true
+}
+
+// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
+func (m *ProjectTaskMutation) WorkShiftsCleared() bool {
+	return m.clearedworkShifts
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
+func (m *ProjectTaskMutation) RemoveWorkShiftIDs(ids ...int) {
+	if m.removedworkShifts == nil {
+		m.removedworkShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.workShifts, ids[i])
+		m.removedworkShifts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
+func (m *ProjectTaskMutation) RemovedWorkShiftsIDs() (ids []int) {
+	for id := range m.removedworkShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
+func (m *ProjectTaskMutation) WorkShiftsIDs() (ids []int) {
+	for id := range m.workShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetWorkShifts resets all changes to the "workShifts" edge.
+func (m *ProjectTaskMutation) ResetWorkShifts() {
+	m.workShifts = nil
+	m.clearedworkShifts = false
+	m.removedworkShifts = nil
+}
+
 // Where appends a list predicates to the ProjectTaskMutation builder.
 func (m *ProjectTaskMutation) Where(ps ...predicate.ProjectTask) {
 	m.predicates = append(m.predicates, ps...)
@@ -12510,7 +12095,10 @@ func (m *ProjectTaskMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectTaskMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
+	if m.createdAt != nil {
+		fields = append(fields, projecttask.FieldCreatedAt)
+	}
 	if m.name != nil {
 		fields = append(fields, projecttask.FieldName)
 	}
@@ -12543,6 +12131,8 @@ func (m *ProjectTaskMutation) Fields() []string {
 // schema.
 func (m *ProjectTaskMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case projecttask.FieldCreatedAt:
+		return m.CreatedAt()
 	case projecttask.FieldName:
 		return m.Name()
 	case projecttask.FieldAssigneeName:
@@ -12568,6 +12158,8 @@ func (m *ProjectTaskMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *ProjectTaskMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case projecttask.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
 	case projecttask.FieldName:
 		return m.OldName(ctx)
 	case projecttask.FieldAssigneeName:
@@ -12593,6 +12185,13 @@ func (m *ProjectTaskMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *ProjectTaskMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case projecttask.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
 	case projecttask.FieldName:
 		v, ok := value.(string)
 		if !ok {
@@ -12679,6 +12278,9 @@ func (m *ProjectTaskMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ProjectTaskMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(projecttask.FieldCreatedAt) {
+		fields = append(fields, projecttask.FieldCreatedAt)
+	}
 	if m.FieldCleared(projecttask.FieldLocation) {
 		fields = append(fields, projecttask.FieldLocation)
 	}
@@ -12699,6 +12301,9 @@ func (m *ProjectTaskMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ProjectTaskMutation) ClearField(name string) error {
 	switch name {
+	case projecttask.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
 	case projecttask.FieldLocation:
 		m.ClearLocation()
 		return nil
@@ -12713,6 +12318,9 @@ func (m *ProjectTaskMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *ProjectTaskMutation) ResetField(name string) error {
 	switch name {
+	case projecttask.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
 	case projecttask.FieldName:
 		m.ResetName()
 		return nil
@@ -12743,7 +12351,7 @@ func (m *ProjectTaskMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ProjectTaskMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 5)
 	if m.project != nil {
 		edges = append(edges, projecttask.EdgeProject)
 	}
@@ -12752,6 +12360,12 @@ func (m *ProjectTaskMutation) AddedEdges() []string {
 	}
 	if m.participants != nil {
 		edges = append(edges, projecttask.EdgeParticipants)
+	}
+	if m.createdBy != nil {
+		edges = append(edges, projecttask.EdgeCreatedBy)
+	}
+	if m.workShifts != nil {
+		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -12774,15 +12388,28 @@ func (m *ProjectTaskMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case projecttask.EdgeCreatedBy:
+		if id := m.createdBy; id != nil {
+			return []ent.Value{*id}
+		}
+	case projecttask.EdgeWorkShifts:
+		ids := make([]ent.Value, 0, len(m.workShifts))
+		for id := range m.workShifts {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ProjectTaskMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 5)
 	if m.removedparticipants != nil {
 		edges = append(edges, projecttask.EdgeParticipants)
+	}
+	if m.removedworkShifts != nil {
+		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -12797,13 +12424,19 @@ func (m *ProjectTaskMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case projecttask.EdgeWorkShifts:
+		ids := make([]ent.Value, 0, len(m.removedworkShifts))
+		for id := range m.removedworkShifts {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ProjectTaskMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 5)
 	if m.clearedproject {
 		edges = append(edges, projecttask.EdgeProject)
 	}
@@ -12812,6 +12445,12 @@ func (m *ProjectTaskMutation) ClearedEdges() []string {
 	}
 	if m.clearedparticipants {
 		edges = append(edges, projecttask.EdgeParticipants)
+	}
+	if m.clearedcreatedBy {
+		edges = append(edges, projecttask.EdgeCreatedBy)
+	}
+	if m.clearedworkShifts {
+		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -12826,6 +12465,10 @@ func (m *ProjectTaskMutation) EdgeCleared(name string) bool {
 		return m.clearedassignee
 	case projecttask.EdgeParticipants:
 		return m.clearedparticipants
+	case projecttask.EdgeCreatedBy:
+		return m.clearedcreatedBy
+	case projecttask.EdgeWorkShifts:
+		return m.clearedworkShifts
 	}
 	return false
 }
@@ -12839,6 +12482,9 @@ func (m *ProjectTaskMutation) ClearEdge(name string) error {
 		return nil
 	case projecttask.EdgeAssignee:
 		m.ClearAssignee()
+		return nil
+	case projecttask.EdgeCreatedBy:
+		m.ClearCreatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown ProjectTask unique edge %s", name)
@@ -12856,6 +12502,12 @@ func (m *ProjectTaskMutation) ResetEdge(name string) error {
 		return nil
 	case projecttask.EdgeParticipants:
 		m.ResetParticipants()
+		return nil
+	case projecttask.EdgeCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case projecttask.EdgeWorkShifts:
+		m.ResetWorkShifts()
 		return nil
 	}
 	return fmt.Errorf("unknown ProjectTask edge %s", name)
@@ -16913,9 +16565,11 @@ type UserMutation struct {
 	assignedRoles                   map[int]struct{}
 	removedassignedRoles            map[int]struct{}
 	clearedassignedRoles            bool
-	createdTasks                    map[int]struct{}
-	removedcreatedTasks             map[int]struct{}
-	clearedcreatedTasks             bool
+	subordinates                    map[int]struct{}
+	removedsubordinates             map[int]struct{}
+	clearedsubordinates             bool
+	leader                          *int
+	clearedleader                   bool
 	employee                        *int
 	clearedemployee                 bool
 	createdProjects                 map[int]struct{}
@@ -16930,9 +16584,18 @@ type UserMutation struct {
 	participatedProjectTasks        map[int]struct{}
 	removedparticipatedProjectTasks map[int]struct{}
 	clearedparticipatedProjectTasks bool
+	createdTasks                    map[int]struct{}
+	removedcreatedTasks             map[int]struct{}
+	clearedcreatedTasks             bool
 	tokens                          map[int]struct{}
 	removedtokens                   map[int]struct{}
 	clearedtokens                   bool
+	approvedWorkShifts              map[int]struct{}
+	removedapprovedWorkShifts       map[int]struct{}
+	clearedapprovedWorkShifts       bool
+	workShifts                      map[int]struct{}
+	removedworkShifts               map[int]struct{}
+	clearedworkShifts               bool
 	done                            bool
 	oldValue                        func(context.Context) (*User, error)
 	predicates                      []predicate.User
@@ -17623,58 +17286,97 @@ func (m *UserMutation) ResetAssignedRoles() {
 	m.removedassignedRoles = nil
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the Worktask entity by ids.
-func (m *UserMutation) AddCreatedTaskIDs(ids ...int) {
-	if m.createdTasks == nil {
-		m.createdTasks = make(map[int]struct{})
+// AddSubordinateIDs adds the "subordinates" edge to the User entity by ids.
+func (m *UserMutation) AddSubordinateIDs(ids ...int) {
+	if m.subordinates == nil {
+		m.subordinates = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.createdTasks[ids[i]] = struct{}{}
+		m.subordinates[ids[i]] = struct{}{}
 	}
 }
 
-// ClearCreatedTasks clears the "createdTasks" edge to the Worktask entity.
-func (m *UserMutation) ClearCreatedTasks() {
-	m.clearedcreatedTasks = true
+// ClearSubordinates clears the "subordinates" edge to the User entity.
+func (m *UserMutation) ClearSubordinates() {
+	m.clearedsubordinates = true
 }
 
-// CreatedTasksCleared reports if the "createdTasks" edge to the Worktask entity was cleared.
-func (m *UserMutation) CreatedTasksCleared() bool {
-	return m.clearedcreatedTasks
+// SubordinatesCleared reports if the "subordinates" edge to the User entity was cleared.
+func (m *UserMutation) SubordinatesCleared() bool {
+	return m.clearedsubordinates
 }
 
-// RemoveCreatedTaskIDs removes the "createdTasks" edge to the Worktask entity by IDs.
-func (m *UserMutation) RemoveCreatedTaskIDs(ids ...int) {
-	if m.removedcreatedTasks == nil {
-		m.removedcreatedTasks = make(map[int]struct{})
+// RemoveSubordinateIDs removes the "subordinates" edge to the User entity by IDs.
+func (m *UserMutation) RemoveSubordinateIDs(ids ...int) {
+	if m.removedsubordinates == nil {
+		m.removedsubordinates = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.createdTasks, ids[i])
-		m.removedcreatedTasks[ids[i]] = struct{}{}
+		delete(m.subordinates, ids[i])
+		m.removedsubordinates[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedCreatedTasks returns the removed IDs of the "createdTasks" edge to the Worktask entity.
-func (m *UserMutation) RemovedCreatedTasksIDs() (ids []int) {
-	for id := range m.removedcreatedTasks {
+// RemovedSubordinates returns the removed IDs of the "subordinates" edge to the User entity.
+func (m *UserMutation) RemovedSubordinatesIDs() (ids []int) {
+	for id := range m.removedsubordinates {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// CreatedTasksIDs returns the "createdTasks" edge IDs in the mutation.
-func (m *UserMutation) CreatedTasksIDs() (ids []int) {
-	for id := range m.createdTasks {
+// SubordinatesIDs returns the "subordinates" edge IDs in the mutation.
+func (m *UserMutation) SubordinatesIDs() (ids []int) {
+	for id := range m.subordinates {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetCreatedTasks resets all changes to the "createdTasks" edge.
-func (m *UserMutation) ResetCreatedTasks() {
-	m.createdTasks = nil
-	m.clearedcreatedTasks = false
-	m.removedcreatedTasks = nil
+// ResetSubordinates resets all changes to the "subordinates" edge.
+func (m *UserMutation) ResetSubordinates() {
+	m.subordinates = nil
+	m.clearedsubordinates = false
+	m.removedsubordinates = nil
+}
+
+// SetLeaderID sets the "leader" edge to the User entity by id.
+func (m *UserMutation) SetLeaderID(id int) {
+	m.leader = &id
+}
+
+// ClearLeader clears the "leader" edge to the User entity.
+func (m *UserMutation) ClearLeader() {
+	m.clearedleader = true
+}
+
+// LeaderCleared reports if the "leader" edge to the User entity was cleared.
+func (m *UserMutation) LeaderCleared() bool {
+	return m.clearedleader
+}
+
+// LeaderID returns the "leader" edge ID in the mutation.
+func (m *UserMutation) LeaderID() (id int, exists bool) {
+	if m.leader != nil {
+		return *m.leader, true
+	}
+	return
+}
+
+// LeaderIDs returns the "leader" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// LeaderID instead. It exists only for internal usage by the builders.
+func (m *UserMutation) LeaderIDs() (ids []int) {
+	if id := m.leader; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetLeader resets all changes to the "leader" edge.
+func (m *UserMutation) ResetLeader() {
+	m.leader = nil
+	m.clearedleader = false
 }
 
 // SetEmployeeID sets the "employee" edge to the Employee entity by id.
@@ -17932,6 +17634,60 @@ func (m *UserMutation) ResetParticipatedProjectTasks() {
 	m.removedparticipatedProjectTasks = nil
 }
 
+// AddCreatedTaskIDs adds the "createdTasks" edge to the ProjectTask entity by ids.
+func (m *UserMutation) AddCreatedTaskIDs(ids ...int) {
+	if m.createdTasks == nil {
+		m.createdTasks = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.createdTasks[ids[i]] = struct{}{}
+	}
+}
+
+// ClearCreatedTasks clears the "createdTasks" edge to the ProjectTask entity.
+func (m *UserMutation) ClearCreatedTasks() {
+	m.clearedcreatedTasks = true
+}
+
+// CreatedTasksCleared reports if the "createdTasks" edge to the ProjectTask entity was cleared.
+func (m *UserMutation) CreatedTasksCleared() bool {
+	return m.clearedcreatedTasks
+}
+
+// RemoveCreatedTaskIDs removes the "createdTasks" edge to the ProjectTask entity by IDs.
+func (m *UserMutation) RemoveCreatedTaskIDs(ids ...int) {
+	if m.removedcreatedTasks == nil {
+		m.removedcreatedTasks = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.createdTasks, ids[i])
+		m.removedcreatedTasks[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedCreatedTasks returns the removed IDs of the "createdTasks" edge to the ProjectTask entity.
+func (m *UserMutation) RemovedCreatedTasksIDs() (ids []int) {
+	for id := range m.removedcreatedTasks {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CreatedTasksIDs returns the "createdTasks" edge IDs in the mutation.
+func (m *UserMutation) CreatedTasksIDs() (ids []int) {
+	for id := range m.createdTasks {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetCreatedTasks resets all changes to the "createdTasks" edge.
+func (m *UserMutation) ResetCreatedTasks() {
+	m.createdTasks = nil
+	m.clearedcreatedTasks = false
+	m.removedcreatedTasks = nil
+}
+
 // AddTokenIDs adds the "tokens" edge to the Token entity by ids.
 func (m *UserMutation) AddTokenIDs(ids ...int) {
 	if m.tokens == nil {
@@ -17984,6 +17740,114 @@ func (m *UserMutation) ResetTokens() {
 	m.tokens = nil
 	m.clearedtokens = false
 	m.removedtokens = nil
+}
+
+// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by ids.
+func (m *UserMutation) AddApprovedWorkShiftIDs(ids ...int) {
+	if m.approvedWorkShifts == nil {
+		m.approvedWorkShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.approvedWorkShifts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearApprovedWorkShifts clears the "approvedWorkShifts" edge to the Workshift entity.
+func (m *UserMutation) ClearApprovedWorkShifts() {
+	m.clearedapprovedWorkShifts = true
+}
+
+// ApprovedWorkShiftsCleared reports if the "approvedWorkShifts" edge to the Workshift entity was cleared.
+func (m *UserMutation) ApprovedWorkShiftsCleared() bool {
+	return m.clearedapprovedWorkShifts
+}
+
+// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to the Workshift entity by IDs.
+func (m *UserMutation) RemoveApprovedWorkShiftIDs(ids ...int) {
+	if m.removedapprovedWorkShifts == nil {
+		m.removedapprovedWorkShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.approvedWorkShifts, ids[i])
+		m.removedapprovedWorkShifts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedApprovedWorkShifts returns the removed IDs of the "approvedWorkShifts" edge to the Workshift entity.
+func (m *UserMutation) RemovedApprovedWorkShiftsIDs() (ids []int) {
+	for id := range m.removedapprovedWorkShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ApprovedWorkShiftsIDs returns the "approvedWorkShifts" edge IDs in the mutation.
+func (m *UserMutation) ApprovedWorkShiftsIDs() (ids []int) {
+	for id := range m.approvedWorkShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetApprovedWorkShifts resets all changes to the "approvedWorkShifts" edge.
+func (m *UserMutation) ResetApprovedWorkShifts() {
+	m.approvedWorkShifts = nil
+	m.clearedapprovedWorkShifts = false
+	m.removedapprovedWorkShifts = nil
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
+func (m *UserMutation) AddWorkShiftIDs(ids ...int) {
+	if m.workShifts == nil {
+		m.workShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.workShifts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
+func (m *UserMutation) ClearWorkShifts() {
+	m.clearedworkShifts = true
+}
+
+// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
+func (m *UserMutation) WorkShiftsCleared() bool {
+	return m.clearedworkShifts
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
+func (m *UserMutation) RemoveWorkShiftIDs(ids ...int) {
+	if m.removedworkShifts == nil {
+		m.removedworkShifts = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.workShifts, ids[i])
+		m.removedworkShifts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
+func (m *UserMutation) RemovedWorkShiftsIDs() (ids []int) {
+	for id := range m.removedworkShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
+func (m *UserMutation) WorkShiftsIDs() (ids []int) {
+	for id := range m.workShifts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetWorkShifts resets all changes to the "workShifts" edge.
+func (m *UserMutation) ResetWorkShifts() {
+	m.workShifts = nil
+	m.clearedworkShifts = false
+	m.removedworkShifts = nil
 }
 
 // Where appends a list predicates to the UserMutation builder.
@@ -18305,7 +18169,7 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 14)
 	if m.accountingEntries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -18315,8 +18179,11 @@ func (m *UserMutation) AddedEdges() []string {
 	if m.assignedRoles != nil {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
-	if m.createdTasks != nil {
-		edges = append(edges, user.EdgeCreatedTasks)
+	if m.subordinates != nil {
+		edges = append(edges, user.EdgeSubordinates)
+	}
+	if m.leader != nil {
+		edges = append(edges, user.EdgeLeader)
 	}
 	if m.employee != nil {
 		edges = append(edges, user.EdgeEmployee)
@@ -18333,8 +18200,17 @@ func (m *UserMutation) AddedEdges() []string {
 	if m.participatedProjectTasks != nil {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
+	if m.createdTasks != nil {
+		edges = append(edges, user.EdgeCreatedTasks)
+	}
 	if m.tokens != nil {
 		edges = append(edges, user.EdgeTokens)
+	}
+	if m.approvedWorkShifts != nil {
+		edges = append(edges, user.EdgeApprovedWorkShifts)
+	}
+	if m.workShifts != nil {
+		edges = append(edges, user.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -18361,12 +18237,16 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case user.EdgeCreatedTasks:
-		ids := make([]ent.Value, 0, len(m.createdTasks))
-		for id := range m.createdTasks {
+	case user.EdgeSubordinates:
+		ids := make([]ent.Value, 0, len(m.subordinates))
+		for id := range m.subordinates {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeLeader:
+		if id := m.leader; id != nil {
+			return []ent.Value{*id}
+		}
 	case user.EdgeEmployee:
 		if id := m.employee; id != nil {
 			return []ent.Value{*id}
@@ -18395,9 +18275,27 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeCreatedTasks:
+		ids := make([]ent.Value, 0, len(m.createdTasks))
+		for id := range m.createdTasks {
+			ids = append(ids, id)
+		}
+		return ids
 	case user.EdgeTokens:
 		ids := make([]ent.Value, 0, len(m.tokens))
 		for id := range m.tokens {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeApprovedWorkShifts:
+		ids := make([]ent.Value, 0, len(m.approvedWorkShifts))
+		for id := range m.approvedWorkShifts {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeWorkShifts:
+		ids := make([]ent.Value, 0, len(m.workShifts))
+		for id := range m.workShifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -18407,7 +18305,7 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 14)
 	if m.removedaccountingEntries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -18417,8 +18315,8 @@ func (m *UserMutation) RemovedEdges() []string {
 	if m.removedassignedRoles != nil {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
-	if m.removedcreatedTasks != nil {
-		edges = append(edges, user.EdgeCreatedTasks)
+	if m.removedsubordinates != nil {
+		edges = append(edges, user.EdgeSubordinates)
 	}
 	if m.removedcreatedProjects != nil {
 		edges = append(edges, user.EdgeCreatedProjects)
@@ -18432,8 +18330,17 @@ func (m *UserMutation) RemovedEdges() []string {
 	if m.removedparticipatedProjectTasks != nil {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
+	if m.removedcreatedTasks != nil {
+		edges = append(edges, user.EdgeCreatedTasks)
+	}
 	if m.removedtokens != nil {
 		edges = append(edges, user.EdgeTokens)
+	}
+	if m.removedapprovedWorkShifts != nil {
+		edges = append(edges, user.EdgeApprovedWorkShifts)
+	}
+	if m.removedworkShifts != nil {
+		edges = append(edges, user.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -18460,9 +18367,9 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case user.EdgeCreatedTasks:
-		ids := make([]ent.Value, 0, len(m.removedcreatedTasks))
-		for id := range m.removedcreatedTasks {
+	case user.EdgeSubordinates:
+		ids := make([]ent.Value, 0, len(m.removedsubordinates))
+		for id := range m.removedsubordinates {
 			ids = append(ids, id)
 		}
 		return ids
@@ -18490,9 +18397,27 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeCreatedTasks:
+		ids := make([]ent.Value, 0, len(m.removedcreatedTasks))
+		for id := range m.removedcreatedTasks {
+			ids = append(ids, id)
+		}
+		return ids
 	case user.EdgeTokens:
 		ids := make([]ent.Value, 0, len(m.removedtokens))
 		for id := range m.removedtokens {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeApprovedWorkShifts:
+		ids := make([]ent.Value, 0, len(m.removedapprovedWorkShifts))
+		for id := range m.removedapprovedWorkShifts {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeWorkShifts:
+		ids := make([]ent.Value, 0, len(m.removedworkShifts))
+		for id := range m.removedworkShifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -18502,7 +18427,7 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 10)
+	edges := make([]string, 0, 14)
 	if m.clearedaccountingEntries {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -18512,8 +18437,11 @@ func (m *UserMutation) ClearedEdges() []string {
 	if m.clearedassignedRoles {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
-	if m.clearedcreatedTasks {
-		edges = append(edges, user.EdgeCreatedTasks)
+	if m.clearedsubordinates {
+		edges = append(edges, user.EdgeSubordinates)
+	}
+	if m.clearedleader {
+		edges = append(edges, user.EdgeLeader)
 	}
 	if m.clearedemployee {
 		edges = append(edges, user.EdgeEmployee)
@@ -18530,8 +18458,17 @@ func (m *UserMutation) ClearedEdges() []string {
 	if m.clearedparticipatedProjectTasks {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
+	if m.clearedcreatedTasks {
+		edges = append(edges, user.EdgeCreatedTasks)
+	}
 	if m.clearedtokens {
 		edges = append(edges, user.EdgeTokens)
+	}
+	if m.clearedapprovedWorkShifts {
+		edges = append(edges, user.EdgeApprovedWorkShifts)
+	}
+	if m.clearedworkShifts {
+		edges = append(edges, user.EdgeWorkShifts)
 	}
 	return edges
 }
@@ -18546,8 +18483,10 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedcompany
 	case user.EdgeAssignedRoles:
 		return m.clearedassignedRoles
-	case user.EdgeCreatedTasks:
-		return m.clearedcreatedTasks
+	case user.EdgeSubordinates:
+		return m.clearedsubordinates
+	case user.EdgeLeader:
+		return m.clearedleader
 	case user.EdgeEmployee:
 		return m.clearedemployee
 	case user.EdgeCreatedProjects:
@@ -18558,8 +18497,14 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedassignedProjectTasks
 	case user.EdgeParticipatedProjectTasks:
 		return m.clearedparticipatedProjectTasks
+	case user.EdgeCreatedTasks:
+		return m.clearedcreatedTasks
 	case user.EdgeTokens:
 		return m.clearedtokens
+	case user.EdgeApprovedWorkShifts:
+		return m.clearedapprovedWorkShifts
+	case user.EdgeWorkShifts:
+		return m.clearedworkShifts
 	}
 	return false
 }
@@ -18568,6 +18513,9 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *UserMutation) ClearEdge(name string) error {
 	switch name {
+	case user.EdgeLeader:
+		m.ClearLeader()
+		return nil
 	case user.EdgeEmployee:
 		m.ClearEmployee()
 		return nil
@@ -18588,8 +18536,11 @@ func (m *UserMutation) ResetEdge(name string) error {
 	case user.EdgeAssignedRoles:
 		m.ResetAssignedRoles()
 		return nil
-	case user.EdgeCreatedTasks:
-		m.ResetCreatedTasks()
+	case user.EdgeSubordinates:
+		m.ResetSubordinates()
+		return nil
+	case user.EdgeLeader:
+		m.ResetLeader()
 		return nil
 	case user.EdgeEmployee:
 		m.ResetEmployee()
@@ -18606,8 +18557,17 @@ func (m *UserMutation) ResetEdge(name string) error {
 	case user.EdgeParticipatedProjectTasks:
 		m.ResetParticipatedProjectTasks()
 		return nil
+	case user.EdgeCreatedTasks:
+		m.ResetCreatedTasks()
+		return nil
 	case user.EdgeTokens:
 		m.ResetTokens()
+		return nil
+	case user.EdgeApprovedWorkShifts:
+		m.ResetApprovedWorkShifts()
+		return nil
+	case user.EdgeWorkShifts:
+		m.ResetWorkShifts()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)
@@ -19111,12 +19071,12 @@ type WorkshiftMutation struct {
 	clearedFields      map[string]struct{}
 	company            *int
 	clearedcompany     bool
-	employee           *int
-	clearedemployee    bool
+	user               *int
+	cleareduser        bool
 	approvedBy         *int
 	clearedapprovedBy  bool
-	workTask           *int
-	clearedworkTask    bool
+	task               *int
+	clearedtask        bool
 	editRequest        *int
 	clearededitRequest bool
 	workShift          *int
@@ -19737,56 +19697,56 @@ func (m *WorkshiftMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// SetEmployeeID sets the "employee" edge to the Employee entity by id.
-func (m *WorkshiftMutation) SetEmployeeID(id int) {
-	m.employee = &id
+// SetUserID sets the "user" edge to the User entity by id.
+func (m *WorkshiftMutation) SetUserID(id int) {
+	m.user = &id
 }
 
-// ClearEmployee clears the "employee" edge to the Employee entity.
-func (m *WorkshiftMutation) ClearEmployee() {
-	m.clearedemployee = true
+// ClearUser clears the "user" edge to the User entity.
+func (m *WorkshiftMutation) ClearUser() {
+	m.cleareduser = true
 }
 
-// EmployeeCleared reports if the "employee" edge to the Employee entity was cleared.
-func (m *WorkshiftMutation) EmployeeCleared() bool {
-	return m.clearedemployee
+// UserCleared reports if the "user" edge to the User entity was cleared.
+func (m *WorkshiftMutation) UserCleared() bool {
+	return m.cleareduser
 }
 
-// EmployeeID returns the "employee" edge ID in the mutation.
-func (m *WorkshiftMutation) EmployeeID() (id int, exists bool) {
-	if m.employee != nil {
-		return *m.employee, true
+// UserID returns the "user" edge ID in the mutation.
+func (m *WorkshiftMutation) UserID() (id int, exists bool) {
+	if m.user != nil {
+		return *m.user, true
 	}
 	return
 }
 
-// EmployeeIDs returns the "employee" edge IDs in the mutation.
+// UserIDs returns the "user" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// EmployeeID instead. It exists only for internal usage by the builders.
-func (m *WorkshiftMutation) EmployeeIDs() (ids []int) {
-	if id := m.employee; id != nil {
+// UserID instead. It exists only for internal usage by the builders.
+func (m *WorkshiftMutation) UserIDs() (ids []int) {
+	if id := m.user; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetEmployee resets all changes to the "employee" edge.
-func (m *WorkshiftMutation) ResetEmployee() {
-	m.employee = nil
-	m.clearedemployee = false
+// ResetUser resets all changes to the "user" edge.
+func (m *WorkshiftMutation) ResetUser() {
+	m.user = nil
+	m.cleareduser = false
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the Employee entity by id.
+// SetApprovedByID sets the "approvedBy" edge to the User entity by id.
 func (m *WorkshiftMutation) SetApprovedByID(id int) {
 	m.approvedBy = &id
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the Employee entity.
+// ClearApprovedBy clears the "approvedBy" edge to the User entity.
 func (m *WorkshiftMutation) ClearApprovedBy() {
 	m.clearedapprovedBy = true
 }
 
-// ApprovedByCleared reports if the "approvedBy" edge to the Employee entity was cleared.
+// ApprovedByCleared reports if the "approvedBy" edge to the User entity was cleared.
 func (m *WorkshiftMutation) ApprovedByCleared() bool {
 	return m.clearedapprovedBy
 }
@@ -19815,43 +19775,43 @@ func (m *WorkshiftMutation) ResetApprovedBy() {
 	m.clearedapprovedBy = false
 }
 
-// SetWorkTaskID sets the "workTask" edge to the Worktask entity by id.
-func (m *WorkshiftMutation) SetWorkTaskID(id int) {
-	m.workTask = &id
+// SetTaskID sets the "task" edge to the ProjectTask entity by id.
+func (m *WorkshiftMutation) SetTaskID(id int) {
+	m.task = &id
 }
 
-// ClearWorkTask clears the "workTask" edge to the Worktask entity.
-func (m *WorkshiftMutation) ClearWorkTask() {
-	m.clearedworkTask = true
+// ClearTask clears the "task" edge to the ProjectTask entity.
+func (m *WorkshiftMutation) ClearTask() {
+	m.clearedtask = true
 }
 
-// WorkTaskCleared reports if the "workTask" edge to the Worktask entity was cleared.
-func (m *WorkshiftMutation) WorkTaskCleared() bool {
-	return m.clearedworkTask
+// TaskCleared reports if the "task" edge to the ProjectTask entity was cleared.
+func (m *WorkshiftMutation) TaskCleared() bool {
+	return m.clearedtask
 }
 
-// WorkTaskID returns the "workTask" edge ID in the mutation.
-func (m *WorkshiftMutation) WorkTaskID() (id int, exists bool) {
-	if m.workTask != nil {
-		return *m.workTask, true
+// TaskID returns the "task" edge ID in the mutation.
+func (m *WorkshiftMutation) TaskID() (id int, exists bool) {
+	if m.task != nil {
+		return *m.task, true
 	}
 	return
 }
 
-// WorkTaskIDs returns the "workTask" edge IDs in the mutation.
+// TaskIDs returns the "task" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// WorkTaskID instead. It exists only for internal usage by the builders.
-func (m *WorkshiftMutation) WorkTaskIDs() (ids []int) {
-	if id := m.workTask; id != nil {
+// TaskID instead. It exists only for internal usage by the builders.
+func (m *WorkshiftMutation) TaskIDs() (ids []int) {
+	if id := m.task; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetWorkTask resets all changes to the "workTask" edge.
-func (m *WorkshiftMutation) ResetWorkTask() {
-	m.workTask = nil
-	m.clearedworkTask = false
+// ResetTask resets all changes to the "task" edge.
+func (m *WorkshiftMutation) ResetTask() {
+	m.task = nil
+	m.clearedtask = false
 }
 
 // SetEditRequestID sets the "editRequest" edge to the Workshift entity by id.
@@ -20278,14 +20238,14 @@ func (m *WorkshiftMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, workshift.EdgeCompany)
 	}
-	if m.employee != nil {
-		edges = append(edges, workshift.EdgeEmployee)
+	if m.user != nil {
+		edges = append(edges, workshift.EdgeUser)
 	}
 	if m.approvedBy != nil {
 		edges = append(edges, workshift.EdgeApprovedBy)
 	}
-	if m.workTask != nil {
-		edges = append(edges, workshift.EdgeWorkTask)
+	if m.task != nil {
+		edges = append(edges, workshift.EdgeTask)
 	}
 	if m.editRequest != nil {
 		edges = append(edges, workshift.EdgeEditRequest)
@@ -20304,16 +20264,16 @@ func (m *WorkshiftMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
-	case workshift.EdgeEmployee:
-		if id := m.employee; id != nil {
+	case workshift.EdgeUser:
+		if id := m.user; id != nil {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeApprovedBy:
 		if id := m.approvedBy; id != nil {
 			return []ent.Value{*id}
 		}
-	case workshift.EdgeWorkTask:
-		if id := m.workTask; id != nil {
+	case workshift.EdgeTask:
+		if id := m.task; id != nil {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeEditRequest:
@@ -20346,14 +20306,14 @@ func (m *WorkshiftMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, workshift.EdgeCompany)
 	}
-	if m.clearedemployee {
-		edges = append(edges, workshift.EdgeEmployee)
+	if m.cleareduser {
+		edges = append(edges, workshift.EdgeUser)
 	}
 	if m.clearedapprovedBy {
 		edges = append(edges, workshift.EdgeApprovedBy)
 	}
-	if m.clearedworkTask {
-		edges = append(edges, workshift.EdgeWorkTask)
+	if m.clearedtask {
+		edges = append(edges, workshift.EdgeTask)
 	}
 	if m.clearededitRequest {
 		edges = append(edges, workshift.EdgeEditRequest)
@@ -20370,12 +20330,12 @@ func (m *WorkshiftMutation) EdgeCleared(name string) bool {
 	switch name {
 	case workshift.EdgeCompany:
 		return m.clearedcompany
-	case workshift.EdgeEmployee:
-		return m.clearedemployee
+	case workshift.EdgeUser:
+		return m.cleareduser
 	case workshift.EdgeApprovedBy:
 		return m.clearedapprovedBy
-	case workshift.EdgeWorkTask:
-		return m.clearedworkTask
+	case workshift.EdgeTask:
+		return m.clearedtask
 	case workshift.EdgeEditRequest:
 		return m.clearededitRequest
 	case workshift.EdgeWorkShift:
@@ -20391,14 +20351,14 @@ func (m *WorkshiftMutation) ClearEdge(name string) error {
 	case workshift.EdgeCompany:
 		m.ClearCompany()
 		return nil
-	case workshift.EdgeEmployee:
-		m.ClearEmployee()
+	case workshift.EdgeUser:
+		m.ClearUser()
 		return nil
 	case workshift.EdgeApprovedBy:
 		m.ClearApprovedBy()
 		return nil
-	case workshift.EdgeWorkTask:
-		m.ClearWorkTask()
+	case workshift.EdgeTask:
+		m.ClearTask()
 		return nil
 	case workshift.EdgeEditRequest:
 		m.ClearEditRequest()
@@ -20417,14 +20377,14 @@ func (m *WorkshiftMutation) ResetEdge(name string) error {
 	case workshift.EdgeCompany:
 		m.ResetCompany()
 		return nil
-	case workshift.EdgeEmployee:
-		m.ResetEmployee()
+	case workshift.EdgeUser:
+		m.ResetUser()
 		return nil
 	case workshift.EdgeApprovedBy:
 		m.ResetApprovedBy()
 		return nil
-	case workshift.EdgeWorkTask:
-		m.ResetWorkTask()
+	case workshift.EdgeTask:
+		m.ResetTask()
 		return nil
 	case workshift.EdgeEditRequest:
 		m.ResetEditRequest()
@@ -20434,1951 +20394,4 @@ func (m *WorkshiftMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Workshift edge %s", name)
-}
-
-// WorktagMutation represents an operation that mutates the Worktag nodes in the graph.
-type WorktagMutation struct {
-	config
-	op               Op
-	typ              string
-	id               *int
-	createdAt        *time.Time
-	updatedAt        *time.Time
-	deletedAt        *time.Time
-	name             *string
-	color            *string
-	clearedFields    map[string]struct{}
-	company          *int
-	clearedcompany   bool
-	workTasks        map[int]struct{}
-	removedworkTasks map[int]struct{}
-	clearedworkTasks bool
-	done             bool
-	oldValue         func(context.Context) (*Worktag, error)
-	predicates       []predicate.Worktag
-}
-
-var _ ent.Mutation = (*WorktagMutation)(nil)
-
-// worktagOption allows management of the mutation configuration using functional options.
-type worktagOption func(*WorktagMutation)
-
-// newWorktagMutation creates new mutation for the Worktag entity.
-func newWorktagMutation(c config, op Op, opts ...worktagOption) *WorktagMutation {
-	m := &WorktagMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeWorktag,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withWorktagID sets the ID field of the mutation.
-func withWorktagID(id int) worktagOption {
-	return func(m *WorktagMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *Worktag
-		)
-		m.oldValue = func(ctx context.Context) (*Worktag, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().Worktag.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withWorktag sets the old Worktag of the mutation.
-func withWorktag(node *Worktag) worktagOption {
-	return func(m *WorktagMutation) {
-		m.oldValue = func(context.Context) (*Worktag, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m WorktagMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m WorktagMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("generated: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *WorktagMutation) ID() (id int, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *WorktagMutation) IDs(ctx context.Context) ([]int, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []int{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Worktag.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreatedAt sets the "createdAt" field.
-func (m *WorktagMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
-}
-
-// CreatedAt returns the value of the "createdAt" field in the mutation.
-func (m *WorktagMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "createdAt" field's value of the Worktag entity.
-// If the Worktag object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktagMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// ResetCreatedAt resets all changes to the "createdAt" field.
-func (m *WorktagMutation) ResetCreatedAt() {
-	m.createdAt = nil
-}
-
-// SetUpdatedAt sets the "updatedAt" field.
-func (m *WorktagMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
-}
-
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
-func (m *WorktagMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updatedAt" field's value of the Worktag entity.
-// If the Worktag object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktagMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
-func (m *WorktagMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
-}
-
-// SetDeletedAt sets the "deletedAt" field.
-func (m *WorktagMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
-}
-
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
-func (m *WorktagMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeletedAt returns the old "deletedAt" field's value of the Worktag entity.
-// If the Worktag object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktagMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
-	}
-	return oldValue.DeletedAt, nil
-}
-
-// ClearDeletedAt clears the value of the "deletedAt" field.
-func (m *WorktagMutation) ClearDeletedAt() {
-	m.deletedAt = nil
-	m.clearedFields[worktag.FieldDeletedAt] = struct{}{}
-}
-
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
-func (m *WorktagMutation) DeletedAtCleared() bool {
-	_, ok := m.clearedFields[worktag.FieldDeletedAt]
-	return ok
-}
-
-// ResetDeletedAt resets all changes to the "deletedAt" field.
-func (m *WorktagMutation) ResetDeletedAt() {
-	m.deletedAt = nil
-	delete(m.clearedFields, worktag.FieldDeletedAt)
-}
-
-// SetName sets the "name" field.
-func (m *WorktagMutation) SetName(s string) {
-	m.name = &s
-}
-
-// Name returns the value of the "name" field in the mutation.
-func (m *WorktagMutation) Name() (r string, exists bool) {
-	v := m.name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldName returns the old "name" field's value of the Worktag entity.
-// If the Worktag object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktagMutation) OldName(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
-	}
-	return oldValue.Name, nil
-}
-
-// ResetName resets all changes to the "name" field.
-func (m *WorktagMutation) ResetName() {
-	m.name = nil
-}
-
-// SetColor sets the "color" field.
-func (m *WorktagMutation) SetColor(s string) {
-	m.color = &s
-}
-
-// Color returns the value of the "color" field in the mutation.
-func (m *WorktagMutation) Color() (r string, exists bool) {
-	v := m.color
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldColor returns the old "color" field's value of the Worktag entity.
-// If the Worktag object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktagMutation) OldColor(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldColor is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldColor requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldColor: %w", err)
-	}
-	return oldValue.Color, nil
-}
-
-// ResetColor resets all changes to the "color" field.
-func (m *WorktagMutation) ResetColor() {
-	m.color = nil
-}
-
-// SetCompanyID sets the "company" edge to the Company entity by id.
-func (m *WorktagMutation) SetCompanyID(id int) {
-	m.company = &id
-}
-
-// ClearCompany clears the "company" edge to the Company entity.
-func (m *WorktagMutation) ClearCompany() {
-	m.clearedcompany = true
-}
-
-// CompanyCleared reports if the "company" edge to the Company entity was cleared.
-func (m *WorktagMutation) CompanyCleared() bool {
-	return m.clearedcompany
-}
-
-// CompanyID returns the "company" edge ID in the mutation.
-func (m *WorktagMutation) CompanyID() (id int, exists bool) {
-	if m.company != nil {
-		return *m.company, true
-	}
-	return
-}
-
-// CompanyIDs returns the "company" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// CompanyID instead. It exists only for internal usage by the builders.
-func (m *WorktagMutation) CompanyIDs() (ids []int) {
-	if id := m.company; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetCompany resets all changes to the "company" edge.
-func (m *WorktagMutation) ResetCompany() {
-	m.company = nil
-	m.clearedcompany = false
-}
-
-// AddWorkTaskIDs adds the "workTasks" edge to the Worktask entity by ids.
-func (m *WorktagMutation) AddWorkTaskIDs(ids ...int) {
-	if m.workTasks == nil {
-		m.workTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workTasks[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkTasks clears the "workTasks" edge to the Worktask entity.
-func (m *WorktagMutation) ClearWorkTasks() {
-	m.clearedworkTasks = true
-}
-
-// WorkTasksCleared reports if the "workTasks" edge to the Worktask entity was cleared.
-func (m *WorktagMutation) WorkTasksCleared() bool {
-	return m.clearedworkTasks
-}
-
-// RemoveWorkTaskIDs removes the "workTasks" edge to the Worktask entity by IDs.
-func (m *WorktagMutation) RemoveWorkTaskIDs(ids ...int) {
-	if m.removedworkTasks == nil {
-		m.removedworkTasks = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workTasks, ids[i])
-		m.removedworkTasks[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkTasks returns the removed IDs of the "workTasks" edge to the Worktask entity.
-func (m *WorktagMutation) RemovedWorkTasksIDs() (ids []int) {
-	for id := range m.removedworkTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkTasksIDs returns the "workTasks" edge IDs in the mutation.
-func (m *WorktagMutation) WorkTasksIDs() (ids []int) {
-	for id := range m.workTasks {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkTasks resets all changes to the "workTasks" edge.
-func (m *WorktagMutation) ResetWorkTasks() {
-	m.workTasks = nil
-	m.clearedworkTasks = false
-	m.removedworkTasks = nil
-}
-
-// Where appends a list predicates to the WorktagMutation builder.
-func (m *WorktagMutation) Where(ps ...predicate.Worktag) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the WorktagMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *WorktagMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Worktag, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *WorktagMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *WorktagMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (Worktag).
-func (m *WorktagMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *WorktagMutation) Fields() []string {
-	fields := make([]string, 0, 5)
-	if m.createdAt != nil {
-		fields = append(fields, worktag.FieldCreatedAt)
-	}
-	if m.updatedAt != nil {
-		fields = append(fields, worktag.FieldUpdatedAt)
-	}
-	if m.deletedAt != nil {
-		fields = append(fields, worktag.FieldDeletedAt)
-	}
-	if m.name != nil {
-		fields = append(fields, worktag.FieldName)
-	}
-	if m.color != nil {
-		fields = append(fields, worktag.FieldColor)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *WorktagMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case worktag.FieldCreatedAt:
-		return m.CreatedAt()
-	case worktag.FieldUpdatedAt:
-		return m.UpdatedAt()
-	case worktag.FieldDeletedAt:
-		return m.DeletedAt()
-	case worktag.FieldName:
-		return m.Name()
-	case worktag.FieldColor:
-		return m.Color()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *WorktagMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case worktag.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case worktag.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
-	case worktag.FieldDeletedAt:
-		return m.OldDeletedAt(ctx)
-	case worktag.FieldName:
-		return m.OldName(ctx)
-	case worktag.FieldColor:
-		return m.OldColor(ctx)
-	}
-	return nil, fmt.Errorf("unknown Worktag field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *WorktagMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case worktag.FieldCreatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case worktag.FieldUpdatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
-		return nil
-	case worktag.FieldDeletedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeletedAt(v)
-		return nil
-	case worktag.FieldName:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetName(v)
-		return nil
-	case worktag.FieldColor:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetColor(v)
-		return nil
-	}
-	return fmt.Errorf("unknown Worktag field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *WorktagMutation) AddedFields() []string {
-	return nil
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *WorktagMutation) AddedField(name string) (ent.Value, bool) {
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *WorktagMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	}
-	return fmt.Errorf("unknown Worktag numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *WorktagMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(worktag.FieldDeletedAt) {
-		fields = append(fields, worktag.FieldDeletedAt)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *WorktagMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *WorktagMutation) ClearField(name string) error {
-	switch name {
-	case worktag.FieldDeletedAt:
-		m.ClearDeletedAt()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktag nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *WorktagMutation) ResetField(name string) error {
-	switch name {
-	case worktag.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case worktag.FieldUpdatedAt:
-		m.ResetUpdatedAt()
-		return nil
-	case worktag.FieldDeletedAt:
-		m.ResetDeletedAt()
-		return nil
-	case worktag.FieldName:
-		m.ResetName()
-		return nil
-	case worktag.FieldColor:
-		m.ResetColor()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktag field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *WorktagMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.company != nil {
-		edges = append(edges, worktag.EdgeCompany)
-	}
-	if m.workTasks != nil {
-		edges = append(edges, worktag.EdgeWorkTasks)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *WorktagMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case worktag.EdgeCompany:
-		if id := m.company; id != nil {
-			return []ent.Value{*id}
-		}
-	case worktag.EdgeWorkTasks:
-		ids := make([]ent.Value, 0, len(m.workTasks))
-		for id := range m.workTasks {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *WorktagMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.removedworkTasks != nil {
-		edges = append(edges, worktag.EdgeWorkTasks)
-	}
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *WorktagMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case worktag.EdgeWorkTasks:
-		ids := make([]ent.Value, 0, len(m.removedworkTasks))
-		for id := range m.removedworkTasks {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *WorktagMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.clearedcompany {
-		edges = append(edges, worktag.EdgeCompany)
-	}
-	if m.clearedworkTasks {
-		edges = append(edges, worktag.EdgeWorkTasks)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *WorktagMutation) EdgeCleared(name string) bool {
-	switch name {
-	case worktag.EdgeCompany:
-		return m.clearedcompany
-	case worktag.EdgeWorkTasks:
-		return m.clearedworkTasks
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *WorktagMutation) ClearEdge(name string) error {
-	switch name {
-	case worktag.EdgeCompany:
-		m.ClearCompany()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktag unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *WorktagMutation) ResetEdge(name string) error {
-	switch name {
-	case worktag.EdgeCompany:
-		m.ResetCompany()
-		return nil
-	case worktag.EdgeWorkTasks:
-		m.ResetWorkTasks()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktag edge %s", name)
-}
-
-// WorktaskMutation represents an operation that mutates the Worktask nodes in the graph.
-type WorktaskMutation struct {
-	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	deletedAt         *time.Time
-	description       *string
-	status            *worktask.Status
-	subtasks          *[]string
-	appendsubtasks    []string
-	title             *string
-	startTime         *time.Time
-	endTime           *time.Time
-	clearedFields     map[string]struct{}
-	company           *int
-	clearedcompany    bool
-	createdBy         *int
-	clearedcreatedBy  bool
-	assignedTo        map[int]struct{}
-	removedassignedTo map[int]struct{}
-	clearedassignedTo bool
-	workShifts        map[int]struct{}
-	removedworkShifts map[int]struct{}
-	clearedworkShifts bool
-	workTags          map[int]struct{}
-	removedworkTags   map[int]struct{}
-	clearedworkTags   bool
-	done              bool
-	oldValue          func(context.Context) (*Worktask, error)
-	predicates        []predicate.Worktask
-}
-
-var _ ent.Mutation = (*WorktaskMutation)(nil)
-
-// worktaskOption allows management of the mutation configuration using functional options.
-type worktaskOption func(*WorktaskMutation)
-
-// newWorktaskMutation creates new mutation for the Worktask entity.
-func newWorktaskMutation(c config, op Op, opts ...worktaskOption) *WorktaskMutation {
-	m := &WorktaskMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeWorktask,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withWorktaskID sets the ID field of the mutation.
-func withWorktaskID(id int) worktaskOption {
-	return func(m *WorktaskMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *Worktask
-		)
-		m.oldValue = func(ctx context.Context) (*Worktask, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().Worktask.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withWorktask sets the old Worktask of the mutation.
-func withWorktask(node *Worktask) worktaskOption {
-	return func(m *WorktaskMutation) {
-		m.oldValue = func(context.Context) (*Worktask, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m WorktaskMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m WorktaskMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("generated: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *WorktaskMutation) ID() (id int, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *WorktaskMutation) IDs(ctx context.Context) ([]int, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []int{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Worktask.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreatedAt sets the "createdAt" field.
-func (m *WorktaskMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
-}
-
-// CreatedAt returns the value of the "createdAt" field in the mutation.
-func (m *WorktaskMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "createdAt" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// ResetCreatedAt resets all changes to the "createdAt" field.
-func (m *WorktaskMutation) ResetCreatedAt() {
-	m.createdAt = nil
-}
-
-// SetUpdatedAt sets the "updatedAt" field.
-func (m *WorktaskMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
-}
-
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
-func (m *WorktaskMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updatedAt" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
-func (m *WorktaskMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
-}
-
-// SetDeletedAt sets the "deletedAt" field.
-func (m *WorktaskMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
-}
-
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
-func (m *WorktaskMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeletedAt returns the old "deletedAt" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
-	}
-	return oldValue.DeletedAt, nil
-}
-
-// ClearDeletedAt clears the value of the "deletedAt" field.
-func (m *WorktaskMutation) ClearDeletedAt() {
-	m.deletedAt = nil
-	m.clearedFields[worktask.FieldDeletedAt] = struct{}{}
-}
-
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
-func (m *WorktaskMutation) DeletedAtCleared() bool {
-	_, ok := m.clearedFields[worktask.FieldDeletedAt]
-	return ok
-}
-
-// ResetDeletedAt resets all changes to the "deletedAt" field.
-func (m *WorktaskMutation) ResetDeletedAt() {
-	m.deletedAt = nil
-	delete(m.clearedFields, worktask.FieldDeletedAt)
-}
-
-// SetDescription sets the "description" field.
-func (m *WorktaskMutation) SetDescription(s string) {
-	m.description = &s
-}
-
-// Description returns the value of the "description" field in the mutation.
-func (m *WorktaskMutation) Description() (r string, exists bool) {
-	v := m.description
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDescription returns the old "description" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldDescription(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDescription requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
-	}
-	return oldValue.Description, nil
-}
-
-// ClearDescription clears the value of the "description" field.
-func (m *WorktaskMutation) ClearDescription() {
-	m.description = nil
-	m.clearedFields[worktask.FieldDescription] = struct{}{}
-}
-
-// DescriptionCleared returns if the "description" field was cleared in this mutation.
-func (m *WorktaskMutation) DescriptionCleared() bool {
-	_, ok := m.clearedFields[worktask.FieldDescription]
-	return ok
-}
-
-// ResetDescription resets all changes to the "description" field.
-func (m *WorktaskMutation) ResetDescription() {
-	m.description = nil
-	delete(m.clearedFields, worktask.FieldDescription)
-}
-
-// SetStatus sets the "status" field.
-func (m *WorktaskMutation) SetStatus(w worktask.Status) {
-	m.status = &w
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *WorktaskMutation) Status() (r worktask.Status, exists bool) {
-	v := m.status
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStatus returns the old "status" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldStatus(ctx context.Context) (v worktask.Status, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *WorktaskMutation) ResetStatus() {
-	m.status = nil
-}
-
-// SetSubtasks sets the "subtasks" field.
-func (m *WorktaskMutation) SetSubtasks(s []string) {
-	m.subtasks = &s
-	m.appendsubtasks = nil
-}
-
-// Subtasks returns the value of the "subtasks" field in the mutation.
-func (m *WorktaskMutation) Subtasks() (r []string, exists bool) {
-	v := m.subtasks
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldSubtasks returns the old "subtasks" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldSubtasks(ctx context.Context) (v []string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSubtasks is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSubtasks requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSubtasks: %w", err)
-	}
-	return oldValue.Subtasks, nil
-}
-
-// AppendSubtasks adds s to the "subtasks" field.
-func (m *WorktaskMutation) AppendSubtasks(s []string) {
-	m.appendsubtasks = append(m.appendsubtasks, s...)
-}
-
-// AppendedSubtasks returns the list of values that were appended to the "subtasks" field in this mutation.
-func (m *WorktaskMutation) AppendedSubtasks() ([]string, bool) {
-	if len(m.appendsubtasks) == 0 {
-		return nil, false
-	}
-	return m.appendsubtasks, true
-}
-
-// ClearSubtasks clears the value of the "subtasks" field.
-func (m *WorktaskMutation) ClearSubtasks() {
-	m.subtasks = nil
-	m.appendsubtasks = nil
-	m.clearedFields[worktask.FieldSubtasks] = struct{}{}
-}
-
-// SubtasksCleared returns if the "subtasks" field was cleared in this mutation.
-func (m *WorktaskMutation) SubtasksCleared() bool {
-	_, ok := m.clearedFields[worktask.FieldSubtasks]
-	return ok
-}
-
-// ResetSubtasks resets all changes to the "subtasks" field.
-func (m *WorktaskMutation) ResetSubtasks() {
-	m.subtasks = nil
-	m.appendsubtasks = nil
-	delete(m.clearedFields, worktask.FieldSubtasks)
-}
-
-// SetTitle sets the "title" field.
-func (m *WorktaskMutation) SetTitle(s string) {
-	m.title = &s
-}
-
-// Title returns the value of the "title" field in the mutation.
-func (m *WorktaskMutation) Title() (r string, exists bool) {
-	v := m.title
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTitle returns the old "title" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldTitle(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTitle requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
-	}
-	return oldValue.Title, nil
-}
-
-// ResetTitle resets all changes to the "title" field.
-func (m *WorktaskMutation) ResetTitle() {
-	m.title = nil
-}
-
-// SetStartTime sets the "startTime" field.
-func (m *WorktaskMutation) SetStartTime(t time.Time) {
-	m.startTime = &t
-}
-
-// StartTime returns the value of the "startTime" field in the mutation.
-func (m *WorktaskMutation) StartTime() (r time.Time, exists bool) {
-	v := m.startTime
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartTime returns the old "startTime" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
-	}
-	return oldValue.StartTime, nil
-}
-
-// ResetStartTime resets all changes to the "startTime" field.
-func (m *WorktaskMutation) ResetStartTime() {
-	m.startTime = nil
-}
-
-// SetEndTime sets the "endTime" field.
-func (m *WorktaskMutation) SetEndTime(t time.Time) {
-	m.endTime = &t
-}
-
-// EndTime returns the value of the "endTime" field in the mutation.
-func (m *WorktaskMutation) EndTime() (r time.Time, exists bool) {
-	v := m.endTime
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEndTime returns the old "endTime" field's value of the Worktask entity.
-// If the Worktask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *WorktaskMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEndTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
-	}
-	return oldValue.EndTime, nil
-}
-
-// ClearEndTime clears the value of the "endTime" field.
-func (m *WorktaskMutation) ClearEndTime() {
-	m.endTime = nil
-	m.clearedFields[worktask.FieldEndTime] = struct{}{}
-}
-
-// EndTimeCleared returns if the "endTime" field was cleared in this mutation.
-func (m *WorktaskMutation) EndTimeCleared() bool {
-	_, ok := m.clearedFields[worktask.FieldEndTime]
-	return ok
-}
-
-// ResetEndTime resets all changes to the "endTime" field.
-func (m *WorktaskMutation) ResetEndTime() {
-	m.endTime = nil
-	delete(m.clearedFields, worktask.FieldEndTime)
-}
-
-// SetCompanyID sets the "company" edge to the Company entity by id.
-func (m *WorktaskMutation) SetCompanyID(id int) {
-	m.company = &id
-}
-
-// ClearCompany clears the "company" edge to the Company entity.
-func (m *WorktaskMutation) ClearCompany() {
-	m.clearedcompany = true
-}
-
-// CompanyCleared reports if the "company" edge to the Company entity was cleared.
-func (m *WorktaskMutation) CompanyCleared() bool {
-	return m.clearedcompany
-}
-
-// CompanyID returns the "company" edge ID in the mutation.
-func (m *WorktaskMutation) CompanyID() (id int, exists bool) {
-	if m.company != nil {
-		return *m.company, true
-	}
-	return
-}
-
-// CompanyIDs returns the "company" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// CompanyID instead. It exists only for internal usage by the builders.
-func (m *WorktaskMutation) CompanyIDs() (ids []int) {
-	if id := m.company; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetCompany resets all changes to the "company" edge.
-func (m *WorktaskMutation) ResetCompany() {
-	m.company = nil
-	m.clearedcompany = false
-}
-
-// SetCreatedByID sets the "createdBy" edge to the User entity by id.
-func (m *WorktaskMutation) SetCreatedByID(id int) {
-	m.createdBy = &id
-}
-
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
-func (m *WorktaskMutation) ClearCreatedBy() {
-	m.clearedcreatedBy = true
-}
-
-// CreatedByCleared reports if the "createdBy" edge to the User entity was cleared.
-func (m *WorktaskMutation) CreatedByCleared() bool {
-	return m.clearedcreatedBy
-}
-
-// CreatedByID returns the "createdBy" edge ID in the mutation.
-func (m *WorktaskMutation) CreatedByID() (id int, exists bool) {
-	if m.createdBy != nil {
-		return *m.createdBy, true
-	}
-	return
-}
-
-// CreatedByIDs returns the "createdBy" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// CreatedByID instead. It exists only for internal usage by the builders.
-func (m *WorktaskMutation) CreatedByIDs() (ids []int) {
-	if id := m.createdBy; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetCreatedBy resets all changes to the "createdBy" edge.
-func (m *WorktaskMutation) ResetCreatedBy() {
-	m.createdBy = nil
-	m.clearedcreatedBy = false
-}
-
-// AddAssignedToIDs adds the "assignedTo" edge to the Employee entity by ids.
-func (m *WorktaskMutation) AddAssignedToIDs(ids ...int) {
-	if m.assignedTo == nil {
-		m.assignedTo = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.assignedTo[ids[i]] = struct{}{}
-	}
-}
-
-// ClearAssignedTo clears the "assignedTo" edge to the Employee entity.
-func (m *WorktaskMutation) ClearAssignedTo() {
-	m.clearedassignedTo = true
-}
-
-// AssignedToCleared reports if the "assignedTo" edge to the Employee entity was cleared.
-func (m *WorktaskMutation) AssignedToCleared() bool {
-	return m.clearedassignedTo
-}
-
-// RemoveAssignedToIDs removes the "assignedTo" edge to the Employee entity by IDs.
-func (m *WorktaskMutation) RemoveAssignedToIDs(ids ...int) {
-	if m.removedassignedTo == nil {
-		m.removedassignedTo = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.assignedTo, ids[i])
-		m.removedassignedTo[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedAssignedTo returns the removed IDs of the "assignedTo" edge to the Employee entity.
-func (m *WorktaskMutation) RemovedAssignedToIDs() (ids []int) {
-	for id := range m.removedassignedTo {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// AssignedToIDs returns the "assignedTo" edge IDs in the mutation.
-func (m *WorktaskMutation) AssignedToIDs() (ids []int) {
-	for id := range m.assignedTo {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetAssignedTo resets all changes to the "assignedTo" edge.
-func (m *WorktaskMutation) ResetAssignedTo() {
-	m.assignedTo = nil
-	m.clearedassignedTo = false
-	m.removedassignedTo = nil
-}
-
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
-func (m *WorktaskMutation) AddWorkShiftIDs(ids ...int) {
-	if m.workShifts == nil {
-		m.workShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workShifts[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
-func (m *WorktaskMutation) ClearWorkShifts() {
-	m.clearedworkShifts = true
-}
-
-// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
-func (m *WorktaskMutation) WorkShiftsCleared() bool {
-	return m.clearedworkShifts
-}
-
-// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
-func (m *WorktaskMutation) RemoveWorkShiftIDs(ids ...int) {
-	if m.removedworkShifts == nil {
-		m.removedworkShifts = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workShifts, ids[i])
-		m.removedworkShifts[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
-func (m *WorktaskMutation) RemovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedworkShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
-func (m *WorktaskMutation) WorkShiftsIDs() (ids []int) {
-	for id := range m.workShifts {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkShifts resets all changes to the "workShifts" edge.
-func (m *WorktaskMutation) ResetWorkShifts() {
-	m.workShifts = nil
-	m.clearedworkShifts = false
-	m.removedworkShifts = nil
-}
-
-// AddWorkTagIDs adds the "workTags" edge to the Worktag entity by ids.
-func (m *WorktaskMutation) AddWorkTagIDs(ids ...int) {
-	if m.workTags == nil {
-		m.workTags = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.workTags[ids[i]] = struct{}{}
-	}
-}
-
-// ClearWorkTags clears the "workTags" edge to the Worktag entity.
-func (m *WorktaskMutation) ClearWorkTags() {
-	m.clearedworkTags = true
-}
-
-// WorkTagsCleared reports if the "workTags" edge to the Worktag entity was cleared.
-func (m *WorktaskMutation) WorkTagsCleared() bool {
-	return m.clearedworkTags
-}
-
-// RemoveWorkTagIDs removes the "workTags" edge to the Worktag entity by IDs.
-func (m *WorktaskMutation) RemoveWorkTagIDs(ids ...int) {
-	if m.removedworkTags == nil {
-		m.removedworkTags = make(map[int]struct{})
-	}
-	for i := range ids {
-		delete(m.workTags, ids[i])
-		m.removedworkTags[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedWorkTags returns the removed IDs of the "workTags" edge to the Worktag entity.
-func (m *WorktaskMutation) RemovedWorkTagsIDs() (ids []int) {
-	for id := range m.removedworkTags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// WorkTagsIDs returns the "workTags" edge IDs in the mutation.
-func (m *WorktaskMutation) WorkTagsIDs() (ids []int) {
-	for id := range m.workTags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetWorkTags resets all changes to the "workTags" edge.
-func (m *WorktaskMutation) ResetWorkTags() {
-	m.workTags = nil
-	m.clearedworkTags = false
-	m.removedworkTags = nil
-}
-
-// Where appends a list predicates to the WorktaskMutation builder.
-func (m *WorktaskMutation) Where(ps ...predicate.Worktask) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the WorktaskMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *WorktaskMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Worktask, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *WorktaskMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *WorktaskMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (Worktask).
-func (m *WorktaskMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *WorktaskMutation) Fields() []string {
-	fields := make([]string, 0, 9)
-	if m.createdAt != nil {
-		fields = append(fields, worktask.FieldCreatedAt)
-	}
-	if m.updatedAt != nil {
-		fields = append(fields, worktask.FieldUpdatedAt)
-	}
-	if m.deletedAt != nil {
-		fields = append(fields, worktask.FieldDeletedAt)
-	}
-	if m.description != nil {
-		fields = append(fields, worktask.FieldDescription)
-	}
-	if m.status != nil {
-		fields = append(fields, worktask.FieldStatus)
-	}
-	if m.subtasks != nil {
-		fields = append(fields, worktask.FieldSubtasks)
-	}
-	if m.title != nil {
-		fields = append(fields, worktask.FieldTitle)
-	}
-	if m.startTime != nil {
-		fields = append(fields, worktask.FieldStartTime)
-	}
-	if m.endTime != nil {
-		fields = append(fields, worktask.FieldEndTime)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *WorktaskMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case worktask.FieldCreatedAt:
-		return m.CreatedAt()
-	case worktask.FieldUpdatedAt:
-		return m.UpdatedAt()
-	case worktask.FieldDeletedAt:
-		return m.DeletedAt()
-	case worktask.FieldDescription:
-		return m.Description()
-	case worktask.FieldStatus:
-		return m.Status()
-	case worktask.FieldSubtasks:
-		return m.Subtasks()
-	case worktask.FieldTitle:
-		return m.Title()
-	case worktask.FieldStartTime:
-		return m.StartTime()
-	case worktask.FieldEndTime:
-		return m.EndTime()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *WorktaskMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case worktask.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case worktask.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
-	case worktask.FieldDeletedAt:
-		return m.OldDeletedAt(ctx)
-	case worktask.FieldDescription:
-		return m.OldDescription(ctx)
-	case worktask.FieldStatus:
-		return m.OldStatus(ctx)
-	case worktask.FieldSubtasks:
-		return m.OldSubtasks(ctx)
-	case worktask.FieldTitle:
-		return m.OldTitle(ctx)
-	case worktask.FieldStartTime:
-		return m.OldStartTime(ctx)
-	case worktask.FieldEndTime:
-		return m.OldEndTime(ctx)
-	}
-	return nil, fmt.Errorf("unknown Worktask field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *WorktaskMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case worktask.FieldCreatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case worktask.FieldUpdatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
-		return nil
-	case worktask.FieldDeletedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeletedAt(v)
-		return nil
-	case worktask.FieldDescription:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDescription(v)
-		return nil
-	case worktask.FieldStatus:
-		v, ok := value.(worktask.Status)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
-		return nil
-	case worktask.FieldSubtasks:
-		v, ok := value.([]string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetSubtasks(v)
-		return nil
-	case worktask.FieldTitle:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTitle(v)
-		return nil
-	case worktask.FieldStartTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartTime(v)
-		return nil
-	case worktask.FieldEndTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEndTime(v)
-		return nil
-	}
-	return fmt.Errorf("unknown Worktask field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *WorktaskMutation) AddedFields() []string {
-	return nil
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *WorktaskMutation) AddedField(name string) (ent.Value, bool) {
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *WorktaskMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	}
-	return fmt.Errorf("unknown Worktask numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *WorktaskMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(worktask.FieldDeletedAt) {
-		fields = append(fields, worktask.FieldDeletedAt)
-	}
-	if m.FieldCleared(worktask.FieldDescription) {
-		fields = append(fields, worktask.FieldDescription)
-	}
-	if m.FieldCleared(worktask.FieldSubtasks) {
-		fields = append(fields, worktask.FieldSubtasks)
-	}
-	if m.FieldCleared(worktask.FieldEndTime) {
-		fields = append(fields, worktask.FieldEndTime)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *WorktaskMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *WorktaskMutation) ClearField(name string) error {
-	switch name {
-	case worktask.FieldDeletedAt:
-		m.ClearDeletedAt()
-		return nil
-	case worktask.FieldDescription:
-		m.ClearDescription()
-		return nil
-	case worktask.FieldSubtasks:
-		m.ClearSubtasks()
-		return nil
-	case worktask.FieldEndTime:
-		m.ClearEndTime()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktask nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *WorktaskMutation) ResetField(name string) error {
-	switch name {
-	case worktask.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case worktask.FieldUpdatedAt:
-		m.ResetUpdatedAt()
-		return nil
-	case worktask.FieldDeletedAt:
-		m.ResetDeletedAt()
-		return nil
-	case worktask.FieldDescription:
-		m.ResetDescription()
-		return nil
-	case worktask.FieldStatus:
-		m.ResetStatus()
-		return nil
-	case worktask.FieldSubtasks:
-		m.ResetSubtasks()
-		return nil
-	case worktask.FieldTitle:
-		m.ResetTitle()
-		return nil
-	case worktask.FieldStartTime:
-		m.ResetStartTime()
-		return nil
-	case worktask.FieldEndTime:
-		m.ResetEndTime()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktask field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *WorktaskMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
-	if m.company != nil {
-		edges = append(edges, worktask.EdgeCompany)
-	}
-	if m.createdBy != nil {
-		edges = append(edges, worktask.EdgeCreatedBy)
-	}
-	if m.assignedTo != nil {
-		edges = append(edges, worktask.EdgeAssignedTo)
-	}
-	if m.workShifts != nil {
-		edges = append(edges, worktask.EdgeWorkShifts)
-	}
-	if m.workTags != nil {
-		edges = append(edges, worktask.EdgeWorkTags)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *WorktaskMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case worktask.EdgeCompany:
-		if id := m.company; id != nil {
-			return []ent.Value{*id}
-		}
-	case worktask.EdgeCreatedBy:
-		if id := m.createdBy; id != nil {
-			return []ent.Value{*id}
-		}
-	case worktask.EdgeAssignedTo:
-		ids := make([]ent.Value, 0, len(m.assignedTo))
-		for id := range m.assignedTo {
-			ids = append(ids, id)
-		}
-		return ids
-	case worktask.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.workShifts))
-		for id := range m.workShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case worktask.EdgeWorkTags:
-		ids := make([]ent.Value, 0, len(m.workTags))
-		for id := range m.workTags {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *WorktaskMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
-	if m.removedassignedTo != nil {
-		edges = append(edges, worktask.EdgeAssignedTo)
-	}
-	if m.removedworkShifts != nil {
-		edges = append(edges, worktask.EdgeWorkShifts)
-	}
-	if m.removedworkTags != nil {
-		edges = append(edges, worktask.EdgeWorkTags)
-	}
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *WorktaskMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case worktask.EdgeAssignedTo:
-		ids := make([]ent.Value, 0, len(m.removedassignedTo))
-		for id := range m.removedassignedTo {
-			ids = append(ids, id)
-		}
-		return ids
-	case worktask.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedworkShifts))
-		for id := range m.removedworkShifts {
-			ids = append(ids, id)
-		}
-		return ids
-	case worktask.EdgeWorkTags:
-		ids := make([]ent.Value, 0, len(m.removedworkTags))
-		for id := range m.removedworkTags {
-			ids = append(ids, id)
-		}
-		return ids
-	}
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *WorktaskMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
-	if m.clearedcompany {
-		edges = append(edges, worktask.EdgeCompany)
-	}
-	if m.clearedcreatedBy {
-		edges = append(edges, worktask.EdgeCreatedBy)
-	}
-	if m.clearedassignedTo {
-		edges = append(edges, worktask.EdgeAssignedTo)
-	}
-	if m.clearedworkShifts {
-		edges = append(edges, worktask.EdgeWorkShifts)
-	}
-	if m.clearedworkTags {
-		edges = append(edges, worktask.EdgeWorkTags)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *WorktaskMutation) EdgeCleared(name string) bool {
-	switch name {
-	case worktask.EdgeCompany:
-		return m.clearedcompany
-	case worktask.EdgeCreatedBy:
-		return m.clearedcreatedBy
-	case worktask.EdgeAssignedTo:
-		return m.clearedassignedTo
-	case worktask.EdgeWorkShifts:
-		return m.clearedworkShifts
-	case worktask.EdgeWorkTags:
-		return m.clearedworkTags
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *WorktaskMutation) ClearEdge(name string) error {
-	switch name {
-	case worktask.EdgeCompany:
-		m.ClearCompany()
-		return nil
-	case worktask.EdgeCreatedBy:
-		m.ClearCreatedBy()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktask unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *WorktaskMutation) ResetEdge(name string) error {
-	switch name {
-	case worktask.EdgeCompany:
-		m.ResetCompany()
-		return nil
-	case worktask.EdgeCreatedBy:
-		m.ResetCreatedBy()
-		return nil
-	case worktask.EdgeAssignedTo:
-		m.ResetAssignedTo()
-		return nil
-	case worktask.EdgeWorkShifts:
-		m.ResetWorkShifts()
-		return nil
-	case worktask.EdgeWorkTags:
-		m.ResetWorkTags()
-		return nil
-	}
-	return fmt.Errorf("unknown Worktask edge %s", name)
 }

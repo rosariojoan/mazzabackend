@@ -23,8 +23,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"reflect"
 	"sync"
 
@@ -108,8 +106,6 @@ func checkColumn(table, column string) error {
 			user.Table:             user.ValidColumn,
 			userrole.Table:         userrole.ValidColumn,
 			workshift.Table:        workshift.ValidColumn,
-			worktag.Table:          worktag.ValidColumn,
-			worktask.Table:         worktask.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

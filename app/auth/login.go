@@ -52,7 +52,7 @@ func Login(ctx *gin.Context) {
 			user.UsernameEQ(input.Username),
 			user.DeletedAtIsNil(),
 		)).
-		WithAssignedRoles().
+		// WithAssignedRoles().
 		WithEmployee(func(empQ *ent.EmployeeQuery) {
 			empQ.Select(employee.FieldID, employee.FieldName) // only these two fields are selected from the employee edge
 		}).
@@ -87,6 +87,7 @@ func Login(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao fazer o login"})
 			return
 		}
+		inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
 	} else {
 		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearFcmToken().Exec(ctx)
 		if err != nil {
@@ -95,7 +96,6 @@ func Login(ctx *gin.Context) {
 			return
 		}
 	}
-	inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
 
 	// Generate JWT token
 	duration := time.Hour * 24 * 30
@@ -124,7 +124,7 @@ func Login(ctx *gin.Context) {
 
 	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.IDEQ(activeCompanyID))).All(ctx)
 	if err != nil {
-		fmt.Println("roles err:",err)
+		fmt.Println("roles err:", err)
 		roles = []*ent.UserRole{}
 		// ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 		// return

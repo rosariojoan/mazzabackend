@@ -11,6 +11,7 @@ import (
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/user"
+	"mazza/ent/generated/workshift"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -28,10 +29,13 @@ type ProjectTaskQuery struct {
 	withProject           *ProjectQuery
 	withAssignee          *UserQuery
 	withParticipants      *UserQuery
+	withCreatedBy         *UserQuery
+	withWorkShifts        *WorkshiftQuery
 	withFKs               bool
 	loadTotal             []func(context.Context, []*ProjectTask) error
 	modifiers             []func(*sql.Selector)
 	withNamedParticipants map[string]*UserQuery
+	withNamedWorkShifts   map[string]*WorkshiftQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -127,6 +131,50 @@ func (ptq *ProjectTaskQuery) QueryParticipants() *UserQuery {
 			sqlgraph.From(projecttask.Table, projecttask.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, projecttask.ParticipantsTable, projecttask.ParticipantsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(ptq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCreatedBy chains the current query on the "createdBy" edge.
+func (ptq *ProjectTaskQuery) QueryCreatedBy() *UserQuery {
+	query := (&UserClient{config: ptq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ptq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ptq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(projecttask.Table, projecttask.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, projecttask.CreatedByTable, projecttask.CreatedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ptq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryWorkShifts chains the current query on the "workShifts" edge.
+func (ptq *ProjectTaskQuery) QueryWorkShifts() *WorkshiftQuery {
+	query := (&WorkshiftClient{config: ptq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ptq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ptq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(projecttask.Table, projecttask.FieldID, selector),
+			sqlgraph.To(workshift.Table, workshift.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, projecttask.WorkShiftsTable, projecttask.WorkShiftsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(ptq.driver.Dialect(), step)
 		return fromU, nil
@@ -329,6 +377,8 @@ func (ptq *ProjectTaskQuery) Clone() *ProjectTaskQuery {
 		withProject:      ptq.withProject.Clone(),
 		withAssignee:     ptq.withAssignee.Clone(),
 		withParticipants: ptq.withParticipants.Clone(),
+		withCreatedBy:    ptq.withCreatedBy.Clone(),
+		withWorkShifts:   ptq.withWorkShifts.Clone(),
 		// clone intermediate query.
 		sql:       ptq.sql.Clone(),
 		path:      ptq.path,
@@ -369,18 +419,40 @@ func (ptq *ProjectTaskQuery) WithParticipants(opts ...func(*UserQuery)) *Project
 	return ptq
 }
 
+// WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
+// the "createdBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (ptq *ProjectTaskQuery) WithCreatedBy(opts ...func(*UserQuery)) *ProjectTaskQuery {
+	query := (&UserClient{config: ptq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	ptq.withCreatedBy = query
+	return ptq
+}
+
+// WithWorkShifts tells the query-builder to eager-load the nodes that are connected to
+// the "workShifts" edge. The optional arguments are used to configure the query builder of the edge.
+func (ptq *ProjectTaskQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *ProjectTaskQuery {
+	query := (&WorkshiftClient{config: ptq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	ptq.withWorkShifts = query
+	return ptq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.ProjectTask.Query().
-//		GroupBy(projecttask.FieldName).
+//		GroupBy(projecttask.FieldCreatedAt).
 //		Aggregate(generated.Count()).
 //		Scan(ctx, &v)
 func (ptq *ProjectTaskQuery) GroupBy(field string, fields ...string) *ProjectTaskGroupBy {
@@ -398,11 +470,11 @@ func (ptq *ProjectTaskQuery) GroupBy(field string, fields ...string) *ProjectTas
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.ProjectTask.Query().
-//		Select(projecttask.FieldName).
+//		Select(projecttask.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (ptq *ProjectTaskQuery) Select(fields ...string) *ProjectTaskSelect {
 	ptq.ctx.Fields = append(ptq.ctx.Fields, fields...)
@@ -448,13 +520,15 @@ func (ptq *ProjectTaskQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 		nodes       = []*ProjectTask{}
 		withFKs     = ptq.withFKs
 		_spec       = ptq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [5]bool{
 			ptq.withProject != nil,
 			ptq.withAssignee != nil,
 			ptq.withParticipants != nil,
+			ptq.withCreatedBy != nil,
+			ptq.withWorkShifts != nil,
 		}
 	)
-	if ptq.withProject != nil || ptq.withAssignee != nil {
+	if ptq.withProject != nil || ptq.withAssignee != nil || ptq.withCreatedBy != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -500,10 +574,30 @@ func (ptq *ProjectTaskQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]
 			return nil, err
 		}
 	}
+	if query := ptq.withCreatedBy; query != nil {
+		if err := ptq.loadCreatedBy(ctx, query, nodes, nil,
+			func(n *ProjectTask, e *User) { n.Edges.CreatedBy = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := ptq.withWorkShifts; query != nil {
+		if err := ptq.loadWorkShifts(ctx, query, nodes,
+			func(n *ProjectTask) { n.Edges.WorkShifts = []*Workshift{} },
+			func(n *ProjectTask, e *Workshift) { n.Edges.WorkShifts = append(n.Edges.WorkShifts, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range ptq.withNamedParticipants {
 		if err := ptq.loadParticipants(ctx, query, nodes,
 			func(n *ProjectTask) { n.appendNamedParticipants(name) },
 			func(n *ProjectTask, e *User) { n.appendNamedParticipants(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range ptq.withNamedWorkShifts {
+		if err := ptq.loadWorkShifts(ctx, query, nodes,
+			func(n *ProjectTask) { n.appendNamedWorkShifts(name) },
+			func(n *ProjectTask, e *Workshift) { n.appendNamedWorkShifts(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -640,6 +734,69 @@ func (ptq *ProjectTaskQuery) loadParticipants(ctx context.Context, query *UserQu
 	}
 	return nil
 }
+func (ptq *ProjectTaskQuery) loadCreatedBy(ctx context.Context, query *UserQuery, nodes []*ProjectTask, init func(*ProjectTask), assign func(*ProjectTask, *User)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*ProjectTask)
+	for i := range nodes {
+		if nodes[i].user_created_tasks == nil {
+			continue
+		}
+		fk := *nodes[i].user_created_tasks
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_created_tasks" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (ptq *ProjectTaskQuery) loadWorkShifts(ctx context.Context, query *WorkshiftQuery, nodes []*ProjectTask, init func(*ProjectTask), assign func(*ProjectTask, *Workshift)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*ProjectTask)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Workshift(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(projecttask.WorkShiftsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.project_task_work_shifts
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "project_task_work_shifts" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "project_task_work_shifts" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 
 func (ptq *ProjectTaskQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := ptq.querySpec()
@@ -745,6 +902,20 @@ func (ptq *ProjectTaskQuery) WithNamedParticipants(name string, opts ...func(*Us
 		ptq.withNamedParticipants = make(map[string]*UserQuery)
 	}
 	ptq.withNamedParticipants[name] = query
+	return ptq
+}
+
+// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "workShifts"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (ptq *ProjectTaskQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *ProjectTaskQuery {
+	query := (&WorkshiftClient{config: ptq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if ptq.withNamedWorkShifts == nil {
+		ptq.withNamedWorkShifts = make(map[string]*WorkshiftQuery)
+	}
+	ptq.withNamedWorkShifts[name] = query
 	return ptq
 }
 

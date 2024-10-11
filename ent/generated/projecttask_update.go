@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/user"
+	"mazza/ent/generated/workshift"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -200,6 +201,21 @@ func (ptu *ProjectTaskUpdate) AddParticipants(u ...*User) *ProjectTaskUpdate {
 	return ptu.AddParticipantIDs(ids...)
 }
 
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (ptu *ProjectTaskUpdate) AddWorkShiftIDs(ids ...int) *ProjectTaskUpdate {
+	ptu.mutation.AddWorkShiftIDs(ids...)
+	return ptu
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (ptu *ProjectTaskUpdate) AddWorkShifts(w ...*Workshift) *ProjectTaskUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return ptu.AddWorkShiftIDs(ids...)
+}
+
 // Mutation returns the ProjectTaskMutation object of the builder.
 func (ptu *ProjectTaskUpdate) Mutation() *ProjectTaskMutation {
 	return ptu.mutation
@@ -236,6 +252,27 @@ func (ptu *ProjectTaskUpdate) RemoveParticipants(u ...*User) *ProjectTaskUpdate 
 		ids[i] = u[i].ID
 	}
 	return ptu.RemoveParticipantIDs(ids...)
+}
+
+// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+func (ptu *ProjectTaskUpdate) ClearWorkShifts() *ProjectTaskUpdate {
+	ptu.mutation.ClearWorkShifts()
+	return ptu
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+func (ptu *ProjectTaskUpdate) RemoveWorkShiftIDs(ids ...int) *ProjectTaskUpdate {
+	ptu.mutation.RemoveWorkShiftIDs(ids...)
+	return ptu
+}
+
+// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+func (ptu *ProjectTaskUpdate) RemoveWorkShifts(w ...*Workshift) *ProjectTaskUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return ptu.RemoveWorkShiftIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -305,6 +342,9 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if ptu.mutation.CreatedAtCleared() {
+		_spec.ClearField(projecttask.FieldCreatedAt, field.TypeTime)
 	}
 	if value, ok := ptu.mutation.Name(); ok {
 		_spec.SetField(projecttask.FieldName, field.TypeString, value)
@@ -432,6 +472,51 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ptu.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ptu.mutation.RemovedWorkShiftsIDs(); len(nodes) > 0 && !ptu.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ptu.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -630,6 +715,21 @@ func (ptuo *ProjectTaskUpdateOne) AddParticipants(u ...*User) *ProjectTaskUpdate
 	return ptuo.AddParticipantIDs(ids...)
 }
 
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (ptuo *ProjectTaskUpdateOne) AddWorkShiftIDs(ids ...int) *ProjectTaskUpdateOne {
+	ptuo.mutation.AddWorkShiftIDs(ids...)
+	return ptuo
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (ptuo *ProjectTaskUpdateOne) AddWorkShifts(w ...*Workshift) *ProjectTaskUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return ptuo.AddWorkShiftIDs(ids...)
+}
+
 // Mutation returns the ProjectTaskMutation object of the builder.
 func (ptuo *ProjectTaskUpdateOne) Mutation() *ProjectTaskMutation {
 	return ptuo.mutation
@@ -666,6 +766,27 @@ func (ptuo *ProjectTaskUpdateOne) RemoveParticipants(u ...*User) *ProjectTaskUpd
 		ids[i] = u[i].ID
 	}
 	return ptuo.RemoveParticipantIDs(ids...)
+}
+
+// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+func (ptuo *ProjectTaskUpdateOne) ClearWorkShifts() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearWorkShifts()
+	return ptuo
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+func (ptuo *ProjectTaskUpdateOne) RemoveWorkShiftIDs(ids ...int) *ProjectTaskUpdateOne {
+	ptuo.mutation.RemoveWorkShiftIDs(ids...)
+	return ptuo
+}
+
+// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+func (ptuo *ProjectTaskUpdateOne) RemoveWorkShifts(w ...*Workshift) *ProjectTaskUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return ptuo.RemoveWorkShiftIDs(ids...)
 }
 
 // Where appends a list predicates to the ProjectTaskUpdate builder.
@@ -765,6 +886,9 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 				ps[i](selector)
 			}
 		}
+	}
+	if ptuo.mutation.CreatedAtCleared() {
+		_spec.ClearField(projecttask.FieldCreatedAt, field.TypeTime)
 	}
 	if value, ok := ptuo.mutation.Name(); ok {
 		_spec.SetField(projecttask.FieldName, field.TypeString, value)
@@ -892,6 +1016,51 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ptuo.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ptuo.mutation.RemovedWorkShiftsIDs(); len(nodes) > 0 && !ptuo.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ptuo.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

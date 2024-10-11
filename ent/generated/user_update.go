@@ -15,7 +15,7 @@ import (
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
-	"mazza/ent/generated/worktask"
+	"mazza/ent/generated/workshift"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -230,19 +230,38 @@ func (uu *UserUpdate) AddAssignedRoles(u ...*UserRole) *UserUpdate {
 	return uu.AddAssignedRoleIDs(ids...)
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the Worktask entity by IDs.
-func (uu *UserUpdate) AddCreatedTaskIDs(ids ...int) *UserUpdate {
-	uu.mutation.AddCreatedTaskIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the User entity by IDs.
+func (uu *UserUpdate) AddSubordinateIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddSubordinateIDs(ids...)
 	return uu
 }
 
-// AddCreatedTasks adds the "createdTasks" edges to the Worktask entity.
-func (uu *UserUpdate) AddCreatedTasks(w ...*Worktask) *UserUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
+// AddSubordinates adds the "subordinates" edges to the User entity.
+func (uu *UserUpdate) AddSubordinates(u ...*User) *UserUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
-	return uu.AddCreatedTaskIDs(ids...)
+	return uu.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the User entity by ID.
+func (uu *UserUpdate) SetLeaderID(id int) *UserUpdate {
+	uu.mutation.SetLeaderID(id)
+	return uu
+}
+
+// SetNillableLeaderID sets the "leader" edge to the User entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableLeaderID(id *int) *UserUpdate {
+	if id != nil {
+		uu = uu.SetLeaderID(*id)
+	}
+	return uu
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uu *UserUpdate) SetLeader(u *User) *UserUpdate {
+	return uu.SetLeaderID(u.ID)
 }
 
 // SetEmployeeID sets the "employee" edge to the Employee entity by ID.
@@ -339,6 +358,36 @@ func (uu *UserUpdate) AddTokens(t ...*Token) *UserUpdate {
 	return uu.AddTokenIDs(ids...)
 }
 
+// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+func (uu *UserUpdate) AddApprovedWorkShiftIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddApprovedWorkShiftIDs(ids...)
+	return uu
+}
+
+// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+func (uu *UserUpdate) AddApprovedWorkShifts(w ...*Workshift) *UserUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uu.AddApprovedWorkShiftIDs(ids...)
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (uu *UserUpdate) AddWorkShiftIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddWorkShiftIDs(ids...)
+	return uu
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (uu *UserUpdate) AddWorkShifts(w ...*Workshift) *UserUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uu.AddWorkShiftIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -407,25 +456,31 @@ func (uu *UserUpdate) RemoveAssignedRoles(u ...*UserRole) *UserUpdate {
 	return uu.RemoveAssignedRoleIDs(ids...)
 }
 
-// ClearCreatedTasks clears all "createdTasks" edges to the Worktask entity.
-func (uu *UserUpdate) ClearCreatedTasks() *UserUpdate {
-	uu.mutation.ClearCreatedTasks()
+// ClearSubordinates clears all "subordinates" edges to the User entity.
+func (uu *UserUpdate) ClearSubordinates() *UserUpdate {
+	uu.mutation.ClearSubordinates()
 	return uu
 }
 
-// RemoveCreatedTaskIDs removes the "createdTasks" edge to Worktask entities by IDs.
-func (uu *UserUpdate) RemoveCreatedTaskIDs(ids ...int) *UserUpdate {
-	uu.mutation.RemoveCreatedTaskIDs(ids...)
+// RemoveSubordinateIDs removes the "subordinates" edge to User entities by IDs.
+func (uu *UserUpdate) RemoveSubordinateIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveSubordinateIDs(ids...)
 	return uu
 }
 
-// RemoveCreatedTasks removes "createdTasks" edges to Worktask entities.
-func (uu *UserUpdate) RemoveCreatedTasks(w ...*Worktask) *UserUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
+// RemoveSubordinates removes "subordinates" edges to User entities.
+func (uu *UserUpdate) RemoveSubordinates(u ...*User) *UserUpdate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
-	return uu.RemoveCreatedTaskIDs(ids...)
+	return uu.RemoveSubordinateIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the User entity.
+func (uu *UserUpdate) ClearLeader() *UserUpdate {
+	uu.mutation.ClearLeader()
+	return uu
 }
 
 // ClearEmployee clears the "employee" edge to the Employee entity.
@@ -537,6 +592,48 @@ func (uu *UserUpdate) RemoveTokens(t ...*Token) *UserUpdate {
 		ids[i] = t[i].ID
 	}
 	return uu.RemoveTokenIDs(ids...)
+}
+
+// ClearApprovedWorkShifts clears all "approvedWorkShifts" edges to the Workshift entity.
+func (uu *UserUpdate) ClearApprovedWorkShifts() *UserUpdate {
+	uu.mutation.ClearApprovedWorkShifts()
+	return uu
+}
+
+// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to Workshift entities by IDs.
+func (uu *UserUpdate) RemoveApprovedWorkShiftIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveApprovedWorkShiftIDs(ids...)
+	return uu
+}
+
+// RemoveApprovedWorkShifts removes "approvedWorkShifts" edges to Workshift entities.
+func (uu *UserUpdate) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uu.RemoveApprovedWorkShiftIDs(ids...)
+}
+
+// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+func (uu *UserUpdate) ClearWorkShifts() *UserUpdate {
+	uu.mutation.ClearWorkShifts()
+	return uu
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+func (uu *UserUpdate) RemoveWorkShiftIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveWorkShiftIDs(ids...)
+	return uu
+}
+
+// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+func (uu *UserUpdate) RemoveWorkShifts(w ...*Workshift) *UserUpdate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uu.RemoveWorkShiftIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -767,28 +864,28 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uu.mutation.CreatedTasksCleared() {
+	if uu.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
-			Bidi:    false,
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uu.mutation.RemovedCreatedTasksIDs(); len(nodes) > 0 && !uu.mutation.CreatedTasksCleared() {
+	if nodes := uu.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !uu.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
-			Bidi:    false,
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -796,15 +893,44 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uu.mutation.CreatedTasksIDs(); len(nodes) > 0 {
+	if nodes := uu.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1066,6 +1192,96 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.ApprovedWorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedApprovedWorkShiftsIDs(); len(nodes) > 0 && !uu.mutation.ApprovedWorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.ApprovedWorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedWorkShiftsIDs(); len(nodes) > 0 && !uu.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -1281,19 +1497,38 @@ func (uuo *UserUpdateOne) AddAssignedRoles(u ...*UserRole) *UserUpdateOne {
 	return uuo.AddAssignedRoleIDs(ids...)
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the Worktask entity by IDs.
-func (uuo *UserUpdateOne) AddCreatedTaskIDs(ids ...int) *UserUpdateOne {
-	uuo.mutation.AddCreatedTaskIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the User entity by IDs.
+func (uuo *UserUpdateOne) AddSubordinateIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddSubordinateIDs(ids...)
 	return uuo
 }
 
-// AddCreatedTasks adds the "createdTasks" edges to the Worktask entity.
-func (uuo *UserUpdateOne) AddCreatedTasks(w ...*Worktask) *UserUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
+// AddSubordinates adds the "subordinates" edges to the User entity.
+func (uuo *UserUpdateOne) AddSubordinates(u ...*User) *UserUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
-	return uuo.AddCreatedTaskIDs(ids...)
+	return uuo.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the User entity by ID.
+func (uuo *UserUpdateOne) SetLeaderID(id int) *UserUpdateOne {
+	uuo.mutation.SetLeaderID(id)
+	return uuo
+}
+
+// SetNillableLeaderID sets the "leader" edge to the User entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableLeaderID(id *int) *UserUpdateOne {
+	if id != nil {
+		uuo = uuo.SetLeaderID(*id)
+	}
+	return uuo
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uuo *UserUpdateOne) SetLeader(u *User) *UserUpdateOne {
+	return uuo.SetLeaderID(u.ID)
 }
 
 // SetEmployeeID sets the "employee" edge to the Employee entity by ID.
@@ -1390,6 +1625,36 @@ func (uuo *UserUpdateOne) AddTokens(t ...*Token) *UserUpdateOne {
 	return uuo.AddTokenIDs(ids...)
 }
 
+// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+func (uuo *UserUpdateOne) AddApprovedWorkShiftIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddApprovedWorkShiftIDs(ids...)
+	return uuo
+}
+
+// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+func (uuo *UserUpdateOne) AddApprovedWorkShifts(w ...*Workshift) *UserUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uuo.AddApprovedWorkShiftIDs(ids...)
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (uuo *UserUpdateOne) AddWorkShiftIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddWorkShiftIDs(ids...)
+	return uuo
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (uuo *UserUpdateOne) AddWorkShifts(w ...*Workshift) *UserUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uuo.AddWorkShiftIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -1458,25 +1723,31 @@ func (uuo *UserUpdateOne) RemoveAssignedRoles(u ...*UserRole) *UserUpdateOne {
 	return uuo.RemoveAssignedRoleIDs(ids...)
 }
 
-// ClearCreatedTasks clears all "createdTasks" edges to the Worktask entity.
-func (uuo *UserUpdateOne) ClearCreatedTasks() *UserUpdateOne {
-	uuo.mutation.ClearCreatedTasks()
+// ClearSubordinates clears all "subordinates" edges to the User entity.
+func (uuo *UserUpdateOne) ClearSubordinates() *UserUpdateOne {
+	uuo.mutation.ClearSubordinates()
 	return uuo
 }
 
-// RemoveCreatedTaskIDs removes the "createdTasks" edge to Worktask entities by IDs.
-func (uuo *UserUpdateOne) RemoveCreatedTaskIDs(ids ...int) *UserUpdateOne {
-	uuo.mutation.RemoveCreatedTaskIDs(ids...)
+// RemoveSubordinateIDs removes the "subordinates" edge to User entities by IDs.
+func (uuo *UserUpdateOne) RemoveSubordinateIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveSubordinateIDs(ids...)
 	return uuo
 }
 
-// RemoveCreatedTasks removes "createdTasks" edges to Worktask entities.
-func (uuo *UserUpdateOne) RemoveCreatedTasks(w ...*Worktask) *UserUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
+// RemoveSubordinates removes "subordinates" edges to User entities.
+func (uuo *UserUpdateOne) RemoveSubordinates(u ...*User) *UserUpdateOne {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
-	return uuo.RemoveCreatedTaskIDs(ids...)
+	return uuo.RemoveSubordinateIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the User entity.
+func (uuo *UserUpdateOne) ClearLeader() *UserUpdateOne {
+	uuo.mutation.ClearLeader()
+	return uuo
 }
 
 // ClearEmployee clears the "employee" edge to the Employee entity.
@@ -1588,6 +1859,48 @@ func (uuo *UserUpdateOne) RemoveTokens(t ...*Token) *UserUpdateOne {
 		ids[i] = t[i].ID
 	}
 	return uuo.RemoveTokenIDs(ids...)
+}
+
+// ClearApprovedWorkShifts clears all "approvedWorkShifts" edges to the Workshift entity.
+func (uuo *UserUpdateOne) ClearApprovedWorkShifts() *UserUpdateOne {
+	uuo.mutation.ClearApprovedWorkShifts()
+	return uuo
+}
+
+// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to Workshift entities by IDs.
+func (uuo *UserUpdateOne) RemoveApprovedWorkShiftIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveApprovedWorkShiftIDs(ids...)
+	return uuo
+}
+
+// RemoveApprovedWorkShifts removes "approvedWorkShifts" edges to Workshift entities.
+func (uuo *UserUpdateOne) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uuo.RemoveApprovedWorkShiftIDs(ids...)
+}
+
+// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+func (uuo *UserUpdateOne) ClearWorkShifts() *UserUpdateOne {
+	uuo.mutation.ClearWorkShifts()
+	return uuo
+}
+
+// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+func (uuo *UserUpdateOne) RemoveWorkShiftIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveWorkShiftIDs(ids...)
+	return uuo
+}
+
+// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+func (uuo *UserUpdateOne) RemoveWorkShifts(w ...*Workshift) *UserUpdateOne {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uuo.RemoveWorkShiftIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -1848,28 +2161,28 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uuo.mutation.CreatedTasksCleared() {
+	if uuo.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
-			Bidi:    false,
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uuo.mutation.RemovedCreatedTasksIDs(); len(nodes) > 0 && !uuo.mutation.CreatedTasksCleared() {
+	if nodes := uuo.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !uuo.mutation.SubordinatesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
-			Bidi:    false,
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1877,15 +2190,44 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uuo.mutation.CreatedTasksIDs(); len(nodes) > 0 {
+	if nodes := uuo.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2140,6 +2482,96 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(token.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.ApprovedWorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedApprovedWorkShiftsIDs(); len(nodes) > 0 && !uuo.mutation.ApprovedWorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.ApprovedWorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedWorkShiftsIDs(); len(nodes) > 0 && !uuo.mutation.WorkShiftsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

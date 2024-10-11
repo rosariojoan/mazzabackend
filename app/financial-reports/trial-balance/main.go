@@ -53,33 +53,57 @@ func GetTrialBalance(
 		Credit float64 `json:"credit"`
 	}{Debit: 0, Credit: 0}
 
+	// sqlStr := fmt.Sprintf(`
+	// 	SELECT
+	// 		account,
+	// 		sum(debit) AS debit,
+	// 		sum(credit) AS credit,
+	// 		CASE
+	// 			WHEN account_type IN ('asset', 'expense')
+	// 			THEN sum(debit) - sum(credit)
+	// 			ELSE sum(credit) - sum(debit)
+	// 		END AS balance
+	// 	FROM
+	// 	(
+	// 		SELECT
+	// 			account,
+	// 			account_type,
+	// 			CASE WHEN debit < 0 THEN -debit ELSE debit END AS debit,
+	// 			CASE WHEN credit < 0 THEN -credit ELSE credit END AS credit
+	// 		FROM
+	// 		(
+	// 			SELECT
+	// 				account AS account,
+	// 				account_type,
+	// 				CASE WHEN is_debit THEN amount ELSE 0 END AS debit,
+	// 				CASE WHEN is_debit THEN 0 ELSE amount END AS credit
+	// 			FROM accounting_entries
+	// 			WHERE company_accounting_entries = %d AND date < '%s' AND account_type NOT IN (%s)
+	// 		) AS intermediate_result
+	// 	) AS result
+
+	// 	GROUP BY account, account_type
+	// 	ORDER BY account ASC
+	// `, currentCompany.ID, endDate.Format(time.RFC3339), excluded)
+
 	sqlStr := fmt.Sprintf(`
 		SELECT
 			account,
 			sum(debit) AS debit,
 			sum(credit) AS credit,
 			CASE 
-				WHEN account_type IN ('asset', 'expense') 
+				WHEN account_type IN ('ASSET', 'EXPENSE') 
 				THEN sum(debit) - sum(credit)
 				ELSE sum(credit) - sum(debit)
 			END AS balance
-		FROM
-		(
-			SELECT
+		FROM (
+			SELECT 
 				account,
 				account_type,
-				CASE WHEN debit < 0 THEN -debit ELSE debit END AS debit,
-				CASE WHEN credit < 0 THEN -credit ELSE credit END AS credit
-			FROM
-			(
-				SELECT 
-					account AS account,
-					account_type,
-					CASE WHEN is_debit THEN amount ELSE 0 END AS debit,
-					CASE WHEN is_debit THEN 0 ELSE amount END AS credit
-				FROM accounting_entries
-				WHERE company_accounting_entries = %d AND date < '%s' AND account_type NOT IN (%s)
-			) AS intermediate_result
+				CASE WHEN is_debit THEN amount ELSE 0 END AS debit,
+				CASE WHEN is_debit THEN 0 ELSE amount END AS credit
+			FROM accounting_entries
+			WHERE company_accounting_entries = %d AND date < '%s' AND account_type NOT IN (%s)
 		) AS result
 		
 		GROUP BY account, account_type

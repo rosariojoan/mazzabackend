@@ -9,6 +9,7 @@ import (
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/user"
+	"mazza/ent/generated/workshift"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -20,6 +21,20 @@ type ProjectTaskCreate struct {
 	config
 	mutation *ProjectTaskMutation
 	hooks    []Hook
+}
+
+// SetCreatedAt sets the "createdAt" field.
+func (ptc *ProjectTaskCreate) SetCreatedAt(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetCreatedAt(t)
+	return ptc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableCreatedAt(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetCreatedAt(*t)
+	}
+	return ptc
 }
 
 // SetName sets the "name" field.
@@ -131,6 +146,40 @@ func (ptc *ProjectTaskCreate) AddParticipants(u ...*User) *ProjectTaskCreate {
 	return ptc.AddParticipantIDs(ids...)
 }
 
+// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+func (ptc *ProjectTaskCreate) SetCreatedByID(id int) *ProjectTaskCreate {
+	ptc.mutation.SetCreatedByID(id)
+	return ptc
+}
+
+// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableCreatedByID(id *int) *ProjectTaskCreate {
+	if id != nil {
+		ptc = ptc.SetCreatedByID(*id)
+	}
+	return ptc
+}
+
+// SetCreatedBy sets the "createdBy" edge to the User entity.
+func (ptc *ProjectTaskCreate) SetCreatedBy(u *User) *ProjectTaskCreate {
+	return ptc.SetCreatedByID(u.ID)
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (ptc *ProjectTaskCreate) AddWorkShiftIDs(ids ...int) *ProjectTaskCreate {
+	ptc.mutation.AddWorkShiftIDs(ids...)
+	return ptc
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (ptc *ProjectTaskCreate) AddWorkShifts(w ...*Workshift) *ProjectTaskCreate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return ptc.AddWorkShiftIDs(ids...)
+}
+
 // Mutation returns the ProjectTaskMutation object of the builder.
 func (ptc *ProjectTaskCreate) Mutation() *ProjectTaskMutation {
 	return ptc.mutation
@@ -138,6 +187,9 @@ func (ptc *ProjectTaskCreate) Mutation() *ProjectTaskMutation {
 
 // Save creates the ProjectTask in the database.
 func (ptc *ProjectTaskCreate) Save(ctx context.Context) (*ProjectTask, error) {
+	if err := ptc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, ptc.sqlSave, ptc.mutation, ptc.hooks)
 }
 
@@ -161,6 +213,18 @@ func (ptc *ProjectTaskCreate) ExecX(ctx context.Context) {
 	if err := ptc.Exec(ctx); err != nil {
 		panic(err)
 	}
+}
+
+// defaults sets the default values of the builder before save.
+func (ptc *ProjectTaskCreate) defaults() error {
+	if _, ok := ptc.mutation.CreatedAt(); !ok {
+		if projecttask.DefaultCreatedAt == nil {
+			return fmt.Errorf("generated: uninitialized projecttask.DefaultCreatedAt (forgotten import generated/runtime?)")
+		}
+		v := projecttask.DefaultCreatedAt()
+		ptc.mutation.SetCreatedAt(v)
+	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -227,6 +291,10 @@ func (ptc *ProjectTaskCreate) createSpec() (*ProjectTask, *sqlgraph.CreateSpec) 
 		_node = &ProjectTask{config: ptc.config}
 		_spec = sqlgraph.NewCreateSpec(projecttask.Table, sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt))
 	)
+	if value, ok := ptc.mutation.CreatedAt(); ok {
+		_spec.SetField(projecttask.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
+	}
 	if value, ok := ptc.mutation.Name(); ok {
 		_spec.SetField(projecttask.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -309,6 +377,39 @@ func (ptc *ProjectTaskCreate) createSpec() (*ProjectTask, *sqlgraph.CreateSpec) 
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := ptc.mutation.CreatedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   projecttask.CreatedByTable,
+			Columns: []string{projecttask.CreatedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_created_tasks = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ptc.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   projecttask.WorkShiftsTable,
+			Columns: []string{projecttask.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -330,6 +431,7 @@ func (ptcb *ProjectTaskCreateBulk) Save(ctx context.Context) ([]*ProjectTask, er
 	for i := range ptcb.builders {
 		func(i int, root context.Context) {
 			builder := ptcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*ProjectTaskMutation)
 				if !ok {

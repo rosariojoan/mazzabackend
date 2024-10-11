@@ -7,10 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/projecttask"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -219,32 +219,32 @@ func (wu *WorkshiftUpdate) SetCompany(c *Company) *WorkshiftUpdate {
 	return wu.SetCompanyID(c.ID)
 }
 
-// SetEmployeeID sets the "employee" edge to the Employee entity by ID.
-func (wu *WorkshiftUpdate) SetEmployeeID(id int) *WorkshiftUpdate {
-	wu.mutation.SetEmployeeID(id)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (wu *WorkshiftUpdate) SetUserID(id int) *WorkshiftUpdate {
+	wu.mutation.SetUserID(id)
 	return wu
 }
 
-// SetNillableEmployeeID sets the "employee" edge to the Employee entity by ID if the given value is not nil.
-func (wu *WorkshiftUpdate) SetNillableEmployeeID(id *int) *WorkshiftUpdate {
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (wu *WorkshiftUpdate) SetNillableUserID(id *int) *WorkshiftUpdate {
 	if id != nil {
-		wu = wu.SetEmployeeID(*id)
+		wu = wu.SetUserID(*id)
 	}
 	return wu
 }
 
-// SetEmployee sets the "employee" edge to the Employee entity.
-func (wu *WorkshiftUpdate) SetEmployee(e *Employee) *WorkshiftUpdate {
-	return wu.SetEmployeeID(e.ID)
+// SetUser sets the "user" edge to the User entity.
+func (wu *WorkshiftUpdate) SetUser(u *User) *WorkshiftUpdate {
+	return wu.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the Employee entity by ID.
+// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
 func (wu *WorkshiftUpdate) SetApprovedByID(id int) *WorkshiftUpdate {
 	wu.mutation.SetApprovedByID(id)
 	return wu
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the Employee entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableApprovedByID(id *int) *WorkshiftUpdate {
 	if id != nil {
 		wu = wu.SetApprovedByID(*id)
@@ -252,28 +252,28 @@ func (wu *WorkshiftUpdate) SetNillableApprovedByID(id *int) *WorkshiftUpdate {
 	return wu
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the Employee entity.
-func (wu *WorkshiftUpdate) SetApprovedBy(e *Employee) *WorkshiftUpdate {
-	return wu.SetApprovedByID(e.ID)
+// SetApprovedBy sets the "approvedBy" edge to the User entity.
+func (wu *WorkshiftUpdate) SetApprovedBy(u *User) *WorkshiftUpdate {
+	return wu.SetApprovedByID(u.ID)
 }
 
-// SetWorkTaskID sets the "workTask" edge to the Worktask entity by ID.
-func (wu *WorkshiftUpdate) SetWorkTaskID(id int) *WorkshiftUpdate {
-	wu.mutation.SetWorkTaskID(id)
+// SetTaskID sets the "task" edge to the ProjectTask entity by ID.
+func (wu *WorkshiftUpdate) SetTaskID(id int) *WorkshiftUpdate {
+	wu.mutation.SetTaskID(id)
 	return wu
 }
 
-// SetNillableWorkTaskID sets the "workTask" edge to the Worktask entity by ID if the given value is not nil.
-func (wu *WorkshiftUpdate) SetNillableWorkTaskID(id *int) *WorkshiftUpdate {
+// SetNillableTaskID sets the "task" edge to the ProjectTask entity by ID if the given value is not nil.
+func (wu *WorkshiftUpdate) SetNillableTaskID(id *int) *WorkshiftUpdate {
 	if id != nil {
-		wu = wu.SetWorkTaskID(*id)
+		wu = wu.SetTaskID(*id)
 	}
 	return wu
 }
 
-// SetWorkTask sets the "workTask" edge to the Worktask entity.
-func (wu *WorkshiftUpdate) SetWorkTask(w *Worktask) *WorkshiftUpdate {
-	return wu.SetWorkTaskID(w.ID)
+// SetTask sets the "task" edge to the ProjectTask entity.
+func (wu *WorkshiftUpdate) SetTask(p *ProjectTask) *WorkshiftUpdate {
+	return wu.SetTaskID(p.ID)
 }
 
 // SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
@@ -325,21 +325,21 @@ func (wu *WorkshiftUpdate) ClearCompany() *WorkshiftUpdate {
 	return wu
 }
 
-// ClearEmployee clears the "employee" edge to the Employee entity.
-func (wu *WorkshiftUpdate) ClearEmployee() *WorkshiftUpdate {
-	wu.mutation.ClearEmployee()
+// ClearUser clears the "user" edge to the User entity.
+func (wu *WorkshiftUpdate) ClearUser() *WorkshiftUpdate {
+	wu.mutation.ClearUser()
 	return wu
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the Employee entity.
+// ClearApprovedBy clears the "approvedBy" edge to the User entity.
 func (wu *WorkshiftUpdate) ClearApprovedBy() *WorkshiftUpdate {
 	wu.mutation.ClearApprovedBy()
 	return wu
 }
 
-// ClearWorkTask clears the "workTask" edge to the Worktask entity.
-func (wu *WorkshiftUpdate) ClearWorkTask() *WorkshiftUpdate {
-	wu.mutation.ClearWorkTask()
+// ClearTask clears the "task" edge to the ProjectTask entity.
+func (wu *WorkshiftUpdate) ClearTask() *WorkshiftUpdate {
+	wu.mutation.ClearTask()
 	return wu
 }
 
@@ -502,28 +502,28 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if wu.mutation.EmployeeCleared() {
+	if wu.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.EmployeeTable,
-			Columns: []string{workshift.EmployeeColumn},
+			Table:   workshift.UserTable,
+			Columns: []string{workshift.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wu.mutation.EmployeeIDs(); len(nodes) > 0 {
+	if nodes := wu.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.EmployeeTable,
-			Columns: []string{workshift.EmployeeColumn},
+			Table:   workshift.UserTable,
+			Columns: []string{workshift.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -539,7 +539,7 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{workshift.ApprovedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -552,7 +552,7 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{workshift.ApprovedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -560,28 +560,28 @@ func (wu *WorkshiftUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if wu.mutation.WorkTaskCleared() {
+	if wu.mutation.TaskCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.WorkTaskTable,
-			Columns: []string{workshift.WorkTaskColumn},
+			Table:   workshift.TaskTable,
+			Columns: []string{workshift.TaskColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wu.mutation.WorkTaskIDs(); len(nodes) > 0 {
+	if nodes := wu.mutation.TaskIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.WorkTaskTable,
-			Columns: []string{workshift.WorkTaskColumn},
+			Table:   workshift.TaskTable,
+			Columns: []string{workshift.TaskColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -856,32 +856,32 @@ func (wuo *WorkshiftUpdateOne) SetCompany(c *Company) *WorkshiftUpdateOne {
 	return wuo.SetCompanyID(c.ID)
 }
 
-// SetEmployeeID sets the "employee" edge to the Employee entity by ID.
-func (wuo *WorkshiftUpdateOne) SetEmployeeID(id int) *WorkshiftUpdateOne {
-	wuo.mutation.SetEmployeeID(id)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (wuo *WorkshiftUpdateOne) SetUserID(id int) *WorkshiftUpdateOne {
+	wuo.mutation.SetUserID(id)
 	return wuo
 }
 
-// SetNillableEmployeeID sets the "employee" edge to the Employee entity by ID if the given value is not nil.
-func (wuo *WorkshiftUpdateOne) SetNillableEmployeeID(id *int) *WorkshiftUpdateOne {
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (wuo *WorkshiftUpdateOne) SetNillableUserID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
-		wuo = wuo.SetEmployeeID(*id)
+		wuo = wuo.SetUserID(*id)
 	}
 	return wuo
 }
 
-// SetEmployee sets the "employee" edge to the Employee entity.
-func (wuo *WorkshiftUpdateOne) SetEmployee(e *Employee) *WorkshiftUpdateOne {
-	return wuo.SetEmployeeID(e.ID)
+// SetUser sets the "user" edge to the User entity.
+func (wuo *WorkshiftUpdateOne) SetUser(u *User) *WorkshiftUpdateOne {
+	return wuo.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the Employee entity by ID.
+// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
 func (wuo *WorkshiftUpdateOne) SetApprovedByID(id int) *WorkshiftUpdateOne {
 	wuo.mutation.SetApprovedByID(id)
 	return wuo
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the Employee entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableApprovedByID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
 		wuo = wuo.SetApprovedByID(*id)
@@ -889,28 +889,28 @@ func (wuo *WorkshiftUpdateOne) SetNillableApprovedByID(id *int) *WorkshiftUpdate
 	return wuo
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the Employee entity.
-func (wuo *WorkshiftUpdateOne) SetApprovedBy(e *Employee) *WorkshiftUpdateOne {
-	return wuo.SetApprovedByID(e.ID)
+// SetApprovedBy sets the "approvedBy" edge to the User entity.
+func (wuo *WorkshiftUpdateOne) SetApprovedBy(u *User) *WorkshiftUpdateOne {
+	return wuo.SetApprovedByID(u.ID)
 }
 
-// SetWorkTaskID sets the "workTask" edge to the Worktask entity by ID.
-func (wuo *WorkshiftUpdateOne) SetWorkTaskID(id int) *WorkshiftUpdateOne {
-	wuo.mutation.SetWorkTaskID(id)
+// SetTaskID sets the "task" edge to the ProjectTask entity by ID.
+func (wuo *WorkshiftUpdateOne) SetTaskID(id int) *WorkshiftUpdateOne {
+	wuo.mutation.SetTaskID(id)
 	return wuo
 }
 
-// SetNillableWorkTaskID sets the "workTask" edge to the Worktask entity by ID if the given value is not nil.
-func (wuo *WorkshiftUpdateOne) SetNillableWorkTaskID(id *int) *WorkshiftUpdateOne {
+// SetNillableTaskID sets the "task" edge to the ProjectTask entity by ID if the given value is not nil.
+func (wuo *WorkshiftUpdateOne) SetNillableTaskID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
-		wuo = wuo.SetWorkTaskID(*id)
+		wuo = wuo.SetTaskID(*id)
 	}
 	return wuo
 }
 
-// SetWorkTask sets the "workTask" edge to the Worktask entity.
-func (wuo *WorkshiftUpdateOne) SetWorkTask(w *Worktask) *WorkshiftUpdateOne {
-	return wuo.SetWorkTaskID(w.ID)
+// SetTask sets the "task" edge to the ProjectTask entity.
+func (wuo *WorkshiftUpdateOne) SetTask(p *ProjectTask) *WorkshiftUpdateOne {
+	return wuo.SetTaskID(p.ID)
 }
 
 // SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
@@ -962,21 +962,21 @@ func (wuo *WorkshiftUpdateOne) ClearCompany() *WorkshiftUpdateOne {
 	return wuo
 }
 
-// ClearEmployee clears the "employee" edge to the Employee entity.
-func (wuo *WorkshiftUpdateOne) ClearEmployee() *WorkshiftUpdateOne {
-	wuo.mutation.ClearEmployee()
+// ClearUser clears the "user" edge to the User entity.
+func (wuo *WorkshiftUpdateOne) ClearUser() *WorkshiftUpdateOne {
+	wuo.mutation.ClearUser()
 	return wuo
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the Employee entity.
+// ClearApprovedBy clears the "approvedBy" edge to the User entity.
 func (wuo *WorkshiftUpdateOne) ClearApprovedBy() *WorkshiftUpdateOne {
 	wuo.mutation.ClearApprovedBy()
 	return wuo
 }
 
-// ClearWorkTask clears the "workTask" edge to the Worktask entity.
-func (wuo *WorkshiftUpdateOne) ClearWorkTask() *WorkshiftUpdateOne {
-	wuo.mutation.ClearWorkTask()
+// ClearTask clears the "task" edge to the ProjectTask entity.
+func (wuo *WorkshiftUpdateOne) ClearTask() *WorkshiftUpdateOne {
+	wuo.mutation.ClearTask()
 	return wuo
 }
 
@@ -1169,28 +1169,28 @@ func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if wuo.mutation.EmployeeCleared() {
+	if wuo.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.EmployeeTable,
-			Columns: []string{workshift.EmployeeColumn},
+			Table:   workshift.UserTable,
+			Columns: []string{workshift.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wuo.mutation.EmployeeIDs(); len(nodes) > 0 {
+	if nodes := wuo.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.EmployeeTable,
-			Columns: []string{workshift.EmployeeColumn},
+			Table:   workshift.UserTable,
+			Columns: []string{workshift.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1206,7 +1206,7 @@ func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, e
 			Columns: []string{workshift.ApprovedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -1219,7 +1219,7 @@ func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, e
 			Columns: []string{workshift.ApprovedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1227,28 +1227,28 @@ func (wuo *WorkshiftUpdateOne) sqlSave(ctx context.Context) (_node *Workshift, e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if wuo.mutation.WorkTaskCleared() {
+	if wuo.mutation.TaskCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.WorkTaskTable,
-			Columns: []string{workshift.WorkTaskColumn},
+			Table:   workshift.TaskTable,
+			Columns: []string{workshift.TaskColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wuo.mutation.WorkTaskIDs(); len(nodes) > 0 {
+	if nodes := wuo.mutation.TaskIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.WorkTaskTable,
-			Columns: []string{workshift.WorkTaskColumn},
+			Table:   workshift.TaskTable,
+			Columns: []string{workshift.TaskColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

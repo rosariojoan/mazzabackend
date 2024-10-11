@@ -37,16 +37,6 @@ const (
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
-	// EdgeSubordinates holds the string denoting the subordinates edge name in mutations.
-	EdgeSubordinates = "subordinates"
-	// EdgeLeader holds the string denoting the leader edge name in mutations.
-	EdgeLeader = "leader"
-	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
-	EdgeWorkShifts = "workShifts"
-	// EdgeApprovedWorkShifts holds the string denoting the approvedworkshifts edge name in mutations.
-	EdgeApprovedWorkShifts = "approvedWorkShifts"
-	// EdgeAssignedTasks holds the string denoting the assignedtasks edge name in mutations.
-	EdgeAssignedTasks = "assignedTasks"
 	// Table holds the table name of the employee in the database.
 	Table = "employees"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -63,33 +53,6 @@ const (
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_employee"
-	// SubordinatesTable is the table that holds the subordinates relation/edge.
-	SubordinatesTable = "employees"
-	// SubordinatesColumn is the table column denoting the subordinates relation/edge.
-	SubordinatesColumn = "employee_subordinates"
-	// LeaderTable is the table that holds the leader relation/edge.
-	LeaderTable = "employees"
-	// LeaderColumn is the table column denoting the leader relation/edge.
-	LeaderColumn = "employee_subordinates"
-	// WorkShiftsTable is the table that holds the workShifts relation/edge.
-	WorkShiftsTable = "workshifts"
-	// WorkShiftsInverseTable is the table name for the Workshift entity.
-	// It exists in this package in order to avoid circular dependency with the "workshift" package.
-	WorkShiftsInverseTable = "workshifts"
-	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
-	WorkShiftsColumn = "employee_work_shifts"
-	// ApprovedWorkShiftsTable is the table that holds the approvedWorkShifts relation/edge.
-	ApprovedWorkShiftsTable = "workshifts"
-	// ApprovedWorkShiftsInverseTable is the table name for the Workshift entity.
-	// It exists in this package in order to avoid circular dependency with the "workshift" package.
-	ApprovedWorkShiftsInverseTable = "workshifts"
-	// ApprovedWorkShiftsColumn is the table column denoting the approvedWorkShifts relation/edge.
-	ApprovedWorkShiftsColumn = "employee_approved_work_shifts"
-	// AssignedTasksTable is the table that holds the assignedTasks relation/edge. The primary key declared below.
-	AssignedTasksTable = "employee_assignedTasks"
-	// AssignedTasksInverseTable is the table name for the Worktask entity.
-	// It exists in this package in order to avoid circular dependency with the "worktask" package.
-	AssignedTasksInverseTable = "worktasks"
 )
 
 // Columns holds all SQL columns for employee fields.
@@ -109,15 +72,8 @@ var Columns = []string{
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_employees",
-	"employee_subordinates",
 	"user_employee",
 }
-
-var (
-	// AssignedTasksPrimaryKey and AssignedTasksColumn2 are the table columns denoting the
-	// primary key for the assignedTasks relation (M2M).
-	AssignedTasksPrimaryKey = []string{"employee_id", "worktask_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -229,69 +185,6 @@ func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
 	}
 }
-
-// BySubordinatesCount orders the results by subordinates count.
-func BySubordinatesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newSubordinatesStep(), opts...)
-	}
-}
-
-// BySubordinates orders the results by subordinates terms.
-func BySubordinates(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newSubordinatesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByLeaderField orders the results by leader field.
-func ByLeaderField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newLeaderStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByWorkShiftsCount orders the results by workShifts count.
-func ByWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newWorkShiftsStep(), opts...)
-	}
-}
-
-// ByWorkShifts orders the results by workShifts terms.
-func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByApprovedWorkShiftsCount orders the results by approvedWorkShifts count.
-func ByApprovedWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newApprovedWorkShiftsStep(), opts...)
-	}
-}
-
-// ByApprovedWorkShifts orders the results by approvedWorkShifts terms.
-func ByApprovedWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newApprovedWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByAssignedTasksCount orders the results by assignedTasks count.
-func ByAssignedTasksCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newAssignedTasksStep(), opts...)
-	}
-}
-
-// ByAssignedTasks orders the results by assignedTasks terms.
-func ByAssignedTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newAssignedTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -304,41 +197,6 @@ func newUserStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(UserInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2O, true, UserTable, UserColumn),
-	)
-}
-func newSubordinatesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(Table, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, SubordinatesTable, SubordinatesColumn),
-	)
-}
-func newLeaderStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(Table, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, LeaderTable, LeaderColumn),
-	)
-}
-func newWorkShiftsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(WorkShiftsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, WorkShiftsTable, WorkShiftsColumn),
-	)
-}
-func newApprovedWorkShiftsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ApprovedWorkShiftsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ApprovedWorkShiftsTable, ApprovedWorkShiftsColumn),
-	)
-}
-func newAssignedTasksStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(AssignedTasksInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, AssignedTasksTable, AssignedTasksPrimaryKey...),
 	)
 }
 

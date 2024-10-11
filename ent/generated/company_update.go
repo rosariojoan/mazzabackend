@@ -20,8 +20,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -581,36 +579,6 @@ func (cu *CompanyUpdate) AddWorkShifts(w ...*Workshift) *CompanyUpdate {
 	return cu.AddWorkShiftIDs(ids...)
 }
 
-// AddWorkTaskIDs adds the "workTasks" edge to the Worktask entity by IDs.
-func (cu *CompanyUpdate) AddWorkTaskIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.AddWorkTaskIDs(ids...)
-	return cu
-}
-
-// AddWorkTasks adds the "workTasks" edges to the Worktask entity.
-func (cu *CompanyUpdate) AddWorkTasks(w ...*Worktask) *CompanyUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cu.AddWorkTaskIDs(ids...)
-}
-
-// AddWorkTagIDs adds the "workTags" edge to the Worktag entity by IDs.
-func (cu *CompanyUpdate) AddWorkTagIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.AddWorkTagIDs(ids...)
-	return cu
-}
-
-// AddWorkTags adds the "workTags" edges to the Worktag entity.
-func (cu *CompanyUpdate) AddWorkTags(w ...*Worktag) *CompanyUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cu.AddWorkTagIDs(ids...)
-}
-
 // AddUserIDs adds the "users" edge to the User entity by IDs.
 func (cu *CompanyUpdate) AddUserIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddUserIDs(ids...)
@@ -894,48 +862,6 @@ func (cu *CompanyUpdate) RemoveWorkShifts(w ...*Workshift) *CompanyUpdate {
 		ids[i] = w[i].ID
 	}
 	return cu.RemoveWorkShiftIDs(ids...)
-}
-
-// ClearWorkTasks clears all "workTasks" edges to the Worktask entity.
-func (cu *CompanyUpdate) ClearWorkTasks() *CompanyUpdate {
-	cu.mutation.ClearWorkTasks()
-	return cu
-}
-
-// RemoveWorkTaskIDs removes the "workTasks" edge to Worktask entities by IDs.
-func (cu *CompanyUpdate) RemoveWorkTaskIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.RemoveWorkTaskIDs(ids...)
-	return cu
-}
-
-// RemoveWorkTasks removes "workTasks" edges to Worktask entities.
-func (cu *CompanyUpdate) RemoveWorkTasks(w ...*Worktask) *CompanyUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cu.RemoveWorkTaskIDs(ids...)
-}
-
-// ClearWorkTags clears all "workTags" edges to the Worktag entity.
-func (cu *CompanyUpdate) ClearWorkTags() *CompanyUpdate {
-	cu.mutation.ClearWorkTags()
-	return cu
-}
-
-// RemoveWorkTagIDs removes the "workTags" edge to Worktag entities by IDs.
-func (cu *CompanyUpdate) RemoveWorkTagIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.RemoveWorkTagIDs(ids...)
-	return cu
-}
-
-// RemoveWorkTags removes "workTags" edges to Worktag entities.
-func (cu *CompanyUpdate) RemoveWorkTags(w ...*Worktag) *CompanyUpdate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cu.RemoveWorkTagIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
@@ -1655,96 +1581,6 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cu.mutation.WorkTasksCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.RemovedWorkTasksIDs(); len(nodes) > 0 && !cu.mutation.WorkTasksCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.WorkTasksIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cu.mutation.WorkTagsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.RemovedWorkTagsIDs(); len(nodes) > 0 && !cu.mutation.WorkTagsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.WorkTagsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if cu.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -2424,36 +2260,6 @@ func (cuo *CompanyUpdateOne) AddWorkShifts(w ...*Workshift) *CompanyUpdateOne {
 	return cuo.AddWorkShiftIDs(ids...)
 }
 
-// AddWorkTaskIDs adds the "workTasks" edge to the Worktask entity by IDs.
-func (cuo *CompanyUpdateOne) AddWorkTaskIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.AddWorkTaskIDs(ids...)
-	return cuo
-}
-
-// AddWorkTasks adds the "workTasks" edges to the Worktask entity.
-func (cuo *CompanyUpdateOne) AddWorkTasks(w ...*Worktask) *CompanyUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cuo.AddWorkTaskIDs(ids...)
-}
-
-// AddWorkTagIDs adds the "workTags" edge to the Worktag entity by IDs.
-func (cuo *CompanyUpdateOne) AddWorkTagIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.AddWorkTagIDs(ids...)
-	return cuo
-}
-
-// AddWorkTags adds the "workTags" edges to the Worktag entity.
-func (cuo *CompanyUpdateOne) AddWorkTags(w ...*Worktag) *CompanyUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cuo.AddWorkTagIDs(ids...)
-}
-
 // AddUserIDs adds the "users" edge to the User entity by IDs.
 func (cuo *CompanyUpdateOne) AddUserIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddUserIDs(ids...)
@@ -2737,48 +2543,6 @@ func (cuo *CompanyUpdateOne) RemoveWorkShifts(w ...*Workshift) *CompanyUpdateOne
 		ids[i] = w[i].ID
 	}
 	return cuo.RemoveWorkShiftIDs(ids...)
-}
-
-// ClearWorkTasks clears all "workTasks" edges to the Worktask entity.
-func (cuo *CompanyUpdateOne) ClearWorkTasks() *CompanyUpdateOne {
-	cuo.mutation.ClearWorkTasks()
-	return cuo
-}
-
-// RemoveWorkTaskIDs removes the "workTasks" edge to Worktask entities by IDs.
-func (cuo *CompanyUpdateOne) RemoveWorkTaskIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.RemoveWorkTaskIDs(ids...)
-	return cuo
-}
-
-// RemoveWorkTasks removes "workTasks" edges to Worktask entities.
-func (cuo *CompanyUpdateOne) RemoveWorkTasks(w ...*Worktask) *CompanyUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cuo.RemoveWorkTaskIDs(ids...)
-}
-
-// ClearWorkTags clears all "workTags" edges to the Worktag entity.
-func (cuo *CompanyUpdateOne) ClearWorkTags() *CompanyUpdateOne {
-	cuo.mutation.ClearWorkTags()
-	return cuo
-}
-
-// RemoveWorkTagIDs removes the "workTags" edge to Worktag entities by IDs.
-func (cuo *CompanyUpdateOne) RemoveWorkTagIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.RemoveWorkTagIDs(ids...)
-	return cuo
-}
-
-// RemoveWorkTags removes "workTags" edges to Worktag entities.
-func (cuo *CompanyUpdateOne) RemoveWorkTags(w ...*Worktag) *CompanyUpdateOne {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
-	}
-	return cuo.RemoveWorkTagIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
@@ -3521,96 +3285,6 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cuo.mutation.WorkTasksCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.RemovedWorkTasksIDs(); len(nodes) > 0 && !cuo.mutation.WorkTasksCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.WorkTasksIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTasksTable,
-			Columns: []string{company.WorkTasksColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cuo.mutation.WorkTagsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.RemovedWorkTagsIDs(); len(nodes) > 0 && !cuo.mutation.WorkTagsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.WorkTagsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.WorkTagsTable,
-			Columns: []string{company.WorkTagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktag.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

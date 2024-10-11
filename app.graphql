@@ -104,9 +104,6 @@ extend type Query {
 
     workShifts(where: WorkshiftWhereInput): [Workshift!]!
     aggregateWorkShift(where: WorkshiftWhereInput, groupBy: [ShiftGroupBy!]!): [WorkShiftAggregationPayload!]!
-    
-    workTags(where: WorktagWhereInput): [Worktag!]!
-    workTasks(where: WorktaskWhereInput): [Worktask!]!
 }
 
 type Mutation {
@@ -167,12 +164,4 @@ type Mutation {
     createWorkShift(input: CreateWorkshiftInput!): Workshift
     updateWorkShift(id: ID!, input: UpdateWorkshiftInput!): Workshift!
     deleteWorkShift(id: ID!): Boolean!
-
-    createWorkTask(input: CreateWorktaskInput!): Worktask
-    updateWorkTask(id: ID!, input: UpdateWorktaskInput!): Worktask!
-    deleteWorkTask(id: ID!): Boolean!
-
-    createWorkTag(input: CreateWorktagInput!): Worktag
-    updateWorkTag(id: ID!, input: UpdateWorktagInput!): Worktag!
-    deleteWorkTag(id: ID!): Boolean!
 }

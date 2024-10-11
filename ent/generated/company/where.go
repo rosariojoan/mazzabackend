@@ -1703,52 +1703,6 @@ func HasWorkShiftsWith(preds ...predicate.Workshift) predicate.Company {
 	})
 }
 
-// HasWorkTasks applies the HasEdge predicate on the "workTasks" edge.
-func HasWorkTasks() predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, WorkTasksTable, WorkTasksColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasWorkTasksWith applies the HasEdge predicate on the "workTasks" edge with a given conditions (other predicates).
-func HasWorkTasksWith(preds ...predicate.Worktask) predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := newWorkTasksStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasWorkTags applies the HasEdge predicate on the "workTags" edge.
-func HasWorkTags() predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, WorkTagsTable, WorkTagsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasWorkTagsWith applies the HasEdge predicate on the "workTags" edge with a given conditions (other predicates).
-func HasWorkTagsWith(preds ...predicate.Worktag) predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := newWorkTagsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // HasUsers applies the HasEdge predicate on the "users" edge.
 func HasUsers() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {

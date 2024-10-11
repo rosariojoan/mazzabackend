@@ -42,12 +42,12 @@ const (
 	FieldStatus = "status"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeEmployee holds the string denoting the employee edge name in mutations.
-	EdgeEmployee = "employee"
+	// EdgeUser holds the string denoting the user edge name in mutations.
+	EdgeUser = "user"
 	// EdgeApprovedBy holds the string denoting the approvedby edge name in mutations.
 	EdgeApprovedBy = "approvedBy"
-	// EdgeWorkTask holds the string denoting the worktask edge name in mutations.
-	EdgeWorkTask = "workTask"
+	// EdgeTask holds the string denoting the task edge name in mutations.
+	EdgeTask = "task"
 	// EdgeEditRequest holds the string denoting the editrequest edge name in mutations.
 	EdgeEditRequest = "editRequest"
 	// EdgeWorkShift holds the string denoting the workshift edge name in mutations.
@@ -61,27 +61,27 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_work_shifts"
-	// EmployeeTable is the table that holds the employee relation/edge.
-	EmployeeTable = "workshifts"
-	// EmployeeInverseTable is the table name for the Employee entity.
-	// It exists in this package in order to avoid circular dependency with the "employee" package.
-	EmployeeInverseTable = "employees"
-	// EmployeeColumn is the table column denoting the employee relation/edge.
-	EmployeeColumn = "employee_work_shifts"
+	// UserTable is the table that holds the user relation/edge.
+	UserTable = "workshifts"
+	// UserInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	UserInverseTable = "users"
+	// UserColumn is the table column denoting the user relation/edge.
+	UserColumn = "user_work_shifts"
 	// ApprovedByTable is the table that holds the approvedBy relation/edge.
 	ApprovedByTable = "workshifts"
-	// ApprovedByInverseTable is the table name for the Employee entity.
-	// It exists in this package in order to avoid circular dependency with the "employee" package.
-	ApprovedByInverseTable = "employees"
+	// ApprovedByInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	ApprovedByInverseTable = "users"
 	// ApprovedByColumn is the table column denoting the approvedBy relation/edge.
-	ApprovedByColumn = "employee_approved_work_shifts"
-	// WorkTaskTable is the table that holds the workTask relation/edge.
-	WorkTaskTable = "workshifts"
-	// WorkTaskInverseTable is the table name for the Worktask entity.
-	// It exists in this package in order to avoid circular dependency with the "worktask" package.
-	WorkTaskInverseTable = "worktasks"
-	// WorkTaskColumn is the table column denoting the workTask relation/edge.
-	WorkTaskColumn = "worktask_work_shifts"
+	ApprovedByColumn = "user_approved_work_shifts"
+	// TaskTable is the table that holds the task relation/edge.
+	TaskTable = "workshifts"
+	// TaskInverseTable is the table name for the ProjectTask entity.
+	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
+	TaskInverseTable = "project_tasks"
+	// TaskColumn is the table column denoting the task relation/edge.
+	TaskColumn = "project_task_work_shifts"
 	// EditRequestTable is the table that holds the editRequest relation/edge.
 	EditRequestTable = "workshifts"
 	// EditRequestColumn is the table column denoting the editRequest relation/edge.
@@ -112,10 +112,10 @@ var Columns = []string{
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_work_shifts",
-	"employee_work_shifts",
-	"employee_approved_work_shifts",
+	"project_task_work_shifts",
+	"user_approved_work_shifts",
+	"user_work_shifts",
 	"workshift_edit_request",
-	"worktask_work_shifts",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -246,10 +246,10 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByEmployeeField orders the results by employee field.
-func ByEmployeeField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByUserField orders the results by user field.
+func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newEmployeeStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -260,10 +260,10 @@ func ByApprovedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByWorkTaskField orders the results by workTask field.
-func ByWorkTaskField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByTaskField orders the results by task field.
+func ByTaskField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newWorkTaskStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newTaskStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -287,11 +287,11 @@ func newCompanyStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
 }
-func newEmployeeStep() *sqlgraph.Step {
+func newUserStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(EmployeeInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, EmployeeTable, EmployeeColumn),
+		sqlgraph.To(UserInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
 	)
 }
 func newApprovedByStep() *sqlgraph.Step {
@@ -301,11 +301,11 @@ func newApprovedByStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, true, ApprovedByTable, ApprovedByColumn),
 	)
 }
-func newWorkTaskStep() *sqlgraph.Step {
+func newTaskStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(WorkTaskInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, WorkTaskTable, WorkTaskColumn),
+		sqlgraph.To(TaskInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, TaskTable, TaskColumn),
 	)
 }
 func newEditRequestStep() *sqlgraph.Step {

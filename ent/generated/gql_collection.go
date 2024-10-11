@@ -21,8 +21,6 @@ import (
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktag"
-	"mazza/ent/generated/worktask"
 
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent/dialect/sql"
@@ -379,30 +377,6 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
-				*wq = *query
-			})
-		case "worktasks":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorktaskClient{config: c.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			c.WithNamedWorkTasks(alias, func(wq *WorktaskQuery) {
-				*wq = *query
-			})
-		case "worktags":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorktagClient{config: c.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			c.WithNamedWorkTags(alias, func(wq *WorktagQuery) {
 				*wq = *query
 			})
 		case "users":
@@ -825,64 +799,6 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			e.withUser = query
-		case "subordinates":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&EmployeeClient{config: e.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			e.WithNamedSubordinates(alias, func(wq *EmployeeQuery) {
-				*wq = *query
-			})
-		case "leader":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&EmployeeClient{config: e.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			e.withLeader = query
-		case "workshifts":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorkshiftClient{config: e.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			e.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
-				*wq = *query
-			})
-		case "approvedworkshifts":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorkshiftClient{config: e.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			e.WithNamedApprovedWorkShifts(alias, func(wq *WorkshiftQuery) {
-				*wq = *query
-			})
-		case "assignedtasks":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorktaskClient{config: e.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			e.WithNamedAssignedTasks(alias, func(wq *WorktaskQuery) {
-				*wq = *query
-			})
 		case "createdat":
 			if _, ok := fieldSeen[employee.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, employee.FieldCreatedAt)
@@ -1699,6 +1615,33 @@ func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.Ope
 			pt.WithNamedParticipants(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
+		case "createdby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: pt.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pt.withCreatedBy = query
+		case "workshifts":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&WorkshiftClient{config: pt.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			pt.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
+				*wq = *query
+			})
+		case "createdat":
+			if _, ok := fieldSeen[projecttask.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldCreatedAt)
+				fieldSeen[projecttask.FieldCreatedAt] = struct{}{}
+			}
 		case "name":
 			if _, ok := fieldSeen[projecttask.FieldName]; !ok {
 				selectedFields = append(selectedFields, projecttask.FieldName)
@@ -2399,18 +2342,28 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedAssignedRoles(alias, func(wq *UserRoleQuery) {
 				*wq = *query
 			})
-		case "createdtasks":
+		case "subordinates":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&WorktaskClient{config: u.config}).Query()
+				query = (&UserClient{config: u.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			u.WithNamedCreatedTasks(alias, func(wq *WorktaskQuery) {
+			u.WithNamedSubordinates(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
+		case "leader":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.withLeader = query
 		case "employee":
 			var (
 				alias = field.Alias
@@ -2469,6 +2422,18 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedParticipatedProjectTasks(alias, func(wq *ProjectTaskQuery) {
 				*wq = *query
 			})
+		case "createdtasks":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ProjectTaskClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedCreatedTasks(alias, func(wq *ProjectTaskQuery) {
+				*wq = *query
+			})
 		case "tokens":
 			var (
 				alias = field.Alias
@@ -2479,6 +2444,30 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.WithNamedTokens(alias, func(wq *TokenQuery) {
+				*wq = *query
+			})
+		case "approvedworkshifts":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&WorkshiftClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedApprovedWorkShifts(alias, func(wq *WorkshiftQuery) {
+				*wq = *query
+			})
+		case "workshifts":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&WorkshiftClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
 				*wq = *query
 			})
 		case "createdat":
@@ -2495,11 +2484,6 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			if _, ok := fieldSeen[user.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldDeletedAt)
 				fieldSeen[user.FieldDeletedAt] = struct{}{}
-			}
-		case "fcmtoken":
-			if _, ok := fieldSeen[user.FieldFcmToken]; !ok {
-				selectedFields = append(selectedFields, user.FieldFcmToken)
-				fieldSeen[user.FieldFcmToken] = struct{}{}
 			}
 		case "email":
 			if _, ok := fieldSeen[user.FieldEmail]; !ok {
@@ -2731,36 +2715,36 @@ func (w *WorkshiftQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				return err
 			}
 			w.withCompany = query
-		case "employee":
+		case "user":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&EmployeeClient{config: w.config}).Query()
+				query = (&UserClient{config: w.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			w.withEmployee = query
+			w.withUser = query
 		case "approvedby":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&EmployeeClient{config: w.config}).Query()
+				query = (&UserClient{config: w.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
 			w.withApprovedBy = query
-		case "worktask":
+		case "task":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&WorktaskClient{config: w.config}).Query()
+				query = (&ProjectTaskClient{config: w.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			w.withWorkTask = query
+			w.withTask = query
 		case "editrequest":
 			var (
 				alias = field.Alias
@@ -2901,278 +2885,6 @@ func newWorkshiftPaginateArgs(rv map[string]any) *workshiftPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*WorkshiftWhereInput); ok {
 		args.opts = append(args.opts, WithWorkshiftFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (w *WorktagQuery) CollectFields(ctx context.Context, satisfies ...string) (*WorktagQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return w, nil
-	}
-	if err := w.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return w, nil
-}
-
-func (w *WorktagQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(worktag.Columns))
-		selectedFields = []string{worktag.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "company":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&CompanyClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.withCompany = query
-		case "worktasks":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorktaskClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.WithNamedWorkTasks(alias, func(wq *WorktaskQuery) {
-				*wq = *query
-			})
-		case "createdat":
-			if _, ok := fieldSeen[worktag.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, worktag.FieldCreatedAt)
-				fieldSeen[worktag.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedat":
-			if _, ok := fieldSeen[worktag.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, worktag.FieldUpdatedAt)
-				fieldSeen[worktag.FieldUpdatedAt] = struct{}{}
-			}
-		case "deletedat":
-			if _, ok := fieldSeen[worktag.FieldDeletedAt]; !ok {
-				selectedFields = append(selectedFields, worktag.FieldDeletedAt)
-				fieldSeen[worktag.FieldDeletedAt] = struct{}{}
-			}
-		case "name":
-			if _, ok := fieldSeen[worktag.FieldName]; !ok {
-				selectedFields = append(selectedFields, worktag.FieldName)
-				fieldSeen[worktag.FieldName] = struct{}{}
-			}
-		case "color":
-			if _, ok := fieldSeen[worktag.FieldColor]; !ok {
-				selectedFields = append(selectedFields, worktag.FieldColor)
-				fieldSeen[worktag.FieldColor] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		w.Select(selectedFields...)
-	}
-	return nil
-}
-
-type worktagPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []WorktagPaginateOption
-}
-
-func newWorktagPaginateArgs(rv map[string]any) *worktagPaginateArgs {
-	args := &worktagPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[whereField].(*WorktagWhereInput); ok {
-		args.opts = append(args.opts, WithWorktagFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (w *WorktaskQuery) CollectFields(ctx context.Context, satisfies ...string) (*WorktaskQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return w, nil
-	}
-	if err := w.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return w, nil
-}
-
-func (w *WorktaskQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(worktask.Columns))
-		selectedFields = []string{worktask.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "company":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&CompanyClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.withCompany = query
-		case "createdby":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&UserClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.withCreatedBy = query
-		case "assignedto":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&EmployeeClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.WithNamedAssignedTo(alias, func(wq *EmployeeQuery) {
-				*wq = *query
-			})
-		case "workshifts":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorkshiftClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
-				*wq = *query
-			})
-		case "worktags":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&WorktagClient{config: w.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			w.WithNamedWorkTags(alias, func(wq *WorktagQuery) {
-				*wq = *query
-			})
-		case "createdat":
-			if _, ok := fieldSeen[worktask.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldCreatedAt)
-				fieldSeen[worktask.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedat":
-			if _, ok := fieldSeen[worktask.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldUpdatedAt)
-				fieldSeen[worktask.FieldUpdatedAt] = struct{}{}
-			}
-		case "deletedat":
-			if _, ok := fieldSeen[worktask.FieldDeletedAt]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldDeletedAt)
-				fieldSeen[worktask.FieldDeletedAt] = struct{}{}
-			}
-		case "description":
-			if _, ok := fieldSeen[worktask.FieldDescription]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldDescription)
-				fieldSeen[worktask.FieldDescription] = struct{}{}
-			}
-		case "status":
-			if _, ok := fieldSeen[worktask.FieldStatus]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldStatus)
-				fieldSeen[worktask.FieldStatus] = struct{}{}
-			}
-		case "subtasks":
-			if _, ok := fieldSeen[worktask.FieldSubtasks]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldSubtasks)
-				fieldSeen[worktask.FieldSubtasks] = struct{}{}
-			}
-		case "title":
-			if _, ok := fieldSeen[worktask.FieldTitle]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldTitle)
-				fieldSeen[worktask.FieldTitle] = struct{}{}
-			}
-		case "starttime":
-			if _, ok := fieldSeen[worktask.FieldStartTime]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldStartTime)
-				fieldSeen[worktask.FieldStartTime] = struct{}{}
-			}
-		case "endtime":
-			if _, ok := fieldSeen[worktask.FieldEndTime]; !ok {
-				selectedFields = append(selectedFields, worktask.FieldEndTime)
-				fieldSeen[worktask.FieldEndTime] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		w.Select(selectedFields...)
-	}
-	return nil
-}
-
-type worktaskPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []WorktaskPaginateOption
-}
-
-func newWorktaskPaginateArgs(rv map[string]any) *worktaskPaginateArgs {
-	args := &worktaskPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[whereField].(*WorktaskWhereInput); ok {
-		args.opts = append(args.opts, WithWorktaskFilter(v.Filter))
 	}
 	return args
 }

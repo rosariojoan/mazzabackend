@@ -7,9 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/employee"
+	"mazza/ent/generated/projecttask"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
-	"mazza/ent/generated/worktask"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -188,32 +188,32 @@ func (wc *WorkshiftCreate) SetCompany(c *Company) *WorkshiftCreate {
 	return wc.SetCompanyID(c.ID)
 }
 
-// SetEmployeeID sets the "employee" edge to the Employee entity by ID.
-func (wc *WorkshiftCreate) SetEmployeeID(id int) *WorkshiftCreate {
-	wc.mutation.SetEmployeeID(id)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (wc *WorkshiftCreate) SetUserID(id int) *WorkshiftCreate {
+	wc.mutation.SetUserID(id)
 	return wc
 }
 
-// SetNillableEmployeeID sets the "employee" edge to the Employee entity by ID if the given value is not nil.
-func (wc *WorkshiftCreate) SetNillableEmployeeID(id *int) *WorkshiftCreate {
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (wc *WorkshiftCreate) SetNillableUserID(id *int) *WorkshiftCreate {
 	if id != nil {
-		wc = wc.SetEmployeeID(*id)
+		wc = wc.SetUserID(*id)
 	}
 	return wc
 }
 
-// SetEmployee sets the "employee" edge to the Employee entity.
-func (wc *WorkshiftCreate) SetEmployee(e *Employee) *WorkshiftCreate {
-	return wc.SetEmployeeID(e.ID)
+// SetUser sets the "user" edge to the User entity.
+func (wc *WorkshiftCreate) SetUser(u *User) *WorkshiftCreate {
+	return wc.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the Employee entity by ID.
+// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
 func (wc *WorkshiftCreate) SetApprovedByID(id int) *WorkshiftCreate {
 	wc.mutation.SetApprovedByID(id)
 	return wc
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the Employee entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableApprovedByID(id *int) *WorkshiftCreate {
 	if id != nil {
 		wc = wc.SetApprovedByID(*id)
@@ -221,28 +221,28 @@ func (wc *WorkshiftCreate) SetNillableApprovedByID(id *int) *WorkshiftCreate {
 	return wc
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the Employee entity.
-func (wc *WorkshiftCreate) SetApprovedBy(e *Employee) *WorkshiftCreate {
-	return wc.SetApprovedByID(e.ID)
+// SetApprovedBy sets the "approvedBy" edge to the User entity.
+func (wc *WorkshiftCreate) SetApprovedBy(u *User) *WorkshiftCreate {
+	return wc.SetApprovedByID(u.ID)
 }
 
-// SetWorkTaskID sets the "workTask" edge to the Worktask entity by ID.
-func (wc *WorkshiftCreate) SetWorkTaskID(id int) *WorkshiftCreate {
-	wc.mutation.SetWorkTaskID(id)
+// SetTaskID sets the "task" edge to the ProjectTask entity by ID.
+func (wc *WorkshiftCreate) SetTaskID(id int) *WorkshiftCreate {
+	wc.mutation.SetTaskID(id)
 	return wc
 }
 
-// SetNillableWorkTaskID sets the "workTask" edge to the Worktask entity by ID if the given value is not nil.
-func (wc *WorkshiftCreate) SetNillableWorkTaskID(id *int) *WorkshiftCreate {
+// SetNillableTaskID sets the "task" edge to the ProjectTask entity by ID if the given value is not nil.
+func (wc *WorkshiftCreate) SetNillableTaskID(id *int) *WorkshiftCreate {
 	if id != nil {
-		wc = wc.SetWorkTaskID(*id)
+		wc = wc.SetTaskID(*id)
 	}
 	return wc
 }
 
-// SetWorkTask sets the "workTask" edge to the Worktask entity.
-func (wc *WorkshiftCreate) SetWorkTask(w *Worktask) *WorkshiftCreate {
-	return wc.SetWorkTaskID(w.ID)
+// SetTask sets the "task" edge to the ProjectTask entity.
+func (wc *WorkshiftCreate) SetTask(p *ProjectTask) *WorkshiftCreate {
+	return wc.SetTaskID(p.ID)
 }
 
 // SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
@@ -457,21 +457,21 @@ func (wc *WorkshiftCreate) createSpec() (*Workshift, *sqlgraph.CreateSpec) {
 		_node.company_work_shifts = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := wc.mutation.EmployeeIDs(); len(nodes) > 0 {
+	if nodes := wc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.EmployeeTable,
-			Columns: []string{workshift.EmployeeColumn},
+			Table:   workshift.UserTable,
+			Columns: []string{workshift.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.employee_work_shifts = &nodes[0]
+		_node.user_work_shifts = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := wc.mutation.ApprovedByIDs(); len(nodes) > 0 {
@@ -482,30 +482,30 @@ func (wc *WorkshiftCreate) createSpec() (*Workshift, *sqlgraph.CreateSpec) {
 			Columns: []string{workshift.ApprovedByColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.employee_approved_work_shifts = &nodes[0]
+		_node.user_approved_work_shifts = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := wc.mutation.WorkTaskIDs(); len(nodes) > 0 {
+	if nodes := wc.mutation.TaskIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   workshift.WorkTaskTable,
-			Columns: []string{workshift.WorkTaskColumn},
+			Table:   workshift.TaskTable,
+			Columns: []string{workshift.TaskColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.worktask_work_shifts = &nodes[0]
+		_node.project_task_work_shifts = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := wc.mutation.EditRequestIDs(); len(nodes) > 0 {

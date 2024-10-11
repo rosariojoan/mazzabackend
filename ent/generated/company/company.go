@@ -80,10 +80,6 @@ const (
 	EdgeTreasuries = "treasuries"
 	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
 	EdgeWorkShifts = "workShifts"
-	// EdgeWorkTasks holds the string denoting the worktasks edge name in mutations.
-	EdgeWorkTasks = "workTasks"
-	// EdgeWorkTags holds the string denoting the worktags edge name in mutations.
-	EdgeWorkTags = "workTags"
 	// EdgeUsers holds the string denoting the users edge name in mutations.
 	EdgeUsers = "users"
 	// EdgeDaughterCompanies holds the string denoting the daughtercompanies edge name in mutations.
@@ -169,20 +165,6 @@ const (
 	WorkShiftsInverseTable = "workshifts"
 	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
 	WorkShiftsColumn = "company_work_shifts"
-	// WorkTasksTable is the table that holds the workTasks relation/edge.
-	WorkTasksTable = "worktasks"
-	// WorkTasksInverseTable is the table name for the Worktask entity.
-	// It exists in this package in order to avoid circular dependency with the "worktask" package.
-	WorkTasksInverseTable = "worktasks"
-	// WorkTasksColumn is the table column denoting the workTasks relation/edge.
-	WorkTasksColumn = "company_work_tasks"
-	// WorkTagsTable is the table that holds the workTags relation/edge.
-	WorkTagsTable = "worktags"
-	// WorkTagsInverseTable is the table name for the Worktag entity.
-	// It exists in this package in order to avoid circular dependency with the "worktag" package.
-	WorkTagsInverseTable = "worktags"
-	// WorkTagsColumn is the table column denoting the workTags relation/edge.
-	WorkTagsColumn = "company_work_tags"
 	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
 	UsersTable = "company_users"
 	// UsersInverseTable is the table name for the User entity.
@@ -547,34 +529,6 @@ func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByWorkTasksCount orders the results by workTasks count.
-func ByWorkTasksCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newWorkTasksStep(), opts...)
-	}
-}
-
-// ByWorkTasks orders the results by workTasks terms.
-func ByWorkTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newWorkTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByWorkTagsCount orders the results by workTags count.
-func ByWorkTagsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newWorkTagsStep(), opts...)
-	}
-}
-
-// ByWorkTags orders the results by workTags terms.
-func ByWorkTags(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newWorkTagsStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
 // ByUsersCount orders the results by users count.
 func ByUsersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -684,20 +638,6 @@ func newWorkShiftsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(WorkShiftsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, WorkShiftsTable, WorkShiftsColumn),
-	)
-}
-func newWorkTasksStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(WorkTasksInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, WorkTasksTable, WorkTasksColumn),
-	)
-}
-func newWorkTagsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(WorkTagsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, WorkTagsTable, WorkTagsColumn),
 	)
 }
 func newUsersStep() *sqlgraph.Step {

@@ -14,7 +14,7 @@ import (
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
-	"mazza/ent/generated/worktask"
+	"mazza/ent/generated/workshift"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -189,19 +189,38 @@ func (uc *UserCreate) AddAssignedRoles(u ...*UserRole) *UserCreate {
 	return uc.AddAssignedRoleIDs(ids...)
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the Worktask entity by IDs.
-func (uc *UserCreate) AddCreatedTaskIDs(ids ...int) *UserCreate {
-	uc.mutation.AddCreatedTaskIDs(ids...)
+// AddSubordinateIDs adds the "subordinates" edge to the User entity by IDs.
+func (uc *UserCreate) AddSubordinateIDs(ids ...int) *UserCreate {
+	uc.mutation.AddSubordinateIDs(ids...)
 	return uc
 }
 
-// AddCreatedTasks adds the "createdTasks" edges to the Worktask entity.
-func (uc *UserCreate) AddCreatedTasks(w ...*Worktask) *UserCreate {
-	ids := make([]int, len(w))
-	for i := range w {
-		ids[i] = w[i].ID
+// AddSubordinates adds the "subordinates" edges to the User entity.
+func (uc *UserCreate) AddSubordinates(u ...*User) *UserCreate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
 	}
-	return uc.AddCreatedTaskIDs(ids...)
+	return uc.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the User entity by ID.
+func (uc *UserCreate) SetLeaderID(id int) *UserCreate {
+	uc.mutation.SetLeaderID(id)
+	return uc
+}
+
+// SetNillableLeaderID sets the "leader" edge to the User entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableLeaderID(id *int) *UserCreate {
+	if id != nil {
+		uc = uc.SetLeaderID(*id)
+	}
+	return uc
+}
+
+// SetLeader sets the "leader" edge to the User entity.
+func (uc *UserCreate) SetLeader(u *User) *UserCreate {
+	return uc.SetLeaderID(u.ID)
 }
 
 // SetEmployeeID sets the "employee" edge to the Employee entity by ID.
@@ -283,6 +302,21 @@ func (uc *UserCreate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserCreate
 	return uc.AddParticipatedProjectTaskIDs(ids...)
 }
 
+// AddCreatedTaskIDs adds the "createdTasks" edge to the ProjectTask entity by IDs.
+func (uc *UserCreate) AddCreatedTaskIDs(ids ...int) *UserCreate {
+	uc.mutation.AddCreatedTaskIDs(ids...)
+	return uc
+}
+
+// AddCreatedTasks adds the "createdTasks" edges to the ProjectTask entity.
+func (uc *UserCreate) AddCreatedTasks(p ...*ProjectTask) *UserCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return uc.AddCreatedTaskIDs(ids...)
+}
+
 // AddTokenIDs adds the "tokens" edge to the Token entity by IDs.
 func (uc *UserCreate) AddTokenIDs(ids ...int) *UserCreate {
 	uc.mutation.AddTokenIDs(ids...)
@@ -296,6 +330,36 @@ func (uc *UserCreate) AddTokens(t ...*Token) *UserCreate {
 		ids[i] = t[i].ID
 	}
 	return uc.AddTokenIDs(ids...)
+}
+
+// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+func (uc *UserCreate) AddApprovedWorkShiftIDs(ids ...int) *UserCreate {
+	uc.mutation.AddApprovedWorkShiftIDs(ids...)
+	return uc
+}
+
+// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+func (uc *UserCreate) AddApprovedWorkShifts(w ...*Workshift) *UserCreate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uc.AddApprovedWorkShiftIDs(ids...)
+}
+
+// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+func (uc *UserCreate) AddWorkShiftIDs(ids ...int) *UserCreate {
+	uc.mutation.AddWorkShiftIDs(ids...)
+	return uc
+}
+
+// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+func (uc *UserCreate) AddWorkShifts(w ...*Workshift) *UserCreate {
+	ids := make([]int, len(w))
+	for i := range w {
+		ids[i] = w[i].ID
+	}
+	return uc.AddWorkShiftIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -485,20 +549,37 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := uc.mutation.CreatedTasksIDs(); len(nodes) > 0 {
+	if nodes := uc.mutation.SubordinatesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   user.CreatedTasksTable,
-			Columns: []string{user.CreatedTasksColumn},
-			Bidi:    false,
+			Table:   user.SubordinatesTable,
+			Columns: []string{user.SubordinatesColumn},
+			Bidi:    true,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(worktask.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   user.LeaderTable,
+			Columns: []string{user.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_subordinates = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := uc.mutation.EmployeeIDs(); len(nodes) > 0 {
@@ -581,6 +662,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := uc.mutation.CreatedTasksIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreatedTasksTable,
+			Columns: []string{user.CreatedTasksColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(projecttask.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	if nodes := uc.mutation.TokensIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -590,6 +687,38 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(token.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.ApprovedWorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedWorkShiftsTable,
+			Columns: []string{user.ApprovedWorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.WorkShiftsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.WorkShiftsTable,
+			Columns: []string{user.WorkShiftsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

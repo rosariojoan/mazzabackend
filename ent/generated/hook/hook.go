@@ -212,30 +212,6 @@ func (f WorkshiftFunc) Mutate(ctx context.Context, m generated.Mutation) (genera
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.WorkshiftMutation", m)
 }
 
-// The WorktagFunc type is an adapter to allow the use of ordinary
-// function as Worktag mutator.
-type WorktagFunc func(context.Context, *generated.WorktagMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f WorktagFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.WorktagMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.WorktagMutation", m)
-}
-
-// The WorktaskFunc type is an adapter to allow the use of ordinary
-// function as Worktask mutator.
-type WorktaskFunc func(context.Context, *generated.WorktaskMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f WorktaskFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.WorktaskMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.WorktaskMutation", m)
-}
-
 // Condition is a hook condition function.
 type Condition func(context.Context, generated.Mutation) bool
 

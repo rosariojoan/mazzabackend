@@ -60,8 +60,6 @@ func (Company) Edges() []ent.Edge {
 		edge.To("tokens", Token.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a company can have many tokens
 		edge.To("treasuries", Treasury.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
-		edge.To("workTasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
-		edge.To("workTags", Worktag.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("users", User.Type), // a company can have many users
 
 		// One-to-many relationship: each company can have many daughter companies, but only one parent company

@@ -92,10 +92,6 @@ type CompanyEdges struct {
 	Treasuries []*Treasury `json:"treasuries,omitempty"`
 	// WorkShifts holds the value of the workShifts edge.
 	WorkShifts []*Workshift `json:"workShifts,omitempty"`
-	// WorkTasks holds the value of the workTasks edge.
-	WorkTasks []*Worktask `json:"workTasks,omitempty"`
-	// WorkTags holds the value of the workTags edge.
-	WorkTags []*Worktag `json:"workTags,omitempty"`
 	// Users holds the value of the users edge.
 	Users []*User `json:"users,omitempty"`
 	// DaughterCompanies holds the value of the daughterCompanies edge.
@@ -104,9 +100,9 @@ type CompanyEdges struct {
 	ParentCompany *Company `json:"parentCompany,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [16]bool
+	loadedTypes [14]bool
 	// totalCount holds the count of the edges above.
-	totalCount [16]map[string]int
+	totalCount [14]map[string]int
 
 	namedAvailableRoles    map[string][]*UserRole
 	namedAccountingEntries map[string][]*AccountingEntry
@@ -119,8 +115,6 @@ type CompanyEdges struct {
 	namedTokens            map[string][]*Token
 	namedTreasuries        map[string][]*Treasury
 	namedWorkShifts        map[string][]*Workshift
-	namedWorkTasks         map[string][]*Worktask
-	namedWorkTags          map[string][]*Worktag
 	namedUsers             map[string][]*User
 	namedDaughterCompanies map[string][]*Company
 }
@@ -224,28 +218,10 @@ func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 	return nil, &NotLoadedError{edge: "workShifts"}
 }
 
-// WorkTasksOrErr returns the WorkTasks value or an error if the edge
-// was not loaded in eager-loading.
-func (e CompanyEdges) WorkTasksOrErr() ([]*Worktask, error) {
-	if e.loadedTypes[11] {
-		return e.WorkTasks, nil
-	}
-	return nil, &NotLoadedError{edge: "workTasks"}
-}
-
-// WorkTagsOrErr returns the WorkTags value or an error if the edge
-// was not loaded in eager-loading.
-func (e CompanyEdges) WorkTagsOrErr() ([]*Worktag, error) {
-	if e.loadedTypes[12] {
-		return e.WorkTags, nil
-	}
-	return nil, &NotLoadedError{edge: "workTags"}
-}
-
 // UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[11] {
 		return e.Users, nil
 	}
 	return nil, &NotLoadedError{edge: "users"}
@@ -254,7 +230,7 @@ func (e CompanyEdges) UsersOrErr() ([]*User, error) {
 // DaughterCompaniesOrErr returns the DaughterCompanies value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
-	if e.loadedTypes[14] {
+	if e.loadedTypes[12] {
 		return e.DaughterCompanies, nil
 	}
 	return nil, &NotLoadedError{edge: "daughterCompanies"}
@@ -265,7 +241,7 @@ func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
 func (e CompanyEdges) ParentCompanyOrErr() (*Company, error) {
 	if e.ParentCompany != nil {
 		return e.ParentCompany, nil
-	} else if e.loadedTypes[15] {
+	} else if e.loadedTypes[13] {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "parentCompany"}
@@ -525,16 +501,6 @@ func (c *Company) QueryTreasuries() *TreasuryQuery {
 // QueryWorkShifts queries the "workShifts" edge of the Company entity.
 func (c *Company) QueryWorkShifts() *WorkshiftQuery {
 	return NewCompanyClient(c.config).QueryWorkShifts(c)
-}
-
-// QueryWorkTasks queries the "workTasks" edge of the Company entity.
-func (c *Company) QueryWorkTasks() *WorktaskQuery {
-	return NewCompanyClient(c.config).QueryWorkTasks(c)
-}
-
-// QueryWorkTags queries the "workTags" edge of the Company entity.
-func (c *Company) QueryWorkTags() *WorktagQuery {
-	return NewCompanyClient(c.config).QueryWorkTags(c)
 }
 
 // QueryUsers queries the "users" edge of the Company entity.
@@ -927,54 +893,6 @@ func (c *Company) appendNamedWorkShifts(name string, edges ...*Workshift) {
 		c.Edges.namedWorkShifts[name] = []*Workshift{}
 	} else {
 		c.Edges.namedWorkShifts[name] = append(c.Edges.namedWorkShifts[name], edges...)
-	}
-}
-
-// NamedWorkTasks returns the WorkTasks named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (c *Company) NamedWorkTasks(name string) ([]*Worktask, error) {
-	if c.Edges.namedWorkTasks == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := c.Edges.namedWorkTasks[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (c *Company) appendNamedWorkTasks(name string, edges ...*Worktask) {
-	if c.Edges.namedWorkTasks == nil {
-		c.Edges.namedWorkTasks = make(map[string][]*Worktask)
-	}
-	if len(edges) == 0 {
-		c.Edges.namedWorkTasks[name] = []*Worktask{}
-	} else {
-		c.Edges.namedWorkTasks[name] = append(c.Edges.namedWorkTasks[name], edges...)
-	}
-}
-
-// NamedWorkTags returns the WorkTags named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (c *Company) NamedWorkTags(name string) ([]*Worktag, error) {
-	if c.Edges.namedWorkTags == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := c.Edges.namedWorkTags[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (c *Company) appendNamedWorkTags(name string, edges ...*Worktag) {
-	if c.Edges.namedWorkTags == nil {
-		c.Edges.namedWorkTags = make(map[string][]*Worktag)
-	}
-	if len(edges) == 0 {
-		c.Edges.namedWorkTags[name] = []*Worktag{}
-	} else {
-		c.Edges.namedWorkTags[name] = append(c.Edges.namedWorkTags[name], edges...)
 	}
 }
 

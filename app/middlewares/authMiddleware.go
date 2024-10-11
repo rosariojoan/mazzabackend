@@ -16,8 +16,9 @@ import (
 func LoginRequired(c *gin.Context) {
 	tokenString, err := c.Cookie("Authorization")
 	if err != nil {
-		_tokenString, _err := c.Request.Header["Authorization"]
-		if !_err {
+		_tokenString, exists := c.Request.Header["Authorization"]
+		if !exists {
+			fmt.Println("No Authorization header provided")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
@@ -34,6 +35,7 @@ func LoginRequired(c *gin.Context) {
 	})
 
 	if err != nil {
+		fmt.Println("err 2:", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
