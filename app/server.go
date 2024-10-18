@@ -30,6 +30,21 @@ func main() {
 		port = defaultPort
 	}
 	router := gin.Default()
+
+	// Security headers
+	router.Use(func(ctx *gin.Context) {
+		// if ctx.Request.Host != expectedHost {
+		// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid host header"})
+		// 	return
+		// }
+		ctx.Header("X-Frame-Options", "DENY")
+		ctx.Header("X-XSS-Protection", "1; mode=block")
+		ctx.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+		ctx.Header("Preferrer-Policy", "strict-origin")
+		ctx.Header("X-Content-Type-Options", "nosniff")
+		ctx.Next()
+	})
+
 	router.Use(middlewares.GinContextToContextMiddleware())
 
 	// This router group do not require the user to be logged in
