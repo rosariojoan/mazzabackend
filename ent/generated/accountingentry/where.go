@@ -100,6 +100,11 @@ func Description(v string) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldDescription, v))
 }
 
+// Category applies equality check predicate on the "category" field. It's identical to CategoryEQ.
+func Category(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldCategory, v))
+}
+
 // IsDebit applies equality check predicate on the "isDebit" field. It's identical to IsDebitEQ.
 func IsDebit(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldIsDebit, v))
@@ -113,11 +118,6 @@ func IsReversal(v bool) predicate.AccountingEntry {
 // Reversed applies equality check predicate on the "reversed" field. It's identical to ReversedEQ.
 func Reversed(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldReversed, v))
-}
-
-// Quantity applies equality check predicate on the "quantity" field. It's identical to QuantityEQ.
-func Quantity(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldEQ(FieldQuantity, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
@@ -625,6 +625,71 @@ func AccountTypeNotIn(vs ...AccountType) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldNotIn(FieldAccountType, vs...))
 }
 
+// CategoryEQ applies the EQ predicate on the "category" field.
+func CategoryEQ(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldCategory, v))
+}
+
+// CategoryNEQ applies the NEQ predicate on the "category" field.
+func CategoryNEQ(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNEQ(FieldCategory, v))
+}
+
+// CategoryIn applies the In predicate on the "category" field.
+func CategoryIn(vs ...string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldIn(FieldCategory, vs...))
+}
+
+// CategoryNotIn applies the NotIn predicate on the "category" field.
+func CategoryNotIn(vs ...string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNotIn(FieldCategory, vs...))
+}
+
+// CategoryGT applies the GT predicate on the "category" field.
+func CategoryGT(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGT(FieldCategory, v))
+}
+
+// CategoryGTE applies the GTE predicate on the "category" field.
+func CategoryGTE(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGTE(FieldCategory, v))
+}
+
+// CategoryLT applies the LT predicate on the "category" field.
+func CategoryLT(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLT(FieldCategory, v))
+}
+
+// CategoryLTE applies the LTE predicate on the "category" field.
+func CategoryLTE(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLTE(FieldCategory, v))
+}
+
+// CategoryContains applies the Contains predicate on the "category" field.
+func CategoryContains(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldContains(FieldCategory, v))
+}
+
+// CategoryHasPrefix applies the HasPrefix predicate on the "category" field.
+func CategoryHasPrefix(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldHasPrefix(FieldCategory, v))
+}
+
+// CategoryHasSuffix applies the HasSuffix predicate on the "category" field.
+func CategoryHasSuffix(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldHasSuffix(FieldCategory, v))
+}
+
+// CategoryEqualFold applies the EqualFold predicate on the "category" field.
+func CategoryEqualFold(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEqualFold(FieldCategory, v))
+}
+
+// CategoryContainsFold applies the ContainsFold predicate on the "category" field.
+func CategoryContainsFold(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldContainsFold(FieldCategory, v))
+}
+
 // IsDebitEQ applies the EQ predicate on the "isDebit" field.
 func IsDebitEQ(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldIsDebit, v))
@@ -653,56 +718,6 @@ func ReversedEQ(v bool) predicate.AccountingEntry {
 // ReversedNEQ applies the NEQ predicate on the "reversed" field.
 func ReversedNEQ(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldNEQ(FieldReversed, v))
-}
-
-// QuantityEQ applies the EQ predicate on the "quantity" field.
-func QuantityEQ(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldEQ(FieldQuantity, v))
-}
-
-// QuantityNEQ applies the NEQ predicate on the "quantity" field.
-func QuantityNEQ(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldNEQ(FieldQuantity, v))
-}
-
-// QuantityIn applies the In predicate on the "quantity" field.
-func QuantityIn(vs ...int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldIn(FieldQuantity, vs...))
-}
-
-// QuantityNotIn applies the NotIn predicate on the "quantity" field.
-func QuantityNotIn(vs ...int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldNotIn(FieldQuantity, vs...))
-}
-
-// QuantityGT applies the GT predicate on the "quantity" field.
-func QuantityGT(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldGT(FieldQuantity, v))
-}
-
-// QuantityGTE applies the GTE predicate on the "quantity" field.
-func QuantityGTE(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldGTE(FieldQuantity, v))
-}
-
-// QuantityLT applies the LT predicate on the "quantity" field.
-func QuantityLT(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldLT(FieldQuantity, v))
-}
-
-// QuantityLTE applies the LTE predicate on the "quantity" field.
-func QuantityLTE(v int) predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldLTE(FieldQuantity, v))
-}
-
-// QuantityIsNil applies the IsNil predicate on the "quantity" field.
-func QuantityIsNil() predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldIsNull(FieldQuantity))
-}
-
-// QuantityNotNil applies the NotNil predicate on the "quantity" field.
-func QuantityNotNil() predicate.AccountingEntry {
-	return predicate.AccountingEntry(sql.FieldNotNull(FieldQuantity))
 }
 
 // HasCompany applies the HasEdge predicate on the "company" edge.
@@ -743,52 +758,6 @@ func HasUser() predicate.AccountingEntry {
 func HasUserWith(preds ...predicate.User) predicate.AccountingEntry {
 	return predicate.AccountingEntry(func(s *sql.Selector) {
 		step := newUserStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasProduct applies the HasEdge predicate on the "product" edge.
-func HasProduct() predicate.AccountingEntry {
-	return predicate.AccountingEntry(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasProductWith applies the HasEdge predicate on the "product" edge with a given conditions (other predicates).
-func HasProductWith(preds ...predicate.Product) predicate.AccountingEntry {
-	return predicate.AccountingEntry(func(s *sql.Selector) {
-		step := newProductStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasTreasury applies the HasEdge predicate on the "treasury" edge.
-func HasTreasury() predicate.AccountingEntry {
-	return predicate.AccountingEntry(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, TreasuryTable, TreasuryColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasTreasuryWith applies the HasEdge predicate on the "treasury" edge with a given conditions (other predicates).
-func HasTreasuryWith(preds ...predicate.Treasury) predicate.AccountingEntry {
-	return predicate.AccountingEntry(func(s *sql.Selector) {
-		step := newTreasuryStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

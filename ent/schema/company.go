@@ -56,6 +56,8 @@ func (Company) Edges() []ent.Edge {
 		edge.To("files", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("products", Product.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("projects", Project.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("payables", Payable.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("receivables", Receivable.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("suppliers", Supplier.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("tokens", Token.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a company can have many tokens
 		edge.To("treasuries", Treasury.Type).Annotations(entsql.OnDelete(entsql.Cascade)),

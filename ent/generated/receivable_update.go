@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/customer"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/receivable"
 	"time"
@@ -91,6 +91,20 @@ func (ru *ReceivableUpdate) SetNillableDate(t *time.Time) *ReceivableUpdate {
 	return ru
 }
 
+// SetName sets the "name" field.
+func (ru *ReceivableUpdate) SetName(s string) *ReceivableUpdate {
+	ru.mutation.SetName(s)
+	return ru
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ru *ReceivableUpdate) SetNillableName(s *string) *ReceivableUpdate {
+	if s != nil {
+		ru.SetName(*s)
+	}
+	return ru
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (ru *ReceivableUpdate) SetOutstandingBalance(f float64) *ReceivableUpdate {
 	ru.mutation.ResetOutstandingBalance()
@@ -133,24 +147,17 @@ func (ru *ReceivableUpdate) AddTotalTransaction(f float64) *ReceivableUpdate {
 	return ru
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (ru *ReceivableUpdate) SetDaysDue(i int) *ReceivableUpdate {
-	ru.mutation.ResetDaysDue()
-	ru.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (ru *ReceivableUpdate) SetDueDate(t time.Time) *ReceivableUpdate {
+	ru.mutation.SetDueDate(t)
 	return ru
 }
 
-// SetNillableDaysDue sets the "daysDue" field if the given value is not nil.
-func (ru *ReceivableUpdate) SetNillableDaysDue(i *int) *ReceivableUpdate {
-	if i != nil {
-		ru.SetDaysDue(*i)
+// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+func (ru *ReceivableUpdate) SetNillableDueDate(t *time.Time) *ReceivableUpdate {
+	if t != nil {
+		ru.SetDueDate(*t)
 	}
-	return ru
-}
-
-// AddDaysDue adds i to the "daysDue" field.
-func (ru *ReceivableUpdate) AddDaysDue(i int) *ReceivableUpdate {
-	ru.mutation.AddDaysDue(i)
 	return ru
 }
 
@@ -168,23 +175,23 @@ func (ru *ReceivableUpdate) SetNillableStatus(r *receivable.Status) *ReceivableU
 	return ru
 }
 
-// SetCustomerID sets the "customer" edge to the Customer entity by ID.
-func (ru *ReceivableUpdate) SetCustomerID(id int) *ReceivableUpdate {
-	ru.mutation.SetCustomerID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (ru *ReceivableUpdate) SetCompanyID(id int) *ReceivableUpdate {
+	ru.mutation.SetCompanyID(id)
 	return ru
 }
 
-// SetNillableCustomerID sets the "customer" edge to the Customer entity by ID if the given value is not nil.
-func (ru *ReceivableUpdate) SetNillableCustomerID(id *int) *ReceivableUpdate {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (ru *ReceivableUpdate) SetNillableCompanyID(id *int) *ReceivableUpdate {
 	if id != nil {
-		ru = ru.SetCustomerID(*id)
+		ru = ru.SetCompanyID(*id)
 	}
 	return ru
 }
 
-// SetCustomer sets the "customer" edge to the Customer entity.
-func (ru *ReceivableUpdate) SetCustomer(c *Customer) *ReceivableUpdate {
-	return ru.SetCustomerID(c.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (ru *ReceivableUpdate) SetCompany(c *Company) *ReceivableUpdate {
+	return ru.SetCompanyID(c.ID)
 }
 
 // Mutation returns the ReceivableMutation object of the builder.
@@ -192,9 +199,9 @@ func (ru *ReceivableUpdate) Mutation() *ReceivableMutation {
 	return ru.mutation
 }
 
-// ClearCustomer clears the "customer" edge to the Customer entity.
-func (ru *ReceivableUpdate) ClearCustomer() *ReceivableUpdate {
-	ru.mutation.ClearCustomer()
+// ClearCompany clears the "company" edge to the Company entity.
+func (ru *ReceivableUpdate) ClearCompany() *ReceivableUpdate {
+	ru.mutation.ClearCompany()
 	return ru
 }
 
@@ -241,11 +248,6 @@ func (ru *ReceivableUpdate) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
 		}
 	}
-	if v, ok := ru.mutation.DaysDue(); ok {
-		if err := receivable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Receivable.daysDue": %w`, err)}
-		}
-	}
 	if v, ok := ru.mutation.Status(); ok {
 		if err := receivable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Receivable.status": %w`, err)}
@@ -290,6 +292,9 @@ func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ru.mutation.Date(); ok {
 		_spec.SetField(receivable.FieldDate, field.TypeTime, value)
 	}
+	if value, ok := ru.mutation.Name(); ok {
+		_spec.SetField(receivable.FieldName, field.TypeString, value)
+	}
 	if value, ok := ru.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
@@ -302,37 +307,34 @@ func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ru.mutation.AddedTotalTransaction(); ok {
 		_spec.AddField(receivable.FieldTotalTransaction, field.TypeFloat64, value)
 	}
-	if value, ok := ru.mutation.DaysDue(); ok {
-		_spec.SetField(receivable.FieldDaysDue, field.TypeInt, value)
-	}
-	if value, ok := ru.mutation.AddedDaysDue(); ok {
-		_spec.AddField(receivable.FieldDaysDue, field.TypeInt, value)
+	if value, ok := ru.mutation.DueDate(); ok {
+		_spec.SetField(receivable.FieldDueDate, field.TypeTime, value)
 	}
 	if value, ok := ru.mutation.Status(); ok {
 		_spec.SetField(receivable.FieldStatus, field.TypeEnum, value)
 	}
-	if ru.mutation.CustomerCleared() {
+	if ru.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   receivable.CustomerTable,
-			Columns: []string{receivable.CustomerColumn},
+			Table:   receivable.CompanyTable,
+			Columns: []string{receivable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ru.mutation.CustomerIDs(); len(nodes) > 0 {
+	if nodes := ru.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   receivable.CustomerTable,
-			Columns: []string{receivable.CustomerColumn},
+			Table:   receivable.CompanyTable,
+			Columns: []string{receivable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -423,6 +425,20 @@ func (ruo *ReceivableUpdateOne) SetNillableDate(t *time.Time) *ReceivableUpdateO
 	return ruo
 }
 
+// SetName sets the "name" field.
+func (ruo *ReceivableUpdateOne) SetName(s string) *ReceivableUpdateOne {
+	ruo.mutation.SetName(s)
+	return ruo
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ruo *ReceivableUpdateOne) SetNillableName(s *string) *ReceivableUpdateOne {
+	if s != nil {
+		ruo.SetName(*s)
+	}
+	return ruo
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (ruo *ReceivableUpdateOne) SetOutstandingBalance(f float64) *ReceivableUpdateOne {
 	ruo.mutation.ResetOutstandingBalance()
@@ -465,24 +481,17 @@ func (ruo *ReceivableUpdateOne) AddTotalTransaction(f float64) *ReceivableUpdate
 	return ruo
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (ruo *ReceivableUpdateOne) SetDaysDue(i int) *ReceivableUpdateOne {
-	ruo.mutation.ResetDaysDue()
-	ruo.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (ruo *ReceivableUpdateOne) SetDueDate(t time.Time) *ReceivableUpdateOne {
+	ruo.mutation.SetDueDate(t)
 	return ruo
 }
 
-// SetNillableDaysDue sets the "daysDue" field if the given value is not nil.
-func (ruo *ReceivableUpdateOne) SetNillableDaysDue(i *int) *ReceivableUpdateOne {
-	if i != nil {
-		ruo.SetDaysDue(*i)
+// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+func (ruo *ReceivableUpdateOne) SetNillableDueDate(t *time.Time) *ReceivableUpdateOne {
+	if t != nil {
+		ruo.SetDueDate(*t)
 	}
-	return ruo
-}
-
-// AddDaysDue adds i to the "daysDue" field.
-func (ruo *ReceivableUpdateOne) AddDaysDue(i int) *ReceivableUpdateOne {
-	ruo.mutation.AddDaysDue(i)
 	return ruo
 }
 
@@ -500,23 +509,23 @@ func (ruo *ReceivableUpdateOne) SetNillableStatus(r *receivable.Status) *Receiva
 	return ruo
 }
 
-// SetCustomerID sets the "customer" edge to the Customer entity by ID.
-func (ruo *ReceivableUpdateOne) SetCustomerID(id int) *ReceivableUpdateOne {
-	ruo.mutation.SetCustomerID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (ruo *ReceivableUpdateOne) SetCompanyID(id int) *ReceivableUpdateOne {
+	ruo.mutation.SetCompanyID(id)
 	return ruo
 }
 
-// SetNillableCustomerID sets the "customer" edge to the Customer entity by ID if the given value is not nil.
-func (ruo *ReceivableUpdateOne) SetNillableCustomerID(id *int) *ReceivableUpdateOne {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (ruo *ReceivableUpdateOne) SetNillableCompanyID(id *int) *ReceivableUpdateOne {
 	if id != nil {
-		ruo = ruo.SetCustomerID(*id)
+		ruo = ruo.SetCompanyID(*id)
 	}
 	return ruo
 }
 
-// SetCustomer sets the "customer" edge to the Customer entity.
-func (ruo *ReceivableUpdateOne) SetCustomer(c *Customer) *ReceivableUpdateOne {
-	return ruo.SetCustomerID(c.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (ruo *ReceivableUpdateOne) SetCompany(c *Company) *ReceivableUpdateOne {
+	return ruo.SetCompanyID(c.ID)
 }
 
 // Mutation returns the ReceivableMutation object of the builder.
@@ -524,9 +533,9 @@ func (ruo *ReceivableUpdateOne) Mutation() *ReceivableMutation {
 	return ruo.mutation
 }
 
-// ClearCustomer clears the "customer" edge to the Customer entity.
-func (ruo *ReceivableUpdateOne) ClearCustomer() *ReceivableUpdateOne {
-	ruo.mutation.ClearCustomer()
+// ClearCompany clears the "company" edge to the Company entity.
+func (ruo *ReceivableUpdateOne) ClearCompany() *ReceivableUpdateOne {
+	ruo.mutation.ClearCompany()
 	return ruo
 }
 
@@ -584,11 +593,6 @@ func (ruo *ReceivableUpdateOne) check() error {
 	if v, ok := ruo.mutation.EntryGroup(); ok {
 		if err := receivable.EntryGroupValidator(v); err != nil {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
-		}
-	}
-	if v, ok := ruo.mutation.DaysDue(); ok {
-		if err := receivable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Receivable.daysDue": %w`, err)}
 		}
 	}
 	if v, ok := ruo.mutation.Status(); ok {
@@ -652,6 +656,9 @@ func (ruo *ReceivableUpdateOne) sqlSave(ctx context.Context) (_node *Receivable,
 	if value, ok := ruo.mutation.Date(); ok {
 		_spec.SetField(receivable.FieldDate, field.TypeTime, value)
 	}
+	if value, ok := ruo.mutation.Name(); ok {
+		_spec.SetField(receivable.FieldName, field.TypeString, value)
+	}
 	if value, ok := ruo.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
@@ -664,37 +671,34 @@ func (ruo *ReceivableUpdateOne) sqlSave(ctx context.Context) (_node *Receivable,
 	if value, ok := ruo.mutation.AddedTotalTransaction(); ok {
 		_spec.AddField(receivable.FieldTotalTransaction, field.TypeFloat64, value)
 	}
-	if value, ok := ruo.mutation.DaysDue(); ok {
-		_spec.SetField(receivable.FieldDaysDue, field.TypeInt, value)
-	}
-	if value, ok := ruo.mutation.AddedDaysDue(); ok {
-		_spec.AddField(receivable.FieldDaysDue, field.TypeInt, value)
+	if value, ok := ruo.mutation.DueDate(); ok {
+		_spec.SetField(receivable.FieldDueDate, field.TypeTime, value)
 	}
 	if value, ok := ruo.mutation.Status(); ok {
 		_spec.SetField(receivable.FieldStatus, field.TypeEnum, value)
 	}
-	if ruo.mutation.CustomerCleared() {
+	if ruo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   receivable.CustomerTable,
-			Columns: []string{receivable.CustomerColumn},
+			Table:   receivable.CompanyTable,
+			Columns: []string{receivable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ruo.mutation.CustomerIDs(); len(nodes) > 0 {
+	if nodes := ruo.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   receivable.CustomerTable,
-			Columns: []string{receivable.CustomerColumn},
+			Table:   receivable.CompanyTable,
+			Columns: []string{receivable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

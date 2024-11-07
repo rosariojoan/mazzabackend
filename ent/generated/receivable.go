@@ -4,7 +4,7 @@ package generated
 
 import (
 	"fmt"
-	"mazza/ent/generated/customer"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/receivable"
 	"strings"
 	"time"
@@ -28,25 +28,28 @@ type Receivable struct {
 	EntryGroup int `json:"entryGroup,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
 	// OutstandingBalance holds the value of the "outstandingBalance" field.
 	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
 	// TotalTransaction holds the value of the "totalTransaction" field.
 	TotalTransaction float64 `json:"totalTransaction,omitempty"`
-	// DaysDue holds the value of the "daysDue" field.
-	DaysDue int `json:"daysDue,omitempty"`
+	// DueDate holds the value of the "dueDate" field.
+	DueDate time.Time `json:"dueDate,omitempty"`
 	// Status holds the value of the "status" field.
 	Status receivable.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ReceivableQuery when eager-loading is set.
 	Edges                ReceivableEdges `json:"edges"`
+	company_receivables  *int
 	customer_receivables *int
 	selectValues         sql.SelectValues
 }
 
 // ReceivableEdges holds the relations/edges for other nodes in the graph.
 type ReceivableEdges struct {
-	// Customer holds the value of the customer edge.
-	Customer *Customer `json:"customer,omitempty"`
+	// Company holds the value of the company edge.
+	Company *Company `json:"company,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
@@ -54,15 +57,15 @@ type ReceivableEdges struct {
 	totalCount [1]map[string]int
 }
 
-// CustomerOrErr returns the Customer value or an error if the edge
+// CompanyOrErr returns the Company value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ReceivableEdges) CustomerOrErr() (*Customer, error) {
-	if e.Customer != nil {
-		return e.Customer, nil
+func (e ReceivableEdges) CompanyOrErr() (*Company, error) {
+	if e.Company != nil {
+		return e.Company, nil
 	} else if e.loadedTypes[0] {
-		return nil, &NotFoundError{label: customer.Label}
+		return nil, &NotFoundError{label: company.Label}
 	}
-	return nil, &NotLoadedError{edge: "customer"}
+	return nil, &NotLoadedError{edge: "company"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -72,13 +75,15 @@ func (*Receivable) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case receivable.FieldOutstandingBalance, receivable.FieldTotalTransaction:
 			values[i] = new(sql.NullFloat64)
-		case receivable.FieldID, receivable.FieldEntryGroup, receivable.FieldDaysDue:
+		case receivable.FieldID, receivable.FieldEntryGroup:
 			values[i] = new(sql.NullInt64)
-		case receivable.FieldStatus:
+		case receivable.FieldName, receivable.FieldStatus:
 			values[i] = new(sql.NullString)
-		case receivable.FieldCreatedAt, receivable.FieldUpdatedAt, receivable.FieldDeletedAt, receivable.FieldDate:
+		case receivable.FieldCreatedAt, receivable.FieldUpdatedAt, receivable.FieldDeletedAt, receivable.FieldDate, receivable.FieldDueDate:
 			values[i] = new(sql.NullTime)
-		case receivable.ForeignKeys[0]: // customer_receivables
+		case receivable.ForeignKeys[0]: // company_receivables
+			values[i] = new(sql.NullInt64)
+		case receivable.ForeignKeys[1]: // customer_receivables
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -132,6 +137,12 @@ func (r *Receivable) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.Date = value.Time
 			}
+		case receivable.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				r.Name = value.String
+			}
 		case receivable.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field outstandingBalance", values[i])
@@ -144,11 +155,11 @@ func (r *Receivable) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.TotalTransaction = value.Float64
 			}
-		case receivable.FieldDaysDue:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field daysDue", values[i])
+		case receivable.FieldDueDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field dueDate", values[i])
 			} else if value.Valid {
-				r.DaysDue = int(value.Int64)
+				r.DueDate = value.Time
 			}
 		case receivable.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -157,6 +168,13 @@ func (r *Receivable) assignValues(columns []string, values []any) error {
 				r.Status = receivable.Status(value.String)
 			}
 		case receivable.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field company_receivables", value)
+			} else if value.Valid {
+				r.company_receivables = new(int)
+				*r.company_receivables = int(value.Int64)
+			}
+		case receivable.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field customer_receivables", value)
 			} else if value.Valid {
@@ -176,9 +194,9 @@ func (r *Receivable) Value(name string) (ent.Value, error) {
 	return r.selectValues.Get(name)
 }
 
-// QueryCustomer queries the "customer" edge of the Receivable entity.
-func (r *Receivable) QueryCustomer() *CustomerQuery {
-	return NewReceivableClient(r.config).QueryCustomer(r)
+// QueryCompany queries the "company" edge of the Receivable entity.
+func (r *Receivable) QueryCompany() *CompanyQuery {
+	return NewReceivableClient(r.config).QueryCompany(r)
 }
 
 // Update returns a builder for updating this Receivable.
@@ -221,14 +239,17 @@ func (r *Receivable) String() string {
 	builder.WriteString("date=")
 	builder.WriteString(r.Date.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("name=")
+	builder.WriteString(r.Name)
+	builder.WriteString(", ")
 	builder.WriteString("outstandingBalance=")
 	builder.WriteString(fmt.Sprintf("%v", r.OutstandingBalance))
 	builder.WriteString(", ")
 	builder.WriteString("totalTransaction=")
 	builder.WriteString(fmt.Sprintf("%v", r.TotalTransaction))
 	builder.WriteString(", ")
-	builder.WriteString("daysDue=")
-	builder.WriteString(fmt.Sprintf("%v", r.DaysDue))
+	builder.WriteString("dueDate=")
+	builder.WriteString(r.DueDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", r.Status))

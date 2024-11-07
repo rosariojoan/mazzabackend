@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+	"strings"
 )
 
 // Load account names from the "app/assets/account_names.json" file
@@ -21,6 +22,6 @@ func LoadAccountNames(country string, lang string) (accountNames map[string]stri
 		return
 	}
 
-	accountNames = _accountNames[country][lang]
+	accountNames = _accountNames[strings.ToUpper(country)][lang]
 	return accountNames, nil
 }

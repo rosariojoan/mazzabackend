@@ -9,8 +9,6 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/product"
-	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 
 	"entgo.io/ent"
@@ -22,17 +20,15 @@ import (
 // AccountingEntryQuery is the builder for querying AccountingEntry entities.
 type AccountingEntryQuery struct {
 	config
-	ctx          *QueryContext
-	order        []accountingentry.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.AccountingEntry
-	withCompany  *CompanyQuery
-	withUser     *UserQuery
-	withProduct  *ProductQuery
-	withTreasury *TreasuryQuery
-	withFKs      bool
-	loadTotal    []func(context.Context, []*AccountingEntry) error
-	modifiers    []func(*sql.Selector)
+	ctx         *QueryContext
+	order       []accountingentry.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.AccountingEntry
+	withCompany *CompanyQuery
+	withUser    *UserQuery
+	withFKs     bool
+	loadTotal   []func(context.Context, []*AccountingEntry) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -106,50 +102,6 @@ func (aeq *AccountingEntryQuery) QueryUser() *UserQuery {
 			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.UserTable, accountingentry.UserColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryProduct chains the current query on the "product" edge.
-func (aeq *AccountingEntryQuery) QueryProduct() *ProductQuery {
-	query := (&ProductClient{config: aeq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := aeq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := aeq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.ProductTable, accountingentry.ProductColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryTreasury chains the current query on the "treasury" edge.
-func (aeq *AccountingEntryQuery) QueryTreasury() *TreasuryQuery {
-	query := (&TreasuryClient{config: aeq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := aeq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := aeq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
-			sqlgraph.To(treasury.Table, treasury.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.TreasuryTable, accountingentry.TreasuryColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
 		return fromU, nil
@@ -344,15 +296,13 @@ func (aeq *AccountingEntryQuery) Clone() *AccountingEntryQuery {
 		return nil
 	}
 	return &AccountingEntryQuery{
-		config:       aeq.config,
-		ctx:          aeq.ctx.Clone(),
-		order:        append([]accountingentry.OrderOption{}, aeq.order...),
-		inters:       append([]Interceptor{}, aeq.inters...),
-		predicates:   append([]predicate.AccountingEntry{}, aeq.predicates...),
-		withCompany:  aeq.withCompany.Clone(),
-		withUser:     aeq.withUser.Clone(),
-		withProduct:  aeq.withProduct.Clone(),
-		withTreasury: aeq.withTreasury.Clone(),
+		config:      aeq.config,
+		ctx:         aeq.ctx.Clone(),
+		order:       append([]accountingentry.OrderOption{}, aeq.order...),
+		inters:      append([]Interceptor{}, aeq.inters...),
+		predicates:  append([]predicate.AccountingEntry{}, aeq.predicates...),
+		withCompany: aeq.withCompany.Clone(),
+		withUser:    aeq.withUser.Clone(),
 		// clone intermediate query.
 		sql:       aeq.sql.Clone(),
 		path:      aeq.path,
@@ -379,28 +329,6 @@ func (aeq *AccountingEntryQuery) WithUser(opts ...func(*UserQuery)) *AccountingE
 		opt(query)
 	}
 	aeq.withUser = query
-	return aeq
-}
-
-// WithProduct tells the query-builder to eager-load the nodes that are connected to
-// the "product" edge. The optional arguments are used to configure the query builder of the edge.
-func (aeq *AccountingEntryQuery) WithProduct(opts ...func(*ProductQuery)) *AccountingEntryQuery {
-	query := (&ProductClient{config: aeq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	aeq.withProduct = query
-	return aeq
-}
-
-// WithTreasury tells the query-builder to eager-load the nodes that are connected to
-// the "treasury" edge. The optional arguments are used to configure the query builder of the edge.
-func (aeq *AccountingEntryQuery) WithTreasury(opts ...func(*TreasuryQuery)) *AccountingEntryQuery {
-	query := (&TreasuryClient{config: aeq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	aeq.withTreasury = query
 	return aeq
 }
 
@@ -483,14 +411,12 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 		nodes       = []*AccountingEntry{}
 		withFKs     = aeq.withFKs
 		_spec       = aeq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [2]bool{
 			aeq.withCompany != nil,
 			aeq.withUser != nil,
-			aeq.withProduct != nil,
-			aeq.withTreasury != nil,
 		}
 	)
-	if aeq.withCompany != nil || aeq.withUser != nil || aeq.withProduct != nil || aeq.withTreasury != nil {
+	if aeq.withCompany != nil || aeq.withUser != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -526,18 +452,6 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 	if query := aeq.withUser; query != nil {
 		if err := aeq.loadUser(ctx, query, nodes, nil,
 			func(n *AccountingEntry, e *User) { n.Edges.User = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := aeq.withProduct; query != nil {
-		if err := aeq.loadProduct(ctx, query, nodes, nil,
-			func(n *AccountingEntry, e *Product) { n.Edges.Product = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := aeq.withTreasury; query != nil {
-		if err := aeq.loadTreasury(ctx, query, nodes, nil,
-			func(n *AccountingEntry, e *Treasury) { n.Edges.Treasury = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -606,70 +520,6 @@ func (aeq *AccountingEntryQuery) loadUser(ctx context.Context, query *UserQuery,
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "user_accounting_entries" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
-func (aeq *AccountingEntryQuery) loadProduct(ctx context.Context, query *ProductQuery, nodes []*AccountingEntry, init func(*AccountingEntry), assign func(*AccountingEntry, *Product)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*AccountingEntry)
-	for i := range nodes {
-		if nodes[i].product_accounting_entries == nil {
-			continue
-		}
-		fk := *nodes[i].product_accounting_entries
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(product.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "product_accounting_entries" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
-func (aeq *AccountingEntryQuery) loadTreasury(ctx context.Context, query *TreasuryQuery, nodes []*AccountingEntry, init func(*AccountingEntry), assign func(*AccountingEntry, *Treasury)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*AccountingEntry)
-	for i := range nodes {
-		if nodes[i].treasury_accounting_entries == nil {
-			continue
-		}
-		fk := *nodes[i].treasury_accounting_entries
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(treasury.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "treasury_accounting_entries" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

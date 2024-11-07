@@ -166,6 +166,21 @@ type AccountingEntryWhereInput struct {
 	AccountTypeIn    []accountingentry.AccountType `json:"accounttypeIn,omitempty"`
 	AccountTypeNotIn []accountingentry.AccountType `json:"accounttypeNotIn,omitempty"`
 
+	// "category" field predicates.
+	Category             *string  `json:"category,omitempty"`
+	CategoryNEQ          *string  `json:"categoryNEQ,omitempty"`
+	CategoryIn           []string `json:"categoryIn,omitempty"`
+	CategoryNotIn        []string `json:"categoryNotIn,omitempty"`
+	CategoryGT           *string  `json:"categoryGT,omitempty"`
+	CategoryGTE          *string  `json:"categoryGTE,omitempty"`
+	CategoryLT           *string  `json:"categoryLT,omitempty"`
+	CategoryLTE          *string  `json:"categoryLTE,omitempty"`
+	CategoryContains     *string  `json:"categoryContains,omitempty"`
+	CategoryHasPrefix    *string  `json:"categoryHasPrefix,omitempty"`
+	CategoryHasSuffix    *string  `json:"categoryHasSuffix,omitempty"`
+	CategoryEqualFold    *string  `json:"categoryEqualFold,omitempty"`
+	CategoryContainsFold *string  `json:"categoryContainsFold,omitempty"`
+
 	// "isDebit" field predicates.
 	IsDebit    *bool `json:"isdebit,omitempty"`
 	IsDebitNEQ *bool `json:"isdebitNEQ,omitempty"`
@@ -178,18 +193,6 @@ type AccountingEntryWhereInput struct {
 	Reversed    *bool `json:"reversed,omitempty"`
 	ReversedNEQ *bool `json:"reversedNEQ,omitempty"`
 
-	// "quantity" field predicates.
-	Quantity       *int  `json:"quantity,omitempty"`
-	QuantityNEQ    *int  `json:"quantityNEQ,omitempty"`
-	QuantityIn     []int `json:"quantityIn,omitempty"`
-	QuantityNotIn  []int `json:"quantityNotIn,omitempty"`
-	QuantityGT     *int  `json:"quantityGT,omitempty"`
-	QuantityGTE    *int  `json:"quantityGTE,omitempty"`
-	QuantityLT     *int  `json:"quantityLT,omitempty"`
-	QuantityLTE    *int  `json:"quantityLTE,omitempty"`
-	QuantityIsNil  bool  `json:"quantityIsNil,omitempty"`
-	QuantityNotNil bool  `json:"quantityNotNil,omitempty"`
-
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
@@ -197,14 +200,6 @@ type AccountingEntryWhereInput struct {
 	// "user" edge predicates.
 	HasUser     *bool             `json:"hasUser,omitempty"`
 	HasUserWith []*UserWhereInput `json:"hasUserWith,omitempty"`
-
-	// "product" edge predicates.
-	HasProduct     *bool                `json:"hasProduct,omitempty"`
-	HasProductWith []*ProductWhereInput `json:"hasProductWith,omitempty"`
-
-	// "treasury" edge predicates.
-	HasTreasury     *bool                 `json:"hasTreasury,omitempty"`
-	HasTreasuryWith []*TreasuryWhereInput `json:"hasTreasuryWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -605,6 +600,45 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 	if len(i.AccountTypeNotIn) > 0 {
 		predicates = append(predicates, accountingentry.AccountTypeNotIn(i.AccountTypeNotIn...))
 	}
+	if i.Category != nil {
+		predicates = append(predicates, accountingentry.CategoryEQ(*i.Category))
+	}
+	if i.CategoryNEQ != nil {
+		predicates = append(predicates, accountingentry.CategoryNEQ(*i.CategoryNEQ))
+	}
+	if len(i.CategoryIn) > 0 {
+		predicates = append(predicates, accountingentry.CategoryIn(i.CategoryIn...))
+	}
+	if len(i.CategoryNotIn) > 0 {
+		predicates = append(predicates, accountingentry.CategoryNotIn(i.CategoryNotIn...))
+	}
+	if i.CategoryGT != nil {
+		predicates = append(predicates, accountingentry.CategoryGT(*i.CategoryGT))
+	}
+	if i.CategoryGTE != nil {
+		predicates = append(predicates, accountingentry.CategoryGTE(*i.CategoryGTE))
+	}
+	if i.CategoryLT != nil {
+		predicates = append(predicates, accountingentry.CategoryLT(*i.CategoryLT))
+	}
+	if i.CategoryLTE != nil {
+		predicates = append(predicates, accountingentry.CategoryLTE(*i.CategoryLTE))
+	}
+	if i.CategoryContains != nil {
+		predicates = append(predicates, accountingentry.CategoryContains(*i.CategoryContains))
+	}
+	if i.CategoryHasPrefix != nil {
+		predicates = append(predicates, accountingentry.CategoryHasPrefix(*i.CategoryHasPrefix))
+	}
+	if i.CategoryHasSuffix != nil {
+		predicates = append(predicates, accountingentry.CategoryHasSuffix(*i.CategoryHasSuffix))
+	}
+	if i.CategoryEqualFold != nil {
+		predicates = append(predicates, accountingentry.CategoryEqualFold(*i.CategoryEqualFold))
+	}
+	if i.CategoryContainsFold != nil {
+		predicates = append(predicates, accountingentry.CategoryContainsFold(*i.CategoryContainsFold))
+	}
 	if i.IsDebit != nil {
 		predicates = append(predicates, accountingentry.IsDebitEQ(*i.IsDebit))
 	}
@@ -622,36 +656,6 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 	}
 	if i.ReversedNEQ != nil {
 		predicates = append(predicates, accountingentry.ReversedNEQ(*i.ReversedNEQ))
-	}
-	if i.Quantity != nil {
-		predicates = append(predicates, accountingentry.QuantityEQ(*i.Quantity))
-	}
-	if i.QuantityNEQ != nil {
-		predicates = append(predicates, accountingentry.QuantityNEQ(*i.QuantityNEQ))
-	}
-	if len(i.QuantityIn) > 0 {
-		predicates = append(predicates, accountingentry.QuantityIn(i.QuantityIn...))
-	}
-	if len(i.QuantityNotIn) > 0 {
-		predicates = append(predicates, accountingentry.QuantityNotIn(i.QuantityNotIn...))
-	}
-	if i.QuantityGT != nil {
-		predicates = append(predicates, accountingentry.QuantityGT(*i.QuantityGT))
-	}
-	if i.QuantityGTE != nil {
-		predicates = append(predicates, accountingentry.QuantityGTE(*i.QuantityGTE))
-	}
-	if i.QuantityLT != nil {
-		predicates = append(predicates, accountingentry.QuantityLT(*i.QuantityLT))
-	}
-	if i.QuantityLTE != nil {
-		predicates = append(predicates, accountingentry.QuantityLTE(*i.QuantityLTE))
-	}
-	if i.QuantityIsNil {
-		predicates = append(predicates, accountingentry.QuantityIsNil())
-	}
-	if i.QuantityNotNil {
-		predicates = append(predicates, accountingentry.QuantityNotNil())
 	}
 
 	if i.HasCompany != nil {
@@ -689,42 +693,6 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, accountingentry.HasUserWith(with...))
-	}
-	if i.HasProduct != nil {
-		p := accountingentry.HasProduct()
-		if !*i.HasProduct {
-			p = accountingentry.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasProductWith) > 0 {
-		with := make([]predicate.Product, 0, len(i.HasProductWith))
-		for _, w := range i.HasProductWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasProductWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, accountingentry.HasProductWith(with...))
-	}
-	if i.HasTreasury != nil {
-		p := accountingentry.HasTreasury()
-		if !*i.HasTreasury {
-			p = accountingentry.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasTreasuryWith) > 0 {
-		with := make([]predicate.Treasury, 0, len(i.HasTreasuryWith))
-		for _, w := range i.HasTreasuryWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasTreasuryWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, accountingentry.HasTreasuryWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -1081,6 +1049,14 @@ type CompanyWhereInput struct {
 	// "projects" edge predicates.
 	HasProjects     *bool                `json:"hasProjects,omitempty"`
 	HasProjectsWith []*ProjectWhereInput `json:"hasProjectsWith,omitempty"`
+
+	// "payables" edge predicates.
+	HasPayables     *bool                `json:"hasPayables,omitempty"`
+	HasPayablesWith []*PayableWhereInput `json:"hasPayablesWith,omitempty"`
+
+	// "receivables" edge predicates.
+	HasReceivables     *bool                   `json:"hasReceivables,omitempty"`
+	HasReceivablesWith []*ReceivableWhereInput `json:"hasReceivablesWith,omitempty"`
 
 	// "suppliers" edge predicates.
 	HasSuppliers     *bool                 `json:"hasSuppliers,omitempty"`
@@ -2103,6 +2079,42 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, company.HasProjectsWith(with...))
+	}
+	if i.HasPayables != nil {
+		p := company.HasPayables()
+		if !*i.HasPayables {
+			p = company.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasPayablesWith) > 0 {
+		with := make([]predicate.Payable, 0, len(i.HasPayablesWith))
+		for _, w := range i.HasPayablesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasPayablesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, company.HasPayablesWith(with...))
+	}
+	if i.HasReceivables != nil {
+		p := company.HasReceivables()
+		if !*i.HasReceivables {
+			p = company.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasReceivablesWith) > 0 {
+		with := make([]predicate.Receivable, 0, len(i.HasReceivablesWith))
+		for _, w := range i.HasReceivablesWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasReceivablesWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, company.HasReceivablesWith(with...))
 	}
 	if i.HasSuppliers != nil {
 		p := company.HasSuppliers()
@@ -3645,10 +3657,6 @@ type FileWhereInput struct {
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
-
-	// "product" edge predicates.
-	HasProduct     *bool                `json:"hasProduct,omitempty"`
-	HasProductWith []*ProductWhereInput `json:"hasProductWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -4050,24 +4058,6 @@ func (i *FileWhereInput) P() (predicate.File, error) {
 		}
 		predicates = append(predicates, file.HasCompanyWith(with...))
 	}
-	if i.HasProduct != nil {
-		p := file.HasProduct()
-		if !*i.HasProduct {
-			p = file.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasProductWith) > 0 {
-		with := make([]predicate.Product, 0, len(i.HasProductWith))
-		for _, w := range i.HasProductWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasProductWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, file.HasProductWith(with...))
-	}
 	switch len(predicates) {
 	case 0:
 		return nil, ErrEmptyFileWhereInput
@@ -4147,6 +4137,21 @@ type PayableWhereInput struct {
 	DateLT    *time.Time  `json:"dateLT,omitempty"`
 	DateLTE   *time.Time  `json:"dateLTE,omitempty"`
 
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
 	// "outstandingBalance" field predicates.
 	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
 	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
@@ -4167,15 +4172,15 @@ type PayableWhereInput struct {
 	TotalTransactionLT    *float64  `json:"totaltransactionLT,omitempty"`
 	TotalTransactionLTE   *float64  `json:"totaltransactionLTE,omitempty"`
 
-	// "daysDue" field predicates.
-	DaysDue      *int  `json:"daysdue,omitempty"`
-	DaysDueNEQ   *int  `json:"daysdueNEQ,omitempty"`
-	DaysDueIn    []int `json:"daysdueIn,omitempty"`
-	DaysDueNotIn []int `json:"daysdueNotIn,omitempty"`
-	DaysDueGT    *int  `json:"daysdueGT,omitempty"`
-	DaysDueGTE   *int  `json:"daysdueGTE,omitempty"`
-	DaysDueLT    *int  `json:"daysdueLT,omitempty"`
-	DaysDueLTE   *int  `json:"daysdueLTE,omitempty"`
+	// "dueDate" field predicates.
+	DueDate      *time.Time  `json:"duedate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
 
 	// "status" field predicates.
 	Status      *payable.Status  `json:"status,omitempty"`
@@ -4183,9 +4188,9 @@ type PayableWhereInput struct {
 	StatusIn    []payable.Status `json:"statusIn,omitempty"`
 	StatusNotIn []payable.Status `json:"statusNotIn,omitempty"`
 
-	// "supplier" edge predicates.
-	HasSupplier     *bool                 `json:"hasSupplier,omitempty"`
-	HasSupplierWith []*SupplierWhereInput `json:"hasSupplierWith,omitempty"`
+	// "company" edge predicates.
+	HasCompany     *bool                `json:"hasCompany,omitempty"`
+	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -4409,6 +4414,45 @@ func (i *PayableWhereInput) P() (predicate.Payable, error) {
 	if i.DateLTE != nil {
 		predicates = append(predicates, payable.DateLTE(*i.DateLTE))
 	}
+	if i.Name != nil {
+		predicates = append(predicates, payable.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, payable.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, payable.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, payable.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, payable.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, payable.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, payable.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, payable.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, payable.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, payable.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, payable.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, payable.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, payable.NameContainsFold(*i.NameContainsFold))
+	}
 	if i.OutstandingBalance != nil {
 		predicates = append(predicates, payable.OutstandingBalanceEQ(*i.OutstandingBalance))
 	}
@@ -4457,29 +4501,29 @@ func (i *PayableWhereInput) P() (predicate.Payable, error) {
 	if i.TotalTransactionLTE != nil {
 		predicates = append(predicates, payable.TotalTransactionLTE(*i.TotalTransactionLTE))
 	}
-	if i.DaysDue != nil {
-		predicates = append(predicates, payable.DaysDueEQ(*i.DaysDue))
+	if i.DueDate != nil {
+		predicates = append(predicates, payable.DueDateEQ(*i.DueDate))
 	}
-	if i.DaysDueNEQ != nil {
-		predicates = append(predicates, payable.DaysDueNEQ(*i.DaysDueNEQ))
+	if i.DueDateNEQ != nil {
+		predicates = append(predicates, payable.DueDateNEQ(*i.DueDateNEQ))
 	}
-	if len(i.DaysDueIn) > 0 {
-		predicates = append(predicates, payable.DaysDueIn(i.DaysDueIn...))
+	if len(i.DueDateIn) > 0 {
+		predicates = append(predicates, payable.DueDateIn(i.DueDateIn...))
 	}
-	if len(i.DaysDueNotIn) > 0 {
-		predicates = append(predicates, payable.DaysDueNotIn(i.DaysDueNotIn...))
+	if len(i.DueDateNotIn) > 0 {
+		predicates = append(predicates, payable.DueDateNotIn(i.DueDateNotIn...))
 	}
-	if i.DaysDueGT != nil {
-		predicates = append(predicates, payable.DaysDueGT(*i.DaysDueGT))
+	if i.DueDateGT != nil {
+		predicates = append(predicates, payable.DueDateGT(*i.DueDateGT))
 	}
-	if i.DaysDueGTE != nil {
-		predicates = append(predicates, payable.DaysDueGTE(*i.DaysDueGTE))
+	if i.DueDateGTE != nil {
+		predicates = append(predicates, payable.DueDateGTE(*i.DueDateGTE))
 	}
-	if i.DaysDueLT != nil {
-		predicates = append(predicates, payable.DaysDueLT(*i.DaysDueLT))
+	if i.DueDateLT != nil {
+		predicates = append(predicates, payable.DueDateLT(*i.DueDateLT))
 	}
-	if i.DaysDueLTE != nil {
-		predicates = append(predicates, payable.DaysDueLTE(*i.DaysDueLTE))
+	if i.DueDateLTE != nil {
+		predicates = append(predicates, payable.DueDateLTE(*i.DueDateLTE))
 	}
 	if i.Status != nil {
 		predicates = append(predicates, payable.StatusEQ(*i.Status))
@@ -4494,23 +4538,23 @@ func (i *PayableWhereInput) P() (predicate.Payable, error) {
 		predicates = append(predicates, payable.StatusNotIn(i.StatusNotIn...))
 	}
 
-	if i.HasSupplier != nil {
-		p := payable.HasSupplier()
-		if !*i.HasSupplier {
+	if i.HasCompany != nil {
+		p := payable.HasCompany()
+		if !*i.HasCompany {
 			p = payable.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasSupplierWith) > 0 {
-		with := make([]predicate.Supplier, 0, len(i.HasSupplierWith))
-		for _, w := range i.HasSupplierWith {
+	if len(i.HasCompanyWith) > 0 {
+		with := make([]predicate.Company, 0, len(i.HasCompanyWith))
+		for _, w := range i.HasCompanyWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasSupplierWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasCompanyWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, payable.HasSupplierWith(with...))
+		predicates = append(predicates, payable.HasCompanyWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -4571,112 +4615,19 @@ type ProductWhereInput struct {
 	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
 	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
 
-	// "description" field predicates.
-	Description             *string  `json:"description,omitempty"`
-	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
-	DescriptionIn           []string `json:"descriptionIn,omitempty"`
-	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
-	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
-	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
-	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
-	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
-	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
-	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
-	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
-	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
-	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
-
-	// "isDefault" field predicates.
-	IsDefault    *bool `json:"isdefault,omitempty"`
-	IsDefaultNEQ *bool `json:"isdefaultNEQ,omitempty"`
-
-	// "minimumStock" field predicates.
-	MinimumStock      *int  `json:"minimumstock,omitempty"`
-	MinimumStockNEQ   *int  `json:"minimumstockNEQ,omitempty"`
-	MinimumStockIn    []int `json:"minimumstockIn,omitempty"`
-	MinimumStockNotIn []int `json:"minimumstockNotIn,omitempty"`
-	MinimumStockGT    *int  `json:"minimumstockGT,omitempty"`
-	MinimumStockGTE   *int  `json:"minimumstockGTE,omitempty"`
-	MinimumStockLT    *int  `json:"minimumstockLT,omitempty"`
-	MinimumStockLTE   *int  `json:"minimumstockLTE,omitempty"`
-
-	// "name" field predicates.
-	Name             *string  `json:"name,omitempty"`
-	NameNEQ          *string  `json:"nameNEQ,omitempty"`
-	NameIn           []string `json:"nameIn,omitempty"`
-	NameNotIn        []string `json:"nameNotIn,omitempty"`
-	NameGT           *string  `json:"nameGT,omitempty"`
-	NameGTE          *string  `json:"nameGTE,omitempty"`
-	NameLT           *string  `json:"nameLT,omitempty"`
-	NameLTE          *string  `json:"nameLTE,omitempty"`
-	NameContains     *string  `json:"nameContains,omitempty"`
-	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
-	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
-	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
-	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
-
-	// "price" field predicates.
-	Price      *int  `json:"price,omitempty"`
-	PriceNEQ   *int  `json:"priceNEQ,omitempty"`
-	PriceIn    []int `json:"priceIn,omitempty"`
-	PriceNotIn []int `json:"priceNotIn,omitempty"`
-	PriceGT    *int  `json:"priceGT,omitempty"`
-	PriceGTE   *int  `json:"priceGTE,omitempty"`
-	PriceLT    *int  `json:"priceLT,omitempty"`
-	PriceLTE   *int  `json:"priceLTE,omitempty"`
-
-	// "sku" field predicates.
-	Sku             *string  `json:"sku,omitempty"`
-	SkuNEQ          *string  `json:"skuNEQ,omitempty"`
-	SkuIn           []string `json:"skuIn,omitempty"`
-	SkuNotIn        []string `json:"skuNotIn,omitempty"`
-	SkuGT           *string  `json:"skuGT,omitempty"`
-	SkuGTE          *string  `json:"skuGTE,omitempty"`
-	SkuLT           *string  `json:"skuLT,omitempty"`
-	SkuLTE          *string  `json:"skuLTE,omitempty"`
-	SkuContains     *string  `json:"skuContains,omitempty"`
-	SkuHasPrefix    *string  `json:"skuHasPrefix,omitempty"`
-	SkuHasSuffix    *string  `json:"skuHasSuffix,omitempty"`
-	SkuEqualFold    *string  `json:"skuEqualFold,omitempty"`
-	SkuContainsFold *string  `json:"skuContainsFold,omitempty"`
-
 	// "stock" field predicates.
-	Stock      *float64  `json:"stock,omitempty"`
-	StockNEQ   *float64  `json:"stockNEQ,omitempty"`
-	StockIn    []float64 `json:"stockIn,omitempty"`
-	StockNotIn []float64 `json:"stockNotIn,omitempty"`
-	StockGT    *float64  `json:"stockGT,omitempty"`
-	StockGTE   *float64  `json:"stockGTE,omitempty"`
-	StockLT    *float64  `json:"stockLT,omitempty"`
-	StockLTE   *float64  `json:"stockLTE,omitempty"`
-
-	// "category" field predicates.
-	Category      *product.Category  `json:"category,omitempty"`
-	CategoryNEQ   *product.Category  `json:"categoryNEQ,omitempty"`
-	CategoryIn    []product.Category `json:"categoryIn,omitempty"`
-	CategoryNotIn []product.Category `json:"categoryNotIn,omitempty"`
-
-	// "unitCost" field predicates.
-	UnitCost      *float64  `json:"unitcost,omitempty"`
-	UnitCostNEQ   *float64  `json:"unitcostNEQ,omitempty"`
-	UnitCostIn    []float64 `json:"unitcostIn,omitempty"`
-	UnitCostNotIn []float64 `json:"unitcostNotIn,omitempty"`
-	UnitCostGT    *float64  `json:"unitcostGT,omitempty"`
-	UnitCostGTE   *float64  `json:"unitcostGTE,omitempty"`
-	UnitCostLT    *float64  `json:"unitcostLT,omitempty"`
-	UnitCostLTE   *float64  `json:"unitcostLTE,omitempty"`
+	Stock      *int  `json:"stock,omitempty"`
+	StockNEQ   *int  `json:"stockNEQ,omitempty"`
+	StockIn    []int `json:"stockIn,omitempty"`
+	StockNotIn []int `json:"stockNotIn,omitempty"`
+	StockGT    *int  `json:"stockGT,omitempty"`
+	StockGTE   *int  `json:"stockGTE,omitempty"`
+	StockLT    *int  `json:"stockLT,omitempty"`
+	StockLTE   *int  `json:"stockLTE,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
-
-	// "pictures" edge predicates.
-	HasPictures     *bool             `json:"hasPictures,omitempty"`
-	HasPicturesWith []*FileWhereInput `json:"hasPicturesWith,omitempty"`
-
-	// "accountingEntries" edge predicates.
-	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
-	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -4852,177 +4803,6 @@ func (i *ProductWhereInput) P() (predicate.Product, error) {
 	if i.DeletedAtNotNil {
 		predicates = append(predicates, product.DeletedAtNotNil())
 	}
-	if i.Description != nil {
-		predicates = append(predicates, product.DescriptionEQ(*i.Description))
-	}
-	if i.DescriptionNEQ != nil {
-		predicates = append(predicates, product.DescriptionNEQ(*i.DescriptionNEQ))
-	}
-	if len(i.DescriptionIn) > 0 {
-		predicates = append(predicates, product.DescriptionIn(i.DescriptionIn...))
-	}
-	if len(i.DescriptionNotIn) > 0 {
-		predicates = append(predicates, product.DescriptionNotIn(i.DescriptionNotIn...))
-	}
-	if i.DescriptionGT != nil {
-		predicates = append(predicates, product.DescriptionGT(*i.DescriptionGT))
-	}
-	if i.DescriptionGTE != nil {
-		predicates = append(predicates, product.DescriptionGTE(*i.DescriptionGTE))
-	}
-	if i.DescriptionLT != nil {
-		predicates = append(predicates, product.DescriptionLT(*i.DescriptionLT))
-	}
-	if i.DescriptionLTE != nil {
-		predicates = append(predicates, product.DescriptionLTE(*i.DescriptionLTE))
-	}
-	if i.DescriptionContains != nil {
-		predicates = append(predicates, product.DescriptionContains(*i.DescriptionContains))
-	}
-	if i.DescriptionHasPrefix != nil {
-		predicates = append(predicates, product.DescriptionHasPrefix(*i.DescriptionHasPrefix))
-	}
-	if i.DescriptionHasSuffix != nil {
-		predicates = append(predicates, product.DescriptionHasSuffix(*i.DescriptionHasSuffix))
-	}
-	if i.DescriptionEqualFold != nil {
-		predicates = append(predicates, product.DescriptionEqualFold(*i.DescriptionEqualFold))
-	}
-	if i.DescriptionContainsFold != nil {
-		predicates = append(predicates, product.DescriptionContainsFold(*i.DescriptionContainsFold))
-	}
-	if i.IsDefault != nil {
-		predicates = append(predicates, product.IsDefaultEQ(*i.IsDefault))
-	}
-	if i.IsDefaultNEQ != nil {
-		predicates = append(predicates, product.IsDefaultNEQ(*i.IsDefaultNEQ))
-	}
-	if i.MinimumStock != nil {
-		predicates = append(predicates, product.MinimumStockEQ(*i.MinimumStock))
-	}
-	if i.MinimumStockNEQ != nil {
-		predicates = append(predicates, product.MinimumStockNEQ(*i.MinimumStockNEQ))
-	}
-	if len(i.MinimumStockIn) > 0 {
-		predicates = append(predicates, product.MinimumStockIn(i.MinimumStockIn...))
-	}
-	if len(i.MinimumStockNotIn) > 0 {
-		predicates = append(predicates, product.MinimumStockNotIn(i.MinimumStockNotIn...))
-	}
-	if i.MinimumStockGT != nil {
-		predicates = append(predicates, product.MinimumStockGT(*i.MinimumStockGT))
-	}
-	if i.MinimumStockGTE != nil {
-		predicates = append(predicates, product.MinimumStockGTE(*i.MinimumStockGTE))
-	}
-	if i.MinimumStockLT != nil {
-		predicates = append(predicates, product.MinimumStockLT(*i.MinimumStockLT))
-	}
-	if i.MinimumStockLTE != nil {
-		predicates = append(predicates, product.MinimumStockLTE(*i.MinimumStockLTE))
-	}
-	if i.Name != nil {
-		predicates = append(predicates, product.NameEQ(*i.Name))
-	}
-	if i.NameNEQ != nil {
-		predicates = append(predicates, product.NameNEQ(*i.NameNEQ))
-	}
-	if len(i.NameIn) > 0 {
-		predicates = append(predicates, product.NameIn(i.NameIn...))
-	}
-	if len(i.NameNotIn) > 0 {
-		predicates = append(predicates, product.NameNotIn(i.NameNotIn...))
-	}
-	if i.NameGT != nil {
-		predicates = append(predicates, product.NameGT(*i.NameGT))
-	}
-	if i.NameGTE != nil {
-		predicates = append(predicates, product.NameGTE(*i.NameGTE))
-	}
-	if i.NameLT != nil {
-		predicates = append(predicates, product.NameLT(*i.NameLT))
-	}
-	if i.NameLTE != nil {
-		predicates = append(predicates, product.NameLTE(*i.NameLTE))
-	}
-	if i.NameContains != nil {
-		predicates = append(predicates, product.NameContains(*i.NameContains))
-	}
-	if i.NameHasPrefix != nil {
-		predicates = append(predicates, product.NameHasPrefix(*i.NameHasPrefix))
-	}
-	if i.NameHasSuffix != nil {
-		predicates = append(predicates, product.NameHasSuffix(*i.NameHasSuffix))
-	}
-	if i.NameEqualFold != nil {
-		predicates = append(predicates, product.NameEqualFold(*i.NameEqualFold))
-	}
-	if i.NameContainsFold != nil {
-		predicates = append(predicates, product.NameContainsFold(*i.NameContainsFold))
-	}
-	if i.Price != nil {
-		predicates = append(predicates, product.PriceEQ(*i.Price))
-	}
-	if i.PriceNEQ != nil {
-		predicates = append(predicates, product.PriceNEQ(*i.PriceNEQ))
-	}
-	if len(i.PriceIn) > 0 {
-		predicates = append(predicates, product.PriceIn(i.PriceIn...))
-	}
-	if len(i.PriceNotIn) > 0 {
-		predicates = append(predicates, product.PriceNotIn(i.PriceNotIn...))
-	}
-	if i.PriceGT != nil {
-		predicates = append(predicates, product.PriceGT(*i.PriceGT))
-	}
-	if i.PriceGTE != nil {
-		predicates = append(predicates, product.PriceGTE(*i.PriceGTE))
-	}
-	if i.PriceLT != nil {
-		predicates = append(predicates, product.PriceLT(*i.PriceLT))
-	}
-	if i.PriceLTE != nil {
-		predicates = append(predicates, product.PriceLTE(*i.PriceLTE))
-	}
-	if i.Sku != nil {
-		predicates = append(predicates, product.SkuEQ(*i.Sku))
-	}
-	if i.SkuNEQ != nil {
-		predicates = append(predicates, product.SkuNEQ(*i.SkuNEQ))
-	}
-	if len(i.SkuIn) > 0 {
-		predicates = append(predicates, product.SkuIn(i.SkuIn...))
-	}
-	if len(i.SkuNotIn) > 0 {
-		predicates = append(predicates, product.SkuNotIn(i.SkuNotIn...))
-	}
-	if i.SkuGT != nil {
-		predicates = append(predicates, product.SkuGT(*i.SkuGT))
-	}
-	if i.SkuGTE != nil {
-		predicates = append(predicates, product.SkuGTE(*i.SkuGTE))
-	}
-	if i.SkuLT != nil {
-		predicates = append(predicates, product.SkuLT(*i.SkuLT))
-	}
-	if i.SkuLTE != nil {
-		predicates = append(predicates, product.SkuLTE(*i.SkuLTE))
-	}
-	if i.SkuContains != nil {
-		predicates = append(predicates, product.SkuContains(*i.SkuContains))
-	}
-	if i.SkuHasPrefix != nil {
-		predicates = append(predicates, product.SkuHasPrefix(*i.SkuHasPrefix))
-	}
-	if i.SkuHasSuffix != nil {
-		predicates = append(predicates, product.SkuHasSuffix(*i.SkuHasSuffix))
-	}
-	if i.SkuEqualFold != nil {
-		predicates = append(predicates, product.SkuEqualFold(*i.SkuEqualFold))
-	}
-	if i.SkuContainsFold != nil {
-		predicates = append(predicates, product.SkuContainsFold(*i.SkuContainsFold))
-	}
 	if i.Stock != nil {
 		predicates = append(predicates, product.StockEQ(*i.Stock))
 	}
@@ -5047,42 +4827,6 @@ func (i *ProductWhereInput) P() (predicate.Product, error) {
 	if i.StockLTE != nil {
 		predicates = append(predicates, product.StockLTE(*i.StockLTE))
 	}
-	if i.Category != nil {
-		predicates = append(predicates, product.CategoryEQ(*i.Category))
-	}
-	if i.CategoryNEQ != nil {
-		predicates = append(predicates, product.CategoryNEQ(*i.CategoryNEQ))
-	}
-	if len(i.CategoryIn) > 0 {
-		predicates = append(predicates, product.CategoryIn(i.CategoryIn...))
-	}
-	if len(i.CategoryNotIn) > 0 {
-		predicates = append(predicates, product.CategoryNotIn(i.CategoryNotIn...))
-	}
-	if i.UnitCost != nil {
-		predicates = append(predicates, product.UnitCostEQ(*i.UnitCost))
-	}
-	if i.UnitCostNEQ != nil {
-		predicates = append(predicates, product.UnitCostNEQ(*i.UnitCostNEQ))
-	}
-	if len(i.UnitCostIn) > 0 {
-		predicates = append(predicates, product.UnitCostIn(i.UnitCostIn...))
-	}
-	if len(i.UnitCostNotIn) > 0 {
-		predicates = append(predicates, product.UnitCostNotIn(i.UnitCostNotIn...))
-	}
-	if i.UnitCostGT != nil {
-		predicates = append(predicates, product.UnitCostGT(*i.UnitCostGT))
-	}
-	if i.UnitCostGTE != nil {
-		predicates = append(predicates, product.UnitCostGTE(*i.UnitCostGTE))
-	}
-	if i.UnitCostLT != nil {
-		predicates = append(predicates, product.UnitCostLT(*i.UnitCostLT))
-	}
-	if i.UnitCostLTE != nil {
-		predicates = append(predicates, product.UnitCostLTE(*i.UnitCostLTE))
-	}
 
 	if i.HasCompany != nil {
 		p := product.HasCompany()
@@ -5101,42 +4845,6 @@ func (i *ProductWhereInput) P() (predicate.Product, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, product.HasCompanyWith(with...))
-	}
-	if i.HasPictures != nil {
-		p := product.HasPictures()
-		if !*i.HasPictures {
-			p = product.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasPicturesWith) > 0 {
-		with := make([]predicate.File, 0, len(i.HasPicturesWith))
-		for _, w := range i.HasPicturesWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasPicturesWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, product.HasPicturesWith(with...))
-	}
-	if i.HasAccountingEntries != nil {
-		p := product.HasAccountingEntries()
-		if !*i.HasAccountingEntries {
-			p = product.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasAccountingEntriesWith) > 0 {
-		with := make([]predicate.AccountingEntry, 0, len(i.HasAccountingEntriesWith))
-		for _, w := range i.HasAccountingEntriesWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasAccountingEntriesWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, product.HasAccountingEntriesWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -6651,6 +6359,21 @@ type ReceivableWhereInput struct {
 	DateLT    *time.Time  `json:"dateLT,omitempty"`
 	DateLTE   *time.Time  `json:"dateLTE,omitempty"`
 
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+
 	// "outstandingBalance" field predicates.
 	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
 	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
@@ -6671,15 +6394,15 @@ type ReceivableWhereInput struct {
 	TotalTransactionLT    *float64  `json:"totaltransactionLT,omitempty"`
 	TotalTransactionLTE   *float64  `json:"totaltransactionLTE,omitempty"`
 
-	// "daysDue" field predicates.
-	DaysDue      *int  `json:"daysdue,omitempty"`
-	DaysDueNEQ   *int  `json:"daysdueNEQ,omitempty"`
-	DaysDueIn    []int `json:"daysdueIn,omitempty"`
-	DaysDueNotIn []int `json:"daysdueNotIn,omitempty"`
-	DaysDueGT    *int  `json:"daysdueGT,omitempty"`
-	DaysDueGTE   *int  `json:"daysdueGTE,omitempty"`
-	DaysDueLT    *int  `json:"daysdueLT,omitempty"`
-	DaysDueLTE   *int  `json:"daysdueLTE,omitempty"`
+	// "dueDate" field predicates.
+	DueDate      *time.Time  `json:"duedate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
 
 	// "status" field predicates.
 	Status      *receivable.Status  `json:"status,omitempty"`
@@ -6687,9 +6410,9 @@ type ReceivableWhereInput struct {
 	StatusIn    []receivable.Status `json:"statusIn,omitempty"`
 	StatusNotIn []receivable.Status `json:"statusNotIn,omitempty"`
 
-	// "customer" edge predicates.
-	HasCustomer     *bool                 `json:"hasCustomer,omitempty"`
-	HasCustomerWith []*CustomerWhereInput `json:"hasCustomerWith,omitempty"`
+	// "company" edge predicates.
+	HasCompany     *bool                `json:"hasCompany,omitempty"`
+	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -6913,6 +6636,45 @@ func (i *ReceivableWhereInput) P() (predicate.Receivable, error) {
 	if i.DateLTE != nil {
 		predicates = append(predicates, receivable.DateLTE(*i.DateLTE))
 	}
+	if i.Name != nil {
+		predicates = append(predicates, receivable.NameEQ(*i.Name))
+	}
+	if i.NameNEQ != nil {
+		predicates = append(predicates, receivable.NameNEQ(*i.NameNEQ))
+	}
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, receivable.NameIn(i.NameIn...))
+	}
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, receivable.NameNotIn(i.NameNotIn...))
+	}
+	if i.NameGT != nil {
+		predicates = append(predicates, receivable.NameGT(*i.NameGT))
+	}
+	if i.NameGTE != nil {
+		predicates = append(predicates, receivable.NameGTE(*i.NameGTE))
+	}
+	if i.NameLT != nil {
+		predicates = append(predicates, receivable.NameLT(*i.NameLT))
+	}
+	if i.NameLTE != nil {
+		predicates = append(predicates, receivable.NameLTE(*i.NameLTE))
+	}
+	if i.NameContains != nil {
+		predicates = append(predicates, receivable.NameContains(*i.NameContains))
+	}
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, receivable.NameHasPrefix(*i.NameHasPrefix))
+	}
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, receivable.NameHasSuffix(*i.NameHasSuffix))
+	}
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, receivable.NameEqualFold(*i.NameEqualFold))
+	}
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, receivable.NameContainsFold(*i.NameContainsFold))
+	}
 	if i.OutstandingBalance != nil {
 		predicates = append(predicates, receivable.OutstandingBalanceEQ(*i.OutstandingBalance))
 	}
@@ -6961,29 +6723,29 @@ func (i *ReceivableWhereInput) P() (predicate.Receivable, error) {
 	if i.TotalTransactionLTE != nil {
 		predicates = append(predicates, receivable.TotalTransactionLTE(*i.TotalTransactionLTE))
 	}
-	if i.DaysDue != nil {
-		predicates = append(predicates, receivable.DaysDueEQ(*i.DaysDue))
+	if i.DueDate != nil {
+		predicates = append(predicates, receivable.DueDateEQ(*i.DueDate))
 	}
-	if i.DaysDueNEQ != nil {
-		predicates = append(predicates, receivable.DaysDueNEQ(*i.DaysDueNEQ))
+	if i.DueDateNEQ != nil {
+		predicates = append(predicates, receivable.DueDateNEQ(*i.DueDateNEQ))
 	}
-	if len(i.DaysDueIn) > 0 {
-		predicates = append(predicates, receivable.DaysDueIn(i.DaysDueIn...))
+	if len(i.DueDateIn) > 0 {
+		predicates = append(predicates, receivable.DueDateIn(i.DueDateIn...))
 	}
-	if len(i.DaysDueNotIn) > 0 {
-		predicates = append(predicates, receivable.DaysDueNotIn(i.DaysDueNotIn...))
+	if len(i.DueDateNotIn) > 0 {
+		predicates = append(predicates, receivable.DueDateNotIn(i.DueDateNotIn...))
 	}
-	if i.DaysDueGT != nil {
-		predicates = append(predicates, receivable.DaysDueGT(*i.DaysDueGT))
+	if i.DueDateGT != nil {
+		predicates = append(predicates, receivable.DueDateGT(*i.DueDateGT))
 	}
-	if i.DaysDueGTE != nil {
-		predicates = append(predicates, receivable.DaysDueGTE(*i.DaysDueGTE))
+	if i.DueDateGTE != nil {
+		predicates = append(predicates, receivable.DueDateGTE(*i.DueDateGTE))
 	}
-	if i.DaysDueLT != nil {
-		predicates = append(predicates, receivable.DaysDueLT(*i.DaysDueLT))
+	if i.DueDateLT != nil {
+		predicates = append(predicates, receivable.DueDateLT(*i.DueDateLT))
 	}
-	if i.DaysDueLTE != nil {
-		predicates = append(predicates, receivable.DaysDueLTE(*i.DaysDueLTE))
+	if i.DueDateLTE != nil {
+		predicates = append(predicates, receivable.DueDateLTE(*i.DueDateLTE))
 	}
 	if i.Status != nil {
 		predicates = append(predicates, receivable.StatusEQ(*i.Status))
@@ -6998,23 +6760,23 @@ func (i *ReceivableWhereInput) P() (predicate.Receivable, error) {
 		predicates = append(predicates, receivable.StatusNotIn(i.StatusNotIn...))
 	}
 
-	if i.HasCustomer != nil {
-		p := receivable.HasCustomer()
-		if !*i.HasCustomer {
+	if i.HasCompany != nil {
+		p := receivable.HasCompany()
+		if !*i.HasCompany {
 			p = receivable.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasCustomerWith) > 0 {
-		with := make([]predicate.Customer, 0, len(i.HasCustomerWith))
-		for _, w := range i.HasCustomerWith {
+	if len(i.HasCompanyWith) > 0 {
+		with := make([]predicate.Company, 0, len(i.HasCompanyWith))
+		for _, w := range i.HasCompanyWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasCustomerWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasCompanyWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, receivable.HasCustomerWith(with...))
+		predicates = append(predicates, receivable.HasCompanyWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -8077,23 +7839,6 @@ type TreasuryWhereInput struct {
 	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
 	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
 
-	// "accountNumber" field predicates.
-	AccountNumber             *string  `json:"accountnumber,omitempty"`
-	AccountNumberNEQ          *string  `json:"accountnumberNEQ,omitempty"`
-	AccountNumberIn           []string `json:"accountnumberIn,omitempty"`
-	AccountNumberNotIn        []string `json:"accountnumberNotIn,omitempty"`
-	AccountNumberGT           *string  `json:"accountnumberGT,omitempty"`
-	AccountNumberGTE          *string  `json:"accountnumberGTE,omitempty"`
-	AccountNumberLT           *string  `json:"accountnumberLT,omitempty"`
-	AccountNumberLTE          *string  `json:"accountnumberLTE,omitempty"`
-	AccountNumberContains     *string  `json:"accountnumberContains,omitempty"`
-	AccountNumberHasPrefix    *string  `json:"accountnumberHasPrefix,omitempty"`
-	AccountNumberHasSuffix    *string  `json:"accountnumberHasSuffix,omitempty"`
-	AccountNumberIsNil        bool     `json:"accountnumberIsNil,omitempty"`
-	AccountNumberNotNil       bool     `json:"accountnumberNotNil,omitempty"`
-	AccountNumberEqualFold    *string  `json:"accountnumberEqualFold,omitempty"`
-	AccountNumberContainsFold *string  `json:"accountnumberContainsFold,omitempty"`
-
 	// "balance" field predicates.
 	Balance      *float64  `json:"balance,omitempty"`
 	BalanceNEQ   *float64  `json:"balanceNEQ,omitempty"`
@@ -8104,120 +7849,9 @@ type TreasuryWhereInput struct {
 	BalanceLT    *float64  `json:"balanceLT,omitempty"`
 	BalanceLTE   *float64  `json:"balanceLTE,omitempty"`
 
-	// "bankName" field predicates.
-	BankName             *string  `json:"bankname,omitempty"`
-	BankNameNEQ          *string  `json:"banknameNEQ,omitempty"`
-	BankNameIn           []string `json:"banknameIn,omitempty"`
-	BankNameNotIn        []string `json:"banknameNotIn,omitempty"`
-	BankNameGT           *string  `json:"banknameGT,omitempty"`
-	BankNameGTE          *string  `json:"banknameGTE,omitempty"`
-	BankNameLT           *string  `json:"banknameLT,omitempty"`
-	BankNameLTE          *string  `json:"banknameLTE,omitempty"`
-	BankNameContains     *string  `json:"banknameContains,omitempty"`
-	BankNameHasPrefix    *string  `json:"banknameHasPrefix,omitempty"`
-	BankNameHasSuffix    *string  `json:"banknameHasSuffix,omitempty"`
-	BankNameIsNil        bool     `json:"banknameIsNil,omitempty"`
-	BankNameNotNil       bool     `json:"banknameNotNil,omitempty"`
-	BankNameEqualFold    *string  `json:"banknameEqualFold,omitempty"`
-	BankNameContainsFold *string  `json:"banknameContainsFold,omitempty"`
-
-	// "currency" field predicates.
-	Currency      *treasury.Currency  `json:"currency,omitempty"`
-	CurrencyNEQ   *treasury.Currency  `json:"currencyNEQ,omitempty"`
-	CurrencyIn    []treasury.Currency `json:"currencyIn,omitempty"`
-	CurrencyNotIn []treasury.Currency `json:"currencyNotIn,omitempty"`
-
-	// "description" field predicates.
-	Description             *string  `json:"description,omitempty"`
-	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
-	DescriptionIn           []string `json:"descriptionIn,omitempty"`
-	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
-	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
-	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
-	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
-	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
-	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
-	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
-	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
-	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
-	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
-	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
-	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
-
-	// "iban" field predicates.
-	Iban             *string  `json:"iban,omitempty"`
-	IbanNEQ          *string  `json:"ibanNEQ,omitempty"`
-	IbanIn           []string `json:"ibanIn,omitempty"`
-	IbanNotIn        []string `json:"ibanNotIn,omitempty"`
-	IbanGT           *string  `json:"ibanGT,omitempty"`
-	IbanGTE          *string  `json:"ibanGTE,omitempty"`
-	IbanLT           *string  `json:"ibanLT,omitempty"`
-	IbanLTE          *string  `json:"ibanLTE,omitempty"`
-	IbanContains     *string  `json:"ibanContains,omitempty"`
-	IbanHasPrefix    *string  `json:"ibanHasPrefix,omitempty"`
-	IbanHasSuffix    *string  `json:"ibanHasSuffix,omitempty"`
-	IbanIsNil        bool     `json:"ibanIsNil,omitempty"`
-	IbanNotNil       bool     `json:"ibanNotNil,omitempty"`
-	IbanEqualFold    *string  `json:"ibanEqualFold,omitempty"`
-	IbanContainsFold *string  `json:"ibanContainsFold,omitempty"`
-
-	// "isDefault" field predicates.
-	IsDefault       *bool `json:"isdefault,omitempty"`
-	IsDefaultNEQ    *bool `json:"isdefaultNEQ,omitempty"`
-	IsDefaultIsNil  bool  `json:"isdefaultIsNil,omitempty"`
-	IsDefaultNotNil bool  `json:"isdefaultNotNil,omitempty"`
-
-	// "isMainAccount" field predicates.
-	IsMainAccount       *bool `json:"ismainaccount,omitempty"`
-	IsMainAccountNEQ    *bool `json:"ismainaccountNEQ,omitempty"`
-	IsMainAccountIsNil  bool  `json:"ismainaccountIsNil,omitempty"`
-	IsMainAccountNotNil bool  `json:"ismainaccountNotNil,omitempty"`
-
-	// "name" field predicates.
-	Name             *string  `json:"name,omitempty"`
-	NameNEQ          *string  `json:"nameNEQ,omitempty"`
-	NameIn           []string `json:"nameIn,omitempty"`
-	NameNotIn        []string `json:"nameNotIn,omitempty"`
-	NameGT           *string  `json:"nameGT,omitempty"`
-	NameGTE          *string  `json:"nameGTE,omitempty"`
-	NameLT           *string  `json:"nameLT,omitempty"`
-	NameLTE          *string  `json:"nameLTE,omitempty"`
-	NameContains     *string  `json:"nameContains,omitempty"`
-	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
-	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
-	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
-	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
-
-	// "category" field predicates.
-	Category      *treasury.Category  `json:"category,omitempty"`
-	CategoryNEQ   *treasury.Category  `json:"categoryNEQ,omitempty"`
-	CategoryIn    []treasury.Category `json:"categoryIn,omitempty"`
-	CategoryNotIn []treasury.Category `json:"categoryNotIn,omitempty"`
-
-	// "swiftCode" field predicates.
-	SwiftCode             *string  `json:"swiftcode,omitempty"`
-	SwiftCodeNEQ          *string  `json:"swiftcodeNEQ,omitempty"`
-	SwiftCodeIn           []string `json:"swiftcodeIn,omitempty"`
-	SwiftCodeNotIn        []string `json:"swiftcodeNotIn,omitempty"`
-	SwiftCodeGT           *string  `json:"swiftcodeGT,omitempty"`
-	SwiftCodeGTE          *string  `json:"swiftcodeGTE,omitempty"`
-	SwiftCodeLT           *string  `json:"swiftcodeLT,omitempty"`
-	SwiftCodeLTE          *string  `json:"swiftcodeLTE,omitempty"`
-	SwiftCodeContains     *string  `json:"swiftcodeContains,omitempty"`
-	SwiftCodeHasPrefix    *string  `json:"swiftcodeHasPrefix,omitempty"`
-	SwiftCodeHasSuffix    *string  `json:"swiftcodeHasSuffix,omitempty"`
-	SwiftCodeIsNil        bool     `json:"swiftcodeIsNil,omitempty"`
-	SwiftCodeNotNil       bool     `json:"swiftcodeNotNil,omitempty"`
-	SwiftCodeEqualFold    *string  `json:"swiftcodeEqualFold,omitempty"`
-	SwiftCodeContainsFold *string  `json:"swiftcodeContainsFold,omitempty"`
-
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
-
-	// "accountingEntries" edge predicates.
-	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
-	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -8393,51 +8027,6 @@ func (i *TreasuryWhereInput) P() (predicate.Treasury, error) {
 	if i.DeletedAtNotNil {
 		predicates = append(predicates, treasury.DeletedAtNotNil())
 	}
-	if i.AccountNumber != nil {
-		predicates = append(predicates, treasury.AccountNumberEQ(*i.AccountNumber))
-	}
-	if i.AccountNumberNEQ != nil {
-		predicates = append(predicates, treasury.AccountNumberNEQ(*i.AccountNumberNEQ))
-	}
-	if len(i.AccountNumberIn) > 0 {
-		predicates = append(predicates, treasury.AccountNumberIn(i.AccountNumberIn...))
-	}
-	if len(i.AccountNumberNotIn) > 0 {
-		predicates = append(predicates, treasury.AccountNumberNotIn(i.AccountNumberNotIn...))
-	}
-	if i.AccountNumberGT != nil {
-		predicates = append(predicates, treasury.AccountNumberGT(*i.AccountNumberGT))
-	}
-	if i.AccountNumberGTE != nil {
-		predicates = append(predicates, treasury.AccountNumberGTE(*i.AccountNumberGTE))
-	}
-	if i.AccountNumberLT != nil {
-		predicates = append(predicates, treasury.AccountNumberLT(*i.AccountNumberLT))
-	}
-	if i.AccountNumberLTE != nil {
-		predicates = append(predicates, treasury.AccountNumberLTE(*i.AccountNumberLTE))
-	}
-	if i.AccountNumberContains != nil {
-		predicates = append(predicates, treasury.AccountNumberContains(*i.AccountNumberContains))
-	}
-	if i.AccountNumberHasPrefix != nil {
-		predicates = append(predicates, treasury.AccountNumberHasPrefix(*i.AccountNumberHasPrefix))
-	}
-	if i.AccountNumberHasSuffix != nil {
-		predicates = append(predicates, treasury.AccountNumberHasSuffix(*i.AccountNumberHasSuffix))
-	}
-	if i.AccountNumberIsNil {
-		predicates = append(predicates, treasury.AccountNumberIsNil())
-	}
-	if i.AccountNumberNotNil {
-		predicates = append(predicates, treasury.AccountNumberNotNil())
-	}
-	if i.AccountNumberEqualFold != nil {
-		predicates = append(predicates, treasury.AccountNumberEqualFold(*i.AccountNumberEqualFold))
-	}
-	if i.AccountNumberContainsFold != nil {
-		predicates = append(predicates, treasury.AccountNumberContainsFold(*i.AccountNumberContainsFold))
-	}
 	if i.Balance != nil {
 		predicates = append(predicates, treasury.BalanceEQ(*i.Balance))
 	}
@@ -8462,273 +8051,6 @@ func (i *TreasuryWhereInput) P() (predicate.Treasury, error) {
 	if i.BalanceLTE != nil {
 		predicates = append(predicates, treasury.BalanceLTE(*i.BalanceLTE))
 	}
-	if i.BankName != nil {
-		predicates = append(predicates, treasury.BankNameEQ(*i.BankName))
-	}
-	if i.BankNameNEQ != nil {
-		predicates = append(predicates, treasury.BankNameNEQ(*i.BankNameNEQ))
-	}
-	if len(i.BankNameIn) > 0 {
-		predicates = append(predicates, treasury.BankNameIn(i.BankNameIn...))
-	}
-	if len(i.BankNameNotIn) > 0 {
-		predicates = append(predicates, treasury.BankNameNotIn(i.BankNameNotIn...))
-	}
-	if i.BankNameGT != nil {
-		predicates = append(predicates, treasury.BankNameGT(*i.BankNameGT))
-	}
-	if i.BankNameGTE != nil {
-		predicates = append(predicates, treasury.BankNameGTE(*i.BankNameGTE))
-	}
-	if i.BankNameLT != nil {
-		predicates = append(predicates, treasury.BankNameLT(*i.BankNameLT))
-	}
-	if i.BankNameLTE != nil {
-		predicates = append(predicates, treasury.BankNameLTE(*i.BankNameLTE))
-	}
-	if i.BankNameContains != nil {
-		predicates = append(predicates, treasury.BankNameContains(*i.BankNameContains))
-	}
-	if i.BankNameHasPrefix != nil {
-		predicates = append(predicates, treasury.BankNameHasPrefix(*i.BankNameHasPrefix))
-	}
-	if i.BankNameHasSuffix != nil {
-		predicates = append(predicates, treasury.BankNameHasSuffix(*i.BankNameHasSuffix))
-	}
-	if i.BankNameIsNil {
-		predicates = append(predicates, treasury.BankNameIsNil())
-	}
-	if i.BankNameNotNil {
-		predicates = append(predicates, treasury.BankNameNotNil())
-	}
-	if i.BankNameEqualFold != nil {
-		predicates = append(predicates, treasury.BankNameEqualFold(*i.BankNameEqualFold))
-	}
-	if i.BankNameContainsFold != nil {
-		predicates = append(predicates, treasury.BankNameContainsFold(*i.BankNameContainsFold))
-	}
-	if i.Currency != nil {
-		predicates = append(predicates, treasury.CurrencyEQ(*i.Currency))
-	}
-	if i.CurrencyNEQ != nil {
-		predicates = append(predicates, treasury.CurrencyNEQ(*i.CurrencyNEQ))
-	}
-	if len(i.CurrencyIn) > 0 {
-		predicates = append(predicates, treasury.CurrencyIn(i.CurrencyIn...))
-	}
-	if len(i.CurrencyNotIn) > 0 {
-		predicates = append(predicates, treasury.CurrencyNotIn(i.CurrencyNotIn...))
-	}
-	if i.Description != nil {
-		predicates = append(predicates, treasury.DescriptionEQ(*i.Description))
-	}
-	if i.DescriptionNEQ != nil {
-		predicates = append(predicates, treasury.DescriptionNEQ(*i.DescriptionNEQ))
-	}
-	if len(i.DescriptionIn) > 0 {
-		predicates = append(predicates, treasury.DescriptionIn(i.DescriptionIn...))
-	}
-	if len(i.DescriptionNotIn) > 0 {
-		predicates = append(predicates, treasury.DescriptionNotIn(i.DescriptionNotIn...))
-	}
-	if i.DescriptionGT != nil {
-		predicates = append(predicates, treasury.DescriptionGT(*i.DescriptionGT))
-	}
-	if i.DescriptionGTE != nil {
-		predicates = append(predicates, treasury.DescriptionGTE(*i.DescriptionGTE))
-	}
-	if i.DescriptionLT != nil {
-		predicates = append(predicates, treasury.DescriptionLT(*i.DescriptionLT))
-	}
-	if i.DescriptionLTE != nil {
-		predicates = append(predicates, treasury.DescriptionLTE(*i.DescriptionLTE))
-	}
-	if i.DescriptionContains != nil {
-		predicates = append(predicates, treasury.DescriptionContains(*i.DescriptionContains))
-	}
-	if i.DescriptionHasPrefix != nil {
-		predicates = append(predicates, treasury.DescriptionHasPrefix(*i.DescriptionHasPrefix))
-	}
-	if i.DescriptionHasSuffix != nil {
-		predicates = append(predicates, treasury.DescriptionHasSuffix(*i.DescriptionHasSuffix))
-	}
-	if i.DescriptionIsNil {
-		predicates = append(predicates, treasury.DescriptionIsNil())
-	}
-	if i.DescriptionNotNil {
-		predicates = append(predicates, treasury.DescriptionNotNil())
-	}
-	if i.DescriptionEqualFold != nil {
-		predicates = append(predicates, treasury.DescriptionEqualFold(*i.DescriptionEqualFold))
-	}
-	if i.DescriptionContainsFold != nil {
-		predicates = append(predicates, treasury.DescriptionContainsFold(*i.DescriptionContainsFold))
-	}
-	if i.Iban != nil {
-		predicates = append(predicates, treasury.IbanEQ(*i.Iban))
-	}
-	if i.IbanNEQ != nil {
-		predicates = append(predicates, treasury.IbanNEQ(*i.IbanNEQ))
-	}
-	if len(i.IbanIn) > 0 {
-		predicates = append(predicates, treasury.IbanIn(i.IbanIn...))
-	}
-	if len(i.IbanNotIn) > 0 {
-		predicates = append(predicates, treasury.IbanNotIn(i.IbanNotIn...))
-	}
-	if i.IbanGT != nil {
-		predicates = append(predicates, treasury.IbanGT(*i.IbanGT))
-	}
-	if i.IbanGTE != nil {
-		predicates = append(predicates, treasury.IbanGTE(*i.IbanGTE))
-	}
-	if i.IbanLT != nil {
-		predicates = append(predicates, treasury.IbanLT(*i.IbanLT))
-	}
-	if i.IbanLTE != nil {
-		predicates = append(predicates, treasury.IbanLTE(*i.IbanLTE))
-	}
-	if i.IbanContains != nil {
-		predicates = append(predicates, treasury.IbanContains(*i.IbanContains))
-	}
-	if i.IbanHasPrefix != nil {
-		predicates = append(predicates, treasury.IbanHasPrefix(*i.IbanHasPrefix))
-	}
-	if i.IbanHasSuffix != nil {
-		predicates = append(predicates, treasury.IbanHasSuffix(*i.IbanHasSuffix))
-	}
-	if i.IbanIsNil {
-		predicates = append(predicates, treasury.IbanIsNil())
-	}
-	if i.IbanNotNil {
-		predicates = append(predicates, treasury.IbanNotNil())
-	}
-	if i.IbanEqualFold != nil {
-		predicates = append(predicates, treasury.IbanEqualFold(*i.IbanEqualFold))
-	}
-	if i.IbanContainsFold != nil {
-		predicates = append(predicates, treasury.IbanContainsFold(*i.IbanContainsFold))
-	}
-	if i.IsDefault != nil {
-		predicates = append(predicates, treasury.IsDefaultEQ(*i.IsDefault))
-	}
-	if i.IsDefaultNEQ != nil {
-		predicates = append(predicates, treasury.IsDefaultNEQ(*i.IsDefaultNEQ))
-	}
-	if i.IsDefaultIsNil {
-		predicates = append(predicates, treasury.IsDefaultIsNil())
-	}
-	if i.IsDefaultNotNil {
-		predicates = append(predicates, treasury.IsDefaultNotNil())
-	}
-	if i.IsMainAccount != nil {
-		predicates = append(predicates, treasury.IsMainAccountEQ(*i.IsMainAccount))
-	}
-	if i.IsMainAccountNEQ != nil {
-		predicates = append(predicates, treasury.IsMainAccountNEQ(*i.IsMainAccountNEQ))
-	}
-	if i.IsMainAccountIsNil {
-		predicates = append(predicates, treasury.IsMainAccountIsNil())
-	}
-	if i.IsMainAccountNotNil {
-		predicates = append(predicates, treasury.IsMainAccountNotNil())
-	}
-	if i.Name != nil {
-		predicates = append(predicates, treasury.NameEQ(*i.Name))
-	}
-	if i.NameNEQ != nil {
-		predicates = append(predicates, treasury.NameNEQ(*i.NameNEQ))
-	}
-	if len(i.NameIn) > 0 {
-		predicates = append(predicates, treasury.NameIn(i.NameIn...))
-	}
-	if len(i.NameNotIn) > 0 {
-		predicates = append(predicates, treasury.NameNotIn(i.NameNotIn...))
-	}
-	if i.NameGT != nil {
-		predicates = append(predicates, treasury.NameGT(*i.NameGT))
-	}
-	if i.NameGTE != nil {
-		predicates = append(predicates, treasury.NameGTE(*i.NameGTE))
-	}
-	if i.NameLT != nil {
-		predicates = append(predicates, treasury.NameLT(*i.NameLT))
-	}
-	if i.NameLTE != nil {
-		predicates = append(predicates, treasury.NameLTE(*i.NameLTE))
-	}
-	if i.NameContains != nil {
-		predicates = append(predicates, treasury.NameContains(*i.NameContains))
-	}
-	if i.NameHasPrefix != nil {
-		predicates = append(predicates, treasury.NameHasPrefix(*i.NameHasPrefix))
-	}
-	if i.NameHasSuffix != nil {
-		predicates = append(predicates, treasury.NameHasSuffix(*i.NameHasSuffix))
-	}
-	if i.NameEqualFold != nil {
-		predicates = append(predicates, treasury.NameEqualFold(*i.NameEqualFold))
-	}
-	if i.NameContainsFold != nil {
-		predicates = append(predicates, treasury.NameContainsFold(*i.NameContainsFold))
-	}
-	if i.Category != nil {
-		predicates = append(predicates, treasury.CategoryEQ(*i.Category))
-	}
-	if i.CategoryNEQ != nil {
-		predicates = append(predicates, treasury.CategoryNEQ(*i.CategoryNEQ))
-	}
-	if len(i.CategoryIn) > 0 {
-		predicates = append(predicates, treasury.CategoryIn(i.CategoryIn...))
-	}
-	if len(i.CategoryNotIn) > 0 {
-		predicates = append(predicates, treasury.CategoryNotIn(i.CategoryNotIn...))
-	}
-	if i.SwiftCode != nil {
-		predicates = append(predicates, treasury.SwiftCodeEQ(*i.SwiftCode))
-	}
-	if i.SwiftCodeNEQ != nil {
-		predicates = append(predicates, treasury.SwiftCodeNEQ(*i.SwiftCodeNEQ))
-	}
-	if len(i.SwiftCodeIn) > 0 {
-		predicates = append(predicates, treasury.SwiftCodeIn(i.SwiftCodeIn...))
-	}
-	if len(i.SwiftCodeNotIn) > 0 {
-		predicates = append(predicates, treasury.SwiftCodeNotIn(i.SwiftCodeNotIn...))
-	}
-	if i.SwiftCodeGT != nil {
-		predicates = append(predicates, treasury.SwiftCodeGT(*i.SwiftCodeGT))
-	}
-	if i.SwiftCodeGTE != nil {
-		predicates = append(predicates, treasury.SwiftCodeGTE(*i.SwiftCodeGTE))
-	}
-	if i.SwiftCodeLT != nil {
-		predicates = append(predicates, treasury.SwiftCodeLT(*i.SwiftCodeLT))
-	}
-	if i.SwiftCodeLTE != nil {
-		predicates = append(predicates, treasury.SwiftCodeLTE(*i.SwiftCodeLTE))
-	}
-	if i.SwiftCodeContains != nil {
-		predicates = append(predicates, treasury.SwiftCodeContains(*i.SwiftCodeContains))
-	}
-	if i.SwiftCodeHasPrefix != nil {
-		predicates = append(predicates, treasury.SwiftCodeHasPrefix(*i.SwiftCodeHasPrefix))
-	}
-	if i.SwiftCodeHasSuffix != nil {
-		predicates = append(predicates, treasury.SwiftCodeHasSuffix(*i.SwiftCodeHasSuffix))
-	}
-	if i.SwiftCodeIsNil {
-		predicates = append(predicates, treasury.SwiftCodeIsNil())
-	}
-	if i.SwiftCodeNotNil {
-		predicates = append(predicates, treasury.SwiftCodeNotNil())
-	}
-	if i.SwiftCodeEqualFold != nil {
-		predicates = append(predicates, treasury.SwiftCodeEqualFold(*i.SwiftCodeEqualFold))
-	}
-	if i.SwiftCodeContainsFold != nil {
-		predicates = append(predicates, treasury.SwiftCodeContainsFold(*i.SwiftCodeContainsFold))
-	}
 
 	if i.HasCompany != nil {
 		p := treasury.HasCompany()
@@ -8747,24 +8069,6 @@ func (i *TreasuryWhereInput) P() (predicate.Treasury, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, treasury.HasCompanyWith(with...))
-	}
-	if i.HasAccountingEntries != nil {
-		p := treasury.HasAccountingEntries()
-		if !*i.HasAccountingEntries {
-			p = treasury.Not(p)
-		}
-		predicates = append(predicates, p)
-	}
-	if len(i.HasAccountingEntriesWith) > 0 {
-		with := make([]predicate.AccountingEntry, 0, len(i.HasAccountingEntriesWith))
-		for _, w := range i.HasAccountingEntriesWith {
-			p, err := w.P()
-			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasAccountingEntriesWith'", err)
-			}
-			with = append(with, p)
-		}
-		predicates = append(predicates, treasury.HasAccountingEntriesWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

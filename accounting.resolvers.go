@@ -21,23 +21,9 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
-// RegisterPurchase is the resolver for the registerPurchase field.
-func (r *mutationResolver) RegisterPurchase(ctx context.Context, input model.PurchaseRegistrationInput) (string, error) {
-	// fmt.Println(input)
-	// accountingentry.AccountTypeASSET
-	return inventory.PurchaseRegistration(ctx, r.client, input)
-	// panic(fmt.Errorf("not implemented: RegisterPurchase - registerPurchase"))
-}
-
 // RegisterSales is the resolver for the registerSales field.
-func (r *mutationResolver) RegisterSales(ctx context.Context, input model.SalesRegistrationInput) (*model.FileDetailsOutput, error) {
+func (r *mutationResolver) RegisterSales(ctx context.Context, input model.SalesRegistrationInput) (string, error) {
 	fmt.Println("##")
-	if input.Invoice != nil {
-		input.IssueInvoice = true
-	} else {
-		input.IssueInvoice = false
-	}
-
 	return inventory.SalesRegistration(ctx, r.client, input)
 }
 
@@ -64,10 +50,9 @@ func (r *mutationResolver) SalesQuotation(ctx context.Context, input model.Sales
 	return output, nil
 }
 
-// RegisterOtherAccountingEntries is the resolver for the registerOtherAccountingEntries field.
-func (r *mutationResolver) RegisterOtherAccountingEntries(ctx context.Context, input model.BaseEntryRegistrationInput) (*string, error) {
-	output, err := accountingentry.RegisterOtherEntries(ctx, r.client, input)
-	return output, err
+// RegisterAccountingEntries is the resolver for the registerAccountingEntries field.
+func (r *mutationResolver) RegisterAccountingEntries(ctx context.Context, input model.BaseEntryRegistrationInput) (*string, error) {
+	return accountingentry.RegisterAccountingOperations(ctx, r.client, input)
 }
 
 // TrialBalance is the resolver for the trialBalance field.

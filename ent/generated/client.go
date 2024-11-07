@@ -482,38 +482,6 @@ func (c *AccountingEntryClient) QueryUser(ae *AccountingEntry) *UserQuery {
 	return query
 }
 
-// QueryProduct queries the product edge of a AccountingEntry.
-func (c *AccountingEntryClient) QueryProduct(ae *AccountingEntry) *ProductQuery {
-	query := (&ProductClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := ae.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.ProductTable, accountingentry.ProductColumn),
-		)
-		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryTreasury queries the treasury edge of a AccountingEntry.
-func (c *AccountingEntryClient) QueryTreasury(ae *AccountingEntry) *TreasuryQuery {
-	query := (&TreasuryClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := ae.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
-			sqlgraph.To(treasury.Table, treasury.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.TreasuryTable, accountingentry.TreasuryColumn),
-		)
-		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *AccountingEntryClient) Hooks() []Hook {
 	return c.hooks.AccountingEntry
@@ -752,6 +720,38 @@ func (c *CompanyClient) QueryProjects(co *Company) *ProjectQuery {
 			sqlgraph.From(company.Table, company.FieldID, id),
 			sqlgraph.To(project.Table, project.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.ProjectsTable, company.ProjectsColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPayables queries the payables edge of a Company.
+func (c *CompanyClient) QueryPayables(co *Company) *PayableQuery {
+	query := (&PayableClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(payable.Table, payable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.PayablesTable, company.PayablesColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryReceivables queries the receivables edge of a Company.
+func (c *CompanyClient) QueryReceivables(co *Company) *ReceivableQuery {
+	query := (&ReceivableClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(receivable.Table, receivable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.ReceivablesTable, company.ReceivablesColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -1350,22 +1350,6 @@ func (c *FileClient) QueryCompany(f *File) *CompanyQuery {
 	return query
 }
 
-// QueryProduct queries the product edge of a File.
-func (c *FileClient) QueryProduct(f *File) *ProductQuery {
-	query := (&ProductClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := f.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(file.Table, file.FieldID, id),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, file.ProductTable, file.ProductColumn),
-		)
-		fromV = sqlgraph.Neighbors(f.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *FileClient) Hooks() []Hook {
 	return c.hooks.File
@@ -1499,15 +1483,15 @@ func (c *PayableClient) GetX(ctx context.Context, id int) *Payable {
 	return obj
 }
 
-// QuerySupplier queries the supplier edge of a Payable.
-func (c *PayableClient) QuerySupplier(pa *Payable) *SupplierQuery {
-	query := (&SupplierClient{config: c.config}).Query()
+// QueryCompany queries the company edge of a Payable.
+func (c *PayableClient) QueryCompany(pa *Payable) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := pa.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(payable.Table, payable.FieldID, id),
-			sqlgraph.To(supplier.Table, supplier.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, payable.SupplierTable, payable.SupplierColumn),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payable.CompanyTable, payable.CompanyColumn),
 		)
 		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
 		return fromV, nil
@@ -1657,38 +1641,6 @@ func (c *ProductClient) QueryCompany(pr *Product) *CompanyQuery {
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, product.CompanyTable, product.CompanyColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryPictures queries the pictures edge of a Product.
-func (c *ProductClient) QueryPictures(pr *Product) *FileQuery {
-	query := (&FileClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(product.Table, product.FieldID, id),
-			sqlgraph.To(file.Table, file.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.PicturesTable, product.PicturesColumn),
-		)
-		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryAccountingEntries queries the accountingEntries edge of a Product.
-func (c *ProductClient) QueryAccountingEntries(pr *Product) *AccountingEntryQuery {
-	query := (&AccountingEntryClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := pr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(product.Table, product.FieldID, id),
-			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.AccountingEntriesTable, product.AccountingEntriesColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -2405,15 +2357,15 @@ func (c *ReceivableClient) GetX(ctx context.Context, id int) *Receivable {
 	return obj
 }
 
-// QueryCustomer queries the customer edge of a Receivable.
-func (c *ReceivableClient) QueryCustomer(r *Receivable) *CustomerQuery {
-	query := (&CustomerClient{config: c.config}).Query()
+// QueryCompany queries the company edge of a Receivable.
+func (c *ReceivableClient) QueryCompany(r *Receivable) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := r.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(receivable.Table, receivable.FieldID, id),
-			sqlgraph.To(customer.Table, customer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, receivable.CustomerTable, receivable.CustomerColumn),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, receivable.CompanyTable, receivable.CompanyColumn),
 		)
 		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
 		return fromV, nil
@@ -2893,22 +2845,6 @@ func (c *TreasuryClient) QueryCompany(t *Treasury) *CompanyQuery {
 			sqlgraph.From(treasury.Table, treasury.FieldID, id),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, treasury.CompanyTable, treasury.CompanyColumn),
-		)
-		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryAccountingEntries queries the accountingEntries edge of a Treasury.
-func (c *TreasuryClient) QueryAccountingEntries(t *Treasury) *AccountingEntryQuery {
-	query := (&AccountingEntryClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := t.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(treasury.Table, treasury.FieldID, id),
-			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, treasury.AccountingEntriesTable, treasury.AccountingEntriesColumn),
 		)
 		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
 		return fromV, nil

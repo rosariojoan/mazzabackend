@@ -24,17 +24,18 @@ func (Receivable) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("entryGroup").Positive(),
 		field.Time("date"),
+		field.String("name").Default("Diversos"),
 		field.Float("outstandingBalance"),
 		field.Float("totalTransaction"),
-		field.Int("daysDue").NonNegative().Annotations(entgql.OrderField("DAYSDUE")),
-		field.Enum("status").Values("paid", "unpaid", "doubtful", "default").Annotations(entgql.OrderField("STATUS")),
+		field.Time("dueDate").Annotations(entgql.OrderField("DUEDATE")),
+		field.Enum("status").Values("paid", "pending", "default").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
 // Edges of the Receivable
 func (Receivable) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("customer", Customer.Type).Ref("receivables").Unique(), // a receivable can belong to only one client
+		edge.From("company", Company.Type).Ref("receivables").Unique(), // a receivable can belong to only one company
 	}
 }
 

@@ -4,12 +4,9 @@ package generated
 
 import (
 	"context"
-	"database/sql/driver"
 	"fmt"
 	"math"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
 
@@ -22,18 +19,14 @@ import (
 // ProductQuery is the builder for querying Product entities.
 type ProductQuery struct {
 	config
-	ctx                        *QueryContext
-	order                      []product.OrderOption
-	inters                     []Interceptor
-	predicates                 []predicate.Product
-	withCompany                *CompanyQuery
-	withPictures               *FileQuery
-	withAccountingEntries      *AccountingEntryQuery
-	withFKs                    bool
-	loadTotal                  []func(context.Context, []*Product) error
-	modifiers                  []func(*sql.Selector)
-	withNamedPictures          map[string]*FileQuery
-	withNamedAccountingEntries map[string]*AccountingEntryQuery
+	ctx         *QueryContext
+	order       []product.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Product
+	withCompany *CompanyQuery
+	withFKs     bool
+	loadTotal   []func(context.Context, []*Product) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -85,50 +78,6 @@ func (pq *ProductQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(product.Table, product.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, product.CompanyTable, product.CompanyColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryPictures chains the current query on the "pictures" edge.
-func (pq *ProductQuery) QueryPictures() *FileQuery {
-	query := (&FileClient{config: pq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(product.Table, product.FieldID, selector),
-			sqlgraph.To(file.Table, file.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.PicturesTable, product.PicturesColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryAccountingEntries chains the current query on the "accountingEntries" edge.
-func (pq *ProductQuery) QueryAccountingEntries() *AccountingEntryQuery {
-	query := (&AccountingEntryClient{config: pq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := pq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := pq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(product.Table, product.FieldID, selector),
-			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, product.AccountingEntriesTable, product.AccountingEntriesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -323,14 +272,12 @@ func (pq *ProductQuery) Clone() *ProductQuery {
 		return nil
 	}
 	return &ProductQuery{
-		config:                pq.config,
-		ctx:                   pq.ctx.Clone(),
-		order:                 append([]product.OrderOption{}, pq.order...),
-		inters:                append([]Interceptor{}, pq.inters...),
-		predicates:            append([]predicate.Product{}, pq.predicates...),
-		withCompany:           pq.withCompany.Clone(),
-		withPictures:          pq.withPictures.Clone(),
-		withAccountingEntries: pq.withAccountingEntries.Clone(),
+		config:      pq.config,
+		ctx:         pq.ctx.Clone(),
+		order:       append([]product.OrderOption{}, pq.order...),
+		inters:      append([]Interceptor{}, pq.inters...),
+		predicates:  append([]predicate.Product{}, pq.predicates...),
+		withCompany: pq.withCompany.Clone(),
 		// clone intermediate query.
 		sql:       pq.sql.Clone(),
 		path:      pq.path,
@@ -346,28 +293,6 @@ func (pq *ProductQuery) WithCompany(opts ...func(*CompanyQuery)) *ProductQuery {
 		opt(query)
 	}
 	pq.withCompany = query
-	return pq
-}
-
-// WithPictures tells the query-builder to eager-load the nodes that are connected to
-// the "pictures" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithPictures(opts ...func(*FileQuery)) *ProductQuery {
-	query := (&FileClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withPictures = query
-	return pq
-}
-
-// WithAccountingEntries tells the query-builder to eager-load the nodes that are connected to
-// the "accountingEntries" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithAccountingEntries(opts ...func(*AccountingEntryQuery)) *ProductQuery {
-	query := (&AccountingEntryClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	pq.withAccountingEntries = query
 	return pq
 }
 
@@ -450,10 +375,8 @@ func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Prod
 		nodes       = []*Product{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [1]bool{
 			pq.withCompany != nil,
-			pq.withPictures != nil,
-			pq.withAccountingEntries != nil,
 		}
 	)
 	if pq.withCompany != nil {
@@ -486,34 +409,6 @@ func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Prod
 	if query := pq.withCompany; query != nil {
 		if err := pq.loadCompany(ctx, query, nodes, nil,
 			func(n *Product, e *Company) { n.Edges.Company = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := pq.withPictures; query != nil {
-		if err := pq.loadPictures(ctx, query, nodes,
-			func(n *Product) { n.Edges.Pictures = []*File{} },
-			func(n *Product, e *File) { n.Edges.Pictures = append(n.Edges.Pictures, e) }); err != nil {
-			return nil, err
-		}
-	}
-	if query := pq.withAccountingEntries; query != nil {
-		if err := pq.loadAccountingEntries(ctx, query, nodes,
-			func(n *Product) { n.Edges.AccountingEntries = []*AccountingEntry{} },
-			func(n *Product, e *AccountingEntry) { n.Edges.AccountingEntries = append(n.Edges.AccountingEntries, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range pq.withNamedPictures {
-		if err := pq.loadPictures(ctx, query, nodes,
-			func(n *Product) { n.appendNamedPictures(name) },
-			func(n *Product, e *File) { n.appendNamedPictures(name, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range pq.withNamedAccountingEntries {
-		if err := pq.loadAccountingEntries(ctx, query, nodes,
-			func(n *Product) { n.appendNamedAccountingEntries(name) },
-			func(n *Product, e *AccountingEntry) { n.appendNamedAccountingEntries(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -554,68 +449,6 @@ func (pq *ProductQuery) loadCompany(ctx context.Context, query *CompanyQuery, no
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
-	}
-	return nil
-}
-func (pq *ProductQuery) loadPictures(ctx context.Context, query *FileQuery, nodes []*Product, init func(*Product), assign func(*Product, *File)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Product)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.File(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(product.PicturesColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.product_pictures
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "product_pictures" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "product_pictures" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (pq *ProductQuery) loadAccountingEntries(ctx context.Context, query *AccountingEntryQuery, nodes []*Product, init func(*Product), assign func(*Product, *AccountingEntry)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Product)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.AccountingEntry(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(product.AccountingEntriesColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.product_accounting_entries
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "product_accounting_entries" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "product_accounting_entries" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
 	}
 	return nil
 }
@@ -711,34 +544,6 @@ func (pq *ProductQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (pq *ProductQuery) Modify(modifiers ...func(s *sql.Selector)) *ProductSelect {
 	pq.modifiers = append(pq.modifiers, modifiers...)
 	return pq.Select()
-}
-
-// WithNamedPictures tells the query-builder to eager-load the nodes that are connected to the "pictures"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithNamedPictures(name string, opts ...func(*FileQuery)) *ProductQuery {
-	query := (&FileClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if pq.withNamedPictures == nil {
-		pq.withNamedPictures = make(map[string]*FileQuery)
-	}
-	pq.withNamedPictures[name] = query
-	return pq
-}
-
-// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accountingEntries"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (pq *ProductQuery) WithNamedAccountingEntries(name string, opts ...func(*AccountingEntryQuery)) *ProductQuery {
-	query := (&AccountingEntryClient{config: pq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if pq.withNamedAccountingEntries == nil {
-		pq.withNamedAccountingEntries = make(map[string]*AccountingEntryQuery)
-	}
-	pq.withNamedAccountingEntries[name] = query
-	return pq
 }
 
 // ProductGroupBy is the group-by builder for Product entities.

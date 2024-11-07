@@ -6,9 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
 	"time"
@@ -58,157 +56,24 @@ func (pu *ProductUpdate) ClearDeletedAt() *ProductUpdate {
 	return pu
 }
 
-// SetDescription sets the "description" field.
-func (pu *ProductUpdate) SetDescription(s string) *ProductUpdate {
-	pu.mutation.SetDescription(s)
-	return pu
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableDescription(s *string) *ProductUpdate {
-	if s != nil {
-		pu.SetDescription(*s)
-	}
-	return pu
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (pu *ProductUpdate) SetIsDefault(b bool) *ProductUpdate {
-	pu.mutation.SetIsDefault(b)
-	return pu
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableIsDefault(b *bool) *ProductUpdate {
-	if b != nil {
-		pu.SetIsDefault(*b)
-	}
-	return pu
-}
-
-// SetMinimumStock sets the "minimumStock" field.
-func (pu *ProductUpdate) SetMinimumStock(i int) *ProductUpdate {
-	pu.mutation.ResetMinimumStock()
-	pu.mutation.SetMinimumStock(i)
-	return pu
-}
-
-// SetNillableMinimumStock sets the "minimumStock" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableMinimumStock(i *int) *ProductUpdate {
-	if i != nil {
-		pu.SetMinimumStock(*i)
-	}
-	return pu
-}
-
-// AddMinimumStock adds i to the "minimumStock" field.
-func (pu *ProductUpdate) AddMinimumStock(i int) *ProductUpdate {
-	pu.mutation.AddMinimumStock(i)
-	return pu
-}
-
-// SetName sets the "name" field.
-func (pu *ProductUpdate) SetName(s string) *ProductUpdate {
-	pu.mutation.SetName(s)
-	return pu
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableName(s *string) *ProductUpdate {
-	if s != nil {
-		pu.SetName(*s)
-	}
-	return pu
-}
-
-// SetPrice sets the "price" field.
-func (pu *ProductUpdate) SetPrice(i int) *ProductUpdate {
-	pu.mutation.ResetPrice()
-	pu.mutation.SetPrice(i)
-	return pu
-}
-
-// SetNillablePrice sets the "price" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillablePrice(i *int) *ProductUpdate {
-	if i != nil {
-		pu.SetPrice(*i)
-	}
-	return pu
-}
-
-// AddPrice adds i to the "price" field.
-func (pu *ProductUpdate) AddPrice(i int) *ProductUpdate {
-	pu.mutation.AddPrice(i)
-	return pu
-}
-
-// SetSku sets the "sku" field.
-func (pu *ProductUpdate) SetSku(s string) *ProductUpdate {
-	pu.mutation.SetSku(s)
-	return pu
-}
-
-// SetNillableSku sets the "sku" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableSku(s *string) *ProductUpdate {
-	if s != nil {
-		pu.SetSku(*s)
-	}
-	return pu
-}
-
 // SetStock sets the "stock" field.
-func (pu *ProductUpdate) SetStock(f float64) *ProductUpdate {
+func (pu *ProductUpdate) SetStock(i int) *ProductUpdate {
 	pu.mutation.ResetStock()
-	pu.mutation.SetStock(f)
+	pu.mutation.SetStock(i)
 	return pu
 }
 
 // SetNillableStock sets the "stock" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableStock(f *float64) *ProductUpdate {
-	if f != nil {
-		pu.SetStock(*f)
+func (pu *ProductUpdate) SetNillableStock(i *int) *ProductUpdate {
+	if i != nil {
+		pu.SetStock(*i)
 	}
 	return pu
 }
 
-// AddStock adds f to the "stock" field.
-func (pu *ProductUpdate) AddStock(f float64) *ProductUpdate {
-	pu.mutation.AddStock(f)
-	return pu
-}
-
-// SetCategory sets the "category" field.
-func (pu *ProductUpdate) SetCategory(pr product.Category) *ProductUpdate {
-	pu.mutation.SetCategory(pr)
-	return pu
-}
-
-// SetNillableCategory sets the "category" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableCategory(pr *product.Category) *ProductUpdate {
-	if pr != nil {
-		pu.SetCategory(*pr)
-	}
-	return pu
-}
-
-// SetUnitCost sets the "unitCost" field.
-func (pu *ProductUpdate) SetUnitCost(f float64) *ProductUpdate {
-	pu.mutation.ResetUnitCost()
-	pu.mutation.SetUnitCost(f)
-	return pu
-}
-
-// SetNillableUnitCost sets the "unitCost" field if the given value is not nil.
-func (pu *ProductUpdate) SetNillableUnitCost(f *float64) *ProductUpdate {
-	if f != nil {
-		pu.SetUnitCost(*f)
-	}
-	return pu
-}
-
-// AddUnitCost adds f to the "unitCost" field.
-func (pu *ProductUpdate) AddUnitCost(f float64) *ProductUpdate {
-	pu.mutation.AddUnitCost(f)
+// AddStock adds i to the "stock" field.
+func (pu *ProductUpdate) AddStock(i int) *ProductUpdate {
+	pu.mutation.AddStock(i)
 	return pu
 }
 
@@ -231,36 +96,6 @@ func (pu *ProductUpdate) SetCompany(c *Company) *ProductUpdate {
 	return pu.SetCompanyID(c.ID)
 }
 
-// AddPictureIDs adds the "pictures" edge to the File entity by IDs.
-func (pu *ProductUpdate) AddPictureIDs(ids ...int) *ProductUpdate {
-	pu.mutation.AddPictureIDs(ids...)
-	return pu
-}
-
-// AddPictures adds the "pictures" edges to the File entity.
-func (pu *ProductUpdate) AddPictures(f ...*File) *ProductUpdate {
-	ids := make([]int, len(f))
-	for i := range f {
-		ids[i] = f[i].ID
-	}
-	return pu.AddPictureIDs(ids...)
-}
-
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (pu *ProductUpdate) AddAccountingEntryIDs(ids ...int) *ProductUpdate {
-	pu.mutation.AddAccountingEntryIDs(ids...)
-	return pu
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (pu *ProductUpdate) AddAccountingEntries(a ...*AccountingEntry) *ProductUpdate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return pu.AddAccountingEntryIDs(ids...)
-}
-
 // Mutation returns the ProductMutation object of the builder.
 func (pu *ProductUpdate) Mutation() *ProductMutation {
 	return pu.mutation
@@ -270,48 +105,6 @@ func (pu *ProductUpdate) Mutation() *ProductMutation {
 func (pu *ProductUpdate) ClearCompany() *ProductUpdate {
 	pu.mutation.ClearCompany()
 	return pu
-}
-
-// ClearPictures clears all "pictures" edges to the File entity.
-func (pu *ProductUpdate) ClearPictures() *ProductUpdate {
-	pu.mutation.ClearPictures()
-	return pu
-}
-
-// RemovePictureIDs removes the "pictures" edge to File entities by IDs.
-func (pu *ProductUpdate) RemovePictureIDs(ids ...int) *ProductUpdate {
-	pu.mutation.RemovePictureIDs(ids...)
-	return pu
-}
-
-// RemovePictures removes "pictures" edges to File entities.
-func (pu *ProductUpdate) RemovePictures(f ...*File) *ProductUpdate {
-	ids := make([]int, len(f))
-	for i := range f {
-		ids[i] = f[i].ID
-	}
-	return pu.RemovePictureIDs(ids...)
-}
-
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
-func (pu *ProductUpdate) ClearAccountingEntries() *ProductUpdate {
-	pu.mutation.ClearAccountingEntries()
-	return pu
-}
-
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
-func (pu *ProductUpdate) RemoveAccountingEntryIDs(ids ...int) *ProductUpdate {
-	pu.mutation.RemoveAccountingEntryIDs(ids...)
-	return pu
-}
-
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
-func (pu *ProductUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *ProductUpdate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return pu.RemoveAccountingEntryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -352,39 +145,9 @@ func (pu *ProductUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (pu *ProductUpdate) check() error {
-	if v, ok := pu.mutation.MinimumStock(); ok {
-		if err := product.MinimumStockValidator(v); err != nil {
-			return &ValidationError{Name: "minimumStock", err: fmt.Errorf(`generated: validator failed for field "Product.minimumStock": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Name(); ok {
-		if err := product.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Product.name": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Price(); ok {
-		if err := product.PriceValidator(v); err != nil {
-			return &ValidationError{Name: "price", err: fmt.Errorf(`generated: validator failed for field "Product.price": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Sku(); ok {
-		if err := product.SkuValidator(v); err != nil {
-			return &ValidationError{Name: "sku", err: fmt.Errorf(`generated: validator failed for field "Product.sku": %w`, err)}
-		}
-	}
 	if v, ok := pu.mutation.Stock(); ok {
 		if err := product.StockValidator(v); err != nil {
 			return &ValidationError{Name: "stock", err: fmt.Errorf(`generated: validator failed for field "Product.stock": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.Category(); ok {
-		if err := product.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Product.category": %w`, err)}
-		}
-	}
-	if v, ok := pu.mutation.UnitCost(); ok {
-		if err := product.UnitCostValidator(v); err != nil {
-			return &ValidationError{Name: "unitCost", err: fmt.Errorf(`generated: validator failed for field "Product.unitCost": %w`, err)}
 		}
 	}
 	return nil
@@ -417,44 +180,11 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if pu.mutation.DeletedAtCleared() {
 		_spec.ClearField(product.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := pu.mutation.Description(); ok {
-		_spec.SetField(product.FieldDescription, field.TypeString, value)
-	}
-	if value, ok := pu.mutation.IsDefault(); ok {
-		_spec.SetField(product.FieldIsDefault, field.TypeBool, value)
-	}
-	if value, ok := pu.mutation.MinimumStock(); ok {
-		_spec.SetField(product.FieldMinimumStock, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedMinimumStock(); ok {
-		_spec.AddField(product.FieldMinimumStock, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.Name(); ok {
-		_spec.SetField(product.FieldName, field.TypeString, value)
-	}
-	if value, ok := pu.mutation.Price(); ok {
-		_spec.SetField(product.FieldPrice, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedPrice(); ok {
-		_spec.AddField(product.FieldPrice, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.Sku(); ok {
-		_spec.SetField(product.FieldSku, field.TypeString, value)
-	}
 	if value, ok := pu.mutation.Stock(); ok {
-		_spec.SetField(product.FieldStock, field.TypeFloat64, value)
+		_spec.SetField(product.FieldStock, field.TypeInt, value)
 	}
 	if value, ok := pu.mutation.AddedStock(); ok {
-		_spec.AddField(product.FieldStock, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.Category(); ok {
-		_spec.SetField(product.FieldCategory, field.TypeEnum, value)
-	}
-	if value, ok := pu.mutation.UnitCost(); ok {
-		_spec.SetField(product.FieldUnitCost, field.TypeFloat64, value)
-	}
-	if value, ok := pu.mutation.AddedUnitCost(); ok {
-		_spec.AddField(product.FieldUnitCost, field.TypeFloat64, value)
+		_spec.AddField(product.FieldStock, field.TypeInt, value)
 	}
 	if pu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -478,96 +208,6 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if pu.mutation.PicturesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedPicturesIDs(); len(nodes) > 0 && !pu.mutation.PicturesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.PicturesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if pu.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !pu.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -623,157 +263,24 @@ func (puo *ProductUpdateOne) ClearDeletedAt() *ProductUpdateOne {
 	return puo
 }
 
-// SetDescription sets the "description" field.
-func (puo *ProductUpdateOne) SetDescription(s string) *ProductUpdateOne {
-	puo.mutation.SetDescription(s)
-	return puo
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableDescription(s *string) *ProductUpdateOne {
-	if s != nil {
-		puo.SetDescription(*s)
-	}
-	return puo
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (puo *ProductUpdateOne) SetIsDefault(b bool) *ProductUpdateOne {
-	puo.mutation.SetIsDefault(b)
-	return puo
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableIsDefault(b *bool) *ProductUpdateOne {
-	if b != nil {
-		puo.SetIsDefault(*b)
-	}
-	return puo
-}
-
-// SetMinimumStock sets the "minimumStock" field.
-func (puo *ProductUpdateOne) SetMinimumStock(i int) *ProductUpdateOne {
-	puo.mutation.ResetMinimumStock()
-	puo.mutation.SetMinimumStock(i)
-	return puo
-}
-
-// SetNillableMinimumStock sets the "minimumStock" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableMinimumStock(i *int) *ProductUpdateOne {
-	if i != nil {
-		puo.SetMinimumStock(*i)
-	}
-	return puo
-}
-
-// AddMinimumStock adds i to the "minimumStock" field.
-func (puo *ProductUpdateOne) AddMinimumStock(i int) *ProductUpdateOne {
-	puo.mutation.AddMinimumStock(i)
-	return puo
-}
-
-// SetName sets the "name" field.
-func (puo *ProductUpdateOne) SetName(s string) *ProductUpdateOne {
-	puo.mutation.SetName(s)
-	return puo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableName(s *string) *ProductUpdateOne {
-	if s != nil {
-		puo.SetName(*s)
-	}
-	return puo
-}
-
-// SetPrice sets the "price" field.
-func (puo *ProductUpdateOne) SetPrice(i int) *ProductUpdateOne {
-	puo.mutation.ResetPrice()
-	puo.mutation.SetPrice(i)
-	return puo
-}
-
-// SetNillablePrice sets the "price" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillablePrice(i *int) *ProductUpdateOne {
-	if i != nil {
-		puo.SetPrice(*i)
-	}
-	return puo
-}
-
-// AddPrice adds i to the "price" field.
-func (puo *ProductUpdateOne) AddPrice(i int) *ProductUpdateOne {
-	puo.mutation.AddPrice(i)
-	return puo
-}
-
-// SetSku sets the "sku" field.
-func (puo *ProductUpdateOne) SetSku(s string) *ProductUpdateOne {
-	puo.mutation.SetSku(s)
-	return puo
-}
-
-// SetNillableSku sets the "sku" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableSku(s *string) *ProductUpdateOne {
-	if s != nil {
-		puo.SetSku(*s)
-	}
-	return puo
-}
-
 // SetStock sets the "stock" field.
-func (puo *ProductUpdateOne) SetStock(f float64) *ProductUpdateOne {
+func (puo *ProductUpdateOne) SetStock(i int) *ProductUpdateOne {
 	puo.mutation.ResetStock()
-	puo.mutation.SetStock(f)
+	puo.mutation.SetStock(i)
 	return puo
 }
 
 // SetNillableStock sets the "stock" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableStock(f *float64) *ProductUpdateOne {
-	if f != nil {
-		puo.SetStock(*f)
+func (puo *ProductUpdateOne) SetNillableStock(i *int) *ProductUpdateOne {
+	if i != nil {
+		puo.SetStock(*i)
 	}
 	return puo
 }
 
-// AddStock adds f to the "stock" field.
-func (puo *ProductUpdateOne) AddStock(f float64) *ProductUpdateOne {
-	puo.mutation.AddStock(f)
-	return puo
-}
-
-// SetCategory sets the "category" field.
-func (puo *ProductUpdateOne) SetCategory(pr product.Category) *ProductUpdateOne {
-	puo.mutation.SetCategory(pr)
-	return puo
-}
-
-// SetNillableCategory sets the "category" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableCategory(pr *product.Category) *ProductUpdateOne {
-	if pr != nil {
-		puo.SetCategory(*pr)
-	}
-	return puo
-}
-
-// SetUnitCost sets the "unitCost" field.
-func (puo *ProductUpdateOne) SetUnitCost(f float64) *ProductUpdateOne {
-	puo.mutation.ResetUnitCost()
-	puo.mutation.SetUnitCost(f)
-	return puo
-}
-
-// SetNillableUnitCost sets the "unitCost" field if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableUnitCost(f *float64) *ProductUpdateOne {
-	if f != nil {
-		puo.SetUnitCost(*f)
-	}
-	return puo
-}
-
-// AddUnitCost adds f to the "unitCost" field.
-func (puo *ProductUpdateOne) AddUnitCost(f float64) *ProductUpdateOne {
-	puo.mutation.AddUnitCost(f)
+// AddStock adds i to the "stock" field.
+func (puo *ProductUpdateOne) AddStock(i int) *ProductUpdateOne {
+	puo.mutation.AddStock(i)
 	return puo
 }
 
@@ -796,36 +303,6 @@ func (puo *ProductUpdateOne) SetCompany(c *Company) *ProductUpdateOne {
 	return puo.SetCompanyID(c.ID)
 }
 
-// AddPictureIDs adds the "pictures" edge to the File entity by IDs.
-func (puo *ProductUpdateOne) AddPictureIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.AddPictureIDs(ids...)
-	return puo
-}
-
-// AddPictures adds the "pictures" edges to the File entity.
-func (puo *ProductUpdateOne) AddPictures(f ...*File) *ProductUpdateOne {
-	ids := make([]int, len(f))
-	for i := range f {
-		ids[i] = f[i].ID
-	}
-	return puo.AddPictureIDs(ids...)
-}
-
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (puo *ProductUpdateOne) AddAccountingEntryIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.AddAccountingEntryIDs(ids...)
-	return puo
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (puo *ProductUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *ProductUpdateOne {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return puo.AddAccountingEntryIDs(ids...)
-}
-
 // Mutation returns the ProductMutation object of the builder.
 func (puo *ProductUpdateOne) Mutation() *ProductMutation {
 	return puo.mutation
@@ -835,48 +312,6 @@ func (puo *ProductUpdateOne) Mutation() *ProductMutation {
 func (puo *ProductUpdateOne) ClearCompany() *ProductUpdateOne {
 	puo.mutation.ClearCompany()
 	return puo
-}
-
-// ClearPictures clears all "pictures" edges to the File entity.
-func (puo *ProductUpdateOne) ClearPictures() *ProductUpdateOne {
-	puo.mutation.ClearPictures()
-	return puo
-}
-
-// RemovePictureIDs removes the "pictures" edge to File entities by IDs.
-func (puo *ProductUpdateOne) RemovePictureIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.RemovePictureIDs(ids...)
-	return puo
-}
-
-// RemovePictures removes "pictures" edges to File entities.
-func (puo *ProductUpdateOne) RemovePictures(f ...*File) *ProductUpdateOne {
-	ids := make([]int, len(f))
-	for i := range f {
-		ids[i] = f[i].ID
-	}
-	return puo.RemovePictureIDs(ids...)
-}
-
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
-func (puo *ProductUpdateOne) ClearAccountingEntries() *ProductUpdateOne {
-	puo.mutation.ClearAccountingEntries()
-	return puo
-}
-
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
-func (puo *ProductUpdateOne) RemoveAccountingEntryIDs(ids ...int) *ProductUpdateOne {
-	puo.mutation.RemoveAccountingEntryIDs(ids...)
-	return puo
-}
-
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
-func (puo *ProductUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *ProductUpdateOne {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return puo.RemoveAccountingEntryIDs(ids...)
 }
 
 // Where appends a list predicates to the ProductUpdate builder.
@@ -930,39 +365,9 @@ func (puo *ProductUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (puo *ProductUpdateOne) check() error {
-	if v, ok := puo.mutation.MinimumStock(); ok {
-		if err := product.MinimumStockValidator(v); err != nil {
-			return &ValidationError{Name: "minimumStock", err: fmt.Errorf(`generated: validator failed for field "Product.minimumStock": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Name(); ok {
-		if err := product.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Product.name": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Price(); ok {
-		if err := product.PriceValidator(v); err != nil {
-			return &ValidationError{Name: "price", err: fmt.Errorf(`generated: validator failed for field "Product.price": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Sku(); ok {
-		if err := product.SkuValidator(v); err != nil {
-			return &ValidationError{Name: "sku", err: fmt.Errorf(`generated: validator failed for field "Product.sku": %w`, err)}
-		}
-	}
 	if v, ok := puo.mutation.Stock(); ok {
 		if err := product.StockValidator(v); err != nil {
 			return &ValidationError{Name: "stock", err: fmt.Errorf(`generated: validator failed for field "Product.stock": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.Category(); ok {
-		if err := product.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Product.category": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.UnitCost(); ok {
-		if err := product.UnitCostValidator(v); err != nil {
-			return &ValidationError{Name: "unitCost", err: fmt.Errorf(`generated: validator failed for field "Product.unitCost": %w`, err)}
 		}
 	}
 	return nil
@@ -1012,44 +417,11 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err e
 	if puo.mutation.DeletedAtCleared() {
 		_spec.ClearField(product.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := puo.mutation.Description(); ok {
-		_spec.SetField(product.FieldDescription, field.TypeString, value)
-	}
-	if value, ok := puo.mutation.IsDefault(); ok {
-		_spec.SetField(product.FieldIsDefault, field.TypeBool, value)
-	}
-	if value, ok := puo.mutation.MinimumStock(); ok {
-		_spec.SetField(product.FieldMinimumStock, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedMinimumStock(); ok {
-		_spec.AddField(product.FieldMinimumStock, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.Name(); ok {
-		_spec.SetField(product.FieldName, field.TypeString, value)
-	}
-	if value, ok := puo.mutation.Price(); ok {
-		_spec.SetField(product.FieldPrice, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedPrice(); ok {
-		_spec.AddField(product.FieldPrice, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.Sku(); ok {
-		_spec.SetField(product.FieldSku, field.TypeString, value)
-	}
 	if value, ok := puo.mutation.Stock(); ok {
-		_spec.SetField(product.FieldStock, field.TypeFloat64, value)
+		_spec.SetField(product.FieldStock, field.TypeInt, value)
 	}
 	if value, ok := puo.mutation.AddedStock(); ok {
-		_spec.AddField(product.FieldStock, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.Category(); ok {
-		_spec.SetField(product.FieldCategory, field.TypeEnum, value)
-	}
-	if value, ok := puo.mutation.UnitCost(); ok {
-		_spec.SetField(product.FieldUnitCost, field.TypeFloat64, value)
-	}
-	if value, ok := puo.mutation.AddedUnitCost(); ok {
-		_spec.AddField(product.FieldUnitCost, field.TypeFloat64, value)
+		_spec.AddField(product.FieldStock, field.TypeInt, value)
 	}
 	if puo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1073,96 +445,6 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (_node *Product, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if puo.mutation.PicturesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedPicturesIDs(); len(nodes) > 0 && !puo.mutation.PicturesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.PicturesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if puo.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !puo.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

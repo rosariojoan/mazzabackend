@@ -39,8 +39,7 @@ func (File) Fields() []ent.Field {
 // Edges of the File.
 func (File) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("files").Unique(),    // one company can have many files
-		edge.From("product", Product.Type).Ref("pictures").Unique(), // one product can have many pictures
+		edge.From("company", Company.Type).Ref("files").Unique(), // one company can have many files
 		// edge.From("accountingEntries", AccountingEntry.Type).Ref("attachments"), // one accounting entry can have many files
 	}
 }

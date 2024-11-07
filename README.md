@@ -23,3 +23,6 @@ List running services: `docker compose ps`
 
 If there is a problem accessing postgres, reset the password.
 Run this command within the container: `sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"`
+
+Start postgres `brew services start postgresql@14`
+Stop postgres `brew services stop postgresql@14`

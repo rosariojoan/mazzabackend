@@ -27,25 +27,27 @@ const (
 	FieldEntryGroup = "entry_group"
 	// FieldDate holds the string denoting the date field in the database.
 	FieldDate = "date"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldOutstandingBalance holds the string denoting the outstandingbalance field in the database.
 	FieldOutstandingBalance = "outstanding_balance"
 	// FieldTotalTransaction holds the string denoting the totaltransaction field in the database.
 	FieldTotalTransaction = "total_transaction"
-	// FieldDaysDue holds the string denoting the daysdue field in the database.
-	FieldDaysDue = "days_due"
+	// FieldDueDate holds the string denoting the duedate field in the database.
+	FieldDueDate = "due_date"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// EdgeCustomer holds the string denoting the customer edge name in mutations.
-	EdgeCustomer = "customer"
+	// EdgeCompany holds the string denoting the company edge name in mutations.
+	EdgeCompany = "company"
 	// Table holds the table name of the receivable in the database.
 	Table = "receivables"
-	// CustomerTable is the table that holds the customer relation/edge.
-	CustomerTable = "receivables"
-	// CustomerInverseTable is the table name for the Customer entity.
-	// It exists in this package in order to avoid circular dependency with the "customer" package.
-	CustomerInverseTable = "customers"
-	// CustomerColumn is the table column denoting the customer relation/edge.
-	CustomerColumn = "customer_receivables"
+	// CompanyTable is the table that holds the company relation/edge.
+	CompanyTable = "receivables"
+	// CompanyInverseTable is the table name for the Company entity.
+	// It exists in this package in order to avoid circular dependency with the "company" package.
+	CompanyInverseTable = "companies"
+	// CompanyColumn is the table column denoting the company relation/edge.
+	CompanyColumn = "company_receivables"
 )
 
 // Columns holds all SQL columns for receivable fields.
@@ -56,15 +58,17 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldEntryGroup,
 	FieldDate,
+	FieldName,
 	FieldOutstandingBalance,
 	FieldTotalTransaction,
-	FieldDaysDue,
+	FieldDueDate,
 	FieldStatus,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "receivables"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
+	"company_receivables",
 	"customer_receivables",
 }
 
@@ -92,8 +96,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
 	EntryGroupValidator func(int) error
-	// DaysDueValidator is a validator for the "daysDue" field. It is called by the builders before save.
-	DaysDueValidator func(int) error
+	// DefaultName holds the default value on creation for the "name" field.
+	DefaultName string
 )
 
 // Status defines the type for the "status" enum field.
@@ -101,10 +105,9 @@ type Status string
 
 // Status values.
 const (
-	StatusPaid     Status = "paid"
-	StatusUnpaid   Status = "unpaid"
-	StatusDoubtful Status = "doubtful"
-	StatusDefault  Status = "default"
+	StatusPaid    Status = "paid"
+	StatusPending Status = "pending"
+	StatusDefault Status = "default"
 )
 
 func (s Status) String() string {
@@ -114,7 +117,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusPaid, StatusUnpaid, StatusDoubtful, StatusDefault:
+	case StatusPaid, StatusPending, StatusDefault:
 		return nil
 	default:
 		return fmt.Errorf("receivable: invalid enum value for status field: %q", s)
@@ -154,6 +157,11 @@ func ByDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDate, opts...).ToFunc()
 }
 
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
 // ByOutstandingBalance orders the results by the outstandingBalance field.
 func ByOutstandingBalance(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOutstandingBalance, opts...).ToFunc()
@@ -164,9 +172,9 @@ func ByTotalTransaction(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTotalTransaction, opts...).ToFunc()
 }
 
-// ByDaysDue orders the results by the daysDue field.
-func ByDaysDue(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDaysDue, opts...).ToFunc()
+// ByDueDate orders the results by the dueDate field.
+func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.
@@ -174,17 +182,17 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByCustomerField orders the results by customer field.
-func ByCustomerField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByCompanyField orders the results by company field.
+func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCustomerStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newCustomerStep() *sqlgraph.Step {
+func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CustomerInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, CustomerTable, CustomerColumn),
+		sqlgraph.To(CompanyInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
 }
 

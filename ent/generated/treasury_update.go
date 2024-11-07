@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/treasury"
@@ -57,26 +56,6 @@ func (tu *TreasuryUpdate) ClearDeletedAt() *TreasuryUpdate {
 	return tu
 }
 
-// SetAccountNumber sets the "accountNumber" field.
-func (tu *TreasuryUpdate) SetAccountNumber(s string) *TreasuryUpdate {
-	tu.mutation.SetAccountNumber(s)
-	return tu
-}
-
-// SetNillableAccountNumber sets the "accountNumber" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableAccountNumber(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetAccountNumber(*s)
-	}
-	return tu
-}
-
-// ClearAccountNumber clears the value of the "accountNumber" field.
-func (tu *TreasuryUpdate) ClearAccountNumber() *TreasuryUpdate {
-	tu.mutation.ClearAccountNumber()
-	return tu
-}
-
 // SetBalance sets the "balance" field.
 func (tu *TreasuryUpdate) SetBalance(f float64) *TreasuryUpdate {
 	tu.mutation.ResetBalance()
@@ -95,168 +74,6 @@ func (tu *TreasuryUpdate) SetNillableBalance(f *float64) *TreasuryUpdate {
 // AddBalance adds f to the "balance" field.
 func (tu *TreasuryUpdate) AddBalance(f float64) *TreasuryUpdate {
 	tu.mutation.AddBalance(f)
-	return tu
-}
-
-// SetBankName sets the "bankName" field.
-func (tu *TreasuryUpdate) SetBankName(s string) *TreasuryUpdate {
-	tu.mutation.SetBankName(s)
-	return tu
-}
-
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableBankName(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetBankName(*s)
-	}
-	return tu
-}
-
-// ClearBankName clears the value of the "bankName" field.
-func (tu *TreasuryUpdate) ClearBankName() *TreasuryUpdate {
-	tu.mutation.ClearBankName()
-	return tu
-}
-
-// SetCurrency sets the "currency" field.
-func (tu *TreasuryUpdate) SetCurrency(t treasury.Currency) *TreasuryUpdate {
-	tu.mutation.SetCurrency(t)
-	return tu
-}
-
-// SetNillableCurrency sets the "currency" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableCurrency(t *treasury.Currency) *TreasuryUpdate {
-	if t != nil {
-		tu.SetCurrency(*t)
-	}
-	return tu
-}
-
-// SetDescription sets the "description" field.
-func (tu *TreasuryUpdate) SetDescription(s string) *TreasuryUpdate {
-	tu.mutation.SetDescription(s)
-	return tu
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableDescription(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetDescription(*s)
-	}
-	return tu
-}
-
-// ClearDescription clears the value of the "description" field.
-func (tu *TreasuryUpdate) ClearDescription() *TreasuryUpdate {
-	tu.mutation.ClearDescription()
-	return tu
-}
-
-// SetIban sets the "iban" field.
-func (tu *TreasuryUpdate) SetIban(s string) *TreasuryUpdate {
-	tu.mutation.SetIban(s)
-	return tu
-}
-
-// SetNillableIban sets the "iban" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableIban(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetIban(*s)
-	}
-	return tu
-}
-
-// ClearIban clears the value of the "iban" field.
-func (tu *TreasuryUpdate) ClearIban() *TreasuryUpdate {
-	tu.mutation.ClearIban()
-	return tu
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (tu *TreasuryUpdate) SetIsDefault(b bool) *TreasuryUpdate {
-	tu.mutation.SetIsDefault(b)
-	return tu
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableIsDefault(b *bool) *TreasuryUpdate {
-	if b != nil {
-		tu.SetIsDefault(*b)
-	}
-	return tu
-}
-
-// ClearIsDefault clears the value of the "isDefault" field.
-func (tu *TreasuryUpdate) ClearIsDefault() *TreasuryUpdate {
-	tu.mutation.ClearIsDefault()
-	return tu
-}
-
-// SetIsMainAccount sets the "isMainAccount" field.
-func (tu *TreasuryUpdate) SetIsMainAccount(b bool) *TreasuryUpdate {
-	tu.mutation.SetIsMainAccount(b)
-	return tu
-}
-
-// SetNillableIsMainAccount sets the "isMainAccount" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableIsMainAccount(b *bool) *TreasuryUpdate {
-	if b != nil {
-		tu.SetIsMainAccount(*b)
-	}
-	return tu
-}
-
-// ClearIsMainAccount clears the value of the "isMainAccount" field.
-func (tu *TreasuryUpdate) ClearIsMainAccount() *TreasuryUpdate {
-	tu.mutation.ClearIsMainAccount()
-	return tu
-}
-
-// SetName sets the "name" field.
-func (tu *TreasuryUpdate) SetName(s string) *TreasuryUpdate {
-	tu.mutation.SetName(s)
-	return tu
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableName(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetName(*s)
-	}
-	return tu
-}
-
-// SetCategory sets the "category" field.
-func (tu *TreasuryUpdate) SetCategory(t treasury.Category) *TreasuryUpdate {
-	tu.mutation.SetCategory(t)
-	return tu
-}
-
-// SetNillableCategory sets the "category" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableCategory(t *treasury.Category) *TreasuryUpdate {
-	if t != nil {
-		tu.SetCategory(*t)
-	}
-	return tu
-}
-
-// SetSwiftCode sets the "swiftCode" field.
-func (tu *TreasuryUpdate) SetSwiftCode(s string) *TreasuryUpdate {
-	tu.mutation.SetSwiftCode(s)
-	return tu
-}
-
-// SetNillableSwiftCode sets the "swiftCode" field if the given value is not nil.
-func (tu *TreasuryUpdate) SetNillableSwiftCode(s *string) *TreasuryUpdate {
-	if s != nil {
-		tu.SetSwiftCode(*s)
-	}
-	return tu
-}
-
-// ClearSwiftCode clears the value of the "swiftCode" field.
-func (tu *TreasuryUpdate) ClearSwiftCode() *TreasuryUpdate {
-	tu.mutation.ClearSwiftCode()
 	return tu
 }
 
@@ -279,21 +96,6 @@ func (tu *TreasuryUpdate) SetCompany(c *Company) *TreasuryUpdate {
 	return tu.SetCompanyID(c.ID)
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (tu *TreasuryUpdate) AddAccountingEntryIDs(ids ...int) *TreasuryUpdate {
-	tu.mutation.AddAccountingEntryIDs(ids...)
-	return tu
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (tu *TreasuryUpdate) AddAccountingEntries(a ...*AccountingEntry) *TreasuryUpdate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return tu.AddAccountingEntryIDs(ids...)
-}
-
 // Mutation returns the TreasuryMutation object of the builder.
 func (tu *TreasuryUpdate) Mutation() *TreasuryMutation {
 	return tu.mutation
@@ -303,27 +105,6 @@ func (tu *TreasuryUpdate) Mutation() *TreasuryMutation {
 func (tu *TreasuryUpdate) ClearCompany() *TreasuryUpdate {
 	tu.mutation.ClearCompany()
 	return tu
-}
-
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
-func (tu *TreasuryUpdate) ClearAccountingEntries() *TreasuryUpdate {
-	tu.mutation.ClearAccountingEntries()
-	return tu
-}
-
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
-func (tu *TreasuryUpdate) RemoveAccountingEntryIDs(ids ...int) *TreasuryUpdate {
-	tu.mutation.RemoveAccountingEntryIDs(ids...)
-	return tu
-}
-
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
-func (tu *TreasuryUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *TreasuryUpdate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return tu.RemoveAccountingEntryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -362,26 +143,6 @@ func (tu *TreasuryUpdate) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (tu *TreasuryUpdate) check() error {
-	if v, ok := tu.mutation.Currency(); ok {
-		if err := treasury.CurrencyValidator(v); err != nil {
-			return &ValidationError{Name: "currency", err: fmt.Errorf(`generated: validator failed for field "Treasury.currency": %w`, err)}
-		}
-	}
-	if v, ok := tu.mutation.Name(); ok {
-		if err := treasury.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Treasury.name": %w`, err)}
-		}
-	}
-	if v, ok := tu.mutation.Category(); ok {
-		if err := treasury.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Treasury.category": %w`, err)}
-		}
-	}
-	return nil
-}
-
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
 func (tu *TreasuryUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TreasuryUpdate {
 	tu.modifiers = append(tu.modifiers, modifiers...)
@@ -389,9 +150,6 @@ func (tu *TreasuryUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *Treas
 }
 
 func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := tu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(treasury.Table, treasury.Columns, sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt))
 	if ps := tu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -409,62 +167,11 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if tu.mutation.DeletedAtCleared() {
 		_spec.ClearField(treasury.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := tu.mutation.AccountNumber(); ok {
-		_spec.SetField(treasury.FieldAccountNumber, field.TypeString, value)
-	}
-	if tu.mutation.AccountNumberCleared() {
-		_spec.ClearField(treasury.FieldAccountNumber, field.TypeString)
-	}
 	if value, ok := tu.mutation.Balance(); ok {
 		_spec.SetField(treasury.FieldBalance, field.TypeFloat64, value)
 	}
 	if value, ok := tu.mutation.AddedBalance(); ok {
 		_spec.AddField(treasury.FieldBalance, field.TypeFloat64, value)
-	}
-	if value, ok := tu.mutation.BankName(); ok {
-		_spec.SetField(treasury.FieldBankName, field.TypeString, value)
-	}
-	if tu.mutation.BankNameCleared() {
-		_spec.ClearField(treasury.FieldBankName, field.TypeString)
-	}
-	if value, ok := tu.mutation.Currency(); ok {
-		_spec.SetField(treasury.FieldCurrency, field.TypeEnum, value)
-	}
-	if value, ok := tu.mutation.Description(); ok {
-		_spec.SetField(treasury.FieldDescription, field.TypeString, value)
-	}
-	if tu.mutation.DescriptionCleared() {
-		_spec.ClearField(treasury.FieldDescription, field.TypeString)
-	}
-	if value, ok := tu.mutation.Iban(); ok {
-		_spec.SetField(treasury.FieldIban, field.TypeString, value)
-	}
-	if tu.mutation.IbanCleared() {
-		_spec.ClearField(treasury.FieldIban, field.TypeString)
-	}
-	if value, ok := tu.mutation.IsDefault(); ok {
-		_spec.SetField(treasury.FieldIsDefault, field.TypeBool, value)
-	}
-	if tu.mutation.IsDefaultCleared() {
-		_spec.ClearField(treasury.FieldIsDefault, field.TypeBool)
-	}
-	if value, ok := tu.mutation.IsMainAccount(); ok {
-		_spec.SetField(treasury.FieldIsMainAccount, field.TypeBool, value)
-	}
-	if tu.mutation.IsMainAccountCleared() {
-		_spec.ClearField(treasury.FieldIsMainAccount, field.TypeBool)
-	}
-	if value, ok := tu.mutation.Name(); ok {
-		_spec.SetField(treasury.FieldName, field.TypeString, value)
-	}
-	if value, ok := tu.mutation.Category(); ok {
-		_spec.SetField(treasury.FieldCategory, field.TypeEnum, value)
-	}
-	if value, ok := tu.mutation.SwiftCode(); ok {
-		_spec.SetField(treasury.FieldSwiftCode, field.TypeString, value)
-	}
-	if tu.mutation.SwiftCodeCleared() {
-		_spec.ClearField(treasury.FieldSwiftCode, field.TypeString)
 	}
 	if tu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -488,51 +195,6 @@ func (tu *TreasuryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if tu.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tu.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !tu.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tu.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -588,26 +250,6 @@ func (tuo *TreasuryUpdateOne) ClearDeletedAt() *TreasuryUpdateOne {
 	return tuo
 }
 
-// SetAccountNumber sets the "accountNumber" field.
-func (tuo *TreasuryUpdateOne) SetAccountNumber(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetAccountNumber(s)
-	return tuo
-}
-
-// SetNillableAccountNumber sets the "accountNumber" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableAccountNumber(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetAccountNumber(*s)
-	}
-	return tuo
-}
-
-// ClearAccountNumber clears the value of the "accountNumber" field.
-func (tuo *TreasuryUpdateOne) ClearAccountNumber() *TreasuryUpdateOne {
-	tuo.mutation.ClearAccountNumber()
-	return tuo
-}
-
 // SetBalance sets the "balance" field.
 func (tuo *TreasuryUpdateOne) SetBalance(f float64) *TreasuryUpdateOne {
 	tuo.mutation.ResetBalance()
@@ -626,168 +268,6 @@ func (tuo *TreasuryUpdateOne) SetNillableBalance(f *float64) *TreasuryUpdateOne 
 // AddBalance adds f to the "balance" field.
 func (tuo *TreasuryUpdateOne) AddBalance(f float64) *TreasuryUpdateOne {
 	tuo.mutation.AddBalance(f)
-	return tuo
-}
-
-// SetBankName sets the "bankName" field.
-func (tuo *TreasuryUpdateOne) SetBankName(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetBankName(s)
-	return tuo
-}
-
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableBankName(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetBankName(*s)
-	}
-	return tuo
-}
-
-// ClearBankName clears the value of the "bankName" field.
-func (tuo *TreasuryUpdateOne) ClearBankName() *TreasuryUpdateOne {
-	tuo.mutation.ClearBankName()
-	return tuo
-}
-
-// SetCurrency sets the "currency" field.
-func (tuo *TreasuryUpdateOne) SetCurrency(t treasury.Currency) *TreasuryUpdateOne {
-	tuo.mutation.SetCurrency(t)
-	return tuo
-}
-
-// SetNillableCurrency sets the "currency" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableCurrency(t *treasury.Currency) *TreasuryUpdateOne {
-	if t != nil {
-		tuo.SetCurrency(*t)
-	}
-	return tuo
-}
-
-// SetDescription sets the "description" field.
-func (tuo *TreasuryUpdateOne) SetDescription(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetDescription(s)
-	return tuo
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableDescription(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetDescription(*s)
-	}
-	return tuo
-}
-
-// ClearDescription clears the value of the "description" field.
-func (tuo *TreasuryUpdateOne) ClearDescription() *TreasuryUpdateOne {
-	tuo.mutation.ClearDescription()
-	return tuo
-}
-
-// SetIban sets the "iban" field.
-func (tuo *TreasuryUpdateOne) SetIban(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetIban(s)
-	return tuo
-}
-
-// SetNillableIban sets the "iban" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableIban(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetIban(*s)
-	}
-	return tuo
-}
-
-// ClearIban clears the value of the "iban" field.
-func (tuo *TreasuryUpdateOne) ClearIban() *TreasuryUpdateOne {
-	tuo.mutation.ClearIban()
-	return tuo
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (tuo *TreasuryUpdateOne) SetIsDefault(b bool) *TreasuryUpdateOne {
-	tuo.mutation.SetIsDefault(b)
-	return tuo
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableIsDefault(b *bool) *TreasuryUpdateOne {
-	if b != nil {
-		tuo.SetIsDefault(*b)
-	}
-	return tuo
-}
-
-// ClearIsDefault clears the value of the "isDefault" field.
-func (tuo *TreasuryUpdateOne) ClearIsDefault() *TreasuryUpdateOne {
-	tuo.mutation.ClearIsDefault()
-	return tuo
-}
-
-// SetIsMainAccount sets the "isMainAccount" field.
-func (tuo *TreasuryUpdateOne) SetIsMainAccount(b bool) *TreasuryUpdateOne {
-	tuo.mutation.SetIsMainAccount(b)
-	return tuo
-}
-
-// SetNillableIsMainAccount sets the "isMainAccount" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableIsMainAccount(b *bool) *TreasuryUpdateOne {
-	if b != nil {
-		tuo.SetIsMainAccount(*b)
-	}
-	return tuo
-}
-
-// ClearIsMainAccount clears the value of the "isMainAccount" field.
-func (tuo *TreasuryUpdateOne) ClearIsMainAccount() *TreasuryUpdateOne {
-	tuo.mutation.ClearIsMainAccount()
-	return tuo
-}
-
-// SetName sets the "name" field.
-func (tuo *TreasuryUpdateOne) SetName(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetName(s)
-	return tuo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableName(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetName(*s)
-	}
-	return tuo
-}
-
-// SetCategory sets the "category" field.
-func (tuo *TreasuryUpdateOne) SetCategory(t treasury.Category) *TreasuryUpdateOne {
-	tuo.mutation.SetCategory(t)
-	return tuo
-}
-
-// SetNillableCategory sets the "category" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableCategory(t *treasury.Category) *TreasuryUpdateOne {
-	if t != nil {
-		tuo.SetCategory(*t)
-	}
-	return tuo
-}
-
-// SetSwiftCode sets the "swiftCode" field.
-func (tuo *TreasuryUpdateOne) SetSwiftCode(s string) *TreasuryUpdateOne {
-	tuo.mutation.SetSwiftCode(s)
-	return tuo
-}
-
-// SetNillableSwiftCode sets the "swiftCode" field if the given value is not nil.
-func (tuo *TreasuryUpdateOne) SetNillableSwiftCode(s *string) *TreasuryUpdateOne {
-	if s != nil {
-		tuo.SetSwiftCode(*s)
-	}
-	return tuo
-}
-
-// ClearSwiftCode clears the value of the "swiftCode" field.
-func (tuo *TreasuryUpdateOne) ClearSwiftCode() *TreasuryUpdateOne {
-	tuo.mutation.ClearSwiftCode()
 	return tuo
 }
 
@@ -810,21 +290,6 @@ func (tuo *TreasuryUpdateOne) SetCompany(c *Company) *TreasuryUpdateOne {
 	return tuo.SetCompanyID(c.ID)
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (tuo *TreasuryUpdateOne) AddAccountingEntryIDs(ids ...int) *TreasuryUpdateOne {
-	tuo.mutation.AddAccountingEntryIDs(ids...)
-	return tuo
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (tuo *TreasuryUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *TreasuryUpdateOne {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return tuo.AddAccountingEntryIDs(ids...)
-}
-
 // Mutation returns the TreasuryMutation object of the builder.
 func (tuo *TreasuryUpdateOne) Mutation() *TreasuryMutation {
 	return tuo.mutation
@@ -834,27 +299,6 @@ func (tuo *TreasuryUpdateOne) Mutation() *TreasuryMutation {
 func (tuo *TreasuryUpdateOne) ClearCompany() *TreasuryUpdateOne {
 	tuo.mutation.ClearCompany()
 	return tuo
-}
-
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
-func (tuo *TreasuryUpdateOne) ClearAccountingEntries() *TreasuryUpdateOne {
-	tuo.mutation.ClearAccountingEntries()
-	return tuo
-}
-
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
-func (tuo *TreasuryUpdateOne) RemoveAccountingEntryIDs(ids ...int) *TreasuryUpdateOne {
-	tuo.mutation.RemoveAccountingEntryIDs(ids...)
-	return tuo
-}
-
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
-func (tuo *TreasuryUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *TreasuryUpdateOne {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return tuo.RemoveAccountingEntryIDs(ids...)
 }
 
 // Where appends a list predicates to the TreasuryUpdate builder.
@@ -906,26 +350,6 @@ func (tuo *TreasuryUpdateOne) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (tuo *TreasuryUpdateOne) check() error {
-	if v, ok := tuo.mutation.Currency(); ok {
-		if err := treasury.CurrencyValidator(v); err != nil {
-			return &ValidationError{Name: "currency", err: fmt.Errorf(`generated: validator failed for field "Treasury.currency": %w`, err)}
-		}
-	}
-	if v, ok := tuo.mutation.Name(); ok {
-		if err := treasury.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Treasury.name": %w`, err)}
-		}
-	}
-	if v, ok := tuo.mutation.Category(); ok {
-		if err := treasury.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Treasury.category": %w`, err)}
-		}
-	}
-	return nil
-}
-
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
 func (tuo *TreasuryUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *TreasuryUpdateOne {
 	tuo.modifiers = append(tuo.modifiers, modifiers...)
@@ -933,9 +357,6 @@ func (tuo *TreasuryUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *T
 }
 
 func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err error) {
-	if err := tuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(treasury.Table, treasury.Columns, sqlgraph.NewFieldSpec(treasury.FieldID, field.TypeInt))
 	id, ok := tuo.mutation.ID()
 	if !ok {
@@ -970,62 +391,11 @@ func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err
 	if tuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(treasury.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := tuo.mutation.AccountNumber(); ok {
-		_spec.SetField(treasury.FieldAccountNumber, field.TypeString, value)
-	}
-	if tuo.mutation.AccountNumberCleared() {
-		_spec.ClearField(treasury.FieldAccountNumber, field.TypeString)
-	}
 	if value, ok := tuo.mutation.Balance(); ok {
 		_spec.SetField(treasury.FieldBalance, field.TypeFloat64, value)
 	}
 	if value, ok := tuo.mutation.AddedBalance(); ok {
 		_spec.AddField(treasury.FieldBalance, field.TypeFloat64, value)
-	}
-	if value, ok := tuo.mutation.BankName(); ok {
-		_spec.SetField(treasury.FieldBankName, field.TypeString, value)
-	}
-	if tuo.mutation.BankNameCleared() {
-		_spec.ClearField(treasury.FieldBankName, field.TypeString)
-	}
-	if value, ok := tuo.mutation.Currency(); ok {
-		_spec.SetField(treasury.FieldCurrency, field.TypeEnum, value)
-	}
-	if value, ok := tuo.mutation.Description(); ok {
-		_spec.SetField(treasury.FieldDescription, field.TypeString, value)
-	}
-	if tuo.mutation.DescriptionCleared() {
-		_spec.ClearField(treasury.FieldDescription, field.TypeString)
-	}
-	if value, ok := tuo.mutation.Iban(); ok {
-		_spec.SetField(treasury.FieldIban, field.TypeString, value)
-	}
-	if tuo.mutation.IbanCleared() {
-		_spec.ClearField(treasury.FieldIban, field.TypeString)
-	}
-	if value, ok := tuo.mutation.IsDefault(); ok {
-		_spec.SetField(treasury.FieldIsDefault, field.TypeBool, value)
-	}
-	if tuo.mutation.IsDefaultCleared() {
-		_spec.ClearField(treasury.FieldIsDefault, field.TypeBool)
-	}
-	if value, ok := tuo.mutation.IsMainAccount(); ok {
-		_spec.SetField(treasury.FieldIsMainAccount, field.TypeBool, value)
-	}
-	if tuo.mutation.IsMainAccountCleared() {
-		_spec.ClearField(treasury.FieldIsMainAccount, field.TypeBool)
-	}
-	if value, ok := tuo.mutation.Name(); ok {
-		_spec.SetField(treasury.FieldName, field.TypeString, value)
-	}
-	if value, ok := tuo.mutation.Category(); ok {
-		_spec.SetField(treasury.FieldCategory, field.TypeEnum, value)
-	}
-	if value, ok := tuo.mutation.SwiftCode(); ok {
-		_spec.SetField(treasury.FieldSwiftCode, field.TypeString, value)
-	}
-	if tuo.mutation.SwiftCodeCleared() {
-		_spec.ClearField(treasury.FieldSwiftCode, field.TypeString)
 	}
 	if tuo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1049,51 +419,6 @@ func (tuo *TreasuryUpdateOne) sqlSave(ctx context.Context) (_node *Treasury, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if tuo.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tuo.mutation.RemovedAccountingEntriesIDs(); len(nodes) > 0 && !tuo.mutation.AccountingEntriesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := tuo.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

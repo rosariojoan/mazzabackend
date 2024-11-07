@@ -11,9 +11,11 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -519,6 +521,36 @@ func (cu *CompanyUpdate) AddProjects(p ...*Project) *CompanyUpdate {
 	return cu.AddProjectIDs(ids...)
 }
 
+// AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
+func (cu *CompanyUpdate) AddPayableIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddPayableIDs(ids...)
+	return cu
+}
+
+// AddPayables adds the "payables" edges to the Payable entity.
+func (cu *CompanyUpdate) AddPayables(p ...*Payable) *CompanyUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cu.AddPayableIDs(ids...)
+}
+
+// AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
+func (cu *CompanyUpdate) AddReceivableIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddReceivableIDs(ids...)
+	return cu
+}
+
+// AddReceivables adds the "receivables" edges to the Receivable entity.
+func (cu *CompanyUpdate) AddReceivables(r ...*Receivable) *CompanyUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return cu.AddReceivableIDs(ids...)
+}
+
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
 func (cu *CompanyUpdate) AddSupplierIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddSupplierIDs(ids...)
@@ -778,6 +810,48 @@ func (cu *CompanyUpdate) RemoveProjects(p ...*Project) *CompanyUpdate {
 		ids[i] = p[i].ID
 	}
 	return cu.RemoveProjectIDs(ids...)
+}
+
+// ClearPayables clears all "payables" edges to the Payable entity.
+func (cu *CompanyUpdate) ClearPayables() *CompanyUpdate {
+	cu.mutation.ClearPayables()
+	return cu
+}
+
+// RemovePayableIDs removes the "payables" edge to Payable entities by IDs.
+func (cu *CompanyUpdate) RemovePayableIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemovePayableIDs(ids...)
+	return cu
+}
+
+// RemovePayables removes "payables" edges to Payable entities.
+func (cu *CompanyUpdate) RemovePayables(p ...*Payable) *CompanyUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cu.RemovePayableIDs(ids...)
+}
+
+// ClearReceivables clears all "receivables" edges to the Receivable entity.
+func (cu *CompanyUpdate) ClearReceivables() *CompanyUpdate {
+	cu.mutation.ClearReceivables()
+	return cu
+}
+
+// RemoveReceivableIDs removes the "receivables" edge to Receivable entities by IDs.
+func (cu *CompanyUpdate) RemoveReceivableIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveReceivableIDs(ids...)
+	return cu
+}
+
+// RemoveReceivables removes "receivables" edges to Receivable entities.
+func (cu *CompanyUpdate) RemoveReceivables(r ...*Receivable) *CompanyUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return cu.RemoveReceivableIDs(ids...)
 }
 
 // ClearSuppliers clears all "suppliers" edges to the Supplier entity.
@@ -1394,6 +1468,96 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.PayablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedPayablesIDs(); len(nodes) > 0 && !cu.mutation.PayablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.PayablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.ReceivablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedReceivablesIDs(); len(nodes) > 0 && !cu.mutation.ReceivablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.ReceivablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2200,6 +2364,36 @@ func (cuo *CompanyUpdateOne) AddProjects(p ...*Project) *CompanyUpdateOne {
 	return cuo.AddProjectIDs(ids...)
 }
 
+// AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
+func (cuo *CompanyUpdateOne) AddPayableIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddPayableIDs(ids...)
+	return cuo
+}
+
+// AddPayables adds the "payables" edges to the Payable entity.
+func (cuo *CompanyUpdateOne) AddPayables(p ...*Payable) *CompanyUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cuo.AddPayableIDs(ids...)
+}
+
+// AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
+func (cuo *CompanyUpdateOne) AddReceivableIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddReceivableIDs(ids...)
+	return cuo
+}
+
+// AddReceivables adds the "receivables" edges to the Receivable entity.
+func (cuo *CompanyUpdateOne) AddReceivables(r ...*Receivable) *CompanyUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return cuo.AddReceivableIDs(ids...)
+}
+
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
 func (cuo *CompanyUpdateOne) AddSupplierIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddSupplierIDs(ids...)
@@ -2459,6 +2653,48 @@ func (cuo *CompanyUpdateOne) RemoveProjects(p ...*Project) *CompanyUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return cuo.RemoveProjectIDs(ids...)
+}
+
+// ClearPayables clears all "payables" edges to the Payable entity.
+func (cuo *CompanyUpdateOne) ClearPayables() *CompanyUpdateOne {
+	cuo.mutation.ClearPayables()
+	return cuo
+}
+
+// RemovePayableIDs removes the "payables" edge to Payable entities by IDs.
+func (cuo *CompanyUpdateOne) RemovePayableIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemovePayableIDs(ids...)
+	return cuo
+}
+
+// RemovePayables removes "payables" edges to Payable entities.
+func (cuo *CompanyUpdateOne) RemovePayables(p ...*Payable) *CompanyUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cuo.RemovePayableIDs(ids...)
+}
+
+// ClearReceivables clears all "receivables" edges to the Receivable entity.
+func (cuo *CompanyUpdateOne) ClearReceivables() *CompanyUpdateOne {
+	cuo.mutation.ClearReceivables()
+	return cuo
+}
+
+// RemoveReceivableIDs removes the "receivables" edge to Receivable entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveReceivableIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveReceivableIDs(ids...)
+	return cuo
+}
+
+// RemoveReceivables removes "receivables" edges to Receivable entities.
+func (cuo *CompanyUpdateOne) RemoveReceivables(r ...*Receivable) *CompanyUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return cuo.RemoveReceivableIDs(ids...)
 }
 
 // ClearSuppliers clears all "suppliers" edges to the Supplier entity.
@@ -3105,6 +3341,96 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.PayablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedPayablesIDs(); len(nodes) > 0 && !cuo.mutation.PayablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.PayablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.ReceivablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedReceivablesIDs(); len(nodes) > 0 && !cuo.mutation.ReceivablesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.ReceivablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

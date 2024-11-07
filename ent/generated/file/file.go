@@ -37,8 +37,6 @@ const (
 	FieldDescription = "description"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeProduct holds the string denoting the product edge name in mutations.
-	EdgeProduct = "product"
 	// Table holds the table name of the file in the database.
 	Table = "files"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -48,13 +46,6 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_files"
-	// ProductTable is the table that holds the product relation/edge.
-	ProductTable = "files"
-	// ProductInverseTable is the table name for the Product entity.
-	// It exists in this package in order to avoid circular dependency with the "product" package.
-	ProductInverseTable = "products"
-	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "product_pictures"
 )
 
 // Columns holds all SQL columns for file fields.
@@ -75,7 +66,6 @@ var Columns = []string{
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_files",
-	"product_pictures",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -186,25 +176,11 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
-
-// ByProductField orders the results by product field.
-func ByProductField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductStep(), sql.OrderByField(field, opts...))
-	}
-}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
-	)
-}
-func newProductStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
 	)
 }
 

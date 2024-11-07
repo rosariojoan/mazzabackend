@@ -4,8 +4,8 @@ package generated
 
 import (
 	"fmt"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/supplier"
 	"strings"
 	"time"
 
@@ -28,25 +28,28 @@ type Payable struct {
 	EntryGroup int `json:"entryGroup,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
 	// OutstandingBalance holds the value of the "outstandingBalance" field.
 	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
 	// TotalTransaction holds the value of the "totalTransaction" field.
 	TotalTransaction float64 `json:"totalTransaction,omitempty"`
-	// DaysDue holds the value of the "daysDue" field.
-	DaysDue int `json:"daysDue,omitempty"`
+	// DueDate holds the value of the "dueDate" field.
+	DueDate time.Time `json:"dueDate,omitempty"`
 	// Status holds the value of the "status" field.
 	Status payable.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PayableQuery when eager-loading is set.
 	Edges             PayableEdges `json:"edges"`
+	company_payables  *int
 	supplier_payables *int
 	selectValues      sql.SelectValues
 }
 
 // PayableEdges holds the relations/edges for other nodes in the graph.
 type PayableEdges struct {
-	// Supplier holds the value of the supplier edge.
-	Supplier *Supplier `json:"supplier,omitempty"`
+	// Company holds the value of the company edge.
+	Company *Company `json:"company,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
@@ -54,15 +57,15 @@ type PayableEdges struct {
 	totalCount [1]map[string]int
 }
 
-// SupplierOrErr returns the Supplier value or an error if the edge
+// CompanyOrErr returns the Company value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e PayableEdges) SupplierOrErr() (*Supplier, error) {
-	if e.Supplier != nil {
-		return e.Supplier, nil
+func (e PayableEdges) CompanyOrErr() (*Company, error) {
+	if e.Company != nil {
+		return e.Company, nil
 	} else if e.loadedTypes[0] {
-		return nil, &NotFoundError{label: supplier.Label}
+		return nil, &NotFoundError{label: company.Label}
 	}
-	return nil, &NotLoadedError{edge: "supplier"}
+	return nil, &NotLoadedError{edge: "company"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -72,13 +75,15 @@ func (*Payable) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case payable.FieldOutstandingBalance, payable.FieldTotalTransaction:
 			values[i] = new(sql.NullFloat64)
-		case payable.FieldID, payable.FieldEntryGroup, payable.FieldDaysDue:
+		case payable.FieldID, payable.FieldEntryGroup:
 			values[i] = new(sql.NullInt64)
-		case payable.FieldStatus:
+		case payable.FieldName, payable.FieldStatus:
 			values[i] = new(sql.NullString)
-		case payable.FieldCreatedAt, payable.FieldUpdatedAt, payable.FieldDeletedAt, payable.FieldDate:
+		case payable.FieldCreatedAt, payable.FieldUpdatedAt, payable.FieldDeletedAt, payable.FieldDate, payable.FieldDueDate:
 			values[i] = new(sql.NullTime)
-		case payable.ForeignKeys[0]: // supplier_payables
+		case payable.ForeignKeys[0]: // company_payables
+			values[i] = new(sql.NullInt64)
+		case payable.ForeignKeys[1]: // supplier_payables
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -132,6 +137,12 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pa.Date = value.Time
 			}
+		case payable.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				pa.Name = value.String
+			}
 		case payable.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field outstandingBalance", values[i])
@@ -144,11 +155,11 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pa.TotalTransaction = value.Float64
 			}
-		case payable.FieldDaysDue:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field daysDue", values[i])
+		case payable.FieldDueDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field dueDate", values[i])
 			} else if value.Valid {
-				pa.DaysDue = int(value.Int64)
+				pa.DueDate = value.Time
 			}
 		case payable.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -157,6 +168,13 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 				pa.Status = payable.Status(value.String)
 			}
 		case payable.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field company_payables", value)
+			} else if value.Valid {
+				pa.company_payables = new(int)
+				*pa.company_payables = int(value.Int64)
+			}
+		case payable.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field supplier_payables", value)
 			} else if value.Valid {
@@ -176,9 +194,9 @@ func (pa *Payable) Value(name string) (ent.Value, error) {
 	return pa.selectValues.Get(name)
 }
 
-// QuerySupplier queries the "supplier" edge of the Payable entity.
-func (pa *Payable) QuerySupplier() *SupplierQuery {
-	return NewPayableClient(pa.config).QuerySupplier(pa)
+// QueryCompany queries the "company" edge of the Payable entity.
+func (pa *Payable) QueryCompany() *CompanyQuery {
+	return NewPayableClient(pa.config).QueryCompany(pa)
 }
 
 // Update returns a builder for updating this Payable.
@@ -221,14 +239,17 @@ func (pa *Payable) String() string {
 	builder.WriteString("date=")
 	builder.WriteString(pa.Date.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("name=")
+	builder.WriteString(pa.Name)
+	builder.WriteString(", ")
 	builder.WriteString("outstandingBalance=")
 	builder.WriteString(fmt.Sprintf("%v", pa.OutstandingBalance))
 	builder.WriteString(", ")
 	builder.WriteString("totalTransaction=")
 	builder.WriteString(fmt.Sprintf("%v", pa.TotalTransaction))
 	builder.WriteString(", ")
-	builder.WriteString("daysDue=")
-	builder.WriteString(fmt.Sprintf("%v", pa.DaysDue))
+	builder.WriteString("dueDate=")
+	builder.WriteString(pa.DueDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", pa.Status))

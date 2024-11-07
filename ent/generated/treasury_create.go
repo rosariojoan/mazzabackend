@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/treasury"
 	"time"
@@ -64,125 +63,9 @@ func (tc *TreasuryCreate) SetNillableDeletedAt(t *time.Time) *TreasuryCreate {
 	return tc
 }
 
-// SetAccountNumber sets the "accountNumber" field.
-func (tc *TreasuryCreate) SetAccountNumber(s string) *TreasuryCreate {
-	tc.mutation.SetAccountNumber(s)
-	return tc
-}
-
-// SetNillableAccountNumber sets the "accountNumber" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableAccountNumber(s *string) *TreasuryCreate {
-	if s != nil {
-		tc.SetAccountNumber(*s)
-	}
-	return tc
-}
-
 // SetBalance sets the "balance" field.
 func (tc *TreasuryCreate) SetBalance(f float64) *TreasuryCreate {
 	tc.mutation.SetBalance(f)
-	return tc
-}
-
-// SetBankName sets the "bankName" field.
-func (tc *TreasuryCreate) SetBankName(s string) *TreasuryCreate {
-	tc.mutation.SetBankName(s)
-	return tc
-}
-
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableBankName(s *string) *TreasuryCreate {
-	if s != nil {
-		tc.SetBankName(*s)
-	}
-	return tc
-}
-
-// SetCurrency sets the "currency" field.
-func (tc *TreasuryCreate) SetCurrency(t treasury.Currency) *TreasuryCreate {
-	tc.mutation.SetCurrency(t)
-	return tc
-}
-
-// SetDescription sets the "description" field.
-func (tc *TreasuryCreate) SetDescription(s string) *TreasuryCreate {
-	tc.mutation.SetDescription(s)
-	return tc
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableDescription(s *string) *TreasuryCreate {
-	if s != nil {
-		tc.SetDescription(*s)
-	}
-	return tc
-}
-
-// SetIban sets the "iban" field.
-func (tc *TreasuryCreate) SetIban(s string) *TreasuryCreate {
-	tc.mutation.SetIban(s)
-	return tc
-}
-
-// SetNillableIban sets the "iban" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableIban(s *string) *TreasuryCreate {
-	if s != nil {
-		tc.SetIban(*s)
-	}
-	return tc
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (tc *TreasuryCreate) SetIsDefault(b bool) *TreasuryCreate {
-	tc.mutation.SetIsDefault(b)
-	return tc
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableIsDefault(b *bool) *TreasuryCreate {
-	if b != nil {
-		tc.SetIsDefault(*b)
-	}
-	return tc
-}
-
-// SetIsMainAccount sets the "isMainAccount" field.
-func (tc *TreasuryCreate) SetIsMainAccount(b bool) *TreasuryCreate {
-	tc.mutation.SetIsMainAccount(b)
-	return tc
-}
-
-// SetNillableIsMainAccount sets the "isMainAccount" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableIsMainAccount(b *bool) *TreasuryCreate {
-	if b != nil {
-		tc.SetIsMainAccount(*b)
-	}
-	return tc
-}
-
-// SetName sets the "name" field.
-func (tc *TreasuryCreate) SetName(s string) *TreasuryCreate {
-	tc.mutation.SetName(s)
-	return tc
-}
-
-// SetCategory sets the "category" field.
-func (tc *TreasuryCreate) SetCategory(t treasury.Category) *TreasuryCreate {
-	tc.mutation.SetCategory(t)
-	return tc
-}
-
-// SetSwiftCode sets the "swiftCode" field.
-func (tc *TreasuryCreate) SetSwiftCode(s string) *TreasuryCreate {
-	tc.mutation.SetSwiftCode(s)
-	return tc
-}
-
-// SetNillableSwiftCode sets the "swiftCode" field if the given value is not nil.
-func (tc *TreasuryCreate) SetNillableSwiftCode(s *string) *TreasuryCreate {
-	if s != nil {
-		tc.SetSwiftCode(*s)
-	}
 	return tc
 }
 
@@ -203,21 +86,6 @@ func (tc *TreasuryCreate) SetNillableCompanyID(id *int) *TreasuryCreate {
 // SetCompany sets the "company" edge to the Company entity.
 func (tc *TreasuryCreate) SetCompany(c *Company) *TreasuryCreate {
 	return tc.SetCompanyID(c.ID)
-}
-
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (tc *TreasuryCreate) AddAccountingEntryIDs(ids ...int) *TreasuryCreate {
-	tc.mutation.AddAccountingEntryIDs(ids...)
-	return tc
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (tc *TreasuryCreate) AddAccountingEntries(a ...*AccountingEntry) *TreasuryCreate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return tc.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the TreasuryMutation object of the builder.
@@ -263,14 +131,6 @@ func (tc *TreasuryCreate) defaults() {
 		v := treasury.DefaultUpdatedAt()
 		tc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := tc.mutation.IsDefault(); !ok {
-		v := treasury.DefaultIsDefault
-		tc.mutation.SetIsDefault(v)
-	}
-	if _, ok := tc.mutation.IsMainAccount(); !ok {
-		v := treasury.DefaultIsMainAccount
-		tc.mutation.SetIsMainAccount(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -283,30 +143,6 @@ func (tc *TreasuryCreate) check() error {
 	}
 	if _, ok := tc.mutation.Balance(); !ok {
 		return &ValidationError{Name: "balance", err: errors.New(`generated: missing required field "Treasury.balance"`)}
-	}
-	if _, ok := tc.mutation.Currency(); !ok {
-		return &ValidationError{Name: "currency", err: errors.New(`generated: missing required field "Treasury.currency"`)}
-	}
-	if v, ok := tc.mutation.Currency(); ok {
-		if err := treasury.CurrencyValidator(v); err != nil {
-			return &ValidationError{Name: "currency", err: fmt.Errorf(`generated: validator failed for field "Treasury.currency": %w`, err)}
-		}
-	}
-	if _, ok := tc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Treasury.name"`)}
-	}
-	if v, ok := tc.mutation.Name(); ok {
-		if err := treasury.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Treasury.name": %w`, err)}
-		}
-	}
-	if _, ok := tc.mutation.Category(); !ok {
-		return &ValidationError{Name: "category", err: errors.New(`generated: missing required field "Treasury.category"`)}
-	}
-	if v, ok := tc.mutation.Category(); ok {
-		if err := treasury.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Treasury.category": %w`, err)}
-		}
 	}
 	return nil
 }
@@ -346,49 +182,9 @@ func (tc *TreasuryCreate) createSpec() (*Treasury, *sqlgraph.CreateSpec) {
 		_spec.SetField(treasury.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := tc.mutation.AccountNumber(); ok {
-		_spec.SetField(treasury.FieldAccountNumber, field.TypeString, value)
-		_node.AccountNumber = value
-	}
 	if value, ok := tc.mutation.Balance(); ok {
 		_spec.SetField(treasury.FieldBalance, field.TypeFloat64, value)
 		_node.Balance = value
-	}
-	if value, ok := tc.mutation.BankName(); ok {
-		_spec.SetField(treasury.FieldBankName, field.TypeString, value)
-		_node.BankName = value
-	}
-	if value, ok := tc.mutation.Currency(); ok {
-		_spec.SetField(treasury.FieldCurrency, field.TypeEnum, value)
-		_node.Currency = value
-	}
-	if value, ok := tc.mutation.Description(); ok {
-		_spec.SetField(treasury.FieldDescription, field.TypeString, value)
-		_node.Description = value
-	}
-	if value, ok := tc.mutation.Iban(); ok {
-		_spec.SetField(treasury.FieldIban, field.TypeString, value)
-		_node.Iban = value
-	}
-	if value, ok := tc.mutation.IsDefault(); ok {
-		_spec.SetField(treasury.FieldIsDefault, field.TypeBool, value)
-		_node.IsDefault = value
-	}
-	if value, ok := tc.mutation.IsMainAccount(); ok {
-		_spec.SetField(treasury.FieldIsMainAccount, field.TypeBool, value)
-		_node.IsMainAccount = value
-	}
-	if value, ok := tc.mutation.Name(); ok {
-		_spec.SetField(treasury.FieldName, field.TypeString, value)
-		_node.Name = value
-	}
-	if value, ok := tc.mutation.Category(); ok {
-		_spec.SetField(treasury.FieldCategory, field.TypeEnum, value)
-		_node.Category = value
-	}
-	if value, ok := tc.mutation.SwiftCode(); ok {
-		_spec.SetField(treasury.FieldSwiftCode, field.TypeString, value)
-		_node.SwiftCode = value
 	}
 	if nodes := tc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -405,22 +201,6 @@ func (tc *TreasuryCreate) createSpec() (*Treasury, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_treasuries = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := tc.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   treasury.AccountingEntriesTable,
-			Columns: []string{treasury.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

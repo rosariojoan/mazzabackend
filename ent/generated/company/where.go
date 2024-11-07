@@ -1611,6 +1611,52 @@ func HasProjectsWith(preds ...predicate.Project) predicate.Company {
 	})
 }
 
+// HasPayables applies the HasEdge predicate on the "payables" edge.
+func HasPayables() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PayablesTable, PayablesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPayablesWith applies the HasEdge predicate on the "payables" edge with a given conditions (other predicates).
+func HasPayablesWith(preds ...predicate.Payable) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newPayablesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasReceivables applies the HasEdge predicate on the "receivables" edge.
+func HasReceivables() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ReceivablesTable, ReceivablesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasReceivablesWith applies the HasEdge predicate on the "receivables" edge with a given conditions (other predicates).
+func HasReceivablesWith(preds ...predicate.Receivable) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newReceivablesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasSuppliers applies the HasEdge predicate on the "suppliers" edge.
 func HasSuppliers() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {

@@ -320,6 +320,20 @@ func (ae *AccountingEntryQuery) Paginate(
 }
 
 var (
+	// AccountingEntryOrderFieldCreatedAt orders AccountingEntry by createdAt.
+	AccountingEntryOrderFieldCreatedAt = &AccountingEntryOrderField{
+		Value: func(ae *AccountingEntry) (ent.Value, error) {
+			return ae.CreatedAt, nil
+		},
+		column: accountingentry.FieldCreatedAt,
+		toTerm: accountingentry.ByCreatedAt,
+		toCursor: func(ae *AccountingEntry) Cursor {
+			return Cursor{
+				ID:    ae.ID,
+				Value: ae.CreatedAt,
+			}
+		},
+	}
 	// AccountingEntryOrderFieldDate orders AccountingEntry by date.
 	AccountingEntryOrderFieldDate = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
@@ -390,6 +404,20 @@ var (
 			}
 		},
 	}
+	// AccountingEntryOrderFieldCategory orders AccountingEntry by category.
+	AccountingEntryOrderFieldCategory = &AccountingEntryOrderField{
+		Value: func(ae *AccountingEntry) (ent.Value, error) {
+			return ae.Category, nil
+		},
+		column: accountingentry.FieldCategory,
+		toTerm: accountingentry.ByCategory,
+		toCursor: func(ae *AccountingEntry) Cursor {
+			return Cursor{
+				ID:    ae.ID,
+				Value: ae.Category,
+			}
+		},
+	}
 	// AccountingEntryOrderFieldIsDebit orders AccountingEntry by isDebit.
 	AccountingEntryOrderFieldIsDebit = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
@@ -410,6 +438,8 @@ var (
 func (f AccountingEntryOrderField) String() string {
 	var str string
 	switch f.column {
+	case AccountingEntryOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case AccountingEntryOrderFieldDate.column:
 		str = "DATE"
 	case AccountingEntryOrderFieldAccount.column:
@@ -420,6 +450,8 @@ func (f AccountingEntryOrderField) String() string {
 		str = "DESCRIPTION"
 	case AccountingEntryOrderFieldAccountType.column:
 		str = "ACCOUNTTYPE"
+	case AccountingEntryOrderFieldCategory.column:
+		str = "CATEGORY"
 	case AccountingEntryOrderFieldIsDebit.column:
 		str = "ISDEBIT"
 	}
@@ -438,6 +470,8 @@ func (f *AccountingEntryOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("AccountingEntryOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *AccountingEntryOrderFieldCreatedAt
 	case "DATE":
 		*f = *AccountingEntryOrderFieldDate
 	case "ACCOUNT":
@@ -448,6 +482,8 @@ func (f *AccountingEntryOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *AccountingEntryOrderFieldDescription
 	case "ACCOUNTTYPE":
 		*f = *AccountingEntryOrderFieldAccountType
+	case "CATEGORY":
+		*f = *AccountingEntryOrderFieldCategory
 	case "ISDEBIT":
 		*f = *AccountingEntryOrderFieldIsDebit
 	default:
@@ -703,6 +739,20 @@ func (c *CompanyQuery) Paginate(
 }
 
 var (
+	// CompanyOrderFieldCreatedAt orders Company by createdAt.
+	CompanyOrderFieldCreatedAt = &CompanyOrderField{
+		Value: func(c *Company) (ent.Value, error) {
+			return c.CreatedAt, nil
+		},
+		column: company.FieldCreatedAt,
+		toTerm: company.ByCreatedAt,
+		toCursor: func(c *Company) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.CreatedAt,
+			}
+		},
+	}
 	// CompanyOrderFieldCity orders Company by city.
 	CompanyOrderFieldCity = &CompanyOrderField{
 		Value: func(c *Company) (ent.Value, error) {
@@ -765,6 +815,8 @@ var (
 func (f CompanyOrderField) String() string {
 	var str string
 	switch f.column {
+	case CompanyOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case CompanyOrderFieldCity.column:
 		str = "CITY"
 	case CompanyOrderFieldCountry.column:
@@ -789,6 +841,8 @@ func (f *CompanyOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("CompanyOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *CompanyOrderFieldCreatedAt
 	case "CITY":
 		*f = *CompanyOrderFieldCity
 	case "COUNTRY":
@@ -1086,6 +1140,20 @@ func (c *CustomerQuery) Paginate(
 }
 
 var (
+	// CustomerOrderFieldCreatedAt orders Customer by createdAt.
+	CustomerOrderFieldCreatedAt = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.CreatedAt, nil
+		},
+		column: customer.FieldCreatedAt,
+		toTerm: customer.ByCreatedAt,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.CreatedAt,
+			}
+		},
+	}
 	// CustomerOrderFieldCity orders Customer by city.
 	CustomerOrderFieldCity = &CustomerOrderField{
 		Value: func(c *Customer) (ent.Value, error) {
@@ -1106,6 +1174,8 @@ var (
 func (f CustomerOrderField) String() string {
 	var str string
 	switch f.column {
+	case CustomerOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case CustomerOrderFieldCity.column:
 		str = "CITY"
 	}
@@ -1124,6 +1194,8 @@ func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("CustomerOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *CustomerOrderFieldCreatedAt
 	case "CITY":
 		*f = *CustomerOrderFieldCity
 	default:
@@ -1378,6 +1450,53 @@ func (e *EmployeeQuery) Paginate(
 	return conn, nil
 }
 
+var (
+	// EmployeeOrderFieldCreatedAt orders Employee by createdAt.
+	EmployeeOrderFieldCreatedAt = &EmployeeOrderField{
+		Value: func(e *Employee) (ent.Value, error) {
+			return e.CreatedAt, nil
+		},
+		column: employee.FieldCreatedAt,
+		toTerm: employee.ByCreatedAt,
+		toCursor: func(e *Employee) Cursor {
+			return Cursor{
+				ID:    e.ID,
+				Value: e.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f EmployeeOrderField) String() string {
+	var str string
+	switch f.column {
+	case EmployeeOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f EmployeeOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *EmployeeOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("EmployeeOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *EmployeeOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid EmployeeOrderField", str)
+	}
+	return nil
+}
+
 // EmployeeOrderField defines the ordering field of Employee.
 type EmployeeOrderField struct {
 	// Value extracts the ordering value from the given Employee.
@@ -1625,6 +1744,20 @@ func (f *FileQuery) Paginate(
 }
 
 var (
+	// FileOrderFieldCreatedAt orders File by createdAt.
+	FileOrderFieldCreatedAt = &FileOrderField{
+		Value: func(f *File) (ent.Value, error) {
+			return f.CreatedAt, nil
+		},
+		column: file.FieldCreatedAt,
+		toTerm: file.ByCreatedAt,
+		toCursor: func(f *File) Cursor {
+			return Cursor{
+				ID:    f.ID,
+				Value: f.CreatedAt,
+			}
+		},
+	}
 	// FileOrderFieldCategory orders File by category.
 	FileOrderFieldCategory = &FileOrderField{
 		Value: func(f *File) (ent.Value, error) {
@@ -1645,6 +1778,8 @@ var (
 func (f FileOrderField) String() string {
 	var str string
 	switch f.column {
+	case FileOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case FileOrderFieldCategory.column:
 		str = "CATEGORY"
 	}
@@ -1663,6 +1798,8 @@ func (f *FileOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("FileOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *FileOrderFieldCreatedAt
 	case "CATEGORY":
 		*f = *FileOrderFieldCategory
 	default:
@@ -1767,19 +1904,14 @@ func (c *PayableConnection) build(nodes []*Payable, pager *payablePager, after *
 type PayablePaginateOption func(*payablePager) error
 
 // WithPayableOrder configures pagination ordering.
-func WithPayableOrder(order *PayableOrder) PayablePaginateOption {
-	if order == nil {
-		order = DefaultPayableOrder
-	}
-	o := *order
+func WithPayableOrder(order []*PayableOrder) PayablePaginateOption {
 	return func(pager *payablePager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultPayableOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -1797,7 +1929,7 @@ func WithPayableFilter(filter func(*PayableQuery) (*PayableQuery, error)) Payabl
 
 type payablePager struct {
 	reverse bool
-	order   *PayableOrder
+	order   []*PayableOrder
 	filter  func(*PayableQuery) (*PayableQuery, error)
 }
 
@@ -1808,8 +1940,10 @@ func newPayablePager(opts []PayablePaginateOption, reverse bool) (*payablePager,
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultPayableOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -1822,48 +1956,87 @@ func (p *payablePager) applyFilter(query *PayableQuery) (*PayableQuery, error) {
 }
 
 func (p *payablePager) toCursor(pa *Payable) Cursor {
-	return p.order.Field.toCursor(pa)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(pa).Value)
+	}
+	return Cursor{ID: pa.ID, Value: cs}
 }
 
 func (p *payablePager) applyCursors(query *PayableQuery, after, before *Cursor) (*PayableQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultPayableOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultPayableOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *payablePager) applyOrder(query *PayableQuery) *PayableQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultPayableOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultPayableOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultPayableOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *payablePager) orderExpr(query *PayableQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultPayableOrder.Field {
-			b.Comma().Ident(DefaultPayableOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultPayableOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -1915,6 +2088,89 @@ func (pa *PayableQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// PayableOrderFieldCreatedAt orders Payable by createdAt.
+	PayableOrderFieldCreatedAt = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.CreatedAt, nil
+		},
+		column: payable.FieldCreatedAt,
+		toTerm: payable.ByCreatedAt,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.CreatedAt,
+			}
+		},
+	}
+	// PayableOrderFieldDueDate orders Payable by dueDate.
+	PayableOrderFieldDueDate = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.DueDate, nil
+		},
+		column: payable.FieldDueDate,
+		toTerm: payable.ByDueDate,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.DueDate,
+			}
+		},
+	}
+	// PayableOrderFieldStatus orders Payable by status.
+	PayableOrderFieldStatus = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.Status, nil
+		},
+		column: payable.FieldStatus,
+		toTerm: payable.ByStatus,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.Status,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f PayableOrderField) String() string {
+	var str string
+	switch f.column {
+	case PayableOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case PayableOrderFieldDueDate.column:
+		str = "DUEDATE"
+	case PayableOrderFieldStatus.column:
+		str = "STATUS"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f PayableOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *PayableOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("PayableOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *PayableOrderFieldCreatedAt
+	case "DUEDATE":
+		*f = *PayableOrderFieldDueDate
+	case "STATUS":
+		*f = *PayableOrderFieldStatus
+	default:
+		return fmt.Errorf("%s is not a valid PayableOrderField", str)
+	}
+	return nil
 }
 
 // PayableOrderField defines the ordering field of Payable.
@@ -2164,31 +2420,17 @@ func (pr *ProductQuery) Paginate(
 }
 
 var (
-	// ProductOrderFieldName orders Product by name.
-	ProductOrderFieldName = &ProductOrderField{
+	// ProductOrderFieldCreatedAt orders Product by createdAt.
+	ProductOrderFieldCreatedAt = &ProductOrderField{
 		Value: func(pr *Product) (ent.Value, error) {
-			return pr.Name, nil
+			return pr.CreatedAt, nil
 		},
-		column: product.FieldName,
-		toTerm: product.ByName,
+		column: product.FieldCreatedAt,
+		toTerm: product.ByCreatedAt,
 		toCursor: func(pr *Product) Cursor {
 			return Cursor{
 				ID:    pr.ID,
-				Value: pr.Name,
-			}
-		},
-	}
-	// ProductOrderFieldCategory orders Product by category.
-	ProductOrderFieldCategory = &ProductOrderField{
-		Value: func(pr *Product) (ent.Value, error) {
-			return pr.Category, nil
-		},
-		column: product.FieldCategory,
-		toTerm: product.ByCategory,
-		toCursor: func(pr *Product) Cursor {
-			return Cursor{
-				ID:    pr.ID,
-				Value: pr.Category,
+				Value: pr.CreatedAt,
 			}
 		},
 	}
@@ -2198,10 +2440,8 @@ var (
 func (f ProductOrderField) String() string {
 	var str string
 	switch f.column {
-	case ProductOrderFieldName.column:
-		str = "NAME"
-	case ProductOrderFieldCategory.column:
-		str = "CATEGORY"
+	case ProductOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	}
 	return str
 }
@@ -2218,10 +2458,8 @@ func (f *ProductOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ProductOrderField %T must be a string", v)
 	}
 	switch str {
-	case "NAME":
-		*f = *ProductOrderFieldName
-	case "CATEGORY":
-		*f = *ProductOrderFieldCategory
+	case "CREATED_AT":
+		*f = *ProductOrderFieldCreatedAt
 	default:
 		return fmt.Errorf("%s is not a valid ProductOrderField", str)
 	}
@@ -2508,6 +2746,53 @@ func (pr *ProjectQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// ProjectOrderFieldCreatedAt orders Project by createdAt.
+	ProjectOrderFieldCreatedAt = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.CreatedAt, nil
+		},
+		column: project.FieldCreatedAt,
+		toTerm: project.ByCreatedAt,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f ProjectOrderField) String() string {
+	var str string
+	switch f.column {
+	case ProjectOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f ProjectOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("ProjectOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *ProjectOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid ProjectOrderField", str)
+	}
+	return nil
 }
 
 // ProjectOrderField defines the ordering field of Project.
@@ -3332,17 +3617,31 @@ func (r *ReceivableQuery) Paginate(
 }
 
 var (
-	// ReceivableOrderFieldDaysDue orders Receivable by daysDue.
-	ReceivableOrderFieldDaysDue = &ReceivableOrderField{
+	// ReceivableOrderFieldCreatedAt orders Receivable by createdAt.
+	ReceivableOrderFieldCreatedAt = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
-			return r.DaysDue, nil
+			return r.CreatedAt, nil
 		},
-		column: receivable.FieldDaysDue,
-		toTerm: receivable.ByDaysDue,
+		column: receivable.FieldCreatedAt,
+		toTerm: receivable.ByCreatedAt,
 		toCursor: func(r *Receivable) Cursor {
 			return Cursor{
 				ID:    r.ID,
-				Value: r.DaysDue,
+				Value: r.CreatedAt,
+			}
+		},
+	}
+	// ReceivableOrderFieldDueDate orders Receivable by dueDate.
+	ReceivableOrderFieldDueDate = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.DueDate, nil
+		},
+		column: receivable.FieldDueDate,
+		toTerm: receivable.ByDueDate,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.DueDate,
 			}
 		},
 	}
@@ -3366,8 +3665,10 @@ var (
 func (f ReceivableOrderField) String() string {
 	var str string
 	switch f.column {
-	case ReceivableOrderFieldDaysDue.column:
-		str = "DAYSDUE"
+	case ReceivableOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case ReceivableOrderFieldDueDate.column:
+		str = "DUEDATE"
 	case ReceivableOrderFieldStatus.column:
 		str = "STATUS"
 	}
@@ -3386,8 +3687,10 @@ func (f *ReceivableOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ReceivableOrderField %T must be a string", v)
 	}
 	switch str {
-	case "DAYSDUE":
-		*f = *ReceivableOrderFieldDaysDue
+	case "CREATED_AT":
+		*f = *ReceivableOrderFieldCreatedAt
+	case "DUEDATE":
+		*f = *ReceivableOrderFieldDueDate
 	case "STATUS":
 		*f = *ReceivableOrderFieldStatus
 	default:
@@ -3640,6 +3943,53 @@ func (s *SupplierQuery) Paginate(
 	}
 	conn.build(nodes, pager, after, first, before, last)
 	return conn, nil
+}
+
+var (
+	// SupplierOrderFieldCreatedAt orders Supplier by createdAt.
+	SupplierOrderFieldCreatedAt = &SupplierOrderField{
+		Value: func(s *Supplier) (ent.Value, error) {
+			return s.CreatedAt, nil
+		},
+		column: supplier.FieldCreatedAt,
+		toTerm: supplier.ByCreatedAt,
+		toCursor: func(s *Supplier) Cursor {
+			return Cursor{
+				ID:    s.ID,
+				Value: s.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f SupplierOrderField) String() string {
+	var str string
+	switch f.column {
+	case SupplierOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f SupplierOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *SupplierOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("SupplierOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *SupplierOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid SupplierOrderField", str)
+	}
+	return nil
 }
 
 // SupplierOrderField defines the ordering field of Supplier.
@@ -4134,6 +4484,53 @@ func (t *TreasuryQuery) Paginate(
 	return conn, nil
 }
 
+var (
+	// TreasuryOrderFieldCreatedAt orders Treasury by createdAt.
+	TreasuryOrderFieldCreatedAt = &TreasuryOrderField{
+		Value: func(t *Treasury) (ent.Value, error) {
+			return t.CreatedAt, nil
+		},
+		column: treasury.FieldCreatedAt,
+		toTerm: treasury.ByCreatedAt,
+		toCursor: func(t *Treasury) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.CreatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f TreasuryOrderField) String() string {
+	var str string
+	switch f.column {
+	case TreasuryOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f TreasuryOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *TreasuryOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("TreasuryOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *TreasuryOrderFieldCreatedAt
+	default:
+		return fmt.Errorf("%s is not a valid TreasuryOrderField", str)
+	}
+	return nil
+}
+
 // TreasuryOrderField defines the ordering field of Treasury.
 type TreasuryOrderField struct {
 	// Value extracts the ordering value from the given Treasury.
@@ -4381,6 +4778,20 @@ func (u *UserQuery) Paginate(
 }
 
 var (
+	// UserOrderFieldCreatedAt orders User by createdAt.
+	UserOrderFieldCreatedAt = &UserOrderField{
+		Value: func(u *User) (ent.Value, error) {
+			return u.CreatedAt, nil
+		},
+		column: user.FieldCreatedAt,
+		toTerm: user.ByCreatedAt,
+		toCursor: func(u *User) Cursor {
+			return Cursor{
+				ID:    u.ID,
+				Value: u.CreatedAt,
+			}
+		},
+	}
 	// UserOrderFieldName orders User by name.
 	UserOrderFieldName = &UserOrderField{
 		Value: func(u *User) (ent.Value, error) {
@@ -4415,6 +4826,8 @@ var (
 func (f UserOrderField) String() string {
 	var str string
 	switch f.column {
+	case UserOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case UserOrderFieldName.column:
 		str = "NAME"
 	case UserOrderFieldUsername.column:
@@ -4435,6 +4848,8 @@ func (f *UserOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("UserOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *UserOrderFieldCreatedAt
 	case "NAME":
 		*f = *UserOrderFieldName
 	case "USERNAME":
@@ -5021,6 +5436,20 @@ func (w *WorkshiftQuery) Paginate(
 }
 
 var (
+	// WorkshiftOrderFieldCreatedAt orders Workshift by createdAt.
+	WorkshiftOrderFieldCreatedAt = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.CreatedAt, nil
+		},
+		column: workshift.FieldCreatedAt,
+		toTerm: workshift.ByCreatedAt,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.CreatedAt,
+			}
+		},
+	}
 	// WorkshiftOrderFieldApprovedAt orders Workshift by approvedAt.
 	WorkshiftOrderFieldApprovedAt = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
@@ -5083,6 +5512,8 @@ var (
 func (f WorkshiftOrderField) String() string {
 	var str string
 	switch f.column {
+	case WorkshiftOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
 	case WorkshiftOrderFieldApprovedAt.column:
 		str = "APPROVED_AT"
 	case WorkshiftOrderFieldClockIn.column:
@@ -5107,6 +5538,8 @@ func (f *WorkshiftOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("WorkshiftOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *WorkshiftOrderFieldCreatedAt
 	case "APPROVED_AT":
 		*f = *WorkshiftOrderFieldApprovedAt
 	case "CLOCK_IN":

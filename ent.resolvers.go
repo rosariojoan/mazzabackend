@@ -10,6 +10,8 @@ import (
 	"mazza/ent/generated"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/payable"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/user"
 	"mazza/ent/utils"
 
@@ -50,14 +52,24 @@ func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], fi
 	)
 }
 
+// Payables is the resolver for the payables field.
+func (r *queryResolver) Payables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.PayableOrder, where *generated.PayableWhereInput) (*generated.PayableConnection, error) {
+	_, currentCompany, _ := utils.GetSession(&ctx)
+
+	return r.client.Payable.Query().
+		Where(payable.HasCompanyWith(company.IDEQ(currentCompany.ID))).
+		Paginate(
+			ctx, after, first, before, last,
+			generated.WithPayableFilter(where.Filter),
+		)
+}
+
 // Receivables is the resolver for the receivables field.
 func (r *queryResolver) Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ReceivableOrder, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error) {
-	currentUser, currentCompany, _ := utils.GetSession(&ctx)
-	userQ := user.IDEQ(currentUser.ID)
+	_, currentCompany, _ := utils.GetSession(&ctx)
 
-	return r.client.User.Query().Where(userQ).
-		QueryCompany().Where(company.IDEQ(currentCompany.ID)).
-		QueryCustomers().QueryReceivables().
+	return r.client.Receivable.Query().
+		Where(receivable.HasCompanyWith(company.IDEQ(currentCompany.ID))).
 		Paginate(
 			ctx, after, first, before, last,
 			generated.WithReceivableFilter(where.Filter),

@@ -72,6 +72,10 @@ const (
 	EdgeProducts = "products"
 	// EdgeProjects holds the string denoting the projects edge name in mutations.
 	EdgeProjects = "projects"
+	// EdgePayables holds the string denoting the payables edge name in mutations.
+	EdgePayables = "payables"
+	// EdgeReceivables holds the string denoting the receivables edge name in mutations.
+	EdgeReceivables = "receivables"
 	// EdgeSuppliers holds the string denoting the suppliers edge name in mutations.
 	EdgeSuppliers = "suppliers"
 	// EdgeTokens holds the string denoting the tokens edge name in mutations.
@@ -137,6 +141,20 @@ const (
 	ProjectsInverseTable = "projects"
 	// ProjectsColumn is the table column denoting the projects relation/edge.
 	ProjectsColumn = "company_projects"
+	// PayablesTable is the table that holds the payables relation/edge.
+	PayablesTable = "payables"
+	// PayablesInverseTable is the table name for the Payable entity.
+	// It exists in this package in order to avoid circular dependency with the "payable" package.
+	PayablesInverseTable = "payables"
+	// PayablesColumn is the table column denoting the payables relation/edge.
+	PayablesColumn = "company_payables"
+	// ReceivablesTable is the table that holds the receivables relation/edge.
+	ReceivablesTable = "receivables"
+	// ReceivablesInverseTable is the table name for the Receivable entity.
+	// It exists in this package in order to avoid circular dependency with the "receivable" package.
+	ReceivablesInverseTable = "receivables"
+	// ReceivablesColumn is the table column denoting the receivables relation/edge.
+	ReceivablesColumn = "company_receivables"
 	// SuppliersTable is the table that holds the suppliers relation/edge.
 	SuppliersTable = "suppliers"
 	// SuppliersInverseTable is the table name for the Supplier entity.
@@ -473,6 +491,34 @@ func ByProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
+// ByPayablesCount orders the results by payables count.
+func ByPayablesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newPayablesStep(), opts...)
+	}
+}
+
+// ByPayables orders the results by payables terms.
+func ByPayables(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPayablesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByReceivablesCount orders the results by receivables count.
+func ByReceivablesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newReceivablesStep(), opts...)
+	}
+}
+
+// ByReceivables orders the results by receivables terms.
+func ByReceivables(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newReceivablesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // BySuppliersCount orders the results by suppliers count.
 func BySuppliersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -610,6 +656,20 @@ func newProjectsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ProjectsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ProjectsTable, ProjectsColumn),
+	)
+}
+func newPayablesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PayablesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, PayablesTable, PayablesColumn),
+	)
+}
+func newReceivablesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ReceivablesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ReceivablesTable, ReceivablesColumn),
 	)
 }
 func newSuppliersStep() *sqlgraph.Step {

@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/customer"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/receivable"
 	"time"
 
@@ -75,6 +75,20 @@ func (rc *ReceivableCreate) SetDate(t time.Time) *ReceivableCreate {
 	return rc
 }
 
+// SetName sets the "name" field.
+func (rc *ReceivableCreate) SetName(s string) *ReceivableCreate {
+	rc.mutation.SetName(s)
+	return rc
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (rc *ReceivableCreate) SetNillableName(s *string) *ReceivableCreate {
+	if s != nil {
+		rc.SetName(*s)
+	}
+	return rc
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (rc *ReceivableCreate) SetOutstandingBalance(f float64) *ReceivableCreate {
 	rc.mutation.SetOutstandingBalance(f)
@@ -87,9 +101,9 @@ func (rc *ReceivableCreate) SetTotalTransaction(f float64) *ReceivableCreate {
 	return rc
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (rc *ReceivableCreate) SetDaysDue(i int) *ReceivableCreate {
-	rc.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (rc *ReceivableCreate) SetDueDate(t time.Time) *ReceivableCreate {
+	rc.mutation.SetDueDate(t)
 	return rc
 }
 
@@ -99,23 +113,23 @@ func (rc *ReceivableCreate) SetStatus(r receivable.Status) *ReceivableCreate {
 	return rc
 }
 
-// SetCustomerID sets the "customer" edge to the Customer entity by ID.
-func (rc *ReceivableCreate) SetCustomerID(id int) *ReceivableCreate {
-	rc.mutation.SetCustomerID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (rc *ReceivableCreate) SetCompanyID(id int) *ReceivableCreate {
+	rc.mutation.SetCompanyID(id)
 	return rc
 }
 
-// SetNillableCustomerID sets the "customer" edge to the Customer entity by ID if the given value is not nil.
-func (rc *ReceivableCreate) SetNillableCustomerID(id *int) *ReceivableCreate {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (rc *ReceivableCreate) SetNillableCompanyID(id *int) *ReceivableCreate {
 	if id != nil {
-		rc = rc.SetCustomerID(*id)
+		rc = rc.SetCompanyID(*id)
 	}
 	return rc
 }
 
-// SetCustomer sets the "customer" edge to the Customer entity.
-func (rc *ReceivableCreate) SetCustomer(c *Customer) *ReceivableCreate {
-	return rc.SetCustomerID(c.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (rc *ReceivableCreate) SetCompany(c *Company) *ReceivableCreate {
+	return rc.SetCompanyID(c.ID)
 }
 
 // Mutation returns the ReceivableMutation object of the builder.
@@ -161,6 +175,10 @@ func (rc *ReceivableCreate) defaults() {
 		v := receivable.DefaultUpdatedAt()
 		rc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := rc.mutation.Name(); !ok {
+		v := receivable.DefaultName
+		rc.mutation.SetName(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -182,19 +200,17 @@ func (rc *ReceivableCreate) check() error {
 	if _, ok := rc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`generated: missing required field "Receivable.date"`)}
 	}
+	if _, ok := rc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Receivable.name"`)}
+	}
 	if _, ok := rc.mutation.OutstandingBalance(); !ok {
 		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Receivable.outstandingBalance"`)}
 	}
 	if _, ok := rc.mutation.TotalTransaction(); !ok {
 		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Receivable.totalTransaction"`)}
 	}
-	if _, ok := rc.mutation.DaysDue(); !ok {
-		return &ValidationError{Name: "daysDue", err: errors.New(`generated: missing required field "Receivable.daysDue"`)}
-	}
-	if v, ok := rc.mutation.DaysDue(); ok {
-		if err := receivable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Receivable.daysDue": %w`, err)}
-		}
+	if _, ok := rc.mutation.DueDate(); !ok {
+		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Receivable.dueDate"`)}
 	}
 	if _, ok := rc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Receivable.status"`)}
@@ -250,6 +266,10 @@ func (rc *ReceivableCreate) createSpec() (*Receivable, *sqlgraph.CreateSpec) {
 		_spec.SetField(receivable.FieldDate, field.TypeTime, value)
 		_node.Date = value
 	}
+	if value, ok := rc.mutation.Name(); ok {
+		_spec.SetField(receivable.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
 	if value, ok := rc.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)
 		_node.OutstandingBalance = value
@@ -258,29 +278,29 @@ func (rc *ReceivableCreate) createSpec() (*Receivable, *sqlgraph.CreateSpec) {
 		_spec.SetField(receivable.FieldTotalTransaction, field.TypeFloat64, value)
 		_node.TotalTransaction = value
 	}
-	if value, ok := rc.mutation.DaysDue(); ok {
-		_spec.SetField(receivable.FieldDaysDue, field.TypeInt, value)
-		_node.DaysDue = value
+	if value, ok := rc.mutation.DueDate(); ok {
+		_spec.SetField(receivable.FieldDueDate, field.TypeTime, value)
+		_node.DueDate = value
 	}
 	if value, ok := rc.mutation.Status(); ok {
 		_spec.SetField(receivable.FieldStatus, field.TypeEnum, value)
 		_node.Status = value
 	}
-	if nodes := rc.mutation.CustomerIDs(); len(nodes) > 0 {
+	if nodes := rc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   receivable.CustomerTable,
-			Columns: []string{receivable.CustomerColumn},
+			Table:   receivable.CompanyTable,
+			Columns: []string{receivable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.customer_receivables = &nodes[0]
+		_node.company_receivables = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

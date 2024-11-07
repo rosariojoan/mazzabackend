@@ -3,8 +3,6 @@ package utils
 import (
 	"context"
 	ent "mazza/ent/generated"
-	"mazza/ent/generated/product"
-	"mazza/ent/generated/treasury"
 )
 
 /* Prepare default items to be used during company creation */
@@ -13,13 +11,9 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	companyClient := client.Company.UpdateOneID(companyID)
 	descr := "Gerado automaticamente"
 	isDefault := true
+	stock := 0
 	defaultProduct, err := client.Product.Create().SetInput(ent.CreateProductInput{
-		Category:    product.CategoryOTHER,
-		Description: descr,
-		IsDefault:   &isDefault,
-		Name:        "Produtos/serviços diversos",
-		Sku:         "P0001",
-		UnitCost:    0,
+		Stock: &stock,
 	}).Save(ctx)
 	if err == nil {
 		companyClient.AddProducts(defaultProduct)
@@ -46,12 +40,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	}
 
 	defaultTreasury, err := client.Treasury.Create().SetInput(ent.CreateTreasuryInput{
-		Category:      treasury.CategoryCASH,
-		Currency:      treasury.CurrencyMzn,
-		Description:   &descr,
-		IsDefault:     &isDefault,
-		IsMainAccount: &isDefault,
-		Name:          "Caixa e bancos - diversos",
+		Balance: 0,
 	}).Save(ctx)
 	if err == nil {
 		companyClient.AddTreasuries(defaultTreasury)

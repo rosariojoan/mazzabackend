@@ -6,9 +6,9 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/supplier"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -19,14 +19,14 @@ import (
 // PayableQuery is the builder for querying Payable entities.
 type PayableQuery struct {
 	config
-	ctx          *QueryContext
-	order        []payable.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.Payable
-	withSupplier *SupplierQuery
-	withFKs      bool
-	loadTotal    []func(context.Context, []*Payable) error
-	modifiers    []func(*sql.Selector)
+	ctx         *QueryContext
+	order       []payable.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Payable
+	withCompany *CompanyQuery
+	withFKs     bool
+	loadTotal   []func(context.Context, []*Payable) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -63,9 +63,9 @@ func (pq *PayableQuery) Order(o ...payable.OrderOption) *PayableQuery {
 	return pq
 }
 
-// QuerySupplier chains the current query on the "supplier" edge.
-func (pq *PayableQuery) QuerySupplier() *SupplierQuery {
-	query := (&SupplierClient{config: pq.config}).Query()
+// QueryCompany chains the current query on the "company" edge.
+func (pq *PayableQuery) QueryCompany() *CompanyQuery {
+	query := (&CompanyClient{config: pq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -76,8 +76,8 @@ func (pq *PayableQuery) QuerySupplier() *SupplierQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(payable.Table, payable.FieldID, selector),
-			sqlgraph.To(supplier.Table, supplier.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, payable.SupplierTable, payable.SupplierColumn),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payable.CompanyTable, payable.CompanyColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -272,12 +272,12 @@ func (pq *PayableQuery) Clone() *PayableQuery {
 		return nil
 	}
 	return &PayableQuery{
-		config:       pq.config,
-		ctx:          pq.ctx.Clone(),
-		order:        append([]payable.OrderOption{}, pq.order...),
-		inters:       append([]Interceptor{}, pq.inters...),
-		predicates:   append([]predicate.Payable{}, pq.predicates...),
-		withSupplier: pq.withSupplier.Clone(),
+		config:      pq.config,
+		ctx:         pq.ctx.Clone(),
+		order:       append([]payable.OrderOption{}, pq.order...),
+		inters:      append([]Interceptor{}, pq.inters...),
+		predicates:  append([]predicate.Payable{}, pq.predicates...),
+		withCompany: pq.withCompany.Clone(),
 		// clone intermediate query.
 		sql:       pq.sql.Clone(),
 		path:      pq.path,
@@ -285,14 +285,14 @@ func (pq *PayableQuery) Clone() *PayableQuery {
 	}
 }
 
-// WithSupplier tells the query-builder to eager-load the nodes that are connected to
-// the "supplier" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PayableQuery) WithSupplier(opts ...func(*SupplierQuery)) *PayableQuery {
-	query := (&SupplierClient{config: pq.config}).Query()
+// WithCompany tells the query-builder to eager-load the nodes that are connected to
+// the "company" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PayableQuery) WithCompany(opts ...func(*CompanyQuery)) *PayableQuery {
+	query := (&CompanyClient{config: pq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withSupplier = query
+	pq.withCompany = query
 	return pq
 }
 
@@ -376,10 +376,10 @@ func (pq *PayableQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Paya
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
 		loadedTypes = [1]bool{
-			pq.withSupplier != nil,
+			pq.withCompany != nil,
 		}
 	)
-	if pq.withSupplier != nil {
+	if pq.withCompany != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -406,9 +406,9 @@ func (pq *PayableQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Paya
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := pq.withSupplier; query != nil {
-		if err := pq.loadSupplier(ctx, query, nodes, nil,
-			func(n *Payable, e *Supplier) { n.Edges.Supplier = e }); err != nil {
+	if query := pq.withCompany; query != nil {
+		if err := pq.loadCompany(ctx, query, nodes, nil,
+			func(n *Payable, e *Company) { n.Edges.Company = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -420,14 +420,14 @@ func (pq *PayableQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Paya
 	return nodes, nil
 }
 
-func (pq *PayableQuery) loadSupplier(ctx context.Context, query *SupplierQuery, nodes []*Payable, init func(*Payable), assign func(*Payable, *Supplier)) error {
+func (pq *PayableQuery) loadCompany(ctx context.Context, query *CompanyQuery, nodes []*Payable, init func(*Payable), assign func(*Payable, *Company)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Payable)
 	for i := range nodes {
-		if nodes[i].supplier_payables == nil {
+		if nodes[i].company_payables == nil {
 			continue
 		}
-		fk := *nodes[i].supplier_payables
+		fk := *nodes[i].company_payables
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -436,7 +436,7 @@ func (pq *PayableQuery) loadSupplier(ctx context.Context, query *SupplierQuery, 
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(supplier.IDIn(ids...))
+	query.Where(company.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -444,7 +444,7 @@ func (pq *PayableQuery) loadSupplier(ctx context.Context, query *SupplierQuery, 
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "supplier_payables" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "company_payables" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

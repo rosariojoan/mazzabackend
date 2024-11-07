@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
-	"mazza/ent/generated/product"
 	"strings"
 	"time"
 
@@ -39,23 +38,20 @@ type File struct {
 	Description string `json:"description,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the FileQuery when eager-loading is set.
-	Edges            FileEdges `json:"edges"`
-	company_files    *int
-	product_pictures *int
-	selectValues     sql.SelectValues
+	Edges         FileEdges `json:"edges"`
+	company_files *int
+	selectValues  sql.SelectValues
 }
 
 // FileEdges holds the relations/edges for other nodes in the graph.
 type FileEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// Product holds the value of the product edge.
-	Product *Product `json:"product,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [1]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [1]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -67,17 +63,6 @@ func (e FileEdges) CompanyOrErr() (*Company, error) {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "company"}
-}
-
-// ProductOrErr returns the Product value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e FileEdges) ProductOrErr() (*Product, error) {
-	if e.Product != nil {
-		return e.Product, nil
-	} else if e.loadedTypes[1] {
-		return nil, &NotFoundError{label: product.Label}
-	}
-	return nil, &NotLoadedError{edge: "product"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -92,8 +77,6 @@ func (*File) scanValues(columns []string) ([]any, error) {
 		case file.FieldCreatedAt, file.FieldUpdatedAt, file.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		case file.ForeignKeys[0]: // company_files
-			values[i] = new(sql.NullInt64)
-		case file.ForeignKeys[1]: // product_pictures
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -178,13 +161,6 @@ func (f *File) assignValues(columns []string, values []any) error {
 				f.company_files = new(int)
 				*f.company_files = int(value.Int64)
 			}
-		case file.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field product_pictures", value)
-			} else if value.Valid {
-				f.product_pictures = new(int)
-				*f.product_pictures = int(value.Int64)
-			}
 		default:
 			f.selectValues.Set(columns[i], values[i])
 		}
@@ -201,11 +177,6 @@ func (f *File) Value(name string) (ent.Value, error) {
 // QueryCompany queries the "company" edge of the File entity.
 func (f *File) QueryCompany() *CompanyQuery {
 	return NewFileClient(f.config).QueryCompany(f)
-}
-
-// QueryProduct queries the "product" edge of the File entity.
-func (f *File) QueryProduct() *ProductQuery {
-	return NewFileClient(f.config).QueryProduct(f)
 }
 
 // Update returns a builder for updating this File.

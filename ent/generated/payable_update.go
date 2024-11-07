@@ -6,9 +6,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/supplier"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -91,6 +91,20 @@ func (pu *PayableUpdate) SetNillableDate(t *time.Time) *PayableUpdate {
 	return pu
 }
 
+// SetName sets the "name" field.
+func (pu *PayableUpdate) SetName(s string) *PayableUpdate {
+	pu.mutation.SetName(s)
+	return pu
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (pu *PayableUpdate) SetNillableName(s *string) *PayableUpdate {
+	if s != nil {
+		pu.SetName(*s)
+	}
+	return pu
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (pu *PayableUpdate) SetOutstandingBalance(f float64) *PayableUpdate {
 	pu.mutation.ResetOutstandingBalance()
@@ -133,24 +147,17 @@ func (pu *PayableUpdate) AddTotalTransaction(f float64) *PayableUpdate {
 	return pu
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (pu *PayableUpdate) SetDaysDue(i int) *PayableUpdate {
-	pu.mutation.ResetDaysDue()
-	pu.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (pu *PayableUpdate) SetDueDate(t time.Time) *PayableUpdate {
+	pu.mutation.SetDueDate(t)
 	return pu
 }
 
-// SetNillableDaysDue sets the "daysDue" field if the given value is not nil.
-func (pu *PayableUpdate) SetNillableDaysDue(i *int) *PayableUpdate {
-	if i != nil {
-		pu.SetDaysDue(*i)
+// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+func (pu *PayableUpdate) SetNillableDueDate(t *time.Time) *PayableUpdate {
+	if t != nil {
+		pu.SetDueDate(*t)
 	}
-	return pu
-}
-
-// AddDaysDue adds i to the "daysDue" field.
-func (pu *PayableUpdate) AddDaysDue(i int) *PayableUpdate {
-	pu.mutation.AddDaysDue(i)
 	return pu
 }
 
@@ -168,23 +175,23 @@ func (pu *PayableUpdate) SetNillableStatus(pa *payable.Status) *PayableUpdate {
 	return pu
 }
 
-// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
-func (pu *PayableUpdate) SetSupplierID(id int) *PayableUpdate {
-	pu.mutation.SetSupplierID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (pu *PayableUpdate) SetCompanyID(id int) *PayableUpdate {
+	pu.mutation.SetCompanyID(id)
 	return pu
 }
 
-// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
-func (pu *PayableUpdate) SetNillableSupplierID(id *int) *PayableUpdate {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (pu *PayableUpdate) SetNillableCompanyID(id *int) *PayableUpdate {
 	if id != nil {
-		pu = pu.SetSupplierID(*id)
+		pu = pu.SetCompanyID(*id)
 	}
 	return pu
 }
 
-// SetSupplier sets the "supplier" edge to the Supplier entity.
-func (pu *PayableUpdate) SetSupplier(s *Supplier) *PayableUpdate {
-	return pu.SetSupplierID(s.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (pu *PayableUpdate) SetCompany(c *Company) *PayableUpdate {
+	return pu.SetCompanyID(c.ID)
 }
 
 // Mutation returns the PayableMutation object of the builder.
@@ -192,9 +199,9 @@ func (pu *PayableUpdate) Mutation() *PayableMutation {
 	return pu.mutation
 }
 
-// ClearSupplier clears the "supplier" edge to the Supplier entity.
-func (pu *PayableUpdate) ClearSupplier() *PayableUpdate {
-	pu.mutation.ClearSupplier()
+// ClearCompany clears the "company" edge to the Company entity.
+func (pu *PayableUpdate) ClearCompany() *PayableUpdate {
+	pu.mutation.ClearCompany()
 	return pu
 }
 
@@ -241,11 +248,6 @@ func (pu *PayableUpdate) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
 		}
 	}
-	if v, ok := pu.mutation.DaysDue(); ok {
-		if err := payable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Payable.daysDue": %w`, err)}
-		}
-	}
 	if v, ok := pu.mutation.Status(); ok {
 		if err := payable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Payable.status": %w`, err)}
@@ -290,6 +292,9 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.Date(); ok {
 		_spec.SetField(payable.FieldDate, field.TypeTime, value)
 	}
+	if value, ok := pu.mutation.Name(); ok {
+		_spec.SetField(payable.FieldName, field.TypeString, value)
+	}
 	if value, ok := pu.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
@@ -302,37 +307,34 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := pu.mutation.AddedTotalTransaction(); ok {
 		_spec.AddField(payable.FieldTotalTransaction, field.TypeFloat64, value)
 	}
-	if value, ok := pu.mutation.DaysDue(); ok {
-		_spec.SetField(payable.FieldDaysDue, field.TypeInt, value)
-	}
-	if value, ok := pu.mutation.AddedDaysDue(); ok {
-		_spec.AddField(payable.FieldDaysDue, field.TypeInt, value)
+	if value, ok := pu.mutation.DueDate(); ok {
+		_spec.SetField(payable.FieldDueDate, field.TypeTime, value)
 	}
 	if value, ok := pu.mutation.Status(); ok {
 		_spec.SetField(payable.FieldStatus, field.TypeEnum, value)
 	}
-	if pu.mutation.SupplierCleared() {
+	if pu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payable.SupplierTable,
-			Columns: []string{payable.SupplierColumn},
+			Table:   payable.CompanyTable,
+			Columns: []string{payable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.SupplierIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payable.SupplierTable,
-			Columns: []string{payable.SupplierColumn},
+			Table:   payable.CompanyTable,
+			Columns: []string{payable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -423,6 +425,20 @@ func (puo *PayableUpdateOne) SetNillableDate(t *time.Time) *PayableUpdateOne {
 	return puo
 }
 
+// SetName sets the "name" field.
+func (puo *PayableUpdateOne) SetName(s string) *PayableUpdateOne {
+	puo.mutation.SetName(s)
+	return puo
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (puo *PayableUpdateOne) SetNillableName(s *string) *PayableUpdateOne {
+	if s != nil {
+		puo.SetName(*s)
+	}
+	return puo
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (puo *PayableUpdateOne) SetOutstandingBalance(f float64) *PayableUpdateOne {
 	puo.mutation.ResetOutstandingBalance()
@@ -465,24 +481,17 @@ func (puo *PayableUpdateOne) AddTotalTransaction(f float64) *PayableUpdateOne {
 	return puo
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (puo *PayableUpdateOne) SetDaysDue(i int) *PayableUpdateOne {
-	puo.mutation.ResetDaysDue()
-	puo.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (puo *PayableUpdateOne) SetDueDate(t time.Time) *PayableUpdateOne {
+	puo.mutation.SetDueDate(t)
 	return puo
 }
 
-// SetNillableDaysDue sets the "daysDue" field if the given value is not nil.
-func (puo *PayableUpdateOne) SetNillableDaysDue(i *int) *PayableUpdateOne {
-	if i != nil {
-		puo.SetDaysDue(*i)
+// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+func (puo *PayableUpdateOne) SetNillableDueDate(t *time.Time) *PayableUpdateOne {
+	if t != nil {
+		puo.SetDueDate(*t)
 	}
-	return puo
-}
-
-// AddDaysDue adds i to the "daysDue" field.
-func (puo *PayableUpdateOne) AddDaysDue(i int) *PayableUpdateOne {
-	puo.mutation.AddDaysDue(i)
 	return puo
 }
 
@@ -500,23 +509,23 @@ func (puo *PayableUpdateOne) SetNillableStatus(pa *payable.Status) *PayableUpdat
 	return puo
 }
 
-// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
-func (puo *PayableUpdateOne) SetSupplierID(id int) *PayableUpdateOne {
-	puo.mutation.SetSupplierID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (puo *PayableUpdateOne) SetCompanyID(id int) *PayableUpdateOne {
+	puo.mutation.SetCompanyID(id)
 	return puo
 }
 
-// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
-func (puo *PayableUpdateOne) SetNillableSupplierID(id *int) *PayableUpdateOne {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (puo *PayableUpdateOne) SetNillableCompanyID(id *int) *PayableUpdateOne {
 	if id != nil {
-		puo = puo.SetSupplierID(*id)
+		puo = puo.SetCompanyID(*id)
 	}
 	return puo
 }
 
-// SetSupplier sets the "supplier" edge to the Supplier entity.
-func (puo *PayableUpdateOne) SetSupplier(s *Supplier) *PayableUpdateOne {
-	return puo.SetSupplierID(s.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (puo *PayableUpdateOne) SetCompany(c *Company) *PayableUpdateOne {
+	return puo.SetCompanyID(c.ID)
 }
 
 // Mutation returns the PayableMutation object of the builder.
@@ -524,9 +533,9 @@ func (puo *PayableUpdateOne) Mutation() *PayableMutation {
 	return puo.mutation
 }
 
-// ClearSupplier clears the "supplier" edge to the Supplier entity.
-func (puo *PayableUpdateOne) ClearSupplier() *PayableUpdateOne {
-	puo.mutation.ClearSupplier()
+// ClearCompany clears the "company" edge to the Company entity.
+func (puo *PayableUpdateOne) ClearCompany() *PayableUpdateOne {
+	puo.mutation.ClearCompany()
 	return puo
 }
 
@@ -584,11 +593,6 @@ func (puo *PayableUpdateOne) check() error {
 	if v, ok := puo.mutation.EntryGroup(); ok {
 		if err := payable.EntryGroupValidator(v); err != nil {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
-		}
-	}
-	if v, ok := puo.mutation.DaysDue(); ok {
-		if err := payable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Payable.daysDue": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.Status(); ok {
@@ -652,6 +656,9 @@ func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err e
 	if value, ok := puo.mutation.Date(); ok {
 		_spec.SetField(payable.FieldDate, field.TypeTime, value)
 	}
+	if value, ok := puo.mutation.Name(); ok {
+		_spec.SetField(payable.FieldName, field.TypeString, value)
+	}
 	if value, ok := puo.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
@@ -664,37 +671,34 @@ func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err e
 	if value, ok := puo.mutation.AddedTotalTransaction(); ok {
 		_spec.AddField(payable.FieldTotalTransaction, field.TypeFloat64, value)
 	}
-	if value, ok := puo.mutation.DaysDue(); ok {
-		_spec.SetField(payable.FieldDaysDue, field.TypeInt, value)
-	}
-	if value, ok := puo.mutation.AddedDaysDue(); ok {
-		_spec.AddField(payable.FieldDaysDue, field.TypeInt, value)
+	if value, ok := puo.mutation.DueDate(); ok {
+		_spec.SetField(payable.FieldDueDate, field.TypeTime, value)
 	}
 	if value, ok := puo.mutation.Status(); ok {
 		_spec.SetField(payable.FieldStatus, field.TypeEnum, value)
 	}
-	if puo.mutation.SupplierCleared() {
+	if puo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payable.SupplierTable,
-			Columns: []string{payable.SupplierColumn},
+			Table:   payable.CompanyTable,
+			Columns: []string{payable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.SupplierIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payable.SupplierTable,
-			Columns: []string{payable.SupplierColumn},
+			Table:   payable.CompanyTable,
+			Columns: []string{payable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

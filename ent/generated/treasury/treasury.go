@@ -3,9 +3,6 @@
 package treasury
 
 import (
-	"fmt"
-	"io"
-	"strconv"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -23,32 +20,10 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldAccountNumber holds the string denoting the accountnumber field in the database.
-	FieldAccountNumber = "account_number"
 	// FieldBalance holds the string denoting the balance field in the database.
 	FieldBalance = "balance"
-	// FieldBankName holds the string denoting the bankname field in the database.
-	FieldBankName = "bank_name"
-	// FieldCurrency holds the string denoting the currency field in the database.
-	FieldCurrency = "currency"
-	// FieldDescription holds the string denoting the description field in the database.
-	FieldDescription = "description"
-	// FieldIban holds the string denoting the iban field in the database.
-	FieldIban = "iban"
-	// FieldIsDefault holds the string denoting the isdefault field in the database.
-	FieldIsDefault = "is_default"
-	// FieldIsMainAccount holds the string denoting the ismainaccount field in the database.
-	FieldIsMainAccount = "is_main_account"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
-	// FieldCategory holds the string denoting the category field in the database.
-	FieldCategory = "category"
-	// FieldSwiftCode holds the string denoting the swiftcode field in the database.
-	FieldSwiftCode = "swift_code"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
-	EdgeAccountingEntries = "accountingEntries"
 	// Table holds the table name of the treasury in the database.
 	Table = "treasuries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -58,13 +33,6 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_treasuries"
-	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
-	AccountingEntriesTable = "accounting_entries"
-	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
-	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
-	AccountingEntriesInverseTable = "accounting_entries"
-	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
-	AccountingEntriesColumn = "treasury_accounting_entries"
 )
 
 // Columns holds all SQL columns for treasury fields.
@@ -73,17 +41,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldAccountNumber,
 	FieldBalance,
-	FieldBankName,
-	FieldCurrency,
-	FieldDescription,
-	FieldIban,
-	FieldIsDefault,
-	FieldIsMainAccount,
-	FieldName,
-	FieldCategory,
-	FieldSwiftCode,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "treasuries"
@@ -114,58 +72,7 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultIsDefault holds the default value on creation for the "isDefault" field.
-	DefaultIsDefault bool
-	// DefaultIsMainAccount holds the default value on creation for the "isMainAccount" field.
-	DefaultIsMainAccount bool
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
 )
-
-// Currency defines the type for the "currency" enum field.
-type Currency string
-
-// Currency values.
-const (
-	CurrencyMzn Currency = "mzn"
-)
-
-func (c Currency) String() string {
-	return string(c)
-}
-
-// CurrencyValidator is a validator for the "currency" field enum values. It is called by the builders before save.
-func CurrencyValidator(c Currency) error {
-	switch c {
-	case CurrencyMzn:
-		return nil
-	default:
-		return fmt.Errorf("treasury: invalid enum value for currency field: %q", c)
-	}
-}
-
-// Category defines the type for the "category" enum field.
-type Category string
-
-// Category values.
-const (
-	CategoryDEPOSIT Category = "DEPOSIT"
-	CategoryCASH    Category = "CASH"
-)
-
-func (c Category) String() string {
-	return string(c)
-}
-
-// CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
-func CategoryValidator(c Category) error {
-	switch c {
-	case CategoryDEPOSIT, CategoryCASH:
-		return nil
-	default:
-		return fmt.Errorf("treasury: invalid enum value for category field: %q", c)
-	}
-}
 
 // OrderOption defines the ordering options for the Treasury queries.
 type OrderOption func(*sql.Selector)
@@ -190,59 +97,9 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByAccountNumber orders the results by the accountNumber field.
-func ByAccountNumber(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAccountNumber, opts...).ToFunc()
-}
-
 // ByBalance orders the results by the balance field.
 func ByBalance(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBalance, opts...).ToFunc()
-}
-
-// ByBankName orders the results by the bankName field.
-func ByBankName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBankName, opts...).ToFunc()
-}
-
-// ByCurrency orders the results by the currency field.
-func ByCurrency(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCurrency, opts...).ToFunc()
-}
-
-// ByDescription orders the results by the description field.
-func ByDescription(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDescription, opts...).ToFunc()
-}
-
-// ByIban orders the results by the iban field.
-func ByIban(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIban, opts...).ToFunc()
-}
-
-// ByIsDefault orders the results by the isDefault field.
-func ByIsDefault(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsDefault, opts...).ToFunc()
-}
-
-// ByIsMainAccount orders the results by the isMainAccount field.
-func ByIsMainAccount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsMainAccount, opts...).ToFunc()
-}
-
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
-}
-
-// ByCategory orders the results by the category field.
-func ByCategory(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCategory, opts...).ToFunc()
-}
-
-// BySwiftCode orders the results by the swiftCode field.
-func BySwiftCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSwiftCode, opts...).ToFunc()
 }
 
 // ByCompanyField orders the results by company field.
@@ -251,67 +108,10 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
-
-// ByAccountingEntriesCount orders the results by accountingEntries count.
-func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
-	}
-}
-
-// ByAccountingEntries orders the results by accountingEntries terms.
-func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
-}
-func newAccountingEntriesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(AccountingEntriesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
-	)
-}
-
-// MarshalGQL implements graphql.Marshaler interface.
-func (e Currency) MarshalGQL(w io.Writer) {
-	io.WriteString(w, strconv.Quote(e.String()))
-}
-
-// UnmarshalGQL implements graphql.Unmarshaler interface.
-func (e *Currency) UnmarshalGQL(val interface{}) error {
-	str, ok := val.(string)
-	if !ok {
-		return fmt.Errorf("enum %T must be a string", val)
-	}
-	*e = Currency(str)
-	if err := CurrencyValidator(*e); err != nil {
-		return fmt.Errorf("%s is not a valid Currency", str)
-	}
-	return nil
-}
-
-// MarshalGQL implements graphql.Marshaler interface.
-func (e Category) MarshalGQL(w io.Writer) {
-	io.WriteString(w, strconv.Quote(e.String()))
-}
-
-// UnmarshalGQL implements graphql.Unmarshaler interface.
-func (e *Category) UnmarshalGQL(val interface{}) error {
-	str, ok := val.(string)
-	if !ok {
-		return fmt.Errorf("enum %T must be a string", val)
-	}
-	*e = Category(str)
-	if err := CategoryValidator(*e); err != nil {
-		return fmt.Errorf("%s is not a valid Category", str)
-	}
-	return nil
 }

@@ -3,9 +3,6 @@
 package product
 
 import (
-	"fmt"
-	"io"
-	"strconv"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -23,30 +20,10 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldDescription holds the string denoting the description field in the database.
-	FieldDescription = "description"
-	// FieldIsDefault holds the string denoting the isdefault field in the database.
-	FieldIsDefault = "is_default"
-	// FieldMinimumStock holds the string denoting the minimumstock field in the database.
-	FieldMinimumStock = "minimum_stock"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
-	// FieldPrice holds the string denoting the price field in the database.
-	FieldPrice = "price"
-	// FieldSku holds the string denoting the sku field in the database.
-	FieldSku = "sku"
 	// FieldStock holds the string denoting the stock field in the database.
 	FieldStock = "stock"
-	// FieldCategory holds the string denoting the category field in the database.
-	FieldCategory = "category"
-	// FieldUnitCost holds the string denoting the unitcost field in the database.
-	FieldUnitCost = "unit_cost"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgePictures holds the string denoting the pictures edge name in mutations.
-	EdgePictures = "pictures"
-	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
-	EdgeAccountingEntries = "accountingEntries"
 	// Table holds the table name of the product in the database.
 	Table = "products"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -56,20 +33,6 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_products"
-	// PicturesTable is the table that holds the pictures relation/edge.
-	PicturesTable = "files"
-	// PicturesInverseTable is the table name for the File entity.
-	// It exists in this package in order to avoid circular dependency with the "file" package.
-	PicturesInverseTable = "files"
-	// PicturesColumn is the table column denoting the pictures relation/edge.
-	PicturesColumn = "product_pictures"
-	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
-	AccountingEntriesTable = "accounting_entries"
-	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
-	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
-	AccountingEntriesInverseTable = "accounting_entries"
-	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
-	AccountingEntriesColumn = "product_accounting_entries"
 )
 
 // Columns holds all SQL columns for product fields.
@@ -78,15 +41,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldDescription,
-	FieldIsDefault,
-	FieldMinimumStock,
-	FieldName,
-	FieldPrice,
-	FieldSku,
 	FieldStock,
-	FieldCategory,
-	FieldUnitCost,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "products"
@@ -117,51 +72,11 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultIsDefault holds the default value on creation for the "isDefault" field.
-	DefaultIsDefault bool
-	// DefaultMinimumStock holds the default value on creation for the "minimumStock" field.
-	DefaultMinimumStock int
-	// MinimumStockValidator is a validator for the "minimumStock" field. It is called by the builders before save.
-	MinimumStockValidator func(int) error
-	// NameValidator is a validator for the "name" field. It is called by the builders before save.
-	NameValidator func(string) error
-	// DefaultPrice holds the default value on creation for the "price" field.
-	DefaultPrice int
-	// PriceValidator is a validator for the "price" field. It is called by the builders before save.
-	PriceValidator func(int) error
-	// SkuValidator is a validator for the "sku" field. It is called by the builders before save.
-	SkuValidator func(string) error
 	// DefaultStock holds the default value on creation for the "stock" field.
-	DefaultStock float64
+	DefaultStock int
 	// StockValidator is a validator for the "stock" field. It is called by the builders before save.
-	StockValidator func(float64) error
-	// UnitCostValidator is a validator for the "unitCost" field. It is called by the builders before save.
-	UnitCostValidator func(float64) error
+	StockValidator func(int) error
 )
-
-// Category defines the type for the "category" enum field.
-type Category string
-
-// Category values.
-const (
-	CategoryMERCHANDISE Category = "MERCHANDISE"
-	CategoryOTHER       Category = "OTHER"
-	CategorySERVICE     Category = "SERVICE"
-)
-
-func (c Category) String() string {
-	return string(c)
-}
-
-// CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
-func CategoryValidator(c Category) error {
-	switch c {
-	case CategoryMERCHANDISE, CategoryOTHER, CategorySERVICE:
-		return nil
-	default:
-		return fmt.Errorf("product: invalid enum value for category field: %q", c)
-	}
-}
 
 // OrderOption defines the ordering options for the Product queries.
 type OrderOption func(*sql.Selector)
@@ -186,49 +101,9 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByDescription orders the results by the description field.
-func ByDescription(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDescription, opts...).ToFunc()
-}
-
-// ByIsDefault orders the results by the isDefault field.
-func ByIsDefault(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsDefault, opts...).ToFunc()
-}
-
-// ByMinimumStock orders the results by the minimumStock field.
-func ByMinimumStock(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMinimumStock, opts...).ToFunc()
-}
-
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
-}
-
-// ByPrice orders the results by the price field.
-func ByPrice(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPrice, opts...).ToFunc()
-}
-
-// BySku orders the results by the sku field.
-func BySku(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSku, opts...).ToFunc()
-}
-
 // ByStock orders the results by the stock field.
 func ByStock(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStock, opts...).ToFunc()
-}
-
-// ByCategory orders the results by the category field.
-func ByCategory(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCategory, opts...).ToFunc()
-}
-
-// ByUnitCost orders the results by the unitCost field.
-func ByUnitCost(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUnitCost, opts...).ToFunc()
 }
 
 // ByCompanyField orders the results by company field.
@@ -237,70 +112,10 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
-
-// ByPicturesCount orders the results by pictures count.
-func ByPicturesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newPicturesStep(), opts...)
-	}
-}
-
-// ByPictures orders the results by pictures terms.
-func ByPictures(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newPicturesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByAccountingEntriesCount orders the results by accountingEntries count.
-func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
-	}
-}
-
-// ByAccountingEntries orders the results by accountingEntries terms.
-func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
-}
-func newPicturesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(PicturesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, PicturesTable, PicturesColumn),
-	)
-}
-func newAccountingEntriesStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(AccountingEntriesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, AccountingEntriesTable, AccountingEntriesColumn),
-	)
-}
-
-// MarshalGQL implements graphql.Marshaler interface.
-func (e Category) MarshalGQL(w io.Writer) {
-	io.WriteString(w, strconv.Quote(e.String()))
-}
-
-// UnmarshalGQL implements graphql.Unmarshaler interface.
-func (e *Category) UnmarshalGQL(val interface{}) error {
-	str, ok := val.(string)
-	if !ok {
-		return fmt.Errorf("enum %T must be a string", val)
-	}
-	*e = Category(str)
-	if err := CategoryValidator(*e); err != nil {
-		return fmt.Errorf("%s is not a valid Category", str)
-	}
-	return nil
 }

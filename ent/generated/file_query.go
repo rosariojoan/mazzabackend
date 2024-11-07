@@ -9,7 +9,6 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/product"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -25,7 +24,6 @@ type FileQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.File
 	withCompany *CompanyQuery
-	withProduct *ProductQuery
 	withFKs     bool
 	loadTotal   []func(context.Context, []*File) error
 	modifiers   []func(*sql.Selector)
@@ -80,28 +78,6 @@ func (fq *FileQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(file.Table, file.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, file.CompanyTable, file.CompanyColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(fq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryProduct chains the current query on the "product" edge.
-func (fq *FileQuery) QueryProduct() *ProductQuery {
-	query := (&ProductClient{config: fq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := fq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := fq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(file.Table, file.FieldID, selector),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, file.ProductTable, file.ProductColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(fq.driver.Dialect(), step)
 		return fromU, nil
@@ -302,7 +278,6 @@ func (fq *FileQuery) Clone() *FileQuery {
 		inters:      append([]Interceptor{}, fq.inters...),
 		predicates:  append([]predicate.File{}, fq.predicates...),
 		withCompany: fq.withCompany.Clone(),
-		withProduct: fq.withProduct.Clone(),
 		// clone intermediate query.
 		sql:       fq.sql.Clone(),
 		path:      fq.path,
@@ -318,17 +293,6 @@ func (fq *FileQuery) WithCompany(opts ...func(*CompanyQuery)) *FileQuery {
 		opt(query)
 	}
 	fq.withCompany = query
-	return fq
-}
-
-// WithProduct tells the query-builder to eager-load the nodes that are connected to
-// the "product" edge. The optional arguments are used to configure the query builder of the edge.
-func (fq *FileQuery) WithProduct(opts ...func(*ProductQuery)) *FileQuery {
-	query := (&ProductClient{config: fq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	fq.withProduct = query
 	return fq
 }
 
@@ -411,12 +375,11 @@ func (fq *FileQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*File, e
 		nodes       = []*File{}
 		withFKs     = fq.withFKs
 		_spec       = fq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [1]bool{
 			fq.withCompany != nil,
-			fq.withProduct != nil,
 		}
 	)
-	if fq.withCompany != nil || fq.withProduct != nil {
+	if fq.withCompany != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -446,12 +409,6 @@ func (fq *FileQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*File, e
 	if query := fq.withCompany; query != nil {
 		if err := fq.loadCompany(ctx, query, nodes, nil,
 			func(n *File, e *Company) { n.Edges.Company = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := fq.withProduct; query != nil {
-		if err := fq.loadProduct(ctx, query, nodes, nil,
-			func(n *File, e *Product) { n.Edges.Product = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -488,38 +445,6 @@ func (fq *FileQuery) loadCompany(ctx context.Context, query *CompanyQuery, nodes
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "company_files" returned %v`, n.ID)
-		}
-		for i := range nodes {
-			assign(nodes[i], n)
-		}
-	}
-	return nil
-}
-func (fq *FileQuery) loadProduct(ctx context.Context, query *ProductQuery, nodes []*File, init func(*File), assign func(*File, *Product)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*File)
-	for i := range nodes {
-		if nodes[i].product_pictures == nil {
-			continue
-		}
-		fk := *nodes[i].product_pictures
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
-		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
-	}
-	if len(ids) == 0 {
-		return nil
-	}
-	query.Where(product.IDIn(ids...))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
-		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "product_pictures" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

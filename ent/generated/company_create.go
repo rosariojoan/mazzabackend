@@ -11,8 +11,10 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -395,6 +397,36 @@ func (cc *CompanyCreate) AddProjects(p ...*Project) *CompanyCreate {
 		ids[i] = p[i].ID
 	}
 	return cc.AddProjectIDs(ids...)
+}
+
+// AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
+func (cc *CompanyCreate) AddPayableIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddPayableIDs(ids...)
+	return cc
+}
+
+// AddPayables adds the "payables" edges to the Payable entity.
+func (cc *CompanyCreate) AddPayables(p ...*Payable) *CompanyCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return cc.AddPayableIDs(ids...)
+}
+
+// AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
+func (cc *CompanyCreate) AddReceivableIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddReceivableIDs(ids...)
+	return cc
+}
+
+// AddReceivables adds the "receivables" edges to the Receivable entity.
+func (cc *CompanyCreate) AddReceivables(r ...*Receivable) *CompanyCreate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return cc.AddReceivableIDs(ids...)
 }
 
 // AddSupplierIDs adds the "suppliers" edge to the Supplier entity by IDs.
@@ -835,6 +867,38 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(project.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.PayablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.PayablesTable,
+			Columns: []string{company.PayablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(payable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.ReceivablesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.ReceivablesTable,
+			Columns: []string{company.ReceivablesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

@@ -10,8 +10,6 @@ import (
 	"mazza/app/utils"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/employee"
-	"mazza/ent/generated/product"
-	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/userrole"
 	"mazza/inits"
 )
@@ -48,7 +46,6 @@ func Signup(ctx *gin.Context) {
 	trueValue := true
 	customerDescription := "Este cliente foi gerado automaticamente"
 	supplierDescription := "Este fornecedor foi gerado automaticamente"
-	treasuryDescription := "Este conta foi gerada automaticamente"
 
 	newCompany, err := tx.Company.Create().SetInput(body.Company).Save(ctx)
 	if err != nil {
@@ -58,6 +55,7 @@ func Signup(ctx *gin.Context) {
 	}
 
 	body.User.CompanyIDs = append(body.User.CompanyIDs, newCompany.ID)
+	stock := 0
 	_, err = newCompany.Update().AddUsers(
 		tx.User.Create().SetInput(body.User).AddAssignedRoles(
 			tx.UserRole.Create().SetInput(ent.CreateUserRoleInput{
@@ -66,20 +64,15 @@ func Signup(ctx *gin.Context) {
 			}).SaveX(ctx),
 		).SetEmployee(
 			tx.Employee.Create().SetInput(ent.CreateEmployeeInput{
-				Name: body.User.Name,
-				Gender: employee.GenderMale,
-				Phone: utils.GetValue(newCompany.Phone, ""),
+				Name:      body.User.Name,
+				Gender:    employee.GenderMale,
+				Phone:     utils.GetValue(newCompany.Phone, ""),
 				CompanyID: &newCompany.ID,
 			}).SaveX(ctx),
 		).SaveX(ctx),
 	).AddProducts(
 		tx.Product.Create().SetInput(ent.CreateProductInput{
-			Name:        "Produtos diversos",
-			Sku:         "0000",
-			Category:    product.CategoryOTHER,
-			Description: "Produto criado automaticamente",
-			IsDefault:   &trueValue,
-			UnitCost:    0,
+			Stock: &stock,
 		}).SaveX(ctx),
 	).AddCustomers(
 		tx.Customer.Create().SetInput(ent.CreateCustomerInput{
@@ -105,11 +98,7 @@ func Signup(ctx *gin.Context) {
 		}).SaveX(ctx),
 	).AddTreasuries(
 		tx.Treasury.Create().SetInput(ent.CreateTreasuryInput{
-			Balance:     0,
-			Category:    treasury.CategoryCASH,
-			Currency:    "mzn",
-			Name:        "Caixa e bancos - diversos",
-			Description: &treasuryDescription,
+			Balance: 0,
 		}).SaveX(ctx),
 	).Save(ctx)
 

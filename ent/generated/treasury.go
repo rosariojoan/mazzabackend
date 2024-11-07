@@ -24,28 +24,8 @@ type Treasury struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// AccountNumber holds the value of the "accountNumber" field.
-	AccountNumber string `json:"accountNumber,omitempty"`
 	// Balance holds the value of the "balance" field.
 	Balance float64 `json:"balance,omitempty"`
-	// BankName holds the value of the "bankName" field.
-	BankName string `json:"bankName,omitempty"`
-	// Currency holds the value of the "currency" field.
-	Currency treasury.Currency `json:"currency,omitempty"`
-	// Description holds the value of the "description" field.
-	Description string `json:"description,omitempty"`
-	// Iban holds the value of the "iban" field.
-	Iban string `json:"iban,omitempty"`
-	// IsDefault holds the value of the "isDefault" field.
-	IsDefault bool `json:"isDefault,omitempty"`
-	// IsMainAccount holds the value of the "isMainAccount" field.
-	IsMainAccount bool `json:"isMainAccount,omitempty"`
-	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
-	// Category holds the value of the "category" field.
-	Category treasury.Category `json:"category,omitempty"`
-	// SwiftCode holds the value of the "swiftCode" field.
-	SwiftCode string `json:"swiftCode,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TreasuryQuery when eager-loading is set.
 	Edges              TreasuryEdges `json:"edges"`
@@ -57,15 +37,11 @@ type Treasury struct {
 type TreasuryEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// AccountingEntries holds the value of the accountingEntries edge.
-	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [1]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
-
-	namedAccountingEntries map[string][]*AccountingEntry
+	totalCount [1]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -79,28 +55,15 @@ func (e TreasuryEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
-// AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
-// was not loaded in eager-loading.
-func (e TreasuryEdges) AccountingEntriesOrErr() ([]*AccountingEntry, error) {
-	if e.loadedTypes[1] {
-		return e.AccountingEntries, nil
-	}
-	return nil, &NotLoadedError{edge: "accountingEntries"}
-}
-
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Treasury) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case treasury.FieldIsDefault, treasury.FieldIsMainAccount:
-			values[i] = new(sql.NullBool)
 		case treasury.FieldBalance:
 			values[i] = new(sql.NullFloat64)
 		case treasury.FieldID:
 			values[i] = new(sql.NullInt64)
-		case treasury.FieldAccountNumber, treasury.FieldBankName, treasury.FieldCurrency, treasury.FieldDescription, treasury.FieldIban, treasury.FieldName, treasury.FieldCategory, treasury.FieldSwiftCode:
-			values[i] = new(sql.NullString)
 		case treasury.FieldCreatedAt, treasury.FieldUpdatedAt, treasury.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		case treasury.ForeignKeys[0]: // company_treasuries
@@ -145,71 +108,11 @@ func (t *Treasury) assignValues(columns []string, values []any) error {
 				t.DeletedAt = new(time.Time)
 				*t.DeletedAt = value.Time
 			}
-		case treasury.FieldAccountNumber:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field accountNumber", values[i])
-			} else if value.Valid {
-				t.AccountNumber = value.String
-			}
 		case treasury.FieldBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field balance", values[i])
 			} else if value.Valid {
 				t.Balance = value.Float64
-			}
-		case treasury.FieldBankName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bankName", values[i])
-			} else if value.Valid {
-				t.BankName = value.String
-			}
-		case treasury.FieldCurrency:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field currency", values[i])
-			} else if value.Valid {
-				t.Currency = treasury.Currency(value.String)
-			}
-		case treasury.FieldDescription:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field description", values[i])
-			} else if value.Valid {
-				t.Description = value.String
-			}
-		case treasury.FieldIban:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field iban", values[i])
-			} else if value.Valid {
-				t.Iban = value.String
-			}
-		case treasury.FieldIsDefault:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isDefault", values[i])
-			} else if value.Valid {
-				t.IsDefault = value.Bool
-			}
-		case treasury.FieldIsMainAccount:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isMainAccount", values[i])
-			} else if value.Valid {
-				t.IsMainAccount = value.Bool
-			}
-		case treasury.FieldName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
-			} else if value.Valid {
-				t.Name = value.String
-			}
-		case treasury.FieldCategory:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field category", values[i])
-			} else if value.Valid {
-				t.Category = treasury.Category(value.String)
-			}
-		case treasury.FieldSwiftCode:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field swiftCode", values[i])
-			} else if value.Valid {
-				t.SwiftCode = value.String
 			}
 		case treasury.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -234,11 +137,6 @@ func (t *Treasury) Value(name string) (ent.Value, error) {
 // QueryCompany queries the "company" edge of the Treasury entity.
 func (t *Treasury) QueryCompany() *CompanyQuery {
 	return NewTreasuryClient(t.config).QueryCompany(t)
-}
-
-// QueryAccountingEntries queries the "accountingEntries" edge of the Treasury entity.
-func (t *Treasury) QueryAccountingEntries() *AccountingEntryQuery {
-	return NewTreasuryClient(t.config).QueryAccountingEntries(t)
 }
 
 // Update returns a builder for updating this Treasury.
@@ -275,64 +173,10 @@ func (t *Treasury) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("accountNumber=")
-	builder.WriteString(t.AccountNumber)
-	builder.WriteString(", ")
 	builder.WriteString("balance=")
 	builder.WriteString(fmt.Sprintf("%v", t.Balance))
-	builder.WriteString(", ")
-	builder.WriteString("bankName=")
-	builder.WriteString(t.BankName)
-	builder.WriteString(", ")
-	builder.WriteString("currency=")
-	builder.WriteString(fmt.Sprintf("%v", t.Currency))
-	builder.WriteString(", ")
-	builder.WriteString("description=")
-	builder.WriteString(t.Description)
-	builder.WriteString(", ")
-	builder.WriteString("iban=")
-	builder.WriteString(t.Iban)
-	builder.WriteString(", ")
-	builder.WriteString("isDefault=")
-	builder.WriteString(fmt.Sprintf("%v", t.IsDefault))
-	builder.WriteString(", ")
-	builder.WriteString("isMainAccount=")
-	builder.WriteString(fmt.Sprintf("%v", t.IsMainAccount))
-	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(t.Name)
-	builder.WriteString(", ")
-	builder.WriteString("category=")
-	builder.WriteString(fmt.Sprintf("%v", t.Category))
-	builder.WriteString(", ")
-	builder.WriteString("swiftCode=")
-	builder.WriteString(t.SwiftCode)
 	builder.WriteByte(')')
 	return builder.String()
-}
-
-// NamedAccountingEntries returns the AccountingEntries named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (t *Treasury) NamedAccountingEntries(name string) ([]*AccountingEntry, error) {
-	if t.Edges.namedAccountingEntries == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := t.Edges.namedAccountingEntries[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (t *Treasury) appendNamedAccountingEntries(name string, edges ...*AccountingEntry) {
-	if t.Edges.namedAccountingEntries == nil {
-		t.Edges.namedAccountingEntries = make(map[string][]*AccountingEntry)
-	}
-	if len(edges) == 0 {
-		t.Edges.namedAccountingEntries[name] = []*AccountingEntry{}
-	} else {
-		t.Edges.namedAccountingEntries[name] = append(t.Edges.namedAccountingEntries[name], edges...)
-	}
 }
 
 // Treasuries is a parsable slice of Treasury.

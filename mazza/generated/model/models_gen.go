@@ -29,25 +29,22 @@ type BalanceSheetOuput struct {
 }
 
 type BaseEntryRegistrationInput struct {
-	Main                  []*EntryItem        `json:"main"`
-	Counterpart           []*EntryItem        `json:"counterpart"`
-	Customer              *EntryCustomerInput `json:"customer,omitempty"`
-	Supplier              *EntrySupplierInput `json:"supplier,omitempty"`
-	Date                  time.Time           `json:"date"`
-	Description           *string             `json:"description,omitempty"`
-	OperationType         BaseOperationType   `json:"operationType"`
-	TotalTransactionValue float64             `json:"totalTransactionValue"`
+	Main                  []*EntryItem      `json:"main"`
+	Counterpart           []*EntryItem      `json:"counterpart"`
+	Attachment            []string          `json:"attachment,omitempty"`
+	CashInput             *float64          `json:"cashInput,omitempty"`
+	Date                  time.Time         `json:"date"`
+	Description           *string           `json:"description,omitempty"`
+	OperationType         BaseOperationType `json:"operationType"`
+	PayableInput          *PayableInput     `json:"payableInput,omitempty"`
+	ProductInput          *int              `json:"productInput,omitempty"`
+	ReceivableInput       *ReceivableInput  `json:"receivableInput,omitempty"`
+	TotalTransactionValue float64           `json:"totalTransactionValue"`
 }
 
 type CustomerAggregationOutput struct {
 	Company *int `json:"company,omitempty"`
 	Count   *int `json:"count,omitempty"`
-}
-
-type EntryCustomerInput struct {
-	ID      int     `json:"id"`
-	Amount  float64 `json:"amount"`
-	DaysDue int     `json:"daysDue"`
 }
 
 type EntryItem struct {
@@ -56,21 +53,13 @@ type EntryItem struct {
 	Amount      float64                     `json:"amount"`
 	IsDebit     bool                        `json:"isDebit"`
 	Label       string                      `json:"label"`
-	Quantity    *int                        `json:"quantity,omitempty"`
-	ProductID   *int                        `json:"productID,omitempty"`
-	TreasuryID  *int                        `json:"treasuryID,omitempty"`
+	Category    string                      `json:"category"`
 }
 
 type EntryProductInput struct {
 	ID       int     `json:"id"`
 	Amount   float64 `json:"amount"`
 	Quantity int     `json:"quantity"`
-}
-
-type EntrySupplierInput struct {
-	ID      int     `json:"id"`
-	Amount  float64 `json:"amount"`
-	DaysDue int     `json:"daysDue"`
 }
 
 type Equity struct {
@@ -170,6 +159,13 @@ type LoginOutput struct {
 	TTL          int                  `json:"ttl"`
 }
 
+type PayableInput struct {
+	Amount  float64   `json:"amount"`
+	Name    string    `json:"name"`
+	Date    time.Time `json:"date"`
+	DueDate time.Time `json:"dueDate"`
+}
+
 type PaymentDetails struct {
 	BankName      string `json:"bankName"`
 	AccountNumber string `json:"accountNumber"`
@@ -182,20 +178,17 @@ type Period struct {
 	End   time.Time `json:"end"`
 }
 
-type PurchaseRegistrationInput struct {
-	Main                  []*EntryItem          `json:"main"`
-	Counterpart           []*EntryItem          `json:"counterpart"`
-	Supplier              *EntrySupplierInput   `json:"supplier"`
-	Date                  time.Time             `json:"date"`
-	Description           *string               `json:"description,omitempty"`
-	OperationType         PurchaseOperationType `json:"operationType"`
-	TotalTransactionValue float64               `json:"totalTransactionValue"`
-}
-
 type ReceivableAggregationOutput struct {
 	Company *int     `json:"company,omitempty"`
 	Count   *int     `json:"count,omitempty"`
 	Sum     *float64 `json:"sum,omitempty"`
+}
+
+type ReceivableInput struct {
+	Amount  float64   `json:"amount"`
+	Name    string    `json:"name"`
+	Date    time.Time `json:"date"`
+	DueDate time.Time `json:"dueDate"`
 }
 
 type ReportInput struct {
@@ -219,15 +212,17 @@ type SalesQuotationInput struct {
 }
 
 type SalesRegistrationInput struct {
-	Main                  []*EntryItem        `json:"main"`
-	Counterpart           []*EntryItem        `json:"counterpart"`
-	Customer              *EntryCustomerInput `json:"customer"`
-	Date                  time.Time           `json:"date"`
-	Description           *string             `json:"description,omitempty"`
-	OperationType         SalesOperationType  `json:"operationType"`
-	TotalTransactionValue float64             `json:"totalTransactionValue"`
-	IssueInvoice          bool                `json:"issueInvoice"`
-	Invoice               *Invoice            `json:"invoice,omitempty"`
+	Main                  []*EntryItem       `json:"main"`
+	Counterpart           []*EntryItem       `json:"counterpart"`
+	ReceivableInput       *ReceivableInput   `json:"receivableInput,omitempty"`
+	CashInput             *float64           `json:"cashInput,omitempty"`
+	ProductInput          *int               `json:"productInput,omitempty"`
+	Category              string             `json:"category"`
+	Date                  time.Time          `json:"date"`
+	Description           *string            `json:"description,omitempty"`
+	OperationType         SalesOperationType `json:"operationType"`
+	TotalTransactionValue float64            `json:"totalTransactionValue"`
+	Attachment            []string           `json:"attachment,omitempty"`
 }
 
 type SignupInput struct {
@@ -264,18 +259,26 @@ type InvitedUserSignupInput struct {
 type BaseOperationType string
 
 const (
-	BaseOperationTypeOther        BaseOperationType = "OTHER"
-	BaseOperationTypeInitialSetup BaseOperationType = "INITIAL_SETUP"
+	BaseOperationTypeSales          BaseOperationType = "SALES"
+	BaseOperationTypeSalesReturn    BaseOperationType = "SALES_RETURN"
+	BaseOperationTypePurchase       BaseOperationType = "PURCHASE"
+	BaseOperationTypePurchaseReturn BaseOperationType = "PURCHASE_RETURN"
+	BaseOperationTypeOther          BaseOperationType = "OTHER"
+	BaseOperationTypeInitialSetup   BaseOperationType = "INITIAL_SETUP"
 )
 
 var AllBaseOperationType = []BaseOperationType{
+	BaseOperationTypeSales,
+	BaseOperationTypeSalesReturn,
+	BaseOperationTypePurchase,
+	BaseOperationTypePurchaseReturn,
 	BaseOperationTypeOther,
 	BaseOperationTypeInitialSetup,
 }
 
 func (e BaseOperationType) IsValid() bool {
 	switch e {
-	case BaseOperationTypeOther, BaseOperationTypeInitialSetup:
+	case BaseOperationTypeSales, BaseOperationTypeSalesReturn, BaseOperationTypePurchase, BaseOperationTypePurchaseReturn, BaseOperationTypeOther, BaseOperationTypeInitialSetup:
 		return true
 	}
 	return false
@@ -340,47 +343,6 @@ func (e *CustomersGroupBy) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CustomersGroupBy) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-type PurchaseOperationType string
-
-const (
-	PurchaseOperationTypePurchase       PurchaseOperationType = "PURCHASE"
-	PurchaseOperationTypePurchaseReturn PurchaseOperationType = "PURCHASE_RETURN"
-)
-
-var AllPurchaseOperationType = []PurchaseOperationType{
-	PurchaseOperationTypePurchase,
-	PurchaseOperationTypePurchaseReturn,
-}
-
-func (e PurchaseOperationType) IsValid() bool {
-	switch e {
-	case PurchaseOperationTypePurchase, PurchaseOperationTypePurchaseReturn:
-		return true
-	}
-	return false
-}
-
-func (e PurchaseOperationType) String() string {
-	return string(e)
-}
-
-func (e *PurchaseOperationType) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = PurchaseOperationType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid PurchaseOperationType", str)
-	}
-	return nil
-}
-
-func (e PurchaseOperationType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 

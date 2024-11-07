@@ -4,10 +4,8 @@ package generated
 
 import (
 	"context"
-	"database/sql/driver"
 	"fmt"
 	"math"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/treasury"
@@ -21,16 +19,14 @@ import (
 // TreasuryQuery is the builder for querying Treasury entities.
 type TreasuryQuery struct {
 	config
-	ctx                        *QueryContext
-	order                      []treasury.OrderOption
-	inters                     []Interceptor
-	predicates                 []predicate.Treasury
-	withCompany                *CompanyQuery
-	withAccountingEntries      *AccountingEntryQuery
-	withFKs                    bool
-	loadTotal                  []func(context.Context, []*Treasury) error
-	modifiers                  []func(*sql.Selector)
-	withNamedAccountingEntries map[string]*AccountingEntryQuery
+	ctx         *QueryContext
+	order       []treasury.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Treasury
+	withCompany *CompanyQuery
+	withFKs     bool
+	loadTotal   []func(context.Context, []*Treasury) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -82,28 +78,6 @@ func (tq *TreasuryQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(treasury.Table, treasury.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, treasury.CompanyTable, treasury.CompanyColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryAccountingEntries chains the current query on the "accountingEntries" edge.
-func (tq *TreasuryQuery) QueryAccountingEntries() *AccountingEntryQuery {
-	query := (&AccountingEntryClient{config: tq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := tq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := tq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(treasury.Table, treasury.FieldID, selector),
-			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, treasury.AccountingEntriesTable, treasury.AccountingEntriesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -298,13 +272,12 @@ func (tq *TreasuryQuery) Clone() *TreasuryQuery {
 		return nil
 	}
 	return &TreasuryQuery{
-		config:                tq.config,
-		ctx:                   tq.ctx.Clone(),
-		order:                 append([]treasury.OrderOption{}, tq.order...),
-		inters:                append([]Interceptor{}, tq.inters...),
-		predicates:            append([]predicate.Treasury{}, tq.predicates...),
-		withCompany:           tq.withCompany.Clone(),
-		withAccountingEntries: tq.withAccountingEntries.Clone(),
+		config:      tq.config,
+		ctx:         tq.ctx.Clone(),
+		order:       append([]treasury.OrderOption{}, tq.order...),
+		inters:      append([]Interceptor{}, tq.inters...),
+		predicates:  append([]predicate.Treasury{}, tq.predicates...),
+		withCompany: tq.withCompany.Clone(),
 		// clone intermediate query.
 		sql:       tq.sql.Clone(),
 		path:      tq.path,
@@ -320,17 +293,6 @@ func (tq *TreasuryQuery) WithCompany(opts ...func(*CompanyQuery)) *TreasuryQuery
 		opt(query)
 	}
 	tq.withCompany = query
-	return tq
-}
-
-// WithAccountingEntries tells the query-builder to eager-load the nodes that are connected to
-// the "accountingEntries" edge. The optional arguments are used to configure the query builder of the edge.
-func (tq *TreasuryQuery) WithAccountingEntries(opts ...func(*AccountingEntryQuery)) *TreasuryQuery {
-	query := (&AccountingEntryClient{config: tq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	tq.withAccountingEntries = query
 	return tq
 }
 
@@ -413,9 +375,8 @@ func (tq *TreasuryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tre
 		nodes       = []*Treasury{}
 		withFKs     = tq.withFKs
 		_spec       = tq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [1]bool{
 			tq.withCompany != nil,
-			tq.withAccountingEntries != nil,
 		}
 	)
 	if tq.withCompany != nil {
@@ -448,22 +409,6 @@ func (tq *TreasuryQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Tre
 	if query := tq.withCompany; query != nil {
 		if err := tq.loadCompany(ctx, query, nodes, nil,
 			func(n *Treasury, e *Company) { n.Edges.Company = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := tq.withAccountingEntries; query != nil {
-		if err := tq.loadAccountingEntries(ctx, query, nodes,
-			func(n *Treasury) { n.Edges.AccountingEntries = []*AccountingEntry{} },
-			func(n *Treasury, e *AccountingEntry) {
-				n.Edges.AccountingEntries = append(n.Edges.AccountingEntries, e)
-			}); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range tq.withNamedAccountingEntries {
-		if err := tq.loadAccountingEntries(ctx, query, nodes,
-			func(n *Treasury) { n.appendNamedAccountingEntries(name) },
-			func(n *Treasury, e *AccountingEntry) { n.appendNamedAccountingEntries(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -504,37 +449,6 @@ func (tq *TreasuryQuery) loadCompany(ctx context.Context, query *CompanyQuery, n
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
-	}
-	return nil
-}
-func (tq *TreasuryQuery) loadAccountingEntries(ctx context.Context, query *AccountingEntryQuery, nodes []*Treasury, init func(*Treasury), assign func(*Treasury, *AccountingEntry)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Treasury)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.AccountingEntry(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(treasury.AccountingEntriesColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.treasury_accounting_entries
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "treasury_accounting_entries" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "treasury_accounting_entries" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
 	}
 	return nil
 }
@@ -630,20 +544,6 @@ func (tq *TreasuryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (tq *TreasuryQuery) Modify(modifiers ...func(s *sql.Selector)) *TreasurySelect {
 	tq.modifiers = append(tq.modifiers, modifiers...)
 	return tq.Select()
-}
-
-// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accountingEntries"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (tq *TreasuryQuery) WithNamedAccountingEntries(name string, opts ...func(*AccountingEntryQuery)) *TreasuryQuery {
-	query := (&AccountingEntryClient{config: tq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if tq.withNamedAccountingEntries == nil {
-		tq.withNamedAccountingEntries = make(map[string]*AccountingEntryQuery)
-	}
-	tq.withNamedAccountingEntries[name] = query
-	return tq
 }
 
 // TreasuryGroupBy is the group-by builder for Treasury entities.

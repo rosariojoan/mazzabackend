@@ -6,9 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/file"
 	"mazza/ent/generated/product"
 	"time"
 
@@ -65,89 +63,17 @@ func (pc *ProductCreate) SetNillableDeletedAt(t *time.Time) *ProductCreate {
 	return pc
 }
 
-// SetDescription sets the "description" field.
-func (pc *ProductCreate) SetDescription(s string) *ProductCreate {
-	pc.mutation.SetDescription(s)
-	return pc
-}
-
-// SetIsDefault sets the "isDefault" field.
-func (pc *ProductCreate) SetIsDefault(b bool) *ProductCreate {
-	pc.mutation.SetIsDefault(b)
-	return pc
-}
-
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
-func (pc *ProductCreate) SetNillableIsDefault(b *bool) *ProductCreate {
-	if b != nil {
-		pc.SetIsDefault(*b)
-	}
-	return pc
-}
-
-// SetMinimumStock sets the "minimumStock" field.
-func (pc *ProductCreate) SetMinimumStock(i int) *ProductCreate {
-	pc.mutation.SetMinimumStock(i)
-	return pc
-}
-
-// SetNillableMinimumStock sets the "minimumStock" field if the given value is not nil.
-func (pc *ProductCreate) SetNillableMinimumStock(i *int) *ProductCreate {
-	if i != nil {
-		pc.SetMinimumStock(*i)
-	}
-	return pc
-}
-
-// SetName sets the "name" field.
-func (pc *ProductCreate) SetName(s string) *ProductCreate {
-	pc.mutation.SetName(s)
-	return pc
-}
-
-// SetPrice sets the "price" field.
-func (pc *ProductCreate) SetPrice(i int) *ProductCreate {
-	pc.mutation.SetPrice(i)
-	return pc
-}
-
-// SetNillablePrice sets the "price" field if the given value is not nil.
-func (pc *ProductCreate) SetNillablePrice(i *int) *ProductCreate {
-	if i != nil {
-		pc.SetPrice(*i)
-	}
-	return pc
-}
-
-// SetSku sets the "sku" field.
-func (pc *ProductCreate) SetSku(s string) *ProductCreate {
-	pc.mutation.SetSku(s)
-	return pc
-}
-
 // SetStock sets the "stock" field.
-func (pc *ProductCreate) SetStock(f float64) *ProductCreate {
-	pc.mutation.SetStock(f)
+func (pc *ProductCreate) SetStock(i int) *ProductCreate {
+	pc.mutation.SetStock(i)
 	return pc
 }
 
 // SetNillableStock sets the "stock" field if the given value is not nil.
-func (pc *ProductCreate) SetNillableStock(f *float64) *ProductCreate {
-	if f != nil {
-		pc.SetStock(*f)
+func (pc *ProductCreate) SetNillableStock(i *int) *ProductCreate {
+	if i != nil {
+		pc.SetStock(*i)
 	}
-	return pc
-}
-
-// SetCategory sets the "category" field.
-func (pc *ProductCreate) SetCategory(pr product.Category) *ProductCreate {
-	pc.mutation.SetCategory(pr)
-	return pc
-}
-
-// SetUnitCost sets the "unitCost" field.
-func (pc *ProductCreate) SetUnitCost(f float64) *ProductCreate {
-	pc.mutation.SetUnitCost(f)
 	return pc
 }
 
@@ -168,36 +94,6 @@ func (pc *ProductCreate) SetNillableCompanyID(id *int) *ProductCreate {
 // SetCompany sets the "company" edge to the Company entity.
 func (pc *ProductCreate) SetCompany(c *Company) *ProductCreate {
 	return pc.SetCompanyID(c.ID)
-}
-
-// AddPictureIDs adds the "pictures" edge to the File entity by IDs.
-func (pc *ProductCreate) AddPictureIDs(ids ...int) *ProductCreate {
-	pc.mutation.AddPictureIDs(ids...)
-	return pc
-}
-
-// AddPictures adds the "pictures" edges to the File entity.
-func (pc *ProductCreate) AddPictures(f ...*File) *ProductCreate {
-	ids := make([]int, len(f))
-	for i := range f {
-		ids[i] = f[i].ID
-	}
-	return pc.AddPictureIDs(ids...)
-}
-
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
-func (pc *ProductCreate) AddAccountingEntryIDs(ids ...int) *ProductCreate {
-	pc.mutation.AddAccountingEntryIDs(ids...)
-	return pc
-}
-
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
-func (pc *ProductCreate) AddAccountingEntries(a ...*AccountingEntry) *ProductCreate {
-	ids := make([]int, len(a))
-	for i := range a {
-		ids[i] = a[i].ID
-	}
-	return pc.AddAccountingEntryIDs(ids...)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -243,18 +139,6 @@ func (pc *ProductCreate) defaults() {
 		v := product.DefaultUpdatedAt()
 		pc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := pc.mutation.IsDefault(); !ok {
-		v := product.DefaultIsDefault
-		pc.mutation.SetIsDefault(v)
-	}
-	if _, ok := pc.mutation.MinimumStock(); !ok {
-		v := product.DefaultMinimumStock
-		pc.mutation.SetMinimumStock(v)
-	}
-	if _, ok := pc.mutation.Price(); !ok {
-		v := product.DefaultPrice
-		pc.mutation.SetPrice(v)
-	}
 	if _, ok := pc.mutation.Stock(); !ok {
 		v := product.DefaultStock
 		pc.mutation.SetStock(v)
@@ -269,66 +153,12 @@ func (pc *ProductCreate) check() error {
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Product.updatedAt"`)}
 	}
-	if _, ok := pc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`generated: missing required field "Product.description"`)}
-	}
-	if _, ok := pc.mutation.IsDefault(); !ok {
-		return &ValidationError{Name: "isDefault", err: errors.New(`generated: missing required field "Product.isDefault"`)}
-	}
-	if _, ok := pc.mutation.MinimumStock(); !ok {
-		return &ValidationError{Name: "minimumStock", err: errors.New(`generated: missing required field "Product.minimumStock"`)}
-	}
-	if v, ok := pc.mutation.MinimumStock(); ok {
-		if err := product.MinimumStockValidator(v); err != nil {
-			return &ValidationError{Name: "minimumStock", err: fmt.Errorf(`generated: validator failed for field "Product.minimumStock": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Product.name"`)}
-	}
-	if v, ok := pc.mutation.Name(); ok {
-		if err := product.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Product.name": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.Price(); !ok {
-		return &ValidationError{Name: "price", err: errors.New(`generated: missing required field "Product.price"`)}
-	}
-	if v, ok := pc.mutation.Price(); ok {
-		if err := product.PriceValidator(v); err != nil {
-			return &ValidationError{Name: "price", err: fmt.Errorf(`generated: validator failed for field "Product.price": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.Sku(); !ok {
-		return &ValidationError{Name: "sku", err: errors.New(`generated: missing required field "Product.sku"`)}
-	}
-	if v, ok := pc.mutation.Sku(); ok {
-		if err := product.SkuValidator(v); err != nil {
-			return &ValidationError{Name: "sku", err: fmt.Errorf(`generated: validator failed for field "Product.sku": %w`, err)}
-		}
-	}
 	if _, ok := pc.mutation.Stock(); !ok {
 		return &ValidationError{Name: "stock", err: errors.New(`generated: missing required field "Product.stock"`)}
 	}
 	if v, ok := pc.mutation.Stock(); ok {
 		if err := product.StockValidator(v); err != nil {
 			return &ValidationError{Name: "stock", err: fmt.Errorf(`generated: validator failed for field "Product.stock": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.Category(); !ok {
-		return &ValidationError{Name: "category", err: errors.New(`generated: missing required field "Product.category"`)}
-	}
-	if v, ok := pc.mutation.Category(); ok {
-		if err := product.CategoryValidator(v); err != nil {
-			return &ValidationError{Name: "category", err: fmt.Errorf(`generated: validator failed for field "Product.category": %w`, err)}
-		}
-	}
-	if _, ok := pc.mutation.UnitCost(); !ok {
-		return &ValidationError{Name: "unitCost", err: errors.New(`generated: missing required field "Product.unitCost"`)}
-	}
-	if v, ok := pc.mutation.UnitCost(); ok {
-		if err := product.UnitCostValidator(v); err != nil {
-			return &ValidationError{Name: "unitCost", err: fmt.Errorf(`generated: validator failed for field "Product.unitCost": %w`, err)}
 		}
 	}
 	return nil
@@ -369,41 +199,9 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		_spec.SetField(product.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := pc.mutation.Description(); ok {
-		_spec.SetField(product.FieldDescription, field.TypeString, value)
-		_node.Description = value
-	}
-	if value, ok := pc.mutation.IsDefault(); ok {
-		_spec.SetField(product.FieldIsDefault, field.TypeBool, value)
-		_node.IsDefault = value
-	}
-	if value, ok := pc.mutation.MinimumStock(); ok {
-		_spec.SetField(product.FieldMinimumStock, field.TypeInt, value)
-		_node.MinimumStock = value
-	}
-	if value, ok := pc.mutation.Name(); ok {
-		_spec.SetField(product.FieldName, field.TypeString, value)
-		_node.Name = value
-	}
-	if value, ok := pc.mutation.Price(); ok {
-		_spec.SetField(product.FieldPrice, field.TypeInt, value)
-		_node.Price = value
-	}
-	if value, ok := pc.mutation.Sku(); ok {
-		_spec.SetField(product.FieldSku, field.TypeString, value)
-		_node.Sku = value
-	}
 	if value, ok := pc.mutation.Stock(); ok {
-		_spec.SetField(product.FieldStock, field.TypeFloat64, value)
+		_spec.SetField(product.FieldStock, field.TypeInt, value)
 		_node.Stock = value
-	}
-	if value, ok := pc.mutation.Category(); ok {
-		_spec.SetField(product.FieldCategory, field.TypeEnum, value)
-		_node.Category = value
-	}
-	if value, ok := pc.mutation.UnitCost(); ok {
-		_spec.SetField(product.FieldUnitCost, field.TypeFloat64, value)
-		_node.UnitCost = value
 	}
 	if nodes := pc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -420,38 +218,6 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_products = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := pc.mutation.PicturesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.PicturesTable,
-			Columns: []string{product.PicturesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := pc.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.AccountingEntriesTable,
-			Columns: []string{product.AccountingEntriesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

@@ -68,26 +68,6 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			ae.withUser = query
-		case "product":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProductClient{config: ae.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			ae.withProduct = query
-		case "treasury":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&TreasuryClient{config: ae.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			ae.withTreasury = query
 		case "createdat":
 			if _, ok := fieldSeen[accountingentry.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldCreatedAt)
@@ -143,6 +123,11 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, accountingentry.FieldAccountType)
 				fieldSeen[accountingentry.FieldAccountType] = struct{}{}
 			}
+		case "category":
+			if _, ok := fieldSeen[accountingentry.FieldCategory]; !ok {
+				selectedFields = append(selectedFields, accountingentry.FieldCategory)
+				fieldSeen[accountingentry.FieldCategory] = struct{}{}
+			}
 		case "isdebit":
 			if _, ok := fieldSeen[accountingentry.FieldIsDebit]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldIsDebit)
@@ -157,11 +142,6 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 			if _, ok := fieldSeen[accountingentry.FieldReversed]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldReversed)
 				fieldSeen[accountingentry.FieldReversed] = struct{}{}
-			}
-		case "quantity":
-			if _, ok := fieldSeen[accountingentry.FieldQuantity]; !ok {
-				selectedFields = append(selectedFields, accountingentry.FieldQuantity)
-				fieldSeen[accountingentry.FieldQuantity] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -329,6 +309,30 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.WithNamedProjects(alias, func(wq *ProjectQuery) {
+				*wq = *query
+			})
+		case "payables":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&PayableClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedPayables(alias, func(wq *PayableQuery) {
+				*wq = *query
+			})
+		case "receivables":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ReceivableClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedReceivables(alias, func(wq *ReceivableQuery) {
 				*wq = *query
 			})
 		case "suppliers":
@@ -874,6 +878,28 @@ func newEmployeePaginateArgs(rv map[string]any) *employeePaginateArgs {
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
 	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &EmployeeOrder{Field: &EmployeeOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithEmployeeOrder(order))
+			}
+		case *EmployeeOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithEmployeeOrder(v))
+			}
+		}
+	}
 	if v, ok := rv[whereField].(*EmployeeWhereInput); ok {
 		args.opts = append(args.opts, WithEmployeeFilter(v.Filter))
 	}
@@ -911,16 +937,6 @@ func (f *FileQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			f.withCompany = query
-		case "product":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProductClient{config: f.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			f.withProduct = query
 		case "createdat":
 			if _, ok := fieldSeen[file.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, file.FieldCreatedAt)
@@ -1045,16 +1061,16 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
-		case "supplier":
+		case "company":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&SupplierClient{config: pa.config}).Query()
+				query = (&CompanyClient{config: pa.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			pa.withSupplier = query
+			pa.withCompany = query
 		case "createdat":
 			if _, ok := fieldSeen[payable.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, payable.FieldCreatedAt)
@@ -1080,6 +1096,11 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, payable.FieldDate)
 				fieldSeen[payable.FieldDate] = struct{}{}
 			}
+		case "name":
+			if _, ok := fieldSeen[payable.FieldName]; !ok {
+				selectedFields = append(selectedFields, payable.FieldName)
+				fieldSeen[payable.FieldName] = struct{}{}
+			}
 		case "outstandingbalance":
 			if _, ok := fieldSeen[payable.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, payable.FieldOutstandingBalance)
@@ -1090,10 +1111,10 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, payable.FieldTotalTransaction)
 				fieldSeen[payable.FieldTotalTransaction] = struct{}{}
 			}
-		case "daysdue":
-			if _, ok := fieldSeen[payable.FieldDaysDue]; !ok {
-				selectedFields = append(selectedFields, payable.FieldDaysDue)
-				fieldSeen[payable.FieldDaysDue] = struct{}{}
+		case "duedate":
+			if _, ok := fieldSeen[payable.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, payable.FieldDueDate)
+				fieldSeen[payable.FieldDueDate] = struct{}{}
 			}
 		case "status":
 			if _, ok := fieldSeen[payable.FieldStatus]; !ok {
@@ -1135,6 +1156,34 @@ func newPayablePaginateArgs(rv map[string]any) *payablePaginateArgs {
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
 	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*PayableOrder:
+			args.opts = append(args.opts, WithPayableOrder(v))
+		case []any:
+			var orders []*PayableOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &PayableOrder{Field: &PayableOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithPayableOrder(orders))
+		}
+	}
 	if v, ok := rv[whereField].(*PayableWhereInput); ok {
 		args.opts = append(args.opts, WithPayableFilter(v.Filter))
 	}
@@ -1172,30 +1221,6 @@ func (pr *ProductQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			pr.withCompany = query
-		case "pictures":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&FileClient{config: pr.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			pr.WithNamedPictures(alias, func(wq *FileQuery) {
-				*wq = *query
-			})
-		case "accountingentries":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&AccountingEntryClient{config: pr.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			pr.WithNamedAccountingEntries(alias, func(wq *AccountingEntryQuery) {
-				*wq = *query
-			})
 		case "createdat":
 			if _, ok := fieldSeen[product.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, product.FieldCreatedAt)
@@ -1211,50 +1236,10 @@ func (pr *ProductQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, product.FieldDeletedAt)
 				fieldSeen[product.FieldDeletedAt] = struct{}{}
 			}
-		case "description":
-			if _, ok := fieldSeen[product.FieldDescription]; !ok {
-				selectedFields = append(selectedFields, product.FieldDescription)
-				fieldSeen[product.FieldDescription] = struct{}{}
-			}
-		case "isdefault":
-			if _, ok := fieldSeen[product.FieldIsDefault]; !ok {
-				selectedFields = append(selectedFields, product.FieldIsDefault)
-				fieldSeen[product.FieldIsDefault] = struct{}{}
-			}
-		case "minimumstock":
-			if _, ok := fieldSeen[product.FieldMinimumStock]; !ok {
-				selectedFields = append(selectedFields, product.FieldMinimumStock)
-				fieldSeen[product.FieldMinimumStock] = struct{}{}
-			}
-		case "name":
-			if _, ok := fieldSeen[product.FieldName]; !ok {
-				selectedFields = append(selectedFields, product.FieldName)
-				fieldSeen[product.FieldName] = struct{}{}
-			}
-		case "price":
-			if _, ok := fieldSeen[product.FieldPrice]; !ok {
-				selectedFields = append(selectedFields, product.FieldPrice)
-				fieldSeen[product.FieldPrice] = struct{}{}
-			}
-		case "sku":
-			if _, ok := fieldSeen[product.FieldSku]; !ok {
-				selectedFields = append(selectedFields, product.FieldSku)
-				fieldSeen[product.FieldSku] = struct{}{}
-			}
 		case "stock":
 			if _, ok := fieldSeen[product.FieldStock]; !ok {
 				selectedFields = append(selectedFields, product.FieldStock)
 				fieldSeen[product.FieldStock] = struct{}{}
-			}
-		case "category":
-			if _, ok := fieldSeen[product.FieldCategory]; !ok {
-				selectedFields = append(selectedFields, product.FieldCategory)
-				fieldSeen[product.FieldCategory] = struct{}{}
-			}
-		case "unitcost":
-			if _, ok := fieldSeen[product.FieldUnitCost]; !ok {
-				selectedFields = append(selectedFields, product.FieldUnitCost)
-				fieldSeen[product.FieldUnitCost] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -1473,6 +1458,34 @@ func newProjectPaginateArgs(rv map[string]any) *projectPaginateArgs {
 	}
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*ProjectOrder:
+			args.opts = append(args.opts, WithProjectOrder(v))
+		case []any:
+			var orders []*ProjectOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &ProjectOrder{Field: &ProjectOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithProjectOrder(orders))
+		}
 	}
 	if v, ok := rv[whereField].(*ProjectWhereInput); ok {
 		args.opts = append(args.opts, WithProjectFilter(v.Filter))
@@ -1766,16 +1779,16 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
-		case "customer":
+		case "company":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
-				query = (&CustomerClient{config: r.config}).Query()
+				query = (&CompanyClient{config: r.config}).Query()
 			)
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			r.withCustomer = query
+			r.withCompany = query
 		case "createdat":
 			if _, ok := fieldSeen[receivable.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldCreatedAt)
@@ -1801,6 +1814,11 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 				selectedFields = append(selectedFields, receivable.FieldDate)
 				fieldSeen[receivable.FieldDate] = struct{}{}
 			}
+		case "name":
+			if _, ok := fieldSeen[receivable.FieldName]; !ok {
+				selectedFields = append(selectedFields, receivable.FieldName)
+				fieldSeen[receivable.FieldName] = struct{}{}
+			}
 		case "outstandingbalance":
 			if _, ok := fieldSeen[receivable.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldOutstandingBalance)
@@ -1811,10 +1829,10 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 				selectedFields = append(selectedFields, receivable.FieldTotalTransaction)
 				fieldSeen[receivable.FieldTotalTransaction] = struct{}{}
 			}
-		case "daysdue":
-			if _, ok := fieldSeen[receivable.FieldDaysDue]; !ok {
-				selectedFields = append(selectedFields, receivable.FieldDaysDue)
-				fieldSeen[receivable.FieldDaysDue] = struct{}{}
+		case "duedate":
+			if _, ok := fieldSeen[receivable.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, receivable.FieldDueDate)
+				fieldSeen[receivable.FieldDueDate] = struct{}{}
 			}
 		case "status":
 			if _, ok := fieldSeen[receivable.FieldStatus]; !ok {
@@ -2028,6 +2046,28 @@ func newSupplierPaginateArgs(rv map[string]any) *supplierPaginateArgs {
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
 	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &SupplierOrder{Field: &SupplierOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithSupplierOrder(order))
+			}
+		case *SupplierOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithSupplierOrder(v))
+			}
+		}
+	}
 	if v, ok := rv[whereField].(*SupplierWhereInput); ok {
 		args.opts = append(args.opts, WithSupplierFilter(v.Filter))
 	}
@@ -2162,18 +2202,6 @@ func (t *TreasuryQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			t.withCompany = query
-		case "accountingentries":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&AccountingEntryClient{config: t.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			t.WithNamedAccountingEntries(alias, func(wq *AccountingEntryQuery) {
-				*wq = *query
-			})
 		case "createdat":
 			if _, ok := fieldSeen[treasury.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, treasury.FieldCreatedAt)
@@ -2189,60 +2217,10 @@ func (t *TreasuryQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, treasury.FieldDeletedAt)
 				fieldSeen[treasury.FieldDeletedAt] = struct{}{}
 			}
-		case "accountnumber":
-			if _, ok := fieldSeen[treasury.FieldAccountNumber]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldAccountNumber)
-				fieldSeen[treasury.FieldAccountNumber] = struct{}{}
-			}
 		case "balance":
 			if _, ok := fieldSeen[treasury.FieldBalance]; !ok {
 				selectedFields = append(selectedFields, treasury.FieldBalance)
 				fieldSeen[treasury.FieldBalance] = struct{}{}
-			}
-		case "bankname":
-			if _, ok := fieldSeen[treasury.FieldBankName]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldBankName)
-				fieldSeen[treasury.FieldBankName] = struct{}{}
-			}
-		case "currency":
-			if _, ok := fieldSeen[treasury.FieldCurrency]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldCurrency)
-				fieldSeen[treasury.FieldCurrency] = struct{}{}
-			}
-		case "description":
-			if _, ok := fieldSeen[treasury.FieldDescription]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldDescription)
-				fieldSeen[treasury.FieldDescription] = struct{}{}
-			}
-		case "iban":
-			if _, ok := fieldSeen[treasury.FieldIban]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldIban)
-				fieldSeen[treasury.FieldIban] = struct{}{}
-			}
-		case "isdefault":
-			if _, ok := fieldSeen[treasury.FieldIsDefault]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldIsDefault)
-				fieldSeen[treasury.FieldIsDefault] = struct{}{}
-			}
-		case "ismainaccount":
-			if _, ok := fieldSeen[treasury.FieldIsMainAccount]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldIsMainAccount)
-				fieldSeen[treasury.FieldIsMainAccount] = struct{}{}
-			}
-		case "name":
-			if _, ok := fieldSeen[treasury.FieldName]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldName)
-				fieldSeen[treasury.FieldName] = struct{}{}
-			}
-		case "category":
-			if _, ok := fieldSeen[treasury.FieldCategory]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldCategory)
-				fieldSeen[treasury.FieldCategory] = struct{}{}
-			}
-		case "swiftcode":
-			if _, ok := fieldSeen[treasury.FieldSwiftCode]; !ok {
-				selectedFields = append(selectedFields, treasury.FieldSwiftCode)
-				fieldSeen[treasury.FieldSwiftCode] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -2278,6 +2256,28 @@ func newTreasuryPaginateArgs(rv map[string]any) *treasuryPaginateArgs {
 	}
 	if v := rv[beforeField]; v != nil {
 		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case map[string]any:
+			var (
+				err1, err2 error
+				order      = &TreasuryOrder{Field: &TreasuryOrderField{}, Direction: entgql.OrderDirectionAsc}
+			)
+			if d, ok := v[directionField]; ok {
+				err1 = order.Direction.UnmarshalGQL(d)
+			}
+			if f, ok := v[fieldField]; ok {
+				err2 = order.Field.UnmarshalGQL(f)
+			}
+			if err1 == nil && err2 == nil {
+				args.opts = append(args.opts, WithTreasuryOrder(order))
+			}
+		case *TreasuryOrder:
+			if v != nil {
+				args.opts = append(args.opts, WithTreasuryOrder(v))
+			}
+		}
 	}
 	if v, ok := rv[whereField].(*TreasuryWhereInput); ok {
 		args.opts = append(args.opts, WithTreasuryFilter(v.Filter))

@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/supplier"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -75,6 +75,20 @@ func (pc *PayableCreate) SetDate(t time.Time) *PayableCreate {
 	return pc
 }
 
+// SetName sets the "name" field.
+func (pc *PayableCreate) SetName(s string) *PayableCreate {
+	pc.mutation.SetName(s)
+	return pc
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (pc *PayableCreate) SetNillableName(s *string) *PayableCreate {
+	if s != nil {
+		pc.SetName(*s)
+	}
+	return pc
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (pc *PayableCreate) SetOutstandingBalance(f float64) *PayableCreate {
 	pc.mutation.SetOutstandingBalance(f)
@@ -87,9 +101,9 @@ func (pc *PayableCreate) SetTotalTransaction(f float64) *PayableCreate {
 	return pc
 }
 
-// SetDaysDue sets the "daysDue" field.
-func (pc *PayableCreate) SetDaysDue(i int) *PayableCreate {
-	pc.mutation.SetDaysDue(i)
+// SetDueDate sets the "dueDate" field.
+func (pc *PayableCreate) SetDueDate(t time.Time) *PayableCreate {
+	pc.mutation.SetDueDate(t)
 	return pc
 }
 
@@ -99,23 +113,23 @@ func (pc *PayableCreate) SetStatus(pa payable.Status) *PayableCreate {
 	return pc
 }
 
-// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
-func (pc *PayableCreate) SetSupplierID(id int) *PayableCreate {
-	pc.mutation.SetSupplierID(id)
+// SetCompanyID sets the "company" edge to the Company entity by ID.
+func (pc *PayableCreate) SetCompanyID(id int) *PayableCreate {
+	pc.mutation.SetCompanyID(id)
 	return pc
 }
 
-// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
-func (pc *PayableCreate) SetNillableSupplierID(id *int) *PayableCreate {
+// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
+func (pc *PayableCreate) SetNillableCompanyID(id *int) *PayableCreate {
 	if id != nil {
-		pc = pc.SetSupplierID(*id)
+		pc = pc.SetCompanyID(*id)
 	}
 	return pc
 }
 
-// SetSupplier sets the "supplier" edge to the Supplier entity.
-func (pc *PayableCreate) SetSupplier(s *Supplier) *PayableCreate {
-	return pc.SetSupplierID(s.ID)
+// SetCompany sets the "company" edge to the Company entity.
+func (pc *PayableCreate) SetCompany(c *Company) *PayableCreate {
+	return pc.SetCompanyID(c.ID)
 }
 
 // Mutation returns the PayableMutation object of the builder.
@@ -161,6 +175,10 @@ func (pc *PayableCreate) defaults() {
 		v := payable.DefaultUpdatedAt()
 		pc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := pc.mutation.Name(); !ok {
+		v := payable.DefaultName
+		pc.mutation.SetName(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -182,19 +200,17 @@ func (pc *PayableCreate) check() error {
 	if _, ok := pc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`generated: missing required field "Payable.date"`)}
 	}
+	if _, ok := pc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Payable.name"`)}
+	}
 	if _, ok := pc.mutation.OutstandingBalance(); !ok {
 		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Payable.outstandingBalance"`)}
 	}
 	if _, ok := pc.mutation.TotalTransaction(); !ok {
 		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Payable.totalTransaction"`)}
 	}
-	if _, ok := pc.mutation.DaysDue(); !ok {
-		return &ValidationError{Name: "daysDue", err: errors.New(`generated: missing required field "Payable.daysDue"`)}
-	}
-	if v, ok := pc.mutation.DaysDue(); ok {
-		if err := payable.DaysDueValidator(v); err != nil {
-			return &ValidationError{Name: "daysDue", err: fmt.Errorf(`generated: validator failed for field "Payable.daysDue": %w`, err)}
-		}
+	if _, ok := pc.mutation.DueDate(); !ok {
+		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Payable.dueDate"`)}
 	}
 	if _, ok := pc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Payable.status"`)}
@@ -250,6 +266,10 @@ func (pc *PayableCreate) createSpec() (*Payable, *sqlgraph.CreateSpec) {
 		_spec.SetField(payable.FieldDate, field.TypeTime, value)
 		_node.Date = value
 	}
+	if value, ok := pc.mutation.Name(); ok {
+		_spec.SetField(payable.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
 	if value, ok := pc.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)
 		_node.OutstandingBalance = value
@@ -258,29 +278,29 @@ func (pc *PayableCreate) createSpec() (*Payable, *sqlgraph.CreateSpec) {
 		_spec.SetField(payable.FieldTotalTransaction, field.TypeFloat64, value)
 		_node.TotalTransaction = value
 	}
-	if value, ok := pc.mutation.DaysDue(); ok {
-		_spec.SetField(payable.FieldDaysDue, field.TypeInt, value)
-		_node.DaysDue = value
+	if value, ok := pc.mutation.DueDate(); ok {
+		_spec.SetField(payable.FieldDueDate, field.TypeTime, value)
+		_node.DueDate = value
 	}
 	if value, ok := pc.mutation.Status(); ok {
 		_spec.SetField(payable.FieldStatus, field.TypeEnum, value)
 		_node.Status = value
 	}
-	if nodes := pc.mutation.SupplierIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payable.SupplierTable,
-			Columns: []string{payable.SupplierColumn},
+			Table:   payable.CompanyTable,
+			Columns: []string{payable.CompanyColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.supplier_payables = &nodes[0]
+		_node.company_payables = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

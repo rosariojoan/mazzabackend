@@ -80,6 +80,11 @@ func Date(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldDate, v))
 }
 
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldEQ(FieldName, v))
+}
+
 // OutstandingBalance applies equality check predicate on the "outstandingBalance" field. It's identical to OutstandingBalanceEQ.
 func OutstandingBalance(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldOutstandingBalance, v))
@@ -90,9 +95,9 @@ func TotalTransaction(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldTotalTransaction, v))
 }
 
-// DaysDue applies equality check predicate on the "daysDue" field. It's identical to DaysDueEQ.
-func DaysDue(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldEQ(FieldDaysDue, v))
+// DueDate applies equality check predicate on the "dueDate" field. It's identical to DueDateEQ.
+func DueDate(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldEQ(FieldDueDate, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
@@ -305,6 +310,71 @@ func DateLTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldDate, v))
 }
 
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldEQ(FieldName, v))
+}
+
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldNEQ(FieldName, v))
+}
+
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldIn(FieldName, vs...))
+}
+
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldNotIn(FieldName, vs...))
+}
+
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldGT(FieldName, v))
+}
+
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldGTE(FieldName, v))
+}
+
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldLT(FieldName, v))
+}
+
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldLTE(FieldName, v))
+}
+
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldContains(FieldName, v))
+}
+
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldHasPrefix(FieldName, v))
+}
+
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldHasSuffix(FieldName, v))
+}
+
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldEqualFold(FieldName, v))
+}
+
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.Receivable {
+	return predicate.Receivable(sql.FieldContainsFold(FieldName, v))
+}
+
 // OutstandingBalanceEQ applies the EQ predicate on the "outstandingBalance" field.
 func OutstandingBalanceEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldOutstandingBalance, v))
@@ -385,44 +455,44 @@ func TotalTransactionLTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldTotalTransaction, v))
 }
 
-// DaysDueEQ applies the EQ predicate on the "daysDue" field.
-func DaysDueEQ(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldEQ(FieldDaysDue, v))
+// DueDateEQ applies the EQ predicate on the "dueDate" field.
+func DueDateEQ(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldEQ(FieldDueDate, v))
 }
 
-// DaysDueNEQ applies the NEQ predicate on the "daysDue" field.
-func DaysDueNEQ(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldNEQ(FieldDaysDue, v))
+// DueDateNEQ applies the NEQ predicate on the "dueDate" field.
+func DueDateNEQ(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldNEQ(FieldDueDate, v))
 }
 
-// DaysDueIn applies the In predicate on the "daysDue" field.
-func DaysDueIn(vs ...int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldIn(FieldDaysDue, vs...))
+// DueDateIn applies the In predicate on the "dueDate" field.
+func DueDateIn(vs ...time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldIn(FieldDueDate, vs...))
 }
 
-// DaysDueNotIn applies the NotIn predicate on the "daysDue" field.
-func DaysDueNotIn(vs ...int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldNotIn(FieldDaysDue, vs...))
+// DueDateNotIn applies the NotIn predicate on the "dueDate" field.
+func DueDateNotIn(vs ...time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldNotIn(FieldDueDate, vs...))
 }
 
-// DaysDueGT applies the GT predicate on the "daysDue" field.
-func DaysDueGT(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldGT(FieldDaysDue, v))
+// DueDateGT applies the GT predicate on the "dueDate" field.
+func DueDateGT(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldGT(FieldDueDate, v))
 }
 
-// DaysDueGTE applies the GTE predicate on the "daysDue" field.
-func DaysDueGTE(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldGTE(FieldDaysDue, v))
+// DueDateGTE applies the GTE predicate on the "dueDate" field.
+func DueDateGTE(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldGTE(FieldDueDate, v))
 }
 
-// DaysDueLT applies the LT predicate on the "daysDue" field.
-func DaysDueLT(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldLT(FieldDaysDue, v))
+// DueDateLT applies the LT predicate on the "dueDate" field.
+func DueDateLT(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldLT(FieldDueDate, v))
 }
 
-// DaysDueLTE applies the LTE predicate on the "daysDue" field.
-func DaysDueLTE(v int) predicate.Receivable {
-	return predicate.Receivable(sql.FieldLTE(FieldDaysDue, v))
+// DueDateLTE applies the LTE predicate on the "dueDate" field.
+func DueDateLTE(v time.Time) predicate.Receivable {
+	return predicate.Receivable(sql.FieldLTE(FieldDueDate, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
@@ -445,21 +515,21 @@ func StatusNotIn(vs ...Status) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldStatus, vs...))
 }
 
-// HasCustomer applies the HasEdge predicate on the "customer" edge.
-func HasCustomer() predicate.Receivable {
+// HasCompany applies the HasEdge predicate on the "company" edge.
+func HasCompany() predicate.Receivable {
 	return predicate.Receivable(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, CustomerTable, CustomerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCustomerWith applies the HasEdge predicate on the "customer" edge with a given conditions (other predicates).
-func HasCustomerWith(preds ...predicate.Customer) predicate.Receivable {
+// HasCompanyWith applies the HasEdge predicate on the "company" edge with a given conditions (other predicates).
+func HasCompanyWith(preds ...predicate.Company) predicate.Receivable {
 	return predicate.Receivable(func(s *sql.Selector) {
-		step := newCustomerStep()
+		step := newCompanyStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

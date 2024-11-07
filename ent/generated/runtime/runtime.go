@@ -58,12 +58,16 @@ func init() {
 	accountingentryDescAccount := accountingentryFields[3].Descriptor()
 	// accountingentry.AccountValidator is a validator for the "account" field. It is called by the builders before save.
 	accountingentry.AccountValidator = accountingentryDescAccount.Validators[0].(func(string) error)
+	// accountingentryDescCategory is the schema descriptor for category field.
+	accountingentryDescCategory := accountingentryFields[8].Descriptor()
+	// accountingentry.DefaultCategory holds the default value on creation for the category field.
+	accountingentry.DefaultCategory = accountingentryDescCategory.Default.(string)
 	// accountingentryDescIsReversal is the schema descriptor for isReversal field.
-	accountingentryDescIsReversal := accountingentryFields[9].Descriptor()
+	accountingentryDescIsReversal := accountingentryFields[10].Descriptor()
 	// accountingentry.DefaultIsReversal holds the default value on creation for the isReversal field.
 	accountingentry.DefaultIsReversal = accountingentryDescIsReversal.Default.(bool)
 	// accountingentryDescReversed is the schema descriptor for reversed field.
-	accountingentryDescReversed := accountingentryFields[10].Descriptor()
+	accountingentryDescReversed := accountingentryFields[11].Descriptor()
 	// accountingentry.DefaultReversed holds the default value on creation for the reversed field.
 	accountingentry.DefaultReversed = accountingentryDescReversed.Default.(bool)
 	companyMixin := schema.Company{}.Mixin()
@@ -189,10 +193,10 @@ func init() {
 	payableDescEntryGroup := payableFields[0].Descriptor()
 	// payable.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
 	payable.EntryGroupValidator = payableDescEntryGroup.Validators[0].(func(int) error)
-	// payableDescDaysDue is the schema descriptor for daysDue field.
-	payableDescDaysDue := payableFields[4].Descriptor()
-	// payable.DaysDueValidator is a validator for the "daysDue" field. It is called by the builders before save.
-	payable.DaysDueValidator = payableDescDaysDue.Validators[0].(func(int) error)
+	// payableDescName is the schema descriptor for name field.
+	payableDescName := payableFields[2].Descriptor()
+	// payable.DefaultName holds the default value on creation for the name field.
+	payable.DefaultName = payableDescName.Default.(string)
 	productMixin := schema.Product{}.Mixin()
 	productMixinFields0 := productMixin[0].Fields()
 	_ = productMixinFields0
@@ -208,40 +212,12 @@ func init() {
 	product.DefaultUpdatedAt = productDescUpdatedAt.Default.(func() time.Time)
 	// product.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	product.UpdateDefaultUpdatedAt = productDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productDescIsDefault is the schema descriptor for isDefault field.
-	productDescIsDefault := productFields[1].Descriptor()
-	// product.DefaultIsDefault holds the default value on creation for the isDefault field.
-	product.DefaultIsDefault = productDescIsDefault.Default.(bool)
-	// productDescMinimumStock is the schema descriptor for minimumStock field.
-	productDescMinimumStock := productFields[2].Descriptor()
-	// product.DefaultMinimumStock holds the default value on creation for the minimumStock field.
-	product.DefaultMinimumStock = productDescMinimumStock.Default.(int)
-	// product.MinimumStockValidator is a validator for the "minimumStock" field. It is called by the builders before save.
-	product.MinimumStockValidator = productDescMinimumStock.Validators[0].(func(int) error)
-	// productDescName is the schema descriptor for name field.
-	productDescName := productFields[3].Descriptor()
-	// product.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	product.NameValidator = productDescName.Validators[0].(func(string) error)
-	// productDescPrice is the schema descriptor for price field.
-	productDescPrice := productFields[4].Descriptor()
-	// product.DefaultPrice holds the default value on creation for the price field.
-	product.DefaultPrice = productDescPrice.Default.(int)
-	// product.PriceValidator is a validator for the "price" field. It is called by the builders before save.
-	product.PriceValidator = productDescPrice.Validators[0].(func(int) error)
-	// productDescSku is the schema descriptor for sku field.
-	productDescSku := productFields[5].Descriptor()
-	// product.SkuValidator is a validator for the "sku" field. It is called by the builders before save.
-	product.SkuValidator = productDescSku.Validators[0].(func(string) error)
 	// productDescStock is the schema descriptor for stock field.
-	productDescStock := productFields[6].Descriptor()
+	productDescStock := productFields[0].Descriptor()
 	// product.DefaultStock holds the default value on creation for the stock field.
-	product.DefaultStock = productDescStock.Default.(float64)
+	product.DefaultStock = productDescStock.Default.(int)
 	// product.StockValidator is a validator for the "stock" field. It is called by the builders before save.
-	product.StockValidator = productDescStock.Validators[0].(func(float64) error)
-	// productDescUnitCost is the schema descriptor for unitCost field.
-	productDescUnitCost := productFields[8].Descriptor()
-	// product.UnitCostValidator is a validator for the "unitCost" field. It is called by the builders before save.
-	product.UnitCostValidator = productDescUnitCost.Validators[0].(func(float64) error)
+	product.StockValidator = productDescStock.Validators[0].(func(int) error)
 	projectMixin := schema.Project{}.Mixin()
 	projectMixinFields0 := projectMixin[0].Fields()
 	_ = projectMixinFields0
@@ -326,10 +302,10 @@ func init() {
 	receivableDescEntryGroup := receivableFields[0].Descriptor()
 	// receivable.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
 	receivable.EntryGroupValidator = receivableDescEntryGroup.Validators[0].(func(int) error)
-	// receivableDescDaysDue is the schema descriptor for daysDue field.
-	receivableDescDaysDue := receivableFields[4].Descriptor()
-	// receivable.DaysDueValidator is a validator for the "daysDue" field. It is called by the builders before save.
-	receivable.DaysDueValidator = receivableDescDaysDue.Validators[0].(func(int) error)
+	// receivableDescName is the schema descriptor for name field.
+	receivableDescName := receivableFields[2].Descriptor()
+	// receivable.DefaultName holds the default value on creation for the name field.
+	receivable.DefaultName = receivableDescName.Default.(string)
 	supplierMixin := schema.Supplier{}.Mixin()
 	supplierMixinFields0 := supplierMixin[0].Fields()
 	_ = supplierMixinFields0
@@ -378,18 +354,6 @@ func init() {
 	treasury.DefaultUpdatedAt = treasuryDescUpdatedAt.Default.(func() time.Time)
 	// treasury.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	treasury.UpdateDefaultUpdatedAt = treasuryDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// treasuryDescIsDefault is the schema descriptor for isDefault field.
-	treasuryDescIsDefault := treasuryFields[6].Descriptor()
-	// treasury.DefaultIsDefault holds the default value on creation for the isDefault field.
-	treasury.DefaultIsDefault = treasuryDescIsDefault.Default.(bool)
-	// treasuryDescIsMainAccount is the schema descriptor for isMainAccount field.
-	treasuryDescIsMainAccount := treasuryFields[7].Descriptor()
-	// treasury.DefaultIsMainAccount holds the default value on creation for the isMainAccount field.
-	treasury.DefaultIsMainAccount = treasuryDescIsMainAccount.Default.(bool)
-	// treasuryDescName is the schema descriptor for name field.
-	treasuryDescName := treasuryFields[8].Descriptor()
-	// treasury.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	treasury.NameValidator = treasuryDescName.Validators[0].(func(string) error)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0

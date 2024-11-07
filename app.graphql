@@ -84,7 +84,6 @@ extend type Query {
     aggregateReceivables(where: ReceivableWhereInput, groupBy: [ReceivablesGroupBy!]): [ReceivableAggregationOutput!]!
 
     employees(where: EmployeeWhereInput): [Employee!]!
-    payables(where: PayableWhereInput): [Payable!]!
     products(where: ProductWhereInput): [Product!]!
     lowStock(where: ProductWhereInput): [Product!]!
     numberOfProducts(where: ProductWhereInput): Int!

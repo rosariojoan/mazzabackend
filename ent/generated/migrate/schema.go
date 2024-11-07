@@ -23,13 +23,11 @@ var (
 		{Name: "amount", Type: field.TypeFloat64},
 		{Name: "description", Type: field.TypeString},
 		{Name: "account_type", Type: field.TypeEnum, Enums: []string{"ASSET", "LIABILITY", "EQUITY", "REVENUE", "EXPENSE", "TAX_EXPENSE", "INCOME", "DIVIDEND_EXPENSE", "CONTRA_ASSET", "CONTRA_LIABILITY", "CONTRA_REVENUE", "CONTRA_EXPENSE"}},
+		{Name: "category", Type: field.TypeString, Default: ""},
 		{Name: "is_debit", Type: field.TypeBool},
 		{Name: "is_reversal", Type: field.TypeBool, Default: false},
 		{Name: "reversed", Type: field.TypeBool, Default: false},
-		{Name: "quantity", Type: field.TypeInt, Nullable: true},
 		{Name: "company_accounting_entries", Type: field.TypeInt, Nullable: true},
-		{Name: "product_accounting_entries", Type: field.TypeInt, Nullable: true},
-		{Name: "treasury_accounting_entries", Type: field.TypeInt, Nullable: true},
 		{Name: "user_accounting_entries", Type: field.TypeInt, Nullable: true},
 	}
 	// AccountingEntriesTable holds the schema information for the "accounting_entries" table.
@@ -45,20 +43,8 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "accounting_entries_products_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
-				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "accounting_entries_treasuries_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
-				RefColumns: []*schema.Column{TreasuriesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
 				Symbol:     "accounting_entries_users_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[19]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -209,7 +195,6 @@ var (
 		{Name: "url", Type: field.TypeString, Unique: true},
 		{Name: "description", Type: field.TypeString},
 		{Name: "company_files", Type: field.TypeInt, Nullable: true},
-		{Name: "product_pictures", Type: field.TypeInt, Nullable: true},
 	}
 	// FilesTable holds the schema information for the "files" table.
 	FilesTable = &schema.Table{
@@ -223,12 +208,6 @@ var (
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
-			{
-				Symbol:     "files_products_pictures",
-				Columns:    []*schema.Column{FilesColumns[11]},
-				RefColumns: []*schema.Column{ProductsColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
 		},
 	}
 	// PayablesColumns holds the columns for the "payables" table.
@@ -239,10 +218,12 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "entry_group", Type: field.TypeInt},
 		{Name: "date", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString, Default: "Diversos"},
 		{Name: "outstanding_balance", Type: field.TypeFloat64},
 		{Name: "total_transaction", Type: field.TypeFloat64},
-		{Name: "days_due", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"PAID", "UNPAID", "DOUBTFUL", "DEFAULT"}},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"paid", "pending", "default"}},
+		{Name: "company_payables", Type: field.TypeInt, Nullable: true},
 		{Name: "supplier_payables", Type: field.TypeInt, Nullable: true},
 	}
 	// PayablesTable holds the schema information for the "payables" table.
@@ -252,8 +233,14 @@ var (
 		PrimaryKey: []*schema.Column{PayablesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
+				Symbol:     "payables_companies_payables",
+				Columns:    []*schema.Column{PayablesColumns[11]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
 				Symbol:     "payables_suppliers_payables",
-				Columns:    []*schema.Column{PayablesColumns[10]},
+				Columns:    []*schema.Column{PayablesColumns[12]},
 				RefColumns: []*schema.Column{SuppliersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -265,15 +252,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "description", Type: field.TypeString},
-		{Name: "is_default", Type: field.TypeBool, Default: false},
-		{Name: "minimum_stock", Type: field.TypeInt, Default: 0},
-		{Name: "name", Type: field.TypeString},
-		{Name: "price", Type: field.TypeInt, Default: 0},
-		{Name: "sku", Type: field.TypeString},
-		{Name: "stock", Type: field.TypeFloat64, Default: 0},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"MERCHANDISE", "OTHER", "SERVICE"}},
-		{Name: "unit_cost", Type: field.TypeFloat64},
+		{Name: "stock", Type: field.TypeInt, Default: 0},
 		{Name: "company_products", Type: field.TypeInt, Nullable: true},
 	}
 	// ProductsTable holds the schema information for the "products" table.
@@ -284,21 +263,9 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "products_companies_products",
-				Columns:    []*schema.Column{ProductsColumns[13]},
+				Columns:    []*schema.Column{ProductsColumns[5]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
-			},
-		},
-		Indexes: []*schema.Index{
-			{
-				Name:    "product_name_company_products",
-				Unique:  true,
-				Columns: []*schema.Column{ProductsColumns[7], ProductsColumns[13]},
-			},
-			{
-				Name:    "product_sku_company_products",
-				Unique:  true,
-				Columns: []*schema.Column{ProductsColumns[9], ProductsColumns[13]},
 			},
 		},
 	}
@@ -436,10 +403,12 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "entry_group", Type: field.TypeInt},
 		{Name: "date", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString, Default: "Diversos"},
 		{Name: "outstanding_balance", Type: field.TypeFloat64},
 		{Name: "total_transaction", Type: field.TypeFloat64},
-		{Name: "days_due", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"paid", "unpaid", "doubtful", "default"}},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"paid", "pending", "default"}},
+		{Name: "company_receivables", Type: field.TypeInt, Nullable: true},
 		{Name: "customer_receivables", Type: field.TypeInt, Nullable: true},
 	}
 	// ReceivablesTable holds the schema information for the "receivables" table.
@@ -449,8 +418,14 @@ var (
 		PrimaryKey: []*schema.Column{ReceivablesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
+				Symbol:     "receivables_companies_receivables",
+				Columns:    []*schema.Column{ReceivablesColumns[11]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
 				Symbol:     "receivables_customers_receivables",
-				Columns:    []*schema.Column{ReceivablesColumns[10]},
+				Columns:    []*schema.Column{ReceivablesColumns[12]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -534,17 +509,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
-		{Name: "account_number", Type: field.TypeString, Nullable: true},
 		{Name: "balance", Type: field.TypeFloat64},
-		{Name: "bank_name", Type: field.TypeString, Nullable: true},
-		{Name: "currency", Type: field.TypeEnum, Enums: []string{"mzn"}},
-		{Name: "description", Type: field.TypeString, Nullable: true},
-		{Name: "iban", Type: field.TypeString, Nullable: true},
-		{Name: "is_default", Type: field.TypeBool, Nullable: true, Default: false},
-		{Name: "is_main_account", Type: field.TypeBool, Nullable: true, Default: false},
-		{Name: "name", Type: field.TypeString},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"DEPOSIT", "CASH"}},
-		{Name: "swift_code", Type: field.TypeString, Nullable: true},
 		{Name: "company_treasuries", Type: field.TypeInt, Nullable: true},
 	}
 	// TreasuriesTable holds the schema information for the "treasuries" table.
@@ -555,16 +520,9 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "treasuries_companies_treasuries",
-				Columns:    []*schema.Column{TreasuriesColumns[15]},
+				Columns:    []*schema.Column{TreasuriesColumns[5]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
-			},
-		},
-		Indexes: []*schema.Index{
-			{
-				Name:    "treasury_name_company_treasuries",
-				Unique:  true,
-				Columns: []*schema.Column{TreasuriesColumns[12], TreasuriesColumns[15]},
 			},
 		},
 	}
@@ -777,16 +735,14 @@ var (
 
 func init() {
 	AccountingEntriesTable.ForeignKeys[0].RefTable = CompaniesTable
-	AccountingEntriesTable.ForeignKeys[1].RefTable = ProductsTable
-	AccountingEntriesTable.ForeignKeys[2].RefTable = TreasuriesTable
-	AccountingEntriesTable.ForeignKeys[3].RefTable = UsersTable
+	AccountingEntriesTable.ForeignKeys[1].RefTable = UsersTable
 	CompaniesTable.ForeignKeys[0].RefTable = CompaniesTable
 	CustomersTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[1].RefTable = UsersTable
 	FilesTable.ForeignKeys[0].RefTable = CompaniesTable
-	FilesTable.ForeignKeys[1].RefTable = ProductsTable
-	PayablesTable.ForeignKeys[0].RefTable = SuppliersTable
+	PayablesTable.ForeignKeys[0].RefTable = CompaniesTable
+	PayablesTable.ForeignKeys[1].RefTable = SuppliersTable
 	ProductsTable.ForeignKeys[0].RefTable = CompaniesTable
 	ProjectsTable.ForeignKeys[0].RefTable = CompaniesTable
 	ProjectsTable.ForeignKeys[1].RefTable = UsersTable
@@ -795,7 +751,8 @@ func init() {
 	ProjectTasksTable.ForeignKeys[0].RefTable = ProjectsTable
 	ProjectTasksTable.ForeignKeys[1].RefTable = UsersTable
 	ProjectTasksTable.ForeignKeys[2].RefTable = UsersTable
-	ReceivablesTable.ForeignKeys[0].RefTable = CustomersTable
+	ReceivablesTable.ForeignKeys[0].RefTable = CompaniesTable
+	ReceivablesTable.ForeignKeys[1].RefTable = CustomersTable
 	SuppliersTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[1].RefTable = UsersTable

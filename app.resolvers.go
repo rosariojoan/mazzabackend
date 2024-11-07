@@ -13,7 +13,6 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
-	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
@@ -498,7 +497,7 @@ func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generat
 	if err != nil {
 		return nil, err
 	}
-	err = query.Where(receivable.HasCustomerWith(customer.HasCompanyWith(company.IDEQ(currentCompany.ID)))).
+	err = query.Where(receivable.HasCompanyWith(company.IDEQ(currentCompany.ID))).
 		// GroupBy().
 		Aggregate(generated.Count(), generated.Sum(receivable.FieldOutstandingBalance)).Scan(ctx, &agg)
 
@@ -526,17 +525,6 @@ func (r *queryResolver) Employees(ctx context.Context, where *generated.Employee
 	return query.All(ctx)
 }
 
-// Payables is the resolver for the payables field.
-func (r *queryResolver) Payables(ctx context.Context, where *generated.PayableWhereInput) ([]*generated.Payable, error) {
-	supplierQ := supplier.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	filter := payable.HasSupplierWith(supplierQ)
-	query, err := where.Filter(r.client.Payable.Query().Where(filter))
-	if err != nil {
-		return nil, err
-	}
-	return query.All(ctx)
-}
-
 // Products is the resolver for the products field.
 func (r *queryResolver) Products(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error) {
 	filter := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
@@ -550,8 +538,7 @@ func (r *queryResolver) Products(ctx context.Context, where *generated.ProductWh
 // LowStock is the resolver for the lowStock field.
 func (r *queryResolver) LowStock(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error) {
 	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	productQ := sql.FieldsLT(product.FieldStock, product.FieldMinimumStock)
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, productQ))
+	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
 	if err != nil {
 		return nil, err
 	}
@@ -571,8 +558,7 @@ func (r *queryResolver) NumberOfProducts(ctx context.Context, where *generated.P
 // NumberOfLowStock is the resolver for the numberOfLowStock field.
 func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
 	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	productQ := sql.FieldsLT(product.FieldStock, product.FieldMinimumStock)
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, productQ))
+	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
 	if err != nil {
 		return 0, err
 	}
@@ -582,8 +568,7 @@ func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.P
 // NumberOfOutOfStock is the resolver for the numberOfOutOfStock field.
 func (r *queryResolver) NumberOfOutOfStock(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
 	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	productQ := product.And(product.CategoryEQ(product.CategoryMERCHANDISE))
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, productQ))
+	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
 	if err != nil {
 		return 0, err
 	}
@@ -630,6 +615,8 @@ func (r *queryResolver) Suppliers(ctx context.Context, where *generated.Supplier
 func (r *queryResolver) Treasuries(ctx context.Context, where *generated.TreasuryWhereInput) ([]*generated.Treasury, error) {
 	filter := treasury.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
 	query, err := where.Filter(r.client.Treasury.Query().Where(filter))
+	// t, _ := r.AccountingEntries(ctx, nil, nil, nil, nil, nil, nil)
+	// appUtils.PP(t)
 	if err != nil {
 		return nil, err
 	}

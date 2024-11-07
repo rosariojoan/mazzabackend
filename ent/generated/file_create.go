@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
-	"mazza/ent/generated/product"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -117,25 +116,6 @@ func (fc *FileCreate) SetNillableCompanyID(id *int) *FileCreate {
 // SetCompany sets the "company" edge to the Company entity.
 func (fc *FileCreate) SetCompany(c *Company) *FileCreate {
 	return fc.SetCompanyID(c.ID)
-}
-
-// SetProductID sets the "product" edge to the Product entity by ID.
-func (fc *FileCreate) SetProductID(id int) *FileCreate {
-	fc.mutation.SetProductID(id)
-	return fc
-}
-
-// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
-func (fc *FileCreate) SetNillableProductID(id *int) *FileCreate {
-	if id != nil {
-		fc = fc.SetProductID(*id)
-	}
-	return fc
-}
-
-// SetProduct sets the "product" edge to the Product entity.
-func (fc *FileCreate) SetProduct(p *Product) *FileCreate {
-	return fc.SetProductID(p.ID)
 }
 
 // Mutation returns the FileMutation object of the builder.
@@ -296,23 +276,6 @@ func (fc *FileCreate) createSpec() (*File, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_files = &nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := fc.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   file.ProductTable,
-			Columns: []string{file.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.product_pictures = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

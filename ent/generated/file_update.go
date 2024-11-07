@@ -9,7 +9,6 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/product"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -160,25 +159,6 @@ func (fu *FileUpdate) SetCompany(c *Company) *FileUpdate {
 	return fu.SetCompanyID(c.ID)
 }
 
-// SetProductID sets the "product" edge to the Product entity by ID.
-func (fu *FileUpdate) SetProductID(id int) *FileUpdate {
-	fu.mutation.SetProductID(id)
-	return fu
-}
-
-// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
-func (fu *FileUpdate) SetNillableProductID(id *int) *FileUpdate {
-	if id != nil {
-		fu = fu.SetProductID(*id)
-	}
-	return fu
-}
-
-// SetProduct sets the "product" edge to the Product entity.
-func (fu *FileUpdate) SetProduct(p *Product) *FileUpdate {
-	return fu.SetProductID(p.ID)
-}
-
 // Mutation returns the FileMutation object of the builder.
 func (fu *FileUpdate) Mutation() *FileMutation {
 	return fu.mutation
@@ -187,12 +167,6 @@ func (fu *FileUpdate) Mutation() *FileMutation {
 // ClearCompany clears the "company" edge to the Company entity.
 func (fu *FileUpdate) ClearCompany() *FileUpdate {
 	fu.mutation.ClearCompany()
-	return fu
-}
-
-// ClearProduct clears the "product" edge to the Product entity.
-func (fu *FileUpdate) ClearProduct() *FileUpdate {
-	fu.mutation.ClearProduct()
 	return fu
 }
 
@@ -314,35 +288,6 @@ func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if fu.mutation.ProductCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   file.ProductTable,
-			Columns: []string{file.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := fu.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   file.ProductTable,
-			Columns: []string{file.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -501,25 +446,6 @@ func (fuo *FileUpdateOne) SetCompany(c *Company) *FileUpdateOne {
 	return fuo.SetCompanyID(c.ID)
 }
 
-// SetProductID sets the "product" edge to the Product entity by ID.
-func (fuo *FileUpdateOne) SetProductID(id int) *FileUpdateOne {
-	fuo.mutation.SetProductID(id)
-	return fuo
-}
-
-// SetNillableProductID sets the "product" edge to the Product entity by ID if the given value is not nil.
-func (fuo *FileUpdateOne) SetNillableProductID(id *int) *FileUpdateOne {
-	if id != nil {
-		fuo = fuo.SetProductID(*id)
-	}
-	return fuo
-}
-
-// SetProduct sets the "product" edge to the Product entity.
-func (fuo *FileUpdateOne) SetProduct(p *Product) *FileUpdateOne {
-	return fuo.SetProductID(p.ID)
-}
-
 // Mutation returns the FileMutation object of the builder.
 func (fuo *FileUpdateOne) Mutation() *FileMutation {
 	return fuo.mutation
@@ -528,12 +454,6 @@ func (fuo *FileUpdateOne) Mutation() *FileMutation {
 // ClearCompany clears the "company" edge to the Company entity.
 func (fuo *FileUpdateOne) ClearCompany() *FileUpdateOne {
 	fuo.mutation.ClearCompany()
-	return fuo
-}
-
-// ClearProduct clears the "product" edge to the Product entity.
-func (fuo *FileUpdateOne) ClearProduct() *FileUpdateOne {
-	fuo.mutation.ClearProduct()
 	return fuo
 }
 
@@ -685,35 +605,6 @@ func (fuo *FileUpdateOne) sqlSave(ctx context.Context) (_node *File, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if fuo.mutation.ProductCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   file.ProductTable,
-			Columns: []string{file.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := fuo.mutation.ProductIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   file.ProductTable,
-			Columns: []string{file.ProductColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

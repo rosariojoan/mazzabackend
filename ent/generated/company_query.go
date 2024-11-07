@@ -12,9 +12,11 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
@@ -42,6 +44,8 @@ type CompanyQuery struct {
 	withFiles                  *FileQuery
 	withProducts               *ProductQuery
 	withProjects               *ProjectQuery
+	withPayables               *PayableQuery
+	withReceivables            *ReceivableQuery
 	withSuppliers              *SupplierQuery
 	withTokens                 *TokenQuery
 	withTreasuries             *TreasuryQuery
@@ -59,6 +63,8 @@ type CompanyQuery struct {
 	withNamedFiles             map[string]*FileQuery
 	withNamedProducts          map[string]*ProductQuery
 	withNamedProjects          map[string]*ProjectQuery
+	withNamedPayables          map[string]*PayableQuery
+	withNamedReceivables       map[string]*ReceivableQuery
 	withNamedSuppliers         map[string]*SupplierQuery
 	withNamedTokens            map[string]*TokenQuery
 	withNamedTreasuries        map[string]*TreasuryQuery
@@ -248,6 +254,50 @@ func (cq *CompanyQuery) QueryProjects() *ProjectQuery {
 			sqlgraph.From(company.Table, company.FieldID, selector),
 			sqlgraph.To(project.Table, project.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.ProjectsTable, company.ProjectsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPayables chains the current query on the "payables" edge.
+func (cq *CompanyQuery) QueryPayables() *PayableQuery {
+	query := (&PayableClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(payable.Table, payable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.PayablesTable, company.PayablesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryReceivables chains the current query on the "receivables" edge.
+func (cq *CompanyQuery) QueryReceivables() *ReceivableQuery {
+	query := (&ReceivableClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(receivable.Table, receivable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.ReceivablesTable, company.ReceivablesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -608,6 +658,8 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		withFiles:             cq.withFiles.Clone(),
 		withProducts:          cq.withProducts.Clone(),
 		withProjects:          cq.withProjects.Clone(),
+		withPayables:          cq.withPayables.Clone(),
+		withReceivables:       cq.withReceivables.Clone(),
 		withSuppliers:         cq.withSuppliers.Clone(),
 		withTokens:            cq.withTokens.Clone(),
 		withTreasuries:        cq.withTreasuries.Clone(),
@@ -696,6 +748,28 @@ func (cq *CompanyQuery) WithProjects(opts ...func(*ProjectQuery)) *CompanyQuery 
 		opt(query)
 	}
 	cq.withProjects = query
+	return cq
+}
+
+// WithPayables tells the query-builder to eager-load the nodes that are connected to
+// the "payables" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithPayables(opts ...func(*PayableQuery)) *CompanyQuery {
+	query := (&PayableClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withPayables = query
+	return cq
+}
+
+// WithReceivables tells the query-builder to eager-load the nodes that are connected to
+// the "receivables" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithReceivables(opts ...func(*ReceivableQuery)) *CompanyQuery {
+	query := (&ReceivableClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withReceivables = query
 	return cq
 }
 
@@ -855,7 +929,7 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [14]bool{
+		loadedTypes = [16]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
@@ -863,6 +937,8 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 			cq.withFiles != nil,
 			cq.withProducts != nil,
 			cq.withProjects != nil,
+			cq.withPayables != nil,
+			cq.withReceivables != nil,
 			cq.withSuppliers != nil,
 			cq.withTokens != nil,
 			cq.withTreasuries != nil,
@@ -945,6 +1021,20 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadProjects(ctx, query, nodes,
 			func(n *Company) { n.Edges.Projects = []*Project{} },
 			func(n *Company, e *Project) { n.Edges.Projects = append(n.Edges.Projects, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withPayables; query != nil {
+		if err := cq.loadPayables(ctx, query, nodes,
+			func(n *Company) { n.Edges.Payables = []*Payable{} },
+			func(n *Company, e *Payable) { n.Edges.Payables = append(n.Edges.Payables, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withReceivables; query != nil {
+		if err := cq.loadReceivables(ctx, query, nodes,
+			func(n *Company) { n.Edges.Receivables = []*Receivable{} },
+			func(n *Company, e *Receivable) { n.Edges.Receivables = append(n.Edges.Receivables, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1042,6 +1132,20 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadProjects(ctx, query, nodes,
 			func(n *Company) { n.appendNamedProjects(name) },
 			func(n *Company, e *Project) { n.appendNamedProjects(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedPayables {
+		if err := cq.loadPayables(ctx, query, nodes,
+			func(n *Company) { n.appendNamedPayables(name) },
+			func(n *Company, e *Payable) { n.appendNamedPayables(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedReceivables {
+		if err := cq.loadReceivables(ctx, query, nodes,
+			func(n *Company) { n.appendNamedReceivables(name) },
+			func(n *Company, e *Receivable) { n.appendNamedReceivables(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1307,6 +1411,68 @@ func (cq *CompanyQuery) loadProjects(ctx context.Context, query *ProjectQuery, n
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_projects" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CompanyQuery) loadPayables(ctx context.Context, query *PayableQuery, nodes []*Company, init func(*Company), assign func(*Company, *Payable)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Company)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Payable(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(company.PayablesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.company_payables
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "company_payables" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "company_payables" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CompanyQuery) loadReceivables(ctx context.Context, query *ReceivableQuery, nodes []*Company, init func(*Company), assign func(*Company, *Receivable)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Company)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Receivable(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(company.ReceivablesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.company_receivables
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "company_receivables" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "company_receivables" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1749,6 +1915,34 @@ func (cq *CompanyQuery) WithNamedProjects(name string, opts ...func(*ProjectQuer
 		cq.withNamedProjects = make(map[string]*ProjectQuery)
 	}
 	cq.withNamedProjects[name] = query
+	return cq
+}
+
+// WithNamedPayables tells the query-builder to eager-load the nodes that are connected to the "payables"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithNamedPayables(name string, opts ...func(*PayableQuery)) *CompanyQuery {
+	query := (&PayableClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedPayables == nil {
+		cq.withNamedPayables = make(map[string]*PayableQuery)
+	}
+	cq.withNamedPayables[name] = query
+	return cq
+}
+
+// WithNamedReceivables tells the query-builder to eager-load the nodes that are connected to the "receivables"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithNamedReceivables(name string, opts ...func(*ReceivableQuery)) *CompanyQuery {
+	query := (&ReceivableClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedReceivables == nil {
+		cq.withNamedReceivables = make(map[string]*ReceivableQuery)
+	}
+	cq.withNamedReceivables[name] = query
 	return cq
 }
 

@@ -39,22 +39,18 @@ const (
 	FieldDescription = "description"
 	// FieldAccountType holds the string denoting the accounttype field in the database.
 	FieldAccountType = "account_type"
+	// FieldCategory holds the string denoting the category field in the database.
+	FieldCategory = "category"
 	// FieldIsDebit holds the string denoting the isdebit field in the database.
 	FieldIsDebit = "is_debit"
 	// FieldIsReversal holds the string denoting the isreversal field in the database.
 	FieldIsReversal = "is_reversal"
 	// FieldReversed holds the string denoting the reversed field in the database.
 	FieldReversed = "reversed"
-	// FieldQuantity holds the string denoting the quantity field in the database.
-	FieldQuantity = "quantity"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
-	// EdgeProduct holds the string denoting the product edge name in mutations.
-	EdgeProduct = "product"
-	// EdgeTreasury holds the string denoting the treasury edge name in mutations.
-	EdgeTreasury = "treasury"
 	// Table holds the table name of the accountingentry in the database.
 	Table = "accounting_entries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -71,20 +67,6 @@ const (
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_accounting_entries"
-	// ProductTable is the table that holds the product relation/edge.
-	ProductTable = "accounting_entries"
-	// ProductInverseTable is the table name for the Product entity.
-	// It exists in this package in order to avoid circular dependency with the "product" package.
-	ProductInverseTable = "products"
-	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "product_accounting_entries"
-	// TreasuryTable is the table that holds the treasury relation/edge.
-	TreasuryTable = "accounting_entries"
-	// TreasuryInverseTable is the table name for the Treasury entity.
-	// It exists in this package in order to avoid circular dependency with the "treasury" package.
-	TreasuryInverseTable = "treasuries"
-	// TreasuryColumn is the table column denoting the treasury relation/edge.
-	TreasuryColumn = "treasury_accounting_entries"
 )
 
 // Columns holds all SQL columns for accountingentry fields.
@@ -101,18 +83,16 @@ var Columns = []string{
 	FieldAmount,
 	FieldDescription,
 	FieldAccountType,
+	FieldCategory,
 	FieldIsDebit,
 	FieldIsReversal,
 	FieldReversed,
-	FieldQuantity,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "accounting_entries"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_accounting_entries",
-	"product_accounting_entries",
-	"treasury_accounting_entries",
 	"user_accounting_entries",
 }
 
@@ -146,6 +126,8 @@ var (
 	DefaultDate func() time.Time
 	// AccountValidator is a validator for the "account" field. It is called by the builders before save.
 	AccountValidator func(string) error
+	// DefaultCategory holds the default value on creation for the "category" field.
+	DefaultCategory string
 	// DefaultIsReversal holds the default value on creation for the "isReversal" field.
 	DefaultIsReversal bool
 	// DefaultReversed holds the default value on creation for the "reversed" field.
@@ -248,6 +230,11 @@ func ByAccountType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAccountType, opts...).ToFunc()
 }
 
+// ByCategory orders the results by the category field.
+func ByCategory(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCategory, opts...).ToFunc()
+}
+
 // ByIsDebit orders the results by the isDebit field.
 func ByIsDebit(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsDebit, opts...).ToFunc()
@@ -263,11 +250,6 @@ func ByReversed(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldReversed, opts...).ToFunc()
 }
 
-// ByQuantity orders the results by the quantity field.
-func ByQuantity(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldQuantity, opts...).ToFunc()
-}
-
 // ByCompanyField orders the results by company field.
 func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -279,20 +261,6 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByProductField orders the results by product field.
-func ByProductField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByTreasuryField orders the results by treasury field.
-func ByTreasuryField(field string, opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newTreasuryStep(), sql.OrderByField(field, opts...))
 	}
 }
 func newCompanyStep() *sqlgraph.Step {
@@ -307,20 +275,6 @@ func newUserStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(UserInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
-	)
-}
-func newProductStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
-	)
-}
-func newTreasuryStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(TreasuryInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, TreasuryTable, TreasuryColumn),
 	)
 }
 

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/product"
-	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
 	"strings"
 	"time"
@@ -43,22 +41,20 @@ type AccountingEntry struct {
 	Description string `json:"description,omitempty"`
 	// AccountType holds the value of the "accountType" field.
 	AccountType accountingentry.AccountType `json:"accountType,omitempty"`
+	// Category holds the value of the "category" field.
+	Category string `json:"category,omitempty"`
 	// IsDebit holds the value of the "isDebit" field.
 	IsDebit bool `json:"isDebit,omitempty"`
 	// IsReversal holds the value of the "isReversal" field.
 	IsReversal bool `json:"isReversal,omitempty"`
 	// Reversed holds the value of the "reversed" field.
 	Reversed bool `json:"reversed,omitempty"`
-	// Quantity holds the value of the "quantity" field.
-	Quantity int `json:"quantity,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AccountingEntryQuery when eager-loading is set.
-	Edges                       AccountingEntryEdges `json:"edges"`
-	company_accounting_entries  *int
-	product_accounting_entries  *int
-	treasury_accounting_entries *int
-	user_accounting_entries     *int
-	selectValues                sql.SelectValues
+	Edges                      AccountingEntryEdges `json:"edges"`
+	company_accounting_entries *int
+	user_accounting_entries    *int
+	selectValues               sql.SelectValues
 }
 
 // AccountingEntryEdges holds the relations/edges for other nodes in the graph.
@@ -67,15 +63,11 @@ type AccountingEntryEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
-	// Product holds the value of the product edge.
-	Product *Product `json:"product,omitempty"`
-	// Treasury holds the value of the treasury edge.
-	Treasury *Treasury `json:"treasury,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
-	totalCount [4]map[string]int
+	totalCount [2]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -100,28 +92,6 @@ func (e AccountingEntryEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
-// ProductOrErr returns the Product value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e AccountingEntryEdges) ProductOrErr() (*Product, error) {
-	if e.Product != nil {
-		return e.Product, nil
-	} else if e.loadedTypes[2] {
-		return nil, &NotFoundError{label: product.Label}
-	}
-	return nil, &NotLoadedError{edge: "product"}
-}
-
-// TreasuryOrErr returns the Treasury value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e AccountingEntryEdges) TreasuryOrErr() (*Treasury, error) {
-	if e.Treasury != nil {
-		return e.Treasury, nil
-	} else if e.loadedTypes[3] {
-		return nil, &NotFoundError{label: treasury.Label}
-	}
-	return nil, &NotLoadedError{edge: "treasury"}
-}
-
 // scanValues returns the types for scanning values from sql.Rows.
 func (*AccountingEntry) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -131,19 +101,15 @@ func (*AccountingEntry) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case accountingentry.FieldAmount:
 			values[i] = new(sql.NullFloat64)
-		case accountingentry.FieldID, accountingentry.FieldNumber, accountingentry.FieldGroup, accountingentry.FieldQuantity:
+		case accountingentry.FieldID, accountingentry.FieldNumber, accountingentry.FieldGroup:
 			values[i] = new(sql.NullInt64)
-		case accountingentry.FieldAccount, accountingentry.FieldLabel, accountingentry.FieldDescription, accountingentry.FieldAccountType:
+		case accountingentry.FieldAccount, accountingentry.FieldLabel, accountingentry.FieldDescription, accountingentry.FieldAccountType, accountingentry.FieldCategory:
 			values[i] = new(sql.NullString)
 		case accountingentry.FieldCreatedAt, accountingentry.FieldUpdatedAt, accountingentry.FieldDeletedAt, accountingentry.FieldDate:
 			values[i] = new(sql.NullTime)
 		case accountingentry.ForeignKeys[0]: // company_accounting_entries
 			values[i] = new(sql.NullInt64)
-		case accountingentry.ForeignKeys[1]: // product_accounting_entries
-			values[i] = new(sql.NullInt64)
-		case accountingentry.ForeignKeys[2]: // treasury_accounting_entries
-			values[i] = new(sql.NullInt64)
-		case accountingentry.ForeignKeys[3]: // user_accounting_entries
+		case accountingentry.ForeignKeys[1]: // user_accounting_entries
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -233,6 +199,12 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ae.AccountType = accountingentry.AccountType(value.String)
 			}
+		case accountingentry.FieldCategory:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field category", values[i])
+			} else if value.Valid {
+				ae.Category = value.String
+			}
 		case accountingentry.FieldIsDebit:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field isDebit", values[i])
@@ -251,12 +223,6 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ae.Reversed = value.Bool
 			}
-		case accountingentry.FieldQuantity:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field quantity", values[i])
-			} else if value.Valid {
-				ae.Quantity = int(value.Int64)
-			}
 		case accountingentry.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field company_accounting_entries", value)
@@ -265,20 +231,6 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 				*ae.company_accounting_entries = int(value.Int64)
 			}
 		case accountingentry.ForeignKeys[1]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field product_accounting_entries", value)
-			} else if value.Valid {
-				ae.product_accounting_entries = new(int)
-				*ae.product_accounting_entries = int(value.Int64)
-			}
-		case accountingentry.ForeignKeys[2]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field treasury_accounting_entries", value)
-			} else if value.Valid {
-				ae.treasury_accounting_entries = new(int)
-				*ae.treasury_accounting_entries = int(value.Int64)
-			}
-		case accountingentry.ForeignKeys[3]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_accounting_entries", value)
 			} else if value.Valid {
@@ -306,16 +258,6 @@ func (ae *AccountingEntry) QueryCompany() *CompanyQuery {
 // QueryUser queries the "user" edge of the AccountingEntry entity.
 func (ae *AccountingEntry) QueryUser() *UserQuery {
 	return NewAccountingEntryClient(ae.config).QueryUser(ae)
-}
-
-// QueryProduct queries the "product" edge of the AccountingEntry entity.
-func (ae *AccountingEntry) QueryProduct() *ProductQuery {
-	return NewAccountingEntryClient(ae.config).QueryProduct(ae)
-}
-
-// QueryTreasury queries the "treasury" edge of the AccountingEntry entity.
-func (ae *AccountingEntry) QueryTreasury() *TreasuryQuery {
-	return NewAccountingEntryClient(ae.config).QueryTreasury(ae)
 }
 
 // Update returns a builder for updating this AccountingEntry.
@@ -376,6 +318,9 @@ func (ae *AccountingEntry) String() string {
 	builder.WriteString("accountType=")
 	builder.WriteString(fmt.Sprintf("%v", ae.AccountType))
 	builder.WriteString(", ")
+	builder.WriteString("category=")
+	builder.WriteString(ae.Category)
+	builder.WriteString(", ")
 	builder.WriteString("isDebit=")
 	builder.WriteString(fmt.Sprintf("%v", ae.IsDebit))
 	builder.WriteString(", ")
@@ -384,9 +329,6 @@ func (ae *AccountingEntry) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("reversed=")
 	builder.WriteString(fmt.Sprintf("%v", ae.Reversed))
-	builder.WriteString(", ")
-	builder.WriteString("quantity=")
-	builder.WriteString(fmt.Sprintf("%v", ae.Quantity))
 	builder.WriteByte(')')
 	return builder.String()
 }
