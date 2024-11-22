@@ -59,12 +59,21 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 		return nil, fmt.Errorf("cannot retrieve income statement now")
 	}
 
+	// SELECT account_type, LEFT (account, 3) AS account, sum(amount) AS balance
+	// 	FROM accounting_entries
+	// 	WHERE company_accounting_entries = %d AND date <= '%s' AND account_type IN ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+	// 	GROUP BY account_type, account
+	// 	ORDER BY account ASC
 	sqlStr := fmt.Sprintf(`
-		SELECT account_type, LEFT (account, 3) AS account, sum(amount) AS balance
-		FROM accounting_entries
-		WHERE company_accounting_entries = %d AND date <= '%s' AND account_type IN ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+		SELECT account_type, account, sum(balance) AS balance
+		FROM (
+			SELECT account_type, LEFT (account, 3) AS account, sum(amount) AS balance
+			FROM accounting_entries
+			WHERE company_accounting_entries = %d AND date <= '%s' AND account_type IN ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+			GROUP BY account_type, account
+			ORDER BY account ASC
+		) AS summary
 		GROUP BY account_type, account
-		ORDER BY account ASC
 		`,
 		currentCompany.ID,
 		endDate.Format(time.RFC3339), // Convert time to RFC3339 format which PostgreSQL accepts
@@ -87,7 +96,7 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 	defer rows.Close()
 	for rows.Next() {
 		var item data
-		if err := rows.Scan(&item.Account, &item.AccountType, &item.Balance); err != nil {
+		if err := rows.Scan(&item.AccountType, &item.Account, &item.Balance); err != nil {
 			// Check for a scan error. Query rows will be closed with defer.
 			fmt.Println("err:", err)
 			return nil, err
@@ -135,6 +144,6 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 
 	result.EarningsBeforeTax = result.NetRevenue - result.TotalExpenses
 	result.NetIncome = result.EarningsBeforeTax - result.TaxExpense
-
+	// utils.PP(result)
 	return result, err
 }

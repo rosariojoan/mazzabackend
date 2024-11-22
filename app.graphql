@@ -1,44 +1,44 @@
 input SignupInput {
-    companyInput: CreateCompanyInput!
-    userInput: CreateUserInput!
+  companyInput: CreateCompanyInput!
+  userInput: CreateUserInput!
 }
 
 input invitedUserSignupInput {
-    userInput: CreateUserInput!
-    invitationToken: String!
+  userInput: CreateUserInput!
+  invitationToken: String!
 }
 
 input ResetPasswordInput {
-    token: String!
-    password: String!
+  token: String!
+  password: String!
 }
 
 input LoginInput {
-    username: String!
-    password: String!
-    fcmToken: String!
+  username: String!
+  password: String!
+  fcmToken: String!
 }
 
 type LoginOutput {
-    user: User!
-    companyId: Int!
-    companies: [Company!]!
-    accessToken: String!
-    refreshToken: String!
-    ttl: Int!
+  user: User!
+  companyId: Int!
+  companies: [Company!]!
+  accessToken: String!
+  refreshToken: String!
+  ttl: Int!
 }
 
 enum CustomersGroupBy {
-    COMPANY
-    CITY
+  COMPANY
+  CITY
 }
 
 enum ReceivablesGroupBy {
-    AGE
-    COMPANY
-    CUSTOMER
-    DAYSDUE
-    STATUS
+  AGE
+  COMPANY
+  CUSTOMER
+  DAYSDUE
+  STATUS
 }
 
 enum ShiftGroupBy {
@@ -48,21 +48,27 @@ enum ShiftGroupBy {
   STATUS
 }
 
+type AgingBucket {
+  range: String!
+  totalAmount: Float!
+  count: Int
+}
+
 type CustomerAggregationOutput {
-    company: ID
-    count: Int
+  company: ID
+  count: Int
 }
 
 type ReceivableAggregationOutput {
-    company: ID
-    count: Int
-    sum: Float
+  company: ID
+  count: Int
+  sum: Float
 }
 
 type TreasuryAggregatePayload {
-    companyID: ID!
-    count: Int!
-    totalBalance: Float!
+  companyID: ID!
+  count: Int!
+  totalBalance: Float!
 }
 
 type WorkShiftAggregationPayload {
@@ -73,94 +79,108 @@ type WorkShiftAggregationPayload {
   # You can add other aggregations here, like sum, avg, etc.
 }
 
-
 extend type Query {
-    verifyPasswordResetToken(token: String!): Boolean!
-    companies(where: CompanyWhereInput): [Company!]!
+  verifyPasswordResetToken(token: String!): Boolean!
+  companies(where: CompanyWhereInput): [Company!]!
 
-    customers(where: CustomerWhereInput): [Customer!]!
-    aggregateCustomers(where: CustomerWhereInput, groupBy: [CustomersGroupBy!]): [CustomerAggregationOutput!]!
+  customers(where: CustomerWhereInput): [Customer!]!
+  aggregateCustomers(
+    where: CustomerWhereInput
+    groupBy: [CustomersGroupBy!]
+  ): [CustomerAggregationOutput!]!
 
-    aggregateReceivables(where: ReceivableWhereInput, groupBy: [ReceivablesGroupBy!]): [ReceivableAggregationOutput!]!
+  aggregateReceivables(
+    where: ReceivableWhereInput
+    groupBy: [ReceivablesGroupBy!]
+  ): [ReceivableAggregationOutput!]!
 
-    employees(where: EmployeeWhereInput): [Employee!]!
-    products(where: ProductWhereInput): [Product!]!
-    lowStock(where: ProductWhereInput): [Product!]!
-    numberOfProducts(where: ProductWhereInput): Int!
-    numberOfLowStock(where: ProductWhereInput): Int!
-    numberOfOutOfStock(where: ProductWhereInput): Int!
+  accountsReceivableAging: [AgingBucket!]!
+  accountsPayableAging: [AgingBucket!]!
 
-    projects(where: ProjectWhereInput): [Project!]!
-    projectTasks(where: ProjectTaskWhereInput): [ProjectTask!]!
+  employees(where: EmployeeWhereInput): [Employee!]!
+  products(where: ProductWhereInput): [Product!]!
+  lowStock(where: ProductWhereInput): [Product!]!
+  numberOfProducts(where: ProductWhereInput): Int!
+  numberOfLowStock(where: ProductWhereInput): Int!
+  numberOfOutOfStock(where: ProductWhereInput): Int!
 
-    suppliers(where: SupplierWhereInput): [Supplier!]!
+  projects(where: ProjectWhereInput): [Project!]!
+  projectTasks(where: ProjectTaskWhereInput): [ProjectTask!]!
 
-    treasuries(where: TreasuryWhereInput): [Treasury!]!
-    aggregateTreasury(where: TreasuryWhereInput): [TreasuryAggregatePayload!]!
-    
-    users(where: UserWhereInput): [User!]!
-    userRoles(where: UserRoleWhereInput): [UserRole!]!
+  suppliers(where: SupplierWhereInput): [Supplier!]!
 
-    workShifts(where: WorkshiftWhereInput): [Workshift!]!
-    aggregateWorkShift(where: WorkshiftWhereInput, groupBy: [ShiftGroupBy!]!): [WorkShiftAggregationPayload!]!
+  treasuries(where: TreasuryWhereInput): [Treasury!]!
+  aggregateTreasury(where: TreasuryWhereInput): [TreasuryAggregatePayload!]!
+
+  users(where: UserWhereInput): [User!]!
+  userRoles(where: UserRoleWhereInput): [UserRole!]!
+
+  workShifts(where: WorkshiftWhereInput): [Workshift!]!
+  aggregateWorkShift(
+    where: WorkshiftWhereInput
+    groupBy: [ShiftGroupBy!]!
+  ): [WorkShiftAggregationPayload!]!
 }
 
 type Mutation {
-    # This is used to register a new company along with its admin
-    signup(input: SignupInput!): LoginOutput!
-    # This is meant to be used by an admin user logged into a parent company
-    createCompany(input: CreateCompanyInput): Company
-    
-    updateCompany(id: ID!, input: UpdateCompanyInput!): Company!
-    # removeCompany()
+  # This is used to register a new company along with its admin
+  signup(input: SignupInput!): LoginOutput!
+  # This is meant to be used by an admin user logged into a parent company
+  createCompany(input: CreateCompanyInput): Company
 
-    # Used to register users who were invited to join an existing company 
-    invitedUserSignup(input: invitedUserSignupInput!): User!
-    
-    # Probably will not be used: used to allow admin to register new users
-    createUser(input: CreateUserInput!): User
+  updateCompany(id: ID!, input: UpdateCompanyInput!): Company!
+  # removeCompany()
 
-    updateUser(id: ID!, input: UpdateUserInput!): User!
-    # login(input: LoginInput!): LoginOutput!
-    forgotPassword(username: String!): String!
-    resetPassword(input: ResetPasswordInput!): Boolean!
-    unsubscribe(id: ID!): Boolean!
+  # Used to register users who were invited to join an existing company
+  invitedUserSignup(input: invitedUserSignupInput!): User!
 
-    createUserRole(input: CreateUserRoleInput!): Boolean!
+  # Probably will not be used: used to allow admin to register new users
+  createUser(input: CreateUserInput!): User
 
-    createCustomer(input: CreateCustomerInput!): Customer
-    updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
-    deleteCustomer(id: ID!): Boolean!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  # login(input: LoginInput!): LoginOutput!
+  forgotPassword(username: String!): String!
+  resetPassword(input: ResetPasswordInput!): Boolean!
+  unsubscribe(id: ID!): Boolean!
 
-    createEmployee(input: CreateEmployeeInput!): Employee
-    updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
-    deleteEmployee(id: ID!): Boolean!
+  createUserRole(input: CreateUserRoleInput!): Boolean!
 
-    createProduct(input: CreateProductInput!): Product
-    updateProduct(id: ID!, input: UpdateProductInput!): Product!
-    deleteProduct(id: ID!): Boolean!
+  createCustomer(input: CreateCustomerInput!): Customer
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
+  deleteCustomer(id: ID!): Boolean!
 
-    createProject(input: CreateProjectInput!): Project
-    updateProject(id: ID!, input: UpdateProjectInput!): Project!
-    deleteProject(id: ID!): Boolean!
+  createEmployee(input: CreateEmployeeInput!): Employee
+  updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
+  deleteEmployee(id: ID!): Boolean!
 
-    createProjectTask(input: CreateProjectTaskInput!): ProjectTask
-    updateProjectTask(id: ID!, input: UpdateProjectTaskInput!): ProjectTask!
-    deleteProjectTask(id: ID!): Boolean!
+  createProduct(input: CreateProductInput!): Product
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  deleteProduct(id: ID!): Boolean!
 
-    createProjectMilestone(input: CreateProjectMilestoneInput!): ProjectMilestone
-    updateProjectMilestone(id: ID!, input: UpdateProjectMilestoneInput!): ProjectMilestone!
-    deleteProjectMilestone(id: ID!): Boolean!
+  createProject(input: CreateProjectInput!): Project
+  updateProject(id: ID!, input: UpdateProjectInput!): Project!
+  deleteProject(id: ID!): Boolean!
 
-    createSupplier(input: CreateSupplierInput!): Supplier
-    updateSupplier(id: ID!, input: UpdateSupplierInput!): Supplier!
-    deleteSupplier(id: ID!): Boolean!
+  createProjectTask(input: CreateProjectTaskInput!): ProjectTask
+  updateProjectTask(id: ID!, input: UpdateProjectTaskInput!): ProjectTask!
+  deleteProjectTask(id: ID!): Boolean!
 
-    createTreasury(input: CreateTreasuryInput!): Treasury
-    updateTreasury(id: ID!, input: UpdateTreasuryInput!): Treasury!
-    deleteTreasury(id: ID!): Boolean!
+  createProjectMilestone(input: CreateProjectMilestoneInput!): ProjectMilestone
+  updateProjectMilestone(
+    id: ID!
+    input: UpdateProjectMilestoneInput!
+  ): ProjectMilestone!
+  deleteProjectMilestone(id: ID!): Boolean!
 
-    createWorkShift(input: CreateWorkshiftInput!): Workshift
-    updateWorkShift(id: ID!, input: UpdateWorkshiftInput!): Workshift!
-    deleteWorkShift(id: ID!): Boolean!
+  createSupplier(input: CreateSupplierInput!): Supplier
+  updateSupplier(id: ID!, input: UpdateSupplierInput!): Supplier!
+  deleteSupplier(id: ID!): Boolean!
+
+  createTreasury(input: CreateTreasuryInput!): Treasury
+  updateTreasury(id: ID!, input: UpdateTreasuryInput!): Treasury!
+  deleteTreasury(id: ID!): Boolean!
+
+  createWorkShift(input: CreateWorkshiftInput!): Workshift
+  updateWorkShift(id: ID!, input: UpdateWorkshiftInput!): Workshift!
+  deleteWorkShift(id: ID!): Boolean!
 }

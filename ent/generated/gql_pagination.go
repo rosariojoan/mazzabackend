@@ -169,19 +169,14 @@ func (c *AccountingEntryConnection) build(nodes []*AccountingEntry, pager *accou
 type AccountingEntryPaginateOption func(*accountingentryPager) error
 
 // WithAccountingEntryOrder configures pagination ordering.
-func WithAccountingEntryOrder(order *AccountingEntryOrder) AccountingEntryPaginateOption {
-	if order == nil {
-		order = DefaultAccountingEntryOrder
-	}
-	o := *order
+func WithAccountingEntryOrder(order []*AccountingEntryOrder) AccountingEntryPaginateOption {
 	return func(pager *accountingentryPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultAccountingEntryOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -199,7 +194,7 @@ func WithAccountingEntryFilter(filter func(*AccountingEntryQuery) (*AccountingEn
 
 type accountingentryPager struct {
 	reverse bool
-	order   *AccountingEntryOrder
+	order   []*AccountingEntryOrder
 	filter  func(*AccountingEntryQuery) (*AccountingEntryQuery, error)
 }
 
@@ -210,8 +205,10 @@ func newAccountingEntryPager(opts []AccountingEntryPaginateOption, reverse bool)
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultAccountingEntryOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -224,48 +221,87 @@ func (p *accountingentryPager) applyFilter(query *AccountingEntryQuery) (*Accoun
 }
 
 func (p *accountingentryPager) toCursor(ae *AccountingEntry) Cursor {
-	return p.order.Field.toCursor(ae)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(ae).Value)
+	}
+	return Cursor{ID: ae.ID, Value: cs}
 }
 
 func (p *accountingentryPager) applyCursors(query *AccountingEntryQuery, after, before *Cursor) (*AccountingEntryQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultAccountingEntryOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultAccountingEntryOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *accountingentryPager) applyOrder(query *AccountingEntryQuery) *AccountingEntryQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultAccountingEntryOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultAccountingEntryOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultAccountingEntryOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *accountingentryPager) orderExpr(query *AccountingEntryQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultAccountingEntryOrder.Field {
-			b.Comma().Ident(DefaultAccountingEntryOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultAccountingEntryOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 

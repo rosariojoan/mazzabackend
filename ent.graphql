@@ -2549,7 +2549,7 @@ type Query {
     """
     Ordering options for AccountingEntries returned from the connection.
     """
-    orderBy: AccountingEntryOrder
+    orderBy: [AccountingEntryOrder!]
 
     """
     Filtering options for AccountingEntries returned from the connection.

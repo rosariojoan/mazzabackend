@@ -11,6 +11,12 @@ import (
 	"time"
 )
 
+type AgingBucket struct {
+	Range       string  `json:"range"`
+	TotalAmount float64 `json:"totalAmount"`
+	Count       *int    `json:"count,omitempty"`
+}
+
 type Assets struct {
 	CurrentAssets      []*ReportRowItem `json:"currentAssets"`
 	TotalCurrentAssets float64          `json:"totalCurrentAssets"`
