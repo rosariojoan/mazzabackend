@@ -23,11 +23,15 @@ func (User) Mixin() []ent.Mixin {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
+		field.String("firebaseUID").NotEmpty().Unique().Sensitive(),
 		field.String("fcmToken").Nillable().Optional().Sensitive(),
 		field.String("email").Nillable().Optional().Unique(),
 		field.String("name").Annotations(entgql.OrderField("NAME")),
-		field.String("password").Sensitive(),
-		field.String("username").Unique().Annotations(entgql.OrderField("USERNAME")),
+		field.String("phone").Nillable().Optional(),
+		field.Time("birthdate").Nillable().Optional(),
+		field.Enum("gender").Values("male", "female"),
+		// field.String("password").Sensitive(),
+		// field.String("username").Unique().Annotations(entgql.OrderField("USERNAME")),
 		field.Bool("disabled").Nillable().Optional().Default(false),
 		field.Bool("notVerified").Nillable().Optional().Default(false),
 	}
@@ -51,6 +55,8 @@ func (User) Edges() []ent.Edge {
 		edge.To("tokens", Token.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a user can have more than one token. E.g. of token: pwd reset token
 		edge.To("approvedWorkShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+		edge.To("uploadedDocuments", CompanyDocument.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+		edge.To("approvedDocuments", CompanyDocument.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 	}
 }
 

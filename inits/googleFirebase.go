@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
@@ -14,6 +15,7 @@ import (
 var (
 	FCM             *messaging.Client
 	FirebaseStorage *storage.BucketHandle
+	Firestore       *firestore.Client
 )
 
 func InitFirebase() error {
@@ -37,11 +39,14 @@ func InitFirebase() error {
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
 	}
-	
+
 	FirebaseStorage, err = client.DefaultBucket()
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
 	}
+
+	// Initialize Firestore client
+	Firestore, err = app.Firestore(ctx)
 
 	return err
 }

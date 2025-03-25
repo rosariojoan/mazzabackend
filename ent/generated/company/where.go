@@ -110,6 +110,11 @@ func Email(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldEmail, v))
 }
 
+// Industry applies equality check predicate on the "industry" field. It's identical to IndustryEQ.
+func Industry(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldIndustry, v))
+}
+
 // LastEntryDate applies equality check predicate on the "lastEntryDate" field. It's identical to LastEntryDateEQ.
 func LastEntryDate(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastEntryDate, v))
@@ -830,6 +835,81 @@ func EmailContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldEmail, v))
 }
 
+// IndustryEQ applies the EQ predicate on the "industry" field.
+func IndustryEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldIndustry, v))
+}
+
+// IndustryNEQ applies the NEQ predicate on the "industry" field.
+func IndustryNEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldIndustry, v))
+}
+
+// IndustryIn applies the In predicate on the "industry" field.
+func IndustryIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldIndustry, vs...))
+}
+
+// IndustryNotIn applies the NotIn predicate on the "industry" field.
+func IndustryNotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldIndustry, vs...))
+}
+
+// IndustryGT applies the GT predicate on the "industry" field.
+func IndustryGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldIndustry, v))
+}
+
+// IndustryGTE applies the GTE predicate on the "industry" field.
+func IndustryGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldIndustry, v))
+}
+
+// IndustryLT applies the LT predicate on the "industry" field.
+func IndustryLT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldIndustry, v))
+}
+
+// IndustryLTE applies the LTE predicate on the "industry" field.
+func IndustryLTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldIndustry, v))
+}
+
+// IndustryContains applies the Contains predicate on the "industry" field.
+func IndustryContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldIndustry, v))
+}
+
+// IndustryHasPrefix applies the HasPrefix predicate on the "industry" field.
+func IndustryHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldIndustry, v))
+}
+
+// IndustryHasSuffix applies the HasSuffix predicate on the "industry" field.
+func IndustryHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldIndustry, v))
+}
+
+// IndustryIsNil applies the IsNil predicate on the "industry" field.
+func IndustryIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldIndustry))
+}
+
+// IndustryNotNil applies the NotNil predicate on the "industry" field.
+func IndustryNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldIndustry))
+}
+
+// IndustryEqualFold applies the EqualFold predicate on the "industry" field.
+func IndustryEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldIndustry, v))
+}
+
+// IndustryContainsFold applies the ContainsFold predicate on the "industry" field.
+func IndustryContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldIndustry, v))
+}
+
 // LastEntryDateEQ applies the EQ predicate on the "lastEntryDate" field.
 func LastEntryDateEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastEntryDate, v))
@@ -1511,6 +1591,29 @@ func HasCustomers() predicate.Company {
 func HasCustomersWith(preds ...predicate.Customer) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newCustomersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasDocuments applies the HasEdge predicate on the "documents" edge.
+func HasDocuments() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, DocumentsTable, DocumentsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasDocumentsWith applies the HasEdge predicate on the "documents" edge with a given conditions (other predicates).
+func HasDocumentsWith(preds ...predicate.CompanyDocument) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newDocumentsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -36,6 +36,8 @@ const (
 	FieldDescription = "description"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldIndustry holds the string denoting the industry field in the database.
+	FieldIndustry = "industry"
 	// FieldLastEntryDate holds the string denoting the lastentrydate field in the database.
 	FieldLastEntryDate = "last_entry_date"
 	// FieldLastInvoiceNumber holds the string denoting the lastinvoicenumber field in the database.
@@ -64,6 +66,8 @@ const (
 	EdgeAccountingEntries = "accountingEntries"
 	// EdgeCustomers holds the string denoting the customers edge name in mutations.
 	EdgeCustomers = "customers"
+	// EdgeDocuments holds the string denoting the documents edge name in mutations.
+	EdgeDocuments = "documents"
 	// EdgeEmployees holds the string denoting the employees edge name in mutations.
 	EdgeEmployees = "employees"
 	// EdgeFiles holds the string denoting the files edge name in mutations.
@@ -113,6 +117,13 @@ const (
 	CustomersInverseTable = "customers"
 	// CustomersColumn is the table column denoting the customers relation/edge.
 	CustomersColumn = "company_customers"
+	// DocumentsTable is the table that holds the documents relation/edge.
+	DocumentsTable = "company_documents"
+	// DocumentsInverseTable is the table name for the CompanyDocument entity.
+	// It exists in this package in order to avoid circular dependency with the "companydocument" package.
+	DocumentsInverseTable = "company_documents"
+	// DocumentsColumn is the table column denoting the documents relation/edge.
+	DocumentsColumn = "company_documents"
 	// EmployeesTable is the table that holds the employees relation/edge.
 	EmployeesTable = "employees"
 	// EmployeesInverseTable is the table name for the Employee entity.
@@ -212,6 +223,7 @@ var Columns = []string{
 	FieldEstablishedAt,
 	FieldDescription,
 	FieldEmail,
+	FieldIndustry,
 	FieldLastEntryDate,
 	FieldLastInvoiceNumber,
 	FieldLogo,
@@ -338,6 +350,11 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
+// ByIndustry orders the results by the industry field.
+func ByIndustry(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIndustry, opts...).ToFunc()
+}
+
 // ByLastEntryDate orders the results by the lastEntryDate field.
 func ByLastEntryDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastEntryDate, opts...).ToFunc()
@@ -432,6 +449,20 @@ func ByCustomersCount(opts ...sql.OrderTermOption) OrderOption {
 func ByCustomers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCustomersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByDocumentsCount orders the results by documents count.
+func ByDocumentsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newDocumentsStep(), opts...)
+	}
+}
+
+// ByDocuments orders the results by documents terms.
+func ByDocuments(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newDocumentsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -628,6 +659,13 @@ func newCustomersStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CustomersInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, CustomersTable, CustomersColumn),
+	)
+}
+func newDocumentsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(DocumentsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, DocumentsTable, DocumentsColumn),
 	)
 }
 func newEmployeesStep() *sqlgraph.Step {

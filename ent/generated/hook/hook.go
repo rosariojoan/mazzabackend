@@ -32,6 +32,18 @@ func (f CompanyFunc) Mutate(ctx context.Context, m generated.Mutation) (generate
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CompanyMutation", m)
 }
 
+// The CompanyDocumentFunc type is an adapter to allow the use of ordinary
+// function as CompanyDocument mutator.
+type CompanyDocumentFunc func(context.Context, *generated.CompanyDocumentMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CompanyDocumentFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.CompanyDocumentMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CompanyDocumentMutation", m)
+}
+
 // The CustomerFunc type is an adapter to allow the use of ordinary
 // function as Customer mutator.
 type CustomerFunc func(context.Context, *generated.CustomerMutation) (generated.Value, error)

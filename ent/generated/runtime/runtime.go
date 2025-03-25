@@ -5,6 +5,7 @@ package runtime
 import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -90,25 +91,64 @@ func init() {
 	// company.DefaultBaseCurrency holds the default value on creation for the baseCurrency field.
 	company.DefaultBaseCurrency = companyDescBaseCurrency.Default.(string)
 	// companyDescLastInvoiceNumber is the schema descriptor for lastInvoiceNumber field.
-	companyDescLastInvoiceNumber := companyFields[9].Descriptor()
+	companyDescLastInvoiceNumber := companyFields[10].Descriptor()
 	// company.DefaultLastInvoiceNumber holds the default value on creation for the lastInvoiceNumber field.
 	company.DefaultLastInvoiceNumber = companyDescLastInvoiceNumber.Default.(int32)
 	// company.LastInvoiceNumberValidator is a validator for the "lastInvoiceNumber" field. It is called by the builders before save.
 	company.LastInvoiceNumberValidator = companyDescLastInvoiceNumber.Validators[0].(func(int32) error)
 	// companyDescNumberOfEmployees is the schema descriptor for numberOfEmployees field.
-	companyDescNumberOfEmployees := companyFields[12].Descriptor()
+	companyDescNumberOfEmployees := companyFields[13].Descriptor()
 	// company.DefaultNumberOfEmployees holds the default value on creation for the numberOfEmployees field.
 	company.DefaultNumberOfEmployees = companyDescNumberOfEmployees.Default.(int32)
 	// company.NumberOfEmployeesValidator is a validator for the "numberOfEmployees" field. It is called by the builders before save.
 	company.NumberOfEmployeesValidator = companyDescNumberOfEmployees.Validators[0].(func(int32) error)
 	// companyDescVatRate is the schema descriptor for vatRate field.
-	companyDescVatRate := companyFields[16].Descriptor()
+	companyDescVatRate := companyFields[17].Descriptor()
 	// company.DefaultVatRate holds the default value on creation for the vatRate field.
 	company.DefaultVatRate = companyDescVatRate.Default.(float64)
 	// companyDescIncompleteSetup is the schema descriptor for incompleteSetup field.
-	companyDescIncompleteSetup := companyFields[18].Descriptor()
+	companyDescIncompleteSetup := companyFields[19].Descriptor()
 	// company.DefaultIncompleteSetup holds the default value on creation for the incompleteSetup field.
 	company.DefaultIncompleteSetup = companyDescIncompleteSetup.Default.(bool)
+	companydocumentMixin := schema.CompanyDocument{}.Mixin()
+	companydocumentMixinFields0 := companydocumentMixin[0].Fields()
+	_ = companydocumentMixinFields0
+	companydocumentFields := schema.CompanyDocument{}.Fields()
+	_ = companydocumentFields
+	// companydocumentDescCreatedAt is the schema descriptor for createdAt field.
+	companydocumentDescCreatedAt := companydocumentMixinFields0[0].Descriptor()
+	// companydocument.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	companydocument.DefaultCreatedAt = companydocumentDescCreatedAt.Default.(func() time.Time)
+	// companydocumentDescUpdatedAt is the schema descriptor for updatedAt field.
+	companydocumentDescUpdatedAt := companydocumentMixinFields0[1].Descriptor()
+	// companydocument.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	companydocument.DefaultUpdatedAt = companydocumentDescUpdatedAt.Default.(func() time.Time)
+	// companydocument.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	companydocument.UpdateDefaultUpdatedAt = companydocumentDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// companydocumentDescFilename is the schema descriptor for filename field.
+	companydocumentDescFilename := companydocumentFields[0].Descriptor()
+	// companydocument.FilenameValidator is a validator for the "filename" field. It is called by the builders before save.
+	companydocument.FilenameValidator = companydocumentDescFilename.Validators[0].(func(string) error)
+	// companydocumentDescTitle is the schema descriptor for title field.
+	companydocumentDescTitle := companydocumentFields[1].Descriptor()
+	// companydocument.TitleValidator is a validator for the "title" field. It is called by the builders before save.
+	companydocument.TitleValidator = companydocumentDescTitle.Validators[0].(func(string) error)
+	// companydocumentDescKeywords is the schema descriptor for keywords field.
+	companydocumentDescKeywords := companydocumentFields[2].Descriptor()
+	// companydocument.KeywordsValidator is a validator for the "keywords" field. It is called by the builders before save.
+	companydocument.KeywordsValidator = companydocumentDescKeywords.Validators[0].(func(string) error)
+	// companydocumentDescSize is the schema descriptor for size field.
+	companydocumentDescSize := companydocumentFields[4].Descriptor()
+	// companydocument.SizeValidator is a validator for the "size" field. It is called by the builders before save.
+	companydocument.SizeValidator = companydocumentDescSize.Validators[0].(func(int) error)
+	// companydocumentDescURL is the schema descriptor for url field.
+	companydocumentDescURL := companydocumentFields[7].Descriptor()
+	// companydocument.URLValidator is a validator for the "url" field. It is called by the builders before save.
+	companydocument.URLValidator = companydocumentDescURL.Validators[0].(func(string) error)
+	// companydocumentDescStorageURI is the schema descriptor for storageURI field.
+	companydocumentDescStorageURI := companydocumentFields[8].Descriptor()
+	// companydocument.StorageURIValidator is a validator for the "storageURI" field. It is called by the builders before save.
+	companydocument.StorageURIValidator = companydocumentDescStorageURI.Validators[0].(func(string) error)
 	customerMixin := schema.Customer{}.Mixin()
 	customerMixinFields0 := customerMixin[0].Fields()
 	_ = customerMixinFields0
@@ -369,12 +409,16 @@ func init() {
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// userDescFirebaseUID is the schema descriptor for firebaseUID field.
+	userDescFirebaseUID := userFields[0].Descriptor()
+	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
+	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
 	// userDescDisabled is the schema descriptor for disabled field.
-	userDescDisabled := userFields[5].Descriptor()
+	userDescDisabled := userFields[7].Descriptor()
 	// user.DefaultDisabled holds the default value on creation for the disabled field.
 	user.DefaultDisabled = userDescDisabled.Default.(bool)
 	// userDescNotVerified is the schema descriptor for notVerified field.
-	userDescNotVerified := userFields[6].Descriptor()
+	userDescNotVerified := userFields[8].Descriptor()
 	// user.DefaultNotVerified holds the default value on creation for the notVerified field.
 	user.DefaultNotVerified = userDescNotVerified.Default.(bool)
 	workshiftMixin := schema.Workshift{}.Mixin()

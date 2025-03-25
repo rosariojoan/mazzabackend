@@ -20,9 +20,8 @@ import (
 )
 
 type LoginInput struct {
-	Username string
-	Password string
-	FcmToken *string
+	FirebaseUID string
+	FcmToken    *string
 }
 
 type LoginOutput struct {
@@ -49,7 +48,7 @@ func Login(ctx *gin.Context) {
 	// fmt.Println("\n ++ client:", input, *input.FcmToken)
 	currentUser, err := inits.Client.User.Query().
 		Where(user.And(
-			user.UsernameEQ(input.Username),
+			user.FirebaseUID(input.FirebaseUID),
 			user.DeletedAtIsNil(),
 		)).
 		// WithAssignedRoles().

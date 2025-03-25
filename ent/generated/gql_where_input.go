@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -876,6 +877,23 @@ type CompanyWhereInput struct {
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
+	// "industry" field predicates.
+	Industry             *string  `json:"industry,omitempty"`
+	IndustryNEQ          *string  `json:"industryNEQ,omitempty"`
+	IndustryIn           []string `json:"industryIn,omitempty"`
+	IndustryNotIn        []string `json:"industryNotIn,omitempty"`
+	IndustryGT           *string  `json:"industryGT,omitempty"`
+	IndustryGTE          *string  `json:"industryGTE,omitempty"`
+	IndustryLT           *string  `json:"industryLT,omitempty"`
+	IndustryLTE          *string  `json:"industryLTE,omitempty"`
+	IndustryContains     *string  `json:"industryContains,omitempty"`
+	IndustryHasPrefix    *string  `json:"industryHasPrefix,omitempty"`
+	IndustryHasSuffix    *string  `json:"industryHasSuffix,omitempty"`
+	IndustryIsNil        bool     `json:"industryIsNil,omitempty"`
+	IndustryNotNil       bool     `json:"industryNotNil,omitempty"`
+	IndustryEqualFold    *string  `json:"industryEqualFold,omitempty"`
+	IndustryContainsFold *string  `json:"industryContainsFold,omitempty"`
+
 	// "lastEntryDate" field predicates.
 	LastEntryDate      *time.Time  `json:"lastentrydate,omitempty"`
 	LastEntryDateNEQ   *time.Time  `json:"lastentrydateNEQ,omitempty"`
@@ -1033,6 +1051,10 @@ type CompanyWhereInput struct {
 	// "customers" edge predicates.
 	HasCustomers     *bool                 `json:"hasCustomers,omitempty"`
 	HasCustomersWith []*CustomerWhereInput `json:"hasCustomersWith,omitempty"`
+
+	// "documents" edge predicates.
+	HasDocuments     *bool                        `json:"hasDocuments,omitempty"`
+	HasDocumentsWith []*CompanyDocumentWhereInput `json:"hasDocumentsWith,omitempty"`
 
 	// "employees" edge predicates.
 	HasEmployees     *bool                 `json:"hasEmployees,omitempty"`
@@ -1581,6 +1603,51 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 	if i.EmailContainsFold != nil {
 		predicates = append(predicates, company.EmailContainsFold(*i.EmailContainsFold))
 	}
+	if i.Industry != nil {
+		predicates = append(predicates, company.IndustryEQ(*i.Industry))
+	}
+	if i.IndustryNEQ != nil {
+		predicates = append(predicates, company.IndustryNEQ(*i.IndustryNEQ))
+	}
+	if len(i.IndustryIn) > 0 {
+		predicates = append(predicates, company.IndustryIn(i.IndustryIn...))
+	}
+	if len(i.IndustryNotIn) > 0 {
+		predicates = append(predicates, company.IndustryNotIn(i.IndustryNotIn...))
+	}
+	if i.IndustryGT != nil {
+		predicates = append(predicates, company.IndustryGT(*i.IndustryGT))
+	}
+	if i.IndustryGTE != nil {
+		predicates = append(predicates, company.IndustryGTE(*i.IndustryGTE))
+	}
+	if i.IndustryLT != nil {
+		predicates = append(predicates, company.IndustryLT(*i.IndustryLT))
+	}
+	if i.IndustryLTE != nil {
+		predicates = append(predicates, company.IndustryLTE(*i.IndustryLTE))
+	}
+	if i.IndustryContains != nil {
+		predicates = append(predicates, company.IndustryContains(*i.IndustryContains))
+	}
+	if i.IndustryHasPrefix != nil {
+		predicates = append(predicates, company.IndustryHasPrefix(*i.IndustryHasPrefix))
+	}
+	if i.IndustryHasSuffix != nil {
+		predicates = append(predicates, company.IndustryHasSuffix(*i.IndustryHasSuffix))
+	}
+	if i.IndustryIsNil {
+		predicates = append(predicates, company.IndustryIsNil())
+	}
+	if i.IndustryNotNil {
+		predicates = append(predicates, company.IndustryNotNil())
+	}
+	if i.IndustryEqualFold != nil {
+		predicates = append(predicates, company.IndustryEqualFold(*i.IndustryEqualFold))
+	}
+	if i.IndustryContainsFold != nil {
+		predicates = append(predicates, company.IndustryContainsFold(*i.IndustryContainsFold))
+	}
 	if i.LastEntryDate != nil {
 		predicates = append(predicates, company.LastEntryDateEQ(*i.LastEntryDate))
 	}
@@ -2008,6 +2075,24 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 		}
 		predicates = append(predicates, company.HasCustomersWith(with...))
 	}
+	if i.HasDocuments != nil {
+		p := company.HasDocuments()
+		if !*i.HasDocuments {
+			p = company.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasDocumentsWith) > 0 {
+		with := make([]predicate.CompanyDocument, 0, len(i.HasDocumentsWith))
+		for _, w := range i.HasDocumentsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasDocumentsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, company.HasDocumentsWith(with...))
+	}
 	if i.HasEmployees != nil {
 		p := company.HasEmployees()
 		if !*i.HasEmployees {
@@ -2249,6 +2334,796 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 		return predicates[0], nil
 	default:
 		return company.And(predicates...), nil
+	}
+}
+
+// CompanyDocumentWhereInput represents a where input for filtering CompanyDocument queries.
+type CompanyDocumentWhereInput struct {
+	Predicates []predicate.CompanyDocument  `json:"-"`
+	Not        *CompanyDocumentWhereInput   `json:"not,omitempty"`
+	Or         []*CompanyDocumentWhereInput `json:"or,omitempty"`
+	And        []*CompanyDocumentWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *int  `json:"id,omitempty"`
+	IDNEQ   *int  `json:"idNEQ,omitempty"`
+	IDIn    []int `json:"idIn,omitempty"`
+	IDNotIn []int `json:"idNotIn,omitempty"`
+	IDGT    *int  `json:"idGT,omitempty"`
+	IDGTE   *int  `json:"idGTE,omitempty"`
+	IDLT    *int  `json:"idLT,omitempty"`
+	IDLTE   *int  `json:"idLTE,omitempty"`
+
+	// "createdAt" field predicates.
+	CreatedAt      *time.Time  `json:"createdat,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+
+	// "updatedAt" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+
+	// "deletedAt" field predicates.
+	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+
+	// "filename" field predicates.
+	Filename             *string  `json:"filename,omitempty"`
+	FilenameNEQ          *string  `json:"filenameNEQ,omitempty"`
+	FilenameIn           []string `json:"filenameIn,omitempty"`
+	FilenameNotIn        []string `json:"filenameNotIn,omitempty"`
+	FilenameGT           *string  `json:"filenameGT,omitempty"`
+	FilenameGTE          *string  `json:"filenameGTE,omitempty"`
+	FilenameLT           *string  `json:"filenameLT,omitempty"`
+	FilenameLTE          *string  `json:"filenameLTE,omitempty"`
+	FilenameContains     *string  `json:"filenameContains,omitempty"`
+	FilenameHasPrefix    *string  `json:"filenameHasPrefix,omitempty"`
+	FilenameHasSuffix    *string  `json:"filenameHasSuffix,omitempty"`
+	FilenameEqualFold    *string  `json:"filenameEqualFold,omitempty"`
+	FilenameContainsFold *string  `json:"filenameContainsFold,omitempty"`
+
+	// "title" field predicates.
+	Title             *string  `json:"title,omitempty"`
+	TitleNEQ          *string  `json:"titleNEQ,omitempty"`
+	TitleIn           []string `json:"titleIn,omitempty"`
+	TitleNotIn        []string `json:"titleNotIn,omitempty"`
+	TitleGT           *string  `json:"titleGT,omitempty"`
+	TitleGTE          *string  `json:"titleGTE,omitempty"`
+	TitleLT           *string  `json:"titleLT,omitempty"`
+	TitleLTE          *string  `json:"titleLTE,omitempty"`
+	TitleContains     *string  `json:"titleContains,omitempty"`
+	TitleHasPrefix    *string  `json:"titleHasPrefix,omitempty"`
+	TitleHasSuffix    *string  `json:"titleHasSuffix,omitempty"`
+	TitleEqualFold    *string  `json:"titleEqualFold,omitempty"`
+	TitleContainsFold *string  `json:"titleContainsFold,omitempty"`
+
+	// "keywords" field predicates.
+	Keywords             *string  `json:"keywords,omitempty"`
+	KeywordsNEQ          *string  `json:"keywordsNEQ,omitempty"`
+	KeywordsIn           []string `json:"keywordsIn,omitempty"`
+	KeywordsNotIn        []string `json:"keywordsNotIn,omitempty"`
+	KeywordsGT           *string  `json:"keywordsGT,omitempty"`
+	KeywordsGTE          *string  `json:"keywordsGTE,omitempty"`
+	KeywordsLT           *string  `json:"keywordsLT,omitempty"`
+	KeywordsLTE          *string  `json:"keywordsLTE,omitempty"`
+	KeywordsContains     *string  `json:"keywordsContains,omitempty"`
+	KeywordsHasPrefix    *string  `json:"keywordsHasPrefix,omitempty"`
+	KeywordsHasSuffix    *string  `json:"keywordsHasSuffix,omitempty"`
+	KeywordsEqualFold    *string  `json:"keywordsEqualFold,omitempty"`
+	KeywordsContainsFold *string  `json:"keywordsContainsFold,omitempty"`
+
+	// "category" field predicates.
+	Category      *companydocument.Category  `json:"category,omitempty"`
+	CategoryNEQ   *companydocument.Category  `json:"categoryNEQ,omitempty"`
+	CategoryIn    []companydocument.Category `json:"categoryIn,omitempty"`
+	CategoryNotIn []companydocument.Category `json:"categoryNotIn,omitempty"`
+
+	// "size" field predicates.
+	Size      *int  `json:"size,omitempty"`
+	SizeNEQ   *int  `json:"sizeNEQ,omitempty"`
+	SizeIn    []int `json:"sizeIn,omitempty"`
+	SizeNotIn []int `json:"sizeNotIn,omitempty"`
+	SizeGT    *int  `json:"sizeGT,omitempty"`
+	SizeGTE   *int  `json:"sizeGTE,omitempty"`
+	SizeLT    *int  `json:"sizeLT,omitempty"`
+	SizeLTE   *int  `json:"sizeLTE,omitempty"`
+
+	// "fileType" field predicates.
+	FileType             *string  `json:"filetype,omitempty"`
+	FileTypeNEQ          *string  `json:"filetypeNEQ,omitempty"`
+	FileTypeIn           []string `json:"filetypeIn,omitempty"`
+	FileTypeNotIn        []string `json:"filetypeNotIn,omitempty"`
+	FileTypeGT           *string  `json:"filetypeGT,omitempty"`
+	FileTypeGTE          *string  `json:"filetypeGTE,omitempty"`
+	FileTypeLT           *string  `json:"filetypeLT,omitempty"`
+	FileTypeLTE          *string  `json:"filetypeLTE,omitempty"`
+	FileTypeContains     *string  `json:"filetypeContains,omitempty"`
+	FileTypeHasPrefix    *string  `json:"filetypeHasPrefix,omitempty"`
+	FileTypeHasSuffix    *string  `json:"filetypeHasSuffix,omitempty"`
+	FileTypeEqualFold    *string  `json:"filetypeEqualFold,omitempty"`
+	FileTypeContainsFold *string  `json:"filetypeContainsFold,omitempty"`
+
+	// "status" field predicates.
+	Status      *companydocument.Status  `json:"status,omitempty"`
+	StatusNEQ   *companydocument.Status  `json:"statusNEQ,omitempty"`
+	StatusIn    []companydocument.Status `json:"statusIn,omitempty"`
+	StatusNotIn []companydocument.Status `json:"statusNotIn,omitempty"`
+
+	// "url" field predicates.
+	URL             *string  `json:"url,omitempty"`
+	URLNEQ          *string  `json:"urlNEQ,omitempty"`
+	URLIn           []string `json:"urlIn,omitempty"`
+	URLNotIn        []string `json:"urlNotIn,omitempty"`
+	URLGT           *string  `json:"urlGT,omitempty"`
+	URLGTE          *string  `json:"urlGTE,omitempty"`
+	URLLT           *string  `json:"urlLT,omitempty"`
+	URLLTE          *string  `json:"urlLTE,omitempty"`
+	URLContains     *string  `json:"urlContains,omitempty"`
+	URLHasPrefix    *string  `json:"urlHasPrefix,omitempty"`
+	URLHasSuffix    *string  `json:"urlHasSuffix,omitempty"`
+	URLEqualFold    *string  `json:"urlEqualFold,omitempty"`
+	URLContainsFold *string  `json:"urlContainsFold,omitempty"`
+
+	// "storageURI" field predicates.
+	StorageURI             *string  `json:"storageuri,omitempty"`
+	StorageURINEQ          *string  `json:"storageuriNEQ,omitempty"`
+	StorageURIIn           []string `json:"storageuriIn,omitempty"`
+	StorageURINotIn        []string `json:"storageuriNotIn,omitempty"`
+	StorageURIGT           *string  `json:"storageuriGT,omitempty"`
+	StorageURIGTE          *string  `json:"storageuriGTE,omitempty"`
+	StorageURILT           *string  `json:"storageuriLT,omitempty"`
+	StorageURILTE          *string  `json:"storageuriLTE,omitempty"`
+	StorageURIContains     *string  `json:"storageuriContains,omitempty"`
+	StorageURIHasPrefix    *string  `json:"storageuriHasPrefix,omitempty"`
+	StorageURIHasSuffix    *string  `json:"storageuriHasSuffix,omitempty"`
+	StorageURIEqualFold    *string  `json:"storageuriEqualFold,omitempty"`
+	StorageURIContainsFold *string  `json:"storageuriContainsFold,omitempty"`
+
+	// "thumbnail" field predicates.
+	Thumbnail             *string  `json:"thumbnail,omitempty"`
+	ThumbnailNEQ          *string  `json:"thumbnailNEQ,omitempty"`
+	ThumbnailIn           []string `json:"thumbnailIn,omitempty"`
+	ThumbnailNotIn        []string `json:"thumbnailNotIn,omitempty"`
+	ThumbnailGT           *string  `json:"thumbnailGT,omitempty"`
+	ThumbnailGTE          *string  `json:"thumbnailGTE,omitempty"`
+	ThumbnailLT           *string  `json:"thumbnailLT,omitempty"`
+	ThumbnailLTE          *string  `json:"thumbnailLTE,omitempty"`
+	ThumbnailContains     *string  `json:"thumbnailContains,omitempty"`
+	ThumbnailHasPrefix    *string  `json:"thumbnailHasPrefix,omitempty"`
+	ThumbnailHasSuffix    *string  `json:"thumbnailHasSuffix,omitempty"`
+	ThumbnailIsNil        bool     `json:"thumbnailIsNil,omitempty"`
+	ThumbnailNotNil       bool     `json:"thumbnailNotNil,omitempty"`
+	ThumbnailEqualFold    *string  `json:"thumbnailEqualFold,omitempty"`
+	ThumbnailContainsFold *string  `json:"thumbnailContainsFold,omitempty"`
+
+	// "expiryDate" field predicates.
+	ExpiryDate      *time.Time  `json:"expirydate,omitempty"`
+	ExpiryDateNEQ   *time.Time  `json:"expirydateNEQ,omitempty"`
+	ExpiryDateIn    []time.Time `json:"expirydateIn,omitempty"`
+	ExpiryDateNotIn []time.Time `json:"expirydateNotIn,omitempty"`
+	ExpiryDateGT    *time.Time  `json:"expirydateGT,omitempty"`
+	ExpiryDateGTE   *time.Time  `json:"expirydateGTE,omitempty"`
+	ExpiryDateLT    *time.Time  `json:"expirydateLT,omitempty"`
+	ExpiryDateLTE   *time.Time  `json:"expirydateLTE,omitempty"`
+
+	// "company" edge predicates.
+	HasCompany     *bool                `json:"hasCompany,omitempty"`
+	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
+
+	// "uploadedBy" edge predicates.
+	HasUploadedBy     *bool             `json:"hasUploadedBy,omitempty"`
+	HasUploadedByWith []*UserWhereInput `json:"hasUploadedByWith,omitempty"`
+
+	// "approvedBy" edge predicates.
+	HasApprovedBy     *bool             `json:"hasApprovedBy,omitempty"`
+	HasApprovedByWith []*UserWhereInput `json:"hasApprovedByWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *CompanyDocumentWhereInput) AddPredicates(predicates ...predicate.CompanyDocument) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the CompanyDocumentWhereInput filter on the CompanyDocumentQuery builder.
+func (i *CompanyDocumentWhereInput) Filter(q *CompanyDocumentQuery) (*CompanyDocumentQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyCompanyDocumentWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyCompanyDocumentWhereInput is returned in case the CompanyDocumentWhereInput is empty.
+var ErrEmptyCompanyDocumentWhereInput = errors.New("generated: empty predicate CompanyDocumentWhereInput")
+
+// P returns a predicate for filtering companydocuments.
+// An error is returned if the input is empty or invalid.
+func (i *CompanyDocumentWhereInput) P() (predicate.CompanyDocument, error) {
+	var predicates []predicate.CompanyDocument
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, companydocument.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.CompanyDocument, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, companydocument.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.CompanyDocument, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, companydocument.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, companydocument.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, companydocument.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, companydocument.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, companydocument.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, companydocument.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, companydocument.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, companydocument.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, companydocument.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, companydocument.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, companydocument.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, companydocument.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, companydocument.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, companydocument.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, companydocument.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, companydocument.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, companydocument.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, companydocument.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, companydocument.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, companydocument.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, companydocument.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, companydocument.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, companydocument.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, companydocument.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, companydocument.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.DeletedAt != nil {
+		predicates = append(predicates, companydocument.DeletedAtEQ(*i.DeletedAt))
+	}
+	if i.DeletedAtNEQ != nil {
+		predicates = append(predicates, companydocument.DeletedAtNEQ(*i.DeletedAtNEQ))
+	}
+	if len(i.DeletedAtIn) > 0 {
+		predicates = append(predicates, companydocument.DeletedAtIn(i.DeletedAtIn...))
+	}
+	if len(i.DeletedAtNotIn) > 0 {
+		predicates = append(predicates, companydocument.DeletedAtNotIn(i.DeletedAtNotIn...))
+	}
+	if i.DeletedAtGT != nil {
+		predicates = append(predicates, companydocument.DeletedAtGT(*i.DeletedAtGT))
+	}
+	if i.DeletedAtGTE != nil {
+		predicates = append(predicates, companydocument.DeletedAtGTE(*i.DeletedAtGTE))
+	}
+	if i.DeletedAtLT != nil {
+		predicates = append(predicates, companydocument.DeletedAtLT(*i.DeletedAtLT))
+	}
+	if i.DeletedAtLTE != nil {
+		predicates = append(predicates, companydocument.DeletedAtLTE(*i.DeletedAtLTE))
+	}
+	if i.DeletedAtIsNil {
+		predicates = append(predicates, companydocument.DeletedAtIsNil())
+	}
+	if i.DeletedAtNotNil {
+		predicates = append(predicates, companydocument.DeletedAtNotNil())
+	}
+	if i.Filename != nil {
+		predicates = append(predicates, companydocument.FilenameEQ(*i.Filename))
+	}
+	if i.FilenameNEQ != nil {
+		predicates = append(predicates, companydocument.FilenameNEQ(*i.FilenameNEQ))
+	}
+	if len(i.FilenameIn) > 0 {
+		predicates = append(predicates, companydocument.FilenameIn(i.FilenameIn...))
+	}
+	if len(i.FilenameNotIn) > 0 {
+		predicates = append(predicates, companydocument.FilenameNotIn(i.FilenameNotIn...))
+	}
+	if i.FilenameGT != nil {
+		predicates = append(predicates, companydocument.FilenameGT(*i.FilenameGT))
+	}
+	if i.FilenameGTE != nil {
+		predicates = append(predicates, companydocument.FilenameGTE(*i.FilenameGTE))
+	}
+	if i.FilenameLT != nil {
+		predicates = append(predicates, companydocument.FilenameLT(*i.FilenameLT))
+	}
+	if i.FilenameLTE != nil {
+		predicates = append(predicates, companydocument.FilenameLTE(*i.FilenameLTE))
+	}
+	if i.FilenameContains != nil {
+		predicates = append(predicates, companydocument.FilenameContains(*i.FilenameContains))
+	}
+	if i.FilenameHasPrefix != nil {
+		predicates = append(predicates, companydocument.FilenameHasPrefix(*i.FilenameHasPrefix))
+	}
+	if i.FilenameHasSuffix != nil {
+		predicates = append(predicates, companydocument.FilenameHasSuffix(*i.FilenameHasSuffix))
+	}
+	if i.FilenameEqualFold != nil {
+		predicates = append(predicates, companydocument.FilenameEqualFold(*i.FilenameEqualFold))
+	}
+	if i.FilenameContainsFold != nil {
+		predicates = append(predicates, companydocument.FilenameContainsFold(*i.FilenameContainsFold))
+	}
+	if i.Title != nil {
+		predicates = append(predicates, companydocument.TitleEQ(*i.Title))
+	}
+	if i.TitleNEQ != nil {
+		predicates = append(predicates, companydocument.TitleNEQ(*i.TitleNEQ))
+	}
+	if len(i.TitleIn) > 0 {
+		predicates = append(predicates, companydocument.TitleIn(i.TitleIn...))
+	}
+	if len(i.TitleNotIn) > 0 {
+		predicates = append(predicates, companydocument.TitleNotIn(i.TitleNotIn...))
+	}
+	if i.TitleGT != nil {
+		predicates = append(predicates, companydocument.TitleGT(*i.TitleGT))
+	}
+	if i.TitleGTE != nil {
+		predicates = append(predicates, companydocument.TitleGTE(*i.TitleGTE))
+	}
+	if i.TitleLT != nil {
+		predicates = append(predicates, companydocument.TitleLT(*i.TitleLT))
+	}
+	if i.TitleLTE != nil {
+		predicates = append(predicates, companydocument.TitleLTE(*i.TitleLTE))
+	}
+	if i.TitleContains != nil {
+		predicates = append(predicates, companydocument.TitleContains(*i.TitleContains))
+	}
+	if i.TitleHasPrefix != nil {
+		predicates = append(predicates, companydocument.TitleHasPrefix(*i.TitleHasPrefix))
+	}
+	if i.TitleHasSuffix != nil {
+		predicates = append(predicates, companydocument.TitleHasSuffix(*i.TitleHasSuffix))
+	}
+	if i.TitleEqualFold != nil {
+		predicates = append(predicates, companydocument.TitleEqualFold(*i.TitleEqualFold))
+	}
+	if i.TitleContainsFold != nil {
+		predicates = append(predicates, companydocument.TitleContainsFold(*i.TitleContainsFold))
+	}
+	if i.Keywords != nil {
+		predicates = append(predicates, companydocument.KeywordsEQ(*i.Keywords))
+	}
+	if i.KeywordsNEQ != nil {
+		predicates = append(predicates, companydocument.KeywordsNEQ(*i.KeywordsNEQ))
+	}
+	if len(i.KeywordsIn) > 0 {
+		predicates = append(predicates, companydocument.KeywordsIn(i.KeywordsIn...))
+	}
+	if len(i.KeywordsNotIn) > 0 {
+		predicates = append(predicates, companydocument.KeywordsNotIn(i.KeywordsNotIn...))
+	}
+	if i.KeywordsGT != nil {
+		predicates = append(predicates, companydocument.KeywordsGT(*i.KeywordsGT))
+	}
+	if i.KeywordsGTE != nil {
+		predicates = append(predicates, companydocument.KeywordsGTE(*i.KeywordsGTE))
+	}
+	if i.KeywordsLT != nil {
+		predicates = append(predicates, companydocument.KeywordsLT(*i.KeywordsLT))
+	}
+	if i.KeywordsLTE != nil {
+		predicates = append(predicates, companydocument.KeywordsLTE(*i.KeywordsLTE))
+	}
+	if i.KeywordsContains != nil {
+		predicates = append(predicates, companydocument.KeywordsContains(*i.KeywordsContains))
+	}
+	if i.KeywordsHasPrefix != nil {
+		predicates = append(predicates, companydocument.KeywordsHasPrefix(*i.KeywordsHasPrefix))
+	}
+	if i.KeywordsHasSuffix != nil {
+		predicates = append(predicates, companydocument.KeywordsHasSuffix(*i.KeywordsHasSuffix))
+	}
+	if i.KeywordsEqualFold != nil {
+		predicates = append(predicates, companydocument.KeywordsEqualFold(*i.KeywordsEqualFold))
+	}
+	if i.KeywordsContainsFold != nil {
+		predicates = append(predicates, companydocument.KeywordsContainsFold(*i.KeywordsContainsFold))
+	}
+	if i.Category != nil {
+		predicates = append(predicates, companydocument.CategoryEQ(*i.Category))
+	}
+	if i.CategoryNEQ != nil {
+		predicates = append(predicates, companydocument.CategoryNEQ(*i.CategoryNEQ))
+	}
+	if len(i.CategoryIn) > 0 {
+		predicates = append(predicates, companydocument.CategoryIn(i.CategoryIn...))
+	}
+	if len(i.CategoryNotIn) > 0 {
+		predicates = append(predicates, companydocument.CategoryNotIn(i.CategoryNotIn...))
+	}
+	if i.Size != nil {
+		predicates = append(predicates, companydocument.SizeEQ(*i.Size))
+	}
+	if i.SizeNEQ != nil {
+		predicates = append(predicates, companydocument.SizeNEQ(*i.SizeNEQ))
+	}
+	if len(i.SizeIn) > 0 {
+		predicates = append(predicates, companydocument.SizeIn(i.SizeIn...))
+	}
+	if len(i.SizeNotIn) > 0 {
+		predicates = append(predicates, companydocument.SizeNotIn(i.SizeNotIn...))
+	}
+	if i.SizeGT != nil {
+		predicates = append(predicates, companydocument.SizeGT(*i.SizeGT))
+	}
+	if i.SizeGTE != nil {
+		predicates = append(predicates, companydocument.SizeGTE(*i.SizeGTE))
+	}
+	if i.SizeLT != nil {
+		predicates = append(predicates, companydocument.SizeLT(*i.SizeLT))
+	}
+	if i.SizeLTE != nil {
+		predicates = append(predicates, companydocument.SizeLTE(*i.SizeLTE))
+	}
+	if i.FileType != nil {
+		predicates = append(predicates, companydocument.FileTypeEQ(*i.FileType))
+	}
+	if i.FileTypeNEQ != nil {
+		predicates = append(predicates, companydocument.FileTypeNEQ(*i.FileTypeNEQ))
+	}
+	if len(i.FileTypeIn) > 0 {
+		predicates = append(predicates, companydocument.FileTypeIn(i.FileTypeIn...))
+	}
+	if len(i.FileTypeNotIn) > 0 {
+		predicates = append(predicates, companydocument.FileTypeNotIn(i.FileTypeNotIn...))
+	}
+	if i.FileTypeGT != nil {
+		predicates = append(predicates, companydocument.FileTypeGT(*i.FileTypeGT))
+	}
+	if i.FileTypeGTE != nil {
+		predicates = append(predicates, companydocument.FileTypeGTE(*i.FileTypeGTE))
+	}
+	if i.FileTypeLT != nil {
+		predicates = append(predicates, companydocument.FileTypeLT(*i.FileTypeLT))
+	}
+	if i.FileTypeLTE != nil {
+		predicates = append(predicates, companydocument.FileTypeLTE(*i.FileTypeLTE))
+	}
+	if i.FileTypeContains != nil {
+		predicates = append(predicates, companydocument.FileTypeContains(*i.FileTypeContains))
+	}
+	if i.FileTypeHasPrefix != nil {
+		predicates = append(predicates, companydocument.FileTypeHasPrefix(*i.FileTypeHasPrefix))
+	}
+	if i.FileTypeHasSuffix != nil {
+		predicates = append(predicates, companydocument.FileTypeHasSuffix(*i.FileTypeHasSuffix))
+	}
+	if i.FileTypeEqualFold != nil {
+		predicates = append(predicates, companydocument.FileTypeEqualFold(*i.FileTypeEqualFold))
+	}
+	if i.FileTypeContainsFold != nil {
+		predicates = append(predicates, companydocument.FileTypeContainsFold(*i.FileTypeContainsFold))
+	}
+	if i.Status != nil {
+		predicates = append(predicates, companydocument.StatusEQ(*i.Status))
+	}
+	if i.StatusNEQ != nil {
+		predicates = append(predicates, companydocument.StatusNEQ(*i.StatusNEQ))
+	}
+	if len(i.StatusIn) > 0 {
+		predicates = append(predicates, companydocument.StatusIn(i.StatusIn...))
+	}
+	if len(i.StatusNotIn) > 0 {
+		predicates = append(predicates, companydocument.StatusNotIn(i.StatusNotIn...))
+	}
+	if i.URL != nil {
+		predicates = append(predicates, companydocument.URLEQ(*i.URL))
+	}
+	if i.URLNEQ != nil {
+		predicates = append(predicates, companydocument.URLNEQ(*i.URLNEQ))
+	}
+	if len(i.URLIn) > 0 {
+		predicates = append(predicates, companydocument.URLIn(i.URLIn...))
+	}
+	if len(i.URLNotIn) > 0 {
+		predicates = append(predicates, companydocument.URLNotIn(i.URLNotIn...))
+	}
+	if i.URLGT != nil {
+		predicates = append(predicates, companydocument.URLGT(*i.URLGT))
+	}
+	if i.URLGTE != nil {
+		predicates = append(predicates, companydocument.URLGTE(*i.URLGTE))
+	}
+	if i.URLLT != nil {
+		predicates = append(predicates, companydocument.URLLT(*i.URLLT))
+	}
+	if i.URLLTE != nil {
+		predicates = append(predicates, companydocument.URLLTE(*i.URLLTE))
+	}
+	if i.URLContains != nil {
+		predicates = append(predicates, companydocument.URLContains(*i.URLContains))
+	}
+	if i.URLHasPrefix != nil {
+		predicates = append(predicates, companydocument.URLHasPrefix(*i.URLHasPrefix))
+	}
+	if i.URLHasSuffix != nil {
+		predicates = append(predicates, companydocument.URLHasSuffix(*i.URLHasSuffix))
+	}
+	if i.URLEqualFold != nil {
+		predicates = append(predicates, companydocument.URLEqualFold(*i.URLEqualFold))
+	}
+	if i.URLContainsFold != nil {
+		predicates = append(predicates, companydocument.URLContainsFold(*i.URLContainsFold))
+	}
+	if i.StorageURI != nil {
+		predicates = append(predicates, companydocument.StorageURIEQ(*i.StorageURI))
+	}
+	if i.StorageURINEQ != nil {
+		predicates = append(predicates, companydocument.StorageURINEQ(*i.StorageURINEQ))
+	}
+	if len(i.StorageURIIn) > 0 {
+		predicates = append(predicates, companydocument.StorageURIIn(i.StorageURIIn...))
+	}
+	if len(i.StorageURINotIn) > 0 {
+		predicates = append(predicates, companydocument.StorageURINotIn(i.StorageURINotIn...))
+	}
+	if i.StorageURIGT != nil {
+		predicates = append(predicates, companydocument.StorageURIGT(*i.StorageURIGT))
+	}
+	if i.StorageURIGTE != nil {
+		predicates = append(predicates, companydocument.StorageURIGTE(*i.StorageURIGTE))
+	}
+	if i.StorageURILT != nil {
+		predicates = append(predicates, companydocument.StorageURILT(*i.StorageURILT))
+	}
+	if i.StorageURILTE != nil {
+		predicates = append(predicates, companydocument.StorageURILTE(*i.StorageURILTE))
+	}
+	if i.StorageURIContains != nil {
+		predicates = append(predicates, companydocument.StorageURIContains(*i.StorageURIContains))
+	}
+	if i.StorageURIHasPrefix != nil {
+		predicates = append(predicates, companydocument.StorageURIHasPrefix(*i.StorageURIHasPrefix))
+	}
+	if i.StorageURIHasSuffix != nil {
+		predicates = append(predicates, companydocument.StorageURIHasSuffix(*i.StorageURIHasSuffix))
+	}
+	if i.StorageURIEqualFold != nil {
+		predicates = append(predicates, companydocument.StorageURIEqualFold(*i.StorageURIEqualFold))
+	}
+	if i.StorageURIContainsFold != nil {
+		predicates = append(predicates, companydocument.StorageURIContainsFold(*i.StorageURIContainsFold))
+	}
+	if i.Thumbnail != nil {
+		predicates = append(predicates, companydocument.ThumbnailEQ(*i.Thumbnail))
+	}
+	if i.ThumbnailNEQ != nil {
+		predicates = append(predicates, companydocument.ThumbnailNEQ(*i.ThumbnailNEQ))
+	}
+	if len(i.ThumbnailIn) > 0 {
+		predicates = append(predicates, companydocument.ThumbnailIn(i.ThumbnailIn...))
+	}
+	if len(i.ThumbnailNotIn) > 0 {
+		predicates = append(predicates, companydocument.ThumbnailNotIn(i.ThumbnailNotIn...))
+	}
+	if i.ThumbnailGT != nil {
+		predicates = append(predicates, companydocument.ThumbnailGT(*i.ThumbnailGT))
+	}
+	if i.ThumbnailGTE != nil {
+		predicates = append(predicates, companydocument.ThumbnailGTE(*i.ThumbnailGTE))
+	}
+	if i.ThumbnailLT != nil {
+		predicates = append(predicates, companydocument.ThumbnailLT(*i.ThumbnailLT))
+	}
+	if i.ThumbnailLTE != nil {
+		predicates = append(predicates, companydocument.ThumbnailLTE(*i.ThumbnailLTE))
+	}
+	if i.ThumbnailContains != nil {
+		predicates = append(predicates, companydocument.ThumbnailContains(*i.ThumbnailContains))
+	}
+	if i.ThumbnailHasPrefix != nil {
+		predicates = append(predicates, companydocument.ThumbnailHasPrefix(*i.ThumbnailHasPrefix))
+	}
+	if i.ThumbnailHasSuffix != nil {
+		predicates = append(predicates, companydocument.ThumbnailHasSuffix(*i.ThumbnailHasSuffix))
+	}
+	if i.ThumbnailIsNil {
+		predicates = append(predicates, companydocument.ThumbnailIsNil())
+	}
+	if i.ThumbnailNotNil {
+		predicates = append(predicates, companydocument.ThumbnailNotNil())
+	}
+	if i.ThumbnailEqualFold != nil {
+		predicates = append(predicates, companydocument.ThumbnailEqualFold(*i.ThumbnailEqualFold))
+	}
+	if i.ThumbnailContainsFold != nil {
+		predicates = append(predicates, companydocument.ThumbnailContainsFold(*i.ThumbnailContainsFold))
+	}
+	if i.ExpiryDate != nil {
+		predicates = append(predicates, companydocument.ExpiryDateEQ(*i.ExpiryDate))
+	}
+	if i.ExpiryDateNEQ != nil {
+		predicates = append(predicates, companydocument.ExpiryDateNEQ(*i.ExpiryDateNEQ))
+	}
+	if len(i.ExpiryDateIn) > 0 {
+		predicates = append(predicates, companydocument.ExpiryDateIn(i.ExpiryDateIn...))
+	}
+	if len(i.ExpiryDateNotIn) > 0 {
+		predicates = append(predicates, companydocument.ExpiryDateNotIn(i.ExpiryDateNotIn...))
+	}
+	if i.ExpiryDateGT != nil {
+		predicates = append(predicates, companydocument.ExpiryDateGT(*i.ExpiryDateGT))
+	}
+	if i.ExpiryDateGTE != nil {
+		predicates = append(predicates, companydocument.ExpiryDateGTE(*i.ExpiryDateGTE))
+	}
+	if i.ExpiryDateLT != nil {
+		predicates = append(predicates, companydocument.ExpiryDateLT(*i.ExpiryDateLT))
+	}
+	if i.ExpiryDateLTE != nil {
+		predicates = append(predicates, companydocument.ExpiryDateLTE(*i.ExpiryDateLTE))
+	}
+
+	if i.HasCompany != nil {
+		p := companydocument.HasCompany()
+		if !*i.HasCompany {
+			p = companydocument.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCompanyWith) > 0 {
+		with := make([]predicate.Company, 0, len(i.HasCompanyWith))
+		for _, w := range i.HasCompanyWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCompanyWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, companydocument.HasCompanyWith(with...))
+	}
+	if i.HasUploadedBy != nil {
+		p := companydocument.HasUploadedBy()
+		if !*i.HasUploadedBy {
+			p = companydocument.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUploadedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasUploadedByWith))
+		for _, w := range i.HasUploadedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUploadedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, companydocument.HasUploadedByWith(with...))
+	}
+	if i.HasApprovedBy != nil {
+		p := companydocument.HasApprovedBy()
+		if !*i.HasApprovedBy {
+			p = companydocument.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApprovedByWith) > 0 {
+		with := make([]predicate.User, 0, len(i.HasApprovedByWith))
+		for _, w := range i.HasApprovedByWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApprovedByWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, companydocument.HasApprovedByWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyCompanyDocumentWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return companydocument.And(predicates...), nil
 	}
 }
 
@@ -8129,6 +9004,21 @@ type UserWhereInput struct {
 	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
 	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
 
+	// "firebaseUID" field predicates.
+	FirebaseUID             *string  `json:"firebaseuid,omitempty"`
+	FirebaseUIDNEQ          *string  `json:"firebaseuidNEQ,omitempty"`
+	FirebaseUIDIn           []string `json:"firebaseuidIn,omitempty"`
+	FirebaseUIDNotIn        []string `json:"firebaseuidNotIn,omitempty"`
+	FirebaseUIDGT           *string  `json:"firebaseuidGT,omitempty"`
+	FirebaseUIDGTE          *string  `json:"firebaseuidGTE,omitempty"`
+	FirebaseUIDLT           *string  `json:"firebaseuidLT,omitempty"`
+	FirebaseUIDLTE          *string  `json:"firebaseuidLTE,omitempty"`
+	FirebaseUIDContains     *string  `json:"firebaseuidContains,omitempty"`
+	FirebaseUIDHasPrefix    *string  `json:"firebaseuidHasPrefix,omitempty"`
+	FirebaseUIDHasSuffix    *string  `json:"firebaseuidHasSuffix,omitempty"`
+	FirebaseUIDEqualFold    *string  `json:"firebaseuidEqualFold,omitempty"`
+	FirebaseUIDContainsFold *string  `json:"firebaseuidContainsFold,omitempty"`
+
 	// "fcmToken" field predicates.
 	FcmToken             *string  `json:"fcmtoken,omitempty"`
 	FcmTokenNEQ          *string  `json:"fcmtokenNEQ,omitempty"`
@@ -8178,35 +9068,40 @@ type UserWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "password" field predicates.
-	Password             *string  `json:"password,omitempty"`
-	PasswordNEQ          *string  `json:"passwordNEQ,omitempty"`
-	PasswordIn           []string `json:"passwordIn,omitempty"`
-	PasswordNotIn        []string `json:"passwordNotIn,omitempty"`
-	PasswordGT           *string  `json:"passwordGT,omitempty"`
-	PasswordGTE          *string  `json:"passwordGTE,omitempty"`
-	PasswordLT           *string  `json:"passwordLT,omitempty"`
-	PasswordLTE          *string  `json:"passwordLTE,omitempty"`
-	PasswordContains     *string  `json:"passwordContains,omitempty"`
-	PasswordHasPrefix    *string  `json:"passwordHasPrefix,omitempty"`
-	PasswordHasSuffix    *string  `json:"passwordHasSuffix,omitempty"`
-	PasswordEqualFold    *string  `json:"passwordEqualFold,omitempty"`
-	PasswordContainsFold *string  `json:"passwordContainsFold,omitempty"`
+	// "phone" field predicates.
+	Phone             *string  `json:"phone,omitempty"`
+	PhoneNEQ          *string  `json:"phoneNEQ,omitempty"`
+	PhoneIn           []string `json:"phoneIn,omitempty"`
+	PhoneNotIn        []string `json:"phoneNotIn,omitempty"`
+	PhoneGT           *string  `json:"phoneGT,omitempty"`
+	PhoneGTE          *string  `json:"phoneGTE,omitempty"`
+	PhoneLT           *string  `json:"phoneLT,omitempty"`
+	PhoneLTE          *string  `json:"phoneLTE,omitempty"`
+	PhoneContains     *string  `json:"phoneContains,omitempty"`
+	PhoneHasPrefix    *string  `json:"phoneHasPrefix,omitempty"`
+	PhoneHasSuffix    *string  `json:"phoneHasSuffix,omitempty"`
+	PhoneIsNil        bool     `json:"phoneIsNil,omitempty"`
+	PhoneNotNil       bool     `json:"phoneNotNil,omitempty"`
+	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
+	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
-	// "username" field predicates.
-	Username             *string  `json:"username,omitempty"`
-	UsernameNEQ          *string  `json:"usernameNEQ,omitempty"`
-	UsernameIn           []string `json:"usernameIn,omitempty"`
-	UsernameNotIn        []string `json:"usernameNotIn,omitempty"`
-	UsernameGT           *string  `json:"usernameGT,omitempty"`
-	UsernameGTE          *string  `json:"usernameGTE,omitempty"`
-	UsernameLT           *string  `json:"usernameLT,omitempty"`
-	UsernameLTE          *string  `json:"usernameLTE,omitempty"`
-	UsernameContains     *string  `json:"usernameContains,omitempty"`
-	UsernameHasPrefix    *string  `json:"usernameHasPrefix,omitempty"`
-	UsernameHasSuffix    *string  `json:"usernameHasSuffix,omitempty"`
-	UsernameEqualFold    *string  `json:"usernameEqualFold,omitempty"`
-	UsernameContainsFold *string  `json:"usernameContainsFold,omitempty"`
+	// "birthdate" field predicates.
+	Birthdate       *time.Time  `json:"birthdate,omitempty"`
+	BirthdateNEQ    *time.Time  `json:"birthdateNEQ,omitempty"`
+	BirthdateIn     []time.Time `json:"birthdateIn,omitempty"`
+	BirthdateNotIn  []time.Time `json:"birthdateNotIn,omitempty"`
+	BirthdateGT     *time.Time  `json:"birthdateGT,omitempty"`
+	BirthdateGTE    *time.Time  `json:"birthdateGTE,omitempty"`
+	BirthdateLT     *time.Time  `json:"birthdateLT,omitempty"`
+	BirthdateLTE    *time.Time  `json:"birthdateLTE,omitempty"`
+	BirthdateIsNil  bool        `json:"birthdateIsNil,omitempty"`
+	BirthdateNotNil bool        `json:"birthdateNotNil,omitempty"`
+
+	// "gender" field predicates.
+	Gender      *user.Gender  `json:"gender,omitempty"`
+	GenderNEQ   *user.Gender  `json:"genderNEQ,omitempty"`
+	GenderIn    []user.Gender `json:"genderIn,omitempty"`
+	GenderNotIn []user.Gender `json:"genderNotIn,omitempty"`
 
 	// "disabled" field predicates.
 	Disabled       *bool `json:"disabled,omitempty"`
@@ -8275,6 +9170,14 @@ type UserWhereInput struct {
 	// "workShifts" edge predicates.
 	HasWorkShifts     *bool                  `json:"hasWorkShifts,omitempty"`
 	HasWorkShiftsWith []*WorkshiftWhereInput `json:"hasWorkShiftsWith,omitempty"`
+
+	// "uploadedDocuments" edge predicates.
+	HasUploadedDocuments     *bool                        `json:"hasUploadedDocuments,omitempty"`
+	HasUploadedDocumentsWith []*CompanyDocumentWhereInput `json:"hasUploadedDocumentsWith,omitempty"`
+
+	// "approvedDocuments" edge predicates.
+	HasApprovedDocuments     *bool                        `json:"hasApprovedDocuments,omitempty"`
+	HasApprovedDocumentsWith []*CompanyDocumentWhereInput `json:"hasApprovedDocumentsWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -8450,6 +9353,45 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.DeletedAtNotNil {
 		predicates = append(predicates, user.DeletedAtNotNil())
 	}
+	if i.FirebaseUID != nil {
+		predicates = append(predicates, user.FirebaseUIDEQ(*i.FirebaseUID))
+	}
+	if i.FirebaseUIDNEQ != nil {
+		predicates = append(predicates, user.FirebaseUIDNEQ(*i.FirebaseUIDNEQ))
+	}
+	if len(i.FirebaseUIDIn) > 0 {
+		predicates = append(predicates, user.FirebaseUIDIn(i.FirebaseUIDIn...))
+	}
+	if len(i.FirebaseUIDNotIn) > 0 {
+		predicates = append(predicates, user.FirebaseUIDNotIn(i.FirebaseUIDNotIn...))
+	}
+	if i.FirebaseUIDGT != nil {
+		predicates = append(predicates, user.FirebaseUIDGT(*i.FirebaseUIDGT))
+	}
+	if i.FirebaseUIDGTE != nil {
+		predicates = append(predicates, user.FirebaseUIDGTE(*i.FirebaseUIDGTE))
+	}
+	if i.FirebaseUIDLT != nil {
+		predicates = append(predicates, user.FirebaseUIDLT(*i.FirebaseUIDLT))
+	}
+	if i.FirebaseUIDLTE != nil {
+		predicates = append(predicates, user.FirebaseUIDLTE(*i.FirebaseUIDLTE))
+	}
+	if i.FirebaseUIDContains != nil {
+		predicates = append(predicates, user.FirebaseUIDContains(*i.FirebaseUIDContains))
+	}
+	if i.FirebaseUIDHasPrefix != nil {
+		predicates = append(predicates, user.FirebaseUIDHasPrefix(*i.FirebaseUIDHasPrefix))
+	}
+	if i.FirebaseUIDHasSuffix != nil {
+		predicates = append(predicates, user.FirebaseUIDHasSuffix(*i.FirebaseUIDHasSuffix))
+	}
+	if i.FirebaseUIDEqualFold != nil {
+		predicates = append(predicates, user.FirebaseUIDEqualFold(*i.FirebaseUIDEqualFold))
+	}
+	if i.FirebaseUIDContainsFold != nil {
+		predicates = append(predicates, user.FirebaseUIDContainsFold(*i.FirebaseUIDContainsFold))
+	}
 	if i.FcmToken != nil {
 		predicates = append(predicates, user.FcmTokenEQ(*i.FcmToken))
 	}
@@ -8579,83 +9521,92 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, user.NameContainsFold(*i.NameContainsFold))
 	}
-	if i.Password != nil {
-		predicates = append(predicates, user.PasswordEQ(*i.Password))
+	if i.Phone != nil {
+		predicates = append(predicates, user.PhoneEQ(*i.Phone))
 	}
-	if i.PasswordNEQ != nil {
-		predicates = append(predicates, user.PasswordNEQ(*i.PasswordNEQ))
+	if i.PhoneNEQ != nil {
+		predicates = append(predicates, user.PhoneNEQ(*i.PhoneNEQ))
 	}
-	if len(i.PasswordIn) > 0 {
-		predicates = append(predicates, user.PasswordIn(i.PasswordIn...))
+	if len(i.PhoneIn) > 0 {
+		predicates = append(predicates, user.PhoneIn(i.PhoneIn...))
 	}
-	if len(i.PasswordNotIn) > 0 {
-		predicates = append(predicates, user.PasswordNotIn(i.PasswordNotIn...))
+	if len(i.PhoneNotIn) > 0 {
+		predicates = append(predicates, user.PhoneNotIn(i.PhoneNotIn...))
 	}
-	if i.PasswordGT != nil {
-		predicates = append(predicates, user.PasswordGT(*i.PasswordGT))
+	if i.PhoneGT != nil {
+		predicates = append(predicates, user.PhoneGT(*i.PhoneGT))
 	}
-	if i.PasswordGTE != nil {
-		predicates = append(predicates, user.PasswordGTE(*i.PasswordGTE))
+	if i.PhoneGTE != nil {
+		predicates = append(predicates, user.PhoneGTE(*i.PhoneGTE))
 	}
-	if i.PasswordLT != nil {
-		predicates = append(predicates, user.PasswordLT(*i.PasswordLT))
+	if i.PhoneLT != nil {
+		predicates = append(predicates, user.PhoneLT(*i.PhoneLT))
 	}
-	if i.PasswordLTE != nil {
-		predicates = append(predicates, user.PasswordLTE(*i.PasswordLTE))
+	if i.PhoneLTE != nil {
+		predicates = append(predicates, user.PhoneLTE(*i.PhoneLTE))
 	}
-	if i.PasswordContains != nil {
-		predicates = append(predicates, user.PasswordContains(*i.PasswordContains))
+	if i.PhoneContains != nil {
+		predicates = append(predicates, user.PhoneContains(*i.PhoneContains))
 	}
-	if i.PasswordHasPrefix != nil {
-		predicates = append(predicates, user.PasswordHasPrefix(*i.PasswordHasPrefix))
+	if i.PhoneHasPrefix != nil {
+		predicates = append(predicates, user.PhoneHasPrefix(*i.PhoneHasPrefix))
 	}
-	if i.PasswordHasSuffix != nil {
-		predicates = append(predicates, user.PasswordHasSuffix(*i.PasswordHasSuffix))
+	if i.PhoneHasSuffix != nil {
+		predicates = append(predicates, user.PhoneHasSuffix(*i.PhoneHasSuffix))
 	}
-	if i.PasswordEqualFold != nil {
-		predicates = append(predicates, user.PasswordEqualFold(*i.PasswordEqualFold))
+	if i.PhoneIsNil {
+		predicates = append(predicates, user.PhoneIsNil())
 	}
-	if i.PasswordContainsFold != nil {
-		predicates = append(predicates, user.PasswordContainsFold(*i.PasswordContainsFold))
+	if i.PhoneNotNil {
+		predicates = append(predicates, user.PhoneNotNil())
 	}
-	if i.Username != nil {
-		predicates = append(predicates, user.UsernameEQ(*i.Username))
+	if i.PhoneEqualFold != nil {
+		predicates = append(predicates, user.PhoneEqualFold(*i.PhoneEqualFold))
 	}
-	if i.UsernameNEQ != nil {
-		predicates = append(predicates, user.UsernameNEQ(*i.UsernameNEQ))
+	if i.PhoneContainsFold != nil {
+		predicates = append(predicates, user.PhoneContainsFold(*i.PhoneContainsFold))
 	}
-	if len(i.UsernameIn) > 0 {
-		predicates = append(predicates, user.UsernameIn(i.UsernameIn...))
+	if i.Birthdate != nil {
+		predicates = append(predicates, user.BirthdateEQ(*i.Birthdate))
 	}
-	if len(i.UsernameNotIn) > 0 {
-		predicates = append(predicates, user.UsernameNotIn(i.UsernameNotIn...))
+	if i.BirthdateNEQ != nil {
+		predicates = append(predicates, user.BirthdateNEQ(*i.BirthdateNEQ))
 	}
-	if i.UsernameGT != nil {
-		predicates = append(predicates, user.UsernameGT(*i.UsernameGT))
+	if len(i.BirthdateIn) > 0 {
+		predicates = append(predicates, user.BirthdateIn(i.BirthdateIn...))
 	}
-	if i.UsernameGTE != nil {
-		predicates = append(predicates, user.UsernameGTE(*i.UsernameGTE))
+	if len(i.BirthdateNotIn) > 0 {
+		predicates = append(predicates, user.BirthdateNotIn(i.BirthdateNotIn...))
 	}
-	if i.UsernameLT != nil {
-		predicates = append(predicates, user.UsernameLT(*i.UsernameLT))
+	if i.BirthdateGT != nil {
+		predicates = append(predicates, user.BirthdateGT(*i.BirthdateGT))
 	}
-	if i.UsernameLTE != nil {
-		predicates = append(predicates, user.UsernameLTE(*i.UsernameLTE))
+	if i.BirthdateGTE != nil {
+		predicates = append(predicates, user.BirthdateGTE(*i.BirthdateGTE))
 	}
-	if i.UsernameContains != nil {
-		predicates = append(predicates, user.UsernameContains(*i.UsernameContains))
+	if i.BirthdateLT != nil {
+		predicates = append(predicates, user.BirthdateLT(*i.BirthdateLT))
 	}
-	if i.UsernameHasPrefix != nil {
-		predicates = append(predicates, user.UsernameHasPrefix(*i.UsernameHasPrefix))
+	if i.BirthdateLTE != nil {
+		predicates = append(predicates, user.BirthdateLTE(*i.BirthdateLTE))
 	}
-	if i.UsernameHasSuffix != nil {
-		predicates = append(predicates, user.UsernameHasSuffix(*i.UsernameHasSuffix))
+	if i.BirthdateIsNil {
+		predicates = append(predicates, user.BirthdateIsNil())
 	}
-	if i.UsernameEqualFold != nil {
-		predicates = append(predicates, user.UsernameEqualFold(*i.UsernameEqualFold))
+	if i.BirthdateNotNil {
+		predicates = append(predicates, user.BirthdateNotNil())
 	}
-	if i.UsernameContainsFold != nil {
-		predicates = append(predicates, user.UsernameContainsFold(*i.UsernameContainsFold))
+	if i.Gender != nil {
+		predicates = append(predicates, user.GenderEQ(*i.Gender))
+	}
+	if i.GenderNEQ != nil {
+		predicates = append(predicates, user.GenderNEQ(*i.GenderNEQ))
+	}
+	if len(i.GenderIn) > 0 {
+		predicates = append(predicates, user.GenderIn(i.GenderIn...))
+	}
+	if len(i.GenderNotIn) > 0 {
+		predicates = append(predicates, user.GenderNotIn(i.GenderNotIn...))
 	}
 	if i.Disabled != nil {
 		predicates = append(predicates, user.DisabledEQ(*i.Disabled))
@@ -8933,6 +9884,42 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, user.HasWorkShiftsWith(with...))
+	}
+	if i.HasUploadedDocuments != nil {
+		p := user.HasUploadedDocuments()
+		if !*i.HasUploadedDocuments {
+			p = user.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasUploadedDocumentsWith) > 0 {
+		with := make([]predicate.CompanyDocument, 0, len(i.HasUploadedDocumentsWith))
+		for _, w := range i.HasUploadedDocumentsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasUploadedDocumentsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, user.HasUploadedDocumentsWith(with...))
+	}
+	if i.HasApprovedDocuments != nil {
+		p := user.HasApprovedDocuments()
+		if !*i.HasApprovedDocuments {
+			p = user.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasApprovedDocumentsWith) > 0 {
+		with := make([]predicate.CompanyDocument, 0, len(i.HasApprovedDocumentsWith))
+		for _, w := range i.HasApprovedDocumentsWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasApprovedDocumentsWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, user.HasApprovedDocumentsWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

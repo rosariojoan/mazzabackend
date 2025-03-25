@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/project"
@@ -60,6 +61,20 @@ func (uu *UserUpdate) SetNillableDeletedAt(t *time.Time) *UserUpdate {
 // ClearDeletedAt clears the value of the "deletedAt" field.
 func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	uu.mutation.ClearDeletedAt()
+	return uu
+}
+
+// SetFirebaseUID sets the "firebaseUID" field.
+func (uu *UserUpdate) SetFirebaseUID(s string) *UserUpdate {
+	uu.mutation.SetFirebaseUID(s)
+	return uu
+}
+
+// SetNillableFirebaseUID sets the "firebaseUID" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableFirebaseUID(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetFirebaseUID(*s)
+	}
 	return uu
 }
 
@@ -117,30 +132,56 @@ func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	return uu
 }
 
-// SetPassword sets the "password" field.
-func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
-	uu.mutation.SetPassword(s)
+// SetPhone sets the "phone" field.
+func (uu *UserUpdate) SetPhone(s string) *UserUpdate {
+	uu.mutation.SetPhone(s)
 	return uu
 }
 
-// SetNillablePassword sets the "password" field if the given value is not nil.
-func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePhone(s *string) *UserUpdate {
 	if s != nil {
-		uu.SetPassword(*s)
+		uu.SetPhone(*s)
 	}
 	return uu
 }
 
-// SetUsername sets the "username" field.
-func (uu *UserUpdate) SetUsername(s string) *UserUpdate {
-	uu.mutation.SetUsername(s)
+// ClearPhone clears the value of the "phone" field.
+func (uu *UserUpdate) ClearPhone() *UserUpdate {
+	uu.mutation.ClearPhone()
 	return uu
 }
 
-// SetNillableUsername sets the "username" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUsername(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetUsername(*s)
+// SetBirthdate sets the "birthdate" field.
+func (uu *UserUpdate) SetBirthdate(t time.Time) *UserUpdate {
+	uu.mutation.SetBirthdate(t)
+	return uu
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableBirthdate(t *time.Time) *UserUpdate {
+	if t != nil {
+		uu.SetBirthdate(*t)
+	}
+	return uu
+}
+
+// ClearBirthdate clears the value of the "birthdate" field.
+func (uu *UserUpdate) ClearBirthdate() *UserUpdate {
+	uu.mutation.ClearBirthdate()
+	return uu
+}
+
+// SetGender sets the "gender" field.
+func (uu *UserUpdate) SetGender(u user.Gender) *UserUpdate {
+	uu.mutation.SetGender(u)
+	return uu
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableGender(u *user.Gender) *UserUpdate {
+	if u != nil {
+		uu.SetGender(*u)
 	}
 	return uu
 }
@@ -386,6 +427,36 @@ func (uu *UserUpdate) AddWorkShifts(w ...*Workshift) *UserUpdate {
 		ids[i] = w[i].ID
 	}
 	return uu.AddWorkShiftIDs(ids...)
+}
+
+// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+func (uu *UserUpdate) AddUploadedDocumentIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddUploadedDocumentIDs(ids...)
+	return uu
+}
+
+// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+func (uu *UserUpdate) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.AddUploadedDocumentIDs(ids...)
+}
+
+// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+func (uu *UserUpdate) AddApprovedDocumentIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddApprovedDocumentIDs(ids...)
+	return uu
+}
+
+// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+func (uu *UserUpdate) AddApprovedDocuments(c ...*CompanyDocument) *UserUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.AddApprovedDocumentIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -636,6 +707,48 @@ func (uu *UserUpdate) RemoveWorkShifts(w ...*Workshift) *UserUpdate {
 	return uu.RemoveWorkShiftIDs(ids...)
 }
 
+// ClearUploadedDocuments clears all "uploadedDocuments" edges to the CompanyDocument entity.
+func (uu *UserUpdate) ClearUploadedDocuments() *UserUpdate {
+	uu.mutation.ClearUploadedDocuments()
+	return uu
+}
+
+// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to CompanyDocument entities by IDs.
+func (uu *UserUpdate) RemoveUploadedDocumentIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveUploadedDocumentIDs(ids...)
+	return uu
+}
+
+// RemoveUploadedDocuments removes "uploadedDocuments" edges to CompanyDocument entities.
+func (uu *UserUpdate) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.RemoveUploadedDocumentIDs(ids...)
+}
+
+// ClearApprovedDocuments clears all "approvedDocuments" edges to the CompanyDocument entity.
+func (uu *UserUpdate) ClearApprovedDocuments() *UserUpdate {
+	uu.mutation.ClearApprovedDocuments()
+	return uu
+}
+
+// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to CompanyDocument entities by IDs.
+func (uu *UserUpdate) RemoveApprovedDocumentIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveApprovedDocumentIDs(ids...)
+	return uu
+}
+
+// RemoveApprovedDocuments removes "approvedDocuments" edges to CompanyDocument entities.
+func (uu *UserUpdate) RemoveApprovedDocuments(c ...*CompanyDocument) *UserUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.RemoveApprovedDocumentIDs(ids...)
+}
+
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
 	uu.defaults()
@@ -672,6 +785,21 @@ func (uu *UserUpdate) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (uu *UserUpdate) check() error {
+	if v, ok := uu.mutation.FirebaseUID(); ok {
+		if err := user.FirebaseUIDValidator(v); err != nil {
+			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+		}
+	}
+	if v, ok := uu.mutation.Gender(); ok {
+		if err := user.GenderValidator(v); err != nil {
+			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "User.gender": %w`, err)}
+		}
+	}
+	return nil
+}
+
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
 func (uu *UserUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *UserUpdate {
 	uu.modifiers = append(uu.modifiers, modifiers...)
@@ -679,6 +807,9 @@ func (uu *UserUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *UserUpdat
 }
 
 func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
+	if err := uu.check(); err != nil {
+		return n, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	if ps := uu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -696,6 +827,9 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := uu.mutation.FirebaseUID(); ok {
+		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)
+	}
 	if value, ok := uu.mutation.FcmToken(); ok {
 		_spec.SetField(user.FieldFcmToken, field.TypeString, value)
 	}
@@ -711,11 +845,20 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	if value, ok := uu.mutation.Phone(); ok {
+		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Username(); ok {
-		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	if uu.mutation.PhoneCleared() {
+		_spec.ClearField(user.FieldPhone, field.TypeString)
+	}
+	if value, ok := uu.mutation.Birthdate(); ok {
+		_spec.SetField(user.FieldBirthdate, field.TypeTime, value)
+	}
+	if uu.mutation.BirthdateCleared() {
+		_spec.ClearField(user.FieldBirthdate, field.TypeTime)
+	}
+	if value, ok := uu.mutation.Gender(); ok {
+		_spec.SetField(user.FieldGender, field.TypeEnum, value)
 	}
 	if value, ok := uu.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
@@ -1282,6 +1425,96 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if uu.mutation.UploadedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedUploadedDocumentsIDs(); len(nodes) > 0 && !uu.mutation.UploadedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.UploadedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.ApprovedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedApprovedDocumentsIDs(); len(nodes) > 0 && !uu.mutation.ApprovedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.ApprovedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -1327,6 +1560,20 @@ func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
 // ClearDeletedAt clears the value of the "deletedAt" field.
 func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	uuo.mutation.ClearDeletedAt()
+	return uuo
+}
+
+// SetFirebaseUID sets the "firebaseUID" field.
+func (uuo *UserUpdateOne) SetFirebaseUID(s string) *UserUpdateOne {
+	uuo.mutation.SetFirebaseUID(s)
+	return uuo
+}
+
+// SetNillableFirebaseUID sets the "firebaseUID" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableFirebaseUID(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetFirebaseUID(*s)
+	}
 	return uuo
 }
 
@@ -1384,30 +1631,56 @@ func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetPassword sets the "password" field.
-func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
-	uuo.mutation.SetPassword(s)
+// SetPhone sets the "phone" field.
+func (uuo *UserUpdateOne) SetPhone(s string) *UserUpdateOne {
+	uuo.mutation.SetPhone(s)
 	return uuo
 }
 
-// SetNillablePassword sets the "password" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePhone(s *string) *UserUpdateOne {
 	if s != nil {
-		uuo.SetPassword(*s)
+		uuo.SetPhone(*s)
 	}
 	return uuo
 }
 
-// SetUsername sets the "username" field.
-func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
-	uuo.mutation.SetUsername(s)
+// ClearPhone clears the value of the "phone" field.
+func (uuo *UserUpdateOne) ClearPhone() *UserUpdateOne {
+	uuo.mutation.ClearPhone()
 	return uuo
 }
 
-// SetNillableUsername sets the "username" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUsername(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetUsername(*s)
+// SetBirthdate sets the "birthdate" field.
+func (uuo *UserUpdateOne) SetBirthdate(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetBirthdate(t)
+	return uuo
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableBirthdate(t *time.Time) *UserUpdateOne {
+	if t != nil {
+		uuo.SetBirthdate(*t)
+	}
+	return uuo
+}
+
+// ClearBirthdate clears the value of the "birthdate" field.
+func (uuo *UserUpdateOne) ClearBirthdate() *UserUpdateOne {
+	uuo.mutation.ClearBirthdate()
+	return uuo
+}
+
+// SetGender sets the "gender" field.
+func (uuo *UserUpdateOne) SetGender(u user.Gender) *UserUpdateOne {
+	uuo.mutation.SetGender(u)
+	return uuo
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableGender(u *user.Gender) *UserUpdateOne {
+	if u != nil {
+		uuo.SetGender(*u)
 	}
 	return uuo
 }
@@ -1653,6 +1926,36 @@ func (uuo *UserUpdateOne) AddWorkShifts(w ...*Workshift) *UserUpdateOne {
 		ids[i] = w[i].ID
 	}
 	return uuo.AddWorkShiftIDs(ids...)
+}
+
+// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+func (uuo *UserUpdateOne) AddUploadedDocumentIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddUploadedDocumentIDs(ids...)
+	return uuo
+}
+
+// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+func (uuo *UserUpdateOne) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.AddUploadedDocumentIDs(ids...)
+}
+
+// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+func (uuo *UserUpdateOne) AddApprovedDocumentIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddApprovedDocumentIDs(ids...)
+	return uuo
+}
+
+// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+func (uuo *UserUpdateOne) AddApprovedDocuments(c ...*CompanyDocument) *UserUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.AddApprovedDocumentIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -1903,6 +2206,48 @@ func (uuo *UserUpdateOne) RemoveWorkShifts(w ...*Workshift) *UserUpdateOne {
 	return uuo.RemoveWorkShiftIDs(ids...)
 }
 
+// ClearUploadedDocuments clears all "uploadedDocuments" edges to the CompanyDocument entity.
+func (uuo *UserUpdateOne) ClearUploadedDocuments() *UserUpdateOne {
+	uuo.mutation.ClearUploadedDocuments()
+	return uuo
+}
+
+// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to CompanyDocument entities by IDs.
+func (uuo *UserUpdateOne) RemoveUploadedDocumentIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveUploadedDocumentIDs(ids...)
+	return uuo
+}
+
+// RemoveUploadedDocuments removes "uploadedDocuments" edges to CompanyDocument entities.
+func (uuo *UserUpdateOne) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.RemoveUploadedDocumentIDs(ids...)
+}
+
+// ClearApprovedDocuments clears all "approvedDocuments" edges to the CompanyDocument entity.
+func (uuo *UserUpdateOne) ClearApprovedDocuments() *UserUpdateOne {
+	uuo.mutation.ClearApprovedDocuments()
+	return uuo
+}
+
+// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to CompanyDocument entities by IDs.
+func (uuo *UserUpdateOne) RemoveApprovedDocumentIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveApprovedDocumentIDs(ids...)
+	return uuo
+}
+
+// RemoveApprovedDocuments removes "approvedDocuments" edges to CompanyDocument entities.
+func (uuo *UserUpdateOne) RemoveApprovedDocuments(c ...*CompanyDocument) *UserUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.RemoveApprovedDocumentIDs(ids...)
+}
+
 // Where appends a list predicates to the UserUpdate builder.
 func (uuo *UserUpdateOne) Where(ps ...predicate.User) *UserUpdateOne {
 	uuo.mutation.Where(ps...)
@@ -1952,6 +2297,21 @@ func (uuo *UserUpdateOne) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (uuo *UserUpdateOne) check() error {
+	if v, ok := uuo.mutation.FirebaseUID(); ok {
+		if err := user.FirebaseUIDValidator(v); err != nil {
+			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+		}
+	}
+	if v, ok := uuo.mutation.Gender(); ok {
+		if err := user.GenderValidator(v); err != nil {
+			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "User.gender": %w`, err)}
+		}
+	}
+	return nil
+}
+
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
 func (uuo *UserUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *UserUpdateOne {
 	uuo.modifiers = append(uuo.modifiers, modifiers...)
@@ -1959,6 +2319,9 @@ func (uuo *UserUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *UserU
 }
 
 func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
+	if err := uuo.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	id, ok := uuo.mutation.ID()
 	if !ok {
@@ -1993,6 +2356,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if uuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := uuo.mutation.FirebaseUID(); ok {
+		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)
+	}
 	if value, ok := uuo.mutation.FcmToken(); ok {
 		_spec.SetField(user.FieldFcmToken, field.TypeString, value)
 	}
@@ -2008,11 +2374,20 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	if value, ok := uuo.mutation.Phone(); ok {
+		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Username(); ok {
-		_spec.SetField(user.FieldUsername, field.TypeString, value)
+	if uuo.mutation.PhoneCleared() {
+		_spec.ClearField(user.FieldPhone, field.TypeString)
+	}
+	if value, ok := uuo.mutation.Birthdate(); ok {
+		_spec.SetField(user.FieldBirthdate, field.TypeTime, value)
+	}
+	if uuo.mutation.BirthdateCleared() {
+		_spec.ClearField(user.FieldBirthdate, field.TypeTime)
+	}
+	if value, ok := uuo.mutation.Gender(); ok {
+		_spec.SetField(user.FieldGender, field.TypeEnum, value)
 	}
 	if value, ok := uuo.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
@@ -2572,6 +2947,96 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.UploadedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedUploadedDocumentsIDs(); len(nodes) > 0 && !uuo.mutation.UploadedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.UploadedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.ApprovedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedApprovedDocumentsIDs(); len(nodes) > 0 && !uuo.mutation.ApprovedDocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.ApprovedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

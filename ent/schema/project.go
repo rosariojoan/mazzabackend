@@ -26,10 +26,10 @@ func (Project) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
 		field.String("description").NotEmpty(),
-		field.Time("startDate").StructTag("startDate"),
-		field.Time("endDate"),
+		field.Time("startDate").StructTag("startDate").Annotations(entgql.OrderField("START_DATE")),
+		field.Time("endDate").Annotations(entgql.OrderField("END_DATE")),
 		field.Float("progress").Min(0).Max(1).Default(0),
-		field.Enum("status").Values("notStarted", "inProgress", "completed").Default("notStarted"),
+		field.Enum("status").Values("notStarted", "inProgress", "completed").Default("notStarted").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
@@ -54,8 +54,8 @@ func (Project) Indexes() []ent.Index {
 // Enable query and mutation for the Project schema
 func (Project) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		// entgql.RelayConnection(),
-		// entgql.QueryField(),
+		entgql.RelayConnection(),
+		entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
 		entgql.MultiOrder(),
 	}

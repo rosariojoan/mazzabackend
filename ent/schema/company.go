@@ -32,6 +32,7 @@ func (Company) Fields() []ent.Field {
 		field.Time("establishedAt").Annotations(entgql.OrderField("ESTABLISHEDAT")),
 		field.String("description").Nillable().Optional(),
 		field.String("email").Nillable().Optional(),
+		field.String("industry").Nillable().Optional(),
 		field.Time("lastEntryDate").Nillable(),
 		field.Int32("lastInvoiceNumber").Optional().Default(0).NonNegative(),
 		field.String("logo").Nillable().Optional(),
@@ -52,6 +53,7 @@ func (Company) Edges() []ent.Edge {
 		edge.To("availableRoles", UserRole.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a company must have at least one role to which its users are assigned
 		edge.To("accountingEntries", AccountingEntry.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("customers", Customer.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("documents", CompanyDocument.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("employees", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("files", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("products", Product.Type).Annotations(entsql.OnDelete(entsql.Cascade)),

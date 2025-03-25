@@ -104,8 +104,11 @@ extend type Query {
   numberOfLowStock(where: ProductWhereInput): Int!
   numberOfOutOfStock(where: ProductWhereInput): Int!
 
-  projects(where: ProjectWhereInput): [Project!]!
-  projectTasks(where: ProjectTaskWhereInput): [ProjectTask!]!
+  """
+  Query and retrieve only one project
+  """
+  retrieveProject(id: ID!): Project!
+  retrieveProjectTask(id: ID!): ProjectTask!
 
   suppliers(where: SupplierWhereInput): [Supplier!]!
 

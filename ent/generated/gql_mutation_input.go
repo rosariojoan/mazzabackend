@@ -4,12 +4,14 @@ package generated
 
 import (
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
 	"time"
@@ -163,6 +165,7 @@ type CreateCompanyInput struct {
 	EstablishedAt      time.Time
 	Description        *string
 	Email              *string
+	Industry           *string
 	LastEntryDate      time.Time
 	LastInvoiceNumber  *int32
 	Logo               *string
@@ -177,6 +180,7 @@ type CreateCompanyInput struct {
 	AvailableRoleIDs   []int
 	AccountingEntryIDs []int
 	CustomerIDs        []int
+	DocumentIDs        []int
 	EmployeeIDs        []int
 	FileIDs            []int
 	ProductIDs         []int
@@ -211,6 +215,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
+	}
+	if v := i.Industry; v != nil {
+		m.SetIndustry(*v)
 	}
 	m.SetLastEntryDate(i.LastEntryDate)
 	if v := i.LastInvoiceNumber; v != nil {
@@ -247,6 +254,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.CustomerIDs; len(v) > 0 {
 		m.AddCustomerIDs(v...)
+	}
+	if v := i.DocumentIDs; len(v) > 0 {
+		m.AddDocumentIDs(v...)
 	}
 	if v := i.EmployeeIDs; len(v) > 0 {
 		m.AddEmployeeIDs(v...)
@@ -309,6 +319,8 @@ type UpdateCompanyInput struct {
 	Description              *string
 	ClearEmail               bool
 	Email                    *string
+	ClearIndustry            bool
+	Industry                 *string
 	LastEntryDate            *time.Time
 	ClearLastInvoiceNumber   bool
 	LastInvoiceNumber        *int32
@@ -335,6 +347,9 @@ type UpdateCompanyInput struct {
 	ClearCustomers           bool
 	AddCustomerIDs           []int
 	RemoveCustomerIDs        []int
+	ClearDocuments           bool
+	AddDocumentIDs           []int
+	RemoveDocumentIDs        []int
 	ClearEmployees           bool
 	AddEmployeeIDs           []int
 	RemoveEmployeeIDs        []int
@@ -413,6 +428,12 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
+	if i.ClearIndustry {
+		m.ClearIndustry()
+	}
+	if v := i.Industry; v != nil {
+		m.SetIndustry(*v)
+	}
 	if v := i.LastEntryDate; v != nil {
 		m.SetLastEntryDate(*v)
 	}
@@ -490,6 +511,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveCustomerIDs; len(v) > 0 {
 		m.RemoveCustomerIDs(v...)
+	}
+	if i.ClearDocuments {
+		m.ClearDocuments()
+	}
+	if v := i.AddDocumentIDs; len(v) > 0 {
+		m.AddDocumentIDs(v...)
+	}
+	if v := i.RemoveDocumentIDs; len(v) > 0 {
+		m.RemoveDocumentIDs(v...)
 	}
 	if i.ClearEmployees {
 		m.ClearEmployees()
@@ -615,6 +645,130 @@ func (c *CompanyUpdate) SetInput(i UpdateCompanyInput) *CompanyUpdate {
 
 // SetInput applies the change-set in the UpdateCompanyInput on the CompanyUpdateOne builder.
 func (c *CompanyUpdateOne) SetInput(i UpdateCompanyInput) *CompanyUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateCompanyDocumentInput represents a mutation input for creating companydocuments.
+type CreateCompanyDocumentInput struct {
+	Filename   string
+	Title      string
+	Keywords   string
+	Category   companydocument.Category
+	Size       int
+	FileType   string
+	URL        string
+	StorageURI string
+	Thumbnail  *string
+	ExpiryDate time.Time
+}
+
+// Mutate applies the CreateCompanyDocumentInput on the CompanyDocumentMutation builder.
+func (i *CreateCompanyDocumentInput) Mutate(m *CompanyDocumentMutation) {
+	m.SetFilename(i.Filename)
+	m.SetTitle(i.Title)
+	m.SetKeywords(i.Keywords)
+	m.SetCategory(i.Category)
+	m.SetSize(i.Size)
+	m.SetFileType(i.FileType)
+	m.SetURL(i.URL)
+	m.SetStorageURI(i.StorageURI)
+	if v := i.Thumbnail; v != nil {
+		m.SetThumbnail(*v)
+	}
+	m.SetExpiryDate(i.ExpiryDate)
+}
+
+// SetInput applies the change-set in the CreateCompanyDocumentInput on the CompanyDocumentCreate builder.
+func (c *CompanyDocumentCreate) SetInput(i CreateCompanyDocumentInput) *CompanyDocumentCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateCompanyDocumentInput represents a mutation input for updating companydocuments.
+type UpdateCompanyDocumentInput struct {
+	Filename        *string
+	Title           *string
+	Keywords        *string
+	Category        *companydocument.Category
+	Size            *int
+	FileType        *string
+	Status          *companydocument.Status
+	URL             *string
+	StorageURI      *string
+	ClearThumbnail  bool
+	Thumbnail       *string
+	ExpiryDate      *time.Time
+	CompanyID       *int
+	ClearUploadedBy bool
+	UploadedByID    *int
+	ClearApprovedBy bool
+	ApprovedByID    *int
+}
+
+// Mutate applies the UpdateCompanyDocumentInput on the CompanyDocumentMutation builder.
+func (i *UpdateCompanyDocumentInput) Mutate(m *CompanyDocumentMutation) {
+	if v := i.Filename; v != nil {
+		m.SetFilename(*v)
+	}
+	if v := i.Title; v != nil {
+		m.SetTitle(*v)
+	}
+	if v := i.Keywords; v != nil {
+		m.SetKeywords(*v)
+	}
+	if v := i.Category; v != nil {
+		m.SetCategory(*v)
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	if v := i.FileType; v != nil {
+		m.SetFileType(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.URL; v != nil {
+		m.SetURL(*v)
+	}
+	if v := i.StorageURI; v != nil {
+		m.SetStorageURI(*v)
+	}
+	if i.ClearThumbnail {
+		m.ClearThumbnail()
+	}
+	if v := i.Thumbnail; v != nil {
+		m.SetThumbnail(*v)
+	}
+	if v := i.ExpiryDate; v != nil {
+		m.SetExpiryDate(*v)
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if i.ClearUploadedBy {
+		m.ClearUploadedBy()
+	}
+	if v := i.UploadedByID; v != nil {
+		m.SetUploadedByID(*v)
+	}
+	if i.ClearApprovedBy {
+		m.ClearApprovedBy()
+	}
+	if v := i.ApprovedByID; v != nil {
+		m.SetApprovedByID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateCompanyDocumentInput on the CompanyDocumentUpdate builder.
+func (c *CompanyDocumentUpdate) SetInput(i UpdateCompanyDocumentInput) *CompanyDocumentUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateCompanyDocumentInput on the CompanyDocumentUpdateOne builder.
+func (c *CompanyDocumentUpdateOne) SetInput(i UpdateCompanyDocumentInput) *CompanyDocumentUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -1691,11 +1845,13 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
+	FirebaseUID                string
 	FcmToken                   *string
 	Email                      *string
 	Name                       string
-	Password                   string
-	Username                   string
+	Phone                      *string
+	Birthdate                  *time.Time
+	Gender                     user.Gender
 	Disabled                   *bool
 	NotVerified                *bool
 	AccountingEntryIDs         []int
@@ -1712,10 +1868,13 @@ type CreateUserInput struct {
 	TokenIDs                   []int
 	ApprovedWorkShiftIDs       []int
 	WorkShiftIDs               []int
+	UploadedDocumentIDs        []int
+	ApprovedDocumentIDs        []int
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
 func (i *CreateUserInput) Mutate(m *UserMutation) {
+	m.SetFirebaseUID(i.FirebaseUID)
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
 	}
@@ -1723,8 +1882,13 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 		m.SetEmail(*v)
 	}
 	m.SetName(i.Name)
-	m.SetPassword(i.Password)
-	m.SetUsername(i.Username)
+	if v := i.Phone; v != nil {
+		m.SetPhone(*v)
+	}
+	if v := i.Birthdate; v != nil {
+		m.SetBirthdate(*v)
+	}
+	m.SetGender(i.Gender)
 	if v := i.Disabled; v != nil {
 		m.SetDisabled(*v)
 	}
@@ -1773,6 +1937,12 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.WorkShiftIDs; len(v) > 0 {
 		m.AddWorkShiftIDs(v...)
 	}
+	if v := i.UploadedDocumentIDs; len(v) > 0 {
+		m.AddUploadedDocumentIDs(v...)
+	}
+	if v := i.ApprovedDocumentIDs; len(v) > 0 {
+		m.AddApprovedDocumentIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateUserInput on the UserCreate builder.
@@ -1783,13 +1953,17 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
+	FirebaseUID                      *string
 	ClearFcmToken                    bool
 	FcmToken                         *string
 	ClearEmail                       bool
 	Email                            *string
 	Name                             *string
-	Password                         *string
-	Username                         *string
+	ClearPhone                       bool
+	Phone                            *string
+	ClearBirthdate                   bool
+	Birthdate                        *time.Time
+	Gender                           *user.Gender
 	ClearDisabled                    bool
 	Disabled                         *bool
 	ClearNotVerified                 bool
@@ -1830,10 +2004,19 @@ type UpdateUserInput struct {
 	ClearWorkShifts                  bool
 	AddWorkShiftIDs                  []int
 	RemoveWorkShiftIDs               []int
+	ClearUploadedDocuments           bool
+	AddUploadedDocumentIDs           []int
+	RemoveUploadedDocumentIDs        []int
+	ClearApprovedDocuments           bool
+	AddApprovedDocumentIDs           []int
+	RemoveApprovedDocumentIDs        []int
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
 func (i *UpdateUserInput) Mutate(m *UserMutation) {
+	if v := i.FirebaseUID; v != nil {
+		m.SetFirebaseUID(*v)
+	}
 	if i.ClearFcmToken {
 		m.ClearFcmToken()
 	}
@@ -1849,11 +2032,20 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if v := i.Password; v != nil {
-		m.SetPassword(*v)
+	if i.ClearPhone {
+		m.ClearPhone()
 	}
-	if v := i.Username; v != nil {
-		m.SetUsername(*v)
+	if v := i.Phone; v != nil {
+		m.SetPhone(*v)
+	}
+	if i.ClearBirthdate {
+		m.ClearBirthdate()
+	}
+	if v := i.Birthdate; v != nil {
+		m.SetBirthdate(*v)
+	}
+	if v := i.Gender; v != nil {
+		m.SetGender(*v)
 	}
 	if i.ClearDisabled {
 		m.ClearDisabled()
@@ -1974,6 +2166,24 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.RemoveWorkShiftIDs; len(v) > 0 {
 		m.RemoveWorkShiftIDs(v...)
+	}
+	if i.ClearUploadedDocuments {
+		m.ClearUploadedDocuments()
+	}
+	if v := i.AddUploadedDocumentIDs; len(v) > 0 {
+		m.AddUploadedDocumentIDs(v...)
+	}
+	if v := i.RemoveUploadedDocumentIDs; len(v) > 0 {
+		m.RemoveUploadedDocumentIDs(v...)
+	}
+	if i.ClearApprovedDocuments {
+		m.ClearApprovedDocuments()
+	}
+	if v := i.AddApprovedDocumentIDs; len(v) > 0 {
+		m.AddApprovedDocumentIDs(v...)
+	}
+	if v := i.RemoveApprovedDocumentIDs; len(v) > 0 {
+		m.RemoveApprovedDocumentIDs(v...)
 	}
 }
 

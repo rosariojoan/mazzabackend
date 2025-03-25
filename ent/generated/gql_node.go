@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -44,6 +45,9 @@ func (n *AccountingEntry) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Company) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *CompanyDocument) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Customer) IsNode() {}
@@ -164,6 +168,18 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Company.Query().
 			Where(company.ID(id))
 		query, err := query.CollectFields(ctx, "Company")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case companydocument.Table:
+		query := c.CompanyDocument.Query().
+			Where(companydocument.ID(id))
+		query, err := query.CollectFields(ctx, "CompanyDocument")
 		if err != nil {
 			return nil, err
 		}
@@ -445,6 +461,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Company.Query().
 			Where(company.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Company")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case companydocument.Table:
+		query := c.CompanyDocument.Query().
+			Where(companydocument.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "CompanyDocument")
 		if err != nil {
 			return nil, err
 		}

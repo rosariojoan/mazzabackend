@@ -13,6 +13,7 @@ import (
 
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -46,6 +47,8 @@ type Client struct {
 	AccountingEntry *AccountingEntryClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
+	// CompanyDocument is the client for interacting with the CompanyDocument builders.
+	CompanyDocument *CompanyDocumentClient
 	// Customer is the client for interacting with the Customer builders.
 	Customer *CustomerClient
 	// Employee is the client for interacting with the Employee builders.
@@ -91,6 +94,7 @@ func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.AccountingEntry = NewAccountingEntryClient(c.config)
 	c.Company = NewCompanyClient(c.config)
+	c.CompanyDocument = NewCompanyDocumentClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
 	c.Employee = NewEmployeeClient(c.config)
 	c.File = NewFileClient(c.config)
@@ -200,6 +204,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		config:           cfg,
 		AccountingEntry:  NewAccountingEntryClient(cfg),
 		Company:          NewCompanyClient(cfg),
+		CompanyDocument:  NewCompanyDocumentClient(cfg),
 		Customer:         NewCustomerClient(cfg),
 		Employee:         NewEmployeeClient(cfg),
 		File:             NewFileClient(cfg),
@@ -236,6 +241,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		config:           cfg,
 		AccountingEntry:  NewAccountingEntryClient(cfg),
 		Company:          NewCompanyClient(cfg),
+		CompanyDocument:  NewCompanyDocumentClient(cfg),
 		Customer:         NewCustomerClient(cfg),
 		Employee:         NewEmployeeClient(cfg),
 		File:             NewFileClient(cfg),
@@ -280,9 +286,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
-		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
+		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
+		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -292,9 +298,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.AccountingEntry, c.Company, c.Customer, c.Employee, c.File, c.Payable,
-		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
+		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
+		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -307,6 +313,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.AccountingEntry.mutate(ctx, m)
 	case *CompanyMutation:
 		return c.Company.mutate(ctx, m)
+	case *CompanyDocumentMutation:
+		return c.CompanyDocument.mutate(ctx, m)
 	case *CustomerMutation:
 		return c.Customer.mutate(ctx, m)
 	case *EmployeeMutation:
@@ -663,6 +671,22 @@ func (c *CompanyClient) QueryCustomers(co *Company) *CustomerQuery {
 	return query
 }
 
+// QueryDocuments queries the documents edge of a Company.
+func (c *CompanyClient) QueryDocuments(co *Company) *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.DocumentsTable, company.DocumentsColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryEmployees queries the employees edge of a Company.
 func (c *CompanyClient) QueryEmployees(co *Company) *EmployeeQuery {
 	query := (&EmployeeClient{config: c.config}).Query()
@@ -893,6 +917,187 @@ func (c *CompanyClient) mutate(ctx context.Context, m *CompanyMutation) (Value, 
 		return (&CompanyDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown Company mutation op: %q", m.Op())
+	}
+}
+
+// CompanyDocumentClient is a client for the CompanyDocument schema.
+type CompanyDocumentClient struct {
+	config
+}
+
+// NewCompanyDocumentClient returns a client for the CompanyDocument from the given config.
+func NewCompanyDocumentClient(c config) *CompanyDocumentClient {
+	return &CompanyDocumentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `companydocument.Hooks(f(g(h())))`.
+func (c *CompanyDocumentClient) Use(hooks ...Hook) {
+	c.hooks.CompanyDocument = append(c.hooks.CompanyDocument, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `companydocument.Intercept(f(g(h())))`.
+func (c *CompanyDocumentClient) Intercept(interceptors ...Interceptor) {
+	c.inters.CompanyDocument = append(c.inters.CompanyDocument, interceptors...)
+}
+
+// Create returns a builder for creating a CompanyDocument entity.
+func (c *CompanyDocumentClient) Create() *CompanyDocumentCreate {
+	mutation := newCompanyDocumentMutation(c.config, OpCreate)
+	return &CompanyDocumentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of CompanyDocument entities.
+func (c *CompanyDocumentClient) CreateBulk(builders ...*CompanyDocumentCreate) *CompanyDocumentCreateBulk {
+	return &CompanyDocumentCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CompanyDocumentClient) MapCreateBulk(slice any, setFunc func(*CompanyDocumentCreate, int)) *CompanyDocumentCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CompanyDocumentCreateBulk{err: fmt.Errorf("calling to CompanyDocumentClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CompanyDocumentCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CompanyDocumentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for CompanyDocument.
+func (c *CompanyDocumentClient) Update() *CompanyDocumentUpdate {
+	mutation := newCompanyDocumentMutation(c.config, OpUpdate)
+	return &CompanyDocumentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CompanyDocumentClient) UpdateOne(cd *CompanyDocument) *CompanyDocumentUpdateOne {
+	mutation := newCompanyDocumentMutation(c.config, OpUpdateOne, withCompanyDocument(cd))
+	return &CompanyDocumentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CompanyDocumentClient) UpdateOneID(id int) *CompanyDocumentUpdateOne {
+	mutation := newCompanyDocumentMutation(c.config, OpUpdateOne, withCompanyDocumentID(id))
+	return &CompanyDocumentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for CompanyDocument.
+func (c *CompanyDocumentClient) Delete() *CompanyDocumentDelete {
+	mutation := newCompanyDocumentMutation(c.config, OpDelete)
+	return &CompanyDocumentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CompanyDocumentClient) DeleteOne(cd *CompanyDocument) *CompanyDocumentDeleteOne {
+	return c.DeleteOneID(cd.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CompanyDocumentClient) DeleteOneID(id int) *CompanyDocumentDeleteOne {
+	builder := c.Delete().Where(companydocument.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CompanyDocumentDeleteOne{builder}
+}
+
+// Query returns a query builder for CompanyDocument.
+func (c *CompanyDocumentClient) Query() *CompanyDocumentQuery {
+	return &CompanyDocumentQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCompanyDocument},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a CompanyDocument entity by its id.
+func (c *CompanyDocumentClient) Get(ctx context.Context, id int) (*CompanyDocument, error) {
+	return c.Query().Where(companydocument.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CompanyDocumentClient) GetX(ctx context.Context, id int) *CompanyDocument {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a CompanyDocument.
+func (c *CompanyDocumentClient) QueryCompany(cd *CompanyDocument) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(companydocument.Table, companydocument.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, companydocument.CompanyTable, companydocument.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(cd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryUploadedBy queries the uploadedBy edge of a CompanyDocument.
+func (c *CompanyDocumentClient) QueryUploadedBy(cd *CompanyDocument) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(companydocument.Table, companydocument.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, companydocument.UploadedByTable, companydocument.UploadedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(cd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprovedBy queries the approvedBy edge of a CompanyDocument.
+func (c *CompanyDocumentClient) QueryApprovedBy(cd *CompanyDocument) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(companydocument.Table, companydocument.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, companydocument.ApprovedByTable, companydocument.ApprovedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(cd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CompanyDocumentClient) Hooks() []Hook {
+	return c.hooks.CompanyDocument
+}
+
+// Interceptors returns the client interceptors.
+func (c *CompanyDocumentClient) Interceptors() []Interceptor {
+	return c.inters.CompanyDocument
+}
+
+func (c *CompanyDocumentClient) mutate(ctx context.Context, m *CompanyDocumentMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CompanyDocumentCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CompanyDocumentUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CompanyDocumentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CompanyDocumentDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown CompanyDocument mutation op: %q", m.Op())
 	}
 }
 
@@ -3209,6 +3414,38 @@ func (c *UserClient) QueryWorkShifts(u *User) *WorkshiftQuery {
 	return query
 }
 
+// QueryUploadedDocuments queries the uploadedDocuments edge of a User.
+func (c *UserClient) QueryUploadedDocuments(u *User) *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.UploadedDocumentsTable, user.UploadedDocumentsColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryApprovedDocuments queries the approvedDocuments edge of a User.
+func (c *UserClient) QueryApprovedDocuments(u *User) *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.ApprovedDocumentsTable, user.ApprovedDocumentsColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
 	return c.hooks.User
@@ -3632,14 +3869,14 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AccountingEntry, Company, Customer, Employee, File, Payable, Product, Project,
-		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift []ent.Hook
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Payable,
+		Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier, Token,
+		Treasury, User, UserRole, Workshift []ent.Hook
 	}
 	inters struct {
-		AccountingEntry, Company, Customer, Employee, File, Payable, Product, Project,
-		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift []ent.Interceptor
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Payable,
+		Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier, Token,
+		Treasury, User, UserRole, Workshift []ent.Interceptor
 	}
 )
 

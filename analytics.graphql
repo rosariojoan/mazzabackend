@@ -1,0 +1,21 @@
+enum TimeRange {
+    WEEK
+    MONTH
+    QUARTER
+    YEAR
+}
+
+type ExpensesBreakdownOutput {
+    name: String!
+    amount: Float!
+}
+
+type RevenueTrendOutput {
+    date: String!
+    amount: Float!
+}
+
+extend type Query {
+    expensesBreakdown(range: TimeRange!): [ExpensesBreakdownOutput!]!
+    revenueTrend(range: TimeRange!): [RevenueTrendOutput!]!
+}

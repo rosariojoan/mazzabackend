@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -91,6 +92,7 @@ func checkColumn(table, column string) error {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			accountingentry.Table:  accountingentry.ValidColumn,
 			company.Table:          company.ValidColumn,
+			companydocument.Table:  companydocument.ValidColumn,
 			customer.Table:         customer.ValidColumn,
 			employee.Table:         employee.ValidColumn,
 			file.Table:             file.ValidColumn,

@@ -6,6 +6,7 @@ import (
 	"context"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -269,6 +270,18 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedCustomers(alias, func(wq *CustomerQuery) {
 				*wq = *query
 			})
+		case "documents":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyDocumentClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedDocuments(alias, func(wq *CompanyDocumentQuery) {
+				*wq = *query
+			})
 		case "employees":
 			var (
 				alias = field.Alias
@@ -478,6 +491,11 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldEmail)
 				fieldSeen[company.FieldEmail] = struct{}{}
 			}
+		case "industry":
+			if _, ok := fieldSeen[company.FieldIndustry]; !ok {
+				selectedFields = append(selectedFields, company.FieldIndustry)
+				fieldSeen[company.FieldIndustry] = struct{}{}
+			}
 		case "lastentrydate":
 			if _, ok := fieldSeen[company.FieldLastEntryDate]; !ok {
 				selectedFields = append(selectedFields, company.FieldLastEntryDate)
@@ -592,6 +610,191 @@ func newCompanyPaginateArgs(rv map[string]any) *companyPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*CompanyWhereInput); ok {
 		args.opts = append(args.opts, WithCompanyFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (cd *CompanyDocumentQuery) CollectFields(ctx context.Context, satisfies ...string) (*CompanyDocumentQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return cd, nil
+	}
+	if err := cd.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return cd, nil
+}
+
+func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(companydocument.Columns))
+		selectedFields = []string{companydocument.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: cd.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			cd.withCompany = query
+		case "uploadedby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: cd.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			cd.withUploadedBy = query
+		case "approvedby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: cd.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			cd.withApprovedBy = query
+		case "createdat":
+			if _, ok := fieldSeen[companydocument.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldCreatedAt)
+				fieldSeen[companydocument.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[companydocument.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldUpdatedAt)
+				fieldSeen[companydocument.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[companydocument.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldDeletedAt)
+				fieldSeen[companydocument.FieldDeletedAt] = struct{}{}
+			}
+		case "filename":
+			if _, ok := fieldSeen[companydocument.FieldFilename]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldFilename)
+				fieldSeen[companydocument.FieldFilename] = struct{}{}
+			}
+		case "title":
+			if _, ok := fieldSeen[companydocument.FieldTitle]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldTitle)
+				fieldSeen[companydocument.FieldTitle] = struct{}{}
+			}
+		case "keywords":
+			if _, ok := fieldSeen[companydocument.FieldKeywords]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldKeywords)
+				fieldSeen[companydocument.FieldKeywords] = struct{}{}
+			}
+		case "category":
+			if _, ok := fieldSeen[companydocument.FieldCategory]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldCategory)
+				fieldSeen[companydocument.FieldCategory] = struct{}{}
+			}
+		case "size":
+			if _, ok := fieldSeen[companydocument.FieldSize]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldSize)
+				fieldSeen[companydocument.FieldSize] = struct{}{}
+			}
+		case "filetype":
+			if _, ok := fieldSeen[companydocument.FieldFileType]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldFileType)
+				fieldSeen[companydocument.FieldFileType] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[companydocument.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldStatus)
+				fieldSeen[companydocument.FieldStatus] = struct{}{}
+			}
+		case "url":
+			if _, ok := fieldSeen[companydocument.FieldURL]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldURL)
+				fieldSeen[companydocument.FieldURL] = struct{}{}
+			}
+		case "thumbnail":
+			if _, ok := fieldSeen[companydocument.FieldThumbnail]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldThumbnail)
+				fieldSeen[companydocument.FieldThumbnail] = struct{}{}
+			}
+		case "expirydate":
+			if _, ok := fieldSeen[companydocument.FieldExpiryDate]; !ok {
+				selectedFields = append(selectedFields, companydocument.FieldExpiryDate)
+				fieldSeen[companydocument.FieldExpiryDate] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		cd.Select(selectedFields...)
+	}
+	return nil
+}
+
+type companydocumentPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []CompanyDocumentPaginateOption
+}
+
+func newCompanyDocumentPaginateArgs(rv map[string]any) *companydocumentPaginateArgs {
+	args := &companydocumentPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*CompanyDocumentOrder:
+			args.opts = append(args.opts, WithCompanyDocumentOrder(v))
+		case []any:
+			var orders []*CompanyDocumentOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &CompanyDocumentOrder{Field: &CompanyDocumentOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithCompanyDocumentOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*CompanyDocumentWhereInput); ok {
+		args.opts = append(args.opts, WithCompanyDocumentFilter(v.Filter))
 	}
 	return args
 }
@@ -1738,24 +1941,30 @@ func newProjectTaskPaginateArgs(rv map[string]any) *projecttaskPaginateArgs {
 	}
 	if v, ok := rv[orderByField]; ok {
 		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &ProjectTaskOrder{Field: &ProjectTaskOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
+		case []*ProjectTaskOrder:
+			args.opts = append(args.opts, WithProjectTaskOrder(v))
+		case []any:
+			var orders []*ProjectTaskOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &ProjectTaskOrder{Field: &ProjectTaskOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
 			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithProjectTaskOrder(order))
-			}
-		case *ProjectTaskOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithProjectTaskOrder(v))
-			}
+			args.opts = append(args.opts, WithProjectTaskOrder(orders))
 		}
 	}
 	if v, ok := rv[whereField].(*ProjectTaskWhereInput); ok {
@@ -2476,6 +2685,30 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
 				*wq = *query
 			})
+		case "uploadeddocuments":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyDocumentClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedUploadedDocuments(alias, func(wq *CompanyDocumentQuery) {
+				*wq = *query
+			})
+		case "approveddocuments":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyDocumentClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedApprovedDocuments(alias, func(wq *CompanyDocumentQuery) {
+				*wq = *query
+			})
 		case "createdat":
 			if _, ok := fieldSeen[user.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldCreatedAt)
@@ -2501,10 +2734,20 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldName)
 				fieldSeen[user.FieldName] = struct{}{}
 			}
-		case "username":
-			if _, ok := fieldSeen[user.FieldUsername]; !ok {
-				selectedFields = append(selectedFields, user.FieldUsername)
-				fieldSeen[user.FieldUsername] = struct{}{}
+		case "phone":
+			if _, ok := fieldSeen[user.FieldPhone]; !ok {
+				selectedFields = append(selectedFields, user.FieldPhone)
+				fieldSeen[user.FieldPhone] = struct{}{}
+			}
+		case "birthdate":
+			if _, ok := fieldSeen[user.FieldBirthdate]; !ok {
+				selectedFields = append(selectedFields, user.FieldBirthdate)
+				fieldSeen[user.FieldBirthdate] = struct{}{}
+			}
+		case "gender":
+			if _, ok := fieldSeen[user.FieldGender]; !ok {
+				selectedFields = append(selectedFields, user.FieldGender)
+				fieldSeen[user.FieldGender] = struct{}{}
 			}
 		case "disabled":
 			if _, ok := fieldSeen[user.FieldDisabled]; !ok {

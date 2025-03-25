@@ -12,6 +12,9 @@ type AccountingEntry func(*sql.Selector)
 // Company is the predicate function for company builders.
 type Company func(*sql.Selector)
 
+// CompanyDocument is the predicate function for companydocument builders.
+type CompanyDocument func(*sql.Selector)
+
 // Customer is the predicate function for customer builders.
 type Customer func(*sql.Selector)
 

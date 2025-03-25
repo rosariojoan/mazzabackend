@@ -18,7 +18,9 @@ import (
 	_ "mazza/ent/generated/runtime" // to avoid import cycle error. See: entgo.io/docs/hooks
 )
 
-const defaultPort = "8080"
+const defaultPort = "8000"
+
+// const defaultPort = "8080"
 
 var ctx = context.Background()
 

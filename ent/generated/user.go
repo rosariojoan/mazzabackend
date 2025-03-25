@@ -24,16 +24,20 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// FirebaseUID holds the value of the "firebaseUID" field.
+	FirebaseUID string `json:"-"`
 	// FcmToken holds the value of the "fcmToken" field.
 	FcmToken *string `json:"-"`
 	// Email holds the value of the "email" field.
 	Email *string `json:"email,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// Password holds the value of the "password" field.
-	Password string `json:"-"`
-	// Username holds the value of the "username" field.
-	Username string `json:"username,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone *string `json:"phone,omitempty"`
+	// Birthdate holds the value of the "birthdate" field.
+	Birthdate *time.Time `json:"birthdate,omitempty"`
+	// Gender holds the value of the "gender" field.
+	Gender user.Gender `json:"gender,omitempty"`
 	// Disabled holds the value of the "disabled" field.
 	Disabled *bool `json:"disabled,omitempty"`
 	// NotVerified holds the value of the "notVerified" field.
@@ -75,11 +79,15 @@ type UserEdges struct {
 	ApprovedWorkShifts []*Workshift `json:"approvedWorkShifts,omitempty"`
 	// WorkShifts holds the value of the workShifts edge.
 	WorkShifts []*Workshift `json:"workShifts,omitempty"`
+	// UploadedDocuments holds the value of the uploadedDocuments edge.
+	UploadedDocuments []*CompanyDocument `json:"uploadedDocuments,omitempty"`
+	// ApprovedDocuments holds the value of the approvedDocuments edge.
+	ApprovedDocuments []*CompanyDocument `json:"approvedDocuments,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [14]bool
+	loadedTypes [16]bool
 	// totalCount holds the count of the edges above.
-	totalCount [14]map[string]int
+	totalCount [16]map[string]int
 
 	namedAccountingEntries        map[string][]*AccountingEntry
 	namedCompany                  map[string][]*Company
@@ -93,6 +101,8 @@ type UserEdges struct {
 	namedTokens                   map[string][]*Token
 	namedApprovedWorkShifts       map[string][]*Workshift
 	namedWorkShifts               map[string][]*Workshift
+	namedUploadedDocuments        map[string][]*CompanyDocument
+	namedApprovedDocuments        map[string][]*CompanyDocument
 }
 
 // AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
@@ -225,6 +235,24 @@ func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 	return nil, &NotLoadedError{edge: "workShifts"}
 }
 
+// UploadedDocumentsOrErr returns the UploadedDocuments value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
+	if e.loadedTypes[14] {
+		return e.UploadedDocuments, nil
+	}
+	return nil, &NotLoadedError{edge: "uploadedDocuments"}
+}
+
+// ApprovedDocumentsOrErr returns the ApprovedDocuments value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) ApprovedDocumentsOrErr() ([]*CompanyDocument, error) {
+	if e.loadedTypes[15] {
+		return e.ApprovedDocuments, nil
+	}
+	return nil, &NotLoadedError{edge: "approvedDocuments"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -234,9 +262,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldFcmToken, user.FieldEmail, user.FieldName, user.FieldPassword, user.FieldUsername:
+		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldEmail, user.FieldName, user.FieldPhone, user.FieldGender:
 			values[i] = new(sql.NullString)
-		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt:
+		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldBirthdate:
 			values[i] = new(sql.NullTime)
 		case user.ForeignKeys[0]: // user_subordinates
 			values[i] = new(sql.NullInt64)
@@ -280,6 +308,12 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.DeletedAt = new(time.Time)
 				*u.DeletedAt = value.Time
 			}
+		case user.FieldFirebaseUID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field firebaseUID", values[i])
+			} else if value.Valid {
+				u.FirebaseUID = value.String
+			}
 		case user.FieldFcmToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field fcmToken", values[i])
@@ -300,17 +334,25 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Name = value.String
 			}
-		case user.FieldPassword:
+		case user.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field password", values[i])
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
 			} else if value.Valid {
-				u.Password = value.String
+				u.Phone = new(string)
+				*u.Phone = value.String
 			}
-		case user.FieldUsername:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field username", values[i])
+		case user.FieldBirthdate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field birthdate", values[i])
 			} else if value.Valid {
-				u.Username = value.String
+				u.Birthdate = new(time.Time)
+				*u.Birthdate = value.Time
+			}
+		case user.FieldGender:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field gender", values[i])
+			} else if value.Valid {
+				u.Gender = user.Gender(value.String)
 			}
 		case user.FieldDisabled:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -416,6 +458,16 @@ func (u *User) QueryWorkShifts() *WorkshiftQuery {
 	return NewUserClient(u.config).QueryWorkShifts(u)
 }
 
+// QueryUploadedDocuments queries the "uploadedDocuments" edge of the User entity.
+func (u *User) QueryUploadedDocuments() *CompanyDocumentQuery {
+	return NewUserClient(u.config).QueryUploadedDocuments(u)
+}
+
+// QueryApprovedDocuments queries the "approvedDocuments" edge of the User entity.
+func (u *User) QueryApprovedDocuments() *CompanyDocumentQuery {
+	return NewUserClient(u.config).QueryApprovedDocuments(u)
+}
+
 // Update returns a builder for updating this User.
 // Note that you need to call User.Unwrap() before calling this method if this User
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -450,6 +502,8 @@ func (u *User) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
+	builder.WriteString("firebaseUID=<sensitive>")
+	builder.WriteString(", ")
 	builder.WriteString("fcmToken=<sensitive>")
 	builder.WriteString(", ")
 	if v := u.Email; v != nil {
@@ -460,10 +514,18 @@ func (u *User) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(u.Name)
 	builder.WriteString(", ")
-	builder.WriteString("password=<sensitive>")
+	if v := u.Phone; v != nil {
+		builder.WriteString("phone=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("username=")
-	builder.WriteString(u.Username)
+	if v := u.Birthdate; v != nil {
+		builder.WriteString("birthdate=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("gender=")
+	builder.WriteString(fmt.Sprintf("%v", u.Gender))
 	builder.WriteString(", ")
 	if v := u.Disabled; v != nil {
 		builder.WriteString("disabled=")
@@ -763,6 +825,54 @@ func (u *User) appendNamedWorkShifts(name string, edges ...*Workshift) {
 		u.Edges.namedWorkShifts[name] = []*Workshift{}
 	} else {
 		u.Edges.namedWorkShifts[name] = append(u.Edges.namedWorkShifts[name], edges...)
+	}
+}
+
+// NamedUploadedDocuments returns the UploadedDocuments named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedUploadedDocuments(name string) ([]*CompanyDocument, error) {
+	if u.Edges.namedUploadedDocuments == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedUploadedDocuments[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedUploadedDocuments(name string, edges ...*CompanyDocument) {
+	if u.Edges.namedUploadedDocuments == nil {
+		u.Edges.namedUploadedDocuments = make(map[string][]*CompanyDocument)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedUploadedDocuments[name] = []*CompanyDocument{}
+	} else {
+		u.Edges.namedUploadedDocuments[name] = append(u.Edges.namedUploadedDocuments[name], edges...)
+	}
+}
+
+// NamedApprovedDocuments returns the ApprovedDocuments named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedApprovedDocuments(name string) ([]*CompanyDocument, error) {
+	if u.Edges.namedApprovedDocuments == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedApprovedDocuments[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedApprovedDocuments(name string, edges ...*CompanyDocument) {
+	if u.Edges.namedApprovedDocuments == nil {
+		u.Edges.namedApprovedDocuments = make(map[string][]*CompanyDocument)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedApprovedDocuments[name] = []*CompanyDocument{}
+	} else {
+		u.Edges.namedApprovedDocuments[name] = append(u.Edges.namedApprovedDocuments[name], edges...)
 	}
 }
 

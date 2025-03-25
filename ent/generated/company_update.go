@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -202,6 +203,26 @@ func (cu *CompanyUpdate) SetNillableEmail(s *string) *CompanyUpdate {
 // ClearEmail clears the value of the "email" field.
 func (cu *CompanyUpdate) ClearEmail() *CompanyUpdate {
 	cu.mutation.ClearEmail()
+	return cu
+}
+
+// SetIndustry sets the "industry" field.
+func (cu *CompanyUpdate) SetIndustry(s string) *CompanyUpdate {
+	cu.mutation.SetIndustry(s)
+	return cu
+}
+
+// SetNillableIndustry sets the "industry" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableIndustry(s *string) *CompanyUpdate {
+	if s != nil {
+		cu.SetIndustry(*s)
+	}
+	return cu
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (cu *CompanyUpdate) ClearIndustry() *CompanyUpdate {
+	cu.mutation.ClearIndustry()
 	return cu
 }
 
@@ -459,6 +480,21 @@ func (cu *CompanyUpdate) AddCustomers(c ...*Customer) *CompanyUpdate {
 		ids[i] = c[i].ID
 	}
 	return cu.AddCustomerIDs(ids...)
+}
+
+// AddDocumentIDs adds the "documents" edge to the CompanyDocument entity by IDs.
+func (cu *CompanyUpdate) AddDocumentIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddDocumentIDs(ids...)
+	return cu
+}
+
+// AddDocuments adds the "documents" edges to the CompanyDocument entity.
+func (cu *CompanyUpdate) AddDocuments(c ...*CompanyDocument) *CompanyUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.AddDocumentIDs(ids...)
 }
 
 // AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
@@ -726,6 +762,27 @@ func (cu *CompanyUpdate) RemoveCustomers(c ...*Customer) *CompanyUpdate {
 		ids[i] = c[i].ID
 	}
 	return cu.RemoveCustomerIDs(ids...)
+}
+
+// ClearDocuments clears all "documents" edges to the CompanyDocument entity.
+func (cu *CompanyUpdate) ClearDocuments() *CompanyUpdate {
+	cu.mutation.ClearDocuments()
+	return cu
+}
+
+// RemoveDocumentIDs removes the "documents" edge to CompanyDocument entities by IDs.
+func (cu *CompanyUpdate) RemoveDocumentIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveDocumentIDs(ids...)
+	return cu
+}
+
+// RemoveDocuments removes "documents" edges to CompanyDocument entities.
+func (cu *CompanyUpdate) RemoveDocuments(c ...*CompanyDocument) *CompanyUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cu.RemoveDocumentIDs(ids...)
 }
 
 // ClearEmployees clears all "employees" edges to the Employee entity.
@@ -1100,6 +1157,12 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.EmailCleared() {
 		_spec.ClearField(company.FieldEmail, field.TypeString)
 	}
+	if value, ok := cu.mutation.Industry(); ok {
+		_spec.SetField(company.FieldIndustry, field.TypeString, value)
+	}
+	if cu.mutation.IndustryCleared() {
+		_spec.ClearField(company.FieldIndustry, field.TypeString)
+	}
 	if value, ok := cu.mutation.LastEntryDate(); ok {
 		_spec.SetField(company.FieldLastEntryDate, field.TypeTime, value)
 	}
@@ -1288,6 +1351,51 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.DocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedDocumentsIDs(); len(nodes) > 0 && !cu.mutation.DocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.DocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2048,6 +2156,26 @@ func (cuo *CompanyUpdateOne) ClearEmail() *CompanyUpdateOne {
 	return cuo
 }
 
+// SetIndustry sets the "industry" field.
+func (cuo *CompanyUpdateOne) SetIndustry(s string) *CompanyUpdateOne {
+	cuo.mutation.SetIndustry(s)
+	return cuo
+}
+
+// SetNillableIndustry sets the "industry" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableIndustry(s *string) *CompanyUpdateOne {
+	if s != nil {
+		cuo.SetIndustry(*s)
+	}
+	return cuo
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (cuo *CompanyUpdateOne) ClearIndustry() *CompanyUpdateOne {
+	cuo.mutation.ClearIndustry()
+	return cuo
+}
+
 // SetLastEntryDate sets the "lastEntryDate" field.
 func (cuo *CompanyUpdateOne) SetLastEntryDate(t time.Time) *CompanyUpdateOne {
 	cuo.mutation.SetLastEntryDate(t)
@@ -2302,6 +2430,21 @@ func (cuo *CompanyUpdateOne) AddCustomers(c ...*Customer) *CompanyUpdateOne {
 		ids[i] = c[i].ID
 	}
 	return cuo.AddCustomerIDs(ids...)
+}
+
+// AddDocumentIDs adds the "documents" edge to the CompanyDocument entity by IDs.
+func (cuo *CompanyUpdateOne) AddDocumentIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddDocumentIDs(ids...)
+	return cuo
+}
+
+// AddDocuments adds the "documents" edges to the CompanyDocument entity.
+func (cuo *CompanyUpdateOne) AddDocuments(c ...*CompanyDocument) *CompanyUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.AddDocumentIDs(ids...)
 }
 
 // AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
@@ -2569,6 +2712,27 @@ func (cuo *CompanyUpdateOne) RemoveCustomers(c ...*Customer) *CompanyUpdateOne {
 		ids[i] = c[i].ID
 	}
 	return cuo.RemoveCustomerIDs(ids...)
+}
+
+// ClearDocuments clears all "documents" edges to the CompanyDocument entity.
+func (cuo *CompanyUpdateOne) ClearDocuments() *CompanyUpdateOne {
+	cuo.mutation.ClearDocuments()
+	return cuo
+}
+
+// RemoveDocumentIDs removes the "documents" edge to CompanyDocument entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveDocumentIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveDocumentIDs(ids...)
+	return cuo
+}
+
+// RemoveDocuments removes "documents" edges to CompanyDocument entities.
+func (cuo *CompanyUpdateOne) RemoveDocuments(c ...*CompanyDocument) *CompanyUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cuo.RemoveDocumentIDs(ids...)
 }
 
 // ClearEmployees clears all "employees" edges to the Employee entity.
@@ -2973,6 +3137,12 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if cuo.mutation.EmailCleared() {
 		_spec.ClearField(company.FieldEmail, field.TypeString)
 	}
+	if value, ok := cuo.mutation.Industry(); ok {
+		_spec.SetField(company.FieldIndustry, field.TypeString, value)
+	}
+	if cuo.mutation.IndustryCleared() {
+		_spec.ClearField(company.FieldIndustry, field.TypeString)
+	}
 	if value, ok := cuo.mutation.LastEntryDate(); ok {
 		_spec.SetField(company.FieldLastEntryDate, field.TypeTime, value)
 	}
@@ -3161,6 +3331,51 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.DocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedDocumentsIDs(); len(nodes) > 0 && !cuo.mutation.DocumentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.DocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

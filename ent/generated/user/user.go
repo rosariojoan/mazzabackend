@@ -3,6 +3,9 @@
 package user
 
 import (
+	"fmt"
+	"io"
+	"strconv"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -20,16 +23,20 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
+	// FieldFirebaseUID holds the string denoting the firebaseuid field in the database.
+	FieldFirebaseUID = "firebase_uid"
 	// FieldFcmToken holds the string denoting the fcmtoken field in the database.
 	FieldFcmToken = "fcm_token"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldPassword holds the string denoting the password field in the database.
-	FieldPassword = "password"
-	// FieldUsername holds the string denoting the username field in the database.
-	FieldUsername = "username"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
+	// FieldBirthdate holds the string denoting the birthdate field in the database.
+	FieldBirthdate = "birthdate"
+	// FieldGender holds the string denoting the gender field in the database.
+	FieldGender = "gender"
 	// FieldDisabled holds the string denoting the disabled field in the database.
 	FieldDisabled = "disabled"
 	// FieldNotVerified holds the string denoting the notverified field in the database.
@@ -62,6 +69,10 @@ const (
 	EdgeApprovedWorkShifts = "approvedWorkShifts"
 	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
 	EdgeWorkShifts = "workShifts"
+	// EdgeUploadedDocuments holds the string denoting the uploadeddocuments edge name in mutations.
+	EdgeUploadedDocuments = "uploadedDocuments"
+	// EdgeApprovedDocuments holds the string denoting the approveddocuments edge name in mutations.
+	EdgeApprovedDocuments = "approvedDocuments"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
@@ -150,6 +161,20 @@ const (
 	WorkShiftsInverseTable = "workshifts"
 	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
 	WorkShiftsColumn = "user_work_shifts"
+	// UploadedDocumentsTable is the table that holds the uploadedDocuments relation/edge.
+	UploadedDocumentsTable = "company_documents"
+	// UploadedDocumentsInverseTable is the table name for the CompanyDocument entity.
+	// It exists in this package in order to avoid circular dependency with the "companydocument" package.
+	UploadedDocumentsInverseTable = "company_documents"
+	// UploadedDocumentsColumn is the table column denoting the uploadedDocuments relation/edge.
+	UploadedDocumentsColumn = "user_uploaded_documents"
+	// ApprovedDocumentsTable is the table that holds the approvedDocuments relation/edge.
+	ApprovedDocumentsTable = "company_documents"
+	// ApprovedDocumentsInverseTable is the table name for the CompanyDocument entity.
+	// It exists in this package in order to avoid circular dependency with the "companydocument" package.
+	ApprovedDocumentsInverseTable = "company_documents"
+	// ApprovedDocumentsColumn is the table column denoting the approvedDocuments relation/edge.
+	ApprovedDocumentsColumn = "user_approved_documents"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -158,11 +183,13 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldFirebaseUID,
 	FieldFcmToken,
 	FieldEmail,
 	FieldName,
-	FieldPassword,
-	FieldUsername,
+	FieldPhone,
+	FieldBirthdate,
+	FieldGender,
 	FieldDisabled,
 	FieldNotVerified,
 }
@@ -207,11 +234,36 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
+	FirebaseUIDValidator func(string) error
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
 	// DefaultNotVerified holds the default value on creation for the "notVerified" field.
 	DefaultNotVerified bool
 )
+
+// Gender defines the type for the "gender" enum field.
+type Gender string
+
+// Gender values.
+const (
+	GenderMale   Gender = "male"
+	GenderFemale Gender = "female"
+)
+
+func (ge Gender) String() string {
+	return string(ge)
+}
+
+// GenderValidator is a validator for the "gender" field enum values. It is called by the builders before save.
+func GenderValidator(ge Gender) error {
+	switch ge {
+	case GenderMale, GenderFemale:
+		return nil
+	default:
+		return fmt.Errorf("user: invalid enum value for gender field: %q", ge)
+	}
+}
 
 // OrderOption defines the ordering options for the User queries.
 type OrderOption func(*sql.Selector)
@@ -236,6 +288,11 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
+// ByFirebaseUID orders the results by the firebaseUID field.
+func ByFirebaseUID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFirebaseUID, opts...).ToFunc()
+}
+
 // ByFcmToken orders the results by the fcmToken field.
 func ByFcmToken(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFcmToken, opts...).ToFunc()
@@ -251,14 +308,19 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByPassword orders the results by the password field.
-func ByPassword(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPassword, opts...).ToFunc()
+// ByPhone orders the results by the phone field.
+func ByPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPhone, opts...).ToFunc()
 }
 
-// ByUsername orders the results by the username field.
-func ByUsername(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+// ByBirthdate orders the results by the birthdate field.
+func ByBirthdate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBirthdate, opts...).ToFunc()
+}
+
+// ByGender orders the results by the gender field.
+func ByGender(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGender, opts...).ToFunc()
 }
 
 // ByDisabled orders the results by the disabled field.
@@ -452,6 +514,34 @@ func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByUploadedDocumentsCount orders the results by uploadedDocuments count.
+func ByUploadedDocumentsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newUploadedDocumentsStep(), opts...)
+	}
+}
+
+// ByUploadedDocuments orders the results by uploadedDocuments terms.
+func ByUploadedDocuments(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newUploadedDocumentsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByApprovedDocumentsCount orders the results by approvedDocuments count.
+func ByApprovedDocumentsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newApprovedDocumentsStep(), opts...)
+	}
+}
+
+// ByApprovedDocuments orders the results by approvedDocuments terms.
+func ByApprovedDocuments(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newApprovedDocumentsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newAccountingEntriesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -549,4 +639,36 @@ func newWorkShiftsStep() *sqlgraph.Step {
 		sqlgraph.To(WorkShiftsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, WorkShiftsTable, WorkShiftsColumn),
 	)
+}
+func newUploadedDocumentsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(UploadedDocumentsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, UploadedDocumentsTable, UploadedDocumentsColumn),
+	)
+}
+func newApprovedDocumentsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ApprovedDocumentsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ApprovedDocumentsTable, ApprovedDocumentsColumn),
+	)
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (e Gender) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(e.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (e *Gender) UnmarshalGQL(val interface{}) error {
+	str, ok := val.(string)
+	if !ok {
+		return fmt.Errorf("enum %T must be a string", val)
+	}
+	*e = Gender(str)
+	if err := GenderValidator(*e); err != nil {
+		return fmt.Errorf("%s is not a valid Gender", str)
+	}
+	return nil
 }

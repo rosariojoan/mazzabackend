@@ -9,6 +9,7 @@ import (
 	"math"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -40,6 +41,7 @@ type CompanyQuery struct {
 	withAvailableRoles         *UserRoleQuery
 	withAccountingEntries      *AccountingEntryQuery
 	withCustomers              *CustomerQuery
+	withDocuments              *CompanyDocumentQuery
 	withEmployees              *EmployeeQuery
 	withFiles                  *FileQuery
 	withProducts               *ProductQuery
@@ -59,6 +61,7 @@ type CompanyQuery struct {
 	withNamedAvailableRoles    map[string]*UserRoleQuery
 	withNamedAccountingEntries map[string]*AccountingEntryQuery
 	withNamedCustomers         map[string]*CustomerQuery
+	withNamedDocuments         map[string]*CompanyDocumentQuery
 	withNamedEmployees         map[string]*EmployeeQuery
 	withNamedFiles             map[string]*FileQuery
 	withNamedProducts          map[string]*ProductQuery
@@ -166,6 +169,28 @@ func (cq *CompanyQuery) QueryCustomers() *CustomerQuery {
 			sqlgraph.From(company.Table, company.FieldID, selector),
 			sqlgraph.To(customer.Table, customer.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.CustomersTable, company.CustomersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryDocuments chains the current query on the "documents" edge.
+func (cq *CompanyQuery) QueryDocuments() *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.DocumentsTable, company.DocumentsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -654,6 +679,7 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		withAvailableRoles:    cq.withAvailableRoles.Clone(),
 		withAccountingEntries: cq.withAccountingEntries.Clone(),
 		withCustomers:         cq.withCustomers.Clone(),
+		withDocuments:         cq.withDocuments.Clone(),
 		withEmployees:         cq.withEmployees.Clone(),
 		withFiles:             cq.withFiles.Clone(),
 		withProducts:          cq.withProducts.Clone(),
@@ -704,6 +730,17 @@ func (cq *CompanyQuery) WithCustomers(opts ...func(*CustomerQuery)) *CompanyQuer
 		opt(query)
 	}
 	cq.withCustomers = query
+	return cq
+}
+
+// WithDocuments tells the query-builder to eager-load the nodes that are connected to
+// the "documents" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithDocuments(opts ...func(*CompanyDocumentQuery)) *CompanyQuery {
+	query := (&CompanyDocumentClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withDocuments = query
 	return cq
 }
 
@@ -929,10 +966,11 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [16]bool{
+		loadedTypes = [17]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
+			cq.withDocuments != nil,
 			cq.withEmployees != nil,
 			cq.withFiles != nil,
 			cq.withProducts != nil,
@@ -993,6 +1031,13 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadCustomers(ctx, query, nodes,
 			func(n *Company) { n.Edges.Customers = []*Customer{} },
 			func(n *Company, e *Customer) { n.Edges.Customers = append(n.Edges.Customers, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withDocuments; query != nil {
+		if err := cq.loadDocuments(ctx, query, nodes,
+			func(n *Company) { n.Edges.Documents = []*CompanyDocument{} },
+			func(n *Company, e *CompanyDocument) { n.Edges.Documents = append(n.Edges.Documents, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1104,6 +1149,13 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadCustomers(ctx, query, nodes,
 			func(n *Company) { n.appendNamedCustomers(name) },
 			func(n *Company, e *Customer) { n.appendNamedCustomers(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedDocuments {
+		if err := cq.loadDocuments(ctx, query, nodes,
+			func(n *Company) { n.appendNamedDocuments(name) },
+			func(n *Company, e *CompanyDocument) { n.appendNamedDocuments(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1287,6 +1339,37 @@ func (cq *CompanyQuery) loadCustomers(ctx context.Context, query *CustomerQuery,
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_customers" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CompanyQuery) loadDocuments(ctx context.Context, query *CompanyDocumentQuery, nodes []*Company, init func(*Company), assign func(*Company, *CompanyDocument)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Company)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.CompanyDocument(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(company.DocumentsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.company_documents
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "company_documents" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "company_documents" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1859,6 +1942,20 @@ func (cq *CompanyQuery) WithNamedCustomers(name string, opts ...func(*CustomerQu
 		cq.withNamedCustomers = make(map[string]*CustomerQuery)
 	}
 	cq.withNamedCustomers[name] = query
+	return cq
+}
+
+// WithNamedDocuments tells the query-builder to eager-load the nodes that are connected to the "documents"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithNamedDocuments(name string, opts ...func(*CompanyDocumentQuery)) *CompanyQuery {
+	query := (&CompanyDocumentClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedDocuments == nil {
+		cq.withNamedDocuments = make(map[string]*CompanyDocumentQuery)
+	}
+	cq.withNamedDocuments[name] = query
 	return cq
 }
 

@@ -18,6 +18,8 @@ type Tx struct {
 	AccountingEntry *AccountingEntryClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
+	// CompanyDocument is the client for interacting with the CompanyDocument builders.
+	CompanyDocument *CompanyDocumentClient
 	// Customer is the client for interacting with the Customer builders.
 	Customer *CustomerClient
 	// Employee is the client for interacting with the Employee builders.
@@ -181,6 +183,7 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.AccountingEntry = NewAccountingEntryClient(tx.config)
 	tx.Company = NewCompanyClient(tx.config)
+	tx.CompanyDocument = NewCompanyDocumentClient(tx.config)
 	tx.Customer = NewCustomerClient(tx.config)
 	tx.Employee = NewEmployeeClient(tx.config)
 	tx.File = NewFileClient(tx.config)

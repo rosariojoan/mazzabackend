@@ -1,4 +1,4 @@
-package inventory
+package accountingentry
 
 import (
 	"fmt"
@@ -61,7 +61,7 @@ import (
 // }
 
 func GenerateInvoicePDF(details *model.Invoice) (file []byte, size float64, err error) {
-	title := "Fatura n." + details.Number
+	title := "Fatura: " + details.Number
 	details.Title = &title
 	details.Keywords = "invoice,sales,fatura,vendas"
 	return __generatePDF(details, true)

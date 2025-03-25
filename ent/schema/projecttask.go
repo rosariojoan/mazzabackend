@@ -32,10 +32,10 @@ func (ProjectTask) Fields() []ent.Field {
 		field.String("assigneeName").NotEmpty(),
 		field.String("location").Optional().Comment("Where is task will be executed"),
 		field.Time("dueDate").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
-		field.Time("startDate"),
-		field.Time("endDate"),
+		field.Time("startDate").Annotations(entgql.OrderField("START_DATE")),
+		field.Time("endDate").Annotations(entgql.OrderField("END_DATE")),
 		field.String("description").Optional(),
-		field.Enum("status").Values("notStarted", "inProgress", "completed"),
+		field.Enum("status").Values("notStarted", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
@@ -60,6 +60,9 @@ func (ProjectTask) Indexes() []ent.Index {
 // Enable query and mutation for the Project schema
 func (ProjectTask) Annotations() []schema.Annotation {
 	return []schema.Annotation{
+		entgql.RelayConnection(),
+		entgql.QueryField(),
+		entgql.MultiOrder(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
 	}
 }

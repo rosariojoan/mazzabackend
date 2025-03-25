@@ -9,6 +9,7 @@ import (
 	"io"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -931,6 +932,389 @@ func (c *Company) ToEdge(order *CompanyOrder) *CompanyEdge {
 	return &CompanyEdge{
 		Node:   c,
 		Cursor: order.Field.toCursor(c),
+	}
+}
+
+// CompanyDocumentEdge is the edge representation of CompanyDocument.
+type CompanyDocumentEdge struct {
+	Node   *CompanyDocument `json:"node"`
+	Cursor Cursor           `json:"cursor"`
+}
+
+// CompanyDocumentConnection is the connection containing edges to CompanyDocument.
+type CompanyDocumentConnection struct {
+	Edges      []*CompanyDocumentEdge `json:"edges"`
+	PageInfo   PageInfo               `json:"pageInfo"`
+	TotalCount int                    `json:"totalCount"`
+}
+
+func (c *CompanyDocumentConnection) build(nodes []*CompanyDocument, pager *companydocumentPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *CompanyDocument
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *CompanyDocument {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *CompanyDocument {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*CompanyDocumentEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &CompanyDocumentEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// CompanyDocumentPaginateOption enables pagination customization.
+type CompanyDocumentPaginateOption func(*companydocumentPager) error
+
+// WithCompanyDocumentOrder configures pagination ordering.
+func WithCompanyDocumentOrder(order []*CompanyDocumentOrder) CompanyDocumentPaginateOption {
+	return func(pager *companydocumentPager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithCompanyDocumentFilter configures pagination filter.
+func WithCompanyDocumentFilter(filter func(*CompanyDocumentQuery) (*CompanyDocumentQuery, error)) CompanyDocumentPaginateOption {
+	return func(pager *companydocumentPager) error {
+		if filter == nil {
+			return errors.New("CompanyDocumentQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type companydocumentPager struct {
+	reverse bool
+	order   []*CompanyDocumentOrder
+	filter  func(*CompanyDocumentQuery) (*CompanyDocumentQuery, error)
+}
+
+func newCompanyDocumentPager(opts []CompanyDocumentPaginateOption, reverse bool) (*companydocumentPager, error) {
+	pager := &companydocumentPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *companydocumentPager) applyFilter(query *CompanyDocumentQuery) (*CompanyDocumentQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *companydocumentPager) toCursor(cd *CompanyDocument) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(cd).Value)
+	}
+	return Cursor{ID: cd.ID, Value: cs}
+}
+
+func (p *companydocumentPager) applyCursors(query *CompanyDocumentQuery, after, before *Cursor) (*CompanyDocumentQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultCompanyDocumentOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *companydocumentPager) applyOrder(query *CompanyDocumentQuery) *CompanyDocumentQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultCompanyDocumentOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultCompanyDocumentOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *companydocumentPager) orderExpr(query *CompanyDocumentQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultCompanyDocumentOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to CompanyDocument.
+func (cd *CompanyDocumentQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...CompanyDocumentPaginateOption,
+) (*CompanyDocumentConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newCompanyDocumentPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if cd, err = pager.applyFilter(cd); err != nil {
+		return nil, err
+	}
+	conn := &CompanyDocumentConnection{Edges: []*CompanyDocumentEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = cd.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if cd, err = pager.applyCursors(cd, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		cd.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := cd.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	cd = pager.applyOrder(cd)
+	nodes, err := cd.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// CompanyDocumentOrderFieldCreatedAt orders CompanyDocument by createdAt.
+	CompanyDocumentOrderFieldCreatedAt = &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.CreatedAt, nil
+		},
+		column: companydocument.FieldCreatedAt,
+		toTerm: companydocument.ByCreatedAt,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{
+				ID:    cd.ID,
+				Value: cd.CreatedAt,
+			}
+		},
+	}
+	// CompanyDocumentOrderFieldCategory orders CompanyDocument by category.
+	CompanyDocumentOrderFieldCategory = &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.Category, nil
+		},
+		column: companydocument.FieldCategory,
+		toTerm: companydocument.ByCategory,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{
+				ID:    cd.ID,
+				Value: cd.Category,
+			}
+		},
+	}
+	// CompanyDocumentOrderFieldStatus orders CompanyDocument by status.
+	CompanyDocumentOrderFieldStatus = &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.Status, nil
+		},
+		column: companydocument.FieldStatus,
+		toTerm: companydocument.ByStatus,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{
+				ID:    cd.ID,
+				Value: cd.Status,
+			}
+		},
+	}
+	// CompanyDocumentOrderFieldExpiryDate orders CompanyDocument by expiryDate.
+	CompanyDocumentOrderFieldExpiryDate = &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.ExpiryDate, nil
+		},
+		column: companydocument.FieldExpiryDate,
+		toTerm: companydocument.ByExpiryDate,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{
+				ID:    cd.ID,
+				Value: cd.ExpiryDate,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f CompanyDocumentOrderField) String() string {
+	var str string
+	switch f.column {
+	case CompanyDocumentOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case CompanyDocumentOrderFieldCategory.column:
+		str = "CATEGORY"
+	case CompanyDocumentOrderFieldStatus.column:
+		str = "STATUS"
+	case CompanyDocumentOrderFieldExpiryDate.column:
+		str = "EXPIRY_DATE"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f CompanyDocumentOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *CompanyDocumentOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("CompanyDocumentOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *CompanyDocumentOrderFieldCreatedAt
+	case "CATEGORY":
+		*f = *CompanyDocumentOrderFieldCategory
+	case "STATUS":
+		*f = *CompanyDocumentOrderFieldStatus
+	case "EXPIRY_DATE":
+		*f = *CompanyDocumentOrderFieldExpiryDate
+	default:
+		return fmt.Errorf("%s is not a valid CompanyDocumentOrderField", str)
+	}
+	return nil
+}
+
+// CompanyDocumentOrderField defines the ordering field of CompanyDocument.
+type CompanyDocumentOrderField struct {
+	// Value extracts the ordering value from the given CompanyDocument.
+	Value    func(*CompanyDocument) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) companydocument.OrderOption
+	toCursor func(*CompanyDocument) Cursor
+}
+
+// CompanyDocumentOrder defines the ordering of CompanyDocument.
+type CompanyDocumentOrder struct {
+	Direction OrderDirection             `json:"direction"`
+	Field     *CompanyDocumentOrderField `json:"field"`
+}
+
+// DefaultCompanyDocumentOrder is the default ordering of CompanyDocument.
+var DefaultCompanyDocumentOrder = &CompanyDocumentOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.ID, nil
+		},
+		column: companydocument.FieldID,
+		toTerm: companydocument.ByID,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{ID: cd.ID}
+		},
+	},
+}
+
+// ToEdge converts CompanyDocument into CompanyDocumentEdge.
+func (cd *CompanyDocument) ToEdge(order *CompanyDocumentOrder) *CompanyDocumentEdge {
+	if order == nil {
+		order = DefaultCompanyDocumentOrder
+	}
+	return &CompanyDocumentEdge{
+		Node:   cd,
+		Cursor: order.Field.toCursor(cd),
 	}
 }
 
@@ -2799,6 +3183,48 @@ var (
 			}
 		},
 	}
+	// ProjectOrderFieldStartDate orders Project by startDate.
+	ProjectOrderFieldStartDate = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.StartDate, nil
+		},
+		column: project.FieldStartDate,
+		toTerm: project.ByStartDate,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.StartDate,
+			}
+		},
+	}
+	// ProjectOrderFieldEndDate orders Project by endDate.
+	ProjectOrderFieldEndDate = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.EndDate, nil
+		},
+		column: project.FieldEndDate,
+		toTerm: project.ByEndDate,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.EndDate,
+			}
+		},
+	}
+	// ProjectOrderFieldStatus orders Project by status.
+	ProjectOrderFieldStatus = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.Status, nil
+		},
+		column: project.FieldStatus,
+		toTerm: project.ByStatus,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.Status,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -2807,6 +3233,12 @@ func (f ProjectOrderField) String() string {
 	switch f.column {
 	case ProjectOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case ProjectOrderFieldStartDate.column:
+		str = "START_DATE"
+	case ProjectOrderFieldEndDate.column:
+		str = "END_DATE"
+	case ProjectOrderFieldStatus.column:
+		str = "STATUS"
 	}
 	return str
 }
@@ -2825,6 +3257,12 @@ func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *ProjectOrderFieldCreatedAt
+	case "START_DATE":
+		*f = *ProjectOrderFieldStartDate
+	case "END_DATE":
+		*f = *ProjectOrderFieldEndDate
+	case "STATUS":
+		*f = *ProjectOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid ProjectOrderField", str)
 	}
@@ -3173,19 +3611,14 @@ func (c *ProjectTaskConnection) build(nodes []*ProjectTask, pager *projecttaskPa
 type ProjectTaskPaginateOption func(*projecttaskPager) error
 
 // WithProjectTaskOrder configures pagination ordering.
-func WithProjectTaskOrder(order *ProjectTaskOrder) ProjectTaskPaginateOption {
-	if order == nil {
-		order = DefaultProjectTaskOrder
-	}
-	o := *order
+func WithProjectTaskOrder(order []*ProjectTaskOrder) ProjectTaskPaginateOption {
 	return func(pager *projecttaskPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
 		}
-		if o.Field == nil {
-			o.Field = DefaultProjectTaskOrder.Field
-		}
-		pager.order = &o
+		pager.order = append(pager.order, order...)
 		return nil
 	}
 }
@@ -3203,7 +3636,7 @@ func WithProjectTaskFilter(filter func(*ProjectTaskQuery) (*ProjectTaskQuery, er
 
 type projecttaskPager struct {
 	reverse bool
-	order   *ProjectTaskOrder
+	order   []*ProjectTaskOrder
 	filter  func(*ProjectTaskQuery) (*ProjectTaskQuery, error)
 }
 
@@ -3214,8 +3647,10 @@ func newProjectTaskPager(opts []ProjectTaskPaginateOption, reverse bool) (*proje
 			return nil, err
 		}
 	}
-	if pager.order == nil {
-		pager.order = DefaultProjectTaskOrder
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
 	}
 	return pager, nil
 }
@@ -3228,48 +3663,87 @@ func (p *projecttaskPager) applyFilter(query *ProjectTaskQuery) (*ProjectTaskQue
 }
 
 func (p *projecttaskPager) toCursor(pt *ProjectTask) Cursor {
-	return p.order.Field.toCursor(pt)
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(pt).Value)
+	}
+	return Cursor{ID: pt.ID, Value: cs}
 }
 
 func (p *projecttaskPager) applyCursors(query *ProjectTaskQuery, after, before *Cursor) (*ProjectTaskQuery, error) {
-	direction := p.order.Direction
+	idDirection := entgql.OrderDirectionAsc
 	if p.reverse {
-		direction = direction.Reverse()
+		idDirection = entgql.OrderDirectionDesc
 	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultProjectTaskOrder.Field.column, p.order.Field.column, direction) {
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultProjectTaskOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
 		query = query.Where(predicate)
 	}
 	return query, nil
 }
 
 func (p *projecttaskPager) applyOrder(query *ProjectTaskQuery) *ProjectTaskQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultProjectTaskOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultProjectTaskOrder.Field {
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
 		query = query.Order(DefaultProjectTaskOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
 	}
 	return query
 }
 
 func (p *projecttaskPager) orderExpr(query *ProjectTaskQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
 	}
 	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultProjectTaskOrder.Field {
-			b.Comma().Ident(DefaultProjectTaskOrder.Field.column).Pad().WriteString(string(direction))
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
 		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultProjectTaskOrder.Field.column).Pad().WriteString(string(direction))
 	})
 }
 
@@ -3338,6 +3812,48 @@ var (
 			}
 		},
 	}
+	// ProjectTaskOrderFieldStartDate orders ProjectTask by startDate.
+	ProjectTaskOrderFieldStartDate = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.StartDate, nil
+		},
+		column: projecttask.FieldStartDate,
+		toTerm: projecttask.ByStartDate,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.StartDate,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldEndDate orders ProjectTask by endDate.
+	ProjectTaskOrderFieldEndDate = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.EndDate, nil
+		},
+		column: projecttask.FieldEndDate,
+		toTerm: projecttask.ByEndDate,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.EndDate,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldStatus orders ProjectTask by status.
+	ProjectTaskOrderFieldStatus = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.Status, nil
+		},
+		column: projecttask.FieldStatus,
+		toTerm: projecttask.ByStatus,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.Status,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -3346,6 +3862,12 @@ func (f ProjectTaskOrderField) String() string {
 	switch f.column {
 	case ProjectTaskOrderFieldDueDate.column:
 		str = "DUE_DATE"
+	case ProjectTaskOrderFieldStartDate.column:
+		str = "START_DATE"
+	case ProjectTaskOrderFieldEndDate.column:
+		str = "END_DATE"
+	case ProjectTaskOrderFieldStatus.column:
+		str = "STATUS"
 	}
 	return str
 }
@@ -3364,6 +3886,12 @@ func (f *ProjectTaskOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "DUE_DATE":
 		*f = *ProjectTaskOrderFieldDueDate
+	case "START_DATE":
+		*f = *ProjectTaskOrderFieldStartDate
+	case "END_DATE":
+		*f = *ProjectTaskOrderFieldEndDate
+	case "STATUS":
+		*f = *ProjectTaskOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid ProjectTaskOrderField", str)
 	}
@@ -4842,20 +5370,6 @@ var (
 			}
 		},
 	}
-	// UserOrderFieldUsername orders User by username.
-	UserOrderFieldUsername = &UserOrderField{
-		Value: func(u *User) (ent.Value, error) {
-			return u.Username, nil
-		},
-		column: user.FieldUsername,
-		toTerm: user.ByUsername,
-		toCursor: func(u *User) Cursor {
-			return Cursor{
-				ID:    u.ID,
-				Value: u.Username,
-			}
-		},
-	}
 )
 
 // String implement fmt.Stringer interface.
@@ -4866,8 +5380,6 @@ func (f UserOrderField) String() string {
 		str = "CREATED_AT"
 	case UserOrderFieldName.column:
 		str = "NAME"
-	case UserOrderFieldUsername.column:
-		str = "USERNAME"
 	}
 	return str
 }
@@ -4888,8 +5400,6 @@ func (f *UserOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *UserOrderFieldCreatedAt
 	case "NAME":
 		*f = *UserOrderFieldName
-	case "USERNAME":
-		*f = *UserOrderFieldUsername
 	default:
 		return fmt.Errorf("%s is not a valid UserOrderField", str)
 	}

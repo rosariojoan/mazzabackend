@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -160,6 +161,20 @@ func (cc *CompanyCreate) SetEmail(s string) *CompanyCreate {
 func (cc *CompanyCreate) SetNillableEmail(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetEmail(*s)
+	}
+	return cc
+}
+
+// SetIndustry sets the "industry" field.
+func (cc *CompanyCreate) SetIndustry(s string) *CompanyCreate {
+	cc.mutation.SetIndustry(s)
+	return cc
+}
+
+// SetNillableIndustry sets the "industry" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableIndustry(s *string) *CompanyCreate {
+	if s != nil {
+		cc.SetIndustry(*s)
 	}
 	return cc
 }
@@ -337,6 +352,21 @@ func (cc *CompanyCreate) AddCustomers(c ...*Customer) *CompanyCreate {
 		ids[i] = c[i].ID
 	}
 	return cc.AddCustomerIDs(ids...)
+}
+
+// AddDocumentIDs adds the "documents" edge to the CompanyDocument entity by IDs.
+func (cc *CompanyCreate) AddDocumentIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddDocumentIDs(ids...)
+	return cc
+}
+
+// AddDocuments adds the "documents" edges to the CompanyDocument entity.
+func (cc *CompanyCreate) AddDocuments(c ...*CompanyDocument) *CompanyCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return cc.AddDocumentIDs(ids...)
 }
 
 // AddEmployeeIDs adds the "employees" edge to the Employee entity by IDs.
@@ -718,6 +748,10 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldEmail, field.TypeString, value)
 		_node.Email = &value
 	}
+	if value, ok := cc.mutation.Industry(); ok {
+		_spec.SetField(company.FieldIndustry, field.TypeString, value)
+		_node.Industry = &value
+	}
 	if value, ok := cc.mutation.LastEntryDate(); ok {
 		_spec.SetField(company.FieldLastEntryDate, field.TypeTime, value)
 		_node.LastEntryDate = &value
@@ -803,6 +837,22 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.DocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.DocumentsTable,
+			Columns: []string{company.DocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
@@ -42,6 +43,7 @@ const (
 	// Node types.
 	TypeAccountingEntry  = "AccountingEntry"
 	TypeCompany          = "Company"
+	TypeCompanyDocument  = "CompanyDocument"
 	TypeCustomer         = "Customer"
 	TypeEmployee         = "Employee"
 	TypeFile             = "File"
@@ -1408,6 +1410,7 @@ type CompanyMutation struct {
 	establishedAt            *time.Time
 	description              *string
 	email                    *string
+	industry                 *string
 	lastEntryDate            *time.Time
 	lastInvoiceNumber        *int32
 	addlastInvoiceNumber     *int32
@@ -1432,6 +1435,9 @@ type CompanyMutation struct {
 	customers                map[int]struct{}
 	removedcustomers         map[int]struct{}
 	clearedcustomers         bool
+	documents                map[int]struct{}
+	removeddocuments         map[int]struct{}
+	cleareddocuments         bool
 	employees                map[int]struct{}
 	removedemployees         map[int]struct{}
 	clearedemployees         bool
@@ -2032,6 +2038,55 @@ func (m *CompanyMutation) EmailCleared() bool {
 func (m *CompanyMutation) ResetEmail() {
 	m.email = nil
 	delete(m.clearedFields, company.FieldEmail)
+}
+
+// SetIndustry sets the "industry" field.
+func (m *CompanyMutation) SetIndustry(s string) {
+	m.industry = &s
+}
+
+// Industry returns the value of the "industry" field in the mutation.
+func (m *CompanyMutation) Industry() (r string, exists bool) {
+	v := m.industry
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIndustry returns the old "industry" field's value of the Company entity.
+// If the Company object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyMutation) OldIndustry(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIndustry is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIndustry requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIndustry: %w", err)
+	}
+	return oldValue.Industry, nil
+}
+
+// ClearIndustry clears the value of the "industry" field.
+func (m *CompanyMutation) ClearIndustry() {
+	m.industry = nil
+	m.clearedFields[company.FieldIndustry] = struct{}{}
+}
+
+// IndustryCleared returns if the "industry" field was cleared in this mutation.
+func (m *CompanyMutation) IndustryCleared() bool {
+	_, ok := m.clearedFields[company.FieldIndustry]
+	return ok
+}
+
+// ResetIndustry resets all changes to the "industry" field.
+func (m *CompanyMutation) ResetIndustry() {
+	m.industry = nil
+	delete(m.clearedFields, company.FieldIndustry)
 }
 
 // SetLastEntryDate sets the "lastEntryDate" field.
@@ -2729,6 +2784,60 @@ func (m *CompanyMutation) ResetCustomers() {
 	m.customers = nil
 	m.clearedcustomers = false
 	m.removedcustomers = nil
+}
+
+// AddDocumentIDs adds the "documents" edge to the CompanyDocument entity by ids.
+func (m *CompanyMutation) AddDocumentIDs(ids ...int) {
+	if m.documents == nil {
+		m.documents = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.documents[ids[i]] = struct{}{}
+	}
+}
+
+// ClearDocuments clears the "documents" edge to the CompanyDocument entity.
+func (m *CompanyMutation) ClearDocuments() {
+	m.cleareddocuments = true
+}
+
+// DocumentsCleared reports if the "documents" edge to the CompanyDocument entity was cleared.
+func (m *CompanyMutation) DocumentsCleared() bool {
+	return m.cleareddocuments
+}
+
+// RemoveDocumentIDs removes the "documents" edge to the CompanyDocument entity by IDs.
+func (m *CompanyMutation) RemoveDocumentIDs(ids ...int) {
+	if m.removeddocuments == nil {
+		m.removeddocuments = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.documents, ids[i])
+		m.removeddocuments[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedDocuments returns the removed IDs of the "documents" edge to the CompanyDocument entity.
+func (m *CompanyMutation) RemovedDocumentsIDs() (ids []int) {
+	for id := range m.removeddocuments {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// DocumentsIDs returns the "documents" edge IDs in the mutation.
+func (m *CompanyMutation) DocumentsIDs() (ids []int) {
+	for id := range m.documents {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetDocuments resets all changes to the "documents" edge.
+func (m *CompanyMutation) ResetDocuments() {
+	m.documents = nil
+	m.cleareddocuments = false
+	m.removeddocuments = nil
 }
 
 // AddEmployeeIDs adds the "employees" edge to the Employee entity by ids.
@@ -3452,7 +3561,7 @@ func (m *CompanyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CompanyMutation) Fields() []string {
-	fields := make([]string, 0, 22)
+	fields := make([]string, 0, 23)
 	if m.createdAt != nil {
 		fields = append(fields, company.FieldCreatedAt)
 	}
@@ -3485,6 +3594,9 @@ func (m *CompanyMutation) Fields() []string {
 	}
 	if m.email != nil {
 		fields = append(fields, company.FieldEmail)
+	}
+	if m.industry != nil {
+		fields = append(fields, company.FieldIndustry)
 	}
 	if m.lastEntryDate != nil {
 		fields = append(fields, company.FieldLastEntryDate)
@@ -3549,6 +3661,8 @@ func (m *CompanyMutation) Field(name string) (ent.Value, bool) {
 		return m.Description()
 	case company.FieldEmail:
 		return m.Email()
+	case company.FieldIndustry:
+		return m.Industry()
 	case company.FieldLastEntryDate:
 		return m.LastEntryDate()
 	case company.FieldLastInvoiceNumber:
@@ -3602,6 +3716,8 @@ func (m *CompanyMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDescription(ctx)
 	case company.FieldEmail:
 		return m.OldEmail(ctx)
+	case company.FieldIndustry:
+		return m.OldIndustry(ctx)
 	case company.FieldLastEntryDate:
 		return m.OldLastEntryDate(ctx)
 	case company.FieldLastInvoiceNumber:
@@ -3709,6 +3825,13 @@ func (m *CompanyMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEmail(v)
+		return nil
+	case company.FieldIndustry:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIndustry(v)
 		return nil
 	case company.FieldLastEntryDate:
 		v, ok := value.(time.Time)
@@ -3871,6 +3994,9 @@ func (m *CompanyMutation) ClearedFields() []string {
 	if m.FieldCleared(company.FieldEmail) {
 		fields = append(fields, company.FieldEmail)
 	}
+	if m.FieldCleared(company.FieldIndustry) {
+		fields = append(fields, company.FieldIndustry)
+	}
 	if m.FieldCleared(company.FieldLastInvoiceNumber) {
 		fields = append(fields, company.FieldLastInvoiceNumber)
 	}
@@ -3917,6 +4043,9 @@ func (m *CompanyMutation) ClearField(name string) error {
 		return nil
 	case company.FieldEmail:
 		m.ClearEmail()
+		return nil
+	case company.FieldIndustry:
+		m.ClearIndustry()
 		return nil
 	case company.FieldLastInvoiceNumber:
 		m.ClearLastInvoiceNumber()
@@ -3977,6 +4106,9 @@ func (m *CompanyMutation) ResetField(name string) error {
 	case company.FieldEmail:
 		m.ResetEmail()
 		return nil
+	case company.FieldIndustry:
+		m.ResetIndustry()
+		return nil
 	case company.FieldLastEntryDate:
 		m.ResetLastEntryDate()
 		return nil
@@ -4016,7 +4148,7 @@ func (m *CompanyMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CompanyMutation) AddedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 17)
 	if m.availableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4025,6 +4157,9 @@ func (m *CompanyMutation) AddedEdges() []string {
 	}
 	if m.customers != nil {
 		edges = append(edges, company.EdgeCustomers)
+	}
+	if m.documents != nil {
+		edges = append(edges, company.EdgeDocuments)
 	}
 	if m.employees != nil {
 		edges = append(edges, company.EdgeEmployees)
@@ -4087,6 +4222,12 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 	case company.EdgeCustomers:
 		ids := make([]ent.Value, 0, len(m.customers))
 		for id := range m.customers {
+			ids = append(ids, id)
+		}
+		return ids
+	case company.EdgeDocuments:
+		ids := make([]ent.Value, 0, len(m.documents))
+		for id := range m.documents {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4172,7 +4313,7 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CompanyMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 17)
 	if m.removedavailableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4181,6 +4322,9 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	}
 	if m.removedcustomers != nil {
 		edges = append(edges, company.EdgeCustomers)
+	}
+	if m.removeddocuments != nil {
+		edges = append(edges, company.EdgeDocuments)
 	}
 	if m.removedemployees != nil {
 		edges = append(edges, company.EdgeEmployees)
@@ -4240,6 +4384,12 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 	case company.EdgeCustomers:
 		ids := make([]ent.Value, 0, len(m.removedcustomers))
 		for id := range m.removedcustomers {
+			ids = append(ids, id)
+		}
+		return ids
+	case company.EdgeDocuments:
+		ids := make([]ent.Value, 0, len(m.removeddocuments))
+		for id := range m.removeddocuments {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4321,7 +4471,7 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CompanyMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 16)
+	edges := make([]string, 0, 17)
 	if m.clearedavailableRoles {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4330,6 +4480,9 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	}
 	if m.clearedcustomers {
 		edges = append(edges, company.EdgeCustomers)
+	}
+	if m.cleareddocuments {
+		edges = append(edges, company.EdgeDocuments)
 	}
 	if m.clearedemployees {
 		edges = append(edges, company.EdgeEmployees)
@@ -4383,6 +4536,8 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 		return m.clearedaccountingEntries
 	case company.EdgeCustomers:
 		return m.clearedcustomers
+	case company.EdgeDocuments:
+		return m.cleareddocuments
 	case company.EdgeEmployees:
 		return m.clearedemployees
 	case company.EdgeFiles:
@@ -4437,6 +4592,9 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 	case company.EdgeCustomers:
 		m.ResetCustomers()
 		return nil
+	case company.EdgeDocuments:
+		m.ResetDocuments()
+		return nil
 	case company.EdgeEmployees:
 		m.ResetEmployees()
 		return nil
@@ -4478,6 +4636,1296 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Company edge %s", name)
+}
+
+// CompanyDocumentMutation represents an operation that mutates the CompanyDocument nodes in the graph.
+type CompanyDocumentMutation struct {
+	config
+	op                Op
+	typ               string
+	id                *int
+	createdAt         *time.Time
+	updatedAt         *time.Time
+	deletedAt         *time.Time
+	filename          *string
+	title             *string
+	keywords          *string
+	category          *companydocument.Category
+	size              *int
+	addsize           *int
+	fileType          *string
+	status            *companydocument.Status
+	url               *string
+	storageURI        *string
+	thumbnail         *string
+	expiryDate        *time.Time
+	clearedFields     map[string]struct{}
+	company           *int
+	clearedcompany    bool
+	uploadedBy        *int
+	cleareduploadedBy bool
+	approvedBy        *int
+	clearedapprovedBy bool
+	done              bool
+	oldValue          func(context.Context) (*CompanyDocument, error)
+	predicates        []predicate.CompanyDocument
+}
+
+var _ ent.Mutation = (*CompanyDocumentMutation)(nil)
+
+// companydocumentOption allows management of the mutation configuration using functional options.
+type companydocumentOption func(*CompanyDocumentMutation)
+
+// newCompanyDocumentMutation creates new mutation for the CompanyDocument entity.
+func newCompanyDocumentMutation(c config, op Op, opts ...companydocumentOption) *CompanyDocumentMutation {
+	m := &CompanyDocumentMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeCompanyDocument,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withCompanyDocumentID sets the ID field of the mutation.
+func withCompanyDocumentID(id int) companydocumentOption {
+	return func(m *CompanyDocumentMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *CompanyDocument
+		)
+		m.oldValue = func(ctx context.Context) (*CompanyDocument, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().CompanyDocument.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withCompanyDocument sets the old CompanyDocument of the mutation.
+func withCompanyDocument(node *CompanyDocument) companydocumentOption {
+	return func(m *CompanyDocumentMutation) {
+		m.oldValue = func(context.Context) (*CompanyDocument, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m CompanyDocumentMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m CompanyDocumentMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("generated: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *CompanyDocumentMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *CompanyDocumentMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().CompanyDocument.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "createdAt" field.
+func (m *CompanyDocumentMutation) SetCreatedAt(t time.Time) {
+	m.createdAt = &t
+}
+
+// CreatedAt returns the value of the "createdAt" field in the mutation.
+func (m *CompanyDocumentMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.createdAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "createdAt" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "createdAt" field.
+func (m *CompanyDocumentMutation) ResetCreatedAt() {
+	m.createdAt = nil
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (m *CompanyDocumentMutation) SetUpdatedAt(t time.Time) {
+	m.updatedAt = &t
+}
+
+// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+func (m *CompanyDocumentMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updatedAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updatedAt" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updatedAt" field.
+func (m *CompanyDocumentMutation) ResetUpdatedAt() {
+	m.updatedAt = nil
+}
+
+// SetDeletedAt sets the "deletedAt" field.
+func (m *CompanyDocumentMutation) SetDeletedAt(t time.Time) {
+	m.deletedAt = &t
+}
+
+// DeletedAt returns the value of the "deletedAt" field in the mutation.
+func (m *CompanyDocumentMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deletedAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deletedAt" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deletedAt" field.
+func (m *CompanyDocumentMutation) ClearDeletedAt() {
+	m.deletedAt = nil
+	m.clearedFields[companydocument.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+func (m *CompanyDocumentMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[companydocument.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deletedAt" field.
+func (m *CompanyDocumentMutation) ResetDeletedAt() {
+	m.deletedAt = nil
+	delete(m.clearedFields, companydocument.FieldDeletedAt)
+}
+
+// SetFilename sets the "filename" field.
+func (m *CompanyDocumentMutation) SetFilename(s string) {
+	m.filename = &s
+}
+
+// Filename returns the value of the "filename" field in the mutation.
+func (m *CompanyDocumentMutation) Filename() (r string, exists bool) {
+	v := m.filename
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFilename returns the old "filename" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldFilename(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFilename is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFilename requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFilename: %w", err)
+	}
+	return oldValue.Filename, nil
+}
+
+// ResetFilename resets all changes to the "filename" field.
+func (m *CompanyDocumentMutation) ResetFilename() {
+	m.filename = nil
+}
+
+// SetTitle sets the "title" field.
+func (m *CompanyDocumentMutation) SetTitle(s string) {
+	m.title = &s
+}
+
+// Title returns the value of the "title" field in the mutation.
+func (m *CompanyDocumentMutation) Title() (r string, exists bool) {
+	v := m.title
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTitle returns the old "title" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldTitle(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTitle requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
+	}
+	return oldValue.Title, nil
+}
+
+// ResetTitle resets all changes to the "title" field.
+func (m *CompanyDocumentMutation) ResetTitle() {
+	m.title = nil
+}
+
+// SetKeywords sets the "keywords" field.
+func (m *CompanyDocumentMutation) SetKeywords(s string) {
+	m.keywords = &s
+}
+
+// Keywords returns the value of the "keywords" field in the mutation.
+func (m *CompanyDocumentMutation) Keywords() (r string, exists bool) {
+	v := m.keywords
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldKeywords returns the old "keywords" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldKeywords(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldKeywords is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldKeywords requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldKeywords: %w", err)
+	}
+	return oldValue.Keywords, nil
+}
+
+// ResetKeywords resets all changes to the "keywords" field.
+func (m *CompanyDocumentMutation) ResetKeywords() {
+	m.keywords = nil
+}
+
+// SetCategory sets the "category" field.
+func (m *CompanyDocumentMutation) SetCategory(c companydocument.Category) {
+	m.category = &c
+}
+
+// Category returns the value of the "category" field in the mutation.
+func (m *CompanyDocumentMutation) Category() (r companydocument.Category, exists bool) {
+	v := m.category
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCategory returns the old "category" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldCategory(ctx context.Context) (v companydocument.Category, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCategory is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCategory requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCategory: %w", err)
+	}
+	return oldValue.Category, nil
+}
+
+// ResetCategory resets all changes to the "category" field.
+func (m *CompanyDocumentMutation) ResetCategory() {
+	m.category = nil
+}
+
+// SetSize sets the "size" field.
+func (m *CompanyDocumentMutation) SetSize(i int) {
+	m.size = &i
+	m.addsize = nil
+}
+
+// Size returns the value of the "size" field in the mutation.
+func (m *CompanyDocumentMutation) Size() (r int, exists bool) {
+	v := m.size
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSize returns the old "size" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldSize(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSize is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSize requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSize: %w", err)
+	}
+	return oldValue.Size, nil
+}
+
+// AddSize adds i to the "size" field.
+func (m *CompanyDocumentMutation) AddSize(i int) {
+	if m.addsize != nil {
+		*m.addsize += i
+	} else {
+		m.addsize = &i
+	}
+}
+
+// AddedSize returns the value that was added to the "size" field in this mutation.
+func (m *CompanyDocumentMutation) AddedSize() (r int, exists bool) {
+	v := m.addsize
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSize resets all changes to the "size" field.
+func (m *CompanyDocumentMutation) ResetSize() {
+	m.size = nil
+	m.addsize = nil
+}
+
+// SetFileType sets the "fileType" field.
+func (m *CompanyDocumentMutation) SetFileType(s string) {
+	m.fileType = &s
+}
+
+// FileType returns the value of the "fileType" field in the mutation.
+func (m *CompanyDocumentMutation) FileType() (r string, exists bool) {
+	v := m.fileType
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFileType returns the old "fileType" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldFileType(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFileType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFileType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFileType: %w", err)
+	}
+	return oldValue.FileType, nil
+}
+
+// ResetFileType resets all changes to the "fileType" field.
+func (m *CompanyDocumentMutation) ResetFileType() {
+	m.fileType = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *CompanyDocumentMutation) SetStatus(c companydocument.Status) {
+	m.status = &c
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *CompanyDocumentMutation) Status() (r companydocument.Status, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldStatus(ctx context.Context) (v companydocument.Status, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *CompanyDocumentMutation) ResetStatus() {
+	m.status = nil
+}
+
+// SetURL sets the "url" field.
+func (m *CompanyDocumentMutation) SetURL(s string) {
+	m.url = &s
+}
+
+// URL returns the value of the "url" field in the mutation.
+func (m *CompanyDocumentMutation) URL() (r string, exists bool) {
+	v := m.url
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldURL returns the old "url" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldURL(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldURL is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldURL requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldURL: %w", err)
+	}
+	return oldValue.URL, nil
+}
+
+// ResetURL resets all changes to the "url" field.
+func (m *CompanyDocumentMutation) ResetURL() {
+	m.url = nil
+}
+
+// SetStorageURI sets the "storageURI" field.
+func (m *CompanyDocumentMutation) SetStorageURI(s string) {
+	m.storageURI = &s
+}
+
+// StorageURI returns the value of the "storageURI" field in the mutation.
+func (m *CompanyDocumentMutation) StorageURI() (r string, exists bool) {
+	v := m.storageURI
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStorageURI returns the old "storageURI" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldStorageURI(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStorageURI is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStorageURI requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStorageURI: %w", err)
+	}
+	return oldValue.StorageURI, nil
+}
+
+// ResetStorageURI resets all changes to the "storageURI" field.
+func (m *CompanyDocumentMutation) ResetStorageURI() {
+	m.storageURI = nil
+}
+
+// SetThumbnail sets the "thumbnail" field.
+func (m *CompanyDocumentMutation) SetThumbnail(s string) {
+	m.thumbnail = &s
+}
+
+// Thumbnail returns the value of the "thumbnail" field in the mutation.
+func (m *CompanyDocumentMutation) Thumbnail() (r string, exists bool) {
+	v := m.thumbnail
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldThumbnail returns the old "thumbnail" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldThumbnail(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldThumbnail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldThumbnail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldThumbnail: %w", err)
+	}
+	return oldValue.Thumbnail, nil
+}
+
+// ClearThumbnail clears the value of the "thumbnail" field.
+func (m *CompanyDocumentMutation) ClearThumbnail() {
+	m.thumbnail = nil
+	m.clearedFields[companydocument.FieldThumbnail] = struct{}{}
+}
+
+// ThumbnailCleared returns if the "thumbnail" field was cleared in this mutation.
+func (m *CompanyDocumentMutation) ThumbnailCleared() bool {
+	_, ok := m.clearedFields[companydocument.FieldThumbnail]
+	return ok
+}
+
+// ResetThumbnail resets all changes to the "thumbnail" field.
+func (m *CompanyDocumentMutation) ResetThumbnail() {
+	m.thumbnail = nil
+	delete(m.clearedFields, companydocument.FieldThumbnail)
+}
+
+// SetExpiryDate sets the "expiryDate" field.
+func (m *CompanyDocumentMutation) SetExpiryDate(t time.Time) {
+	m.expiryDate = &t
+}
+
+// ExpiryDate returns the value of the "expiryDate" field in the mutation.
+func (m *CompanyDocumentMutation) ExpiryDate() (r time.Time, exists bool) {
+	v := m.expiryDate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpiryDate returns the old "expiryDate" field's value of the CompanyDocument entity.
+// If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CompanyDocumentMutation) OldExpiryDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpiryDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpiryDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpiryDate: %w", err)
+	}
+	return oldValue.ExpiryDate, nil
+}
+
+// ResetExpiryDate resets all changes to the "expiryDate" field.
+func (m *CompanyDocumentMutation) ResetExpiryDate() {
+	m.expiryDate = nil
+}
+
+// SetCompanyID sets the "company" edge to the Company entity by id.
+func (m *CompanyDocumentMutation) SetCompanyID(id int) {
+	m.company = &id
+}
+
+// ClearCompany clears the "company" edge to the Company entity.
+func (m *CompanyDocumentMutation) ClearCompany() {
+	m.clearedcompany = true
+}
+
+// CompanyCleared reports if the "company" edge to the Company entity was cleared.
+func (m *CompanyDocumentMutation) CompanyCleared() bool {
+	return m.clearedcompany
+}
+
+// CompanyID returns the "company" edge ID in the mutation.
+func (m *CompanyDocumentMutation) CompanyID() (id int, exists bool) {
+	if m.company != nil {
+		return *m.company, true
+	}
+	return
+}
+
+// CompanyIDs returns the "company" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CompanyID instead. It exists only for internal usage by the builders.
+func (m *CompanyDocumentMutation) CompanyIDs() (ids []int) {
+	if id := m.company; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCompany resets all changes to the "company" edge.
+func (m *CompanyDocumentMutation) ResetCompany() {
+	m.company = nil
+	m.clearedcompany = false
+}
+
+// SetUploadedByID sets the "uploadedBy" edge to the User entity by id.
+func (m *CompanyDocumentMutation) SetUploadedByID(id int) {
+	m.uploadedBy = &id
+}
+
+// ClearUploadedBy clears the "uploadedBy" edge to the User entity.
+func (m *CompanyDocumentMutation) ClearUploadedBy() {
+	m.cleareduploadedBy = true
+}
+
+// UploadedByCleared reports if the "uploadedBy" edge to the User entity was cleared.
+func (m *CompanyDocumentMutation) UploadedByCleared() bool {
+	return m.cleareduploadedBy
+}
+
+// UploadedByID returns the "uploadedBy" edge ID in the mutation.
+func (m *CompanyDocumentMutation) UploadedByID() (id int, exists bool) {
+	if m.uploadedBy != nil {
+		return *m.uploadedBy, true
+	}
+	return
+}
+
+// UploadedByIDs returns the "uploadedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// UploadedByID instead. It exists only for internal usage by the builders.
+func (m *CompanyDocumentMutation) UploadedByIDs() (ids []int) {
+	if id := m.uploadedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetUploadedBy resets all changes to the "uploadedBy" edge.
+func (m *CompanyDocumentMutation) ResetUploadedBy() {
+	m.uploadedBy = nil
+	m.cleareduploadedBy = false
+}
+
+// SetApprovedByID sets the "approvedBy" edge to the User entity by id.
+func (m *CompanyDocumentMutation) SetApprovedByID(id int) {
+	m.approvedBy = &id
+}
+
+// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+func (m *CompanyDocumentMutation) ClearApprovedBy() {
+	m.clearedapprovedBy = true
+}
+
+// ApprovedByCleared reports if the "approvedBy" edge to the User entity was cleared.
+func (m *CompanyDocumentMutation) ApprovedByCleared() bool {
+	return m.clearedapprovedBy
+}
+
+// ApprovedByID returns the "approvedBy" edge ID in the mutation.
+func (m *CompanyDocumentMutation) ApprovedByID() (id int, exists bool) {
+	if m.approvedBy != nil {
+		return *m.approvedBy, true
+	}
+	return
+}
+
+// ApprovedByIDs returns the "approvedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ApprovedByID instead. It exists only for internal usage by the builders.
+func (m *CompanyDocumentMutation) ApprovedByIDs() (ids []int) {
+	if id := m.approvedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetApprovedBy resets all changes to the "approvedBy" edge.
+func (m *CompanyDocumentMutation) ResetApprovedBy() {
+	m.approvedBy = nil
+	m.clearedapprovedBy = false
+}
+
+// Where appends a list predicates to the CompanyDocumentMutation builder.
+func (m *CompanyDocumentMutation) Where(ps ...predicate.CompanyDocument) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the CompanyDocumentMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *CompanyDocumentMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.CompanyDocument, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *CompanyDocumentMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *CompanyDocumentMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (CompanyDocument).
+func (m *CompanyDocumentMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *CompanyDocumentMutation) Fields() []string {
+	fields := make([]string, 0, 14)
+	if m.createdAt != nil {
+		fields = append(fields, companydocument.FieldCreatedAt)
+	}
+	if m.updatedAt != nil {
+		fields = append(fields, companydocument.FieldUpdatedAt)
+	}
+	if m.deletedAt != nil {
+		fields = append(fields, companydocument.FieldDeletedAt)
+	}
+	if m.filename != nil {
+		fields = append(fields, companydocument.FieldFilename)
+	}
+	if m.title != nil {
+		fields = append(fields, companydocument.FieldTitle)
+	}
+	if m.keywords != nil {
+		fields = append(fields, companydocument.FieldKeywords)
+	}
+	if m.category != nil {
+		fields = append(fields, companydocument.FieldCategory)
+	}
+	if m.size != nil {
+		fields = append(fields, companydocument.FieldSize)
+	}
+	if m.fileType != nil {
+		fields = append(fields, companydocument.FieldFileType)
+	}
+	if m.status != nil {
+		fields = append(fields, companydocument.FieldStatus)
+	}
+	if m.url != nil {
+		fields = append(fields, companydocument.FieldURL)
+	}
+	if m.storageURI != nil {
+		fields = append(fields, companydocument.FieldStorageURI)
+	}
+	if m.thumbnail != nil {
+		fields = append(fields, companydocument.FieldThumbnail)
+	}
+	if m.expiryDate != nil {
+		fields = append(fields, companydocument.FieldExpiryDate)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *CompanyDocumentMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case companydocument.FieldCreatedAt:
+		return m.CreatedAt()
+	case companydocument.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case companydocument.FieldDeletedAt:
+		return m.DeletedAt()
+	case companydocument.FieldFilename:
+		return m.Filename()
+	case companydocument.FieldTitle:
+		return m.Title()
+	case companydocument.FieldKeywords:
+		return m.Keywords()
+	case companydocument.FieldCategory:
+		return m.Category()
+	case companydocument.FieldSize:
+		return m.Size()
+	case companydocument.FieldFileType:
+		return m.FileType()
+	case companydocument.FieldStatus:
+		return m.Status()
+	case companydocument.FieldURL:
+		return m.URL()
+	case companydocument.FieldStorageURI:
+		return m.StorageURI()
+	case companydocument.FieldThumbnail:
+		return m.Thumbnail()
+	case companydocument.FieldExpiryDate:
+		return m.ExpiryDate()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *CompanyDocumentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case companydocument.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case companydocument.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case companydocument.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case companydocument.FieldFilename:
+		return m.OldFilename(ctx)
+	case companydocument.FieldTitle:
+		return m.OldTitle(ctx)
+	case companydocument.FieldKeywords:
+		return m.OldKeywords(ctx)
+	case companydocument.FieldCategory:
+		return m.OldCategory(ctx)
+	case companydocument.FieldSize:
+		return m.OldSize(ctx)
+	case companydocument.FieldFileType:
+		return m.OldFileType(ctx)
+	case companydocument.FieldStatus:
+		return m.OldStatus(ctx)
+	case companydocument.FieldURL:
+		return m.OldURL(ctx)
+	case companydocument.FieldStorageURI:
+		return m.OldStorageURI(ctx)
+	case companydocument.FieldThumbnail:
+		return m.OldThumbnail(ctx)
+	case companydocument.FieldExpiryDate:
+		return m.OldExpiryDate(ctx)
+	}
+	return nil, fmt.Errorf("unknown CompanyDocument field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CompanyDocumentMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case companydocument.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case companydocument.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case companydocument.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case companydocument.FieldFilename:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFilename(v)
+		return nil
+	case companydocument.FieldTitle:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTitle(v)
+		return nil
+	case companydocument.FieldKeywords:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetKeywords(v)
+		return nil
+	case companydocument.FieldCategory:
+		v, ok := value.(companydocument.Category)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCategory(v)
+		return nil
+	case companydocument.FieldSize:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSize(v)
+		return nil
+	case companydocument.FieldFileType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFileType(v)
+		return nil
+	case companydocument.FieldStatus:
+		v, ok := value.(companydocument.Status)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case companydocument.FieldURL:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetURL(v)
+		return nil
+	case companydocument.FieldStorageURI:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStorageURI(v)
+		return nil
+	case companydocument.FieldThumbnail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetThumbnail(v)
+		return nil
+	case companydocument.FieldExpiryDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpiryDate(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *CompanyDocumentMutation) AddedFields() []string {
+	var fields []string
+	if m.addsize != nil {
+		fields = append(fields, companydocument.FieldSize)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *CompanyDocumentMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case companydocument.FieldSize:
+		return m.AddedSize()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CompanyDocumentMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case companydocument.FieldSize:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSize(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *CompanyDocumentMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(companydocument.FieldDeletedAt) {
+		fields = append(fields, companydocument.FieldDeletedAt)
+	}
+	if m.FieldCleared(companydocument.FieldThumbnail) {
+		fields = append(fields, companydocument.FieldThumbnail)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *CompanyDocumentMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *CompanyDocumentMutation) ClearField(name string) error {
+	switch name {
+	case companydocument.FieldDeletedAt:
+		m.ClearDeletedAt()
+		return nil
+	case companydocument.FieldThumbnail:
+		m.ClearThumbnail()
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *CompanyDocumentMutation) ResetField(name string) error {
+	switch name {
+	case companydocument.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case companydocument.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case companydocument.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case companydocument.FieldFilename:
+		m.ResetFilename()
+		return nil
+	case companydocument.FieldTitle:
+		m.ResetTitle()
+		return nil
+	case companydocument.FieldKeywords:
+		m.ResetKeywords()
+		return nil
+	case companydocument.FieldCategory:
+		m.ResetCategory()
+		return nil
+	case companydocument.FieldSize:
+		m.ResetSize()
+		return nil
+	case companydocument.FieldFileType:
+		m.ResetFileType()
+		return nil
+	case companydocument.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case companydocument.FieldURL:
+		m.ResetURL()
+		return nil
+	case companydocument.FieldStorageURI:
+		m.ResetStorageURI()
+		return nil
+	case companydocument.FieldThumbnail:
+		m.ResetThumbnail()
+		return nil
+	case companydocument.FieldExpiryDate:
+		m.ResetExpiryDate()
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *CompanyDocumentMutation) AddedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.company != nil {
+		edges = append(edges, companydocument.EdgeCompany)
+	}
+	if m.uploadedBy != nil {
+		edges = append(edges, companydocument.EdgeUploadedBy)
+	}
+	if m.approvedBy != nil {
+		edges = append(edges, companydocument.EdgeApprovedBy)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *CompanyDocumentMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case companydocument.EdgeCompany:
+		if id := m.company; id != nil {
+			return []ent.Value{*id}
+		}
+	case companydocument.EdgeUploadedBy:
+		if id := m.uploadedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	case companydocument.EdgeApprovedBy:
+		if id := m.approvedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *CompanyDocumentMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 3)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *CompanyDocumentMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *CompanyDocumentMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 3)
+	if m.clearedcompany {
+		edges = append(edges, companydocument.EdgeCompany)
+	}
+	if m.cleareduploadedBy {
+		edges = append(edges, companydocument.EdgeUploadedBy)
+	}
+	if m.clearedapprovedBy {
+		edges = append(edges, companydocument.EdgeApprovedBy)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *CompanyDocumentMutation) EdgeCleared(name string) bool {
+	switch name {
+	case companydocument.EdgeCompany:
+		return m.clearedcompany
+	case companydocument.EdgeUploadedBy:
+		return m.cleareduploadedBy
+	case companydocument.EdgeApprovedBy:
+		return m.clearedapprovedBy
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *CompanyDocumentMutation) ClearEdge(name string) error {
+	switch name {
+	case companydocument.EdgeCompany:
+		m.ClearCompany()
+		return nil
+	case companydocument.EdgeUploadedBy:
+		m.ClearUploadedBy()
+		return nil
+	case companydocument.EdgeApprovedBy:
+		m.ClearApprovedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *CompanyDocumentMutation) ResetEdge(name string) error {
+	switch name {
+	case companydocument.EdgeCompany:
+		m.ResetCompany()
+		return nil
+	case companydocument.EdgeUploadedBy:
+		m.ResetUploadedBy()
+		return nil
+	case companydocument.EdgeApprovedBy:
+		m.ResetApprovedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown CompanyDocument edge %s", name)
 }
 
 // CustomerMutation represents an operation that mutates the Customer nodes in the graph.
@@ -15069,11 +16517,13 @@ type UserMutation struct {
 	createdAt                       *time.Time
 	updatedAt                       *time.Time
 	deletedAt                       *time.Time
+	firebaseUID                     *string
 	fcmToken                        *string
 	email                           *string
 	name                            *string
-	password                        *string
-	username                        *string
+	phone                           *string
+	birthdate                       *time.Time
+	gender                          *user.Gender
 	disabled                        *bool
 	notVerified                     *bool
 	clearedFields                   map[string]struct{}
@@ -15117,6 +16567,12 @@ type UserMutation struct {
 	workShifts                      map[int]struct{}
 	removedworkShifts               map[int]struct{}
 	clearedworkShifts               bool
+	uploadedDocuments               map[int]struct{}
+	removeduploadedDocuments        map[int]struct{}
+	cleareduploadedDocuments        bool
+	approvedDocuments               map[int]struct{}
+	removedapprovedDocuments        map[int]struct{}
+	clearedapprovedDocuments        bool
 	done                            bool
 	oldValue                        func(context.Context) (*User, error)
 	predicates                      []predicate.User
@@ -15341,6 +16797,42 @@ func (m *UserMutation) ResetDeletedAt() {
 	delete(m.clearedFields, user.FieldDeletedAt)
 }
 
+// SetFirebaseUID sets the "firebaseUID" field.
+func (m *UserMutation) SetFirebaseUID(s string) {
+	m.firebaseUID = &s
+}
+
+// FirebaseUID returns the value of the "firebaseUID" field in the mutation.
+func (m *UserMutation) FirebaseUID() (r string, exists bool) {
+	v := m.firebaseUID
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFirebaseUID returns the old "firebaseUID" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldFirebaseUID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFirebaseUID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFirebaseUID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFirebaseUID: %w", err)
+	}
+	return oldValue.FirebaseUID, nil
+}
+
+// ResetFirebaseUID resets all changes to the "firebaseUID" field.
+func (m *UserMutation) ResetFirebaseUID() {
+	m.firebaseUID = nil
+}
+
 // SetFcmToken sets the "fcmToken" field.
 func (m *UserMutation) SetFcmToken(s string) {
 	m.fcmToken = &s
@@ -15475,76 +16967,138 @@ func (m *UserMutation) ResetName() {
 	m.name = nil
 }
 
-// SetPassword sets the "password" field.
-func (m *UserMutation) SetPassword(s string) {
-	m.password = &s
+// SetPhone sets the "phone" field.
+func (m *UserMutation) SetPhone(s string) {
+	m.phone = &s
 }
 
-// Password returns the value of the "password" field in the mutation.
-func (m *UserMutation) Password() (r string, exists bool) {
-	v := m.password
+// Phone returns the value of the "phone" field in the mutation.
+func (m *UserMutation) Phone() (r string, exists bool) {
+	v := m.phone
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPassword returns the old "password" field's value of the User entity.
+// OldPhone returns the old "phone" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldPassword(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldPhone(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
+		return v, errors.New("OldPhone is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPassword requires an ID field in the mutation")
+		return v, errors.New("OldPhone requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
+		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
 	}
-	return oldValue.Password, nil
+	return oldValue.Phone, nil
 }
 
-// ResetPassword resets all changes to the "password" field.
-func (m *UserMutation) ResetPassword() {
-	m.password = nil
+// ClearPhone clears the value of the "phone" field.
+func (m *UserMutation) ClearPhone() {
+	m.phone = nil
+	m.clearedFields[user.FieldPhone] = struct{}{}
 }
 
-// SetUsername sets the "username" field.
-func (m *UserMutation) SetUsername(s string) {
-	m.username = &s
+// PhoneCleared returns if the "phone" field was cleared in this mutation.
+func (m *UserMutation) PhoneCleared() bool {
+	_, ok := m.clearedFields[user.FieldPhone]
+	return ok
 }
 
-// Username returns the value of the "username" field in the mutation.
-func (m *UserMutation) Username() (r string, exists bool) {
-	v := m.username
+// ResetPhone resets all changes to the "phone" field.
+func (m *UserMutation) ResetPhone() {
+	m.phone = nil
+	delete(m.clearedFields, user.FieldPhone)
+}
+
+// SetBirthdate sets the "birthdate" field.
+func (m *UserMutation) SetBirthdate(t time.Time) {
+	m.birthdate = &t
+}
+
+// Birthdate returns the value of the "birthdate" field in the mutation.
+func (m *UserMutation) Birthdate() (r time.Time, exists bool) {
+	v := m.birthdate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUsername returns the old "username" field's value of the User entity.
+// OldBirthdate returns the old "birthdate" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldUsername(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldBirthdate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUsername is only allowed on UpdateOne operations")
+		return v, errors.New("OldBirthdate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUsername requires an ID field in the mutation")
+		return v, errors.New("OldBirthdate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUsername: %w", err)
+		return v, fmt.Errorf("querying old value for OldBirthdate: %w", err)
 	}
-	return oldValue.Username, nil
+	return oldValue.Birthdate, nil
 }
 
-// ResetUsername resets all changes to the "username" field.
-func (m *UserMutation) ResetUsername() {
-	m.username = nil
+// ClearBirthdate clears the value of the "birthdate" field.
+func (m *UserMutation) ClearBirthdate() {
+	m.birthdate = nil
+	m.clearedFields[user.FieldBirthdate] = struct{}{}
+}
+
+// BirthdateCleared returns if the "birthdate" field was cleared in this mutation.
+func (m *UserMutation) BirthdateCleared() bool {
+	_, ok := m.clearedFields[user.FieldBirthdate]
+	return ok
+}
+
+// ResetBirthdate resets all changes to the "birthdate" field.
+func (m *UserMutation) ResetBirthdate() {
+	m.birthdate = nil
+	delete(m.clearedFields, user.FieldBirthdate)
+}
+
+// SetGender sets the "gender" field.
+func (m *UserMutation) SetGender(u user.Gender) {
+	m.gender = &u
+}
+
+// Gender returns the value of the "gender" field in the mutation.
+func (m *UserMutation) Gender() (r user.Gender, exists bool) {
+	v := m.gender
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGender returns the old "gender" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldGender(ctx context.Context) (v user.Gender, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGender is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGender requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGender: %w", err)
+	}
+	return oldValue.Gender, nil
+}
+
+// ResetGender resets all changes to the "gender" field.
+func (m *UserMutation) ResetGender() {
+	m.gender = nil
 }
 
 // SetDisabled sets the "disabled" field.
@@ -16371,6 +17925,114 @@ func (m *UserMutation) ResetWorkShifts() {
 	m.removedworkShifts = nil
 }
 
+// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by ids.
+func (m *UserMutation) AddUploadedDocumentIDs(ids ...int) {
+	if m.uploadedDocuments == nil {
+		m.uploadedDocuments = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.uploadedDocuments[ids[i]] = struct{}{}
+	}
+}
+
+// ClearUploadedDocuments clears the "uploadedDocuments" edge to the CompanyDocument entity.
+func (m *UserMutation) ClearUploadedDocuments() {
+	m.cleareduploadedDocuments = true
+}
+
+// UploadedDocumentsCleared reports if the "uploadedDocuments" edge to the CompanyDocument entity was cleared.
+func (m *UserMutation) UploadedDocumentsCleared() bool {
+	return m.cleareduploadedDocuments
+}
+
+// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+func (m *UserMutation) RemoveUploadedDocumentIDs(ids ...int) {
+	if m.removeduploadedDocuments == nil {
+		m.removeduploadedDocuments = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.uploadedDocuments, ids[i])
+		m.removeduploadedDocuments[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedUploadedDocuments returns the removed IDs of the "uploadedDocuments" edge to the CompanyDocument entity.
+func (m *UserMutation) RemovedUploadedDocumentsIDs() (ids []int) {
+	for id := range m.removeduploadedDocuments {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// UploadedDocumentsIDs returns the "uploadedDocuments" edge IDs in the mutation.
+func (m *UserMutation) UploadedDocumentsIDs() (ids []int) {
+	for id := range m.uploadedDocuments {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetUploadedDocuments resets all changes to the "uploadedDocuments" edge.
+func (m *UserMutation) ResetUploadedDocuments() {
+	m.uploadedDocuments = nil
+	m.cleareduploadedDocuments = false
+	m.removeduploadedDocuments = nil
+}
+
+// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by ids.
+func (m *UserMutation) AddApprovedDocumentIDs(ids ...int) {
+	if m.approvedDocuments == nil {
+		m.approvedDocuments = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.approvedDocuments[ids[i]] = struct{}{}
+	}
+}
+
+// ClearApprovedDocuments clears the "approvedDocuments" edge to the CompanyDocument entity.
+func (m *UserMutation) ClearApprovedDocuments() {
+	m.clearedapprovedDocuments = true
+}
+
+// ApprovedDocumentsCleared reports if the "approvedDocuments" edge to the CompanyDocument entity was cleared.
+func (m *UserMutation) ApprovedDocumentsCleared() bool {
+	return m.clearedapprovedDocuments
+}
+
+// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+func (m *UserMutation) RemoveApprovedDocumentIDs(ids ...int) {
+	if m.removedapprovedDocuments == nil {
+		m.removedapprovedDocuments = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.approvedDocuments, ids[i])
+		m.removedapprovedDocuments[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedApprovedDocuments returns the removed IDs of the "approvedDocuments" edge to the CompanyDocument entity.
+func (m *UserMutation) RemovedApprovedDocumentsIDs() (ids []int) {
+	for id := range m.removedapprovedDocuments {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ApprovedDocumentsIDs returns the "approvedDocuments" edge IDs in the mutation.
+func (m *UserMutation) ApprovedDocumentsIDs() (ids []int) {
+	for id := range m.approvedDocuments {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetApprovedDocuments resets all changes to the "approvedDocuments" edge.
+func (m *UserMutation) ResetApprovedDocuments() {
+	m.approvedDocuments = nil
+	m.clearedapprovedDocuments = false
+	m.removedapprovedDocuments = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -16405,7 +18067,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 12)
 	if m.createdAt != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -16414,6 +18076,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.deletedAt != nil {
 		fields = append(fields, user.FieldDeletedAt)
+	}
+	if m.firebaseUID != nil {
+		fields = append(fields, user.FieldFirebaseUID)
 	}
 	if m.fcmToken != nil {
 		fields = append(fields, user.FieldFcmToken)
@@ -16424,11 +18089,14 @@ func (m *UserMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, user.FieldName)
 	}
-	if m.password != nil {
-		fields = append(fields, user.FieldPassword)
+	if m.phone != nil {
+		fields = append(fields, user.FieldPhone)
 	}
-	if m.username != nil {
-		fields = append(fields, user.FieldUsername)
+	if m.birthdate != nil {
+		fields = append(fields, user.FieldBirthdate)
+	}
+	if m.gender != nil {
+		fields = append(fields, user.FieldGender)
 	}
 	if m.disabled != nil {
 		fields = append(fields, user.FieldDisabled)
@@ -16450,16 +18118,20 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case user.FieldDeletedAt:
 		return m.DeletedAt()
+	case user.FieldFirebaseUID:
+		return m.FirebaseUID()
 	case user.FieldFcmToken:
 		return m.FcmToken()
 	case user.FieldEmail:
 		return m.Email()
 	case user.FieldName:
 		return m.Name()
-	case user.FieldPassword:
-		return m.Password()
-	case user.FieldUsername:
-		return m.Username()
+	case user.FieldPhone:
+		return m.Phone()
+	case user.FieldBirthdate:
+		return m.Birthdate()
+	case user.FieldGender:
+		return m.Gender()
 	case user.FieldDisabled:
 		return m.Disabled()
 	case user.FieldNotVerified:
@@ -16479,16 +18151,20 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdatedAt(ctx)
 	case user.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
+	case user.FieldFirebaseUID:
+		return m.OldFirebaseUID(ctx)
 	case user.FieldFcmToken:
 		return m.OldFcmToken(ctx)
 	case user.FieldEmail:
 		return m.OldEmail(ctx)
 	case user.FieldName:
 		return m.OldName(ctx)
-	case user.FieldPassword:
-		return m.OldPassword(ctx)
-	case user.FieldUsername:
-		return m.OldUsername(ctx)
+	case user.FieldPhone:
+		return m.OldPhone(ctx)
+	case user.FieldBirthdate:
+		return m.OldBirthdate(ctx)
+	case user.FieldGender:
+		return m.OldGender(ctx)
 	case user.FieldDisabled:
 		return m.OldDisabled(ctx)
 	case user.FieldNotVerified:
@@ -16523,6 +18199,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeletedAt(v)
 		return nil
+	case user.FieldFirebaseUID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFirebaseUID(v)
+		return nil
 	case user.FieldFcmToken:
 		v, ok := value.(string)
 		if !ok {
@@ -16544,19 +18227,26 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case user.FieldPassword:
+	case user.FieldPhone:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPassword(v)
+		m.SetPhone(v)
 		return nil
-	case user.FieldUsername:
-		v, ok := value.(string)
+	case user.FieldBirthdate:
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUsername(v)
+		m.SetBirthdate(v)
+		return nil
+	case user.FieldGender:
+		v, ok := value.(user.Gender)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGender(v)
 		return nil
 	case user.FieldDisabled:
 		v, ok := value.(bool)
@@ -16611,6 +18301,12 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldEmail) {
 		fields = append(fields, user.FieldEmail)
 	}
+	if m.FieldCleared(user.FieldPhone) {
+		fields = append(fields, user.FieldPhone)
+	}
+	if m.FieldCleared(user.FieldBirthdate) {
+		fields = append(fields, user.FieldBirthdate)
+	}
 	if m.FieldCleared(user.FieldDisabled) {
 		fields = append(fields, user.FieldDisabled)
 	}
@@ -16640,6 +18336,12 @@ func (m *UserMutation) ClearField(name string) error {
 	case user.FieldEmail:
 		m.ClearEmail()
 		return nil
+	case user.FieldPhone:
+		m.ClearPhone()
+		return nil
+	case user.FieldBirthdate:
+		m.ClearBirthdate()
+		return nil
 	case user.FieldDisabled:
 		m.ClearDisabled()
 		return nil
@@ -16663,6 +18365,9 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldDeletedAt:
 		m.ResetDeletedAt()
 		return nil
+	case user.FieldFirebaseUID:
+		m.ResetFirebaseUID()
+		return nil
 	case user.FieldFcmToken:
 		m.ResetFcmToken()
 		return nil
@@ -16672,11 +18377,14 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldName:
 		m.ResetName()
 		return nil
-	case user.FieldPassword:
-		m.ResetPassword()
+	case user.FieldPhone:
+		m.ResetPhone()
 		return nil
-	case user.FieldUsername:
-		m.ResetUsername()
+	case user.FieldBirthdate:
+		m.ResetBirthdate()
+		return nil
+	case user.FieldGender:
+		m.ResetGender()
 		return nil
 	case user.FieldDisabled:
 		m.ResetDisabled()
@@ -16690,7 +18398,7 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 14)
+	edges := make([]string, 0, 16)
 	if m.accountingEntries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -16732,6 +18440,12 @@ func (m *UserMutation) AddedEdges() []string {
 	}
 	if m.workShifts != nil {
 		edges = append(edges, user.EdgeWorkShifts)
+	}
+	if m.uploadedDocuments != nil {
+		edges = append(edges, user.EdgeUploadedDocuments)
+	}
+	if m.approvedDocuments != nil {
+		edges = append(edges, user.EdgeApprovedDocuments)
 	}
 	return edges
 }
@@ -16820,13 +18534,25 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeUploadedDocuments:
+		ids := make([]ent.Value, 0, len(m.uploadedDocuments))
+		for id := range m.uploadedDocuments {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeApprovedDocuments:
+		ids := make([]ent.Value, 0, len(m.approvedDocuments))
+		for id := range m.approvedDocuments {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 14)
+	edges := make([]string, 0, 16)
 	if m.removedaccountingEntries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -16862,6 +18588,12 @@ func (m *UserMutation) RemovedEdges() []string {
 	}
 	if m.removedworkShifts != nil {
 		edges = append(edges, user.EdgeWorkShifts)
+	}
+	if m.removeduploadedDocuments != nil {
+		edges = append(edges, user.EdgeUploadedDocuments)
+	}
+	if m.removedapprovedDocuments != nil {
+		edges = append(edges, user.EdgeApprovedDocuments)
 	}
 	return edges
 }
@@ -16942,13 +18674,25 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case user.EdgeUploadedDocuments:
+		ids := make([]ent.Value, 0, len(m.removeduploadedDocuments))
+		for id := range m.removeduploadedDocuments {
+			ids = append(ids, id)
+		}
+		return ids
+	case user.EdgeApprovedDocuments:
+		ids := make([]ent.Value, 0, len(m.removedapprovedDocuments))
+		for id := range m.removedapprovedDocuments {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 14)
+	edges := make([]string, 0, 16)
 	if m.clearedaccountingEntries {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
@@ -16991,6 +18735,12 @@ func (m *UserMutation) ClearedEdges() []string {
 	if m.clearedworkShifts {
 		edges = append(edges, user.EdgeWorkShifts)
 	}
+	if m.cleareduploadedDocuments {
+		edges = append(edges, user.EdgeUploadedDocuments)
+	}
+	if m.clearedapprovedDocuments {
+		edges = append(edges, user.EdgeApprovedDocuments)
+	}
 	return edges
 }
 
@@ -17026,6 +18776,10 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 		return m.clearedapprovedWorkShifts
 	case user.EdgeWorkShifts:
 		return m.clearedworkShifts
+	case user.EdgeUploadedDocuments:
+		return m.cleareduploadedDocuments
+	case user.EdgeApprovedDocuments:
+		return m.clearedapprovedDocuments
 	}
 	return false
 }
@@ -17089,6 +18843,12 @@ func (m *UserMutation) ResetEdge(name string) error {
 		return nil
 	case user.EdgeWorkShifts:
 		m.ResetWorkShifts()
+		return nil
+	case user.EdgeUploadedDocuments:
+		m.ResetUploadedDocuments()
+		return nil
+	case user.EdgeApprovedDocuments:
+		m.ResetApprovedDocuments()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)

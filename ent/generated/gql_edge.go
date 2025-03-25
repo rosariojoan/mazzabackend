@@ -60,6 +60,18 @@ func (c *Company) Customers(ctx context.Context) (result []*Customer, err error)
 	return result, err
 }
 
+func (c *Company) Documents(ctx context.Context) (result []*CompanyDocument, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedDocuments(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.DocumentsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryDocuments().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) Employees(ctx context.Context) (result []*Employee, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedEmployees(graphql.GetFieldContext(ctx).Field.Alias)
@@ -208,6 +220,30 @@ func (c *Company) ParentCompany(ctx context.Context) (*Company, error) {
 	result, err := c.Edges.ParentCompanyOrErr()
 	if IsNotLoaded(err) {
 		result, err = c.QueryParentCompany().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (cd *CompanyDocument) Company(ctx context.Context) (*Company, error) {
+	result, err := cd.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = cd.QueryCompany().Only(ctx)
+	}
+	return result, err
+}
+
+func (cd *CompanyDocument) UploadedBy(ctx context.Context) (*User, error) {
+	result, err := cd.Edges.UploadedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = cd.QueryUploadedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (cd *CompanyDocument) ApprovedBy(ctx context.Context) (*User, error) {
+	result, err := cd.Edges.ApprovedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = cd.QueryApprovedBy().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
@@ -584,6 +620,30 @@ func (u *User) WorkShifts(ctx context.Context) (result []*Workshift, err error) 
 	}
 	if IsNotLoaded(err) {
 		result, err = u.QueryWorkShifts().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) UploadedDocuments(ctx context.Context) (result []*CompanyDocument, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedUploadedDocuments(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.UploadedDocumentsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryUploadedDocuments().All(ctx)
+	}
+	return result, err
+}
+
+func (u *User) ApprovedDocuments(ctx context.Context) (result []*CompanyDocument, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedApprovedDocuments(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.ApprovedDocumentsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryApprovedDocuments().All(ctx)
 	}
 	return result, err
 }

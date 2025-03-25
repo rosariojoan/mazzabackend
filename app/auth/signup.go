@@ -34,14 +34,14 @@ func Signup(ctx *gin.Context) {
 		return
 	}
 
-	pwdHash, err := utils.HashPwd(&body.User.Password)
-	if err != nil {
-		fmt.Println("err:", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
-		return
-	}
-
-	body.User.Password = pwdHash
+	// pwdHash, err := utils.HashPwd(&body.User.Password)
+	// if err != nil {
+	// 	fmt.Println("err:", err)
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
+	// 	return
+	// }
+	
+	// body.User.Password = pwdHash
 	body.Company.LastEntryDate = utils.StartOfYear(time.Now())
 	trueValue := true
 	customerDescription := "Este cliente foi gerado automaticamente"

@@ -122,22 +122,13 @@ input BaseEntryRegistrationInput {
   totalTransactionValue: Float!
 }
 
-input SalesRegistrationInput {
-  main: [EntryItem!]!
-  counterpart: [EntryItem!]!
-  receivableInput: ReceivableInput
-  cashInput: Float
-  productInput: Int
-  category: String!
-  date: Time!
-  description: String
-  operationType: SalesOperationType!
-  totalTransactionValue: Float!
-  attachment: [String!]
+input InvoiceInput {
+  accountingEntryData: BaseEntryRegistrationInput!
+  invoiceData: Invoice!
 }
 
 input SalesQuotationInput {
-  data: Invoice!
+  invoiceData: Invoice!
 }
 
 input LedgerDownloadInput {
@@ -224,10 +215,15 @@ type FileDetailsOutput {
   file: FileOutput
 }
 
+type InvoiceIssuanceOutput {
+  message: String!
+  fileUrl: String!
+}
+
 # -------------------------------------------------
 extend type Mutation {
-  registerSales(input: SalesRegistrationInput!): String!
-  salesQuotation(input: SalesQuotationInput!): FileDetailsOutput!
+  issueSalesQuotation(input: SalesQuotationInput!): InvoiceIssuanceOutput!
+  issueInvoice(input: InvoiceInput!): InvoiceIssuanceOutput!
   registerAccountingEntries(input: BaseEntryRegistrationInput!): String
 }
 

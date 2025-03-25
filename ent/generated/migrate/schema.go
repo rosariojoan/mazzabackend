@@ -71,6 +71,7 @@ var (
 		{Name: "established_at", Type: field.TypeTime},
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "email", Type: field.TypeString, Nullable: true},
+		{Name: "industry", Type: field.TypeString, Nullable: true},
 		{Name: "last_entry_date", Type: field.TypeTime},
 		{Name: "last_invoice_number", Type: field.TypeInt32, Nullable: true, Default: 0},
 		{Name: "logo", Type: field.TypeString, Nullable: true},
@@ -92,7 +93,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "companies_companies_daughterCompanies",
-				Columns:    []*schema.Column{CompaniesColumns[23]},
+				Columns:    []*schema.Column{CompaniesColumns[24]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -101,7 +102,54 @@ var (
 			{
 				Name:    "company_country_name",
 				Unique:  true,
-				Columns: []*schema.Column{CompaniesColumns[8], CompaniesColumns[15]},
+				Columns: []*schema.Column{CompaniesColumns[8], CompaniesColumns[16]},
+			},
+		},
+	}
+	// CompanyDocumentsColumns holds the columns for the "company_documents" table.
+	CompanyDocumentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "filename", Type: field.TypeString},
+		{Name: "title", Type: field.TypeString},
+		{Name: "keywords", Type: field.TypeString},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"LEGAL", "CONTRACT", "LICENSE", "TAX", "HR"}},
+		{Name: "size", Type: field.TypeInt},
+		{Name: "file_type", Type: field.TypeString},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"PENDING", "APPROVED", "REJECTED", "EXPIRED"}},
+		{Name: "url", Type: field.TypeString},
+		{Name: "storage_uri", Type: field.TypeString},
+		{Name: "thumbnail", Type: field.TypeString, Nullable: true},
+		{Name: "expiry_date", Type: field.TypeTime},
+		{Name: "company_documents", Type: field.TypeInt},
+		{Name: "user_uploaded_documents", Type: field.TypeInt, Nullable: true},
+		{Name: "user_approved_documents", Type: field.TypeInt, Nullable: true},
+	}
+	// CompanyDocumentsTable holds the schema information for the "company_documents" table.
+	CompanyDocumentsTable = &schema.Table{
+		Name:       "company_documents",
+		Columns:    CompanyDocumentsColumns,
+		PrimaryKey: []*schema.Column{CompanyDocumentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "company_documents_companies_documents",
+				Columns:    []*schema.Column{CompanyDocumentsColumns[15]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "company_documents_users_uploadedDocuments",
+				Columns:    []*schema.Column{CompanyDocumentsColumns[16]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "company_documents_users_approvedDocuments",
+				Columns:    []*schema.Column{CompanyDocumentsColumns[17]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -532,11 +580,13 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "firebase_uid", Type: field.TypeString, Unique: true},
 		{Name: "fcm_token", Type: field.TypeString, Nullable: true},
 		{Name: "email", Type: field.TypeString, Unique: true, Nullable: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
-		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "phone", Type: field.TypeString, Nullable: true},
+		{Name: "birthdate", Type: field.TypeTime, Nullable: true},
+		{Name: "gender", Type: field.TypeEnum, Enums: []string{"male", "female"}},
 		{Name: "disabled", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "not_verified", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "user_subordinates", Type: field.TypeInt, Nullable: true},
@@ -549,7 +599,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_subordinates",
-				Columns:    []*schema.Column{UsersColumns[11]},
+				Columns:    []*schema.Column{UsersColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -712,6 +762,7 @@ var (
 	Tables = []*schema.Table{
 		AccountingEntriesTable,
 		CompaniesTable,
+		CompanyDocumentsTable,
 		CustomersTable,
 		EmployeesTable,
 		FilesTable,
@@ -737,6 +788,9 @@ func init() {
 	AccountingEntriesTable.ForeignKeys[0].RefTable = CompaniesTable
 	AccountingEntriesTable.ForeignKeys[1].RefTable = UsersTable
 	CompaniesTable.ForeignKeys[0].RefTable = CompaniesTable
+	CompanyDocumentsTable.ForeignKeys[0].RefTable = CompaniesTable
+	CompanyDocumentsTable.ForeignKeys[1].RefTable = UsersTable
+	CompanyDocumentsTable.ForeignKeys[2].RefTable = UsersTable
 	CustomersTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[1].RefTable = UsersTable

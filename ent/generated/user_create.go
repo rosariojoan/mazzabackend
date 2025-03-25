@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
@@ -70,6 +71,12 @@ func (uc *UserCreate) SetNillableDeletedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetFirebaseUID sets the "firebaseUID" field.
+func (uc *UserCreate) SetFirebaseUID(s string) *UserCreate {
+	uc.mutation.SetFirebaseUID(s)
+	return uc
+}
+
 // SetFcmToken sets the "fcmToken" field.
 func (uc *UserCreate) SetFcmToken(s string) *UserCreate {
 	uc.mutation.SetFcmToken(s)
@@ -104,15 +111,37 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 	return uc
 }
 
-// SetPassword sets the "password" field.
-func (uc *UserCreate) SetPassword(s string) *UserCreate {
-	uc.mutation.SetPassword(s)
+// SetPhone sets the "phone" field.
+func (uc *UserCreate) SetPhone(s string) *UserCreate {
+	uc.mutation.SetPhone(s)
 	return uc
 }
 
-// SetUsername sets the "username" field.
-func (uc *UserCreate) SetUsername(s string) *UserCreate {
-	uc.mutation.SetUsername(s)
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePhone(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPhone(*s)
+	}
+	return uc
+}
+
+// SetBirthdate sets the "birthdate" field.
+func (uc *UserCreate) SetBirthdate(t time.Time) *UserCreate {
+	uc.mutation.SetBirthdate(t)
+	return uc
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (uc *UserCreate) SetNillableBirthdate(t *time.Time) *UserCreate {
+	if t != nil {
+		uc.SetBirthdate(*t)
+	}
+	return uc
+}
+
+// SetGender sets the "gender" field.
+func (uc *UserCreate) SetGender(u user.Gender) *UserCreate {
+	uc.mutation.SetGender(u)
 	return uc
 }
 
@@ -362,6 +391,36 @@ func (uc *UserCreate) AddWorkShifts(w ...*Workshift) *UserCreate {
 	return uc.AddWorkShiftIDs(ids...)
 }
 
+// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+func (uc *UserCreate) AddUploadedDocumentIDs(ids ...int) *UserCreate {
+	uc.mutation.AddUploadedDocumentIDs(ids...)
+	return uc
+}
+
+// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+func (uc *UserCreate) AddUploadedDocuments(c ...*CompanyDocument) *UserCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uc.AddUploadedDocumentIDs(ids...)
+}
+
+// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+func (uc *UserCreate) AddApprovedDocumentIDs(ids ...int) *UserCreate {
+	uc.mutation.AddApprovedDocumentIDs(ids...)
+	return uc
+}
+
+// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+func (uc *UserCreate) AddApprovedDocuments(c ...*CompanyDocument) *UserCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uc.AddApprovedDocumentIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uc *UserCreate) Mutation() *UserMutation {
 	return uc.mutation
@@ -423,14 +482,24 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "User.updatedAt"`)}
 	}
+	if _, ok := uc.mutation.FirebaseUID(); !ok {
+		return &ValidationError{Name: "firebaseUID", err: errors.New(`generated: missing required field "User.firebaseUID"`)}
+	}
+	if v, ok := uc.mutation.FirebaseUID(); ok {
+		if err := user.FirebaseUIDValidator(v); err != nil {
+			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+		}
+	}
 	if _, ok := uc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "User.name"`)}
 	}
-	if _, ok := uc.mutation.Password(); !ok {
-		return &ValidationError{Name: "password", err: errors.New(`generated: missing required field "User.password"`)}
+	if _, ok := uc.mutation.Gender(); !ok {
+		return &ValidationError{Name: "gender", err: errors.New(`generated: missing required field "User.gender"`)}
 	}
-	if _, ok := uc.mutation.Username(); !ok {
-		return &ValidationError{Name: "username", err: errors.New(`generated: missing required field "User.username"`)}
+	if v, ok := uc.mutation.Gender(); ok {
+		if err := user.GenderValidator(v); err != nil {
+			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "User.gender": %w`, err)}
+		}
 	}
 	if len(uc.mutation.CompanyIDs()) == 0 {
 		return &ValidationError{Name: "company", err: errors.New(`generated: missing required edge "User.company"`)}
@@ -473,6 +542,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
+	if value, ok := uc.mutation.FirebaseUID(); ok {
+		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)
+		_node.FirebaseUID = value
+	}
 	if value, ok := uc.mutation.FcmToken(); ok {
 		_spec.SetField(user.FieldFcmToken, field.TypeString, value)
 		_node.FcmToken = &value
@@ -485,13 +558,17 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := uc.mutation.Password(); ok {
-		_spec.SetField(user.FieldPassword, field.TypeString, value)
-		_node.Password = value
+	if value, ok := uc.mutation.Phone(); ok {
+		_spec.SetField(user.FieldPhone, field.TypeString, value)
+		_node.Phone = &value
 	}
-	if value, ok := uc.mutation.Username(); ok {
-		_spec.SetField(user.FieldUsername, field.TypeString, value)
-		_node.Username = value
+	if value, ok := uc.mutation.Birthdate(); ok {
+		_spec.SetField(user.FieldBirthdate, field.TypeTime, value)
+		_node.Birthdate = &value
+	}
+	if value, ok := uc.mutation.Gender(); ok {
+		_spec.SetField(user.FieldGender, field.TypeEnum, value)
+		_node.Gender = value
 	}
 	if value, ok := uc.mutation.Disabled(); ok {
 		_spec.SetField(user.FieldDisabled, field.TypeBool, value)
@@ -719,6 +796,38 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(workshift.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.UploadedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.UploadedDocumentsTable,
+			Columns: []string{user.UploadedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.ApprovedDocumentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.ApprovedDocumentsTable,
+			Columns: []string{user.ApprovedDocumentsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(companydocument.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

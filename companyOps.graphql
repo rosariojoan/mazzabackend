@@ -1,0 +1,28 @@
+# This file is for creating resolvers for operations related to companies
+
+input CompanyInfoInput {
+    industry: String!
+    vatRate: Float!
+}
+
+input InitialSetupInput {
+    accountingEntry: BaseEntryRegistrationInput
+    companyInfo: CompanyInfoInput!
+}
+
+type DocumentCount {
+  category: CompanyDocumentCategory!
+  count: Int!
+}
+
+# -------------------------------------------------
+extend type Mutation {
+  initialSetup(input: InitialSetupInput!): String
+  uploadDocument(input: CreateCompanyDocumentInput!): CompanyDocument!
+  updateDocument(id: ID!, input: UpdateCompanyDocumentInput!): CompanyDocument!
+  deleteDocuments(ids: [ID!]!): String
+}
+
+extend type Query {
+  countDocuments: [DocumentCount!]!
+}

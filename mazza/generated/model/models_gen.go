@@ -7,6 +7,7 @@ import (
 	"io"
 	"mazza/ent/generated"
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/companydocument"
 	"strconv"
 	"time"
 )
@@ -48,9 +49,19 @@ type BaseEntryRegistrationInput struct {
 	TotalTransactionValue float64           `json:"totalTransactionValue"`
 }
 
+type CompanyInfoInput struct {
+	Industry string  `json:"industry"`
+	VatRate  float64 `json:"vatRate"`
+}
+
 type CustomerAggregationOutput struct {
 	Company *int `json:"company,omitempty"`
 	Count   *int `json:"count,omitempty"`
+}
+
+type DocumentCount struct {
+	Category companydocument.Category `json:"category"`
+	Count    int                      `json:"count"`
 }
 
 type EntryItem struct {
@@ -71,6 +82,11 @@ type EntryProductInput struct {
 type Equity struct {
 	Equity      []*ReportRowItem `json:"equity"`
 	TotalEquity float64          `json:"totalEquity"`
+}
+
+type ExpensesBreakdownOutput struct {
+	Name   string  `json:"name"`
+	Amount float64 `json:"amount"`
 }
 
 type FileDetailsOutput struct {
@@ -97,6 +113,11 @@ type IncomeStatementOuput struct {
 	IsProvisional     bool             `json:"isProvisional"`
 }
 
+type InitialSetupInput struct {
+	AccountingEntry *BaseEntryRegistrationInput `json:"accountingEntry,omitempty"`
+	CompanyInfo     *CompanyInfoInput           `json:"companyInfo"`
+}
+
 type Invoice struct {
 	Date            string           `json:"date"`
 	Filename        string           `json:"filename"`
@@ -118,6 +139,16 @@ type InvoiceCustomer struct {
 	Country string `json:"country"`
 	Phone   string `json:"phone"`
 	Email   string `json:"email"`
+}
+
+type InvoiceInput struct {
+	AccountingEntryData *BaseEntryRegistrationInput `json:"accountingEntryData"`
+	InvoiceData         *Invoice                    `json:"invoiceData"`
+}
+
+type InvoiceIssuanceOutput struct {
+	Message string `json:"message"`
+	FileURL string `json:"fileUrl"`
 }
 
 type InvoiceIssuer struct {
@@ -213,22 +244,13 @@ type ResetPasswordInput struct {
 	Password string `json:"password"`
 }
 
-type SalesQuotationInput struct {
-	Data *Invoice `json:"data"`
+type RevenueTrendOutput struct {
+	Date   string  `json:"date"`
+	Amount float64 `json:"amount"`
 }
 
-type SalesRegistrationInput struct {
-	Main                  []*EntryItem       `json:"main"`
-	Counterpart           []*EntryItem       `json:"counterpart"`
-	ReceivableInput       *ReceivableInput   `json:"receivableInput,omitempty"`
-	CashInput             *float64           `json:"cashInput,omitempty"`
-	ProductInput          *int               `json:"productInput,omitempty"`
-	Category              string             `json:"category"`
-	Date                  time.Time          `json:"date"`
-	Description           *string            `json:"description,omitempty"`
-	OperationType         SalesOperationType `json:"operationType"`
-	TotalTransactionValue float64            `json:"totalTransactionValue"`
-	Attachment            []string           `json:"attachment,omitempty"`
+type SalesQuotationInput struct {
+	InvoiceData *Invoice `json:"invoiceData"`
 }
 
 type SignupInput struct {
@@ -482,5 +504,50 @@ func (e *ShiftGroupBy) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ShiftGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type TimeRange string
+
+const (
+	TimeRangeWeek    TimeRange = "WEEK"
+	TimeRangeMonth   TimeRange = "MONTH"
+	TimeRangeQuarter TimeRange = "QUARTER"
+	TimeRangeYear    TimeRange = "YEAR"
+)
+
+var AllTimeRange = []TimeRange{
+	TimeRangeWeek,
+	TimeRangeMonth,
+	TimeRangeQuarter,
+	TimeRangeYear,
+}
+
+func (e TimeRange) IsValid() bool {
+	switch e {
+	case TimeRangeWeek, TimeRangeMonth, TimeRangeQuarter, TimeRangeYear:
+		return true
+	}
+	return false
+}
+
+func (e TimeRange) String() string {
+	return string(e)
+}
+
+func (e *TimeRange) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TimeRange(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TimeRange", str)
+	}
+	return nil
+}
+
+func (e TimeRange) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -9,6 +9,7 @@ import (
 	"math"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/project"
@@ -45,6 +46,8 @@ type UserQuery struct {
 	withTokens                        *TokenQuery
 	withApprovedWorkShifts            *WorkshiftQuery
 	withWorkShifts                    *WorkshiftQuery
+	withUploadedDocuments             *CompanyDocumentQuery
+	withApprovedDocuments             *CompanyDocumentQuery
 	withFKs                           bool
 	loadTotal                         []func(context.Context, []*User) error
 	modifiers                         []func(*sql.Selector)
@@ -60,6 +63,8 @@ type UserQuery struct {
 	withNamedTokens                   map[string]*TokenQuery
 	withNamedApprovedWorkShifts       map[string]*WorkshiftQuery
 	withNamedWorkShifts               map[string]*WorkshiftQuery
+	withNamedUploadedDocuments        map[string]*CompanyDocumentQuery
+	withNamedApprovedDocuments        map[string]*CompanyDocumentQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -404,6 +409,50 @@ func (uq *UserQuery) QueryWorkShifts() *WorkshiftQuery {
 	return query
 }
 
+// QueryUploadedDocuments chains the current query on the "uploadedDocuments" edge.
+func (uq *UserQuery) QueryUploadedDocuments() *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.UploadedDocumentsTable, user.UploadedDocumentsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryApprovedDocuments chains the current query on the "approvedDocuments" edge.
+func (uq *UserQuery) QueryApprovedDocuments() *CompanyDocumentQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(companydocument.Table, companydocument.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.ApprovedDocumentsTable, user.ApprovedDocumentsColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first User entity from the query.
 // Returns a *NotFoundError when no User was found.
 func (uq *UserQuery) First(ctx context.Context) (*User, error) {
@@ -610,6 +659,8 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withTokens:                   uq.withTokens.Clone(),
 		withApprovedWorkShifts:       uq.withApprovedWorkShifts.Clone(),
 		withWorkShifts:               uq.withWorkShifts.Clone(),
+		withUploadedDocuments:        uq.withUploadedDocuments.Clone(),
+		withApprovedDocuments:        uq.withApprovedDocuments.Clone(),
 		// clone intermediate query.
 		sql:       uq.sql.Clone(),
 		path:      uq.path,
@@ -771,6 +822,28 @@ func (uq *UserQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
 	return uq
 }
 
+// WithUploadedDocuments tells the query-builder to eager-load the nodes that are connected to
+// the "uploadedDocuments" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithUploadedDocuments(opts ...func(*CompanyDocumentQuery)) *UserQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withUploadedDocuments = query
+	return uq
+}
+
+// WithApprovedDocuments tells the query-builder to eager-load the nodes that are connected to
+// the "approvedDocuments" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithApprovedDocuments(opts ...func(*CompanyDocumentQuery)) *UserQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withApprovedDocuments = query
+	return uq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -850,7 +923,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		nodes       = []*User{}
 		withFKs     = uq.withFKs
 		_spec       = uq.querySpec()
-		loadedTypes = [14]bool{
+		loadedTypes = [16]bool{
 			uq.withAccountingEntries != nil,
 			uq.withCompany != nil,
 			uq.withAssignedRoles != nil,
@@ -865,6 +938,8 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			uq.withTokens != nil,
 			uq.withApprovedWorkShifts != nil,
 			uq.withWorkShifts != nil,
+			uq.withUploadedDocuments != nil,
+			uq.withApprovedDocuments != nil,
 		}
 	)
 	if uq.withLeader != nil {
@@ -992,6 +1067,20 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			return nil, err
 		}
 	}
+	if query := uq.withUploadedDocuments; query != nil {
+		if err := uq.loadUploadedDocuments(ctx, query, nodes,
+			func(n *User) { n.Edges.UploadedDocuments = []*CompanyDocument{} },
+			func(n *User, e *CompanyDocument) { n.Edges.UploadedDocuments = append(n.Edges.UploadedDocuments, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withApprovedDocuments; query != nil {
+		if err := uq.loadApprovedDocuments(ctx, query, nodes,
+			func(n *User) { n.Edges.ApprovedDocuments = []*CompanyDocument{} },
+			func(n *User, e *CompanyDocument) { n.Edges.ApprovedDocuments = append(n.Edges.ApprovedDocuments, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range uq.withNamedAccountingEntries {
 		if err := uq.loadAccountingEntries(ctx, query, nodes,
 			func(n *User) { n.appendNamedAccountingEntries(name) },
@@ -1073,6 +1162,20 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadWorkShifts(ctx, query, nodes,
 			func(n *User) { n.appendNamedWorkShifts(name) },
 			func(n *User, e *Workshift) { n.appendNamedWorkShifts(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedUploadedDocuments {
+		if err := uq.loadUploadedDocuments(ctx, query, nodes,
+			func(n *User) { n.appendNamedUploadedDocuments(name) },
+			func(n *User, e *CompanyDocument) { n.appendNamedUploadedDocuments(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedApprovedDocuments {
+		if err := uq.loadApprovedDocuments(ctx, query, nodes,
+			func(n *User) { n.appendNamedApprovedDocuments(name) },
+			func(n *User, e *CompanyDocument) { n.appendNamedApprovedDocuments(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1606,6 +1709,68 @@ func (uq *UserQuery) loadWorkShifts(ctx context.Context, query *WorkshiftQuery, 
 	}
 	return nil
 }
+func (uq *UserQuery) loadUploadedDocuments(ctx context.Context, query *CompanyDocumentQuery, nodes []*User, init func(*User), assign func(*User, *CompanyDocument)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.CompanyDocument(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.UploadedDocumentsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_uploaded_documents
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_uploaded_documents" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_uploaded_documents" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadApprovedDocuments(ctx context.Context, query *CompanyDocumentQuery, nodes []*User, init func(*User), assign func(*User, *CompanyDocument)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.CompanyDocument(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.ApprovedDocumentsColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_approved_documents
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_approved_documents" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_approved_documents" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
 
 func (uq *UserQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := uq.querySpec()
@@ -1865,6 +2030,34 @@ func (uq *UserQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQue
 		uq.withNamedWorkShifts = make(map[string]*WorkshiftQuery)
 	}
 	uq.withNamedWorkShifts[name] = query
+	return uq
+}
+
+// WithNamedUploadedDocuments tells the query-builder to eager-load the nodes that are connected to the "uploadedDocuments"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedUploadedDocuments(name string, opts ...func(*CompanyDocumentQuery)) *UserQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedUploadedDocuments == nil {
+		uq.withNamedUploadedDocuments = make(map[string]*CompanyDocumentQuery)
+	}
+	uq.withNamedUploadedDocuments[name] = query
+	return uq
+}
+
+// WithNamedApprovedDocuments tells the query-builder to eager-load the nodes that are connected to the "approvedDocuments"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedApprovedDocuments(name string, opts ...func(*CompanyDocumentQuery)) *UserQuery {
+	query := (&CompanyDocumentClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedApprovedDocuments == nil {
+		uq.withNamedApprovedDocuments = make(map[string]*CompanyDocumentQuery)
+	}
+	uq.withNamedApprovedDocuments[name] = query
 	return uq
 }
 
