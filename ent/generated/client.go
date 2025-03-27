@@ -17,6 +17,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -55,6 +56,8 @@ type Client struct {
 	Employee *EmployeeClient
 	// File is the client for interacting with the File builders.
 	File *FileClient
+	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
+	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
 	Payable *PayableClient
 	// Product is the client for interacting with the Product builders.
@@ -98,6 +101,7 @@ func (c *Client) init() {
 	c.Customer = NewCustomerClient(c.config)
 	c.Employee = NewEmployeeClient(c.config)
 	c.File = NewFileClient(c.config)
+	c.MemberSignupToken = NewMemberSignupTokenClient(c.config)
 	c.Payable = NewPayableClient(c.config)
 	c.Product = NewProductClient(c.config)
 	c.Project = NewProjectClient(c.config)
@@ -200,26 +204,27 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:              ctx,
-		config:           cfg,
-		AccountingEntry:  NewAccountingEntryClient(cfg),
-		Company:          NewCompanyClient(cfg),
-		CompanyDocument:  NewCompanyDocumentClient(cfg),
-		Customer:         NewCustomerClient(cfg),
-		Employee:         NewEmployeeClient(cfg),
-		File:             NewFileClient(cfg),
-		Payable:          NewPayableClient(cfg),
-		Product:          NewProductClient(cfg),
-		Project:          NewProjectClient(cfg),
-		ProjectMilestone: NewProjectMilestoneClient(cfg),
-		ProjectTask:      NewProjectTaskClient(cfg),
-		Receivable:       NewReceivableClient(cfg),
-		Supplier:         NewSupplierClient(cfg),
-		Token:            NewTokenClient(cfg),
-		Treasury:         NewTreasuryClient(cfg),
-		User:             NewUserClient(cfg),
-		UserRole:         NewUserRoleClient(cfg),
-		Workshift:        NewWorkshiftClient(cfg),
+		ctx:               ctx,
+		config:            cfg,
+		AccountingEntry:   NewAccountingEntryClient(cfg),
+		Company:           NewCompanyClient(cfg),
+		CompanyDocument:   NewCompanyDocumentClient(cfg),
+		Customer:          NewCustomerClient(cfg),
+		Employee:          NewEmployeeClient(cfg),
+		File:              NewFileClient(cfg),
+		MemberSignupToken: NewMemberSignupTokenClient(cfg),
+		Payable:           NewPayableClient(cfg),
+		Product:           NewProductClient(cfg),
+		Project:           NewProjectClient(cfg),
+		ProjectMilestone:  NewProjectMilestoneClient(cfg),
+		ProjectTask:       NewProjectTaskClient(cfg),
+		Receivable:        NewReceivableClient(cfg),
+		Supplier:          NewSupplierClient(cfg),
+		Token:             NewTokenClient(cfg),
+		Treasury:          NewTreasuryClient(cfg),
+		User:              NewUserClient(cfg),
+		UserRole:          NewUserRoleClient(cfg),
+		Workshift:         NewWorkshiftClient(cfg),
 	}, nil
 }
 
@@ -237,26 +242,27 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:              ctx,
-		config:           cfg,
-		AccountingEntry:  NewAccountingEntryClient(cfg),
-		Company:          NewCompanyClient(cfg),
-		CompanyDocument:  NewCompanyDocumentClient(cfg),
-		Customer:         NewCustomerClient(cfg),
-		Employee:         NewEmployeeClient(cfg),
-		File:             NewFileClient(cfg),
-		Payable:          NewPayableClient(cfg),
-		Product:          NewProductClient(cfg),
-		Project:          NewProjectClient(cfg),
-		ProjectMilestone: NewProjectMilestoneClient(cfg),
-		ProjectTask:      NewProjectTaskClient(cfg),
-		Receivable:       NewReceivableClient(cfg),
-		Supplier:         NewSupplierClient(cfg),
-		Token:            NewTokenClient(cfg),
-		Treasury:         NewTreasuryClient(cfg),
-		User:             NewUserClient(cfg),
-		UserRole:         NewUserRoleClient(cfg),
-		Workshift:        NewWorkshiftClient(cfg),
+		ctx:               ctx,
+		config:            cfg,
+		AccountingEntry:   NewAccountingEntryClient(cfg),
+		Company:           NewCompanyClient(cfg),
+		CompanyDocument:   NewCompanyDocumentClient(cfg),
+		Customer:          NewCustomerClient(cfg),
+		Employee:          NewEmployeeClient(cfg),
+		File:              NewFileClient(cfg),
+		MemberSignupToken: NewMemberSignupTokenClient(cfg),
+		Payable:           NewPayableClient(cfg),
+		Product:           NewProductClient(cfg),
+		Project:           NewProjectClient(cfg),
+		ProjectMilestone:  NewProjectMilestoneClient(cfg),
+		ProjectTask:       NewProjectTaskClient(cfg),
+		Receivable:        NewReceivableClient(cfg),
+		Supplier:          NewSupplierClient(cfg),
+		Token:             NewTokenClient(cfg),
+		Treasury:          NewTreasuryClient(cfg),
+		User:              NewUserClient(cfg),
+		UserRole:          NewUserRoleClient(cfg),
+		Workshift:         NewWorkshiftClient(cfg),
 	}, nil
 }
 
@@ -287,8 +293,9 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
-		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.MemberSignupToken, c.Payable, c.Product, c.Project, c.ProjectMilestone,
+		c.ProjectTask, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User,
+		c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -299,8 +306,9 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
-		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.MemberSignupToken, c.Payable, c.Product, c.Project, c.ProjectMilestone,
+		c.ProjectTask, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User,
+		c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -321,6 +329,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Employee.mutate(ctx, m)
 	case *FileMutation:
 		return c.File.mutate(ctx, m)
+	case *MemberSignupTokenMutation:
+		return c.MemberSignupToken.mutate(ctx, m)
 	case *PayableMutation:
 		return c.Payable.mutate(ctx, m)
 	case *ProductMutation:
@@ -712,6 +722,22 @@ func (c *CompanyClient) QueryFiles(co *Company) *FileQuery {
 			sqlgraph.From(company.Table, company.FieldID, id),
 			sqlgraph.To(file.Table, file.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.FilesTable, company.FilesColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMemberSignupTokens queries the memberSignupTokens edge of a Company.
+func (c *CompanyClient) QueryMemberSignupTokens(co *Company) *MemberSignupTokenQuery {
+	query := (&MemberSignupTokenClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(membersignuptoken.Table, membersignuptoken.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.MemberSignupTokensTable, company.MemberSignupTokensColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -1577,6 +1603,171 @@ func (c *FileClient) mutate(ctx context.Context, m *FileMutation) (Value, error)
 		return (&FileDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown File mutation op: %q", m.Op())
+	}
+}
+
+// MemberSignupTokenClient is a client for the MemberSignupToken schema.
+type MemberSignupTokenClient struct {
+	config
+}
+
+// NewMemberSignupTokenClient returns a client for the MemberSignupToken from the given config.
+func NewMemberSignupTokenClient(c config) *MemberSignupTokenClient {
+	return &MemberSignupTokenClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `membersignuptoken.Hooks(f(g(h())))`.
+func (c *MemberSignupTokenClient) Use(hooks ...Hook) {
+	c.hooks.MemberSignupToken = append(c.hooks.MemberSignupToken, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `membersignuptoken.Intercept(f(g(h())))`.
+func (c *MemberSignupTokenClient) Intercept(interceptors ...Interceptor) {
+	c.inters.MemberSignupToken = append(c.inters.MemberSignupToken, interceptors...)
+}
+
+// Create returns a builder for creating a MemberSignupToken entity.
+func (c *MemberSignupTokenClient) Create() *MemberSignupTokenCreate {
+	mutation := newMemberSignupTokenMutation(c.config, OpCreate)
+	return &MemberSignupTokenCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of MemberSignupToken entities.
+func (c *MemberSignupTokenClient) CreateBulk(builders ...*MemberSignupTokenCreate) *MemberSignupTokenCreateBulk {
+	return &MemberSignupTokenCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *MemberSignupTokenClient) MapCreateBulk(slice any, setFunc func(*MemberSignupTokenCreate, int)) *MemberSignupTokenCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &MemberSignupTokenCreateBulk{err: fmt.Errorf("calling to MemberSignupTokenClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*MemberSignupTokenCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &MemberSignupTokenCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for MemberSignupToken.
+func (c *MemberSignupTokenClient) Update() *MemberSignupTokenUpdate {
+	mutation := newMemberSignupTokenMutation(c.config, OpUpdate)
+	return &MemberSignupTokenUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *MemberSignupTokenClient) UpdateOne(mst *MemberSignupToken) *MemberSignupTokenUpdateOne {
+	mutation := newMemberSignupTokenMutation(c.config, OpUpdateOne, withMemberSignupToken(mst))
+	return &MemberSignupTokenUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *MemberSignupTokenClient) UpdateOneID(id int) *MemberSignupTokenUpdateOne {
+	mutation := newMemberSignupTokenMutation(c.config, OpUpdateOne, withMemberSignupTokenID(id))
+	return &MemberSignupTokenUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for MemberSignupToken.
+func (c *MemberSignupTokenClient) Delete() *MemberSignupTokenDelete {
+	mutation := newMemberSignupTokenMutation(c.config, OpDelete)
+	return &MemberSignupTokenDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *MemberSignupTokenClient) DeleteOne(mst *MemberSignupToken) *MemberSignupTokenDeleteOne {
+	return c.DeleteOneID(mst.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *MemberSignupTokenClient) DeleteOneID(id int) *MemberSignupTokenDeleteOne {
+	builder := c.Delete().Where(membersignuptoken.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &MemberSignupTokenDeleteOne{builder}
+}
+
+// Query returns a query builder for MemberSignupToken.
+func (c *MemberSignupTokenClient) Query() *MemberSignupTokenQuery {
+	return &MemberSignupTokenQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeMemberSignupToken},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a MemberSignupToken entity by its id.
+func (c *MemberSignupTokenClient) Get(ctx context.Context, id int) (*MemberSignupToken, error) {
+	return c.Query().Where(membersignuptoken.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *MemberSignupTokenClient) GetX(ctx context.Context, id int) *MemberSignupToken {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a MemberSignupToken.
+func (c *MemberSignupTokenClient) QueryCompany(mst *MemberSignupToken) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := mst.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(membersignuptoken.Table, membersignuptoken.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, membersignuptoken.CompanyTable, membersignuptoken.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(mst.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCreatedBy queries the createdBy edge of a MemberSignupToken.
+func (c *MemberSignupTokenClient) QueryCreatedBy(mst *MemberSignupToken) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := mst.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(membersignuptoken.Table, membersignuptoken.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, membersignuptoken.CreatedByTable, membersignuptoken.CreatedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(mst.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *MemberSignupTokenClient) Hooks() []Hook {
+	return c.hooks.MemberSignupToken
+}
+
+// Interceptors returns the client interceptors.
+func (c *MemberSignupTokenClient) Interceptors() []Interceptor {
+	return c.inters.MemberSignupToken
+}
+
+func (c *MemberSignupTokenClient) mutate(ctx context.Context, m *MemberSignupTokenMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&MemberSignupTokenCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&MemberSignupTokenUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&MemberSignupTokenUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&MemberSignupTokenDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown MemberSignupToken mutation op: %q", m.Op())
 	}
 }
 
@@ -3230,7 +3421,7 @@ func (c *UserClient) QueryAssignedRoles(u *User) *UserRoleQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(userrole.Table, userrole.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, user.AssignedRolesTable, user.AssignedRolesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.AssignedRolesTable, user.AssignedRolesColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -3263,6 +3454,22 @@ func (c *UserClient) QueryLeader(u *User) *UserQuery {
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, user.LeaderTable, user.LeaderColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCreatedMemberSignupTokens queries the createdMemberSignupTokens edge of a User.
+func (c *UserClient) QueryCreatedMemberSignupTokens(u *User) *MemberSignupTokenQuery {
+	query := (&MemberSignupTokenClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(membersignuptoken.Table, membersignuptoken.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.CreatedMemberSignupTokensTable, user.CreatedMemberSignupTokensColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -3603,7 +3810,7 @@ func (c *UserRoleClient) QueryUser(ur *UserRole) *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(userrole.Table, userrole.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, userrole.UserTable, userrole.UserPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2O, true, userrole.UserTable, userrole.UserColumn),
 		)
 		fromV = sqlgraph.Neighbors(ur.driver.Dialect(), step)
 		return fromV, nil
@@ -3869,14 +4076,15 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Payable,
-		Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier, Token,
-		Treasury, User, UserRole, Workshift []ent.Hook
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File,
+		MemberSignupToken, Payable, Product, Project, ProjectMilestone, ProjectTask,
+		Receivable, Supplier, Token, Treasury, User, UserRole, Workshift []ent.Hook
 	}
 	inters struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Payable,
-		Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier, Token,
-		Treasury, User, UserRole, Workshift []ent.Interceptor
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File,
+		MemberSignupToken, Payable, Product, Project, ProjectMilestone, ProjectTask,
+		Receivable, Supplier, Token, Treasury, User, UserRole,
+		Workshift []ent.Interceptor
 	}
 )
 

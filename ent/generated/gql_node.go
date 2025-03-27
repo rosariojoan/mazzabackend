@@ -11,6 +11,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -57,6 +58,9 @@ func (n *Employee) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *File) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *MemberSignupToken) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Payable) IsNode() {}
@@ -216,6 +220,18 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.File.Query().
 			Where(file.ID(id))
 		query, err := query.CollectFields(ctx, "File")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case membersignuptoken.Table:
+		query := c.MemberSignupToken.Query().
+			Where(membersignuptoken.ID(id))
+		query, err := query.CollectFields(ctx, "MemberSignupToken")
 		if err != nil {
 			return nil, err
 		}
@@ -525,6 +541,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.File.Query().
 			Where(file.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "File")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case membersignuptoken.Table:
+		query := c.MemberSignupToken.Query().
+			Where(membersignuptoken.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "MemberSignupToken")
 		if err != nil {
 			return nil, err
 		}

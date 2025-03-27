@@ -11,6 +11,7 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
@@ -33,7 +34,7 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []int) ([]generated.Noder
 
 // AccountingEntries is the resolver for the accountingEntries field.
 func (r *queryResolver) AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) (*generated.AccountingEntryConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	companyFilter := accountingentry.HasCompanyWith(company.IDEQ(currentCompany.ID))
 	return r.client.AccountingEntry.Query().Where(companyFilter).Paginate(
 		ctx, after, first, before, last,
@@ -44,7 +45,7 @@ func (r *queryResolver) AccountingEntries(ctx context.Context, after *entgql.Cur
 
 // CompanyDocuments is the resolver for the companyDocuments field.
 func (r *queryResolver) CompanyDocuments(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.CompanyDocumentOrder, where *generated.CompanyDocumentWhereInput) (*generated.CompanyDocumentConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	companyFilter := companydocument.HasCompanyWith(company.IDEQ(currentCompany.ID))
 
 	// result, err := inits.Firestore.Collection("users").Doc("XddvScdAef").Set(ctx, map[string]any{
@@ -61,7 +62,7 @@ func (r *queryResolver) CompanyDocuments(ctx context.Context, after *entgql.Curs
 
 // Files is the resolver for the files field.
 func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) (*generated.FileConnection, error) {
-	currentUser, currentCompany, _ := utils.GetSession(&ctx)
+	currentUser, currentCompany := utils.GetSession(&ctx)
 	userQ := user.IDEQ(currentUser.ID)
 	companyQ := company.IDEQ(currentCompany.ID)
 
@@ -72,9 +73,23 @@ func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], fi
 	)
 }
 
+// MemberSignupTokens is the resolver for the memberSignupTokens field.
+func (r *queryResolver) MemberSignupTokens(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.MemberSignupTokenOrder, where *generated.MemberSignupTokenWhereInput) (*generated.MemberSignupTokenConnection, error) {
+	_, currentCompany := utils.GetSession(&ctx)
+	companyFilter := company.IDEQ(currentCompany.ID)
+
+	return r.client.MemberSignupToken.Query().
+		Where(membersignuptoken.HasCompanyWith(companyFilter)).
+		Paginate(
+			ctx, after, first, before, last,
+			generated.WithMemberSignupTokenFilter(where.Filter),
+			generated.WithMemberSignupTokenOrder(orderBy),
+		)
+}
+
 // Payables is the resolver for the payables field.
 func (r *queryResolver) Payables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.PayableOrder, where *generated.PayableWhereInput) (*generated.PayableConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 
 	return r.client.Payable.Query().
 		Where(payable.HasCompanyWith(company.IDEQ(currentCompany.ID))).
@@ -86,7 +101,7 @@ func (r *queryResolver) Payables(ctx context.Context, after *entgql.Cursor[int],
 
 // Projects is the resolver for the projects field.
 func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ProjectOrder, where *generated.ProjectWhereInput) (*generated.ProjectConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	return r.client.Project.Query().
 		Where(project.HasCompanyWith(company.IDEQ(currentCompany.ID))).
 		Paginate(
@@ -98,7 +113,7 @@ func (r *queryResolver) Projects(ctx context.Context, after *entgql.Cursor[int],
 
 // ProjectTasks is the resolver for the projectTasks field.
 func (r *queryResolver) ProjectTasks(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ProjectTaskOrder, where *generated.ProjectTaskWhereInput) (*generated.ProjectTaskConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	projectFilter := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
 
 	return r.client.ProjectTask.Query().
@@ -112,7 +127,7 @@ func (r *queryResolver) ProjectTasks(ctx context.Context, after *entgql.Cursor[i
 
 // Receivables is the resolver for the receivables field.
 func (r *queryResolver) Receivables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ReceivableOrder, where *generated.ReceivableWhereInput) (*generated.ReceivableConnection, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 
 	return r.client.Receivable.Query().
 		Where(receivable.HasCompanyWith(company.IDEQ(currentCompany.ID))).

@@ -7,6 +7,7 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
@@ -157,43 +158,42 @@ func (c *AccountingEntryUpdateOne) SetInput(i UpdateAccountingEntryInput) *Accou
 
 // CreateCompanyInput represents a mutation input for creating companies.
 type CreateCompanyInput struct {
-	Address            *string
-	BaseCurrency       *string
-	CeoName            *string
-	City               string
-	Country            string
-	EstablishedAt      time.Time
-	Description        *string
-	Email              *string
-	Industry           *string
-	LastEntryDate      time.Time
-	LastInvoiceNumber  *int32
-	Logo               *string
-	Name               string
-	NumberOfEmployees  *int32
-	Phone              *string
-	Sector             *string
-	TaxId              string
-	VatRate            *float64
-	Website            *string
-	IncompleteSetup    *bool
-	AvailableRoleIDs   []int
-	AccountingEntryIDs []int
-	CustomerIDs        []int
-	DocumentIDs        []int
-	EmployeeIDs        []int
-	FileIDs            []int
-	ProductIDs         []int
-	ProjectIDs         []int
-	PayableIDs         []int
-	ReceivableIDs      []int
-	SupplierIDs        []int
-	TokenIDs           []int
-	TreasuryIDs        []int
-	WorkShiftIDs       []int
-	UserIDs            []int
-	DaughterCompanyIDs []int
-	ParentCompanyID    *int
+	Address              *string
+	BaseCurrency         *string
+	CeoName              *string
+	City                 string
+	Country              string
+	EstablishedAt        time.Time
+	Description          *string
+	Email                *string
+	Industry             *string
+	LastEntryDate        time.Time
+	LastInvoiceNumber    *int32
+	Name                 string
+	NumberOfEmployees    *int32
+	Phone                *string
+	TaxId                string
+	VatRate              *float64
+	Website              *string
+	IncompleteSetup      *bool
+	AvailableRoleIDs     []int
+	AccountingEntryIDs   []int
+	CustomerIDs          []int
+	DocumentIDs          []int
+	EmployeeIDs          []int
+	FileIDs              []int
+	MemberSignupTokenIDs []int
+	ProductIDs           []int
+	ProjectIDs           []int
+	PayableIDs           []int
+	ReceivableIDs        []int
+	SupplierIDs          []int
+	TokenIDs             []int
+	TreasuryIDs          []int
+	WorkShiftIDs         []int
+	UserIDs              []int
+	DaughterCompanyIDs   []int
+	ParentCompanyID      *int
 }
 
 // Mutate applies the CreateCompanyInput on the CompanyMutation builder.
@@ -223,18 +223,12 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.LastInvoiceNumber; v != nil {
 		m.SetLastInvoiceNumber(*v)
 	}
-	if v := i.Logo; v != nil {
-		m.SetLogo(*v)
-	}
 	m.SetName(i.Name)
 	if v := i.NumberOfEmployees; v != nil {
 		m.SetNumberOfEmployees(*v)
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
-	}
-	if v := i.Sector; v != nil {
-		m.SetSector(*v)
 	}
 	m.SetTaxId(i.TaxId)
 	if v := i.VatRate; v != nil {
@@ -263,6 +257,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.FileIDs; len(v) > 0 {
 		m.AddFileIDs(v...)
+	}
+	if v := i.MemberSignupTokenIDs; len(v) > 0 {
+		m.AddMemberSignupTokenIDs(v...)
 	}
 	if v := i.ProductIDs; len(v) > 0 {
 		m.AddProductIDs(v...)
@@ -307,87 +304,86 @@ func (c *CompanyCreate) SetInput(i CreateCompanyInput) *CompanyCreate {
 
 // UpdateCompanyInput represents a mutation input for updating companies.
 type UpdateCompanyInput struct {
-	ClearAddress             bool
-	Address                  *string
-	BaseCurrency             *string
-	ClearCeoName             bool
-	CeoName                  *string
-	City                     *string
-	Country                  *string
-	EstablishedAt            *time.Time
-	ClearDescription         bool
-	Description              *string
-	ClearEmail               bool
-	Email                    *string
-	ClearIndustry            bool
-	Industry                 *string
-	LastEntryDate            *time.Time
-	ClearLastInvoiceNumber   bool
-	LastInvoiceNumber        *int32
-	ClearLogo                bool
-	Logo                     *string
-	Name                     *string
-	NumberOfEmployees        *int32
-	ClearPhone               bool
-	Phone                    *string
-	ClearSector              bool
-	Sector                   *string
-	TaxId                    *string
-	VatRate                  *float64
-	ClearWebsite             bool
-	Website                  *string
-	ClearIncompleteSetup     bool
-	IncompleteSetup          *bool
-	ClearAvailableRoles      bool
-	AddAvailableRoleIDs      []int
-	RemoveAvailableRoleIDs   []int
-	ClearAccountingEntries   bool
-	AddAccountingEntryIDs    []int
-	RemoveAccountingEntryIDs []int
-	ClearCustomers           bool
-	AddCustomerIDs           []int
-	RemoveCustomerIDs        []int
-	ClearDocuments           bool
-	AddDocumentIDs           []int
-	RemoveDocumentIDs        []int
-	ClearEmployees           bool
-	AddEmployeeIDs           []int
-	RemoveEmployeeIDs        []int
-	ClearFiles               bool
-	AddFileIDs               []int
-	RemoveFileIDs            []int
-	ClearProducts            bool
-	AddProductIDs            []int
-	RemoveProductIDs         []int
-	ClearProjects            bool
-	AddProjectIDs            []int
-	RemoveProjectIDs         []int
-	ClearPayables            bool
-	AddPayableIDs            []int
-	RemovePayableIDs         []int
-	ClearReceivables         bool
-	AddReceivableIDs         []int
-	RemoveReceivableIDs      []int
-	ClearSuppliers           bool
-	AddSupplierIDs           []int
-	RemoveSupplierIDs        []int
-	ClearTokens              bool
-	AddTokenIDs              []int
-	RemoveTokenIDs           []int
-	ClearTreasuries          bool
-	AddTreasuryIDs           []int
-	RemoveTreasuryIDs        []int
-	ClearWorkShifts          bool
-	AddWorkShiftIDs          []int
-	RemoveWorkShiftIDs       []int
-	ClearUsers               bool
-	AddUserIDs               []int
-	RemoveUserIDs            []int
-	ClearDaughterCompanies   bool
-	AddDaughterCompanyIDs    []int
-	RemoveDaughterCompanyIDs []int
-	ClearParentCompany       bool
-	ParentCompanyID          *int
+	ClearAddress               bool
+	Address                    *string
+	BaseCurrency               *string
+	ClearCeoName               bool
+	CeoName                    *string
+	City                       *string
+	Country                    *string
+	EstablishedAt              *time.Time
+	ClearDescription           bool
+	Description                *string
+	ClearEmail                 bool
+	Email                      *string
+	ClearIndustry              bool
+	Industry                   *string
+	LastEntryDate              *time.Time
+	ClearLastInvoiceNumber     bool
+	LastInvoiceNumber          *int32
+	Name                       *string
+	NumberOfEmployees          *int32
+	ClearPhone                 bool
+	Phone                      *string
+	TaxId                      *string
+	VatRate                    *float64
+	ClearWebsite               bool
+	Website                    *string
+	ClearIncompleteSetup       bool
+	IncompleteSetup            *bool
+	ClearAvailableRoles        bool
+	AddAvailableRoleIDs        []int
+	RemoveAvailableRoleIDs     []int
+	ClearAccountingEntries     bool
+	AddAccountingEntryIDs      []int
+	RemoveAccountingEntryIDs   []int
+	ClearCustomers             bool
+	AddCustomerIDs             []int
+	RemoveCustomerIDs          []int
+	ClearDocuments             bool
+	AddDocumentIDs             []int
+	RemoveDocumentIDs          []int
+	ClearEmployees             bool
+	AddEmployeeIDs             []int
+	RemoveEmployeeIDs          []int
+	ClearFiles                 bool
+	AddFileIDs                 []int
+	RemoveFileIDs              []int
+	ClearMemberSignupTokens    bool
+	AddMemberSignupTokenIDs    []int
+	RemoveMemberSignupTokenIDs []int
+	ClearProducts              bool
+	AddProductIDs              []int
+	RemoveProductIDs           []int
+	ClearProjects              bool
+	AddProjectIDs              []int
+	RemoveProjectIDs           []int
+	ClearPayables              bool
+	AddPayableIDs              []int
+	RemovePayableIDs           []int
+	ClearReceivables           bool
+	AddReceivableIDs           []int
+	RemoveReceivableIDs        []int
+	ClearSuppliers             bool
+	AddSupplierIDs             []int
+	RemoveSupplierIDs          []int
+	ClearTokens                bool
+	AddTokenIDs                []int
+	RemoveTokenIDs             []int
+	ClearTreasuries            bool
+	AddTreasuryIDs             []int
+	RemoveTreasuryIDs          []int
+	ClearWorkShifts            bool
+	AddWorkShiftIDs            []int
+	RemoveWorkShiftIDs         []int
+	ClearUsers                 bool
+	AddUserIDs                 []int
+	RemoveUserIDs              []int
+	ClearDaughterCompanies     bool
+	AddDaughterCompanyIDs      []int
+	RemoveDaughterCompanyIDs   []int
+	ClearParentCompany         bool
+	ParentCompanyID            *int
 }
 
 // Mutate applies the UpdateCompanyInput on the CompanyMutation builder.
@@ -443,12 +439,6 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.LastInvoiceNumber; v != nil {
 		m.SetLastInvoiceNumber(*v)
 	}
-	if i.ClearLogo {
-		m.ClearLogo()
-	}
-	if v := i.Logo; v != nil {
-		m.SetLogo(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
@@ -460,12 +450,6 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
-	}
-	if i.ClearSector {
-		m.ClearSector()
-	}
-	if v := i.Sector; v != nil {
-		m.SetSector(*v)
 	}
 	if v := i.TaxId; v != nil {
 		m.SetTaxId(*v)
@@ -538,6 +522,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveFileIDs; len(v) > 0 {
 		m.RemoveFileIDs(v...)
+	}
+	if i.ClearMemberSignupTokens {
+		m.ClearMemberSignupTokens()
+	}
+	if v := i.AddMemberSignupTokenIDs; len(v) > 0 {
+		m.AddMemberSignupTokenIDs(v...)
+	}
+	if v := i.RemoveMemberSignupTokenIDs; len(v) > 0 {
+		m.RemoveMemberSignupTokenIDs(v...)
 	}
 	if i.ClearProducts {
 		m.ClearProducts()
@@ -1085,6 +1078,88 @@ func (c *FileUpdate) SetInput(i UpdateFileInput) *FileUpdate {
 
 // SetInput applies the change-set in the UpdateFileInput on the FileUpdateOne builder.
 func (c *FileUpdateOne) SetInput(i UpdateFileInput) *FileUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateMemberSignupTokenInput represents a mutation input for creating membersignuptokens.
+type CreateMemberSignupTokenInput struct {
+	Name   string
+	Email  *string
+	Avatar string
+	Role   membersignuptoken.Role
+	Note   string
+}
+
+// Mutate applies the CreateMemberSignupTokenInput on the MemberSignupTokenMutation builder.
+func (i *CreateMemberSignupTokenInput) Mutate(m *MemberSignupTokenMutation) {
+	m.SetName(i.Name)
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
+	}
+	m.SetAvatar(i.Avatar)
+	m.SetRole(i.Role)
+	m.SetNote(i.Note)
+}
+
+// SetInput applies the change-set in the CreateMemberSignupTokenInput on the MemberSignupTokenCreate builder.
+func (c *MemberSignupTokenCreate) SetInput(i CreateMemberSignupTokenInput) *MemberSignupTokenCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateMemberSignupTokenInput represents a mutation input for updating membersignuptokens.
+type UpdateMemberSignupTokenInput struct {
+	Name           *string
+	ClearEmail     bool
+	Email          *string
+	Avatar         *string
+	Role           *membersignuptoken.Role
+	Note           *string
+	CompanyID      *int
+	ClearCreatedBy bool
+	CreatedByID    *int
+}
+
+// Mutate applies the UpdateMemberSignupTokenInput on the MemberSignupTokenMutation builder.
+func (i *UpdateMemberSignupTokenInput) Mutate(m *MemberSignupTokenMutation) {
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if i.ClearEmail {
+		m.ClearEmail()
+	}
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
+	}
+	if v := i.Avatar; v != nil {
+		m.SetAvatar(*v)
+	}
+	if v := i.Role; v != nil {
+		m.SetRole(*v)
+	}
+	if v := i.Note; v != nil {
+		m.SetNote(*v)
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if i.ClearCreatedBy {
+		m.ClearCreatedBy()
+	}
+	if v := i.CreatedByID; v != nil {
+		m.SetCreatedByID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateMemberSignupTokenInput on the MemberSignupTokenUpdate builder.
+func (c *MemberSignupTokenUpdate) SetInput(i UpdateMemberSignupTokenInput) *MemberSignupTokenUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateMemberSignupTokenInput on the MemberSignupTokenUpdateOne builder.
+func (c *MemberSignupTokenUpdateOne) SetInput(i UpdateMemberSignupTokenInput) *MemberSignupTokenUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -1845,31 +1920,33 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
-	FirebaseUID                string
-	FcmToken                   *string
-	Email                      *string
-	Name                       string
-	Phone                      *string
-	Birthdate                  *time.Time
-	Gender                     user.Gender
-	Disabled                   *bool
-	NotVerified                *bool
-	AccountingEntryIDs         []int
-	CompanyIDs                 []int
-	AssignedRoleIDs            []int
-	SubordinateIDs             []int
-	LeaderID                   *int
-	EmployeeID                 *int
-	CreatedProjectIDs          []int
-	LeaderedProjectIDs         []int
-	AssignedProjectTaskIDs     []int
-	ParticipatedProjectTaskIDs []int
-	CreatedTaskIDs             []int
-	TokenIDs                   []int
-	ApprovedWorkShiftIDs       []int
-	WorkShiftIDs               []int
-	UploadedDocumentIDs        []int
-	ApprovedDocumentIDs        []int
+	FirebaseUID                 string
+	FcmToken                    *string
+	Email                       string
+	Name                        string
+	Address                     *string
+	Avatar                      *string
+	PhotoURL                    *string
+	Department                  *string
+	Phone                       *string
+	Birthdate                   *time.Time
+	Gender                      user.Gender
+	AccountingEntryIDs          []int
+	AssignedRoleIDs             []int
+	SubordinateIDs              []int
+	LeaderID                    *int
+	CreatedMemberSignupTokenIDs []int
+	EmployeeID                  *int
+	CreatedProjectIDs           []int
+	LeaderedProjectIDs          []int
+	AssignedProjectTaskIDs      []int
+	ParticipatedProjectTaskIDs  []int
+	CreatedTaskIDs              []int
+	TokenIDs                    []int
+	ApprovedWorkShiftIDs        []int
+	WorkShiftIDs                []int
+	UploadedDocumentIDs         []int
+	ApprovedDocumentIDs         []int
 }
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
@@ -1878,10 +1955,20 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
 	}
-	if v := i.Email; v != nil {
-		m.SetEmail(*v)
-	}
+	m.SetEmail(i.Email)
 	m.SetName(i.Name)
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.Avatar; v != nil {
+		m.SetAvatar(*v)
+	}
+	if v := i.PhotoURL; v != nil {
+		m.SetPhotoURL(*v)
+	}
+	if v := i.Department; v != nil {
+		m.SetDepartment(*v)
+	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
@@ -1889,17 +1976,8 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 		m.SetBirthdate(*v)
 	}
 	m.SetGender(i.Gender)
-	if v := i.Disabled; v != nil {
-		m.SetDisabled(*v)
-	}
-	if v := i.NotVerified; v != nil {
-		m.SetNotVerified(*v)
-	}
 	if v := i.AccountingEntryIDs; len(v) > 0 {
 		m.AddAccountingEntryIDs(v...)
-	}
-	if v := i.CompanyIDs; len(v) > 0 {
-		m.AddCompanyIDs(v...)
 	}
 	if v := i.AssignedRoleIDs; len(v) > 0 {
 		m.AddAssignedRoleIDs(v...)
@@ -1909,6 +1987,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.LeaderID; v != nil {
 		m.SetLeaderID(*v)
+	}
+	if v := i.CreatedMemberSignupTokenIDs; len(v) > 0 {
+		m.AddCreatedMemberSignupTokenIDs(v...)
 	}
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
@@ -1953,63 +2034,69 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
-	FirebaseUID                      *string
-	ClearFcmToken                    bool
-	FcmToken                         *string
-	ClearEmail                       bool
-	Email                            *string
-	Name                             *string
-	ClearPhone                       bool
-	Phone                            *string
-	ClearBirthdate                   bool
-	Birthdate                        *time.Time
-	Gender                           *user.Gender
-	ClearDisabled                    bool
-	Disabled                         *bool
-	ClearNotVerified                 bool
-	NotVerified                      *bool
-	ClearAccountingEntries           bool
-	AddAccountingEntryIDs            []int
-	RemoveAccountingEntryIDs         []int
-	AddCompanyIDs                    []int
-	RemoveCompanyIDs                 []int
-	ClearAssignedRoles               bool
-	AddAssignedRoleIDs               []int
-	RemoveAssignedRoleIDs            []int
-	ClearSubordinates                bool
-	AddSubordinateIDs                []int
-	RemoveSubordinateIDs             []int
-	ClearLeader                      bool
-	LeaderID                         *int
-	ClearEmployee                    bool
-	EmployeeID                       *int
-	ClearCreatedProjects             bool
-	AddCreatedProjectIDs             []int
-	RemoveCreatedProjectIDs          []int
-	ClearLeaderedProjects            bool
-	AddLeaderedProjectIDs            []int
-	RemoveLeaderedProjectIDs         []int
-	ClearAssignedProjectTasks        bool
-	AddAssignedProjectTaskIDs        []int
-	RemoveAssignedProjectTaskIDs     []int
-	ClearParticipatedProjectTasks    bool
-	AddParticipatedProjectTaskIDs    []int
-	RemoveParticipatedProjectTaskIDs []int
-	ClearTokens                      bool
-	AddTokenIDs                      []int
-	RemoveTokenIDs                   []int
-	ClearApprovedWorkShifts          bool
-	AddApprovedWorkShiftIDs          []int
-	RemoveApprovedWorkShiftIDs       []int
-	ClearWorkShifts                  bool
-	AddWorkShiftIDs                  []int
-	RemoveWorkShiftIDs               []int
-	ClearUploadedDocuments           bool
-	AddUploadedDocumentIDs           []int
-	RemoveUploadedDocumentIDs        []int
-	ClearApprovedDocuments           bool
-	AddApprovedDocumentIDs           []int
-	RemoveApprovedDocumentIDs        []int
+	FirebaseUID                       *string
+	ClearFcmToken                     bool
+	FcmToken                          *string
+	Name                              *string
+	ClearAddress                      bool
+	Address                           *string
+	ClearAvatar                       bool
+	Avatar                            *string
+	ClearPhotoURL                     bool
+	PhotoURL                          *string
+	ClearDepartment                   bool
+	Department                        *string
+	ClearPhone                        bool
+	Phone                             *string
+	ClearBirthdate                    bool
+	Birthdate                         *time.Time
+	Gender                            *user.Gender
+	Active                            *bool
+	ClearAccountingEntries            bool
+	AddAccountingEntryIDs             []int
+	RemoveAccountingEntryIDs          []int
+	AddCompanyIDs                     []int
+	RemoveCompanyIDs                  []int
+	ClearAssignedRoles                bool
+	AddAssignedRoleIDs                []int
+	RemoveAssignedRoleIDs             []int
+	ClearSubordinates                 bool
+	AddSubordinateIDs                 []int
+	RemoveSubordinateIDs              []int
+	ClearLeader                       bool
+	LeaderID                          *int
+	ClearCreatedMemberSignupTokens    bool
+	AddCreatedMemberSignupTokenIDs    []int
+	RemoveCreatedMemberSignupTokenIDs []int
+	ClearEmployee                     bool
+	EmployeeID                        *int
+	ClearCreatedProjects              bool
+	AddCreatedProjectIDs              []int
+	RemoveCreatedProjectIDs           []int
+	ClearLeaderedProjects             bool
+	AddLeaderedProjectIDs             []int
+	RemoveLeaderedProjectIDs          []int
+	ClearAssignedProjectTasks         bool
+	AddAssignedProjectTaskIDs         []int
+	RemoveAssignedProjectTaskIDs      []int
+	ClearParticipatedProjectTasks     bool
+	AddParticipatedProjectTaskIDs     []int
+	RemoveParticipatedProjectTaskIDs  []int
+	ClearTokens                       bool
+	AddTokenIDs                       []int
+	RemoveTokenIDs                    []int
+	ClearApprovedWorkShifts           bool
+	AddApprovedWorkShiftIDs           []int
+	RemoveApprovedWorkShiftIDs        []int
+	ClearWorkShifts                   bool
+	AddWorkShiftIDs                   []int
+	RemoveWorkShiftIDs                []int
+	ClearUploadedDocuments            bool
+	AddUploadedDocumentIDs            []int
+	RemoveUploadedDocumentIDs         []int
+	ClearApprovedDocuments            bool
+	AddApprovedDocumentIDs            []int
+	RemoveApprovedDocumentIDs         []int
 }
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
@@ -2023,14 +2110,32 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
 	}
-	if i.ClearEmail {
-		m.ClearEmail()
-	}
-	if v := i.Email; v != nil {
-		m.SetEmail(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if i.ClearAddress {
+		m.ClearAddress()
+	}
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if i.ClearAvatar {
+		m.ClearAvatar()
+	}
+	if v := i.Avatar; v != nil {
+		m.SetAvatar(*v)
+	}
+	if i.ClearPhotoURL {
+		m.ClearPhotoURL()
+	}
+	if v := i.PhotoURL; v != nil {
+		m.SetPhotoURL(*v)
+	}
+	if i.ClearDepartment {
+		m.ClearDepartment()
+	}
+	if v := i.Department; v != nil {
+		m.SetDepartment(*v)
 	}
 	if i.ClearPhone {
 		m.ClearPhone()
@@ -2047,17 +2152,8 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.Gender; v != nil {
 		m.SetGender(*v)
 	}
-	if i.ClearDisabled {
-		m.ClearDisabled()
-	}
-	if v := i.Disabled; v != nil {
-		m.SetDisabled(*v)
-	}
-	if i.ClearNotVerified {
-		m.ClearNotVerified()
-	}
-	if v := i.NotVerified; v != nil {
-		m.SetNotVerified(*v)
+	if v := i.Active; v != nil {
+		m.SetActive(*v)
 	}
 	if i.ClearAccountingEntries {
 		m.ClearAccountingEntries()
@@ -2097,6 +2193,15 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.LeaderID; v != nil {
 		m.SetLeaderID(*v)
+	}
+	if i.ClearCreatedMemberSignupTokens {
+		m.ClearCreatedMemberSignupTokens()
+	}
+	if v := i.AddCreatedMemberSignupTokenIDs; len(v) > 0 {
+		m.AddCreatedMemberSignupTokenIDs(v...)
+	}
+	if v := i.RemoveCreatedMemberSignupTokenIDs; len(v) > 0 {
+		m.RemoveCreatedMemberSignupTokenIDs(v...)
 	}
 	if i.ClearEmployee {
 		m.ClearEmployee()
@@ -2202,18 +2307,20 @@ func (c *UserUpdateOne) SetInput(i UpdateUserInput) *UserUpdateOne {
 // CreateUserRoleInput represents a mutation input for creating userroles.
 type CreateUserRoleInput struct {
 	Role      userrole.Role
+	Notes     string
 	CompanyID *int
-	UserIDs   []int
+	UserID    *int
 }
 
 // Mutate applies the CreateUserRoleInput on the UserRoleMutation builder.
 func (i *CreateUserRoleInput) Mutate(m *UserRoleMutation) {
 	m.SetRole(i.Role)
+	m.SetNotes(i.Notes)
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
-	if v := i.UserIDs; len(v) > 0 {
-		m.AddUserIDs(v...)
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
 	}
 }
 
@@ -2225,18 +2332,21 @@ func (c *UserRoleCreate) SetInput(i CreateUserRoleInput) *UserRoleCreate {
 
 // UpdateUserRoleInput represents a mutation input for updating userroles.
 type UpdateUserRoleInput struct {
-	Role          *userrole.Role
-	ClearCompany  bool
-	CompanyID     *int
-	ClearUser     bool
-	AddUserIDs    []int
-	RemoveUserIDs []int
+	Role         *userrole.Role
+	Notes        *string
+	ClearCompany bool
+	CompanyID    *int
+	ClearUser    bool
+	UserID       *int
 }
 
 // Mutate applies the UpdateUserRoleInput on the UserRoleMutation builder.
 func (i *UpdateUserRoleInput) Mutate(m *UserRoleMutation) {
 	if v := i.Role; v != nil {
 		m.SetRole(*v)
+	}
+	if v := i.Notes; v != nil {
+		m.SetNotes(*v)
 	}
 	if i.ClearCompany {
 		m.ClearCompany()
@@ -2247,11 +2357,8 @@ func (i *UpdateUserRoleInput) Mutate(m *UserRoleMutation) {
 	if i.ClearUser {
 		m.ClearUser()
 	}
-	if v := i.AddUserIDs; len(v) > 0 {
-		m.AddUserIDs(v...)
-	}
-	if v := i.RemoveUserIDs; len(v) > 0 {
-		m.RemoveUserIDs(v...)
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
 	}
 }
 

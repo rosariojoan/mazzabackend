@@ -37,7 +37,7 @@ func (r *mutationResolver) IssueSalesQuotation(ctx context.Context, input model.
 	}
 	dateString := string(date)
 
-	_, company, _ := utils.GetSession(&ctx)
+	_, company := utils.GetSession(&ctx)
 	filename := "cotacao_" + dateString + ".pdf"
 	fileProps := appUtils.FileProps{
 		Bucket:      "quotation",
@@ -92,7 +92,7 @@ func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.Invoice
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	_, company, _ := utils.GetSession(&ctx)
+	_, company := utils.GetSession(&ctx)
 	filename := "fatura_" + input.InvoiceData.Number + ".pdf"
 	fileProps := appUtils.FileProps{
 		Bucket:      "invoice",
@@ -163,49 +163,49 @@ func (r *mutationResolver) RegisterAccountingEntries(ctx context.Context, input 
 
 // TrialBalance is the resolver for the trialBalance field.
 func (r *queryResolver) TrialBalance(ctx context.Context, date time.Time) ([]*model.TrialBalanceRowItem, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := trialbalance.GetTrialBalance(r.client, ctx, *user, *company, date, []string{})
 	return output, err
 }
 
 // IncomeStatement is the resolver for the incomeStatement field.
 func (r *queryResolver) IncomeStatement(ctx context.Context, date time.Time) (*model.IncomeStatementOuput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := incomestatement.GetIncomeStatement(r.client, ctx, *user, *company, date)
 	return output, err
 }
 
 // BalanceSheet is the resolver for the balanceSheet field.
 func (r *queryResolver) BalanceSheet(ctx context.Context, date time.Time) (*model.BalanceSheetOuput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := balancesheet.GetBalanceSheet(r.client, ctx, *user, *company, date)
 	return output, err
 }
 
 // DownloadLedger is the resolver for the downloadLedger field.
 func (r *queryResolver) DownloadLedger(ctx context.Context, where model.LedgerDownloadInput) (*model.FileDetailsOutput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := ledger.BuildReport(r.client, ctx, *user, *company, where.StartDate, where.EndDate)
 	return output, err
 }
 
 // DownloadTrialBalance is the resolver for the downloadTrialBalance field.
 func (r *queryResolver) DownloadTrialBalance(ctx context.Context, where model.ReportInput) (*model.FileDetailsOutput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := trialbalance.BuildReport(r.client, ctx, *user, *company, where.Date)
 	return output, err
 }
 
 // DownloadIncomeStatement is the resolver for the downloadIncomeStatement field.
 func (r *queryResolver) DownloadIncomeStatement(ctx context.Context, where model.ReportInput) (*model.FileDetailsOutput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := incomestatement.BuildReport(r.client, ctx, *user, *company, where.Date)
 	return output, err
 }
 
 // DownloadBalanceSheet is the resolver for the downloadBalanceSheet field.
 func (r *queryResolver) DownloadBalanceSheet(ctx context.Context, where model.ReportInput) (*model.FileDetailsOutput, error) {
-	user, company, _ := utils.GetSession(&ctx)
+	user, company := utils.GetSession(&ctx)
 	output, err := balancesheet.BuildReport(r.client, ctx, *user, *company, where.Date)
 	return output, err
 }

@@ -44,6 +44,20 @@ func (uru *UserRoleUpdate) SetNillableRole(u *userrole.Role) *UserRoleUpdate {
 	return uru
 }
 
+// SetNotes sets the "notes" field.
+func (uru *UserRoleUpdate) SetNotes(s string) *UserRoleUpdate {
+	uru.mutation.SetNotes(s)
+	return uru
+}
+
+// SetNillableNotes sets the "notes" field if the given value is not nil.
+func (uru *UserRoleUpdate) SetNillableNotes(s *string) *UserRoleUpdate {
+	if s != nil {
+		uru.SetNotes(*s)
+	}
+	return uru
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (uru *UserRoleUpdate) SetCompanyID(id int) *UserRoleUpdate {
 	uru.mutation.SetCompanyID(id)
@@ -63,19 +77,23 @@ func (uru *UserRoleUpdate) SetCompany(c *Company) *UserRoleUpdate {
 	return uru.SetCompanyID(c.ID)
 }
 
-// AddUserIDs adds the "user" edge to the User entity by IDs.
-func (uru *UserRoleUpdate) AddUserIDs(ids ...int) *UserRoleUpdate {
-	uru.mutation.AddUserIDs(ids...)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (uru *UserRoleUpdate) SetUserID(id int) *UserRoleUpdate {
+	uru.mutation.SetUserID(id)
 	return uru
 }
 
-// AddUser adds the "user" edges to the User entity.
-func (uru *UserRoleUpdate) AddUser(u ...*User) *UserRoleUpdate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (uru *UserRoleUpdate) SetNillableUserID(id *int) *UserRoleUpdate {
+	if id != nil {
+		uru = uru.SetUserID(*id)
 	}
-	return uru.AddUserIDs(ids...)
+	return uru
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (uru *UserRoleUpdate) SetUser(u *User) *UserRoleUpdate {
+	return uru.SetUserID(u.ID)
 }
 
 // Mutation returns the UserRoleMutation object of the builder.
@@ -89,25 +107,10 @@ func (uru *UserRoleUpdate) ClearCompany() *UserRoleUpdate {
 	return uru
 }
 
-// ClearUser clears all "user" edges to the User entity.
+// ClearUser clears the "user" edge to the User entity.
 func (uru *UserRoleUpdate) ClearUser() *UserRoleUpdate {
 	uru.mutation.ClearUser()
 	return uru
-}
-
-// RemoveUserIDs removes the "user" edge to User entities by IDs.
-func (uru *UserRoleUpdate) RemoveUserIDs(ids ...int) *UserRoleUpdate {
-	uru.mutation.RemoveUserIDs(ids...)
-	return uru
-}
-
-// RemoveUser removes "user" edges to User entities.
-func (uru *UserRoleUpdate) RemoveUser(u ...*User) *UserRoleUpdate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
-	}
-	return uru.RemoveUserIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -144,6 +147,11 @@ func (uru *UserRoleUpdate) check() error {
 			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "UserRole.role": %w`, err)}
 		}
 	}
+	if v, ok := uru.mutation.Notes(); ok {
+		if err := userrole.NotesValidator(v); err != nil {
+			return &ValidationError{Name: "notes", err: fmt.Errorf(`generated: validator failed for field "UserRole.notes": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -167,6 +175,9 @@ func (uru *UserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uru.mutation.Role(); ok {
 		_spec.SetField(userrole.FieldRole, field.TypeEnum, value)
+	}
+	if value, ok := uru.mutation.Notes(); ok {
+		_spec.SetField(userrole.FieldNotes, field.TypeString, value)
 	}
 	if uru.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -199,39 +210,23 @@ func (uru *UserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if uru.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
+			Columns: []string{userrole.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uru.mutation.RemovedUserIDs(); len(nodes) > 0 && !uru.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := uru.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
+			Columns: []string{userrole.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -278,6 +273,20 @@ func (uruo *UserRoleUpdateOne) SetNillableRole(u *userrole.Role) *UserRoleUpdate
 	return uruo
 }
 
+// SetNotes sets the "notes" field.
+func (uruo *UserRoleUpdateOne) SetNotes(s string) *UserRoleUpdateOne {
+	uruo.mutation.SetNotes(s)
+	return uruo
+}
+
+// SetNillableNotes sets the "notes" field if the given value is not nil.
+func (uruo *UserRoleUpdateOne) SetNillableNotes(s *string) *UserRoleUpdateOne {
+	if s != nil {
+		uruo.SetNotes(*s)
+	}
+	return uruo
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (uruo *UserRoleUpdateOne) SetCompanyID(id int) *UserRoleUpdateOne {
 	uruo.mutation.SetCompanyID(id)
@@ -297,19 +306,23 @@ func (uruo *UserRoleUpdateOne) SetCompany(c *Company) *UserRoleUpdateOne {
 	return uruo.SetCompanyID(c.ID)
 }
 
-// AddUserIDs adds the "user" edge to the User entity by IDs.
-func (uruo *UserRoleUpdateOne) AddUserIDs(ids ...int) *UserRoleUpdateOne {
-	uruo.mutation.AddUserIDs(ids...)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (uruo *UserRoleUpdateOne) SetUserID(id int) *UserRoleUpdateOne {
+	uruo.mutation.SetUserID(id)
 	return uruo
 }
 
-// AddUser adds the "user" edges to the User entity.
-func (uruo *UserRoleUpdateOne) AddUser(u ...*User) *UserRoleUpdateOne {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (uruo *UserRoleUpdateOne) SetNillableUserID(id *int) *UserRoleUpdateOne {
+	if id != nil {
+		uruo = uruo.SetUserID(*id)
 	}
-	return uruo.AddUserIDs(ids...)
+	return uruo
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (uruo *UserRoleUpdateOne) SetUser(u *User) *UserRoleUpdateOne {
+	return uruo.SetUserID(u.ID)
 }
 
 // Mutation returns the UserRoleMutation object of the builder.
@@ -323,25 +336,10 @@ func (uruo *UserRoleUpdateOne) ClearCompany() *UserRoleUpdateOne {
 	return uruo
 }
 
-// ClearUser clears all "user" edges to the User entity.
+// ClearUser clears the "user" edge to the User entity.
 func (uruo *UserRoleUpdateOne) ClearUser() *UserRoleUpdateOne {
 	uruo.mutation.ClearUser()
 	return uruo
-}
-
-// RemoveUserIDs removes the "user" edge to User entities by IDs.
-func (uruo *UserRoleUpdateOne) RemoveUserIDs(ids ...int) *UserRoleUpdateOne {
-	uruo.mutation.RemoveUserIDs(ids...)
-	return uruo
-}
-
-// RemoveUser removes "user" edges to User entities.
-func (uruo *UserRoleUpdateOne) RemoveUser(u ...*User) *UserRoleUpdateOne {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
-	}
-	return uruo.RemoveUserIDs(ids...)
 }
 
 // Where appends a list predicates to the UserRoleUpdate builder.
@@ -391,6 +389,11 @@ func (uruo *UserRoleUpdateOne) check() error {
 			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "UserRole.role": %w`, err)}
 		}
 	}
+	if v, ok := uruo.mutation.Notes(); ok {
+		if err := userrole.NotesValidator(v); err != nil {
+			return &ValidationError{Name: "notes", err: fmt.Errorf(`generated: validator failed for field "UserRole.notes": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -432,6 +435,9 @@ func (uruo *UserRoleUpdateOne) sqlSave(ctx context.Context) (_node *UserRole, er
 	if value, ok := uruo.mutation.Role(); ok {
 		_spec.SetField(userrole.FieldRole, field.TypeEnum, value)
 	}
+	if value, ok := uruo.mutation.Notes(); ok {
+		_spec.SetField(userrole.FieldNotes, field.TypeString, value)
+	}
 	if uruo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -463,39 +469,23 @@ func (uruo *UserRoleUpdateOne) sqlSave(ctx context.Context) (_node *UserRole, er
 	}
 	if uruo.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
+			Columns: []string{userrole.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
 			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := uruo.mutation.RemovedUserIDs(); len(nodes) > 0 && !uruo.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
-			Inverse: true,
-			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := uruo.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
+			Columns: []string{userrole.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),

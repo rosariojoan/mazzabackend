@@ -45,16 +45,16 @@ type Company struct {
 	LastEntryDate *time.Time `json:"lastEntryDate,omitempty"`
 	// LastInvoiceNumber holds the value of the "lastInvoiceNumber" field.
 	LastInvoiceNumber int32 `json:"lastInvoiceNumber,omitempty"`
-	// Logo holds the value of the "logo" field.
-	Logo *string `json:"logo,omitempty"`
+	// LogoURL holds the value of the "logoURL" field.
+	LogoURL *string `json:"logoURL,omitempty"`
+	// LogoStorageURI holds the value of the "logoStorageURI" field.
+	LogoStorageURI *string `json:"-"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// NumberOfEmployees holds the value of the "numberOfEmployees" field.
 	NumberOfEmployees int32 `json:"numberOfEmployees,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone *string `json:"phone,omitempty"`
-	// Sector holds the value of the "sector" field.
-	Sector *string `json:"sector,omitempty"`
 	// TaxId holds the value of the "taxId" field.
 	TaxId *string `json:"taxId,omitempty"`
 	// VatRate holds the value of the "vatRate" field.
@@ -84,6 +84,8 @@ type CompanyEdges struct {
 	Employees []*Employee `json:"employees,omitempty"`
 	// Files holds the value of the files edge.
 	Files []*File `json:"files,omitempty"`
+	// MemberSignupTokens holds the value of the memberSignupTokens edge.
+	MemberSignupTokens []*MemberSignupToken `json:"memberSignupTokens,omitempty"`
 	// Products holds the value of the products edge.
 	Products []*Product `json:"products,omitempty"`
 	// Projects holds the value of the projects edge.
@@ -108,26 +110,27 @@ type CompanyEdges struct {
 	ParentCompany *Company `json:"parentCompany,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [17]bool
+	loadedTypes [18]bool
 	// totalCount holds the count of the edges above.
-	totalCount [17]map[string]int
+	totalCount [18]map[string]int
 
-	namedAvailableRoles    map[string][]*UserRole
-	namedAccountingEntries map[string][]*AccountingEntry
-	namedCustomers         map[string][]*Customer
-	namedDocuments         map[string][]*CompanyDocument
-	namedEmployees         map[string][]*Employee
-	namedFiles             map[string][]*File
-	namedProducts          map[string][]*Product
-	namedProjects          map[string][]*Project
-	namedPayables          map[string][]*Payable
-	namedReceivables       map[string][]*Receivable
-	namedSuppliers         map[string][]*Supplier
-	namedTokens            map[string][]*Token
-	namedTreasuries        map[string][]*Treasury
-	namedWorkShifts        map[string][]*Workshift
-	namedUsers             map[string][]*User
-	namedDaughterCompanies map[string][]*Company
+	namedAvailableRoles     map[string][]*UserRole
+	namedAccountingEntries  map[string][]*AccountingEntry
+	namedCustomers          map[string][]*Customer
+	namedDocuments          map[string][]*CompanyDocument
+	namedEmployees          map[string][]*Employee
+	namedFiles              map[string][]*File
+	namedMemberSignupTokens map[string][]*MemberSignupToken
+	namedProducts           map[string][]*Product
+	namedProjects           map[string][]*Project
+	namedPayables           map[string][]*Payable
+	namedReceivables        map[string][]*Receivable
+	namedSuppliers          map[string][]*Supplier
+	namedTokens             map[string][]*Token
+	namedTreasuries         map[string][]*Treasury
+	namedWorkShifts         map[string][]*Workshift
+	namedUsers              map[string][]*User
+	namedDaughterCompanies  map[string][]*Company
 }
 
 // AvailableRolesOrErr returns the AvailableRoles value or an error if the edge
@@ -184,10 +187,19 @@ func (e CompanyEdges) FilesOrErr() ([]*File, error) {
 	return nil, &NotLoadedError{edge: "files"}
 }
 
+// MemberSignupTokensOrErr returns the MemberSignupTokens value or an error if the edge
+// was not loaded in eager-loading.
+func (e CompanyEdges) MemberSignupTokensOrErr() ([]*MemberSignupToken, error) {
+	if e.loadedTypes[6] {
+		return e.MemberSignupTokens, nil
+	}
+	return nil, &NotLoadedError{edge: "memberSignupTokens"}
+}
+
 // ProductsOrErr returns the Products value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) ProductsOrErr() ([]*Product, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[7] {
 		return e.Products, nil
 	}
 	return nil, &NotLoadedError{edge: "products"}
@@ -196,7 +208,7 @@ func (e CompanyEdges) ProductsOrErr() ([]*Product, error) {
 // ProjectsOrErr returns the Projects value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) ProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[8] {
 		return e.Projects, nil
 	}
 	return nil, &NotLoadedError{edge: "projects"}
@@ -205,7 +217,7 @@ func (e CompanyEdges) ProjectsOrErr() ([]*Project, error) {
 // PayablesOrErr returns the Payables value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) PayablesOrErr() ([]*Payable, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[9] {
 		return e.Payables, nil
 	}
 	return nil, &NotLoadedError{edge: "payables"}
@@ -214,7 +226,7 @@ func (e CompanyEdges) PayablesOrErr() ([]*Payable, error) {
 // ReceivablesOrErr returns the Receivables value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) ReceivablesOrErr() ([]*Receivable, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[10] {
 		return e.Receivables, nil
 	}
 	return nil, &NotLoadedError{edge: "receivables"}
@@ -223,7 +235,7 @@ func (e CompanyEdges) ReceivablesOrErr() ([]*Receivable, error) {
 // SuppliersOrErr returns the Suppliers value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
-	if e.loadedTypes[10] {
+	if e.loadedTypes[11] {
 		return e.Suppliers, nil
 	}
 	return nil, &NotLoadedError{edge: "suppliers"}
@@ -232,7 +244,7 @@ func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[11] {
+	if e.loadedTypes[12] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -241,7 +253,7 @@ func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
 // TreasuriesOrErr returns the Treasuries value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
-	if e.loadedTypes[12] {
+	if e.loadedTypes[13] {
 		return e.Treasuries, nil
 	}
 	return nil, &NotLoadedError{edge: "treasuries"}
@@ -250,7 +262,7 @@ func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[14] {
 		return e.WorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "workShifts"}
@@ -259,7 +271,7 @@ func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 // UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[14] {
+	if e.loadedTypes[15] {
 		return e.Users, nil
 	}
 	return nil, &NotLoadedError{edge: "users"}
@@ -268,7 +280,7 @@ func (e CompanyEdges) UsersOrErr() ([]*User, error) {
 // DaughterCompaniesOrErr returns the DaughterCompanies value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
-	if e.loadedTypes[15] {
+	if e.loadedTypes[16] {
 		return e.DaughterCompanies, nil
 	}
 	return nil, &NotLoadedError{edge: "daughterCompanies"}
@@ -279,7 +291,7 @@ func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
 func (e CompanyEdges) ParentCompanyOrErr() (*Company, error) {
 	if e.ParentCompany != nil {
 		return e.ParentCompany, nil
-	} else if e.loadedTypes[16] {
+	} else if e.loadedTypes[17] {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "parentCompany"}
@@ -296,7 +308,7 @@ func (*Company) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldNumberOfEmployees:
 			values[i] = new(sql.NullInt64)
-		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldLogo, company.FieldName, company.FieldPhone, company.FieldSector, company.FieldTaxId, company.FieldWebsite:
+		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldLogoURL, company.FieldLogoStorageURI, company.FieldName, company.FieldPhone, company.FieldTaxId, company.FieldWebsite:
 			values[i] = new(sql.NullString)
 		case company.FieldCreatedAt, company.FieldUpdatedAt, company.FieldDeletedAt, company.FieldEstablishedAt, company.FieldLastEntryDate:
 			values[i] = new(sql.NullTime)
@@ -414,12 +426,19 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.LastInvoiceNumber = int32(value.Int64)
 			}
-		case company.FieldLogo:
+		case company.FieldLogoURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field logo", values[i])
+				return fmt.Errorf("unexpected type %T for field logoURL", values[i])
 			} else if value.Valid {
-				c.Logo = new(string)
-				*c.Logo = value.String
+				c.LogoURL = new(string)
+				*c.LogoURL = value.String
+			}
+		case company.FieldLogoStorageURI:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field logoStorageURI", values[i])
+			} else if value.Valid {
+				c.LogoStorageURI = new(string)
+				*c.LogoStorageURI = value.String
 			}
 		case company.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -439,13 +458,6 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Phone = new(string)
 				*c.Phone = value.String
-			}
-		case company.FieldSector:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field sector", values[i])
-			} else if value.Valid {
-				c.Sector = new(string)
-				*c.Sector = value.String
 			}
 		case company.FieldTaxId:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -521,6 +533,11 @@ func (c *Company) QueryEmployees() *EmployeeQuery {
 // QueryFiles queries the "files" edge of the Company entity.
 func (c *Company) QueryFiles() *FileQuery {
 	return NewCompanyClient(c.config).QueryFiles(c)
+}
+
+// QueryMemberSignupTokens queries the "memberSignupTokens" edge of the Company entity.
+func (c *Company) QueryMemberSignupTokens() *MemberSignupTokenQuery {
+	return NewCompanyClient(c.config).QueryMemberSignupTokens(c)
 }
 
 // QueryProducts queries the "products" edge of the Company entity.
@@ -657,10 +674,12 @@ func (c *Company) String() string {
 	builder.WriteString("lastInvoiceNumber=")
 	builder.WriteString(fmt.Sprintf("%v", c.LastInvoiceNumber))
 	builder.WriteString(", ")
-	if v := c.Logo; v != nil {
-		builder.WriteString("logo=")
+	if v := c.LogoURL; v != nil {
+		builder.WriteString("logoURL=")
 		builder.WriteString(*v)
 	}
+	builder.WriteString(", ")
+	builder.WriteString("logoStorageURI=<sensitive>")
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
@@ -670,11 +689,6 @@ func (c *Company) String() string {
 	builder.WriteString(", ")
 	if v := c.Phone; v != nil {
 		builder.WriteString("phone=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := c.Sector; v != nil {
-		builder.WriteString("sector=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -838,6 +852,30 @@ func (c *Company) appendNamedFiles(name string, edges ...*File) {
 		c.Edges.namedFiles[name] = []*File{}
 	} else {
 		c.Edges.namedFiles[name] = append(c.Edges.namedFiles[name], edges...)
+	}
+}
+
+// NamedMemberSignupTokens returns the MemberSignupTokens named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Company) NamedMemberSignupTokens(name string) ([]*MemberSignupToken, error) {
+	if c.Edges.namedMemberSignupTokens == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedMemberSignupTokens[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Company) appendNamedMemberSignupTokens(name string, edges ...*MemberSignupToken) {
+	if c.Edges.namedMemberSignupTokens == nil {
+		c.Edges.namedMemberSignupTokens = make(map[string][]*MemberSignupToken)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedMemberSignupTokens[name] = []*MemberSignupToken{}
+	} else {
+		c.Edges.namedMemberSignupTokens[name] = append(c.Edges.namedMemberSignupTokens[name], edges...)
 	}
 }
 

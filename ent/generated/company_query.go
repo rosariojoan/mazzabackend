@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
@@ -34,46 +35,48 @@ import (
 // CompanyQuery is the builder for querying Company entities.
 type CompanyQuery struct {
 	config
-	ctx                        *QueryContext
-	order                      []company.OrderOption
-	inters                     []Interceptor
-	predicates                 []predicate.Company
-	withAvailableRoles         *UserRoleQuery
-	withAccountingEntries      *AccountingEntryQuery
-	withCustomers              *CustomerQuery
-	withDocuments              *CompanyDocumentQuery
-	withEmployees              *EmployeeQuery
-	withFiles                  *FileQuery
-	withProducts               *ProductQuery
-	withProjects               *ProjectQuery
-	withPayables               *PayableQuery
-	withReceivables            *ReceivableQuery
-	withSuppliers              *SupplierQuery
-	withTokens                 *TokenQuery
-	withTreasuries             *TreasuryQuery
-	withWorkShifts             *WorkshiftQuery
-	withUsers                  *UserQuery
-	withDaughterCompanies      *CompanyQuery
-	withParentCompany          *CompanyQuery
-	withFKs                    bool
-	loadTotal                  []func(context.Context, []*Company) error
-	modifiers                  []func(*sql.Selector)
-	withNamedAvailableRoles    map[string]*UserRoleQuery
-	withNamedAccountingEntries map[string]*AccountingEntryQuery
-	withNamedCustomers         map[string]*CustomerQuery
-	withNamedDocuments         map[string]*CompanyDocumentQuery
-	withNamedEmployees         map[string]*EmployeeQuery
-	withNamedFiles             map[string]*FileQuery
-	withNamedProducts          map[string]*ProductQuery
-	withNamedProjects          map[string]*ProjectQuery
-	withNamedPayables          map[string]*PayableQuery
-	withNamedReceivables       map[string]*ReceivableQuery
-	withNamedSuppliers         map[string]*SupplierQuery
-	withNamedTokens            map[string]*TokenQuery
-	withNamedTreasuries        map[string]*TreasuryQuery
-	withNamedWorkShifts        map[string]*WorkshiftQuery
-	withNamedUsers             map[string]*UserQuery
-	withNamedDaughterCompanies map[string]*CompanyQuery
+	ctx                         *QueryContext
+	order                       []company.OrderOption
+	inters                      []Interceptor
+	predicates                  []predicate.Company
+	withAvailableRoles          *UserRoleQuery
+	withAccountingEntries       *AccountingEntryQuery
+	withCustomers               *CustomerQuery
+	withDocuments               *CompanyDocumentQuery
+	withEmployees               *EmployeeQuery
+	withFiles                   *FileQuery
+	withMemberSignupTokens      *MemberSignupTokenQuery
+	withProducts                *ProductQuery
+	withProjects                *ProjectQuery
+	withPayables                *PayableQuery
+	withReceivables             *ReceivableQuery
+	withSuppliers               *SupplierQuery
+	withTokens                  *TokenQuery
+	withTreasuries              *TreasuryQuery
+	withWorkShifts              *WorkshiftQuery
+	withUsers                   *UserQuery
+	withDaughterCompanies       *CompanyQuery
+	withParentCompany           *CompanyQuery
+	withFKs                     bool
+	loadTotal                   []func(context.Context, []*Company) error
+	modifiers                   []func(*sql.Selector)
+	withNamedAvailableRoles     map[string]*UserRoleQuery
+	withNamedAccountingEntries  map[string]*AccountingEntryQuery
+	withNamedCustomers          map[string]*CustomerQuery
+	withNamedDocuments          map[string]*CompanyDocumentQuery
+	withNamedEmployees          map[string]*EmployeeQuery
+	withNamedFiles              map[string]*FileQuery
+	withNamedMemberSignupTokens map[string]*MemberSignupTokenQuery
+	withNamedProducts           map[string]*ProductQuery
+	withNamedProjects           map[string]*ProjectQuery
+	withNamedPayables           map[string]*PayableQuery
+	withNamedReceivables        map[string]*ReceivableQuery
+	withNamedSuppliers          map[string]*SupplierQuery
+	withNamedTokens             map[string]*TokenQuery
+	withNamedTreasuries         map[string]*TreasuryQuery
+	withNamedWorkShifts         map[string]*WorkshiftQuery
+	withNamedUsers              map[string]*UserQuery
+	withNamedDaughterCompanies  map[string]*CompanyQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -235,6 +238,28 @@ func (cq *CompanyQuery) QueryFiles() *FileQuery {
 			sqlgraph.From(company.Table, company.FieldID, selector),
 			sqlgraph.To(file.Table, file.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.FilesTable, company.FilesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryMemberSignupTokens chains the current query on the "memberSignupTokens" edge.
+func (cq *CompanyQuery) QueryMemberSignupTokens() *MemberSignupTokenQuery {
+	query := (&MemberSignupTokenClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(membersignuptoken.Table, membersignuptoken.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.MemberSignupTokensTable, company.MemberSignupTokensColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -671,28 +696,29 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		return nil
 	}
 	return &CompanyQuery{
-		config:                cq.config,
-		ctx:                   cq.ctx.Clone(),
-		order:                 append([]company.OrderOption{}, cq.order...),
-		inters:                append([]Interceptor{}, cq.inters...),
-		predicates:            append([]predicate.Company{}, cq.predicates...),
-		withAvailableRoles:    cq.withAvailableRoles.Clone(),
-		withAccountingEntries: cq.withAccountingEntries.Clone(),
-		withCustomers:         cq.withCustomers.Clone(),
-		withDocuments:         cq.withDocuments.Clone(),
-		withEmployees:         cq.withEmployees.Clone(),
-		withFiles:             cq.withFiles.Clone(),
-		withProducts:          cq.withProducts.Clone(),
-		withProjects:          cq.withProjects.Clone(),
-		withPayables:          cq.withPayables.Clone(),
-		withReceivables:       cq.withReceivables.Clone(),
-		withSuppliers:         cq.withSuppliers.Clone(),
-		withTokens:            cq.withTokens.Clone(),
-		withTreasuries:        cq.withTreasuries.Clone(),
-		withWorkShifts:        cq.withWorkShifts.Clone(),
-		withUsers:             cq.withUsers.Clone(),
-		withDaughterCompanies: cq.withDaughterCompanies.Clone(),
-		withParentCompany:     cq.withParentCompany.Clone(),
+		config:                 cq.config,
+		ctx:                    cq.ctx.Clone(),
+		order:                  append([]company.OrderOption{}, cq.order...),
+		inters:                 append([]Interceptor{}, cq.inters...),
+		predicates:             append([]predicate.Company{}, cq.predicates...),
+		withAvailableRoles:     cq.withAvailableRoles.Clone(),
+		withAccountingEntries:  cq.withAccountingEntries.Clone(),
+		withCustomers:          cq.withCustomers.Clone(),
+		withDocuments:          cq.withDocuments.Clone(),
+		withEmployees:          cq.withEmployees.Clone(),
+		withFiles:              cq.withFiles.Clone(),
+		withMemberSignupTokens: cq.withMemberSignupTokens.Clone(),
+		withProducts:           cq.withProducts.Clone(),
+		withProjects:           cq.withProjects.Clone(),
+		withPayables:           cq.withPayables.Clone(),
+		withReceivables:        cq.withReceivables.Clone(),
+		withSuppliers:          cq.withSuppliers.Clone(),
+		withTokens:             cq.withTokens.Clone(),
+		withTreasuries:         cq.withTreasuries.Clone(),
+		withWorkShifts:         cq.withWorkShifts.Clone(),
+		withUsers:              cq.withUsers.Clone(),
+		withDaughterCompanies:  cq.withDaughterCompanies.Clone(),
+		withParentCompany:      cq.withParentCompany.Clone(),
 		// clone intermediate query.
 		sql:       cq.sql.Clone(),
 		path:      cq.path,
@@ -763,6 +789,17 @@ func (cq *CompanyQuery) WithFiles(opts ...func(*FileQuery)) *CompanyQuery {
 		opt(query)
 	}
 	cq.withFiles = query
+	return cq
+}
+
+// WithMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to
+// the "memberSignupTokens" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithMemberSignupTokens(opts ...func(*MemberSignupTokenQuery)) *CompanyQuery {
+	query := (&MemberSignupTokenClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withMemberSignupTokens = query
 	return cq
 }
 
@@ -966,13 +1003,14 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [17]bool{
+		loadedTypes = [18]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
 			cq.withDocuments != nil,
 			cq.withEmployees != nil,
 			cq.withFiles != nil,
+			cq.withMemberSignupTokens != nil,
 			cq.withProducts != nil,
 			cq.withProjects != nil,
 			cq.withPayables != nil,
@@ -1052,6 +1090,15 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadFiles(ctx, query, nodes,
 			func(n *Company) { n.Edges.Files = []*File{} },
 			func(n *Company, e *File) { n.Edges.Files = append(n.Edges.Files, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := cq.withMemberSignupTokens; query != nil {
+		if err := cq.loadMemberSignupTokens(ctx, query, nodes,
+			func(n *Company) { n.Edges.MemberSignupTokens = []*MemberSignupToken{} },
+			func(n *Company, e *MemberSignupToken) {
+				n.Edges.MemberSignupTokens = append(n.Edges.MemberSignupTokens, e)
+			}); err != nil {
 			return nil, err
 		}
 	}
@@ -1170,6 +1217,13 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadFiles(ctx, query, nodes,
 			func(n *Company) { n.appendNamedFiles(name) },
 			func(n *Company, e *File) { n.appendNamedFiles(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedMemberSignupTokens {
+		if err := cq.loadMemberSignupTokens(ctx, query, nodes,
+			func(n *Company) { n.appendNamedMemberSignupTokens(name) },
+			func(n *Company, e *MemberSignupToken) { n.appendNamedMemberSignupTokens(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1432,6 +1486,37 @@ func (cq *CompanyQuery) loadFiles(ctx context.Context, query *FileQuery, nodes [
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_files" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CompanyQuery) loadMemberSignupTokens(ctx context.Context, query *MemberSignupTokenQuery, nodes []*Company, init func(*Company), assign func(*Company, *MemberSignupToken)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Company)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.MemberSignupToken(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(company.MemberSignupTokensColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.company_member_signup_tokens
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "company_member_signup_tokens" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "company_member_signup_tokens" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1984,6 +2069,20 @@ func (cq *CompanyQuery) WithNamedFiles(name string, opts ...func(*FileQuery)) *C
 		cq.withNamedFiles = make(map[string]*FileQuery)
 	}
 	cq.withNamedFiles[name] = query
+	return cq
+}
+
+// WithNamedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to the "memberSignupTokens"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CompanyQuery) WithNamedMemberSignupTokens(name string, opts ...func(*MemberSignupTokenQuery)) *CompanyQuery {
+	query := (&MemberSignupTokenClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedMemberSignupTokens == nil {
+		cq.withNamedMemberSignupTokens = make(map[string]*MemberSignupTokenQuery)
+	}
+	cq.withNamedMemberSignupTokens[name] = query
 	return cq
 }
 

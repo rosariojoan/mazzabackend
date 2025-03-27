@@ -21,7 +21,7 @@ func Logout(ctx *context.Context) error {
 	if err == nil {
 		return fmt.Errorf("unauthorized")
 	}
-	currentUser, _, _ := u.GetSession(ctx)
+	currentUser, _ := u.GetSession(ctx)
 	if currentUser == nil {
 		return fmt.Errorf("unauthorized")
 	}

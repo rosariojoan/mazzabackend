@@ -27,6 +27,12 @@ func (urc *UserRoleCreate) SetRole(u userrole.Role) *UserRoleCreate {
 	return urc
 }
 
+// SetNotes sets the "notes" field.
+func (urc *UserRoleCreate) SetNotes(s string) *UserRoleCreate {
+	urc.mutation.SetNotes(s)
+	return urc
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (urc *UserRoleCreate) SetCompanyID(id int) *UserRoleCreate {
 	urc.mutation.SetCompanyID(id)
@@ -46,19 +52,23 @@ func (urc *UserRoleCreate) SetCompany(c *Company) *UserRoleCreate {
 	return urc.SetCompanyID(c.ID)
 }
 
-// AddUserIDs adds the "user" edge to the User entity by IDs.
-func (urc *UserRoleCreate) AddUserIDs(ids ...int) *UserRoleCreate {
-	urc.mutation.AddUserIDs(ids...)
+// SetUserID sets the "user" edge to the User entity by ID.
+func (urc *UserRoleCreate) SetUserID(id int) *UserRoleCreate {
+	urc.mutation.SetUserID(id)
 	return urc
 }
 
-// AddUser adds the "user" edges to the User entity.
-func (urc *UserRoleCreate) AddUser(u ...*User) *UserRoleCreate {
-	ids := make([]int, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (urc *UserRoleCreate) SetNillableUserID(id *int) *UserRoleCreate {
+	if id != nil {
+		urc = urc.SetUserID(*id)
 	}
-	return urc.AddUserIDs(ids...)
+	return urc
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (urc *UserRoleCreate) SetUser(u *User) *UserRoleCreate {
+	return urc.SetUserID(u.ID)
 }
 
 // Mutation returns the UserRoleMutation object of the builder.
@@ -103,6 +113,14 @@ func (urc *UserRoleCreate) check() error {
 			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "UserRole.role": %w`, err)}
 		}
 	}
+	if _, ok := urc.mutation.Notes(); !ok {
+		return &ValidationError{Name: "notes", err: errors.New(`generated: missing required field "UserRole.notes"`)}
+	}
+	if v, ok := urc.mutation.Notes(); ok {
+		if err := userrole.NotesValidator(v); err != nil {
+			return &ValidationError{Name: "notes", err: fmt.Errorf(`generated: validator failed for field "UserRole.notes": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -133,6 +151,10 @@ func (urc *UserRoleCreate) createSpec() (*UserRole, *sqlgraph.CreateSpec) {
 		_spec.SetField(userrole.FieldRole, field.TypeEnum, value)
 		_node.Role = value
 	}
+	if value, ok := urc.mutation.Notes(); ok {
+		_spec.SetField(userrole.FieldNotes, field.TypeString, value)
+		_node.Notes = &value
+	}
 	if nodes := urc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -152,10 +174,10 @@ func (urc *UserRoleCreate) createSpec() (*UserRole, *sqlgraph.CreateSpec) {
 	}
 	if nodes := urc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   userrole.UserTable,
-			Columns: userrole.UserPrimaryKey,
+			Columns: []string{userrole.UserColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -164,6 +186,7 @@ func (urc *UserRoleCreate) createSpec() (*UserRole, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_node.user_assigned_roles = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

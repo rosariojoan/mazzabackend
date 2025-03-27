@@ -17,8 +17,9 @@ import (
 // Create company and a new user. Associate the new company with the new user.
 func Signup(ctx *gin.Context) {
 	var body struct {
-		Company ent.CreateCompanyInput
-		User    ent.CreateUserInput
+		Company   ent.CreateCompanyInput
+		User      ent.CreateUserInput
+		RoleNotes *string
 	}
 
 	tx, err := inits.Client.Tx(ctx)
@@ -40,7 +41,7 @@ func Signup(ctx *gin.Context) {
 	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
 	// 	return
 	// }
-	
+
 	// body.User.Password = pwdHash
 	body.Company.LastEntryDate = utils.StartOfYear(time.Now())
 	trueValue := true
@@ -54,12 +55,13 @@ func Signup(ctx *gin.Context) {
 		return
 	}
 
-	body.User.CompanyIDs = append(body.User.CompanyIDs, newCompany.ID)
+	// body.User.CompanyIDs = append(body.User.CompanyIDs, newCompany.ID)
 	stock := 0
 	_, err = newCompany.Update().AddUsers(
-		tx.User.Create().SetInput(body.User).AddAssignedRoles(
+		tx.User.Create().SetInput(body.User).SetActive(true).AddAssignedRoles(
 			tx.UserRole.Create().SetInput(ent.CreateUserRoleInput{
-				Role:      userrole.RoleAdmin,
+				Role:      userrole.RoleADMIN,
+				Notes:     *body.RoleNotes,
 				CompanyID: &newCompany.ID,
 			}).SaveX(ctx),
 		).SetEmployee(

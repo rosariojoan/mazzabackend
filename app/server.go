@@ -53,6 +53,8 @@ func main() {
 	authRouter := router.Group("/account")
 	{
 		authRouter.POST("/signup", auth.Signup)
+		authRouter.POST("/signup-invited-user", auth.SignupInvitedUser)
+		authRouter.POST("/verify-invitation-token", auth.VerifyMemberInvitationToken)
 		authRouter.POST("/login", auth.Login)
 		authRouter.POST("/forgot-password")
 		authRouter.POST("/verify-password")

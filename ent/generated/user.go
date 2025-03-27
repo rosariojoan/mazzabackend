@@ -29,19 +29,27 @@ type User struct {
 	// FcmToken holds the value of the "fcmToken" field.
 	FcmToken *string `json:"-"`
 	// Email holds the value of the "email" field.
-	Email *string `json:"email,omitempty"`
+	Email string `json:"email,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Address holds the value of the "address" field.
+	Address *string `json:"address,omitempty"`
+	// Avatar holds the value of the "avatar" field.
+	Avatar *string `json:"avatar,omitempty"`
+	// PhotoURL holds the value of the "photoURL" field.
+	PhotoURL *string `json:"photoURL,omitempty"`
+	// Department holds the value of the "department" field.
+	Department *string `json:"department,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone *string `json:"phone,omitempty"`
 	// Birthdate holds the value of the "birthdate" field.
 	Birthdate *time.Time `json:"birthdate,omitempty"`
+	// It can be the last time the user opened the app and synced with the backend.
+	LastLogin *time.Time `json:"lastLogin,omitempty"`
 	// Gender holds the value of the "gender" field.
 	Gender user.Gender `json:"gender,omitempty"`
-	// Disabled holds the value of the "disabled" field.
-	Disabled *bool `json:"disabled,omitempty"`
-	// NotVerified holds the value of the "notVerified" field.
-	NotVerified *bool `json:"notVerified,omitempty"`
+	// Active holds the value of the "active" field.
+	Active *bool `json:"active,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges             UserEdges `json:"edges"`
@@ -55,17 +63,19 @@ type UserEdges struct {
 	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
 	// Company holds the value of the company edge.
 	Company []*Company `json:"company,omitempty"`
-	// a user should be assigned to at least one role in the company
+	// a user should be assigned to only one role in the company
 	AssignedRoles []*UserRole `json:"assignedRoles,omitempty"`
 	// Subordinates holds the value of the subordinates edge.
 	Subordinates []*User `json:"subordinates,omitempty"`
 	// Leader holds the value of the leader edge.
 	Leader *User `json:"leader,omitempty"`
+	// CreatedMemberSignupTokens holds the value of the createdMemberSignupTokens edge.
+	CreatedMemberSignupTokens []*MemberSignupToken `json:"createdMemberSignupTokens,omitempty"`
 	// Employee holds the value of the employee edge.
 	Employee *Employee `json:"employee,omitempty"`
-	// Represent the projects created by the user
+	// Represents the projects created by the user
 	CreatedProjects []*Project `json:"createdProjects,omitempty"`
-	// Represent the projects leadered or supervised by the user
+	// Represents the projects leadered or supervised by the user
 	LeaderedProjects []*Project `json:"leaderedProjects,omitempty"`
 	// These are the project tasks assigned to the user and he is responsible for them
 	AssignedProjectTasks []*ProjectTask `json:"assignedProjectTasks,omitempty"`
@@ -85,24 +95,25 @@ type UserEdges struct {
 	ApprovedDocuments []*CompanyDocument `json:"approvedDocuments,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [16]bool
+	loadedTypes [17]bool
 	// totalCount holds the count of the edges above.
-	totalCount [16]map[string]int
+	totalCount [17]map[string]int
 
-	namedAccountingEntries        map[string][]*AccountingEntry
-	namedCompany                  map[string][]*Company
-	namedAssignedRoles            map[string][]*UserRole
-	namedSubordinates             map[string][]*User
-	namedCreatedProjects          map[string][]*Project
-	namedLeaderedProjects         map[string][]*Project
-	namedAssignedProjectTasks     map[string][]*ProjectTask
-	namedParticipatedProjectTasks map[string][]*ProjectTask
-	namedCreatedTasks             map[string][]*ProjectTask
-	namedTokens                   map[string][]*Token
-	namedApprovedWorkShifts       map[string][]*Workshift
-	namedWorkShifts               map[string][]*Workshift
-	namedUploadedDocuments        map[string][]*CompanyDocument
-	namedApprovedDocuments        map[string][]*CompanyDocument
+	namedAccountingEntries         map[string][]*AccountingEntry
+	namedCompany                   map[string][]*Company
+	namedAssignedRoles             map[string][]*UserRole
+	namedSubordinates              map[string][]*User
+	namedCreatedMemberSignupTokens map[string][]*MemberSignupToken
+	namedCreatedProjects           map[string][]*Project
+	namedLeaderedProjects          map[string][]*Project
+	namedAssignedProjectTasks      map[string][]*ProjectTask
+	namedParticipatedProjectTasks  map[string][]*ProjectTask
+	namedCreatedTasks              map[string][]*ProjectTask
+	namedTokens                    map[string][]*Token
+	namedApprovedWorkShifts        map[string][]*Workshift
+	namedWorkShifts                map[string][]*Workshift
+	namedUploadedDocuments         map[string][]*CompanyDocument
+	namedApprovedDocuments         map[string][]*CompanyDocument
 }
 
 // AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
@@ -152,12 +163,21 @@ func (e UserEdges) LeaderOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "leader"}
 }
 
+// CreatedMemberSignupTokensOrErr returns the CreatedMemberSignupTokens value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CreatedMemberSignupTokensOrErr() ([]*MemberSignupToken, error) {
+	if e.loadedTypes[5] {
+		return e.CreatedMemberSignupTokens, nil
+	}
+	return nil, &NotLoadedError{edge: "createdMemberSignupTokens"}
+}
+
 // EmployeeOrErr returns the Employee value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
 func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 	if e.Employee != nil {
 		return e.Employee, nil
-	} else if e.loadedTypes[5] {
+	} else if e.loadedTypes[6] {
 		return nil, &NotFoundError{label: employee.Label}
 	}
 	return nil, &NotLoadedError{edge: "employee"}
@@ -166,7 +186,7 @@ func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 // CreatedProjectsOrErr returns the CreatedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[7] {
 		return e.CreatedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "createdProjects"}
@@ -175,7 +195,7 @@ func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
 // LeaderedProjectsOrErr returns the LeaderedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[8] {
 		return e.LeaderedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "leaderedProjects"}
@@ -184,7 +204,7 @@ func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
 // AssignedProjectTasksOrErr returns the AssignedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[9] {
 		return e.AssignedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "assignedProjectTasks"}
@@ -193,7 +213,7 @@ func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
 // ParticipatedProjectTasksOrErr returns the ParticipatedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[10] {
 		return e.ParticipatedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "participatedProjectTasks"}
@@ -202,7 +222,7 @@ func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
 // CreatedTasksOrErr returns the CreatedTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[10] {
+	if e.loadedTypes[11] {
 		return e.CreatedTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "createdTasks"}
@@ -211,7 +231,7 @@ func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[11] {
+	if e.loadedTypes[12] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -220,7 +240,7 @@ func (e UserEdges) TokensOrErr() ([]*Token, error) {
 // ApprovedWorkShiftsOrErr returns the ApprovedWorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[12] {
+	if e.loadedTypes[13] {
 		return e.ApprovedWorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "approvedWorkShifts"}
@@ -229,7 +249,7 @@ func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[14] {
 		return e.WorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "workShifts"}
@@ -238,7 +258,7 @@ func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 // UploadedDocumentsOrErr returns the UploadedDocuments value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
-	if e.loadedTypes[14] {
+	if e.loadedTypes[15] {
 		return e.UploadedDocuments, nil
 	}
 	return nil, &NotLoadedError{edge: "uploadedDocuments"}
@@ -247,7 +267,7 @@ func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
 // ApprovedDocumentsOrErr returns the ApprovedDocuments value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ApprovedDocumentsOrErr() ([]*CompanyDocument, error) {
-	if e.loadedTypes[15] {
+	if e.loadedTypes[16] {
 		return e.ApprovedDocuments, nil
 	}
 	return nil, &NotLoadedError{edge: "approvedDocuments"}
@@ -258,13 +278,13 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldDisabled, user.FieldNotVerified:
+		case user.FieldActive:
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldEmail, user.FieldName, user.FieldPhone, user.FieldGender:
+		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldEmail, user.FieldName, user.FieldAddress, user.FieldAvatar, user.FieldPhotoURL, user.FieldDepartment, user.FieldPhone, user.FieldGender:
 			values[i] = new(sql.NullString)
-		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldBirthdate:
+		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldBirthdate, user.FieldLastLogin:
 			values[i] = new(sql.NullTime)
 		case user.ForeignKeys[0]: // user_subordinates
 			values[i] = new(sql.NullInt64)
@@ -325,14 +345,41 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				u.Email = new(string)
-				*u.Email = value.String
+				u.Email = value.String
 			}
 		case user.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				u.Name = value.String
+			}
+		case user.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				u.Address = new(string)
+				*u.Address = value.String
+			}
+		case user.FieldAvatar:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field avatar", values[i])
+			} else if value.Valid {
+				u.Avatar = new(string)
+				*u.Avatar = value.String
+			}
+		case user.FieldPhotoURL:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field photoURL", values[i])
+			} else if value.Valid {
+				u.PhotoURL = new(string)
+				*u.PhotoURL = value.String
+			}
+		case user.FieldDepartment:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field department", values[i])
+			} else if value.Valid {
+				u.Department = new(string)
+				*u.Department = value.String
 			}
 		case user.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -348,25 +395,25 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.Birthdate = new(time.Time)
 				*u.Birthdate = value.Time
 			}
+		case user.FieldLastLogin:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field lastLogin", values[i])
+			} else if value.Valid {
+				u.LastLogin = new(time.Time)
+				*u.LastLogin = value.Time
+			}
 		case user.FieldGender:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field gender", values[i])
 			} else if value.Valid {
 				u.Gender = user.Gender(value.String)
 			}
-		case user.FieldDisabled:
+		case user.FieldActive:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field disabled", values[i])
+				return fmt.Errorf("unexpected type %T for field active", values[i])
 			} else if value.Valid {
-				u.Disabled = new(bool)
-				*u.Disabled = value.Bool
-			}
-		case user.FieldNotVerified:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field notVerified", values[i])
-			} else if value.Valid {
-				u.NotVerified = new(bool)
-				*u.NotVerified = value.Bool
+				u.Active = new(bool)
+				*u.Active = value.Bool
 			}
 		case user.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -411,6 +458,11 @@ func (u *User) QuerySubordinates() *UserQuery {
 // QueryLeader queries the "leader" edge of the User entity.
 func (u *User) QueryLeader() *UserQuery {
 	return NewUserClient(u.config).QueryLeader(u)
+}
+
+// QueryCreatedMemberSignupTokens queries the "createdMemberSignupTokens" edge of the User entity.
+func (u *User) QueryCreatedMemberSignupTokens() *MemberSignupTokenQuery {
+	return NewUserClient(u.config).QueryCreatedMemberSignupTokens(u)
 }
 
 // QueryEmployee queries the "employee" edge of the User entity.
@@ -506,13 +558,31 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("fcmToken=<sensitive>")
 	builder.WriteString(", ")
-	if v := u.Email; v != nil {
-		builder.WriteString("email=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("email=")
+	builder.WriteString(u.Email)
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(u.Name)
+	builder.WriteString(", ")
+	if v := u.Address; v != nil {
+		builder.WriteString("address=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := u.Avatar; v != nil {
+		builder.WriteString("avatar=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := u.PhotoURL; v != nil {
+		builder.WriteString("photoURL=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := u.Department; v != nil {
+		builder.WriteString("department=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	if v := u.Phone; v != nil {
 		builder.WriteString("phone=")
@@ -524,16 +594,16 @@ func (u *User) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
+	if v := u.LastLogin; v != nil {
+		builder.WriteString("lastLogin=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
 	builder.WriteString("gender=")
 	builder.WriteString(fmt.Sprintf("%v", u.Gender))
 	builder.WriteString(", ")
-	if v := u.Disabled; v != nil {
-		builder.WriteString("disabled=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
-	builder.WriteString(", ")
-	if v := u.NotVerified; v != nil {
-		builder.WriteString("notVerified=")
+	if v := u.Active; v != nil {
+		builder.WriteString("active=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteByte(')')
@@ -633,6 +703,30 @@ func (u *User) appendNamedSubordinates(name string, edges ...*User) {
 		u.Edges.namedSubordinates[name] = []*User{}
 	} else {
 		u.Edges.namedSubordinates[name] = append(u.Edges.namedSubordinates[name], edges...)
+	}
+}
+
+// NamedCreatedMemberSignupTokens returns the CreatedMemberSignupTokens named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedCreatedMemberSignupTokens(name string) ([]*MemberSignupToken, error) {
+	if u.Edges.namedCreatedMemberSignupTokens == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedCreatedMemberSignupTokens[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedCreatedMemberSignupTokens(name string, edges ...*MemberSignupToken) {
+	if u.Edges.namedCreatedMemberSignupTokens == nil {
+		u.Edges.namedCreatedMemberSignupTokens = make(map[string][]*MemberSignupToken)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedCreatedMemberSignupTokens[name] = []*MemberSignupToken{}
+	} else {
+		u.Edges.namedCreatedMemberSignupTokens[name] = append(u.Edges.namedCreatedMemberSignupTokens[name], edges...)
 	}
 }
 

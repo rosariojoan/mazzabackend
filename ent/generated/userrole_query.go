@@ -4,7 +4,6 @@ package generated
 
 import (
 	"context"
-	"database/sql/driver"
 	"fmt"
 	"math"
 	"mazza/ent/generated/company"
@@ -21,16 +20,15 @@ import (
 // UserRoleQuery is the builder for querying UserRole entities.
 type UserRoleQuery struct {
 	config
-	ctx           *QueryContext
-	order         []userrole.OrderOption
-	inters        []Interceptor
-	predicates    []predicate.UserRole
-	withCompany   *CompanyQuery
-	withUser      *UserQuery
-	withFKs       bool
-	loadTotal     []func(context.Context, []*UserRole) error
-	modifiers     []func(*sql.Selector)
-	withNamedUser map[string]*UserQuery
+	ctx         *QueryContext
+	order       []userrole.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.UserRole
+	withCompany *CompanyQuery
+	withUser    *UserQuery
+	withFKs     bool
+	loadTotal   []func(context.Context, []*UserRole) error
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -103,7 +101,7 @@ func (urq *UserRoleQuery) QueryUser() *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(userrole.Table, userrole.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, userrole.UserTable, userrole.UserPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2O, true, userrole.UserTable, userrole.UserColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(urq.driver.Dialect(), step)
 		return fromU, nil
@@ -418,7 +416,7 @@ func (urq *UserRoleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Us
 			urq.withUser != nil,
 		}
 	)
-	if urq.withCompany != nil {
+	if urq.withCompany != nil || urq.withUser != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -452,16 +450,8 @@ func (urq *UserRoleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Us
 		}
 	}
 	if query := urq.withUser; query != nil {
-		if err := urq.loadUser(ctx, query, nodes,
-			func(n *UserRole) { n.Edges.User = []*User{} },
-			func(n *UserRole, e *User) { n.Edges.User = append(n.Edges.User, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range urq.withNamedUser {
-		if err := urq.loadUser(ctx, query, nodes,
-			func(n *UserRole) { n.appendNamedUser(name) },
-			func(n *UserRole, e *User) { n.appendNamedUser(name, e) }); err != nil {
+		if err := urq.loadUser(ctx, query, nodes, nil,
+			func(n *UserRole, e *User) { n.Edges.User = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -506,62 +496,33 @@ func (urq *UserRoleQuery) loadCompany(ctx context.Context, query *CompanyQuery, 
 	return nil
 }
 func (urq *UserRoleQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*UserRole, init func(*UserRole), assign func(*UserRole, *User)) error {
-	edgeIDs := make([]driver.Value, len(nodes))
-	byID := make(map[int]*UserRole)
-	nids := make(map[int]map[*UserRole]struct{})
-	for i, node := range nodes {
-		edgeIDs[i] = node.ID
-		byID[node.ID] = node
-		if init != nil {
-			init(node)
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*UserRole)
+	for i := range nodes {
+		if nodes[i].user_assigned_roles == nil {
+			continue
 		}
+		fk := *nodes[i].user_assigned_roles
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(userrole.UserTable)
-		s.Join(joinT).On(s.C(user.FieldID), joinT.C(userrole.UserPrimaryKey[0]))
-		s.Where(sql.InValues(joinT.C(userrole.UserPrimaryKey[1]), edgeIDs...))
-		columns := s.SelectedColumns()
-		s.Select(joinT.C(userrole.UserPrimaryKey[1]))
-		s.AppendSelect(columns...)
-		s.SetDistinct(false)
-	})
-	if err := query.prepareQuery(ctx); err != nil {
-		return err
+	if len(ids) == 0 {
+		return nil
 	}
-	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
-		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
-			assign := spec.Assign
-			values := spec.ScanValues
-			spec.ScanValues = func(columns []string) ([]any, error) {
-				values, err := values(columns[1:])
-				if err != nil {
-					return nil, err
-				}
-				return append([]any{new(sql.NullInt64)}, values...), nil
-			}
-			spec.Assign = func(columns []string, values []any) error {
-				outValue := int(values[0].(*sql.NullInt64).Int64)
-				inValue := int(values[1].(*sql.NullInt64).Int64)
-				if nids[inValue] == nil {
-					nids[inValue] = map[*UserRole]struct{}{byID[outValue]: {}}
-					return assign(columns[1:], values[1:])
-				}
-				nids[inValue][byID[outValue]] = struct{}{}
-				return nil
-			}
-		})
-	})
-	neighbors, err := withInterceptors[[]*User](ctx, query, qr, query.inters)
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		nodes, ok := nids[n.ID]
+		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "user" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "user_assigned_roles" returned %v`, n.ID)
 		}
-		for kn := range nodes {
-			assign(kn, n)
+		for i := range nodes {
+			assign(nodes[i], n)
 		}
 	}
 	return nil
@@ -658,20 +619,6 @@ func (urq *UserRoleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (urq *UserRoleQuery) Modify(modifiers ...func(s *sql.Selector)) *UserRoleSelect {
 	urq.modifiers = append(urq.modifiers, modifiers...)
 	return urq.Select()
-}
-
-// WithNamedUser tells the query-builder to eager-load the nodes that are connected to the "user"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (urq *UserRoleQuery) WithNamedUser(name string, opts ...func(*UserQuery)) *UserRoleQuery {
-	query := (&UserClient{config: urq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if urq.withNamedUser == nil {
-		urq.withNamedUser = make(map[string]*UserQuery)
-	}
-	urq.withNamedUser[name] = query
-	return urq
 }
 
 // UserRoleGroupBy is the group-by builder for UserRole entities.

@@ -18,6 +18,8 @@ const (
 	FieldID = "id"
 	// FieldRole holds the string denoting the role field in the database.
 	FieldRole = "role"
+	// FieldNotes holds the string denoting the notes field in the database.
+	FieldNotes = "notes"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
@@ -31,30 +33,28 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_available_roles"
-	// UserTable is the table that holds the user relation/edge. The primary key declared below.
-	UserTable = "user_assignedRoles"
+	// UserTable is the table that holds the user relation/edge.
+	UserTable = "user_roles"
 	// UserInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	UserInverseTable = "users"
+	// UserColumn is the table column denoting the user relation/edge.
+	UserColumn = "user_assigned_roles"
 )
 
 // Columns holds all SQL columns for userrole fields.
 var Columns = []string{
 	FieldID,
 	FieldRole,
+	FieldNotes,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "user_roles"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_available_roles",
+	"user_assigned_roles",
 }
-
-var (
-	// UserPrimaryKey and UserColumn2 are the table columns denoting the
-	// primary key for the user relation (M2M).
-	UserPrimaryKey = []string{"user_id", "user_role_id"}
-)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -71,16 +71,21 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+var (
+	// NotesValidator is a validator for the "notes" field. It is called by the builders before save.
+	NotesValidator func(string) error
+)
+
 // Role defines the type for the "role" enum field.
 type Role string
 
 // Role values.
 const (
-	RoleSuperuser  Role = "superuser"
-	RoleAdmin      Role = "admin"
-	RoleAccountant Role = "accountant"
-	RoleAuditor    Role = "auditor"
-	RoleStaff      Role = "staff"
+	RoleSUPERUSER  Role = "SUPERUSER"
+	RoleADMIN      Role = "ADMIN"
+	RoleACCOUNTANT Role = "ACCOUNTANT"
+	RoleAUDITOR    Role = "AUDITOR"
+	RoleSTAFF      Role = "STAFF"
 )
 
 func (r Role) String() string {
@@ -90,7 +95,7 @@ func (r Role) String() string {
 // RoleValidator is a validator for the "role" field enum values. It is called by the builders before save.
 func RoleValidator(r Role) error {
 	switch r {
-	case RoleSuperuser, RoleAdmin, RoleAccountant, RoleAuditor, RoleStaff:
+	case RoleSUPERUSER, RoleADMIN, RoleACCOUNTANT, RoleAUDITOR, RoleSTAFF:
 		return nil
 	default:
 		return fmt.Errorf("userrole: invalid enum value for role field: %q", r)
@@ -110,6 +115,11 @@ func ByRole(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRole, opts...).ToFunc()
 }
 
+// ByNotes orders the results by the notes field.
+func ByNotes(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNotes, opts...).ToFunc()
+}
+
 // ByCompanyField orders the results by company field.
 func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -117,17 +127,10 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByUserCount orders the results by user count.
-func ByUserCount(opts ...sql.OrderTermOption) OrderOption {
+// ByUserField orders the results by user field.
+func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newUserStep(), opts...)
-	}
-}
-
-// ByUser orders the results by user terms.
-func ByUser(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newUserStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
 	}
 }
 func newCompanyStep() *sqlgraph.Step {
@@ -141,7 +144,7 @@ func newUserStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(UserInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, true, UserTable, UserPrimaryKey...),
+		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
 	)
 }
 

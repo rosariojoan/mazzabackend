@@ -96,6 +96,18 @@ func (c *Company) Files(ctx context.Context) (result []*File, err error) {
 	return result, err
 }
 
+func (c *Company) MemberSignupTokens(ctx context.Context) (result []*MemberSignupToken, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedMemberSignupTokens(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.MemberSignupTokensOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryMemberSignupTokens().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) Products(ctx context.Context) (result []*Product, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedProducts(graphql.GetFieldContext(ctx).Field.Alias)
@@ -288,6 +300,22 @@ func (f *File) Company(ctx context.Context) (*Company, error) {
 	result, err := f.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
 		result, err = f.QueryCompany().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (mst *MemberSignupToken) Company(ctx context.Context) (*Company, error) {
+	result, err := mst.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = mst.QueryCompany().Only(ctx)
+	}
+	return result, err
+}
+
+func (mst *MemberSignupToken) CreatedBy(ctx context.Context) (*User, error) {
+	result, err := mst.Edges.CreatedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = mst.QueryCreatedBy().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
@@ -520,6 +548,18 @@ func (u *User) Leader(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
+func (u *User) CreatedMemberSignupTokens(ctx context.Context) (result []*MemberSignupToken, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedCreatedMemberSignupTokens(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.CreatedMemberSignupTokensOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryCreatedMemberSignupTokens().All(ctx)
+	}
+	return result, err
+}
+
 func (u *User) Employee(ctx context.Context) (*Employee, error) {
 	result, err := u.Edges.EmployeeOrErr()
 	if IsNotLoaded(err) {
@@ -656,16 +696,12 @@ func (ur *UserRole) Company(ctx context.Context) (*Company, error) {
 	return result, MaskNotFound(err)
 }
 
-func (ur *UserRole) User(ctx context.Context) (result []*User, err error) {
-	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
-		result, err = ur.NamedUser(graphql.GetFieldContext(ctx).Field.Alias)
-	} else {
-		result, err = ur.Edges.UserOrErr()
-	}
+func (ur *UserRole) User(ctx context.Context) (*User, error) {
+	result, err := ur.Edges.UserOrErr()
 	if IsNotLoaded(err) {
-		result, err = ur.QueryUser().All(ctx)
+		result, err = ur.QueryUser().Only(ctx)
 	}
-	return result, err
+	return result, MaskNotFound(err)
 }
 
 func (w *Workshift) Company(ctx context.Context) (*Company, error) {

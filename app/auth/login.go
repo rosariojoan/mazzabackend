@@ -5,7 +5,6 @@ import (
 	"mazza/app/utils"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/company"
-	"mazza/ent/generated/employee"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 
@@ -52,9 +51,6 @@ func Login(ctx *gin.Context) {
 			user.DeletedAtIsNil(),
 		)).
 		// WithAssignedRoles().
-		WithEmployee(func(empQ *ent.EmployeeQuery) {
-			empQ.Select(employee.FieldID, employee.FieldName) // only these two fields are selected from the employee edge
-		}).
 		First(ctx)
 
 	if err != nil {
@@ -97,12 +93,12 @@ func Login(ctx *gin.Context) {
 	}
 
 	// Generate JWT token
-	duration := time.Hour * 24 * 30
+	duration := time.Hour * 24 * 30 // valid for 30 days
 	payload := jwt.MapClaims{
-		"id":         currentUser.ID,
-		"companyID":  activeCompanyID,
-		"employeeID": currentUser.Edges.Employee.ID,
+		"id":        currentUser.ID,
+		"companyID": activeCompanyID,
 	}
+
 	token, err := utils.GenerateJWTToken(duration, payload)
 	if err != nil {
 		fmt.Println("err:", err)
@@ -121,12 +117,17 @@ func Login(ctx *gin.Context) {
 		ttl = 2592000 // 30 days
 	}
 
-	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.IDEQ(activeCompanyID))).All(ctx)
+	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.ID(activeCompanyID))).All(ctx)
 	if err != nil {
 		fmt.Println("roles err:", err)
 		roles = []*ent.UserRole{}
 		// ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 		// return
+	}
+
+	currentUser, err = currentUser.Update().SetLastLogin(time.Now()).Save(ctx)
+	if err != nil {
+		fmt.Println("Login user SetLastLogin update err:", err)
 	}
 
 	response := LoginOutput{

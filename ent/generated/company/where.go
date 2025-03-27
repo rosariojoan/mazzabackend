@@ -125,9 +125,14 @@ func LastInvoiceNumber(v int32) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastInvoiceNumber, v))
 }
 
-// Logo applies equality check predicate on the "logo" field. It's identical to LogoEQ.
-func Logo(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldLogo, v))
+// LogoURL applies equality check predicate on the "logoURL" field. It's identical to LogoURLEQ.
+func LogoURL(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
+}
+
+// LogoStorageURI applies equality check predicate on the "logoStorageURI" field. It's identical to LogoStorageURIEQ.
+func LogoStorageURI(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLogoStorageURI, v))
 }
 
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
@@ -143,11 +148,6 @@ func NumberOfEmployees(v int32) predicate.Company {
 // Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
 func Phone(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldPhone, v))
-}
-
-// Sector applies equality check predicate on the "sector" field. It's identical to SectorEQ.
-func Sector(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldSector, v))
 }
 
 // TaxId applies equality check predicate on the "taxId" field. It's identical to TaxIdEQ.
@@ -1000,79 +1000,154 @@ func LastInvoiceNumberNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLastInvoiceNumber))
 }
 
-// LogoEQ applies the EQ predicate on the "logo" field.
-func LogoEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldLogo, v))
+// LogoURLEQ applies the EQ predicate on the "logoURL" field.
+func LogoURLEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
 }
 
-// LogoNEQ applies the NEQ predicate on the "logo" field.
-func LogoNEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldLogo, v))
+// LogoURLNEQ applies the NEQ predicate on the "logoURL" field.
+func LogoURLNEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldLogoURL, v))
 }
 
-// LogoIn applies the In predicate on the "logo" field.
-func LogoIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldLogo, vs...))
+// LogoURLIn applies the In predicate on the "logoURL" field.
+func LogoURLIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldLogoURL, vs...))
 }
 
-// LogoNotIn applies the NotIn predicate on the "logo" field.
-func LogoNotIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldLogo, vs...))
+// LogoURLNotIn applies the NotIn predicate on the "logoURL" field.
+func LogoURLNotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldLogoURL, vs...))
 }
 
-// LogoGT applies the GT predicate on the "logo" field.
-func LogoGT(v string) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldLogo, v))
+// LogoURLGT applies the GT predicate on the "logoURL" field.
+func LogoURLGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldLogoURL, v))
 }
 
-// LogoGTE applies the GTE predicate on the "logo" field.
-func LogoGTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldLogo, v))
+// LogoURLGTE applies the GTE predicate on the "logoURL" field.
+func LogoURLGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldLogoURL, v))
 }
 
-// LogoLT applies the LT predicate on the "logo" field.
-func LogoLT(v string) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldLogo, v))
+// LogoURLLT applies the LT predicate on the "logoURL" field.
+func LogoURLLT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldLogoURL, v))
 }
 
-// LogoLTE applies the LTE predicate on the "logo" field.
-func LogoLTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldLogo, v))
+// LogoURLLTE applies the LTE predicate on the "logoURL" field.
+func LogoURLLTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldLogoURL, v))
 }
 
-// LogoContains applies the Contains predicate on the "logo" field.
-func LogoContains(v string) predicate.Company {
-	return predicate.Company(sql.FieldContains(FieldLogo, v))
+// LogoURLContains applies the Contains predicate on the "logoURL" field.
+func LogoURLContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldLogoURL, v))
 }
 
-// LogoHasPrefix applies the HasPrefix predicate on the "logo" field.
-func LogoHasPrefix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasPrefix(FieldLogo, v))
+// LogoURLHasPrefix applies the HasPrefix predicate on the "logoURL" field.
+func LogoURLHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldLogoURL, v))
 }
 
-// LogoHasSuffix applies the HasSuffix predicate on the "logo" field.
-func LogoHasSuffix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasSuffix(FieldLogo, v))
+// LogoURLHasSuffix applies the HasSuffix predicate on the "logoURL" field.
+func LogoURLHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldLogoURL, v))
 }
 
-// LogoIsNil applies the IsNil predicate on the "logo" field.
-func LogoIsNil() predicate.Company {
-	return predicate.Company(sql.FieldIsNull(FieldLogo))
+// LogoURLIsNil applies the IsNil predicate on the "logoURL" field.
+func LogoURLIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldLogoURL))
 }
 
-// LogoNotNil applies the NotNil predicate on the "logo" field.
-func LogoNotNil() predicate.Company {
-	return predicate.Company(sql.FieldNotNull(FieldLogo))
+// LogoURLNotNil applies the NotNil predicate on the "logoURL" field.
+func LogoURLNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldLogoURL))
 }
 
-// LogoEqualFold applies the EqualFold predicate on the "logo" field.
-func LogoEqualFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldEqualFold(FieldLogo, v))
+// LogoURLEqualFold applies the EqualFold predicate on the "logoURL" field.
+func LogoURLEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldLogoURL, v))
 }
 
-// LogoContainsFold applies the ContainsFold predicate on the "logo" field.
-func LogoContainsFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldContainsFold(FieldLogo, v))
+// LogoURLContainsFold applies the ContainsFold predicate on the "logoURL" field.
+func LogoURLContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldLogoURL, v))
+}
+
+// LogoStorageURIEQ applies the EQ predicate on the "logoStorageURI" field.
+func LogoStorageURIEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURINEQ applies the NEQ predicate on the "logoStorageURI" field.
+func LogoStorageURINEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIIn applies the In predicate on the "logoStorageURI" field.
+func LogoStorageURIIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldLogoStorageURI, vs...))
+}
+
+// LogoStorageURINotIn applies the NotIn predicate on the "logoStorageURI" field.
+func LogoStorageURINotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldLogoStorageURI, vs...))
+}
+
+// LogoStorageURIGT applies the GT predicate on the "logoStorageURI" field.
+func LogoStorageURIGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIGTE applies the GTE predicate on the "logoStorageURI" field.
+func LogoStorageURIGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURILT applies the LT predicate on the "logoStorageURI" field.
+func LogoStorageURILT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURILTE applies the LTE predicate on the "logoStorageURI" field.
+func LogoStorageURILTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIContains applies the Contains predicate on the "logoStorageURI" field.
+func LogoStorageURIContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIHasPrefix applies the HasPrefix predicate on the "logoStorageURI" field.
+func LogoStorageURIHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIHasSuffix applies the HasSuffix predicate on the "logoStorageURI" field.
+func LogoStorageURIHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIIsNil applies the IsNil predicate on the "logoStorageURI" field.
+func LogoStorageURIIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldLogoStorageURI))
+}
+
+// LogoStorageURINotNil applies the NotNil predicate on the "logoStorageURI" field.
+func LogoStorageURINotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldLogoStorageURI))
+}
+
+// LogoStorageURIEqualFold applies the EqualFold predicate on the "logoStorageURI" field.
+func LogoStorageURIEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldLogoStorageURI, v))
+}
+
+// LogoStorageURIContainsFold applies the ContainsFold predicate on the "logoStorageURI" field.
+func LogoStorageURIContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldLogoStorageURI, v))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -1253,81 +1328,6 @@ func PhoneEqualFold(v string) predicate.Company {
 // PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
 func PhoneContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldPhone, v))
-}
-
-// SectorEQ applies the EQ predicate on the "sector" field.
-func SectorEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldSector, v))
-}
-
-// SectorNEQ applies the NEQ predicate on the "sector" field.
-func SectorNEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldSector, v))
-}
-
-// SectorIn applies the In predicate on the "sector" field.
-func SectorIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldSector, vs...))
-}
-
-// SectorNotIn applies the NotIn predicate on the "sector" field.
-func SectorNotIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldSector, vs...))
-}
-
-// SectorGT applies the GT predicate on the "sector" field.
-func SectorGT(v string) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldSector, v))
-}
-
-// SectorGTE applies the GTE predicate on the "sector" field.
-func SectorGTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldSector, v))
-}
-
-// SectorLT applies the LT predicate on the "sector" field.
-func SectorLT(v string) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldSector, v))
-}
-
-// SectorLTE applies the LTE predicate on the "sector" field.
-func SectorLTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldSector, v))
-}
-
-// SectorContains applies the Contains predicate on the "sector" field.
-func SectorContains(v string) predicate.Company {
-	return predicate.Company(sql.FieldContains(FieldSector, v))
-}
-
-// SectorHasPrefix applies the HasPrefix predicate on the "sector" field.
-func SectorHasPrefix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasPrefix(FieldSector, v))
-}
-
-// SectorHasSuffix applies the HasSuffix predicate on the "sector" field.
-func SectorHasSuffix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasSuffix(FieldSector, v))
-}
-
-// SectorIsNil applies the IsNil predicate on the "sector" field.
-func SectorIsNil() predicate.Company {
-	return predicate.Company(sql.FieldIsNull(FieldSector))
-}
-
-// SectorNotNil applies the NotNil predicate on the "sector" field.
-func SectorNotNil() predicate.Company {
-	return predicate.Company(sql.FieldNotNull(FieldSector))
-}
-
-// SectorEqualFold applies the EqualFold predicate on the "sector" field.
-func SectorEqualFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldEqualFold(FieldSector, v))
-}
-
-// SectorContainsFold applies the ContainsFold predicate on the "sector" field.
-func SectorContainsFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldContainsFold(FieldSector, v))
 }
 
 // TaxIdEQ applies the EQ predicate on the "taxId" field.
@@ -1660,6 +1660,29 @@ func HasFiles() predicate.Company {
 func HasFilesWith(preds ...predicate.File) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newFilesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasMemberSignupTokens applies the HasEdge predicate on the "memberSignupTokens" edge.
+func HasMemberSignupTokens() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, MemberSignupTokensTable, MemberSignupTokensColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMemberSignupTokensWith applies the HasEdge predicate on the "memberSignupTokens" edge with a given conditions (other predicates).
+func HasMemberSignupTokensWith(preds ...predicate.MemberSignupToken) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newMemberSignupTokensStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

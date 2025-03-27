@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -199,16 +200,30 @@ func (cc *CompanyCreate) SetNillableLastInvoiceNumber(i *int32) *CompanyCreate {
 	return cc
 }
 
-// SetLogo sets the "logo" field.
-func (cc *CompanyCreate) SetLogo(s string) *CompanyCreate {
-	cc.mutation.SetLogo(s)
+// SetLogoURL sets the "logoURL" field.
+func (cc *CompanyCreate) SetLogoURL(s string) *CompanyCreate {
+	cc.mutation.SetLogoURL(s)
 	return cc
 }
 
-// SetNillableLogo sets the "logo" field if the given value is not nil.
-func (cc *CompanyCreate) SetNillableLogo(s *string) *CompanyCreate {
+// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableLogoURL(s *string) *CompanyCreate {
 	if s != nil {
-		cc.SetLogo(*s)
+		cc.SetLogoURL(*s)
+	}
+	return cc
+}
+
+// SetLogoStorageURI sets the "logoStorageURI" field.
+func (cc *CompanyCreate) SetLogoStorageURI(s string) *CompanyCreate {
+	cc.mutation.SetLogoStorageURI(s)
+	return cc
+}
+
+// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableLogoStorageURI(s *string) *CompanyCreate {
+	if s != nil {
+		cc.SetLogoStorageURI(*s)
 	}
 	return cc
 }
@@ -243,20 +258,6 @@ func (cc *CompanyCreate) SetPhone(s string) *CompanyCreate {
 func (cc *CompanyCreate) SetNillablePhone(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetPhone(*s)
-	}
-	return cc
-}
-
-// SetSector sets the "sector" field.
-func (cc *CompanyCreate) SetSector(s string) *CompanyCreate {
-	cc.mutation.SetSector(s)
-	return cc
-}
-
-// SetNillableSector sets the "sector" field if the given value is not nil.
-func (cc *CompanyCreate) SetNillableSector(s *string) *CompanyCreate {
-	if s != nil {
-		cc.SetSector(*s)
 	}
 	return cc
 }
@@ -397,6 +398,21 @@ func (cc *CompanyCreate) AddFiles(f ...*File) *CompanyCreate {
 		ids[i] = f[i].ID
 	}
 	return cc.AddFileIDs(ids...)
+}
+
+// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+func (cc *CompanyCreate) AddMemberSignupTokenIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddMemberSignupTokenIDs(ids...)
+	return cc
+}
+
+// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+func (cc *CompanyCreate) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyCreate {
+	ids := make([]int, len(m))
+	for i := range m {
+		ids[i] = m[i].ID
+	}
+	return cc.AddMemberSignupTokenIDs(ids...)
 }
 
 // AddProductIDs adds the "products" edge to the Product entity by IDs.
@@ -760,9 +776,13 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldLastInvoiceNumber, field.TypeInt32, value)
 		_node.LastInvoiceNumber = value
 	}
-	if value, ok := cc.mutation.Logo(); ok {
-		_spec.SetField(company.FieldLogo, field.TypeString, value)
-		_node.Logo = &value
+	if value, ok := cc.mutation.LogoURL(); ok {
+		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
+		_node.LogoURL = &value
+	}
+	if value, ok := cc.mutation.LogoStorageURI(); ok {
+		_spec.SetField(company.FieldLogoStorageURI, field.TypeString, value)
+		_node.LogoStorageURI = &value
 	}
 	if value, ok := cc.mutation.Name(); ok {
 		_spec.SetField(company.FieldName, field.TypeString, value)
@@ -775,10 +795,6 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Phone(); ok {
 		_spec.SetField(company.FieldPhone, field.TypeString, value)
 		_node.Phone = &value
-	}
-	if value, ok := cc.mutation.Sector(); ok {
-		_spec.SetField(company.FieldSector, field.TypeString, value)
-		_node.Sector = &value
 	}
 	if value, ok := cc.mutation.TaxId(); ok {
 		_spec.SetField(company.FieldTaxId, field.TypeString, value)
@@ -885,6 +901,22 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.MemberSignupTokensIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

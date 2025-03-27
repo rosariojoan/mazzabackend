@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"net/mail"
+
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
@@ -25,15 +27,24 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("firebaseUID").NotEmpty().Unique().Sensitive(),
 		field.String("fcmToken").Nillable().Optional().Sensitive(),
-		field.String("email").Nillable().Optional().Unique(),
+		field.String("email").NotEmpty().Unique().Immutable().Validate(func(s string) error {
+			_, err := mail.ParseAddress(s)
+			return err
+		}),
 		field.String("name").Annotations(entgql.OrderField("NAME")),
+		field.String("address").Nillable().Optional(),
+		field.String("avatar").Nillable().Optional(),
+		field.String("photoURL").Nillable().Optional(),
+		field.String("department").Nillable().Optional(),
 		field.String("phone").Nillable().Optional(),
 		field.Time("birthdate").Nillable().Optional(),
+		field.Time("lastLogin").Nillable().Optional().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)).
+			Comment("It can be the last time the user opened the app and synced with the backend."),
 		field.Enum("gender").Values("male", "female"),
+		field.Bool("active").Default(false).Nillable().Annotations(entgql.Skip(entgql.SkipMutationCreateInput)),
 		// field.String("password").Sensitive(),
 		// field.String("username").Unique().Annotations(entgql.OrderField("USERNAME")),
-		field.Bool("disabled").Nillable().Optional().Default(false),
-		field.Bool("notVerified").Nillable().Optional().Default(false),
 	}
 }
 
@@ -41,14 +52,15 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("accountingEntries", AccountingEntry.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
-		edge.From("company", Company.Type).Ref("users").Required(),
-		edge.To("assignedRoles", UserRole.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Comment("a user should be assigned to at least one role in the company"),
+		edge.From("company", Company.Type).Ref("users").Required().Annotations(entgql.Skip(entgql.SkipMutationCreateInput)),
+		edge.To("assignedRoles", UserRole.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Comment("a user should be assigned to only one role in the company"),
 		edge.To("subordinates", User.Type).Annotations(entsql.OnDelete(entsql.SetNull)), // an employee can be a leader of many employees
 		edge.From("leader", User.Type).Ref("subordinates").Unique(),                     // an employee can have only one leader
-		// edge.To("createdTasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Tasks created by this user"),
+		edge.To("createdMemberSignupTokens", MemberSignupToken.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+
 		edge.To("employee", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Unique(),
-		edge.To("createdProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represent the projects created by the user"),
-		edge.To("leaderedProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represent the projects leadered or supervised by the user"),
+		edge.To("createdProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represents the projects created by the user"),
+		edge.To("leaderedProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represents the projects leadered or supervised by the user"),
 		edge.To("assignedProjectTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("These are the project tasks assigned to the user and he is responsible for them"),
 		edge.To("participatedProjectTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("These are the project tasks in which the user is a member. E.g. a meeting"),
 		edge.To("createdTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Immutable().Comment("Represents the tasks created by a user"),

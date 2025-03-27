@@ -13,10 +13,19 @@ type UserRole struct {
 	ent.Schema
 }
 
+var userRoles = []string{
+	"SUPERUSER",
+	"ADMIN",
+	"ACCOUNTANT",
+	"AUDITOR",
+	"STAFF",
+}
+
 // Fields of the UserRole.
 func (UserRole) Fields() []ent.Field {
 	return []ent.Field{
-		field.Enum("role").Values("superuser", "admin", "accountant", "auditor", "staff").Annotations(entgql.OrderField("ROLES")),
+		field.Enum("role").Values(userRoles...).Annotations(entgql.OrderField("ROLES")),
+		field.String("notes").MaxLen(255).Nillable().Comment("Description about this role"),
 	}
 }
 
@@ -24,7 +33,7 @@ func (UserRole) Fields() []ent.Field {
 func (UserRole) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("availableRoles").Unique().Comment("each role must belong to only only company"),
-		edge.From("user", User.Type).Ref("assignedRoles").Comment("a role must have at least one user"),
+		edge.From("user", User.Type).Ref("assignedRoles").Unique().Comment("a role must belong to only one user"),
 	}
 }
 

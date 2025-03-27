@@ -64,7 +64,7 @@ func (CompanyDocument) Edges() []ent.Edge {
 	}
 }
 
-// Enable query and mutation for the AccountingEntry schema
+// Enable query and mutation for the CompanyDocument schema
 func (CompanyDocument) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),

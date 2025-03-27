@@ -74,11 +74,11 @@ var (
 		{Name: "industry", Type: field.TypeString, Nullable: true},
 		{Name: "last_entry_date", Type: field.TypeTime},
 		{Name: "last_invoice_number", Type: field.TypeInt32, Nullable: true, Default: 0},
-		{Name: "logo", Type: field.TypeString, Nullable: true},
+		{Name: "logo_url", Type: field.TypeString, Nullable: true},
+		{Name: "logo_storage_uri", Type: field.TypeString, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "number_of_employees", Type: field.TypeInt32, Default: 0},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
-		{Name: "sector", Type: field.TypeString, Nullable: true},
 		{Name: "tax_id", Type: field.TypeString, Unique: true},
 		{Name: "vat_rate", Type: field.TypeFloat64, Default: 0.16},
 		{Name: "website", Type: field.TypeString, Nullable: true},
@@ -102,7 +102,7 @@ var (
 			{
 				Name:    "company_country_name",
 				Unique:  true,
-				Columns: []*schema.Column{CompaniesColumns[8], CompaniesColumns[16]},
+				Columns: []*schema.Column{CompaniesColumns[8], CompaniesColumns[17]},
 			},
 		},
 	}
@@ -255,6 +255,44 @@ var (
 				Columns:    []*schema.Column{FilesColumns[10]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// MemberSignupTokensColumns holds the columns for the "member_signup_tokens" table.
+	MemberSignupTokensColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "email", Type: field.TypeString, Nullable: true},
+		{Name: "token", Type: field.TypeString},
+		{Name: "avatar", Type: field.TypeString},
+		{Name: "role", Type: field.TypeEnum, Enums: []string{"SUPERUSER", "ADMIN", "ACCOUNTANT", "AUDITOR", "STAFF"}},
+		{Name: "note", Type: field.TypeString},
+		{Name: "number_accessed", Type: field.TypeInt, Default: 0},
+		{Name: "expires_at", Type: field.TypeTime},
+		{Name: "already_used", Type: field.TypeBool, Default: false},
+		{Name: "company_member_signup_tokens", Type: field.TypeInt},
+		{Name: "user_created_member_signup_tokens", Type: field.TypeInt, Nullable: true},
+	}
+	// MemberSignupTokensTable holds the schema information for the "member_signup_tokens" table.
+	MemberSignupTokensTable = &schema.Table{
+		Name:       "member_signup_tokens",
+		Columns:    MemberSignupTokensColumns,
+		PrimaryKey: []*schema.Column{MemberSignupTokensColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "member_signup_tokens_companies_memberSignupTokens",
+				Columns:    []*schema.Column{MemberSignupTokensColumns[13]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "member_signup_tokens_users_createdMemberSignupTokens",
+				Columns:    []*schema.Column{MemberSignupTokensColumns[14]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -582,13 +620,17 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "firebase_uid", Type: field.TypeString, Unique: true},
 		{Name: "fcm_token", Type: field.TypeString, Nullable: true},
-		{Name: "email", Type: field.TypeString, Unique: true, Nullable: true},
+		{Name: "email", Type: field.TypeString, Unique: true},
 		{Name: "name", Type: field.TypeString},
+		{Name: "address", Type: field.TypeString, Nullable: true},
+		{Name: "avatar", Type: field.TypeString, Nullable: true},
+		{Name: "photo_url", Type: field.TypeString, Nullable: true},
+		{Name: "department", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
 		{Name: "birthdate", Type: field.TypeTime, Nullable: true},
+		{Name: "last_login", Type: field.TypeTime, Nullable: true},
 		{Name: "gender", Type: field.TypeEnum, Enums: []string{"male", "female"}},
-		{Name: "disabled", Type: field.TypeBool, Nullable: true, Default: false},
-		{Name: "not_verified", Type: field.TypeBool, Nullable: true, Default: false},
+		{Name: "active", Type: field.TypeBool, Default: false},
 		{Name: "user_subordinates", Type: field.TypeInt, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
@@ -599,7 +641,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_subordinates",
-				Columns:    []*schema.Column{UsersColumns[13]},
+				Columns:    []*schema.Column{UsersColumns[17]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -608,8 +650,10 @@ var (
 	// UserRolesColumns holds the columns for the "user_roles" table.
 	UserRolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "role", Type: field.TypeEnum, Enums: []string{"superuser", "admin", "accountant", "auditor", "staff"}},
+		{Name: "role", Type: field.TypeEnum, Enums: []string{"SUPERUSER", "ADMIN", "ACCOUNTANT", "AUDITOR", "STAFF"}},
+		{Name: "notes", Type: field.TypeString, Size: 255},
 		{Name: "company_available_roles", Type: field.TypeInt, Nullable: true},
+		{Name: "user_assigned_roles", Type: field.TypeInt, Nullable: true},
 	}
 	// UserRolesTable holds the schema information for the "user_roles" table.
 	UserRolesTable = &schema.Table{
@@ -619,8 +663,14 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "user_roles_companies_availableRoles",
-				Columns:    []*schema.Column{UserRolesColumns[2]},
+				Columns:    []*schema.Column{UserRolesColumns[3]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "user_roles_users_assignedRoles",
+				Columns:    []*schema.Column{UserRolesColumns[4]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -708,31 +758,6 @@ var (
 			},
 		},
 	}
-	// UserAssignedRolesColumns holds the columns for the "user_assignedRoles" table.
-	UserAssignedRolesColumns = []*schema.Column{
-		{Name: "user_id", Type: field.TypeInt},
-		{Name: "user_role_id", Type: field.TypeInt},
-	}
-	// UserAssignedRolesTable holds the schema information for the "user_assignedRoles" table.
-	UserAssignedRolesTable = &schema.Table{
-		Name:       "user_assignedRoles",
-		Columns:    UserAssignedRolesColumns,
-		PrimaryKey: []*schema.Column{UserAssignedRolesColumns[0], UserAssignedRolesColumns[1]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "user_assignedRoles_user_id",
-				Columns:    []*schema.Column{UserAssignedRolesColumns[0]},
-				RefColumns: []*schema.Column{UsersColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-			{
-				Symbol:     "user_assignedRoles_user_role_id",
-				Columns:    []*schema.Column{UserAssignedRolesColumns[1]},
-				RefColumns: []*schema.Column{UserRolesColumns[0]},
-				OnDelete:   schema.Cascade,
-			},
-		},
-	}
 	// UserParticipatedProjectTasksColumns holds the columns for the "user_participatedProjectTasks" table.
 	UserParticipatedProjectTasksColumns = []*schema.Column{
 		{Name: "user_id", Type: field.TypeInt},
@@ -766,6 +791,7 @@ var (
 		CustomersTable,
 		EmployeesTable,
 		FilesTable,
+		MemberSignupTokensTable,
 		PayablesTable,
 		ProductsTable,
 		ProjectsTable,
@@ -779,7 +805,6 @@ var (
 		UserRolesTable,
 		WorkshiftsTable,
 		CompanyUsersTable,
-		UserAssignedRolesTable,
 		UserParticipatedProjectTasksTable,
 	}
 )
@@ -795,6 +820,8 @@ func init() {
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[1].RefTable = UsersTable
 	FilesTable.ForeignKeys[0].RefTable = CompaniesTable
+	MemberSignupTokensTable.ForeignKeys[0].RefTable = CompaniesTable
+	MemberSignupTokensTable.ForeignKeys[1].RefTable = UsersTable
 	PayablesTable.ForeignKeys[0].RefTable = CompaniesTable
 	PayablesTable.ForeignKeys[1].RefTable = SuppliersTable
 	ProductsTable.ForeignKeys[0].RefTable = CompaniesTable
@@ -813,6 +840,7 @@ func init() {
 	TreasuriesTable.ForeignKeys[0].RefTable = CompaniesTable
 	UsersTable.ForeignKeys[0].RefTable = UsersTable
 	UserRolesTable.ForeignKeys[0].RefTable = CompaniesTable
+	UserRolesTable.ForeignKeys[1].RefTable = UsersTable
 	WorkshiftsTable.ForeignKeys[0].RefTable = CompaniesTable
 	WorkshiftsTable.ForeignKeys[1].RefTable = ProjectTasksTable
 	WorkshiftsTable.ForeignKeys[2].RefTable = UsersTable
@@ -820,9 +848,6 @@ func init() {
 	WorkshiftsTable.ForeignKeys[4].RefTable = WorkshiftsTable
 	CompanyUsersTable.ForeignKeys[0].RefTable = CompaniesTable
 	CompanyUsersTable.ForeignKeys[1].RefTable = UsersTable
-	UserAssignedRolesTable.ForeignKeys[0].RefTable = UsersTable
-	UserAssignedRolesTable.ForeignKeys[1].RefTable = UserRolesTable
-	UserAssignedRolesTable.Annotation = &entsql.Annotation{}
 	UserParticipatedProjectTasksTable.ForeignKeys[0].RefTable = UsersTable
 	UserParticipatedProjectTasksTable.ForeignKeys[1].RefTable = ProjectTasksTable
 	UserParticipatedProjectTasksTable.Annotation = &entsql.Annotation{}

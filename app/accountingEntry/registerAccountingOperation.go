@@ -12,7 +12,7 @@ import (
 )
 
 func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input model.BaseEntryRegistrationInput) (*string, error) {
-	currentUser, currentCompany, _ := u.GetSession(&ctx)
+	currentUser, currentCompany := u.GetSession(&ctx)
 	companyQ := u.CurrentCompanyQuery(&ctx)
 	// country, lang := "mz", "pt"
 	// accountNames, err := utils.LoadAccountNames(country, lang)

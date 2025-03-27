@@ -31,16 +31,24 @@ const (
 	FieldEmail = "email"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
+	// FieldAvatar holds the string denoting the avatar field in the database.
+	FieldAvatar = "avatar"
+	// FieldPhotoURL holds the string denoting the photourl field in the database.
+	FieldPhotoURL = "photo_url"
+	// FieldDepartment holds the string denoting the department field in the database.
+	FieldDepartment = "department"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
 	// FieldBirthdate holds the string denoting the birthdate field in the database.
 	FieldBirthdate = "birthdate"
+	// FieldLastLogin holds the string denoting the lastlogin field in the database.
+	FieldLastLogin = "last_login"
 	// FieldGender holds the string denoting the gender field in the database.
 	FieldGender = "gender"
-	// FieldDisabled holds the string denoting the disabled field in the database.
-	FieldDisabled = "disabled"
-	// FieldNotVerified holds the string denoting the notverified field in the database.
-	FieldNotVerified = "not_verified"
+	// FieldActive holds the string denoting the active field in the database.
+	FieldActive = "active"
 	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
 	EdgeAccountingEntries = "accountingEntries"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
@@ -51,6 +59,8 @@ const (
 	EdgeSubordinates = "subordinates"
 	// EdgeLeader holds the string denoting the leader edge name in mutations.
 	EdgeLeader = "leader"
+	// EdgeCreatedMemberSignupTokens holds the string denoting the createdmembersignuptokens edge name in mutations.
+	EdgeCreatedMemberSignupTokens = "createdMemberSignupTokens"
 	// EdgeEmployee holds the string denoting the employee edge name in mutations.
 	EdgeEmployee = "employee"
 	// EdgeCreatedProjects holds the string denoting the createdprojects edge name in mutations.
@@ -87,11 +97,13 @@ const (
 	// CompanyInverseTable is the table name for the Company entity.
 	// It exists in this package in order to avoid circular dependency with the "company" package.
 	CompanyInverseTable = "companies"
-	// AssignedRolesTable is the table that holds the assignedRoles relation/edge. The primary key declared below.
-	AssignedRolesTable = "user_assignedRoles"
+	// AssignedRolesTable is the table that holds the assignedRoles relation/edge.
+	AssignedRolesTable = "user_roles"
 	// AssignedRolesInverseTable is the table name for the UserRole entity.
 	// It exists in this package in order to avoid circular dependency with the "userrole" package.
 	AssignedRolesInverseTable = "user_roles"
+	// AssignedRolesColumn is the table column denoting the assignedRoles relation/edge.
+	AssignedRolesColumn = "user_assigned_roles"
 	// SubordinatesTable is the table that holds the subordinates relation/edge.
 	SubordinatesTable = "users"
 	// SubordinatesColumn is the table column denoting the subordinates relation/edge.
@@ -100,6 +112,13 @@ const (
 	LeaderTable = "users"
 	// LeaderColumn is the table column denoting the leader relation/edge.
 	LeaderColumn = "user_subordinates"
+	// CreatedMemberSignupTokensTable is the table that holds the createdMemberSignupTokens relation/edge.
+	CreatedMemberSignupTokensTable = "member_signup_tokens"
+	// CreatedMemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
+	// It exists in this package in order to avoid circular dependency with the "membersignuptoken" package.
+	CreatedMemberSignupTokensInverseTable = "member_signup_tokens"
+	// CreatedMemberSignupTokensColumn is the table column denoting the createdMemberSignupTokens relation/edge.
+	CreatedMemberSignupTokensColumn = "user_created_member_signup_tokens"
 	// EmployeeTable is the table that holds the employee relation/edge.
 	EmployeeTable = "employees"
 	// EmployeeInverseTable is the table name for the Employee entity.
@@ -187,11 +206,15 @@ var Columns = []string{
 	FieldFcmToken,
 	FieldEmail,
 	FieldName,
+	FieldAddress,
+	FieldAvatar,
+	FieldPhotoURL,
+	FieldDepartment,
 	FieldPhone,
 	FieldBirthdate,
+	FieldLastLogin,
 	FieldGender,
-	FieldDisabled,
-	FieldNotVerified,
+	FieldActive,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "users"
@@ -204,9 +227,6 @@ var (
 	// CompanyPrimaryKey and CompanyColumn2 are the table columns denoting the
 	// primary key for the company relation (M2M).
 	CompanyPrimaryKey = []string{"company_id", "user_id"}
-	// AssignedRolesPrimaryKey and AssignedRolesColumn2 are the table columns denoting the
-	// primary key for the assignedRoles relation (M2M).
-	AssignedRolesPrimaryKey = []string{"user_id", "user_role_id"}
 	// ParticipatedProjectTasksPrimaryKey and ParticipatedProjectTasksColumn2 are the table columns denoting the
 	// primary key for the participatedProjectTasks relation (M2M).
 	ParticipatedProjectTasksPrimaryKey = []string{"user_id", "project_task_id"}
@@ -236,10 +256,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	FirebaseUIDValidator func(string) error
-	// DefaultDisabled holds the default value on creation for the "disabled" field.
-	DefaultDisabled bool
-	// DefaultNotVerified holds the default value on creation for the "notVerified" field.
-	DefaultNotVerified bool
+	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
+	EmailValidator func(string) error
+	// DefaultActive holds the default value on creation for the "active" field.
+	DefaultActive bool
 )
 
 // Gender defines the type for the "gender" enum field.
@@ -308,6 +328,26 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
+}
+
+// ByAvatar orders the results by the avatar field.
+func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
+}
+
+// ByPhotoURL orders the results by the photoURL field.
+func ByPhotoURL(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPhotoURL, opts...).ToFunc()
+}
+
+// ByDepartment orders the results by the department field.
+func ByDepartment(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDepartment, opts...).ToFunc()
+}
+
 // ByPhone orders the results by the phone field.
 func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
@@ -318,19 +358,19 @@ func ByBirthdate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBirthdate, opts...).ToFunc()
 }
 
+// ByLastLogin orders the results by the lastLogin field.
+func ByLastLogin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastLogin, opts...).ToFunc()
+}
+
 // ByGender orders the results by the gender field.
 func ByGender(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldGender, opts...).ToFunc()
 }
 
-// ByDisabled orders the results by the disabled field.
-func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDisabled, opts...).ToFunc()
-}
-
-// ByNotVerified orders the results by the notVerified field.
-func ByNotVerified(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNotVerified, opts...).ToFunc()
+// ByActive orders the results by the active field.
+func ByActive(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldActive, opts...).ToFunc()
 }
 
 // ByAccountingEntriesCount orders the results by accountingEntries count.
@@ -393,6 +433,20 @@ func BySubordinates(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 func ByLeaderField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newLeaderStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCreatedMemberSignupTokensCount orders the results by createdMemberSignupTokens count.
+func ByCreatedMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCreatedMemberSignupTokensStep(), opts...)
+	}
+}
+
+// ByCreatedMemberSignupTokens orders the results by createdMemberSignupTokens terms.
+func ByCreatedMemberSignupTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreatedMemberSignupTokensStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -560,7 +614,7 @@ func newAssignedRolesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(AssignedRolesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, AssignedRolesTable, AssignedRolesPrimaryKey...),
+		sqlgraph.Edge(sqlgraph.O2M, false, AssignedRolesTable, AssignedRolesColumn),
 	)
 }
 func newSubordinatesStep() *sqlgraph.Step {
@@ -575,6 +629,13 @@ func newLeaderStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(Table, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, LeaderTable, LeaderColumn),
+	)
+}
+func newCreatedMemberSignupTokensStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreatedMemberSignupTokensInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CreatedMemberSignupTokensTable, CreatedMemberSignupTokensColumn),
 	)
 }
 func newEmployeeStep() *sqlgraph.Step {

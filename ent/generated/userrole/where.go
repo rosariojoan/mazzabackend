@@ -54,6 +54,11 @@ func IDLTE(id int) predicate.UserRole {
 	return predicate.UserRole(sql.FieldLTE(FieldID, id))
 }
 
+// Notes applies equality check predicate on the "notes" field. It's identical to NotesEQ.
+func Notes(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldEQ(FieldNotes, v))
+}
+
 // RoleEQ applies the EQ predicate on the "role" field.
 func RoleEQ(v Role) predicate.UserRole {
 	return predicate.UserRole(sql.FieldEQ(FieldRole, v))
@@ -72,6 +77,71 @@ func RoleIn(vs ...Role) predicate.UserRole {
 // RoleNotIn applies the NotIn predicate on the "role" field.
 func RoleNotIn(vs ...Role) predicate.UserRole {
 	return predicate.UserRole(sql.FieldNotIn(FieldRole, vs...))
+}
+
+// NotesEQ applies the EQ predicate on the "notes" field.
+func NotesEQ(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldEQ(FieldNotes, v))
+}
+
+// NotesNEQ applies the NEQ predicate on the "notes" field.
+func NotesNEQ(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldNEQ(FieldNotes, v))
+}
+
+// NotesIn applies the In predicate on the "notes" field.
+func NotesIn(vs ...string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldIn(FieldNotes, vs...))
+}
+
+// NotesNotIn applies the NotIn predicate on the "notes" field.
+func NotesNotIn(vs ...string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldNotIn(FieldNotes, vs...))
+}
+
+// NotesGT applies the GT predicate on the "notes" field.
+func NotesGT(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldGT(FieldNotes, v))
+}
+
+// NotesGTE applies the GTE predicate on the "notes" field.
+func NotesGTE(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldGTE(FieldNotes, v))
+}
+
+// NotesLT applies the LT predicate on the "notes" field.
+func NotesLT(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldLT(FieldNotes, v))
+}
+
+// NotesLTE applies the LTE predicate on the "notes" field.
+func NotesLTE(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldLTE(FieldNotes, v))
+}
+
+// NotesContains applies the Contains predicate on the "notes" field.
+func NotesContains(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldContains(FieldNotes, v))
+}
+
+// NotesHasPrefix applies the HasPrefix predicate on the "notes" field.
+func NotesHasPrefix(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldHasPrefix(FieldNotes, v))
+}
+
+// NotesHasSuffix applies the HasSuffix predicate on the "notes" field.
+func NotesHasSuffix(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldHasSuffix(FieldNotes, v))
+}
+
+// NotesEqualFold applies the EqualFold predicate on the "notes" field.
+func NotesEqualFold(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldEqualFold(FieldNotes, v))
+}
+
+// NotesContainsFold applies the ContainsFold predicate on the "notes" field.
+func NotesContainsFold(v string) predicate.UserRole {
+	return predicate.UserRole(sql.FieldContainsFold(FieldNotes, v))
 }
 
 // HasCompany applies the HasEdge predicate on the "company" edge.
@@ -102,7 +172,7 @@ func HasUser() predicate.UserRole {
 	return predicate.UserRole(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, UserTable, UserPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})

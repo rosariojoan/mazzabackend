@@ -54,6 +54,11 @@ type CompanyInfoInput struct {
 	VatRate  float64 `json:"vatRate"`
 }
 
+type CreateMemberSignupTokenOutput struct {
+	Token     string    `json:"token"`
+	ExpiresAt time.Time `json:"expiresAt"`
+}
+
 type CustomerAggregationOutput struct {
 	Company *int `json:"company,omitempty"`
 	Count   *int `json:"count,omitempty"`
@@ -215,6 +220,11 @@ type Period struct {
 	End   time.Time `json:"end"`
 }
 
+type ProfilePhotoInput struct {
+	URL        string `json:"url"`
+	StorageURI string `json:"storageURI"`
+}
+
 type ReceivableAggregationOutput struct {
 	Company *int     `json:"company,omitempty"`
 	Count   *int     `json:"count,omitempty"`
@@ -254,8 +264,10 @@ type SalesQuotationInput struct {
 }
 
 type SignupInput struct {
-	CompanyInput *generated.CreateCompanyInput `json:"companyInput"`
-	UserInput    *generated.CreateUserInput    `json:"userInput"`
+	CompanyInput     *generated.CreateCompanyInput `json:"companyInput"`
+	UserInput        *generated.CreateUserInput    `json:"userInput"`
+	UserProfilePhoto *ProfilePhotoInput            `json:"userProfilePhoto,omitempty"`
+	CompanyLogo      *ProfilePhotoInput            `json:"companyLogo,omitempty"`
 }
 
 type TreasuryAggregatePayload struct {
@@ -272,6 +284,11 @@ type TrialBalanceRowItem struct {
 	Balance float64 `json:"balance"`
 }
 
+type VerifyMemberSignupTokenInput struct {
+	Token string  `json:"token"`
+	Email *string `json:"email,omitempty"`
+}
+
 type WorkShiftAggregationPayload struct {
 	Date              string `json:"date"`
 	Count             int    `json:"count"`
@@ -280,8 +297,9 @@ type WorkShiftAggregationPayload struct {
 }
 
 type InvitedUserSignupInput struct {
-	UserInput       *generated.CreateUserInput `json:"userInput"`
-	InvitationToken string                     `json:"invitationToken"`
+	UserInput        *generated.CreateUserInput `json:"userInput"`
+	UserProfilePhoto *ProfilePhotoInput         `json:"userProfilePhoto,omitempty"`
+	InvitationToken  int                        `json:"invitationToken"`
 }
 
 type BaseOperationType string

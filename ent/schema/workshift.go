@@ -81,7 +81,7 @@ func (Workshift) Hooks() []ent.Hook {
 					// On clock-out, if the employee has a leader, set status to "PENDING", otherwise set status "APPROVED"
 					userID, exists := m.UserID()
 					if !exists {
-						currentUser, _, _ := utils.GetSession(&ctx)
+						currentUser, _ := utils.GetSession(&ctx)
 						userID = currentUser.ID
 						// return next.Mutate(ctx, m)
 					}

@@ -10,19 +10,37 @@ input InitialSetupInput {
     companyInfo: CompanyInfoInput!
 }
 
+input VerifyMemberSignupTokenInput {
+  token: String!
+  email: String
+}
+
 type DocumentCount {
   category: CompanyDocumentCategory!
   count: Int!
 }
 
+type CreateMemberSignupTokenOutput {
+  token: String!
+  expiresAt: Time!
+}
+
+
 # -------------------------------------------------
 extend type Mutation {
   initialSetup(input: InitialSetupInput!): String
+
   uploadDocument(input: CreateCompanyDocumentInput!): CompanyDocument!
   updateDocument(id: ID!, input: UpdateCompanyDocumentInput!): CompanyDocument!
   deleteDocuments(ids: [ID!]!): String
+
+  generateMemberSignupToken(input: CreateMemberSignupTokenInput!): CreateMemberSignupTokenOutput!
+  deleteMemberSignupToken(id: Int!): String
+
+  removeUser(id: ID!): String
 }
 
 extend type Query {
   countDocuments: [DocumentCount!]!
+  verifyMemberSignupToken(input: VerifyMemberSignupTokenInput): MemberSignupToken!
 }

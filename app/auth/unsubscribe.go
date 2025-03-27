@@ -3,10 +3,11 @@ package auth
 import (
 	"context"
 	"fmt"
+
 	// "mazza/app/utils"
-	"mazza/ent/utils"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/userrole"
+	"mazza/ent/utils"
 )
 
 type contact struct {
@@ -19,7 +20,7 @@ type contact struct {
 
 func Unsubscribe(ctx *context.Context) error {
 	client := ent.FromContext(*ctx)
-	currentUser, company, _ := utils.GetSession(ctx)
+	currentUser, company := utils.GetSession(ctx)
 	if currentUser == nil || company == nil {
 		return fmt.Errorf("unauthorized")
 	}
@@ -29,7 +30,7 @@ func Unsubscribe(ctx *context.Context) error {
 	// fmt.Println("user:", user, company)
 
 	// Check if the user is admin
-	isAdmin, err := currentUser.QueryAssignedRoles().Where(userrole.RoleEQ(userrole.RoleAdmin)).Exist(*ctx)
+	isAdmin, err := currentUser.QueryAssignedRoles().Where(userrole.RoleEQ(userrole.RoleADMIN)).Exist(*ctx)
 	if err != nil || !isAdmin {
 		fmt.Println("err:", err)
 		return fmt.Errorf("unauthorized")

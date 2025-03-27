@@ -35,11 +35,13 @@ func (Company) Fields() []ent.Field {
 		field.String("industry").Nillable().Optional(),
 		field.Time("lastEntryDate").Nillable(),
 		field.Int32("lastInvoiceNumber").Optional().Default(0).NonNegative(),
-		field.String("logo").Nillable().Optional(),
+		field.String("logoURL").Nillable().Optional().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
+		field.String("logoStorageURI").Nillable().Optional().Nillable().Sensitive().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
 		field.String("name").Annotations(entgql.OrderField("NAME")),
 		field.Int32("numberOfEmployees").NonNegative().Default(0),
 		field.String("phone").Nillable().Optional(),
-		field.String("sector").Nillable().Optional(),
 		field.String("taxId").Unique().Nillable(),
 		field.Float("vatRate").Default(0.16),
 		field.String("website").Nillable().Optional(),
@@ -56,6 +58,7 @@ func (Company) Edges() []ent.Edge {
 		edge.To("documents", CompanyDocument.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("employees", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("files", File.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("memberSignupTokens", MemberSignupToken.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("products", Product.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("projects", Project.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("payables", Payable.Type).Annotations(entsql.OnDelete(entsql.Cascade)),

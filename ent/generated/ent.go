@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -90,24 +91,25 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			accountingentry.Table:  accountingentry.ValidColumn,
-			company.Table:          company.ValidColumn,
-			companydocument.Table:  companydocument.ValidColumn,
-			customer.Table:         customer.ValidColumn,
-			employee.Table:         employee.ValidColumn,
-			file.Table:             file.ValidColumn,
-			payable.Table:          payable.ValidColumn,
-			product.Table:          product.ValidColumn,
-			project.Table:          project.ValidColumn,
-			projectmilestone.Table: projectmilestone.ValidColumn,
-			projecttask.Table:      projecttask.ValidColumn,
-			receivable.Table:       receivable.ValidColumn,
-			supplier.Table:         supplier.ValidColumn,
-			token.Table:            token.ValidColumn,
-			treasury.Table:         treasury.ValidColumn,
-			user.Table:             user.ValidColumn,
-			userrole.Table:         userrole.ValidColumn,
-			workshift.Table:        workshift.ValidColumn,
+			accountingentry.Table:   accountingentry.ValidColumn,
+			company.Table:           company.ValidColumn,
+			companydocument.Table:   companydocument.ValidColumn,
+			customer.Table:          customer.ValidColumn,
+			employee.Table:          employee.ValidColumn,
+			file.Table:              file.ValidColumn,
+			membersignuptoken.Table: membersignuptoken.ValidColumn,
+			payable.Table:           payable.ValidColumn,
+			product.Table:           product.ValidColumn,
+			project.Table:           project.ValidColumn,
+			projectmilestone.Table:  projectmilestone.ValidColumn,
+			projecttask.Table:       projecttask.ValidColumn,
+			receivable.Table:        receivable.ValidColumn,
+			supplier.Table:          supplier.ValidColumn,
+			token.Table:             token.ValidColumn,
+			treasury.Table:          treasury.ValidColumn,
+			user.Table:              user.ValidColumn,
+			userrole.Table:          userrole.ValidColumn,
+			workshift.Table:         workshift.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

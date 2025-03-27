@@ -80,6 +80,18 @@ func (f FileFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.FileMutation", m)
 }
 
+// The MemberSignupTokenFunc type is an adapter to allow the use of ordinary
+// function as MemberSignupToken mutator.
+type MemberSignupTokenFunc func(context.Context, *generated.MemberSignupTokenMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f MemberSignupTokenFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.MemberSignupTokenMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.MemberSignupTokenMutation", m)
+}
+
 // The PayableFunc type is an adapter to allow the use of ordinary
 // function as Payable mutator.
 type PayableFunc func(context.Context, *generated.PayableMutation) (generated.Value, error)

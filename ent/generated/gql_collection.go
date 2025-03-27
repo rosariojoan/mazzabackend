@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -306,6 +307,18 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedFiles(alias, func(wq *FileQuery) {
 				*wq = *query
 			})
+		case "membersignuptokens":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&MemberSignupTokenClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedMemberSignupTokens(alias, func(wq *MemberSignupTokenQuery) {
+				*wq = *query
+			})
 		case "products":
 			var (
 				alias = field.Alias
@@ -506,10 +519,10 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldLastInvoiceNumber)
 				fieldSeen[company.FieldLastInvoiceNumber] = struct{}{}
 			}
-		case "logo":
-			if _, ok := fieldSeen[company.FieldLogo]; !ok {
-				selectedFields = append(selectedFields, company.FieldLogo)
-				fieldSeen[company.FieldLogo] = struct{}{}
+		case "logourl":
+			if _, ok := fieldSeen[company.FieldLogoURL]; !ok {
+				selectedFields = append(selectedFields, company.FieldLogoURL)
+				fieldSeen[company.FieldLogoURL] = struct{}{}
 			}
 		case "name":
 			if _, ok := fieldSeen[company.FieldName]; !ok {
@@ -525,11 +538,6 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			if _, ok := fieldSeen[company.FieldPhone]; !ok {
 				selectedFields = append(selectedFields, company.FieldPhone)
 				fieldSeen[company.FieldPhone] = struct{}{}
-			}
-		case "sector":
-			if _, ok := fieldSeen[company.FieldSector]; !ok {
-				selectedFields = append(selectedFields, company.FieldSector)
-				fieldSeen[company.FieldSector] = struct{}{}
 			}
 		case "taxid":
 			if _, ok := fieldSeen[company.FieldTaxId]; !ok {
@@ -1245,6 +1253,176 @@ func newFilePaginateArgs(rv map[string]any) *filePaginateArgs {
 	}
 	if v, ok := rv[whereField].(*FileWhereInput); ok {
 		args.opts = append(args.opts, WithFileFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (mst *MemberSignupTokenQuery) CollectFields(ctx context.Context, satisfies ...string) (*MemberSignupTokenQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return mst, nil
+	}
+	if err := mst.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return mst, nil
+}
+
+func (mst *MemberSignupTokenQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(membersignuptoken.Columns))
+		selectedFields = []string{membersignuptoken.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: mst.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			mst.withCompany = query
+		case "createdby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: mst.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			mst.withCreatedBy = query
+		case "createdat":
+			if _, ok := fieldSeen[membersignuptoken.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldCreatedAt)
+				fieldSeen[membersignuptoken.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[membersignuptoken.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldUpdatedAt)
+				fieldSeen[membersignuptoken.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[membersignuptoken.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldDeletedAt)
+				fieldSeen[membersignuptoken.FieldDeletedAt] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[membersignuptoken.FieldName]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldName)
+				fieldSeen[membersignuptoken.FieldName] = struct{}{}
+			}
+		case "email":
+			if _, ok := fieldSeen[membersignuptoken.FieldEmail]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldEmail)
+				fieldSeen[membersignuptoken.FieldEmail] = struct{}{}
+			}
+		case "token":
+			if _, ok := fieldSeen[membersignuptoken.FieldToken]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldToken)
+				fieldSeen[membersignuptoken.FieldToken] = struct{}{}
+			}
+		case "avatar":
+			if _, ok := fieldSeen[membersignuptoken.FieldAvatar]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldAvatar)
+				fieldSeen[membersignuptoken.FieldAvatar] = struct{}{}
+			}
+		case "role":
+			if _, ok := fieldSeen[membersignuptoken.FieldRole]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldRole)
+				fieldSeen[membersignuptoken.FieldRole] = struct{}{}
+			}
+		case "note":
+			if _, ok := fieldSeen[membersignuptoken.FieldNote]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldNote)
+				fieldSeen[membersignuptoken.FieldNote] = struct{}{}
+			}
+		case "numberaccessed":
+			if _, ok := fieldSeen[membersignuptoken.FieldNumberAccessed]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldNumberAccessed)
+				fieldSeen[membersignuptoken.FieldNumberAccessed] = struct{}{}
+			}
+		case "expiresat":
+			if _, ok := fieldSeen[membersignuptoken.FieldExpiresAt]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldExpiresAt)
+				fieldSeen[membersignuptoken.FieldExpiresAt] = struct{}{}
+			}
+		case "alreadyused":
+			if _, ok := fieldSeen[membersignuptoken.FieldAlreadyUsed]; !ok {
+				selectedFields = append(selectedFields, membersignuptoken.FieldAlreadyUsed)
+				fieldSeen[membersignuptoken.FieldAlreadyUsed] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		mst.Select(selectedFields...)
+	}
+	return nil
+}
+
+type membersignuptokenPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []MemberSignupTokenPaginateOption
+}
+
+func newMemberSignupTokenPaginateArgs(rv map[string]any) *membersignuptokenPaginateArgs {
+	args := &membersignuptokenPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*MemberSignupTokenOrder:
+			args.opts = append(args.opts, WithMemberSignupTokenOrder(v))
+		case []any:
+			var orders []*MemberSignupTokenOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &MemberSignupTokenOrder{Field: &MemberSignupTokenOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithMemberSignupTokenOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*MemberSignupTokenWhereInput); ok {
+		args.opts = append(args.opts, WithMemberSignupTokenFilter(v.Filter))
 	}
 	return args
 }
@@ -2579,6 +2757,18 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.withLeader = query
+		case "createdmembersignuptokens":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&MemberSignupTokenClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedCreatedMemberSignupTokens(alias, func(wq *MemberSignupTokenQuery) {
+				*wq = *query
+			})
 		case "employee":
 			var (
 				alias = field.Alias
@@ -2734,6 +2924,26 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldName)
 				fieldSeen[user.FieldName] = struct{}{}
 			}
+		case "address":
+			if _, ok := fieldSeen[user.FieldAddress]; !ok {
+				selectedFields = append(selectedFields, user.FieldAddress)
+				fieldSeen[user.FieldAddress] = struct{}{}
+			}
+		case "avatar":
+			if _, ok := fieldSeen[user.FieldAvatar]; !ok {
+				selectedFields = append(selectedFields, user.FieldAvatar)
+				fieldSeen[user.FieldAvatar] = struct{}{}
+			}
+		case "photourl":
+			if _, ok := fieldSeen[user.FieldPhotoURL]; !ok {
+				selectedFields = append(selectedFields, user.FieldPhotoURL)
+				fieldSeen[user.FieldPhotoURL] = struct{}{}
+			}
+		case "department":
+			if _, ok := fieldSeen[user.FieldDepartment]; !ok {
+				selectedFields = append(selectedFields, user.FieldDepartment)
+				fieldSeen[user.FieldDepartment] = struct{}{}
+			}
 		case "phone":
 			if _, ok := fieldSeen[user.FieldPhone]; !ok {
 				selectedFields = append(selectedFields, user.FieldPhone)
@@ -2744,20 +2954,20 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldBirthdate)
 				fieldSeen[user.FieldBirthdate] = struct{}{}
 			}
+		case "lastlogin":
+			if _, ok := fieldSeen[user.FieldLastLogin]; !ok {
+				selectedFields = append(selectedFields, user.FieldLastLogin)
+				fieldSeen[user.FieldLastLogin] = struct{}{}
+			}
 		case "gender":
 			if _, ok := fieldSeen[user.FieldGender]; !ok {
 				selectedFields = append(selectedFields, user.FieldGender)
 				fieldSeen[user.FieldGender] = struct{}{}
 			}
-		case "disabled":
-			if _, ok := fieldSeen[user.FieldDisabled]; !ok {
-				selectedFields = append(selectedFields, user.FieldDisabled)
-				fieldSeen[user.FieldDisabled] = struct{}{}
-			}
-		case "notverified":
-			if _, ok := fieldSeen[user.FieldNotVerified]; !ok {
-				selectedFields = append(selectedFields, user.FieldNotVerified)
-				fieldSeen[user.FieldNotVerified] = struct{}{}
+		case "active":
+			if _, ok := fieldSeen[user.FieldActive]; !ok {
+				selectedFields = append(selectedFields, user.FieldActive)
+				fieldSeen[user.FieldActive] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -2862,13 +3072,16 @@ func (ur *UserRoleQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			ur.WithNamedUser(alias, func(wq *UserQuery) {
-				*wq = *query
-			})
+			ur.withUser = query
 		case "role":
 			if _, ok := fieldSeen[userrole.FieldRole]; !ok {
 				selectedFields = append(selectedFields, userrole.FieldRole)
 				fieldSeen[userrole.FieldRole] = struct{}{}
+			}
+		case "notes":
+			if _, ok := fieldSeen[userrole.FieldNotes]; !ok {
+				selectedFields = append(selectedFields, userrole.FieldNotes)
+				fieldSeen[userrole.FieldNotes] = struct{}{}
 			}
 		case "id":
 		case "__typename":

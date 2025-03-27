@@ -34,7 +34,7 @@ import (
 
 // Signup is the resolver for the signup field.
 func (r *mutationResolver) Signup(ctx context.Context, input model.SignupInput) (*model.LoginOutput, error) {
-	newCompany, err := r.CreateCompany(ctx, input.CompanyInput)
+	newCompany, err := r.CreateCompany(ctx, input.CompanyInput, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (r *mutationResolver) Signup(ctx context.Context, input model.SignupInput) 
 		return nil, err
 	}
 
-	role, err := r.client.UserRole.Create().SetRole(userrole.RoleAdmin).Save(ctx)
+	role, err := r.client.UserRole.Create().SetRole(userrole.RoleADMIN).Save(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (r *mutationResolver) Signup(ctx context.Context, input model.SignupInput) 
 }
 
 // CreateCompany is the resolver for the createCompany field.
-func (r *mutationResolver) CreateCompany(ctx context.Context, input *generated.CreateCompanyInput) (*generated.Company, error) {
+func (r *mutationResolver) CreateCompany(ctx context.Context, input *generated.CreateCompanyInput, companyLogo *model.ProfilePhotoInput) (*generated.Company, error) {
 	client := generated.FromContext(ctx)
 	company, err := client.Company.Create().SetInput(*input).Save(ctx)
 	if err == nil {
@@ -78,18 +78,56 @@ func (r *mutationResolver) CreateCompany(ctx context.Context, input *generated.C
 }
 
 // UpdateCompany is the resolver for the updateCompany field.
-func (r *mutationResolver) UpdateCompany(ctx context.Context, id int, input generated.UpdateCompanyInput) (*generated.Company, error) {
+func (r *mutationResolver) UpdateCompany(ctx context.Context, id int, input generated.UpdateCompanyInput, companyLogo *model.ProfilePhotoInput) (*generated.Company, error) {
 	client := generated.FromContext(ctx)
-	currentCompany, _, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	if currentCompany.ID != id {
 		return nil, fmt.Errorf("unauthorized")
 	}
-	return client.Company.UpdateOneID(id).SetInput(input).Save(ctx)
+
+	updateBuilder := client.Company.UpdateOneID(id).SetInput(input)
+	if companyLogo != nil {
+		updateBuilder = updateBuilder.SetLogoStorageURI(companyLogo.StorageURI).SetLogoURL(companyLogo.URL)
+	}
+	return updateBuilder.Save(ctx)
 }
 
 // InvitedUserSignup is the resolver for the invitedUserSignup field.
 func (r *mutationResolver) InvitedUserSignup(ctx context.Context, input model.InvitedUserSignupInput) (*generated.User, error) {
-	panic(fmt.Errorf("not implemented: InvitedUserSignup - invitedUserSignup"))
+	token, err := r.client.MemberSignupToken.Get(ctx, input.InvitationToken)
+	if err != nil {
+		fmt.Println("InvitedUserSignup get token err:", err)
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	companyID, err := token.QueryCompany().FirstID(ctx)
+	if err != nil {
+		fmt.Println("InvitedUserSignup get company err:", err)
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	inviteeID, err := token.QueryCreatedBy().FirstID(ctx)
+	if err != nil {
+		fmt.Println("InvitedUserSignup get invitee err:", err)
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	roleInput := generated.CreateUserRoleInput{
+		Role:      userrole.Role(token.Role),
+		CompanyID: &companyID,
+	}
+
+	user, err := r.client.User.Create().SetInput(*input.UserInput).
+		AddCompanyIDs(companyID).
+		SetActive(false).SetLastLogin(time.Now()).SetLeaderID(inviteeID).
+		AddAssignedRoles(r.client.UserRole.Create().SetInput(roleInput).SaveX(ctx)).
+		Save(ctx)
+	if err != nil {
+		fmt.Println("InvitedUserSignup create user err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	return user, nil
 }
 
 // CreateUser is the resolver for the createUser field.
@@ -104,18 +142,31 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input generated.Creat
 }
 
 // UpdateUser is the resolver for the updateUser field.
-func (r *mutationResolver) UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput) (*generated.User, error) {
+func (r *mutationResolver) UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput, companyLogo *model.ProfilePhotoInput) (*generated.User, error) {
 	client := generated.FromContext(ctx)
-	currentUser, _, _ := utils.GetSession(&ctx)
+	currentUser, currentCompany := utils.GetSession(&ctx)
 	if currentUser == nil {
 		return nil, fmt.Errorf("unauthorized")
 	}
 
 	// Beside from admin, users can only update themselves
-	if currentUser.ID != id {
+	if currentUser.ID == id {
+		return client.User.UpdateOneID(id).SetInput(input).Save(ctx)
+	}
+
+	// Check if the current user is admin. If yes, perform the update
+	_, err := currentUser.QueryAssignedRoles().Where(
+		userrole.HasCompanyWith(company.ID(currentCompany.ID)),
+		userrole.Or(
+			userrole.RoleEQ(userrole.RoleADMIN),
+			userrole.RoleEQ(userrole.RoleSUPERUSER),
+		),
+	).Exist(ctx)
+	if err != nil {
+		fmt.Println("user:", currentCompany.ID, currentUser.Name, err)
 		return nil, fmt.Errorf("unauthorized")
 	}
-	// Admin updating other users from the same company is not implemented yet.
+
 	return client.User.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
@@ -150,7 +201,7 @@ func (r *mutationResolver) CreateUserRole(ctx context.Context, input generated.C
 
 // CreateCustomer is the resolver for the createCustomer field.
 func (r *mutationResolver) CreateCustomer(ctx context.Context, input generated.CreateCustomerInput) (*generated.Customer, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	return r.client.Customer.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 }
 
@@ -174,7 +225,7 @@ func (r *mutationResolver) DeleteCustomer(ctx context.Context, id int) (bool, er
 
 // CreateEmployee is the resolver for the createEmployee field.
 func (r *mutationResolver) CreateEmployee(ctx context.Context, input generated.CreateEmployeeInput) (*generated.Employee, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	return r.client.Employee.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 }
 
@@ -198,7 +249,7 @@ func (r *mutationResolver) DeleteEmployee(ctx context.Context, id int) (bool, er
 
 // CreateProduct is the resolver for the createProduct field.
 func (r *mutationResolver) CreateProduct(ctx context.Context, input generated.CreateProductInput) (*generated.Product, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	product, err := r.client.Product.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 	if err != nil {
 		errStr := err.Error()
@@ -233,20 +284,20 @@ func (r *mutationResolver) DeleteProduct(ctx context.Context, id int) (bool, err
 
 // CreateProject is the resolver for the createProject field.
 func (r *mutationResolver) CreateProject(ctx context.Context, input generated.CreateProjectInput) (*generated.Project, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	return r.client.Project.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 }
 
 // UpdateProject is the resolver for the updateProject field.
 func (r *mutationResolver) UpdateProject(ctx context.Context, id int, input generated.UpdateProjectInput) (*generated.Project, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
 	return generated.FromContext(ctx).Project.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
 }
 
 // DeleteProject is the resolver for the deleteProject field.
 func (r *mutationResolver) DeleteProject(ctx context.Context, id int) (bool, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := project.HasCompanyWith(company.IDEQ(currentCompany.ID))
 
 	if err := generated.FromContext(ctx).Project.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
@@ -257,7 +308,7 @@ func (r *mutationResolver) DeleteProject(ctx context.Context, id int) (bool, err
 
 // CreateProjectTask is the resolver for the createProjectTask field.
 func (r *mutationResolver) CreateProjectTask(ctx context.Context, input generated.CreateProjectTaskInput) (*generated.ProjectTask, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	if _, err := r.client.Project.Query().Where(project.IDEQ(input.ProjectID), project.HasCompanyWith(company.IDEQ(currentCompany.ID))).First(ctx); err != nil {
 		fmt.Println("err 1:", err)
 		return nil, gqlerror.Errorf("invalid project input")
@@ -281,7 +332,7 @@ func (r *mutationResolver) CreateProjectTask(ctx context.Context, input generate
 
 // UpdateProjectTask is the resolver for the updateProjectTask field.
 func (r *mutationResolver) UpdateProjectTask(ctx context.Context, id int, input generated.UpdateProjectTaskInput) (*generated.ProjectTask, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 	updatedTask, err := generated.FromContext(ctx).ProjectTask.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
 	if err != nil {
@@ -292,7 +343,7 @@ func (r *mutationResolver) UpdateProjectTask(ctx context.Context, id int, input 
 
 // DeleteProjectTask is the resolver for the deleteProjectTask field.
 func (r *mutationResolver) DeleteProjectTask(ctx context.Context, id int) (bool, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 
 	if err := generated.FromContext(ctx).ProjectTask.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
@@ -304,7 +355,7 @@ func (r *mutationResolver) DeleteProjectTask(ctx context.Context, id int) (bool,
 
 // CreateProjectMilestone is the resolver for the createProjectMilestone field.
 func (r *mutationResolver) CreateProjectMilestone(ctx context.Context, input generated.CreateProjectMilestoneInput) (*generated.ProjectMilestone, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	if _, err := r.client.Project.Query().Where(project.IDEQ(input.ProjectID), project.HasCompanyWith(company.IDEQ(currentCompany.ID))).First(ctx); err != nil {
 		return nil, gqlerror.Errorf("invalid project input")
 	}
@@ -314,14 +365,14 @@ func (r *mutationResolver) CreateProjectMilestone(ctx context.Context, input gen
 
 // UpdateProjectMilestone is the resolver for the updateProjectMilestone field.
 func (r *mutationResolver) UpdateProjectMilestone(ctx context.Context, id int, input generated.UpdateProjectMilestoneInput) (*generated.ProjectMilestone, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := projectmilestone.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 	return generated.FromContext(ctx).ProjectMilestone.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
 }
 
 // DeleteProjectMilestone is the resolver for the deleteProjectMilestone field.
 func (r *mutationResolver) DeleteProjectMilestone(ctx context.Context, id int) (bool, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	filter := projectmilestone.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 
 	if err := generated.FromContext(ctx).ProjectMilestone.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
@@ -332,7 +383,7 @@ func (r *mutationResolver) DeleteProjectMilestone(ctx context.Context, id int) (
 
 // CreateSupplier is the resolver for the createSupplier field.
 func (r *mutationResolver) CreateSupplier(ctx context.Context, input generated.CreateSupplierInput) (*generated.Supplier, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	return r.client.Supplier.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 }
 
@@ -356,7 +407,7 @@ func (r *mutationResolver) DeleteSupplier(ctx context.Context, id int) (bool, er
 
 // CreateTreasury is the resolver for the createTreasury field.
 func (r *mutationResolver) CreateTreasury(ctx context.Context, input generated.CreateTreasuryInput) (*generated.Treasury, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	output, err := r.client.Treasury.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
 	if err != nil {
 		errStr := err.Error()
@@ -388,7 +439,7 @@ func (r *mutationResolver) DeleteTreasury(ctx context.Context, id int) (bool, er
 
 // CreateWorkShift is the resolver for the createWorkShift field.
 func (r *mutationResolver) CreateWorkShift(ctx context.Context, input generated.CreateWorkshiftInput) (*generated.Workshift, error) {
-	currentUser, currentCompany, _ := utils.GetSession(&ctx)
+	currentUser, currentCompany := utils.GetSession(&ctx)
 	var clockIn time.Time
 	fmt.Println("## edit iD:", input.EditRequestID)
 	// Clock-in is the current time if this is a workshift
@@ -457,7 +508,7 @@ func (r *queryResolver) Customers(ctx context.Context, where *generated.Customer
 
 // AggregateCustomers is the resolver for the aggregateCustomers field.
 func (r *queryResolver) AggregateCustomers(ctx context.Context, where *generated.CustomerWhereInput, groupBy []model.CustomersGroupBy) ([]*model.CustomerAggregationOutput, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	var result []*model.CustomerAggregationOutput
 	var agg []struct {
 		Company int `json:"company_customers"`
@@ -486,7 +537,7 @@ func (r *queryResolver) AggregateCustomers(ctx context.Context, where *generated
 
 // AggregateReceivables is the resolver for the aggregateReceivables field.
 func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	var result []*model.ReceivableAggregationOutput
 	var agg []struct {
 		Company int     `json:"company_customers"`
@@ -517,7 +568,7 @@ func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generat
 
 // AccountsReceivableAging is the resolver for the accountsReceivableAging field.
 func (r *queryResolver) AccountsReceivableAging(ctx context.Context) ([]*model.AgingBucket, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	// Current date for age calculation
 	now := time.Now().Format(time.RFC3339) // Convert time to RFC3339 format which PostgreSQL accepts
 
@@ -574,7 +625,7 @@ func (r *queryResolver) AccountsReceivableAging(ctx context.Context) ([]*model.A
 
 // AccountsPayableAging is the resolver for the accountsPayableAging field.
 func (r *queryResolver) AccountsPayableAging(ctx context.Context) ([]*model.AgingBucket, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	// Current date for age calculation
 	now := time.Now().Format(time.RFC3339) // Convert time to RFC3339 format which PostgreSQL accepts
 
@@ -727,7 +778,7 @@ func (r *queryResolver) Treasuries(ctx context.Context, where *generated.Treasur
 
 // AggregateTreasury is the resolver for the aggregateTreasury field.
 func (r *queryResolver) AggregateTreasury(ctx context.Context, where *generated.TreasuryWhereInput) ([]*model.TreasuryAggregatePayload, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	var result []*struct {
 		CompanyID    int     `json:"company_treasuries"`
 		Count        int     `json:"count"`
@@ -759,13 +810,22 @@ func (r *queryResolver) AggregateTreasury(ctx context.Context, where *generated.
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context, where *generated.UserWhereInput) ([]*generated.User, error) {
-	roleQ := utils.UserRoleQuery(&ctx)
-	filter := user.HasAssignedRolesWith(roleQ)
-	query, err := where.Filter(r.client.User.Query().Where(filter))
+	_, currentCompany := utils.GetSession(&ctx)
+	companyFilter := company.ID(currentCompany.ID)
+	queryBuilder := r.client.User.Query().Where(user.HasCompanyWith(companyFilter))
+	query, err := where.Filter(queryBuilder)
 	if err != nil {
-		return nil, err
+		fmt.Println("Users query err:", err)
+		return nil, fmt.Errorf("an error occurred")
 	}
-	return query.All(ctx)
+
+	users, err := query.All(ctx)
+	if err != nil {
+		fmt.Println("Users query err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	return users, nil
 }
 
 // UserRoles is the resolver for the userRoles field.
@@ -780,7 +840,7 @@ func (r *queryResolver) UserRoles(ctx context.Context, where *generated.UserRole
 
 // WorkShifts is the resolver for the workShifts field.
 func (r *queryResolver) WorkShifts(ctx context.Context, where *generated.WorkshiftWhereInput) ([]*generated.Workshift, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	companyQ := workshift.HasCompanyWith(company.IDEQ(currentCompany.ID))
 	query, err := where.Filter(r.client.Workshift.Query().Where(companyQ))
 	if err != nil {
@@ -791,7 +851,7 @@ func (r *queryResolver) WorkShifts(ctx context.Context, where *generated.Workshi
 
 // AggregateWorkShift is the resolver for the aggregateWorkShift field.
 func (r *queryResolver) AggregateWorkShift(ctx context.Context, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) ([]*model.WorkShiftAggregationPayload, error) {
-	currentUser, _, _ := utils.GetSession(&ctx)
+	currentUser, _ := utils.GetSession(&ctx)
 	var payload = []*model.WorkShiftAggregationPayload{}
 
 	var result []struct {

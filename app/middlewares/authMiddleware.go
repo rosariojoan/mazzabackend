@@ -65,7 +65,7 @@ func LoginRequired(c *gin.Context) {
 		c.Set("user", user)
 		c.Set("company", company)
 		c.Set("companyID", company.ID)
-		c.Set("employeeID", int(claims["employeeID"].(float64)))
+		
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}

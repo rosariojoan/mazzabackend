@@ -9,6 +9,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
@@ -19,6 +20,7 @@ import (
 	"mazza/ent/generated/token"
 	"mazza/ent/generated/treasury"
 	"mazza/ent/generated/user"
+	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
 	"mazza/ent/schema"
 	"time"
@@ -97,7 +99,7 @@ func init() {
 	// company.LastInvoiceNumberValidator is a validator for the "lastInvoiceNumber" field. It is called by the builders before save.
 	company.LastInvoiceNumberValidator = companyDescLastInvoiceNumber.Validators[0].(func(int32) error)
 	// companyDescNumberOfEmployees is the schema descriptor for numberOfEmployees field.
-	companyDescNumberOfEmployees := companyFields[13].Descriptor()
+	companyDescNumberOfEmployees := companyFields[14].Descriptor()
 	// company.DefaultNumberOfEmployees holds the default value on creation for the numberOfEmployees field.
 	company.DefaultNumberOfEmployees = companyDescNumberOfEmployees.Default.(int32)
 	// company.NumberOfEmployeesValidator is a validator for the "numberOfEmployees" field. It is called by the builders before save.
@@ -214,6 +216,39 @@ func init() {
 	fileDescURI := fileFields[3].Descriptor()
 	// file.URIValidator is a validator for the "uri" field. It is called by the builders before save.
 	file.URIValidator = fileDescURI.Validators[0].(func(string) error)
+	membersignuptokenMixin := schema.MemberSignupToken{}.Mixin()
+	membersignuptokenMixinFields0 := membersignuptokenMixin[0].Fields()
+	_ = membersignuptokenMixinFields0
+	membersignuptokenFields := schema.MemberSignupToken{}.Fields()
+	_ = membersignuptokenFields
+	// membersignuptokenDescCreatedAt is the schema descriptor for createdAt field.
+	membersignuptokenDescCreatedAt := membersignuptokenMixinFields0[0].Descriptor()
+	// membersignuptoken.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	membersignuptoken.DefaultCreatedAt = membersignuptokenDescCreatedAt.Default.(func() time.Time)
+	// membersignuptokenDescUpdatedAt is the schema descriptor for updatedAt field.
+	membersignuptokenDescUpdatedAt := membersignuptokenMixinFields0[1].Descriptor()
+	// membersignuptoken.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	membersignuptoken.DefaultUpdatedAt = membersignuptokenDescUpdatedAt.Default.(func() time.Time)
+	// membersignuptoken.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	membersignuptoken.UpdateDefaultUpdatedAt = membersignuptokenDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// membersignuptokenDescName is the schema descriptor for name field.
+	membersignuptokenDescName := membersignuptokenFields[0].Descriptor()
+	// membersignuptoken.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	membersignuptoken.NameValidator = membersignuptokenDescName.Validators[0].(func(string) error)
+	// membersignuptokenDescToken is the schema descriptor for token field.
+	membersignuptokenDescToken := membersignuptokenFields[2].Descriptor()
+	// membersignuptoken.TokenValidator is a validator for the "token" field. It is called by the builders before save.
+	membersignuptoken.TokenValidator = membersignuptokenDescToken.Validators[0].(func(string) error)
+	// membersignuptokenDescNumberAccessed is the schema descriptor for numberAccessed field.
+	membersignuptokenDescNumberAccessed := membersignuptokenFields[6].Descriptor()
+	// membersignuptoken.DefaultNumberAccessed holds the default value on creation for the numberAccessed field.
+	membersignuptoken.DefaultNumberAccessed = membersignuptokenDescNumberAccessed.Default.(int)
+	// membersignuptoken.NumberAccessedValidator is a validator for the "numberAccessed" field. It is called by the builders before save.
+	membersignuptoken.NumberAccessedValidator = membersignuptokenDescNumberAccessed.Validators[0].(func(int) error)
+	// membersignuptokenDescAlreadyUsed is the schema descriptor for alreadyUsed field.
+	membersignuptokenDescAlreadyUsed := membersignuptokenFields[8].Descriptor()
+	// membersignuptoken.DefaultAlreadyUsed holds the default value on creation for the alreadyUsed field.
+	membersignuptoken.DefaultAlreadyUsed = membersignuptokenDescAlreadyUsed.Default.(bool)
 	payableMixin := schema.Payable{}.Mixin()
 	payableMixinFields0 := payableMixin[0].Fields()
 	_ = payableMixinFields0
@@ -413,14 +448,34 @@ func init() {
 	userDescFirebaseUID := userFields[0].Descriptor()
 	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
-	// userDescDisabled is the schema descriptor for disabled field.
-	userDescDisabled := userFields[7].Descriptor()
-	// user.DefaultDisabled holds the default value on creation for the disabled field.
-	user.DefaultDisabled = userDescDisabled.Default.(bool)
-	// userDescNotVerified is the schema descriptor for notVerified field.
-	userDescNotVerified := userFields[8].Descriptor()
-	// user.DefaultNotVerified holds the default value on creation for the notVerified field.
-	user.DefaultNotVerified = userDescNotVerified.Default.(bool)
+	// userDescEmail is the schema descriptor for email field.
+	userDescEmail := userFields[2].Descriptor()
+	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
+	user.EmailValidator = func() func(string) error {
+		validators := userDescEmail.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(email string) error {
+			for _, fn := range fns {
+				if err := fn(email); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// userDescActive is the schema descriptor for active field.
+	userDescActive := userFields[12].Descriptor()
+	// user.DefaultActive holds the default value on creation for the active field.
+	user.DefaultActive = userDescActive.Default.(bool)
+	userroleFields := schema.UserRole{}.Fields()
+	_ = userroleFields
+	// userroleDescNotes is the schema descriptor for notes field.
+	userroleDescNotes := userroleFields[1].Descriptor()
+	// userrole.NotesValidator is a validator for the "notes" field. It is called by the builders before save.
+	userrole.NotesValidator = userroleDescNotes.Validators[0].(func(string) error)
 	workshiftMixin := schema.Workshift{}.Mixin()
 	workshiftHooks := schema.Workshift{}.Hooks()
 	workshift.Hooks[0] = workshiftHooks[0]

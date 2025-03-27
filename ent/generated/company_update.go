@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/product"
@@ -267,23 +268,43 @@ func (cu *CompanyUpdate) ClearLastInvoiceNumber() *CompanyUpdate {
 	return cu
 }
 
-// SetLogo sets the "logo" field.
-func (cu *CompanyUpdate) SetLogo(s string) *CompanyUpdate {
-	cu.mutation.SetLogo(s)
+// SetLogoURL sets the "logoURL" field.
+func (cu *CompanyUpdate) SetLogoURL(s string) *CompanyUpdate {
+	cu.mutation.SetLogoURL(s)
 	return cu
 }
 
-// SetNillableLogo sets the "logo" field if the given value is not nil.
-func (cu *CompanyUpdate) SetNillableLogo(s *string) *CompanyUpdate {
+// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableLogoURL(s *string) *CompanyUpdate {
 	if s != nil {
-		cu.SetLogo(*s)
+		cu.SetLogoURL(*s)
 	}
 	return cu
 }
 
-// ClearLogo clears the value of the "logo" field.
-func (cu *CompanyUpdate) ClearLogo() *CompanyUpdate {
-	cu.mutation.ClearLogo()
+// ClearLogoURL clears the value of the "logoURL" field.
+func (cu *CompanyUpdate) ClearLogoURL() *CompanyUpdate {
+	cu.mutation.ClearLogoURL()
+	return cu
+}
+
+// SetLogoStorageURI sets the "logoStorageURI" field.
+func (cu *CompanyUpdate) SetLogoStorageURI(s string) *CompanyUpdate {
+	cu.mutation.SetLogoStorageURI(s)
+	return cu
+}
+
+// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableLogoStorageURI(s *string) *CompanyUpdate {
+	if s != nil {
+		cu.SetLogoStorageURI(*s)
+	}
+	return cu
+}
+
+// ClearLogoStorageURI clears the value of the "logoStorageURI" field.
+func (cu *CompanyUpdate) ClearLogoStorageURI() *CompanyUpdate {
+	cu.mutation.ClearLogoStorageURI()
 	return cu
 }
 
@@ -339,26 +360,6 @@ func (cu *CompanyUpdate) SetNillablePhone(s *string) *CompanyUpdate {
 // ClearPhone clears the value of the "phone" field.
 func (cu *CompanyUpdate) ClearPhone() *CompanyUpdate {
 	cu.mutation.ClearPhone()
-	return cu
-}
-
-// SetSector sets the "sector" field.
-func (cu *CompanyUpdate) SetSector(s string) *CompanyUpdate {
-	cu.mutation.SetSector(s)
-	return cu
-}
-
-// SetNillableSector sets the "sector" field if the given value is not nil.
-func (cu *CompanyUpdate) SetNillableSector(s *string) *CompanyUpdate {
-	if s != nil {
-		cu.SetSector(*s)
-	}
-	return cu
-}
-
-// ClearSector clears the value of the "sector" field.
-func (cu *CompanyUpdate) ClearSector() *CompanyUpdate {
-	cu.mutation.ClearSector()
 	return cu
 }
 
@@ -525,6 +526,21 @@ func (cu *CompanyUpdate) AddFiles(f ...*File) *CompanyUpdate {
 		ids[i] = f[i].ID
 	}
 	return cu.AddFileIDs(ids...)
+}
+
+// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+func (cu *CompanyUpdate) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddMemberSignupTokenIDs(ids...)
+	return cu
+}
+
+// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+func (cu *CompanyUpdate) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdate {
+	ids := make([]int, len(m))
+	for i := range m {
+		ids[i] = m[i].ID
+	}
+	return cu.AddMemberSignupTokenIDs(ids...)
 }
 
 // AddProductIDs adds the "products" edge to the Product entity by IDs.
@@ -825,6 +841,27 @@ func (cu *CompanyUpdate) RemoveFiles(f ...*File) *CompanyUpdate {
 		ids[i] = f[i].ID
 	}
 	return cu.RemoveFileIDs(ids...)
+}
+
+// ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
+func (cu *CompanyUpdate) ClearMemberSignupTokens() *CompanyUpdate {
+	cu.mutation.ClearMemberSignupTokens()
+	return cu
+}
+
+// RemoveMemberSignupTokenIDs removes the "memberSignupTokens" edge to MemberSignupToken entities by IDs.
+func (cu *CompanyUpdate) RemoveMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveMemberSignupTokenIDs(ids...)
+	return cu
+}
+
+// RemoveMemberSignupTokens removes "memberSignupTokens" edges to MemberSignupToken entities.
+func (cu *CompanyUpdate) RemoveMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdate {
+	ids := make([]int, len(m))
+	for i := range m {
+		ids[i] = m[i].ID
+	}
+	return cu.RemoveMemberSignupTokenIDs(ids...)
 }
 
 // ClearProducts clears all "products" edges to the Product entity.
@@ -1175,11 +1212,17 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.LastInvoiceNumberCleared() {
 		_spec.ClearField(company.FieldLastInvoiceNumber, field.TypeInt32)
 	}
-	if value, ok := cu.mutation.Logo(); ok {
-		_spec.SetField(company.FieldLogo, field.TypeString, value)
+	if value, ok := cu.mutation.LogoURL(); ok {
+		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
 	}
-	if cu.mutation.LogoCleared() {
-		_spec.ClearField(company.FieldLogo, field.TypeString)
+	if cu.mutation.LogoURLCleared() {
+		_spec.ClearField(company.FieldLogoURL, field.TypeString)
+	}
+	if value, ok := cu.mutation.LogoStorageURI(); ok {
+		_spec.SetField(company.FieldLogoStorageURI, field.TypeString, value)
+	}
+	if cu.mutation.LogoStorageURICleared() {
+		_spec.ClearField(company.FieldLogoStorageURI, field.TypeString)
 	}
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(company.FieldName, field.TypeString, value)
@@ -1195,12 +1238,6 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if cu.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
-	}
-	if value, ok := cu.mutation.Sector(); ok {
-		_spec.SetField(company.FieldSector, field.TypeString, value)
-	}
-	if cu.mutation.SectorCleared() {
-		_spec.ClearField(company.FieldSector, field.TypeString)
 	}
 	if value, ok := cu.mutation.TaxId(); ok {
 		_spec.SetField(company.FieldTaxId, field.TypeString, value)
@@ -1486,6 +1523,51 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.MemberSignupTokensCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedMemberSignupTokensIDs(); len(nodes) > 0 && !cu.mutation.MemberSignupTokensCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.MemberSignupTokensIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2217,23 +2299,43 @@ func (cuo *CompanyUpdateOne) ClearLastInvoiceNumber() *CompanyUpdateOne {
 	return cuo
 }
 
-// SetLogo sets the "logo" field.
-func (cuo *CompanyUpdateOne) SetLogo(s string) *CompanyUpdateOne {
-	cuo.mutation.SetLogo(s)
+// SetLogoURL sets the "logoURL" field.
+func (cuo *CompanyUpdateOne) SetLogoURL(s string) *CompanyUpdateOne {
+	cuo.mutation.SetLogoURL(s)
 	return cuo
 }
 
-// SetNillableLogo sets the "logo" field if the given value is not nil.
-func (cuo *CompanyUpdateOne) SetNillableLogo(s *string) *CompanyUpdateOne {
+// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableLogoURL(s *string) *CompanyUpdateOne {
 	if s != nil {
-		cuo.SetLogo(*s)
+		cuo.SetLogoURL(*s)
 	}
 	return cuo
 }
 
-// ClearLogo clears the value of the "logo" field.
-func (cuo *CompanyUpdateOne) ClearLogo() *CompanyUpdateOne {
-	cuo.mutation.ClearLogo()
+// ClearLogoURL clears the value of the "logoURL" field.
+func (cuo *CompanyUpdateOne) ClearLogoURL() *CompanyUpdateOne {
+	cuo.mutation.ClearLogoURL()
+	return cuo
+}
+
+// SetLogoStorageURI sets the "logoStorageURI" field.
+func (cuo *CompanyUpdateOne) SetLogoStorageURI(s string) *CompanyUpdateOne {
+	cuo.mutation.SetLogoStorageURI(s)
+	return cuo
+}
+
+// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableLogoStorageURI(s *string) *CompanyUpdateOne {
+	if s != nil {
+		cuo.SetLogoStorageURI(*s)
+	}
+	return cuo
+}
+
+// ClearLogoStorageURI clears the value of the "logoStorageURI" field.
+func (cuo *CompanyUpdateOne) ClearLogoStorageURI() *CompanyUpdateOne {
+	cuo.mutation.ClearLogoStorageURI()
 	return cuo
 }
 
@@ -2289,26 +2391,6 @@ func (cuo *CompanyUpdateOne) SetNillablePhone(s *string) *CompanyUpdateOne {
 // ClearPhone clears the value of the "phone" field.
 func (cuo *CompanyUpdateOne) ClearPhone() *CompanyUpdateOne {
 	cuo.mutation.ClearPhone()
-	return cuo
-}
-
-// SetSector sets the "sector" field.
-func (cuo *CompanyUpdateOne) SetSector(s string) *CompanyUpdateOne {
-	cuo.mutation.SetSector(s)
-	return cuo
-}
-
-// SetNillableSector sets the "sector" field if the given value is not nil.
-func (cuo *CompanyUpdateOne) SetNillableSector(s *string) *CompanyUpdateOne {
-	if s != nil {
-		cuo.SetSector(*s)
-	}
-	return cuo
-}
-
-// ClearSector clears the value of the "sector" field.
-func (cuo *CompanyUpdateOne) ClearSector() *CompanyUpdateOne {
-	cuo.mutation.ClearSector()
 	return cuo
 }
 
@@ -2475,6 +2557,21 @@ func (cuo *CompanyUpdateOne) AddFiles(f ...*File) *CompanyUpdateOne {
 		ids[i] = f[i].ID
 	}
 	return cuo.AddFileIDs(ids...)
+}
+
+// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+func (cuo *CompanyUpdateOne) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddMemberSignupTokenIDs(ids...)
+	return cuo
+}
+
+// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+func (cuo *CompanyUpdateOne) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdateOne {
+	ids := make([]int, len(m))
+	for i := range m {
+		ids[i] = m[i].ID
+	}
+	return cuo.AddMemberSignupTokenIDs(ids...)
 }
 
 // AddProductIDs adds the "products" edge to the Product entity by IDs.
@@ -2775,6 +2872,27 @@ func (cuo *CompanyUpdateOne) RemoveFiles(f ...*File) *CompanyUpdateOne {
 		ids[i] = f[i].ID
 	}
 	return cuo.RemoveFileIDs(ids...)
+}
+
+// ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
+func (cuo *CompanyUpdateOne) ClearMemberSignupTokens() *CompanyUpdateOne {
+	cuo.mutation.ClearMemberSignupTokens()
+	return cuo
+}
+
+// RemoveMemberSignupTokenIDs removes the "memberSignupTokens" edge to MemberSignupToken entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveMemberSignupTokenIDs(ids...)
+	return cuo
+}
+
+// RemoveMemberSignupTokens removes "memberSignupTokens" edges to MemberSignupToken entities.
+func (cuo *CompanyUpdateOne) RemoveMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdateOne {
+	ids := make([]int, len(m))
+	for i := range m {
+		ids[i] = m[i].ID
+	}
+	return cuo.RemoveMemberSignupTokenIDs(ids...)
 }
 
 // ClearProducts clears all "products" edges to the Product entity.
@@ -3155,11 +3273,17 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if cuo.mutation.LastInvoiceNumberCleared() {
 		_spec.ClearField(company.FieldLastInvoiceNumber, field.TypeInt32)
 	}
-	if value, ok := cuo.mutation.Logo(); ok {
-		_spec.SetField(company.FieldLogo, field.TypeString, value)
+	if value, ok := cuo.mutation.LogoURL(); ok {
+		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
 	}
-	if cuo.mutation.LogoCleared() {
-		_spec.ClearField(company.FieldLogo, field.TypeString)
+	if cuo.mutation.LogoURLCleared() {
+		_spec.ClearField(company.FieldLogoURL, field.TypeString)
+	}
+	if value, ok := cuo.mutation.LogoStorageURI(); ok {
+		_spec.SetField(company.FieldLogoStorageURI, field.TypeString, value)
+	}
+	if cuo.mutation.LogoStorageURICleared() {
+		_spec.ClearField(company.FieldLogoStorageURI, field.TypeString)
 	}
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(company.FieldName, field.TypeString, value)
@@ -3175,12 +3299,6 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	}
 	if cuo.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
-	}
-	if value, ok := cuo.mutation.Sector(); ok {
-		_spec.SetField(company.FieldSector, field.TypeString, value)
-	}
-	if cuo.mutation.SectorCleared() {
-		_spec.ClearField(company.FieldSector, field.TypeString)
 	}
 	if value, ok := cuo.mutation.TaxId(); ok {
 		_spec.SetField(company.FieldTaxId, field.TypeString, value)
@@ -3466,6 +3584,51 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.MemberSignupTokensCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedMemberSignupTokensIDs(); len(nodes) > 0 && !cuo.mutation.MemberSignupTokensCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.MemberSignupTokensIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.MemberSignupTokensTable,
+			Columns: []string{company.MemberSignupTokensColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

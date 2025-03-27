@@ -13,14 +13,14 @@ import (
 
 // ExpensesBreakdown is the resolver for the expensesBreakdown field.
 func (r *queryResolver) ExpensesBreakdown(ctx context.Context, rangeArg model.TimeRange) ([]*model.ExpensesBreakdownOutput, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	breadown, err := accountingentry.AggregateExpenses(ctx, *r.client.AccountingEntry, currentCompany.ID, rangeArg)
 	return breadown, err
 }
 
 // RevenueTrend is the resolver for the revenueTrend field.
 func (r *queryResolver) RevenueTrend(ctx context.Context, rangeArg model.TimeRange) ([]*model.RevenueTrendOutput, error) {
-	_, currentCompany, _ := utils.GetSession(&ctx)
+	_, currentCompany := utils.GetSession(&ctx)
 	_ = currentCompany
 	trend, err := accountingentry.AggregateRevenue(ctx, *r.client.AccountingEntry, currentCompany.ID, rangeArg)
 	return trend, err

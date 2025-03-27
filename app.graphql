@@ -1,11 +1,19 @@
+input ProfilePhotoInput {
+  url: String!
+  storageURI: String!
+}
+
 input SignupInput {
   companyInput: CreateCompanyInput!
   userInput: CreateUserInput!
+  userProfilePhoto: ProfilePhotoInput
+  companyLogo: ProfilePhotoInput
 }
 
 input invitedUserSignupInput {
   userInput: CreateUserInput!
-  invitationToken: String!
+  userProfilePhoto: ProfilePhotoInput
+  invitationToken: ID!
 }
 
 input ResetPasswordInput {
@@ -129,9 +137,9 @@ type Mutation {
   # This is used to register a new company along with its admin
   signup(input: SignupInput!): LoginOutput!
   # This is meant to be used by an admin user logged into a parent company
-  createCompany(input: CreateCompanyInput): Company
+  createCompany(input: CreateCompanyInput, companyLogo: ProfilePhotoInput): Company
 
-  updateCompany(id: ID!, input: UpdateCompanyInput!): Company!
+  updateCompany(id: ID!, input: UpdateCompanyInput!, companyLogo: ProfilePhotoInput): Company!
   # removeCompany()
 
   # Used to register users who were invited to join an existing company
@@ -140,7 +148,7 @@ type Mutation {
   # Probably will not be used: used to allow admin to register new users
   createUser(input: CreateUserInput!): User
 
-  updateUser(id: ID!, input: UpdateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!, companyLogo: ProfilePhotoInput): User!
   # login(input: LoginInput!): LoginOutput!
   forgotPassword(username: String!): String!
   resetPassword(input: ResetPasswordInput!): Boolean!

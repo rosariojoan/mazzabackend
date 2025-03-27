@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetSession(ctx *context.Context) (user *ent.User, company *ent.Company, employeeID *int) {
+func GetSession(ctx *context.Context) (user *ent.User, company *ent.Company) {
 	/*
 		This function should be used inside resolvers:
 		gc, err := GinContextFromContext(ctx)
@@ -30,7 +30,7 @@ func GetSession(ctx *context.Context) (user *ent.User, company *ent.Company, emp
 
 	ginCtx, err := getGinContext(*ctx)
 	if err != nil {
-		return nil, nil, nil
+		return nil, nil
 	}
 	_user, _ := ginCtx.Get("user")
 	user = _user.(*ent.User)
@@ -38,8 +38,5 @@ func GetSession(ctx *context.Context) (user *ent.User, company *ent.Company, emp
 	_c, _ := ginCtx.Get("company")
 	company = _c.(*ent.Company)
 
-	_emp, _ := ginCtx.Get("employeeID")
-	_employeeID := _emp.(int)
-
-	return user, company, &_employeeID
+	return user, company
 }

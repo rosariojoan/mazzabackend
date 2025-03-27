@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
@@ -118,47 +119,47 @@ type ComplexityRoot struct {
 	}
 
 	Company struct {
-		AccountingEntries func(childComplexity int) int
-		Address           func(childComplexity int) int
-		AvailableRoles    func(childComplexity int) int
-		BaseCurrency      func(childComplexity int) int
-		CeoName           func(childComplexity int) int
-		City              func(childComplexity int) int
-		Country           func(childComplexity int) int
-		CreatedAt         func(childComplexity int) int
-		Customers         func(childComplexity int) int
-		DaughterCompanies func(childComplexity int) int
-		DeletedAt         func(childComplexity int) int
-		Description       func(childComplexity int) int
-		Documents         func(childComplexity int) int
-		Email             func(childComplexity int) int
-		Employees         func(childComplexity int) int
-		EstablishedAt     func(childComplexity int) int
-		Files             func(childComplexity int) int
-		ID                func(childComplexity int) int
-		IncompleteSetup   func(childComplexity int) int
-		Industry          func(childComplexity int) int
-		LastEntryDate     func(childComplexity int) int
-		LastInvoiceNumber func(childComplexity int) int
-		Logo              func(childComplexity int) int
-		Name              func(childComplexity int) int
-		NumberOfEmployees func(childComplexity int) int
-		ParentCompany     func(childComplexity int) int
-		Payables          func(childComplexity int) int
-		Phone             func(childComplexity int) int
-		Products          func(childComplexity int) int
-		Projects          func(childComplexity int) int
-		Receivables       func(childComplexity int) int
-		Sector            func(childComplexity int) int
-		Suppliers         func(childComplexity int) int
-		TaxId             func(childComplexity int) int
-		Tokens            func(childComplexity int) int
-		Treasuries        func(childComplexity int) int
-		UpdatedAt         func(childComplexity int) int
-		Users             func(childComplexity int) int
-		VatRate           func(childComplexity int) int
-		Website           func(childComplexity int) int
-		WorkShifts        func(childComplexity int) int
+		AccountingEntries  func(childComplexity int) int
+		Address            func(childComplexity int) int
+		AvailableRoles     func(childComplexity int) int
+		BaseCurrency       func(childComplexity int) int
+		CeoName            func(childComplexity int) int
+		City               func(childComplexity int) int
+		Country            func(childComplexity int) int
+		CreatedAt          func(childComplexity int) int
+		Customers          func(childComplexity int) int
+		DaughterCompanies  func(childComplexity int) int
+		DeletedAt          func(childComplexity int) int
+		Description        func(childComplexity int) int
+		Documents          func(childComplexity int) int
+		Email              func(childComplexity int) int
+		Employees          func(childComplexity int) int
+		EstablishedAt      func(childComplexity int) int
+		Files              func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		IncompleteSetup    func(childComplexity int) int
+		Industry           func(childComplexity int) int
+		LastEntryDate      func(childComplexity int) int
+		LastInvoiceNumber  func(childComplexity int) int
+		LogoURL            func(childComplexity int) int
+		MemberSignupTokens func(childComplexity int) int
+		Name               func(childComplexity int) int
+		NumberOfEmployees  func(childComplexity int) int
+		ParentCompany      func(childComplexity int) int
+		Payables           func(childComplexity int) int
+		Phone              func(childComplexity int) int
+		Products           func(childComplexity int) int
+		Projects           func(childComplexity int) int
+		Receivables        func(childComplexity int) int
+		Suppliers          func(childComplexity int) int
+		TaxId              func(childComplexity int) int
+		Tokens             func(childComplexity int) int
+		Treasuries         func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		Users              func(childComplexity int) int
+		VatRate            func(childComplexity int) int
+		Website            func(childComplexity int) int
+		WorkShifts         func(childComplexity int) int
 	}
 
 	CompanyDocument struct {
@@ -190,6 +191,11 @@ type ComplexityRoot struct {
 	CompanyDocumentEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
+	}
+
+	CreateMemberSignupTokenOutput struct {
+		ExpiresAt func(childComplexity int) int
+		Token     func(childComplexity int) int
 	}
 
 	Customer struct {
@@ -314,8 +320,37 @@ type ComplexityRoot struct {
 		User         func(childComplexity int) int
 	}
 
+	MemberSignupToken struct {
+		AlreadyUsed    func(childComplexity int) int
+		Avatar         func(childComplexity int) int
+		Company        func(childComplexity int) int
+		CreatedAt      func(childComplexity int) int
+		CreatedBy      func(childComplexity int) int
+		DeletedAt      func(childComplexity int) int
+		Email          func(childComplexity int) int
+		ExpiresAt      func(childComplexity int) int
+		ID             func(childComplexity int) int
+		Name           func(childComplexity int) int
+		Note           func(childComplexity int) int
+		NumberAccessed func(childComplexity int) int
+		Role           func(childComplexity int) int
+		Token          func(childComplexity int) int
+		UpdatedAt      func(childComplexity int) int
+	}
+
+	MemberSignupTokenConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	MemberSignupTokenEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Mutation struct {
-		CreateCompany             func(childComplexity int, input *generated.CreateCompanyInput) int
+		CreateCompany             func(childComplexity int, input *generated.CreateCompanyInput, companyLogo *model.ProfilePhotoInput) int
 		CreateCustomer            func(childComplexity int, input generated.CreateCustomerInput) int
 		CreateEmployee            func(childComplexity int, input generated.CreateEmployeeInput) int
 		CreateProduct             func(childComplexity int, input generated.CreateProductInput) int
@@ -330,6 +365,7 @@ type ComplexityRoot struct {
 		DeleteCustomer            func(childComplexity int, id int) int
 		DeleteDocuments           func(childComplexity int, ids []int) int
 		DeleteEmployee            func(childComplexity int, id int) int
+		DeleteMemberSignupToken   func(childComplexity int, id int) int
 		DeleteProduct             func(childComplexity int, id int) int
 		DeleteProject             func(childComplexity int, id int) int
 		DeleteProjectMilestone    func(childComplexity int, id int) int
@@ -338,15 +374,17 @@ type ComplexityRoot struct {
 		DeleteTreasury            func(childComplexity int, id int) int
 		DeleteWorkShift           func(childComplexity int, id int) int
 		ForgotPassword            func(childComplexity int, username string) int
+		GenerateMemberSignupToken func(childComplexity int, input generated.CreateMemberSignupTokenInput) int
 		InitialSetup              func(childComplexity int, input model.InitialSetupInput) int
 		InvitedUserSignup         func(childComplexity int, input model.InvitedUserSignupInput) int
 		IssueInvoice              func(childComplexity int, input model.InvoiceInput) int
 		IssueSalesQuotation       func(childComplexity int, input model.SalesQuotationInput) int
 		RegisterAccountingEntries func(childComplexity int, input model.BaseEntryRegistrationInput) int
+		RemoveUser                func(childComplexity int, id int) int
 		ResetPassword             func(childComplexity int, input model.ResetPasswordInput) int
 		Signup                    func(childComplexity int, input model.SignupInput) int
 		Unsubscribe               func(childComplexity int, id int) int
-		UpdateCompany             func(childComplexity int, id int, input generated.UpdateCompanyInput) int
+		UpdateCompany             func(childComplexity int, id int, input generated.UpdateCompanyInput, companyLogo *model.ProfilePhotoInput) int
 		UpdateCustomer            func(childComplexity int, id int, input generated.UpdateCustomerInput) int
 		UpdateDocument            func(childComplexity int, id int, input generated.UpdateCompanyDocumentInput) int
 		UpdateEmployee            func(childComplexity int, id int, input generated.UpdateEmployeeInput) int
@@ -356,7 +394,7 @@ type ComplexityRoot struct {
 		UpdateProjectTask         func(childComplexity int, id int, input generated.UpdateProjectTaskInput) int
 		UpdateSupplier            func(childComplexity int, id int, input generated.UpdateSupplierInput) int
 		UpdateTreasury            func(childComplexity int, id int, input generated.UpdateTreasuryInput) int
-		UpdateUser                func(childComplexity int, id int, input generated.UpdateUserInput) int
+		UpdateUser                func(childComplexity int, id int, input generated.UpdateUserInput, companyLogo *model.ProfilePhotoInput) int
 		UpdateWorkShift           func(childComplexity int, id int, input generated.UpdateWorkshiftInput) int
 		UploadDocument            func(childComplexity int, input generated.CreateCompanyDocumentInput) int
 	}
@@ -495,6 +533,7 @@ type ComplexityRoot struct {
 		Files                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) int
 		IncomeStatement          func(childComplexity int, date time.Time) int
 		LowStock                 func(childComplexity int, where *generated.ProductWhereInput) int
+		MemberSignupTokens       func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.MemberSignupTokenOrder, where *generated.MemberSignupTokenWhereInput) int
 		Node                     func(childComplexity int, id int) int
 		Nodes                    func(childComplexity int, ids []int) int
 		NumberOfLowStock         func(childComplexity int, where *generated.ProductWhereInput) int
@@ -514,6 +553,7 @@ type ComplexityRoot struct {
 		TrialBalance             func(childComplexity int, date time.Time) int
 		UserRoles                func(childComplexity int, where *generated.UserRoleWhereInput) int
 		Users                    func(childComplexity int, where *generated.UserWhereInput) int
+		VerifyMemberSignupToken  func(childComplexity int, input *model.VerifyMemberSignupTokenInput) int
 		VerifyPasswordResetToken func(childComplexity int, token string) int
 		WorkShifts               func(childComplexity int, where *generated.WorkshiftWhereInput) int
 		Workshifts               func(childComplexity int) int
@@ -613,38 +653,44 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		AccountingEntries        func(childComplexity int) int
-		ApprovedDocuments        func(childComplexity int) int
-		ApprovedWorkShifts       func(childComplexity int) int
-		AssignedProjectTasks     func(childComplexity int) int
-		AssignedRoles            func(childComplexity int) int
-		Birthdate                func(childComplexity int) int
-		Company                  func(childComplexity int) int
-		CreatedAt                func(childComplexity int) int
-		CreatedProjects          func(childComplexity int) int
-		CreatedTasks             func(childComplexity int) int
-		DeletedAt                func(childComplexity int) int
-		Disabled                 func(childComplexity int) int
-		Email                    func(childComplexity int) int
-		Employee                 func(childComplexity int) int
-		Gender                   func(childComplexity int) int
-		ID                       func(childComplexity int) int
-		Leader                   func(childComplexity int) int
-		LeaderedProjects         func(childComplexity int) int
-		Name                     func(childComplexity int) int
-		NotVerified              func(childComplexity int) int
-		ParticipatedProjectTasks func(childComplexity int) int
-		Phone                    func(childComplexity int) int
-		Subordinates             func(childComplexity int) int
-		Tokens                   func(childComplexity int) int
-		UpdatedAt                func(childComplexity int) int
-		UploadedDocuments        func(childComplexity int) int
-		WorkShifts               func(childComplexity int) int
+		AccountingEntries         func(childComplexity int) int
+		Active                    func(childComplexity int) int
+		Address                   func(childComplexity int) int
+		ApprovedDocuments         func(childComplexity int) int
+		ApprovedWorkShifts        func(childComplexity int) int
+		AssignedProjectTasks      func(childComplexity int) int
+		AssignedRoles             func(childComplexity int) int
+		Avatar                    func(childComplexity int) int
+		Birthdate                 func(childComplexity int) int
+		Company                   func(childComplexity int) int
+		CreatedAt                 func(childComplexity int) int
+		CreatedMemberSignupTokens func(childComplexity int) int
+		CreatedProjects           func(childComplexity int) int
+		CreatedTasks              func(childComplexity int) int
+		DeletedAt                 func(childComplexity int) int
+		Department                func(childComplexity int) int
+		Email                     func(childComplexity int) int
+		Employee                  func(childComplexity int) int
+		Gender                    func(childComplexity int) int
+		ID                        func(childComplexity int) int
+		LastLogin                 func(childComplexity int) int
+		Leader                    func(childComplexity int) int
+		LeaderedProjects          func(childComplexity int) int
+		Name                      func(childComplexity int) int
+		ParticipatedProjectTasks  func(childComplexity int) int
+		Phone                     func(childComplexity int) int
+		PhotoURL                  func(childComplexity int) int
+		Subordinates              func(childComplexity int) int
+		Tokens                    func(childComplexity int) int
+		UpdatedAt                 func(childComplexity int) int
+		UploadedDocuments         func(childComplexity int) int
+		WorkShifts                func(childComplexity int) int
 	}
 
 	UserRole struct {
 		Company func(childComplexity int) int
 		ID      func(childComplexity int) int
+		Notes   func(childComplexity int) int
 		Role    func(childComplexity int) int
 		User    func(childComplexity int) int
 	}
@@ -680,11 +726,11 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	Signup(ctx context.Context, input model.SignupInput) (*model.LoginOutput, error)
-	CreateCompany(ctx context.Context, input *generated.CreateCompanyInput) (*generated.Company, error)
-	UpdateCompany(ctx context.Context, id int, input generated.UpdateCompanyInput) (*generated.Company, error)
+	CreateCompany(ctx context.Context, input *generated.CreateCompanyInput, companyLogo *model.ProfilePhotoInput) (*generated.Company, error)
+	UpdateCompany(ctx context.Context, id int, input generated.UpdateCompanyInput, companyLogo *model.ProfilePhotoInput) (*generated.Company, error)
 	InvitedUserSignup(ctx context.Context, input model.InvitedUserSignupInput) (*generated.User, error)
 	CreateUser(ctx context.Context, input generated.CreateUserInput) (*generated.User, error)
-	UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput) (*generated.User, error)
+	UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput, companyLogo *model.ProfilePhotoInput) (*generated.User, error)
 	ForgotPassword(ctx context.Context, username string) (string, error)
 	ResetPassword(ctx context.Context, input model.ResetPasswordInput) (bool, error)
 	Unsubscribe(ctx context.Context, id int) (bool, error)
@@ -723,6 +769,9 @@ type MutationResolver interface {
 	UploadDocument(ctx context.Context, input generated.CreateCompanyDocumentInput) (*generated.CompanyDocument, error)
 	UpdateDocument(ctx context.Context, id int, input generated.UpdateCompanyDocumentInput) (*generated.CompanyDocument, error)
 	DeleteDocuments(ctx context.Context, ids []int) (*string, error)
+	GenerateMemberSignupToken(ctx context.Context, input generated.CreateMemberSignupTokenInput) (*model.CreateMemberSignupTokenOutput, error)
+	DeleteMemberSignupToken(ctx context.Context, id int) (*string, error)
+	RemoveUser(ctx context.Context, id int) (*string, error)
 }
 type QueryResolver interface {
 	Node(ctx context.Context, id int) (generated.Noder, error)
@@ -730,6 +779,7 @@ type QueryResolver interface {
 	AccountingEntries(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) (*generated.AccountingEntryConnection, error)
 	CompanyDocuments(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.CompanyDocumentOrder, where *generated.CompanyDocumentWhereInput) (*generated.CompanyDocumentConnection, error)
 	Files(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) (*generated.FileConnection, error)
+	MemberSignupTokens(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.MemberSignupTokenOrder, where *generated.MemberSignupTokenWhereInput) (*generated.MemberSignupTokenConnection, error)
 	Payables(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.PayableOrder, where *generated.PayableWhereInput) (*generated.PayableConnection, error)
 	Projects(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ProjectOrder, where *generated.ProjectWhereInput) (*generated.ProjectConnection, error)
 	ProjectTasks(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.ProjectTaskOrder, where *generated.ProjectTaskWhereInput) (*generated.ProjectTaskConnection, error)
@@ -768,6 +818,7 @@ type QueryResolver interface {
 	WorkShifts(ctx context.Context, where *generated.WorkshiftWhereInput) ([]*generated.Workshift, error)
 	AggregateWorkShift(ctx context.Context, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) ([]*model.WorkShiftAggregationPayload, error)
 	CountDocuments(ctx context.Context) ([]*model.DocumentCount, error)
+	VerifyMemberSignupToken(ctx context.Context, input *model.VerifyMemberSignupTokenInput) (*generated.MemberSignupToken, error)
 }
 
 type executableSchema struct {
@@ -1202,12 +1253,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Company.LastInvoiceNumber(childComplexity), true
 
-	case "Company.logo":
-		if e.complexity.Company.Logo == nil {
+	case "Company.logourl":
+		if e.complexity.Company.LogoURL == nil {
 			break
 		}
 
-		return e.complexity.Company.Logo(childComplexity), true
+		return e.complexity.Company.LogoURL(childComplexity), true
+
+	case "Company.membersignuptokens":
+		if e.complexity.Company.MemberSignupTokens == nil {
+			break
+		}
+
+		return e.complexity.Company.MemberSignupTokens(childComplexity), true
 
 	case "Company.name":
 		if e.complexity.Company.Name == nil {
@@ -1264,13 +1322,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Company.Receivables(childComplexity), true
-
-	case "Company.sector":
-		if e.complexity.Company.Sector == nil {
-			break
-		}
-
-		return e.complexity.Company.Sector(childComplexity), true
 
 	case "Company.suppliers":
 		if e.complexity.Company.Suppliers == nil {
@@ -1488,6 +1539,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CompanyDocumentEdge.Node(childComplexity), true
+
+	case "CreateMemberSignupTokenOutput.expiresAt":
+		if e.complexity.CreateMemberSignupTokenOutput.ExpiresAt == nil {
+			break
+		}
+
+		return e.complexity.CreateMemberSignupTokenOutput.ExpiresAt(childComplexity), true
+
+	case "CreateMemberSignupTokenOutput.token":
+		if e.complexity.CreateMemberSignupTokenOutput.Token == nil {
+			break
+		}
+
+		return e.complexity.CreateMemberSignupTokenOutput.Token(childComplexity), true
 
 	case "Customer.address":
 		if e.complexity.Customer.Address == nil {
@@ -2028,6 +2093,146 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.LoginOutput.User(childComplexity), true
 
+	case "MemberSignupToken.alreadyused":
+		if e.complexity.MemberSignupToken.AlreadyUsed == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.AlreadyUsed(childComplexity), true
+
+	case "MemberSignupToken.avatar":
+		if e.complexity.MemberSignupToken.Avatar == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Avatar(childComplexity), true
+
+	case "MemberSignupToken.company":
+		if e.complexity.MemberSignupToken.Company == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Company(childComplexity), true
+
+	case "MemberSignupToken.createdat":
+		if e.complexity.MemberSignupToken.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.CreatedAt(childComplexity), true
+
+	case "MemberSignupToken.createdby":
+		if e.complexity.MemberSignupToken.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.CreatedBy(childComplexity), true
+
+	case "MemberSignupToken.deletedat":
+		if e.complexity.MemberSignupToken.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.DeletedAt(childComplexity), true
+
+	case "MemberSignupToken.email":
+		if e.complexity.MemberSignupToken.Email == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Email(childComplexity), true
+
+	case "MemberSignupToken.expiresat":
+		if e.complexity.MemberSignupToken.ExpiresAt == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.ExpiresAt(childComplexity), true
+
+	case "MemberSignupToken.id":
+		if e.complexity.MemberSignupToken.ID == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.ID(childComplexity), true
+
+	case "MemberSignupToken.name":
+		if e.complexity.MemberSignupToken.Name == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Name(childComplexity), true
+
+	case "MemberSignupToken.note":
+		if e.complexity.MemberSignupToken.Note == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Note(childComplexity), true
+
+	case "MemberSignupToken.numberaccessed":
+		if e.complexity.MemberSignupToken.NumberAccessed == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.NumberAccessed(childComplexity), true
+
+	case "MemberSignupToken.role":
+		if e.complexity.MemberSignupToken.Role == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Role(childComplexity), true
+
+	case "MemberSignupToken.token":
+		if e.complexity.MemberSignupToken.Token == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.Token(childComplexity), true
+
+	case "MemberSignupToken.updatedat":
+		if e.complexity.MemberSignupToken.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupToken.UpdatedAt(childComplexity), true
+
+	case "MemberSignupTokenConnection.edges":
+		if e.complexity.MemberSignupTokenConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupTokenConnection.Edges(childComplexity), true
+
+	case "MemberSignupTokenConnection.pageInfo":
+		if e.complexity.MemberSignupTokenConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupTokenConnection.PageInfo(childComplexity), true
+
+	case "MemberSignupTokenConnection.totalCount":
+		if e.complexity.MemberSignupTokenConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupTokenConnection.TotalCount(childComplexity), true
+
+	case "MemberSignupTokenEdge.cursor":
+		if e.complexity.MemberSignupTokenEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupTokenEdge.Cursor(childComplexity), true
+
+	case "MemberSignupTokenEdge.node":
+		if e.complexity.MemberSignupTokenEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.MemberSignupTokenEdge.Node(childComplexity), true
+
 	case "Mutation.createCompany":
 		if e.complexity.Mutation.CreateCompany == nil {
 			break
@@ -2038,7 +2243,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateCompany(childComplexity, args["input"].(*generated.CreateCompanyInput)), true
+		return e.complexity.Mutation.CreateCompany(childComplexity, args["input"].(*generated.CreateCompanyInput), args["companyLogo"].(*model.ProfilePhotoInput)), true
 
 	case "Mutation.createCustomer":
 		if e.complexity.Mutation.CreateCustomer == nil {
@@ -2208,6 +2413,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteEmployee(childComplexity, args["id"].(int)), true
 
+	case "Mutation.deleteMemberSignupToken":
+		if e.complexity.Mutation.DeleteMemberSignupToken == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteMemberSignupToken_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteMemberSignupToken(childComplexity, args["id"].(int)), true
+
 	case "Mutation.deleteProduct":
 		if e.complexity.Mutation.DeleteProduct == nil {
 			break
@@ -2304,6 +2521,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.ForgotPassword(childComplexity, args["username"].(string)), true
 
+	case "Mutation.generateMemberSignupToken":
+		if e.complexity.Mutation.GenerateMemberSignupToken == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_generateMemberSignupToken_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.GenerateMemberSignupToken(childComplexity, args["input"].(generated.CreateMemberSignupTokenInput)), true
+
 	case "Mutation.initialSetup":
 		if e.complexity.Mutation.InitialSetup == nil {
 			break
@@ -2364,6 +2593,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.RegisterAccountingEntries(childComplexity, args["input"].(model.BaseEntryRegistrationInput)), true
 
+	case "Mutation.removeUser":
+		if e.complexity.Mutation.RemoveUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_removeUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RemoveUser(childComplexity, args["id"].(int)), true
+
 	case "Mutation.resetPassword":
 		if e.complexity.Mutation.ResetPassword == nil {
 			break
@@ -2410,7 +2651,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateCompany(childComplexity, args["id"].(int), args["input"].(generated.UpdateCompanyInput)), true
+		return e.complexity.Mutation.UpdateCompany(childComplexity, args["id"].(int), args["input"].(generated.UpdateCompanyInput), args["companyLogo"].(*model.ProfilePhotoInput)), true
 
 	case "Mutation.updateCustomer":
 		if e.complexity.Mutation.UpdateCustomer == nil {
@@ -2530,7 +2771,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(int), args["input"].(generated.UpdateUserInput)), true
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(int), args["input"].(generated.UpdateUserInput), args["companyLogo"].(*model.ProfilePhotoInput)), true
 
 	case "Mutation.updateWorkShift":
 		if e.complexity.Mutation.UpdateWorkShift == nil {
@@ -3304,6 +3545,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.LowStock(childComplexity, args["where"].(*generated.ProductWhereInput)), true
 
+	case "Query.memberSignupTokens":
+		if e.complexity.Query.MemberSignupTokens == nil {
+			break
+		}
+
+		args, err := ec.field_Query_memberSignupTokens_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.MemberSignupTokens(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].([]*generated.MemberSignupTokenOrder), args["where"].(*generated.MemberSignupTokenWhereInput)), true
+
 	case "Query.node":
 		if e.complexity.Query.Node == nil {
 			break
@@ -3526,6 +3779,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Users(childComplexity, args["where"].(*generated.UserWhereInput)), true
+
+	case "Query.verifyMemberSignupToken":
+		if e.complexity.Query.VerifyMemberSignupToken == nil {
+			break
+		}
+
+		args, err := ec.field_Query_verifyMemberSignupToken_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.VerifyMemberSignupToken(childComplexity, args["input"].(*model.VerifyMemberSignupTokenInput)), true
 
 	case "Query.verifyPasswordResetToken":
 		if e.complexity.Query.VerifyPasswordResetToken == nil {
@@ -3985,6 +4250,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.AccountingEntries(childComplexity), true
 
+	case "User.active":
+		if e.complexity.User.Active == nil {
+			break
+		}
+
+		return e.complexity.User.Active(childComplexity), true
+
+	case "User.address":
+		if e.complexity.User.Address == nil {
+			break
+		}
+
+		return e.complexity.User.Address(childComplexity), true
+
 	case "User.approveddocuments":
 		if e.complexity.User.ApprovedDocuments == nil {
 			break
@@ -4013,6 +4292,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.AssignedRoles(childComplexity), true
 
+	case "User.avatar":
+		if e.complexity.User.Avatar == nil {
+			break
+		}
+
+		return e.complexity.User.Avatar(childComplexity), true
+
 	case "User.birthdate":
 		if e.complexity.User.Birthdate == nil {
 			break
@@ -4033,6 +4319,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.CreatedAt(childComplexity), true
+
+	case "User.createdmembersignuptokens":
+		if e.complexity.User.CreatedMemberSignupTokens == nil {
+			break
+		}
+
+		return e.complexity.User.CreatedMemberSignupTokens(childComplexity), true
 
 	case "User.createdprojects":
 		if e.complexity.User.CreatedProjects == nil {
@@ -4055,12 +4348,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.DeletedAt(childComplexity), true
 
-	case "User.disabled":
-		if e.complexity.User.Disabled == nil {
+	case "User.department":
+		if e.complexity.User.Department == nil {
 			break
 		}
 
-		return e.complexity.User.Disabled(childComplexity), true
+		return e.complexity.User.Department(childComplexity), true
 
 	case "User.email":
 		if e.complexity.User.Email == nil {
@@ -4090,6 +4383,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.ID(childComplexity), true
 
+	case "User.lastlogin":
+		if e.complexity.User.LastLogin == nil {
+			break
+		}
+
+		return e.complexity.User.LastLogin(childComplexity), true
+
 	case "User.leader":
 		if e.complexity.User.Leader == nil {
 			break
@@ -4111,13 +4411,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Name(childComplexity), true
 
-	case "User.notverified":
-		if e.complexity.User.NotVerified == nil {
-			break
-		}
-
-		return e.complexity.User.NotVerified(childComplexity), true
-
 	case "User.participatedprojecttasks":
 		if e.complexity.User.ParticipatedProjectTasks == nil {
 			break
@@ -4131,6 +4424,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Phone(childComplexity), true
+
+	case "User.photourl":
+		if e.complexity.User.PhotoURL == nil {
+			break
+		}
+
+		return e.complexity.User.PhotoURL(childComplexity), true
 
 	case "User.subordinates":
 		if e.complexity.User.Subordinates == nil {
@@ -4180,6 +4480,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.UserRole.ID(childComplexity), true
+
+	case "UserRole.notes":
+		if e.complexity.UserRole.Notes == nil {
+			break
+		}
+
+		return e.complexity.UserRole.Notes(childComplexity), true
 
 	case "UserRole.role":
 		if e.complexity.UserRole.Role == nil {
@@ -4371,6 +4678,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateCustomerInput,
 		ec.unmarshalInputCreateEmployeeInput,
 		ec.unmarshalInputCreateFileInput,
+		ec.unmarshalInputCreateMemberSignupTokenInput,
 		ec.unmarshalInputCreatePayableInput,
 		ec.unmarshalInputCreateProductInput,
 		ec.unmarshalInputCreateProjectInput,
@@ -4398,12 +4706,15 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputInvoiceTotals,
 		ec.unmarshalInputLedgerDownloadInput,
 		ec.unmarshalInputLoginInput,
+		ec.unmarshalInputMemberSignupTokenOrder,
+		ec.unmarshalInputMemberSignupTokenWhereInput,
 		ec.unmarshalInputPayableInput,
 		ec.unmarshalInputPayableOrder,
 		ec.unmarshalInputPayableWhereInput,
 		ec.unmarshalInputPaymentDetails,
 		ec.unmarshalInputProductOrder,
 		ec.unmarshalInputProductWhereInput,
+		ec.unmarshalInputProfilePhotoInput,
 		ec.unmarshalInputProjectMilestoneWhereInput,
 		ec.unmarshalInputProjectOrder,
 		ec.unmarshalInputProjectTaskOrder,
@@ -4427,6 +4738,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateCustomerInput,
 		ec.unmarshalInputUpdateEmployeeInput,
 		ec.unmarshalInputUpdateFileInput,
+		ec.unmarshalInputUpdateMemberSignupTokenInput,
 		ec.unmarshalInputUpdatePayableInput,
 		ec.unmarshalInputUpdateProductInput,
 		ec.unmarshalInputUpdateProjectInput,
@@ -4442,6 +4754,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUserRoleOrder,
 		ec.unmarshalInputUserRoleWhereInput,
 		ec.unmarshalInputUserWhereInput,
+		ec.unmarshalInputVerifyMemberSignupTokenInput,
 		ec.unmarshalInputWorkshiftOrder,
 		ec.unmarshalInputWorkshiftWhereInput,
 		ec.unmarshalInputinvitedUserSignupInput,
@@ -4573,6 +4886,11 @@ func (ec *executionContext) field_Mutation_createCompany_args(ctx context.Contex
 		return nil, err
 	}
 	args["input"] = arg0
+	arg1, err := ec.field_Mutation_createCompany_argsCompanyLogo(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["companyLogo"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_createCompany_argsInput(
@@ -4594,6 +4912,28 @@ func (ec *executionContext) field_Mutation_createCompany_argsInput(
 	}
 
 	var zeroVal *generated.CreateCompanyInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_createCompany_argsCompanyLogo(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*model.ProfilePhotoInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["companyLogo"]
+	if !ok {
+		var zeroVal *model.ProfilePhotoInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("companyLogo"))
+	if tmp, ok := rawArgs["companyLogo"]; ok {
+		return ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, tmp)
+	}
+
+	var zeroVal *model.ProfilePhotoInput
 	return zeroVal, nil
 }
 
@@ -5045,6 +5385,38 @@ func (ec *executionContext) field_Mutation_deleteEmployee_argsID(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_deleteMemberSignupToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_deleteMemberSignupToken_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_deleteMemberSignupToken_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNInt2int(ctx, tmp)
+	}
+
+	var zeroVal int
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteProduct_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5301,6 +5673,38 @@ func (ec *executionContext) field_Mutation_forgotPassword_argsUsername(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_generateMemberSignupToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_generateMemberSignupToken_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_generateMemberSignupToken_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (generated.CreateMemberSignupTokenInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal generated.CreateMemberSignupTokenInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNCreateMemberSignupTokenInput2mazzaᚋentᚋgeneratedᚐCreateMemberSignupTokenInput(ctx, tmp)
+	}
+
+	var zeroVal generated.CreateMemberSignupTokenInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_initialSetup_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5461,6 +5865,38 @@ func (ec *executionContext) field_Mutation_registerAccountingEntries_argsInput(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Mutation_removeUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_removeUser_argsID(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["id"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_removeUser_argsID(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["id"]
+	if !ok {
+		var zeroVal int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+	if tmp, ok := rawArgs["id"]; ok {
+		return ec.unmarshalNID2int(ctx, tmp)
+	}
+
+	var zeroVal int
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Mutation_resetPassword_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5570,6 +6006,11 @@ func (ec *executionContext) field_Mutation_updateCompany_args(ctx context.Contex
 		return nil, err
 	}
 	args["input"] = arg1
+	arg2, err := ec.field_Mutation_updateCompany_argsCompanyLogo(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["companyLogo"] = arg2
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateCompany_argsID(
@@ -5613,6 +6054,28 @@ func (ec *executionContext) field_Mutation_updateCompany_argsInput(
 	}
 
 	var zeroVal generated.UpdateCompanyInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateCompany_argsCompanyLogo(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*model.ProfilePhotoInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["companyLogo"]
+	if !ok {
+		var zeroVal *model.ProfilePhotoInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("companyLogo"))
+	if tmp, ok := rawArgs["companyLogo"]; ok {
+		return ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, tmp)
+	}
+
+	var zeroVal *model.ProfilePhotoInput
 	return zeroVal, nil
 }
 
@@ -6160,6 +6623,11 @@ func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, 
 		return nil, err
 	}
 	args["input"] = arg1
+	arg2, err := ec.field_Mutation_updateUser_argsCompanyLogo(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["companyLogo"] = arg2
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_updateUser_argsID(
@@ -6203,6 +6671,28 @@ func (ec *executionContext) field_Mutation_updateUser_argsInput(
 	}
 
 	var zeroVal generated.UpdateUserInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_updateUser_argsCompanyLogo(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*model.ProfilePhotoInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["companyLogo"]
+	if !ok {
+		var zeroVal *model.ProfilePhotoInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("companyLogo"))
+	if tmp, ok := rawArgs["companyLogo"]; ok {
+		return ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, tmp)
+	}
+
+	var zeroVal *model.ProfilePhotoInput
 	return zeroVal, nil
 }
 
@@ -7391,6 +7881,173 @@ func (ec *executionContext) field_Query_lowStock_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_memberSignupTokens_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_memberSignupTokens_argsAfter(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["after"] = arg0
+	arg1, err := ec.field_Query_memberSignupTokens_argsFirst(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["first"] = arg1
+	arg2, err := ec.field_Query_memberSignupTokens_argsBefore(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["before"] = arg2
+	arg3, err := ec.field_Query_memberSignupTokens_argsLast(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["last"] = arg3
+	arg4, err := ec.field_Query_memberSignupTokens_argsOrderBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["orderBy"] = arg4
+	arg5, err := ec.field_Query_memberSignupTokens_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg5
+	return args, nil
+}
+func (ec *executionContext) field_Query_memberSignupTokens_argsAfter(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[int], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["after"]
+	if !ok {
+		var zeroVal *entgql.Cursor[int]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+	if tmp, ok := rawArgs["after"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[int]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_memberSignupTokens_argsFirst(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["first"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["first"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_memberSignupTokens_argsBefore(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*entgql.Cursor[int], error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["before"]
+	if !ok {
+		var zeroVal *entgql.Cursor[int]
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+	if tmp, ok := rawArgs["before"]; ok {
+		return ec.unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, tmp)
+	}
+
+	var zeroVal *entgql.Cursor[int]
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_memberSignupTokens_argsLast(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*int, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["last"]
+	if !ok {
+		var zeroVal *int
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+	if tmp, ok := rawArgs["last"]; ok {
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
+	}
+
+	var zeroVal *int
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_memberSignupTokens_argsOrderBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]*generated.MemberSignupTokenOrder, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["orderBy"]
+	if !ok {
+		var zeroVal []*generated.MemberSignupTokenOrder
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("orderBy"))
+	if tmp, ok := rawArgs["orderBy"]; ok {
+		return ec.unmarshalOMemberSignupTokenOrder2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrderᚄ(ctx, tmp)
+	}
+
+	var zeroVal []*generated.MemberSignupTokenOrder
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_memberSignupTokens_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*generated.MemberSignupTokenWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *generated.MemberSignupTokenWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOMemberSignupTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *generated.MemberSignupTokenWhereInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_node_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -8507,6 +9164,38 @@ func (ec *executionContext) field_Query_users_argsWhere(
 	return zeroVal, nil
 }
 
+func (ec *executionContext) field_Query_verifyMemberSignupToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_verifyMemberSignupToken_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_verifyMemberSignupToken_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*model.VerifyMemberSignupTokenInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal *model.VerifyMemberSignupTokenInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalOVerifyMemberSignupTokenInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐVerifyMemberSignupTokenInput(ctx, tmp)
+	}
+
+	var zeroVal *model.VerifyMemberSignupTokenInput
+	return zeroVal, nil
+}
+
 func (ec *executionContext) field_Query_verifyPasswordResetToken_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -9410,16 +10099,14 @@ func (ec *executionContext) fieldContext_AccountingEntry_company(_ context.Conte
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -9440,6 +10127,8 @@ func (ec *executionContext) fieldContext_AccountingEntry_company(_ context.Conte
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -9517,16 +10206,24 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -9537,6 +10234,8 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -11138,8 +11837,8 @@ func (ec *executionContext) fieldContext_Company_lastinvoicenumber(_ context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Company_logo(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Company_logo(ctx, field)
+func (ec *executionContext) _Company_logourl(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Company_logourl(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -11152,7 +11851,7 @@ func (ec *executionContext) _Company_logo(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Logo, nil
+		return obj.LogoURL, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11166,7 +11865,7 @@ func (ec *executionContext) _Company_logo(ctx context.Context, field graphql.Col
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Company_logo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Company_logourl(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Company",
 		Field:      field,
@@ -11296,47 +11995,6 @@ func (ec *executionContext) _Company_phone(ctx context.Context, field graphql.Co
 }
 
 func (ec *executionContext) fieldContext_Company_phone(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Company",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Company_sector(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Company_sector(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Sector, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Company_sector(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Company",
 		Field:      field,
@@ -11559,6 +12217,8 @@ func (ec *executionContext) fieldContext_Company_availableroles(_ context.Contex
 				return ec.fieldContext_UserRole_id(ctx, field)
 			case "role":
 				return ec.fieldContext_UserRole_role(ctx, field)
+			case "notes":
+				return ec.fieldContext_UserRole_notes(ctx, field)
 			case "company":
 				return ec.fieldContext_UserRole_company(ctx, field)
 			case "user":
@@ -11922,6 +12582,79 @@ func (ec *executionContext) fieldContext_Company_files(_ context.Context, field 
 				return ec.fieldContext_File_company(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type File", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Company_membersignuptokens(ctx context.Context, field graphql.CollectedField, obj *generated.Company) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Company_membersignuptokens(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MemberSignupTokens(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.MemberSignupToken)
+	fc.Result = res
+	return ec.marshalOMemberSignupToken2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Company_membersignuptokens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Company",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_MemberSignupToken_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_MemberSignupToken_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_MemberSignupToken_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_MemberSignupToken_deletedat(ctx, field)
+			case "name":
+				return ec.fieldContext_MemberSignupToken_name(ctx, field)
+			case "email":
+				return ec.fieldContext_MemberSignupToken_email(ctx, field)
+			case "token":
+				return ec.fieldContext_MemberSignupToken_token(ctx, field)
+			case "avatar":
+				return ec.fieldContext_MemberSignupToken_avatar(ctx, field)
+			case "role":
+				return ec.fieldContext_MemberSignupToken_role(ctx, field)
+			case "note":
+				return ec.fieldContext_MemberSignupToken_note(ctx, field)
+			case "numberaccessed":
+				return ec.fieldContext_MemberSignupToken_numberaccessed(ctx, field)
+			case "expiresat":
+				return ec.fieldContext_MemberSignupToken_expiresat(ctx, field)
+			case "alreadyused":
+				return ec.fieldContext_MemberSignupToken_alreadyused(ctx, field)
+			case "company":
+				return ec.fieldContext_MemberSignupToken_company(ctx, field)
+			case "createdby":
+				return ec.fieldContext_MemberSignupToken_createdby(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupToken", field.Name)
 		},
 	}
 	return fc, nil
@@ -12499,16 +13232,24 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -12519,6 +13260,8 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -12614,16 +13357,14 @@ func (ec *executionContext) fieldContext_Company_daughtercompanies(_ context.Con
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -12644,6 +13385,8 @@ func (ec *executionContext) fieldContext_Company_daughtercompanies(_ context.Con
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -12739,16 +13482,14 @@ func (ec *executionContext) fieldContext_Company_parentcompany(_ context.Context
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -12769,6 +13510,8 @@ func (ec *executionContext) fieldContext_Company_parentcompany(_ context.Context
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -13477,16 +14220,14 @@ func (ec *executionContext) fieldContext_CompanyDocument_company(_ context.Conte
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -13507,6 +14248,8 @@ func (ec *executionContext) fieldContext_CompanyDocument_company(_ context.Conte
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -13584,16 +14327,24 @@ func (ec *executionContext) fieldContext_CompanyDocument_uploadedby(_ context.Co
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -13604,6 +14355,8 @@ func (ec *executionContext) fieldContext_CompanyDocument_uploadedby(_ context.Co
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -13681,16 +14434,24 @@ func (ec *executionContext) fieldContext_CompanyDocument_approvedby(_ context.Co
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -13701,6 +14462,8 @@ func (ec *executionContext) fieldContext_CompanyDocument_approvedby(_ context.Co
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -13991,6 +14754,94 @@ func (ec *executionContext) fieldContext_CompanyDocumentEdge_cursor(_ context.Co
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Cursor does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CreateMemberSignupTokenOutput_token(ctx context.Context, field graphql.CollectedField, obj *model.CreateMemberSignupTokenOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CreateMemberSignupTokenOutput_token(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Token, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CreateMemberSignupTokenOutput_token(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CreateMemberSignupTokenOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CreateMemberSignupTokenOutput_expiresAt(ctx context.Context, field graphql.CollectedField, obj *model.CreateMemberSignupTokenOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CreateMemberSignupTokenOutput_expiresAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ExpiresAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CreateMemberSignupTokenOutput_expiresAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CreateMemberSignupTokenOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
 		},
 	}
 	return fc, nil
@@ -14622,16 +15473,14 @@ func (ec *executionContext) fieldContext_Customer_company(_ context.Context, fie
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -14652,6 +15501,8 @@ func (ec *executionContext) fieldContext_Customer_company(_ context.Context, fie
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -15371,16 +16222,14 @@ func (ec *executionContext) fieldContext_Employee_company(_ context.Context, fie
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -15401,6 +16250,8 @@ func (ec *executionContext) fieldContext_Employee_company(_ context.Context, fie
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -15478,16 +16329,24 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -15498,6 +16357,8 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -16170,16 +17031,14 @@ func (ec *executionContext) fieldContext_File_company(_ context.Context, field g
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -16200,6 +17059,8 @@ func (ec *executionContext) fieldContext_File_company(_ context.Context, field g
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -17545,16 +18406,24 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -17565,6 +18434,8 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -17707,16 +18578,14 @@ func (ec *executionContext) fieldContext_LoginOutput_companies(_ context.Context
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -17737,6 +18606,8 @@ func (ec *executionContext) fieldContext_LoginOutput_companies(_ context.Context
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -17898,6 +18769,1069 @@ func (ec *executionContext) fieldContext_LoginOutput_ttl(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _MemberSignupToken_id(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNID2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_createdat(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_createdat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_createdat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_updatedat(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_updatedat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_updatedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_deletedat(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_deletedat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_deletedat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_name(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_email(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_email(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_email(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_token(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_token(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Token, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_token(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_avatar(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_avatar(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Avatar, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_avatar(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_role(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_role(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Role, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(membersignuptoken.Role)
+	fc.Result = res
+	return ec.marshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_role(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type MemberSignupTokenRole does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_note(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_note(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Note, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_note(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_numberaccessed(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_numberaccessed(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberAccessed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_numberaccessed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_expiresat(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_expiresat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ExpiresAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_expiresat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_alreadyused(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_alreadyused(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AlreadyUsed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_alreadyused(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_company(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_company(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Company(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*generated.Company)
+	fc.Result = res
+	return ec.marshalNCompany2ᚖmazzaᚋentᚋgeneratedᚐCompany(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Company_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_Company_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_Company_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_Company_deletedat(ctx, field)
+			case "address":
+				return ec.fieldContext_Company_address(ctx, field)
+			case "basecurrency":
+				return ec.fieldContext_Company_basecurrency(ctx, field)
+			case "ceoname":
+				return ec.fieldContext_Company_ceoname(ctx, field)
+			case "city":
+				return ec.fieldContext_Company_city(ctx, field)
+			case "country":
+				return ec.fieldContext_Company_country(ctx, field)
+			case "establishedat":
+				return ec.fieldContext_Company_establishedat(ctx, field)
+			case "description":
+				return ec.fieldContext_Company_description(ctx, field)
+			case "email":
+				return ec.fieldContext_Company_email(ctx, field)
+			case "industry":
+				return ec.fieldContext_Company_industry(ctx, field)
+			case "lastentrydate":
+				return ec.fieldContext_Company_lastentrydate(ctx, field)
+			case "lastinvoicenumber":
+				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
+			case "name":
+				return ec.fieldContext_Company_name(ctx, field)
+			case "numberofemployees":
+				return ec.fieldContext_Company_numberofemployees(ctx, field)
+			case "phone":
+				return ec.fieldContext_Company_phone(ctx, field)
+			case "taxid":
+				return ec.fieldContext_Company_taxid(ctx, field)
+			case "vatrate":
+				return ec.fieldContext_Company_vatrate(ctx, field)
+			case "website":
+				return ec.fieldContext_Company_website(ctx, field)
+			case "incompletesetup":
+				return ec.fieldContext_Company_incompletesetup(ctx, field)
+			case "availableroles":
+				return ec.fieldContext_Company_availableroles(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_Company_accountingentries(ctx, field)
+			case "customers":
+				return ec.fieldContext_Company_customers(ctx, field)
+			case "documents":
+				return ec.fieldContext_Company_documents(ctx, field)
+			case "employees":
+				return ec.fieldContext_Company_employees(ctx, field)
+			case "files":
+				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
+			case "products":
+				return ec.fieldContext_Company_products(ctx, field)
+			case "projects":
+				return ec.fieldContext_Company_projects(ctx, field)
+			case "payables":
+				return ec.fieldContext_Company_payables(ctx, field)
+			case "receivables":
+				return ec.fieldContext_Company_receivables(ctx, field)
+			case "suppliers":
+				return ec.fieldContext_Company_suppliers(ctx, field)
+			case "tokens":
+				return ec.fieldContext_Company_tokens(ctx, field)
+			case "treasuries":
+				return ec.fieldContext_Company_treasuries(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_Company_workshifts(ctx, field)
+			case "users":
+				return ec.fieldContext_Company_users(ctx, field)
+			case "daughtercompanies":
+				return ec.fieldContext_Company_daughtercompanies(ctx, field)
+			case "parentcompany":
+				return ec.fieldContext_Company_parentcompany(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Company", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupToken_createdby(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupToken) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupToken_createdby(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupToken_createdby(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupToken",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_User_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_User_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_User_deletedat(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
+			case "phone":
+				return ec.fieldContext_User_phone(ctx, field)
+			case "birthdate":
+				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
+			case "gender":
+				return ec.fieldContext_User_gender(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
+			case "accountingentries":
+				return ec.fieldContext_User_accountingentries(ctx, field)
+			case "company":
+				return ec.fieldContext_User_company(ctx, field)
+			case "assignedroles":
+				return ec.fieldContext_User_assignedroles(ctx, field)
+			case "subordinates":
+				return ec.fieldContext_User_subordinates(ctx, field)
+			case "leader":
+				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
+			case "employee":
+				return ec.fieldContext_User_employee(ctx, field)
+			case "createdprojects":
+				return ec.fieldContext_User_createdprojects(ctx, field)
+			case "leaderedprojects":
+				return ec.fieldContext_User_leaderedprojects(ctx, field)
+			case "assignedprojecttasks":
+				return ec.fieldContext_User_assignedprojecttasks(ctx, field)
+			case "participatedprojecttasks":
+				return ec.fieldContext_User_participatedprojecttasks(ctx, field)
+			case "createdtasks":
+				return ec.fieldContext_User_createdtasks(ctx, field)
+			case "tokens":
+				return ec.fieldContext_User_tokens(ctx, field)
+			case "approvedworkshifts":
+				return ec.fieldContext_User_approvedworkshifts(ctx, field)
+			case "workshifts":
+				return ec.fieldContext_User_workshifts(ctx, field)
+			case "uploadeddocuments":
+				return ec.fieldContext_User_uploadeddocuments(ctx, field)
+			case "approveddocuments":
+				return ec.fieldContext_User_approveddocuments(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupTokenConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupTokenConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupTokenConnection_edges(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.MemberSignupTokenEdge)
+	fc.Result = res
+	return ec.marshalOMemberSignupTokenEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenEdge(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupTokenConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupTokenConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "node":
+				return ec.fieldContext_MemberSignupTokenEdge_node(ctx, field)
+			case "cursor":
+				return ec.fieldContext_MemberSignupTokenEdge_cursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupTokenEdge", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupTokenConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupTokenConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupTokenConnection_pageInfo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(entgql.PageInfo[int])
+	fc.Result = res
+	return ec.marshalNPageInfo2entgoᚗioᚋcontribᚋentgqlᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupTokenConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupTokenConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "hasNextPage":
+				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+			case "hasPreviousPage":
+				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+			case "startCursor":
+				return ec.fieldContext_PageInfo_startCursor(ctx, field)
+			case "endCursor":
+				return ec.fieldContext_PageInfo_endCursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupTokenConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupTokenConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupTokenConnection_totalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupTokenConnection_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupTokenConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupTokenEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupTokenEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupTokenEdge_node(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*generated.MemberSignupToken)
+	fc.Result = res
+	return ec.marshalOMemberSignupToken2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupTokenEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupTokenEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_MemberSignupToken_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_MemberSignupToken_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_MemberSignupToken_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_MemberSignupToken_deletedat(ctx, field)
+			case "name":
+				return ec.fieldContext_MemberSignupToken_name(ctx, field)
+			case "email":
+				return ec.fieldContext_MemberSignupToken_email(ctx, field)
+			case "token":
+				return ec.fieldContext_MemberSignupToken_token(ctx, field)
+			case "avatar":
+				return ec.fieldContext_MemberSignupToken_avatar(ctx, field)
+			case "role":
+				return ec.fieldContext_MemberSignupToken_role(ctx, field)
+			case "note":
+				return ec.fieldContext_MemberSignupToken_note(ctx, field)
+			case "numberaccessed":
+				return ec.fieldContext_MemberSignupToken_numberaccessed(ctx, field)
+			case "expiresat":
+				return ec.fieldContext_MemberSignupToken_expiresat(ctx, field)
+			case "alreadyused":
+				return ec.fieldContext_MemberSignupToken_alreadyused(ctx, field)
+			case "company":
+				return ec.fieldContext_MemberSignupToken_company(ctx, field)
+			case "createdby":
+				return ec.fieldContext_MemberSignupToken_createdby(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupToken", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _MemberSignupTokenEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *generated.MemberSignupTokenEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_MemberSignupTokenEdge_cursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(entgql.Cursor[int])
+	fc.Result = res
+	return ec.marshalNCursor2entgoᚗioᚋcontribᚋentgqlᚐCursor(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_MemberSignupTokenEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "MemberSignupTokenEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Cursor does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_signup(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_signup(ctx, field)
 	if err != nil {
@@ -17981,7 +19915,7 @@ func (ec *executionContext) _Mutation_createCompany(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateCompany(rctx, fc.Args["input"].(*generated.CreateCompanyInput))
+		return ec.resolvers.Mutation().CreateCompany(rctx, fc.Args["input"].(*generated.CreateCompanyInput), fc.Args["companyLogo"].(*model.ProfilePhotoInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18033,16 +19967,14 @@ func (ec *executionContext) fieldContext_Mutation_createCompany(ctx context.Cont
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -18063,6 +19995,8 @@ func (ec *executionContext) fieldContext_Mutation_createCompany(ctx context.Cont
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -18117,7 +20051,7 @@ func (ec *executionContext) _Mutation_updateCompany(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateCompany(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateCompanyInput))
+		return ec.resolvers.Mutation().UpdateCompany(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateCompanyInput), fc.Args["companyLogo"].(*model.ProfilePhotoInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18172,16 +20106,14 @@ func (ec *executionContext) fieldContext_Mutation_updateCompany(ctx context.Cont
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -18202,6 +20134,8 @@ func (ec *executionContext) fieldContext_Mutation_updateCompany(ctx context.Cont
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -18293,16 +20227,24 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -18313,6 +20255,8 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -18401,16 +20345,24 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -18421,6 +20373,8 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -18475,7 +20429,7 @@ func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateUser(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateUserInput))
+		return ec.resolvers.Mutation().UpdateUser(rctx, fc.Args["id"].(int), fc.Args["input"].(generated.UpdateUserInput), fc.Args["companyLogo"].(*model.ProfilePhotoInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -18512,16 +20466,24 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -18532,6 +20494,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -21166,6 +23130,171 @@ func (ec *executionContext) fieldContext_Mutation_deleteDocuments(ctx context.Co
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_generateMemberSignupToken(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_generateMemberSignupToken(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().GenerateMemberSignupToken(rctx, fc.Args["input"].(generated.CreateMemberSignupTokenInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.CreateMemberSignupTokenOutput)
+	fc.Result = res
+	return ec.marshalNCreateMemberSignupTokenOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐCreateMemberSignupTokenOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_generateMemberSignupToken(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "token":
+				return ec.fieldContext_CreateMemberSignupTokenOutput_token(ctx, field)
+			case "expiresAt":
+				return ec.fieldContext_CreateMemberSignupTokenOutput_expiresAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CreateMemberSignupTokenOutput", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_generateMemberSignupToken_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteMemberSignupToken(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteMemberSignupToken(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteMemberSignupToken(rctx, fc.Args["id"].(int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteMemberSignupToken(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteMemberSignupToken_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_removeUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_removeUser(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().RemoveUser(rctx, fc.Args["id"].(int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_removeUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_removeUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _PageInfo_hasNextPage(ctx context.Context, field graphql.CollectedField, obj *entgql.PageInfo[int]) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_PageInfo_hasNextPage(ctx, field)
 	if err != nil {
@@ -21883,16 +24012,14 @@ func (ec *executionContext) fieldContext_Payable_company(_ context.Context, fiel
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -21913,6 +24040,8 @@ func (ec *executionContext) fieldContext_Payable_company(_ context.Context, fiel
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -22569,16 +24698,14 @@ func (ec *executionContext) fieldContext_Product_company(_ context.Context, fiel
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -22599,6 +24726,8 @@ func (ec *executionContext) fieldContext_Product_company(_ context.Context, fiel
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -23131,16 +25260,14 @@ func (ec *executionContext) fieldContext_Project_company(_ context.Context, fiel
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -23161,6 +25288,8 @@ func (ec *executionContext) fieldContext_Project_company(_ context.Context, fiel
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -23238,16 +25367,24 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -23258,6 +25395,8 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -23335,16 +25474,24 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -23355,6 +25502,8 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -24533,16 +26682,24 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -24553,6 +26710,8 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -24630,16 +26789,24 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -24650,6 +26817,8 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -24727,16 +26896,24 @@ func (ec *executionContext) fieldContext_ProjectTask_createdby(_ context.Context
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -24747,6 +26924,8 @@ func (ec *executionContext) fieldContext_ProjectTask_createdby(_ context.Context
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -25407,6 +27586,69 @@ func (ec *executionContext) fieldContext_Query_files(ctx context.Context, field 
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_files_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_memberSignupTokens(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_memberSignupTokens(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MemberSignupTokens(rctx, fc.Args["after"].(*entgql.Cursor[int]), fc.Args["first"].(*int), fc.Args["before"].(*entgql.Cursor[int]), fc.Args["last"].(*int), fc.Args["orderBy"].([]*generated.MemberSignupTokenOrder), fc.Args["where"].(*generated.MemberSignupTokenWhereInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*generated.MemberSignupTokenConnection)
+	fc.Result = res
+	return ec.marshalNMemberSignupTokenConnection2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_memberSignupTokens(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_MemberSignupTokenConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_MemberSignupTokenConnection_pageInfo(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_MemberSignupTokenConnection_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupTokenConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_memberSignupTokens_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -26506,16 +28748,14 @@ func (ec *executionContext) fieldContext_Query_companies(ctx context.Context, fi
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -26536,6 +28776,8 @@ func (ec *executionContext) fieldContext_Query_companies(ctx context.Context, fi
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -27717,16 +29959,24 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -27737,6 +29987,8 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -27820,6 +30072,8 @@ func (ec *executionContext) fieldContext_Query_userRoles(ctx context.Context, fi
 				return ec.fieldContext_UserRole_id(ctx, field)
 			case "role":
 				return ec.fieldContext_UserRole_role(ctx, field)
+			case "notes":
+				return ec.fieldContext_UserRole_notes(ctx, field)
 			case "company":
 				return ec.fieldContext_UserRole_company(ctx, field)
 			case "user":
@@ -28046,6 +30300,93 @@ func (ec *executionContext) fieldContext_Query_countDocuments(_ context.Context,
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DocumentCount", field.Name)
 		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_verifyMemberSignupToken(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_verifyMemberSignupToken(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().VerifyMemberSignupToken(rctx, fc.Args["input"].(*model.VerifyMemberSignupTokenInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*generated.MemberSignupToken)
+	fc.Result = res
+	return ec.marshalNMemberSignupToken2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_verifyMemberSignupToken(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_MemberSignupToken_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_MemberSignupToken_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_MemberSignupToken_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_MemberSignupToken_deletedat(ctx, field)
+			case "name":
+				return ec.fieldContext_MemberSignupToken_name(ctx, field)
+			case "email":
+				return ec.fieldContext_MemberSignupToken_email(ctx, field)
+			case "token":
+				return ec.fieldContext_MemberSignupToken_token(ctx, field)
+			case "avatar":
+				return ec.fieldContext_MemberSignupToken_avatar(ctx, field)
+			case "role":
+				return ec.fieldContext_MemberSignupToken_role(ctx, field)
+			case "note":
+				return ec.fieldContext_MemberSignupToken_note(ctx, field)
+			case "numberaccessed":
+				return ec.fieldContext_MemberSignupToken_numberaccessed(ctx, field)
+			case "expiresat":
+				return ec.fieldContext_MemberSignupToken_expiresat(ctx, field)
+			case "alreadyused":
+				return ec.fieldContext_MemberSignupToken_alreadyused(ctx, field)
+			case "company":
+				return ec.fieldContext_MemberSignupToken_company(ctx, field)
+			case "createdby":
+				return ec.fieldContext_MemberSignupToken_createdby(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupToken", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_verifyMemberSignupToken_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -28726,16 +31067,14 @@ func (ec *executionContext) fieldContext_Receivable_company(_ context.Context, f
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -28756,6 +31095,8 @@ func (ec *executionContext) fieldContext_Receivable_company(_ context.Context, f
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -30016,16 +32357,14 @@ func (ec *executionContext) fieldContext_Supplier_company(_ context.Context, fie
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -30046,6 +32385,8 @@ func (ec *executionContext) fieldContext_Supplier_company(_ context.Context, fie
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -30384,16 +32725,14 @@ func (ec *executionContext) fieldContext_Token_company(_ context.Context, field 
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -30414,6 +32753,8 @@ func (ec *executionContext) fieldContext_Token_company(_ context.Context, field 
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -30491,16 +32832,24 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -30511,6 +32860,8 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -30823,16 +33174,14 @@ func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, fie
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -30853,6 +33202,8 @@ func (ec *executionContext) fieldContext_Treasury_company(_ context.Context, fie
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -31428,11 +33779,14 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_email(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -31480,6 +33834,170 @@ func (ec *executionContext) _User_name(ctx context.Context, field graphql.Collec
 }
 
 func (ec *executionContext) fieldContext_User_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_address(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_address(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_address(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_avatar(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_avatar(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Avatar, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_avatar(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_photourl(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_photourl(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PhotoURL, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_photourl(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_department(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_department(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Department, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_department(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -31574,6 +34092,47 @@ func (ec *executionContext) fieldContext_User_birthdate(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _User_lastlogin(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_lastlogin(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastLogin, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_lastlogin(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _User_gender(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_gender(ctx, field)
 	if err != nil {
@@ -31618,8 +34177,8 @@ func (ec *executionContext) fieldContext_User_gender(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _User_disabled(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_disabled(ctx, field)
+func (ec *executionContext) _User_active(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_active(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -31632,62 +34191,24 @@ func (ec *executionContext) _User_disabled(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Disabled, nil
+		return obj.Active, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*bool)
-	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_User_disabled(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "User",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _User_notverified(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_notverified(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
 		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NotVerified, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
 		return graphql.Null
 	}
 	res := resTmp.(*bool)
 	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
+	return ec.marshalNBoolean2ᚖbool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_User_notverified(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_User_active(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -31848,16 +34369,14 @@ func (ec *executionContext) fieldContext_User_company(_ context.Context, field g
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -31878,6 +34397,8 @@ func (ec *executionContext) fieldContext_User_company(_ context.Context, field g
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -31947,6 +34468,8 @@ func (ec *executionContext) fieldContext_User_assignedroles(_ context.Context, f
 				return ec.fieldContext_UserRole_id(ctx, field)
 			case "role":
 				return ec.fieldContext_UserRole_role(ctx, field)
+			case "notes":
+				return ec.fieldContext_UserRole_notes(ctx, field)
 			case "company":
 				return ec.fieldContext_UserRole_company(ctx, field)
 			case "user":
@@ -32006,16 +34529,24 @@ func (ec *executionContext) fieldContext_User_subordinates(_ context.Context, fi
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -32026,6 +34557,8 @@ func (ec *executionContext) fieldContext_User_subordinates(_ context.Context, fi
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -32103,16 +34636,24 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -32123,6 +34664,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -32147,6 +34690,79 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_approveddocuments(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_createdmembersignuptokens(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_createdmembersignuptokens(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedMemberSignupTokens(ctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*generated.MemberSignupToken)
+	fc.Result = res
+	return ec.marshalOMemberSignupToken2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_createdmembersignuptokens(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_MemberSignupToken_id(ctx, field)
+			case "createdat":
+				return ec.fieldContext_MemberSignupToken_createdat(ctx, field)
+			case "updatedat":
+				return ec.fieldContext_MemberSignupToken_updatedat(ctx, field)
+			case "deletedat":
+				return ec.fieldContext_MemberSignupToken_deletedat(ctx, field)
+			case "name":
+				return ec.fieldContext_MemberSignupToken_name(ctx, field)
+			case "email":
+				return ec.fieldContext_MemberSignupToken_email(ctx, field)
+			case "token":
+				return ec.fieldContext_MemberSignupToken_token(ctx, field)
+			case "avatar":
+				return ec.fieldContext_MemberSignupToken_avatar(ctx, field)
+			case "role":
+				return ec.fieldContext_MemberSignupToken_role(ctx, field)
+			case "note":
+				return ec.fieldContext_MemberSignupToken_note(ctx, field)
+			case "numberaccessed":
+				return ec.fieldContext_MemberSignupToken_numberaccessed(ctx, field)
+			case "expiresat":
+				return ec.fieldContext_MemberSignupToken_expiresat(ctx, field)
+			case "alreadyused":
+				return ec.fieldContext_MemberSignupToken_alreadyused(ctx, field)
+			case "company":
+				return ec.fieldContext_MemberSignupToken_company(ctx, field)
+			case "createdby":
+				return ec.fieldContext_MemberSignupToken_createdby(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type MemberSignupToken", field.Name)
 		},
 	}
 	return fc, nil
@@ -33037,6 +35653,50 @@ func (ec *executionContext) fieldContext_UserRole_role(_ context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _UserRole_notes(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UserRole_notes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Notes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UserRole_notes(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UserRole",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _UserRole_company(ctx context.Context, field graphql.CollectedField, obj *generated.UserRole) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UserRole_company(ctx, field)
 	if err != nil {
@@ -33103,16 +35763,14 @@ func (ec *executionContext) fieldContext_UserRole_company(_ context.Context, fie
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -33133,6 +35791,8 @@ func (ec *executionContext) fieldContext_UserRole_company(_ context.Context, fie
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -33185,9 +35845,9 @@ func (ec *executionContext) _UserRole_user(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*generated.User)
+	res := resTmp.(*generated.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚕᚖmazzaᚋentᚋgeneratedᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖmazzaᚋentᚋgeneratedᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -33210,16 +35870,24 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -33230,6 +35898,8 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -34005,16 +36675,14 @@ func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, fi
 				return ec.fieldContext_Company_lastentrydate(ctx, field)
 			case "lastinvoicenumber":
 				return ec.fieldContext_Company_lastinvoicenumber(ctx, field)
-			case "logo":
-				return ec.fieldContext_Company_logo(ctx, field)
+			case "logourl":
+				return ec.fieldContext_Company_logourl(ctx, field)
 			case "name":
 				return ec.fieldContext_Company_name(ctx, field)
 			case "numberofemployees":
 				return ec.fieldContext_Company_numberofemployees(ctx, field)
 			case "phone":
 				return ec.fieldContext_Company_phone(ctx, field)
-			case "sector":
-				return ec.fieldContext_Company_sector(ctx, field)
 			case "taxid":
 				return ec.fieldContext_Company_taxid(ctx, field)
 			case "vatrate":
@@ -34035,6 +36703,8 @@ func (ec *executionContext) fieldContext_Workshift_company(_ context.Context, fi
 				return ec.fieldContext_Company_employees(ctx, field)
 			case "files":
 				return ec.fieldContext_Company_files(ctx, field)
+			case "membersignuptokens":
+				return ec.fieldContext_Company_membersignuptokens(ctx, field)
 			case "products":
 				return ec.fieldContext_Company_products(ctx, field)
 			case "projects":
@@ -34112,16 +36782,24 @@ func (ec *executionContext) fieldContext_Workshift_user(_ context.Context, field
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -34132,6 +36810,8 @@ func (ec *executionContext) fieldContext_Workshift_user(_ context.Context, field
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -34209,16 +36889,24 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "address":
+				return ec.fieldContext_User_address(ctx, field)
+			case "avatar":
+				return ec.fieldContext_User_avatar(ctx, field)
+			case "photourl":
+				return ec.fieldContext_User_photourl(ctx, field)
+			case "department":
+				return ec.fieldContext_User_department(ctx, field)
 			case "phone":
 				return ec.fieldContext_User_phone(ctx, field)
 			case "birthdate":
 				return ec.fieldContext_User_birthdate(ctx, field)
+			case "lastlogin":
+				return ec.fieldContext_User_lastlogin(ctx, field)
 			case "gender":
 				return ec.fieldContext_User_gender(ctx, field)
-			case "disabled":
-				return ec.fieldContext_User_disabled(ctx, field)
-			case "notverified":
-				return ec.fieldContext_User_notverified(ctx, field)
+			case "active":
+				return ec.fieldContext_User_active(ctx, field)
 			case "accountingentries":
 				return ec.fieldContext_User_accountingentries(ctx, field)
 			case "company":
@@ -34229,6 +36917,8 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 				return ec.fieldContext_User_subordinates(ctx, field)
 			case "leader":
 				return ec.fieldContext_User_leader(ctx, field)
+			case "createdmembersignuptokens":
+				return ec.fieldContext_User_createdmembersignuptokens(ctx, field)
 			case "employee":
 				return ec.fieldContext_User_employee(ctx, field)
 			case "createdprojects":
@@ -38528,7 +41218,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryContains", "industryHasPrefix", "industryHasSuffix", "industryIsNil", "industryNotNil", "industryEqualFold", "industryContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logo", "logoNEQ", "logoIn", "logoNotIn", "logoGT", "logoGTE", "logoLT", "logoLTE", "logoContains", "logoHasPrefix", "logoHasSuffix", "logoIsNil", "logoNotNil", "logoEqualFold", "logoContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "sector", "sectorNEQ", "sectorIn", "sectorNotIn", "sectorGT", "sectorGTE", "sectorLT", "sectorLTE", "sectorContains", "sectorHasPrefix", "sectorHasSuffix", "sectorIsNil", "sectorNotNil", "sectorEqualFold", "sectorContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasDocuments", "hasDocumentsWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasPayables", "hasPayablesWith", "hasReceivables", "hasReceivablesWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryContains", "industryHasPrefix", "industryHasSuffix", "industryIsNil", "industryNotNil", "industryEqualFold", "industryContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logourl", "logourlNEQ", "logourlIn", "logourlNotIn", "logourlGT", "logourlGTE", "logourlLT", "logourlLTE", "logourlContains", "logourlHasPrefix", "logourlHasSuffix", "logourlIsNil", "logourlNotNil", "logourlEqualFold", "logourlContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasDocuments", "hasDocumentsWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasMemberSignupTokens", "hasMemberSignupTokensWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasPayables", "hasPayablesWith", "hasReceivables", "hasReceivablesWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -39774,111 +42464,111 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.LastInvoiceNumberNotNil = data
-		case "logo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logo"))
+		case "logourl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourl"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Logo = data
-		case "logoNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoNEQ"))
+			it.LogoURL = data
+		case "logourlNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlNEQ"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoNEQ = data
-		case "logoIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoIn"))
+			it.LogoURLNEQ = data
+		case "logourlIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlIn"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoIn = data
-		case "logoNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoNotIn"))
+			it.LogoURLIn = data
+		case "logourlNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlNotIn"))
 			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoNotIn = data
-		case "logoGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoGT"))
+			it.LogoURLNotIn = data
+		case "logourlGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlGT"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoGT = data
-		case "logoGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoGTE"))
+			it.LogoURLGT = data
+		case "logourlGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlGTE"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoGTE = data
-		case "logoLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoLT"))
+			it.LogoURLGTE = data
+		case "logourlLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlLT"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoLT = data
-		case "logoLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoLTE"))
+			it.LogoURLLT = data
+		case "logourlLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlLTE"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoLTE = data
-		case "logoContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoContains"))
+			it.LogoURLLTE = data
+		case "logourlContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlContains"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoContains = data
-		case "logoHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoHasPrefix"))
+			it.LogoURLContains = data
+		case "logourlHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlHasPrefix"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoHasPrefix = data
-		case "logoHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoHasSuffix"))
+			it.LogoURLHasPrefix = data
+		case "logourlHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlHasSuffix"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoHasSuffix = data
-		case "logoIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoIsNil"))
+			it.LogoURLHasSuffix = data
+		case "logourlIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoIsNil = data
-		case "logoNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoNotNil"))
+			it.LogoURLIsNil = data
+		case "logourlNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlNotNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoNotNil = data
-		case "logoEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoEqualFold"))
+			it.LogoURLNotNil = data
+		case "logourlEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlEqualFold"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoEqualFold = data
-		case "logoContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logoContainsFold"))
+			it.LogoURLEqualFold = data
+		case "logourlContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logourlContainsFold"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.LogoContainsFold = data
+			it.LogoURLContainsFold = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -40131,111 +42821,6 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.PhoneContainsFold = data
-		case "sector":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sector"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Sector = data
-		case "sectorNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorNEQ"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorNEQ = data
-		case "sectorIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorIn = data
-		case "sectorNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorNotIn"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorNotIn = data
-		case "sectorGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorGT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorGT = data
-		case "sectorGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorGTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorGTE = data
-		case "sectorLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorLT"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorLT = data
-		case "sectorLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorLTE"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorLTE = data
-		case "sectorContains":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorContains"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorContains = data
-		case "sectorHasPrefix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorHasPrefix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorHasPrefix = data
-		case "sectorHasSuffix":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorHasSuffix"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorHasSuffix = data
-		case "sectorIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorIsNil = data
-		case "sectorNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorNotNil = data
-		case "sectorEqualFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorEqualFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorEqualFold = data
-		case "sectorContainsFold":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sectorContainsFold"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.SectorContainsFold = data
 		case "taxid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxid"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -40600,6 +43185,20 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.HasFilesWith = data
+		case "hasMemberSignupTokens":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasMemberSignupTokens"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasMemberSignupTokens = data
+		case "hasMemberSignupTokensWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasMemberSignupTokensWith"))
+			data, err := ec.unmarshalOMemberSignupTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasMemberSignupTokensWith = data
 		case "hasProducts":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasProducts"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -40975,7 +43574,7 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"address", "basecurrency", "ceoname", "city", "country", "establishedat", "description", "email", "industry", "lastentrydate", "lastinvoicenumber", "logo", "name", "numberofemployees", "phone", "sector", "taxid", "vatrate", "website", "incompletesetup", "availableroleIDs", "accountingentryIDs", "customerIDs", "documentIDs", "employeeIDs", "fileIDs", "productIDs", "projectIDs", "payableIDs", "receivableIDs", "supplierIDs", "tokenIDs", "treasuryIDs", "workshiftIDs", "userIDs", "daughtercompanyIDs", "parentcompanyID"}
+	fieldsInOrder := [...]string{"address", "basecurrency", "ceoname", "city", "country", "establishedat", "description", "email", "industry", "lastentrydate", "lastinvoicenumber", "name", "numberofemployees", "phone", "taxid", "vatrate", "website", "incompletesetup", "availableroleIDs", "accountingentryIDs", "customerIDs", "documentIDs", "employeeIDs", "fileIDs", "membersignuptokenIDs", "productIDs", "projectIDs", "payableIDs", "receivableIDs", "supplierIDs", "tokenIDs", "treasuryIDs", "workshiftIDs", "userIDs", "daughtercompanyIDs", "parentcompanyID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -41059,13 +43658,6 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.LastInvoiceNumber = data
-		case "logo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logo"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Logo = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -41087,13 +43679,6 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.Phone = data
-		case "sector":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sector"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Sector = data
 		case "taxid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxid"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -41164,6 +43749,13 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.FileIDs = data
+		case "membersignuptokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("membersignuptokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MemberSignupTokenIDs = data
 		case "productIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("productIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -41476,6 +44068,61 @@ func (ec *executionContext) unmarshalInputCreateFileInput(ctx context.Context, o
 				return it, err
 			}
 			it.CompanyID = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCreateMemberSignupTokenInput(ctx context.Context, obj interface{}) (generated.CreateMemberSignupTokenInput, error) {
+	var it generated.CreateMemberSignupTokenInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"name", "email", "avatar", "role", "note"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "email":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Email = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "role":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
+			data, err := ec.unmarshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Role = data
+		case "note":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("note"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Note = data
 		}
 	}
 
@@ -42062,7 +44709,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "email", "name", "phone", "birthdate", "gender", "disabled", "notverified", "accountingentryIDs", "companyIDs", "assignedroleIDs", "subordinateIDs", "leaderID", "employeeID", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "createdtaskIDs", "tokenIDs", "approvedworkshiftIDs", "workshiftIDs", "uploadeddocumentIDs", "approveddocumentIDs"}
+	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "email", "name", "address", "avatar", "photourl", "department", "phone", "birthdate", "gender", "accountingentryIDs", "assignedroleIDs", "subordinateIDs", "leaderID", "createdmembersignuptokenIDs", "employeeID", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "createdtaskIDs", "tokenIDs", "approvedworkshiftIDs", "workshiftIDs", "uploadeddocumentIDs", "approveddocumentIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -42085,7 +44732,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 			it.FcmToken = data
 		case "email":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -42097,6 +44744,34 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Name = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "photourl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourl"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURL = data
+		case "department":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("department"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Department = data
 		case "phone":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("phone"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -42118,20 +44793,6 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Gender = data
-		case "disabled":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabled"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Disabled = data
-		case "notverified":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverified"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerified = data
 		case "accountingentryIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountingentryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -42139,13 +44800,6 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.AccountingEntryIDs = data
-		case "companyIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyIDs"))
-			data, err := ec.unmarshalNID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.CompanyIDs = data
 		case "assignedroleIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("assignedroleIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -42167,6 +44821,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.LeaderID = data
+		case "createdmembersignuptokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdmembersignuptokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedMemberSignupTokenIDs = data
 		case "employeeID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -42257,7 +44918,7 @@ func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"role", "companyID", "userIDs"}
+	fieldsInOrder := [...]string{"role", "notes", "companyID", "userID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -42271,6 +44932,13 @@ func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Contex
 				return it, err
 			}
 			it.Role = data
+		case "notes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Notes = data
 		case "companyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -42278,13 +44946,13 @@ func (ec *executionContext) unmarshalInputCreateUserRoleInput(ctx context.Contex
 				return it, err
 			}
 			it.CompanyID = data
-		case "userIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.UserIDs = data
+			it.UserID = data
 		}
 	}
 
@@ -45548,6 +48216,974 @@ func (ec *executionContext) unmarshalInputLoginInput(ctx context.Context, obj in
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputMemberSignupTokenOrder(ctx context.Context, obj interface{}) (generated.MemberSignupTokenOrder, error) {
+	var it generated.MemberSignupTokenOrder
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
+	}
+
+	fieldsInOrder := [...]string{"direction", "field"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "direction":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("direction"))
+			data, err := ec.unmarshalNOrderDirection2entgoᚗioᚋcontribᚋentgqlᚐOrderDirection(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Direction = data
+		case "field":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			data, err := ec.unmarshalNMemberSignupTokenOrderField2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrderField(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Field = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputMemberSignupTokenWhereInput(ctx context.Context, obj interface{}) (generated.MemberSignupTokenWhereInput, error) {
+	var it generated.MemberSignupTokenWhereInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "token", "tokenNEQ", "tokenIn", "tokenNotIn", "tokenGT", "tokenGTE", "tokenLT", "tokenLTE", "tokenContains", "tokenHasPrefix", "tokenHasSuffix", "tokenEqualFold", "tokenContainsFold", "avatar", "avatarNEQ", "avatarIn", "avatarNotIn", "avatarGT", "avatarGTE", "avatarLT", "avatarLTE", "avatarContains", "avatarHasPrefix", "avatarHasSuffix", "avatarEqualFold", "avatarContainsFold", "role", "roleNEQ", "roleIn", "roleNotIn", "note", "noteNEQ", "noteIn", "noteNotIn", "noteGT", "noteGTE", "noteLT", "noteLTE", "noteContains", "noteHasPrefix", "noteHasSuffix", "noteEqualFold", "noteContainsFold", "numberaccessed", "numberaccessedNEQ", "numberaccessedIn", "numberaccessedNotIn", "numberaccessedGT", "numberaccessedGTE", "numberaccessedLT", "numberaccessedLTE", "expiresat", "expiresatNEQ", "expiresatIn", "expiresatNotIn", "expiresatGT", "expiresatGTE", "expiresatLT", "expiresatLTE", "alreadyused", "alreadyusedNEQ", "hasCompany", "hasCompanyWith", "hasCreatedBy", "hasCreatedByWith"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("not"))
+			data, err := ec.unmarshalOMemberSignupTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("and"))
+			data, err := ec.unmarshalOMemberSignupTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
+			data, err := ec.unmarshalOMemberSignupTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "id":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "idNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDNEQ = data
+		case "idIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idIn"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDIn = data
+		case "idNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNotIn"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDNotIn = data
+		case "idGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGT"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDGT = data
+		case "idGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idGTE"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDGTE = data
+		case "idLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLT"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDLT = data
+		case "idLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idLTE"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IDLTE = data
+		case "createdat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAt = data
+		case "createdatNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtNEQ = data
+		case "createdatIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtIn = data
+		case "createdatNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtNotIn = data
+		case "createdatGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtGT = data
+		case "createdatGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtGTE = data
+		case "createdatLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtLT = data
+		case "createdatLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdatLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedAtLTE = data
+		case "updatedat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAt = data
+		case "updatedatNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtNEQ = data
+		case "updatedatIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtIn = data
+		case "updatedatNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtNotIn = data
+		case "updatedatGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtGT = data
+		case "updatedatGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtGTE = data
+		case "updatedatLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtLT = data
+		case "updatedatLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("updatedatLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UpdatedAtLTE = data
+		case "deletedat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAt = data
+		case "deletedatNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtNEQ = data
+		case "deletedatIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtIn = data
+		case "deletedatNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtNotIn = data
+		case "deletedatGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtGT = data
+		case "deletedatGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtGTE = data
+		case "deletedatLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtLT = data
+		case "deletedatLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtLTE = data
+		case "deletedatIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtIsNil = data
+		case "deletedatNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deletedatNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeletedAtNotNil = data
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "nameNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameNEQ = data
+		case "nameIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameIn = data
+		case "nameNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameNotIn = data
+		case "nameGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameGT = data
+		case "nameGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameGTE = data
+		case "nameLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameLT = data
+		case "nameLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameLTE = data
+		case "nameContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameContains = data
+		case "nameHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameHasPrefix = data
+		case "nameHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameHasSuffix = data
+		case "nameEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameEqualFold = data
+		case "nameContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NameContainsFold = data
+		case "email":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Email = data
+		case "emailNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailNEQ = data
+		case "emailIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailIn = data
+		case "emailNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailNotIn = data
+		case "emailGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailGT = data
+		case "emailGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailGTE = data
+		case "emailLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailLT = data
+		case "emailLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailLTE = data
+		case "emailContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailContains = data
+		case "emailHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailHasPrefix = data
+		case "emailHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailHasSuffix = data
+		case "emailIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailIsNil = data
+		case "emailNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailNotNil = data
+		case "emailEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailEqualFold = data
+		case "emailContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EmailContainsFold = data
+		case "token":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("token"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Token = data
+		case "tokenNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenNEQ = data
+		case "tokenIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenIn = data
+		case "tokenNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenNotIn = data
+		case "tokenGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenGT = data
+		case "tokenGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenGTE = data
+		case "tokenLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenLT = data
+		case "tokenLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenLTE = data
+		case "tokenContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenContains = data
+		case "tokenHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenHasPrefix = data
+		case "tokenHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenHasSuffix = data
+		case "tokenEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenEqualFold = data
+		case "tokenContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tokenContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TokenContainsFold = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "avatarNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarNEQ = data
+		case "avatarIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarIn = data
+		case "avatarNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarNotIn = data
+		case "avatarGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarGT = data
+		case "avatarGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarGTE = data
+		case "avatarLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarLT = data
+		case "avatarLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarLTE = data
+		case "avatarContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarContains = data
+		case "avatarHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarHasPrefix = data
+		case "avatarHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarHasSuffix = data
+		case "avatarEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarEqualFold = data
+		case "avatarContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarContainsFold = data
+		case "role":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
+			data, err := ec.unmarshalOMemberSignupTokenRole2ᚖmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Role = data
+		case "roleNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleNEQ"))
+			data, err := ec.unmarshalOMemberSignupTokenRole2ᚖmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RoleNEQ = data
+		case "roleIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleIn"))
+			data, err := ec.unmarshalOMemberSignupTokenRole2ᚕmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRoleᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RoleIn = data
+		case "roleNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("roleNotIn"))
+			data, err := ec.unmarshalOMemberSignupTokenRole2ᚕmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRoleᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RoleNotIn = data
+		case "note":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("note"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Note = data
+		case "noteNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteNEQ = data
+		case "noteIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteIn = data
+		case "noteNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteNotIn = data
+		case "noteGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteGT = data
+		case "noteGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteGTE = data
+		case "noteLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteLT = data
+		case "noteLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteLTE = data
+		case "noteContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteContains = data
+		case "noteHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteHasPrefix = data
+		case "noteHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteHasSuffix = data
+		case "noteEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteEqualFold = data
+		case "noteContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("noteContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NoteContainsFold = data
+		case "numberaccessed":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessed"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessed = data
+		case "numberaccessedNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedNEQ"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedNEQ = data
+		case "numberaccessedIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedIn = data
+		case "numberaccessedNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedNotIn"))
+			data, err := ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedNotIn = data
+		case "numberaccessedGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedGT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedGT = data
+		case "numberaccessedGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedGTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedGTE = data
+		case "numberaccessedLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedLT"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedLT = data
+		case "numberaccessedLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("numberaccessedLTE"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberAccessedLTE = data
+		case "expiresat":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresat"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAt = data
+		case "expiresatNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtNEQ = data
+		case "expiresatIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtIn = data
+		case "expiresatNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtNotIn = data
+		case "expiresatGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtGT = data
+		case "expiresatGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtGTE = data
+		case "expiresatLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtLT = data
+		case "expiresatLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiresatLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpiresAtLTE = data
+		case "alreadyused":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("alreadyused"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AlreadyUsed = data
+		case "alreadyusedNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("alreadyusedNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AlreadyUsedNEQ = data
+		case "hasCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompany"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCompany = data
+		case "hasCompanyWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompanyWith"))
+			data, err := ec.unmarshalOCompanyWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCompanyWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCompanyWith = data
+		case "hasCreatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedBy"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedBy = data
+		case "hasCreatedByWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedByWith"))
+			data, err := ec.unmarshalOUserWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐUserWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedByWith = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputPayableInput(ctx context.Context, obj interface{}) (model.PayableInput, error) {
 	var it model.PayableInput
 	asMap := map[string]interface{}{}
@@ -46755,6 +50391,40 @@ func (ec *executionContext) unmarshalInputProductWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.HasCompanyWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputProfilePhotoInput(ctx context.Context, obj interface{}) (model.ProfilePhotoInput, error) {
+	var it model.ProfilePhotoInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"url", "storageURI"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "url":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("url"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.URL = data
+		case "storageURI":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("storageURI"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.StorageURI = data
 		}
 	}
 
@@ -49527,7 +53197,7 @@ func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj i
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"companyInput", "userInput"}
+	fieldsInOrder := [...]string{"companyInput", "userInput", "userProfilePhoto", "companyLogo"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -49548,6 +53218,20 @@ func (ec *executionContext) unmarshalInputSignupInput(ctx context.Context, obj i
 				return it, err
 			}
 			it.UserInput = data
+		case "userProfilePhoto":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userProfilePhoto"))
+			data, err := ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserProfilePhoto = data
+		case "companyLogo":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyLogo"))
+			data, err := ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompanyLogo = data
 		}
 	}
 
@@ -51620,7 +55304,7 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "industry", "clearIndustry", "lastentrydate", "lastinvoicenumber", "clearLastInvoiceNumber", "logo", "clearLogo", "name", "numberofemployees", "phone", "clearPhone", "sector", "clearSector", "taxid", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addDocumentIDs", "removeDocumentIDs", "clearDocuments", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addPayableIDs", "removePayableIDs", "clearPayables", "addReceivableIDs", "removeReceivableIDs", "clearReceivables", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
+	fieldsInOrder := [...]string{"address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "industry", "clearIndustry", "lastentrydate", "lastinvoicenumber", "clearLastInvoiceNumber", "name", "numberofemployees", "phone", "clearPhone", "taxid", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addDocumentIDs", "removeDocumentIDs", "clearDocuments", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addMemberSignupTokenIDs", "removeMemberSignupTokenIDs", "clearMemberSignupTokens", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addPayableIDs", "removePayableIDs", "clearPayables", "addReceivableIDs", "removeReceivableIDs", "clearReceivables", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -51746,20 +55430,6 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.ClearLastInvoiceNumber = data
-		case "logo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("logo"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Logo = data
-		case "clearLogo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearLogo"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearLogo = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -51788,20 +55458,6 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.ClearPhone = data
-		case "sector":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sector"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Sector = data
-		case "clearSector":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearSector"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearSector = data
 		case "taxid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxid"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -51970,6 +55626,27 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.ClearFiles = data
+		case "addMemberSignupTokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addMemberSignupTokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddMemberSignupTokenIDs = data
+		case "removeMemberSignupTokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeMemberSignupTokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveMemberSignupTokenIDs = data
+		case "clearMemberSignupTokens":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearMemberSignupTokens"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearMemberSignupTokens = data
 		case "addProductIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addProductIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -52506,6 +56183,89 @@ func (ec *executionContext) unmarshalInputUpdateFileInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearCompany = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateMemberSignupTokenInput(ctx context.Context, obj interface{}) (generated.UpdateMemberSignupTokenInput, error) {
+	var it generated.UpdateMemberSignupTokenInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"name", "email", "clearEmail", "avatar", "role", "note", "companyID", "createdbyID", "clearCreatedBy"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "email":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Email = data
+		case "clearEmail":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEmail"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearEmail = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "role":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
+			data, err := ec.unmarshalOMemberSignupTokenRole2ᚖmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Role = data
+		case "note":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("note"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Note = data
+		case "companyID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompanyID = data
+		case "createdbyID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createdbyID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreatedByID = data
+		case "clearCreatedBy":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCreatedBy"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCreatedBy = data
 		}
 	}
 
@@ -53232,7 +56992,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "clearFcmToken", "email", "clearEmail", "name", "phone", "clearPhone", "birthdate", "clearBirthdate", "gender", "disabled", "clearDisabled", "notverified", "clearNotVerified", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "employeeID", "clearEmployee", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUploadedDocumentIDs", "removeUploadedDocumentIDs", "clearUploadedDocuments", "addApprovedDocumentIDs", "removeApprovedDocumentIDs", "clearApprovedDocuments"}
+	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "clearFcmToken", "name", "address", "clearAddress", "avatar", "clearAvatar", "photourl", "clearPhotoURL", "department", "clearDepartment", "phone", "clearPhone", "birthdate", "clearBirthdate", "gender", "active", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "addCreatedMemberSignupTokenIDs", "removeCreatedMemberSignupTokenIDs", "clearCreatedMemberSignupTokens", "employeeID", "clearEmployee", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUploadedDocumentIDs", "removeUploadedDocumentIDs", "clearUploadedDocuments", "addApprovedDocumentIDs", "removeApprovedDocumentIDs", "clearApprovedDocuments"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53260,20 +57020,6 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearFcmToken = data
-		case "email":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Email = data
-		case "clearEmail":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEmail"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearEmail = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -53281,6 +57027,62 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Name = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "clearAddress":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAddress"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAddress = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "clearAvatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearAvatar"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearAvatar = data
+		case "photourl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourl"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURL = data
+		case "clearPhotoURL":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPhotoURL"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPhotoURL = data
+		case "department":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("department"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Department = data
+		case "clearDepartment":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDepartment"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearDepartment = data
 		case "phone":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("phone"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -53316,34 +57118,13 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Gender = data
-		case "disabled":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabled"))
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Disabled = data
-		case "clearDisabled":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearDisabled"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearDisabled = data
-		case "notverified":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverified"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerified = data
-		case "clearNotVerified":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearNotVerified"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ClearNotVerified = data
+			it.Active = data
 		case "addAccountingEntryIDs":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addAccountingEntryIDs"))
 			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
@@ -53435,6 +57216,27 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearLeader = data
+		case "addCreatedMemberSignupTokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addCreatedMemberSignupTokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddCreatedMemberSignupTokenIDs = data
+		case "removeCreatedMemberSignupTokenIDs":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeCreatedMemberSignupTokenIDs"))
+			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RemoveCreatedMemberSignupTokenIDs = data
+		case "clearCreatedMemberSignupTokens":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCreatedMemberSignupTokens"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCreatedMemberSignupTokens = data
 		case "employeeID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("employeeID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -53651,7 +57453,7 @@ func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"role", "companyID", "clearCompany", "addUserIDs", "removeUserIDs", "clearUser"}
+	fieldsInOrder := [...]string{"role", "notes", "companyID", "clearCompany", "userID", "clearUser"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53665,6 +57467,13 @@ func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Contex
 				return it, err
 			}
 			it.Role = data
+		case "notes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Notes = data
 		case "companyID":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
 			data, err := ec.unmarshalOID2ᚖint(ctx, v)
@@ -53679,20 +57488,13 @@ func (ec *executionContext) unmarshalInputUpdateUserRoleInput(ctx context.Contex
 				return it, err
 			}
 			it.ClearCompany = data
-		case "addUserIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addUserIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.AddUserIDs = data
-		case "removeUserIDs":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("removeUserIDs"))
-			data, err := ec.unmarshalOID2ᚕintᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.RemoveUserIDs = data
+			it.UserID = data
 		case "clearUser":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUser"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
@@ -53984,7 +57786,7 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "role", "roleNEQ", "roleIn", "roleNotIn", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "role", "roleNEQ", "roleIn", "roleNotIn", "notes", "notesNEQ", "notesIn", "notesNotIn", "notesGT", "notesGTE", "notesLT", "notesLTE", "notesContains", "notesHasPrefix", "notesHasSuffix", "notesEqualFold", "notesContainsFold", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -54096,6 +57898,97 @@ func (ec *executionContext) unmarshalInputUserRoleWhereInput(ctx context.Context
 				return it, err
 			}
 			it.RoleNotIn = data
+		case "notes":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Notes = data
+		case "notesNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesNEQ = data
+		case "notesIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesIn = data
+		case "notesNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesNotIn = data
+		case "notesGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesGT = data
+		case "notesGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesGTE = data
+		case "notesLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesLT = data
+		case "notesLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesLTE = data
+		case "notesContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesContains = data
+		case "notesHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesHasPrefix = data
+		case "notesHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesHasSuffix = data
+		case "notesEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesEqualFold = data
+		case "notesContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notesContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NotesContainsFold = data
 		case "hasCompany":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCompany"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -54137,7 +58030,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "birthdate", "birthdateNEQ", "birthdateIn", "birthdateNotIn", "birthdateGT", "birthdateGTE", "birthdateLT", "birthdateLTE", "birthdateIsNil", "birthdateNotNil", "gender", "genderNEQ", "genderIn", "genderNotIn", "disabled", "disabledNEQ", "disabledIsNil", "disabledNotNil", "notverified", "notverifiedNEQ", "notverifiedIsNil", "notverifiedNotNil", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasEmployee", "hasEmployeeWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasTokens", "hasTokensWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUploadedDocuments", "hasUploadedDocumentsWith", "hasApprovedDocuments", "hasApprovedDocumentsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "avatar", "avatarNEQ", "avatarIn", "avatarNotIn", "avatarGT", "avatarGTE", "avatarLT", "avatarLTE", "avatarContains", "avatarHasPrefix", "avatarHasSuffix", "avatarIsNil", "avatarNotNil", "avatarEqualFold", "avatarContainsFold", "photourl", "photourlNEQ", "photourlIn", "photourlNotIn", "photourlGT", "photourlGTE", "photourlLT", "photourlLTE", "photourlContains", "photourlHasPrefix", "photourlHasSuffix", "photourlIsNil", "photourlNotNil", "photourlEqualFold", "photourlContainsFold", "department", "departmentNEQ", "departmentIn", "departmentNotIn", "departmentGT", "departmentGTE", "departmentLT", "departmentLTE", "departmentContains", "departmentHasPrefix", "departmentHasSuffix", "departmentIsNil", "departmentNotNil", "departmentEqualFold", "departmentContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "birthdate", "birthdateNEQ", "birthdateIn", "birthdateNotIn", "birthdateGT", "birthdateGTE", "birthdateLT", "birthdateLTE", "birthdateIsNil", "birthdateNotNil", "lastlogin", "lastloginNEQ", "lastloginIn", "lastloginNotIn", "lastloginGT", "lastloginGTE", "lastloginLT", "lastloginLTE", "lastloginIsNil", "lastloginNotNil", "gender", "genderNEQ", "genderIn", "genderNotIn", "active", "activeNEQ", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasCreatedMemberSignupTokens", "hasCreatedMemberSignupTokensWith", "hasEmployee", "hasEmployeeWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasTokens", "hasTokensWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUploadedDocuments", "hasUploadedDocumentsWith", "hasApprovedDocuments", "hasApprovedDocumentsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -54480,20 +58373,6 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.EmailHasSuffix = data
-		case "emailIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EmailIsNil = data
-		case "emailNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.EmailNotNil = data
 		case "emailEqualFold":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("emailEqualFold"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -54599,6 +58478,426 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.NameContainsFold = data
+		case "address":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("address"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Address = data
+		case "addressNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNEQ = data
+		case "addressIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressIn = data
+		case "addressNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNotIn = data
+		case "addressGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressGT = data
+		case "addressGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressGTE = data
+		case "addressLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressLT = data
+		case "addressLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressLTE = data
+		case "addressContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressContains = data
+		case "addressHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressHasPrefix = data
+		case "addressHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressHasSuffix = data
+		case "addressIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressIsNil = data
+		case "addressNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressNotNil = data
+		case "addressEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressEqualFold = data
+		case "addressContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("addressContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AddressContainsFold = data
+		case "avatar":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatar"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Avatar = data
+		case "avatarNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarNEQ = data
+		case "avatarIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarIn = data
+		case "avatarNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarNotIn = data
+		case "avatarGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarGT = data
+		case "avatarGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarGTE = data
+		case "avatarLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarLT = data
+		case "avatarLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarLTE = data
+		case "avatarContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarContains = data
+		case "avatarHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarHasPrefix = data
+		case "avatarHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarHasSuffix = data
+		case "avatarIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarIsNil = data
+		case "avatarNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarNotNil = data
+		case "avatarEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarEqualFold = data
+		case "avatarContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("avatarContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AvatarContainsFold = data
+		case "photourl":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourl"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURL = data
+		case "photourlNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLNEQ = data
+		case "photourlIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLIn = data
+		case "photourlNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLNotIn = data
+		case "photourlGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLGT = data
+		case "photourlGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLGTE = data
+		case "photourlLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLLT = data
+		case "photourlLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLLTE = data
+		case "photourlContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLContains = data
+		case "photourlHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLHasPrefix = data
+		case "photourlHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLHasSuffix = data
+		case "photourlIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLIsNil = data
+		case "photourlNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLNotNil = data
+		case "photourlEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLEqualFold = data
+		case "photourlContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("photourlContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PhotoURLContainsFold = data
+		case "department":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("department"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Department = data
+		case "departmentNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentNEQ = data
+		case "departmentIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentIn = data
+		case "departmentNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentNotIn = data
+		case "departmentGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentGT = data
+		case "departmentGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentGTE = data
+		case "departmentLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentLT = data
+		case "departmentLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentLTE = data
+		case "departmentContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentContains = data
+		case "departmentHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentHasPrefix = data
+		case "departmentHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentHasSuffix = data
+		case "departmentIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentIsNil = data
+		case "departmentNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentNotNil = data
+		case "departmentEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentEqualFold = data
+		case "departmentContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("departmentContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DepartmentContainsFold = data
 		case "phone":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("phone"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -54774,6 +59073,76 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.BirthdateNotNil = data
+		case "lastlogin":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastlogin"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLogin = data
+		case "lastloginNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginNEQ = data
+		case "lastloginIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginIn = data
+		case "lastloginNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginNotIn = data
+		case "lastloginGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginGT = data
+		case "lastloginGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginGTE = data
+		case "lastloginLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginLT = data
+		case "lastloginLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginLTE = data
+		case "lastloginIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginIsNil = data
+		case "lastloginNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastloginNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastLoginNotNil = data
 		case "gender":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gender"))
 			data, err := ec.unmarshalOUserGender2ᚖmazzaᚋentᚋgeneratedᚋuserᚐGender(ctx, v)
@@ -54802,62 +59171,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.GenderNotIn = data
-		case "disabled":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabled"))
+		case "active":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("active"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Disabled = data
-		case "disabledNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabledNEQ"))
+			it.Active = data
+		case "activeNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("activeNEQ"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.DisabledNEQ = data
-		case "disabledIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabledIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DisabledIsNil = data
-		case "disabledNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("disabledNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.DisabledNotNil = data
-		case "notverified":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverified"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerified = data
-		case "notverifiedNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverifiedNEQ"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerifiedNEQ = data
-		case "notverifiedIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverifiedIsNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerifiedIsNil = data
-		case "notverifiedNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notverifiedNotNil"))
-			data, err := ec.unmarshalOBoolean2bool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.NotVerifiedNotNil = data
+			it.ActiveNEQ = data
 		case "hasAccountingEntries":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasAccountingEntries"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -54928,6 +59255,20 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasLeaderWith = data
+		case "hasCreatedMemberSignupTokens":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedMemberSignupTokens"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedMemberSignupTokens = data
+		case "hasCreatedMemberSignupTokensWith":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasCreatedMemberSignupTokensWith"))
+			data, err := ec.unmarshalOMemberSignupTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.HasCreatedMemberSignupTokensWith = data
 		case "hasEmployee":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("hasEmployee"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -55082,6 +59423,40 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.HasApprovedDocumentsWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputVerifyMemberSignupTokenInput(ctx context.Context, obj interface{}) (model.VerifyMemberSignupTokenInput, error) {
+	var it model.VerifyMemberSignupTokenInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"token", "email"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "token":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("token"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Token = data
+		case "email":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Email = data
 		}
 	}
 
@@ -56126,7 +60501,7 @@ func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"userInput", "invitationToken"}
+	fieldsInOrder := [...]string{"userInput", "userProfilePhoto", "invitationToken"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -56140,9 +60515,16 @@ func (ec *executionContext) unmarshalInputinvitedUserSignupInput(ctx context.Con
 				return it, err
 			}
 			it.UserInput = data
+		case "userProfilePhoto":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userProfilePhoto"))
+			data, err := ec.unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserProfilePhoto = data
 		case "invitationToken":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("invitationToken"))
-			data, err := ec.unmarshalNString2string(ctx, v)
+			data, err := ec.unmarshalNID2int(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -56209,6 +60591,14 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._File(ctx, sel, obj)
+	case *generated.MemberSignupToken:
+		if len(graphql.CollectFields(ec.OperationContext, sel, []string{"Noder", "MemberSignupToken"})) == 0 {
+			return graphql.Empty{}
+		}
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._MemberSignupToken(ctx, sel, obj)
 	case *generated.Payable:
 		if len(graphql.CollectFields(ec.OperationContext, sel, []string{"Noder", "Payable"})) == 0 {
 			return graphql.Empty{}
@@ -56812,8 +61202,8 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "lastinvoicenumber":
 			out.Values[i] = ec._Company_lastinvoicenumber(ctx, field, obj)
-		case "logo":
-			out.Values[i] = ec._Company_logo(ctx, field, obj)
+		case "logourl":
+			out.Values[i] = ec._Company_logourl(ctx, field, obj)
 		case "name":
 			out.Values[i] = ec._Company_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -56826,8 +61216,6 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "phone":
 			out.Values[i] = ec._Company_phone(ctx, field, obj)
-		case "sector":
-			out.Values[i] = ec._Company_sector(ctx, field, obj)
 		case "taxid":
 			out.Values[i] = ec._Company_taxid(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -57017,6 +61405,39 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 					}
 				}()
 				res = ec._Company_files(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "membersignuptokens":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Company_membersignuptokens(ctx, field, obj)
 				return res
 			}
 
@@ -57687,6 +62108,50 @@ func (ec *executionContext) _CompanyDocumentEdge(ctx context.Context, sel ast.Se
 			out.Values[i] = ec._CompanyDocumentEdge_node(ctx, field, obj)
 		case "cursor":
 			out.Values[i] = ec._CompanyDocumentEdge_cursor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var createMemberSignupTokenOutputImplementors = []string{"CreateMemberSignupTokenOutput"}
+
+func (ec *executionContext) _CreateMemberSignupTokenOutput(ctx context.Context, sel ast.SelectionSet, obj *model.CreateMemberSignupTokenOutput) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, createMemberSignupTokenOutputImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CreateMemberSignupTokenOutput")
+		case "token":
+			out.Values[i] = ec._CreateMemberSignupTokenOutput_token(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "expiresAt":
+			out.Values[i] = ec._CreateMemberSignupTokenOutput_expiresAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -58709,6 +63174,255 @@ func (ec *executionContext) _LoginOutput(ctx context.Context, sel ast.SelectionS
 	return out
 }
 
+var memberSignupTokenImplementors = []string{"MemberSignupToken", "Node"}
+
+func (ec *executionContext) _MemberSignupToken(ctx context.Context, sel ast.SelectionSet, obj *generated.MemberSignupToken) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, memberSignupTokenImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("MemberSignupToken")
+		case "id":
+			out.Values[i] = ec._MemberSignupToken_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "createdat":
+			out.Values[i] = ec._MemberSignupToken_createdat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "updatedat":
+			out.Values[i] = ec._MemberSignupToken_updatedat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "deletedat":
+			out.Values[i] = ec._MemberSignupToken_deletedat(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._MemberSignupToken_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "email":
+			out.Values[i] = ec._MemberSignupToken_email(ctx, field, obj)
+		case "token":
+			out.Values[i] = ec._MemberSignupToken_token(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "avatar":
+			out.Values[i] = ec._MemberSignupToken_avatar(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "role":
+			out.Values[i] = ec._MemberSignupToken_role(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "note":
+			out.Values[i] = ec._MemberSignupToken_note(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "numberaccessed":
+			out.Values[i] = ec._MemberSignupToken_numberaccessed(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "expiresat":
+			out.Values[i] = ec._MemberSignupToken_expiresat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "alreadyused":
+			out.Values[i] = ec._MemberSignupToken_alreadyused(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "company":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._MemberSignupToken_company(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "createdby":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._MemberSignupToken_createdby(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var memberSignupTokenConnectionImplementors = []string{"MemberSignupTokenConnection"}
+
+func (ec *executionContext) _MemberSignupTokenConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.MemberSignupTokenConnection) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, memberSignupTokenConnectionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("MemberSignupTokenConnection")
+		case "edges":
+			out.Values[i] = ec._MemberSignupTokenConnection_edges(ctx, field, obj)
+		case "pageInfo":
+			out.Values[i] = ec._MemberSignupTokenConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalCount":
+			out.Values[i] = ec._MemberSignupTokenConnection_totalCount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var memberSignupTokenEdgeImplementors = []string{"MemberSignupTokenEdge"}
+
+func (ec *executionContext) _MemberSignupTokenEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.MemberSignupTokenEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, memberSignupTokenEdgeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("MemberSignupTokenEdge")
+		case "node":
+			out.Values[i] = ec._MemberSignupTokenEdge_node(ctx, field, obj)
+		case "cursor":
+			out.Values[i] = ec._MemberSignupTokenEdge_cursor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var mutationImplementors = []string{"Mutation"}
 
 func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -58993,6 +63707,21 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "deleteDocuments":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteDocuments(ctx, field)
+			})
+		case "generateMemberSignupToken":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_generateMemberSignupToken(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deleteMemberSignupToken":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteMemberSignupToken(ctx, field)
+			})
+		case "removeUser":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_removeUser(ctx, field)
 			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -60278,6 +65007,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "memberSignupTokens":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_memberSignupTokens(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "payables":
 			field := field
 
@@ -61102,6 +65853,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_countDocuments(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "verifyMemberSignupToken":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_verifyMemberSignupToken(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -61990,24 +66763,38 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = ec._User_deletedat(ctx, field, obj)
 		case "email":
 			out.Values[i] = ec._User_email(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
 		case "name":
 			out.Values[i] = ec._User_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "address":
+			out.Values[i] = ec._User_address(ctx, field, obj)
+		case "avatar":
+			out.Values[i] = ec._User_avatar(ctx, field, obj)
+		case "photourl":
+			out.Values[i] = ec._User_photourl(ctx, field, obj)
+		case "department":
+			out.Values[i] = ec._User_department(ctx, field, obj)
 		case "phone":
 			out.Values[i] = ec._User_phone(ctx, field, obj)
 		case "birthdate":
 			out.Values[i] = ec._User_birthdate(ctx, field, obj)
+		case "lastlogin":
+			out.Values[i] = ec._User_lastlogin(ctx, field, obj)
 		case "gender":
 			out.Values[i] = ec._User_gender(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "disabled":
-			out.Values[i] = ec._User_disabled(ctx, field, obj)
-		case "notverified":
-			out.Values[i] = ec._User_notverified(ctx, field, obj)
+		case "active":
+			out.Values[i] = ec._User_active(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
 		case "accountingentries":
 			field := field
 
@@ -62153,6 +66940,39 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_leader(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "createdmembersignuptokens":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_createdmembersignuptokens(ctx, field, obj)
 				return res
 			}
 
@@ -62580,6 +67400,11 @@ func (ec *executionContext) _UserRole(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "role":
 			out.Values[i] = ec._UserRole_role(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "notes":
+			out.Values[i] = ec._UserRole_notes(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
@@ -63503,6 +68328,27 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) unmarshalNBoolean2ᚖbool(ctx context.Context, v interface{}) (*bool, error) {
+	res, err := graphql.UnmarshalBoolean(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNBoolean2ᚖbool(ctx context.Context, sel ast.SelectionSet, v *bool) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	res := graphql.MarshalBoolean(*v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
 func (ec *executionContext) marshalNCompany2mazzaᚋentᚋgeneratedᚐCompany(ctx context.Context, sel ast.SelectionSet, v generated.Company) graphql.Marshaler {
 	return ec._Company(ctx, sel, &v)
 }
@@ -63679,6 +68525,25 @@ func (ec *executionContext) unmarshalNCreateCustomerInput2mazzaᚋentᚋgenerate
 func (ec *executionContext) unmarshalNCreateEmployeeInput2mazzaᚋentᚋgeneratedᚐCreateEmployeeInput(ctx context.Context, v interface{}) (generated.CreateEmployeeInput, error) {
 	res, err := ec.unmarshalInputCreateEmployeeInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNCreateMemberSignupTokenInput2mazzaᚋentᚋgeneratedᚐCreateMemberSignupTokenInput(ctx context.Context, v interface{}) (generated.CreateMemberSignupTokenInput, error) {
+	res, err := ec.unmarshalInputCreateMemberSignupTokenInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCreateMemberSignupTokenOutput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐCreateMemberSignupTokenOutput(ctx context.Context, sel ast.SelectionSet, v model.CreateMemberSignupTokenOutput) graphql.Marshaler {
+	return ec._CreateMemberSignupTokenOutput(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCreateMemberSignupTokenOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐCreateMemberSignupTokenOutput(ctx context.Context, sel ast.SelectionSet, v *model.CreateMemberSignupTokenOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._CreateMemberSignupTokenOutput(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNCreateProductInput2mazzaᚋentᚋgeneratedᚐCreateProductInput(ctx context.Context, v interface{}) (generated.CreateProductInput, error) {
@@ -64359,6 +69224,70 @@ func (ec *executionContext) marshalNLoginOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋm
 		return graphql.Null
 	}
 	return ec._LoginOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNMemberSignupToken2mazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx context.Context, sel ast.SelectionSet, v generated.MemberSignupToken) graphql.Marshaler {
+	return ec._MemberSignupToken(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNMemberSignupToken2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx context.Context, sel ast.SelectionSet, v *generated.MemberSignupToken) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._MemberSignupToken(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNMemberSignupTokenConnection2mazzaᚋentᚋgeneratedᚐMemberSignupTokenConnection(ctx context.Context, sel ast.SelectionSet, v generated.MemberSignupTokenConnection) graphql.Marshaler {
+	return ec._MemberSignupTokenConnection(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNMemberSignupTokenConnection2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenConnection(ctx context.Context, sel ast.SelectionSet, v *generated.MemberSignupTokenConnection) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._MemberSignupTokenConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNMemberSignupTokenOrder2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrder(ctx context.Context, v interface{}) (*generated.MemberSignupTokenOrder, error) {
+	res, err := ec.unmarshalInputMemberSignupTokenOrder(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNMemberSignupTokenOrderField2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrderField(ctx context.Context, v interface{}) (*generated.MemberSignupTokenOrderField, error) {
+	var res = new(generated.MemberSignupTokenOrderField)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNMemberSignupTokenOrderField2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrderField(ctx context.Context, sel ast.SelectionSet, v *generated.MemberSignupTokenOrderField) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return v
+}
+
+func (ec *executionContext) unmarshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx context.Context, v interface{}) (membersignuptoken.Role, error) {
+	var res membersignuptoken.Role
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx context.Context, sel ast.SelectionSet, v membersignuptoken.Role) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalNMemberSignupTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInput(ctx context.Context, v interface{}) (*generated.MemberSignupTokenWhereInput, error) {
+	res, err := ec.unmarshalInputMemberSignupTokenWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNNode2ᚕmazzaᚋentᚋgeneratedᚐNoder(ctx context.Context, sel ast.SelectionSet, v []generated.Noder) graphql.Marshaler {
@@ -67578,6 +72507,239 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalOMemberSignupToken2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.MemberSignupToken) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNMemberSignupToken2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalOMemberSignupToken2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupToken(ctx context.Context, sel ast.SelectionSet, v *generated.MemberSignupToken) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._MemberSignupToken(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOMemberSignupTokenEdge2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenEdge(ctx context.Context, sel ast.SelectionSet, v []*generated.MemberSignupTokenEdge) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOMemberSignupTokenEdge2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenEdge(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOMemberSignupTokenEdge2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenEdge(ctx context.Context, sel ast.SelectionSet, v *generated.MemberSignupTokenEdge) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._MemberSignupTokenEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOMemberSignupTokenOrder2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrderᚄ(ctx context.Context, v interface{}) ([]*generated.MemberSignupTokenOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*generated.MemberSignupTokenOrder, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNMemberSignupTokenOrder2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenOrder(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOMemberSignupTokenRole2ᚕmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRoleᚄ(ctx context.Context, v interface{}) ([]membersignuptoken.Role, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]membersignuptoken.Role, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOMemberSignupTokenRole2ᚕmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRoleᚄ(ctx context.Context, sel ast.SelectionSet, v []membersignuptoken.Role) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNMemberSignupTokenRole2mazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) unmarshalOMemberSignupTokenRole2ᚖmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx context.Context, v interface{}) (*membersignuptoken.Role, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(membersignuptoken.Role)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOMemberSignupTokenRole2ᚖmazzaᚋentᚋgeneratedᚋmembersignuptokenᚐRole(ctx context.Context, sel ast.SelectionSet, v *membersignuptoken.Role) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
+func (ec *executionContext) unmarshalOMemberSignupTokenWhereInput2ᚕᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInputᚄ(ctx context.Context, v interface{}) ([]*generated.MemberSignupTokenWhereInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*generated.MemberSignupTokenWhereInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNMemberSignupTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOMemberSignupTokenWhereInput2ᚖmazzaᚋentᚋgeneratedᚐMemberSignupTokenWhereInput(ctx context.Context, v interface{}) (*generated.MemberSignupTokenWhereInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputMemberSignupTokenWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalONode2mazzaᚋentᚋgeneratedᚐNoder(ctx context.Context, sel ast.SelectionSet, v generated.Noder) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -67905,6 +73067,14 @@ func (ec *executionContext) unmarshalOProductWhereInput2ᚖmazzaᚋentᚋgenerat
 		return nil, nil
 	}
 	res, err := ec.unmarshalInputProductWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOProfilePhotoInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐProfilePhotoInput(ctx context.Context, v interface{}) (*model.ProfilePhotoInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputProfilePhotoInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -69548,6 +74718,14 @@ func (ec *executionContext) unmarshalOUserWhereInput2ᚖmazzaᚋentᚋgenerated�
 		return nil, nil
 	}
 	res, err := ec.unmarshalInputUserWhereInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOVerifyMemberSignupTokenInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐVerifyMemberSignupTokenInput(ctx context.Context, v interface{}) (*model.VerifyMemberSignupTokenInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputVerifyMemberSignupTokenInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 

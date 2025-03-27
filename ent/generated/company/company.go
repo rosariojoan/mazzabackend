@@ -42,16 +42,16 @@ const (
 	FieldLastEntryDate = "last_entry_date"
 	// FieldLastInvoiceNumber holds the string denoting the lastinvoicenumber field in the database.
 	FieldLastInvoiceNumber = "last_invoice_number"
-	// FieldLogo holds the string denoting the logo field in the database.
-	FieldLogo = "logo"
+	// FieldLogoURL holds the string denoting the logourl field in the database.
+	FieldLogoURL = "logo_url"
+	// FieldLogoStorageURI holds the string denoting the logostorageuri field in the database.
+	FieldLogoStorageURI = "logo_storage_uri"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldNumberOfEmployees holds the string denoting the numberofemployees field in the database.
 	FieldNumberOfEmployees = "number_of_employees"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
-	// FieldSector holds the string denoting the sector field in the database.
-	FieldSector = "sector"
 	// FieldTaxId holds the string denoting the taxid field in the database.
 	FieldTaxId = "tax_id"
 	// FieldVatRate holds the string denoting the vatrate field in the database.
@@ -72,6 +72,8 @@ const (
 	EdgeEmployees = "employees"
 	// EdgeFiles holds the string denoting the files edge name in mutations.
 	EdgeFiles = "files"
+	// EdgeMemberSignupTokens holds the string denoting the membersignuptokens edge name in mutations.
+	EdgeMemberSignupTokens = "memberSignupTokens"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
 	EdgeProducts = "products"
 	// EdgeProjects holds the string denoting the projects edge name in mutations.
@@ -138,6 +140,13 @@ const (
 	FilesInverseTable = "files"
 	// FilesColumn is the table column denoting the files relation/edge.
 	FilesColumn = "company_files"
+	// MemberSignupTokensTable is the table that holds the memberSignupTokens relation/edge.
+	MemberSignupTokensTable = "member_signup_tokens"
+	// MemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
+	// It exists in this package in order to avoid circular dependency with the "membersignuptoken" package.
+	MemberSignupTokensInverseTable = "member_signup_tokens"
+	// MemberSignupTokensColumn is the table column denoting the memberSignupTokens relation/edge.
+	MemberSignupTokensColumn = "company_member_signup_tokens"
 	// ProductsTable is the table that holds the products relation/edge.
 	ProductsTable = "products"
 	// ProductsInverseTable is the table name for the Product entity.
@@ -226,11 +235,11 @@ var Columns = []string{
 	FieldIndustry,
 	FieldLastEntryDate,
 	FieldLastInvoiceNumber,
-	FieldLogo,
+	FieldLogoURL,
+	FieldLogoStorageURI,
 	FieldName,
 	FieldNumberOfEmployees,
 	FieldPhone,
-	FieldSector,
 	FieldTaxId,
 	FieldVatRate,
 	FieldWebsite,
@@ -365,9 +374,14 @@ func ByLastInvoiceNumber(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastInvoiceNumber, opts...).ToFunc()
 }
 
-// ByLogo orders the results by the logo field.
-func ByLogo(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLogo, opts...).ToFunc()
+// ByLogoURL orders the results by the logoURL field.
+func ByLogoURL(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLogoURL, opts...).ToFunc()
+}
+
+// ByLogoStorageURI orders the results by the logoStorageURI field.
+func ByLogoStorageURI(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLogoStorageURI, opts...).ToFunc()
 }
 
 // ByName orders the results by the name field.
@@ -383,11 +397,6 @@ func ByNumberOfEmployees(opts ...sql.OrderTermOption) OrderOption {
 // ByPhone orders the results by the phone field.
 func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
-}
-
-// BySector orders the results by the sector field.
-func BySector(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSector, opts...).ToFunc()
 }
 
 // ByTaxId orders the results by the taxId field.
@@ -491,6 +500,20 @@ func ByFilesCount(opts ...sql.OrderTermOption) OrderOption {
 func ByFiles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newFilesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByMemberSignupTokensCount orders the results by memberSignupTokens count.
+func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newMemberSignupTokensStep(), opts...)
+	}
+}
+
+// ByMemberSignupTokens orders the results by memberSignupTokens terms.
+func ByMemberSignupTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newMemberSignupTokensStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -680,6 +703,13 @@ func newFilesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(FilesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, FilesTable, FilesColumn),
+	)
+}
+func newMemberSignupTokensStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(MemberSignupTokensInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, MemberSignupTokensTable, MemberSignupTokensColumn),
 	)
 }
 func newProductsStep() *sqlgraph.Step {
