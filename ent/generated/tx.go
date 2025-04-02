@@ -26,6 +26,12 @@ type Tx struct {
 	Employee *EmployeeClient
 	// File is the client for interacting with the File builders.
 	File *FileClient
+	// Inventory is the client for interacting with the Inventory builders.
+	Inventory *InventoryClient
+	// InventoryMovement is the client for interacting with the InventoryMovement builders.
+	InventoryMovement *InventoryMovementClient
+	// Invoice is the client for interacting with the Invoice builders.
+	Invoice *InvoiceClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -189,6 +195,9 @@ func (tx *Tx) init() {
 	tx.Customer = NewCustomerClient(tx.config)
 	tx.Employee = NewEmployeeClient(tx.config)
 	tx.File = NewFileClient(tx.config)
+	tx.Inventory = NewInventoryClient(tx.config)
+	tx.InventoryMovement = NewInventoryMovementClient(tx.config)
+	tx.Invoice = NewInvoiceClient(tx.config)
 	tx.MemberSignupToken = NewMemberSignupTokenClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
 	tx.Product = NewProductClient(tx.config)

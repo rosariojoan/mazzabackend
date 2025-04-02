@@ -13,6 +13,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -372,6 +375,34 @@ var (
 			}
 		},
 	}
+	// AccountingEntryOrderFieldUpdatedAt orders AccountingEntry by updatedAt.
+	AccountingEntryOrderFieldUpdatedAt = &AccountingEntryOrderField{
+		Value: func(ae *AccountingEntry) (ent.Value, error) {
+			return ae.UpdatedAt, nil
+		},
+		column: accountingentry.FieldUpdatedAt,
+		toTerm: accountingentry.ByUpdatedAt,
+		toCursor: func(ae *AccountingEntry) Cursor {
+			return Cursor{
+				ID:    ae.ID,
+				Value: ae.UpdatedAt,
+			}
+		},
+	}
+	// AccountingEntryOrderFieldGroup orders AccountingEntry by group.
+	AccountingEntryOrderFieldGroup = &AccountingEntryOrderField{
+		Value: func(ae *AccountingEntry) (ent.Value, error) {
+			return ae.Group, nil
+		},
+		column: accountingentry.FieldGroup,
+		toTerm: accountingentry.ByGroup,
+		toCursor: func(ae *AccountingEntry) Cursor {
+			return Cursor{
+				ID:    ae.ID,
+				Value: ae.Group,
+			}
+		},
+	}
 	// AccountingEntryOrderFieldDate orders AccountingEntry by date.
 	AccountingEntryOrderFieldDate = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
@@ -478,6 +509,10 @@ func (f AccountingEntryOrderField) String() string {
 	switch f.column {
 	case AccountingEntryOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case AccountingEntryOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	case AccountingEntryOrderFieldGroup.column:
+		str = "GROUP"
 	case AccountingEntryOrderFieldDate.column:
 		str = "DATE"
 	case AccountingEntryOrderFieldAccount.column:
@@ -510,6 +545,10 @@ func (f *AccountingEntryOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *AccountingEntryOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *AccountingEntryOrderFieldUpdatedAt
+	case "GROUP":
+		*f = *AccountingEntryOrderFieldGroup
 	case "DATE":
 		*f = *AccountingEntryOrderFieldDate
 	case "ACCOUNT":
@@ -791,6 +830,20 @@ var (
 			}
 		},
 	}
+	// CompanyOrderFieldUpdatedAt orders Company by updatedAt.
+	CompanyOrderFieldUpdatedAt = &CompanyOrderField{
+		Value: func(c *Company) (ent.Value, error) {
+			return c.UpdatedAt, nil
+		},
+		column: company.FieldUpdatedAt,
+		toTerm: company.ByUpdatedAt,
+		toCursor: func(c *Company) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.UpdatedAt,
+			}
+		},
+	}
 	// CompanyOrderFieldCity orders Company by city.
 	CompanyOrderFieldCity = &CompanyOrderField{
 		Value: func(c *Company) (ent.Value, error) {
@@ -855,6 +908,8 @@ func (f CompanyOrderField) String() string {
 	switch f.column {
 	case CompanyOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case CompanyOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case CompanyOrderFieldCity.column:
 		str = "CITY"
 	case CompanyOrderFieldCountry.column:
@@ -881,6 +936,8 @@ func (f *CompanyOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *CompanyOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *CompanyOrderFieldUpdatedAt
 	case "CITY":
 		*f = *CompanyOrderFieldCity
 	case "COUNTRY":
@@ -1192,6 +1249,20 @@ var (
 			}
 		},
 	}
+	// CompanyDocumentOrderFieldUpdatedAt orders CompanyDocument by updatedAt.
+	CompanyDocumentOrderFieldUpdatedAt = &CompanyDocumentOrderField{
+		Value: func(cd *CompanyDocument) (ent.Value, error) {
+			return cd.UpdatedAt, nil
+		},
+		column: companydocument.FieldUpdatedAt,
+		toTerm: companydocument.ByUpdatedAt,
+		toCursor: func(cd *CompanyDocument) Cursor {
+			return Cursor{
+				ID:    cd.ID,
+				Value: cd.UpdatedAt,
+			}
+		},
+	}
 	// CompanyDocumentOrderFieldCategory orders CompanyDocument by category.
 	CompanyDocumentOrderFieldCategory = &CompanyDocumentOrderField{
 		Value: func(cd *CompanyDocument) (ent.Value, error) {
@@ -1242,6 +1313,8 @@ func (f CompanyDocumentOrderField) String() string {
 	switch f.column {
 	case CompanyDocumentOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case CompanyDocumentOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case CompanyDocumentOrderFieldCategory.column:
 		str = "CATEGORY"
 	case CompanyDocumentOrderFieldStatus.column:
@@ -1266,6 +1339,8 @@ func (f *CompanyDocumentOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *CompanyDocumentOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *CompanyDocumentOrderFieldUpdatedAt
 	case "CATEGORY":
 		*f = *CompanyDocumentOrderFieldCategory
 	case "STATUS":
@@ -1575,6 +1650,20 @@ var (
 			}
 		},
 	}
+	// CustomerOrderFieldUpdatedAt orders Customer by updatedAt.
+	CustomerOrderFieldUpdatedAt = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.UpdatedAt, nil
+		},
+		column: customer.FieldUpdatedAt,
+		toTerm: customer.ByUpdatedAt,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.UpdatedAt,
+			}
+		},
+	}
 	// CustomerOrderFieldCity orders Customer by city.
 	CustomerOrderFieldCity = &CustomerOrderField{
 		Value: func(c *Customer) (ent.Value, error) {
@@ -1597,6 +1686,8 @@ func (f CustomerOrderField) String() string {
 	switch f.column {
 	case CustomerOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case CustomerOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case CustomerOrderFieldCity.column:
 		str = "CITY"
 	}
@@ -1617,6 +1708,8 @@ func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *CustomerOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *CustomerOrderFieldUpdatedAt
 	case "CITY":
 		*f = *CustomerOrderFieldCity
 	default:
@@ -1886,6 +1979,48 @@ var (
 			}
 		},
 	}
+	// EmployeeOrderFieldUpdatedAt orders Employee by updatedAt.
+	EmployeeOrderFieldUpdatedAt = &EmployeeOrderField{
+		Value: func(e *Employee) (ent.Value, error) {
+			return e.UpdatedAt, nil
+		},
+		column: employee.FieldUpdatedAt,
+		toTerm: employee.ByUpdatedAt,
+		toCursor: func(e *Employee) Cursor {
+			return Cursor{
+				ID:    e.ID,
+				Value: e.UpdatedAt,
+			}
+		},
+	}
+	// EmployeeOrderFieldGender orders Employee by gender.
+	EmployeeOrderFieldGender = &EmployeeOrderField{
+		Value: func(e *Employee) (ent.Value, error) {
+			return e.Gender, nil
+		},
+		column: employee.FieldGender,
+		toTerm: employee.ByGender,
+		toCursor: func(e *Employee) Cursor {
+			return Cursor{
+				ID:    e.ID,
+				Value: e.Gender,
+			}
+		},
+	}
+	// EmployeeOrderFieldStatus orders Employee by status.
+	EmployeeOrderFieldStatus = &EmployeeOrderField{
+		Value: func(e *Employee) (ent.Value, error) {
+			return e.Status, nil
+		},
+		column: employee.FieldStatus,
+		toTerm: employee.ByStatus,
+		toCursor: func(e *Employee) Cursor {
+			return Cursor{
+				ID:    e.ID,
+				Value: e.Status,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -1894,6 +2029,12 @@ func (f EmployeeOrderField) String() string {
 	switch f.column {
 	case EmployeeOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case EmployeeOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	case EmployeeOrderFieldGender.column:
+		str = "GENDER"
+	case EmployeeOrderFieldStatus.column:
+		str = "STATUS"
 	}
 	return str
 }
@@ -1912,6 +2053,12 @@ func (f *EmployeeOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *EmployeeOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *EmployeeOrderFieldUpdatedAt
+	case "GENDER":
+		*f = *EmployeeOrderFieldGender
+	case "STATUS":
+		*f = *EmployeeOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid EmployeeOrderField", str)
 	}
@@ -2179,6 +2326,20 @@ var (
 			}
 		},
 	}
+	// FileOrderFieldUpdatedAt orders File by updatedAt.
+	FileOrderFieldUpdatedAt = &FileOrderField{
+		Value: func(f *File) (ent.Value, error) {
+			return f.UpdatedAt, nil
+		},
+		column: file.FieldUpdatedAt,
+		toTerm: file.ByUpdatedAt,
+		toCursor: func(f *File) Cursor {
+			return Cursor{
+				ID:    f.ID,
+				Value: f.UpdatedAt,
+			}
+		},
+	}
 	// FileOrderFieldCategory orders File by category.
 	FileOrderFieldCategory = &FileOrderField{
 		Value: func(f *File) (ent.Value, error) {
@@ -2201,6 +2362,8 @@ func (f FileOrderField) String() string {
 	switch f.column {
 	case FileOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case FileOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case FileOrderFieldCategory.column:
 		str = "CATEGORY"
 	}
@@ -2221,6 +2384,8 @@ func (f *FileOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *FileOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *FileOrderFieldUpdatedAt
 	case "CATEGORY":
 		*f = *FileOrderFieldCategory
 	default:
@@ -2267,6 +2432,1191 @@ func (f *File) ToEdge(order *FileOrder) *FileEdge {
 	return &FileEdge{
 		Node:   f,
 		Cursor: order.Field.toCursor(f),
+	}
+}
+
+// InventoryEdge is the edge representation of Inventory.
+type InventoryEdge struct {
+	Node   *Inventory `json:"node"`
+	Cursor Cursor     `json:"cursor"`
+}
+
+// InventoryConnection is the connection containing edges to Inventory.
+type InventoryConnection struct {
+	Edges      []*InventoryEdge `json:"edges"`
+	PageInfo   PageInfo         `json:"pageInfo"`
+	TotalCount int              `json:"totalCount"`
+}
+
+func (c *InventoryConnection) build(nodes []*Inventory, pager *inventoryPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Inventory
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Inventory {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Inventory {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*InventoryEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &InventoryEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// InventoryPaginateOption enables pagination customization.
+type InventoryPaginateOption func(*inventoryPager) error
+
+// WithInventoryOrder configures pagination ordering.
+func WithInventoryOrder(order []*InventoryOrder) InventoryPaginateOption {
+	return func(pager *inventoryPager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithInventoryFilter configures pagination filter.
+func WithInventoryFilter(filter func(*InventoryQuery) (*InventoryQuery, error)) InventoryPaginateOption {
+	return func(pager *inventoryPager) error {
+		if filter == nil {
+			return errors.New("InventoryQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type inventoryPager struct {
+	reverse bool
+	order   []*InventoryOrder
+	filter  func(*InventoryQuery) (*InventoryQuery, error)
+}
+
+func newInventoryPager(opts []InventoryPaginateOption, reverse bool) (*inventoryPager, error) {
+	pager := &inventoryPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *inventoryPager) applyFilter(query *InventoryQuery) (*InventoryQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *inventoryPager) toCursor(i *Inventory) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(i).Value)
+	}
+	return Cursor{ID: i.ID, Value: cs}
+}
+
+func (p *inventoryPager) applyCursors(query *InventoryQuery, after, before *Cursor) (*InventoryQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultInventoryOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *inventoryPager) applyOrder(query *InventoryQuery) *InventoryQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultInventoryOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultInventoryOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *inventoryPager) orderExpr(query *InventoryQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultInventoryOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Inventory.
+func (i *InventoryQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...InventoryPaginateOption,
+) (*InventoryConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newInventoryPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if i, err = pager.applyFilter(i); err != nil {
+		return nil, err
+	}
+	conn := &InventoryConnection{Edges: []*InventoryEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = i.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if i, err = pager.applyCursors(i, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		i.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := i.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	i = pager.applyOrder(i)
+	nodes, err := i.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// InventoryOrderFieldCreatedAt orders Inventory by createdAt.
+	InventoryOrderFieldCreatedAt = &InventoryOrderField{
+		Value: func(i *Inventory) (ent.Value, error) {
+			return i.CreatedAt, nil
+		},
+		column: inventory.FieldCreatedAt,
+		toTerm: inventory.ByCreatedAt,
+		toCursor: func(i *Inventory) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.CreatedAt,
+			}
+		},
+	}
+	// InventoryOrderFieldUpdatedAt orders Inventory by updatedAt.
+	InventoryOrderFieldUpdatedAt = &InventoryOrderField{
+		Value: func(i *Inventory) (ent.Value, error) {
+			return i.UpdatedAt, nil
+		},
+		column: inventory.FieldUpdatedAt,
+		toTerm: inventory.ByUpdatedAt,
+		toCursor: func(i *Inventory) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.UpdatedAt,
+			}
+		},
+	}
+	// InventoryOrderFieldCategory orders Inventory by category.
+	InventoryOrderFieldCategory = &InventoryOrderField{
+		Value: func(i *Inventory) (ent.Value, error) {
+			return i.Category, nil
+		},
+		column: inventory.FieldCategory,
+		toTerm: inventory.ByCategory,
+		toCursor: func(i *Inventory) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.Category,
+			}
+		},
+	}
+	// InventoryOrderFieldCurrentValue orders Inventory by currentValue.
+	InventoryOrderFieldCurrentValue = &InventoryOrderField{
+		Value: func(i *Inventory) (ent.Value, error) {
+			return i.CurrentValue, nil
+		},
+		column: inventory.FieldCurrentValue,
+		toTerm: inventory.ByCurrentValue,
+		toCursor: func(i *Inventory) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.CurrentValue,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f InventoryOrderField) String() string {
+	var str string
+	switch f.column {
+	case InventoryOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case InventoryOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	case InventoryOrderFieldCategory.column:
+		str = "CATEGORY"
+	case InventoryOrderFieldCurrentValue.column:
+		str = "CURRENT_VALUE"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f InventoryOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *InventoryOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("InventoryOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *InventoryOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *InventoryOrderFieldUpdatedAt
+	case "CATEGORY":
+		*f = *InventoryOrderFieldCategory
+	case "CURRENT_VALUE":
+		*f = *InventoryOrderFieldCurrentValue
+	default:
+		return fmt.Errorf("%s is not a valid InventoryOrderField", str)
+	}
+	return nil
+}
+
+// InventoryOrderField defines the ordering field of Inventory.
+type InventoryOrderField struct {
+	// Value extracts the ordering value from the given Inventory.
+	Value    func(*Inventory) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) inventory.OrderOption
+	toCursor func(*Inventory) Cursor
+}
+
+// InventoryOrder defines the ordering of Inventory.
+type InventoryOrder struct {
+	Direction OrderDirection       `json:"direction"`
+	Field     *InventoryOrderField `json:"field"`
+}
+
+// DefaultInventoryOrder is the default ordering of Inventory.
+var DefaultInventoryOrder = &InventoryOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &InventoryOrderField{
+		Value: func(i *Inventory) (ent.Value, error) {
+			return i.ID, nil
+		},
+		column: inventory.FieldID,
+		toTerm: inventory.ByID,
+		toCursor: func(i *Inventory) Cursor {
+			return Cursor{ID: i.ID}
+		},
+	},
+}
+
+// ToEdge converts Inventory into InventoryEdge.
+func (i *Inventory) ToEdge(order *InventoryOrder) *InventoryEdge {
+	if order == nil {
+		order = DefaultInventoryOrder
+	}
+	return &InventoryEdge{
+		Node:   i,
+		Cursor: order.Field.toCursor(i),
+	}
+}
+
+// InventoryMovementEdge is the edge representation of InventoryMovement.
+type InventoryMovementEdge struct {
+	Node   *InventoryMovement `json:"node"`
+	Cursor Cursor             `json:"cursor"`
+}
+
+// InventoryMovementConnection is the connection containing edges to InventoryMovement.
+type InventoryMovementConnection struct {
+	Edges      []*InventoryMovementEdge `json:"edges"`
+	PageInfo   PageInfo                 `json:"pageInfo"`
+	TotalCount int                      `json:"totalCount"`
+}
+
+func (c *InventoryMovementConnection) build(nodes []*InventoryMovement, pager *inventorymovementPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *InventoryMovement
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *InventoryMovement {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *InventoryMovement {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*InventoryMovementEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &InventoryMovementEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// InventoryMovementPaginateOption enables pagination customization.
+type InventoryMovementPaginateOption func(*inventorymovementPager) error
+
+// WithInventoryMovementOrder configures pagination ordering.
+func WithInventoryMovementOrder(order []*InventoryMovementOrder) InventoryMovementPaginateOption {
+	return func(pager *inventorymovementPager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithInventoryMovementFilter configures pagination filter.
+func WithInventoryMovementFilter(filter func(*InventoryMovementQuery) (*InventoryMovementQuery, error)) InventoryMovementPaginateOption {
+	return func(pager *inventorymovementPager) error {
+		if filter == nil {
+			return errors.New("InventoryMovementQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type inventorymovementPager struct {
+	reverse bool
+	order   []*InventoryMovementOrder
+	filter  func(*InventoryMovementQuery) (*InventoryMovementQuery, error)
+}
+
+func newInventoryMovementPager(opts []InventoryMovementPaginateOption, reverse bool) (*inventorymovementPager, error) {
+	pager := &inventorymovementPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *inventorymovementPager) applyFilter(query *InventoryMovementQuery) (*InventoryMovementQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *inventorymovementPager) toCursor(im *InventoryMovement) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(im).Value)
+	}
+	return Cursor{ID: im.ID, Value: cs}
+}
+
+func (p *inventorymovementPager) applyCursors(query *InventoryMovementQuery, after, before *Cursor) (*InventoryMovementQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultInventoryMovementOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *inventorymovementPager) applyOrder(query *InventoryMovementQuery) *InventoryMovementQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultInventoryMovementOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultInventoryMovementOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *inventorymovementPager) orderExpr(query *InventoryMovementQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultInventoryMovementOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to InventoryMovement.
+func (im *InventoryMovementQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...InventoryMovementPaginateOption,
+) (*InventoryMovementConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newInventoryMovementPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if im, err = pager.applyFilter(im); err != nil {
+		return nil, err
+	}
+	conn := &InventoryMovementConnection{Edges: []*InventoryMovementEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = im.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if im, err = pager.applyCursors(im, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		im.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := im.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	im = pager.applyOrder(im)
+	nodes, err := im.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// InventoryMovementOrderFieldCreatedAt orders InventoryMovement by createdAt.
+	InventoryMovementOrderFieldCreatedAt = &InventoryMovementOrderField{
+		Value: func(im *InventoryMovement) (ent.Value, error) {
+			return im.CreatedAt, nil
+		},
+		column: inventorymovement.FieldCreatedAt,
+		toTerm: inventorymovement.ByCreatedAt,
+		toCursor: func(im *InventoryMovement) Cursor {
+			return Cursor{
+				ID:    im.ID,
+				Value: im.CreatedAt,
+			}
+		},
+	}
+	// InventoryMovementOrderFieldUpdatedAt orders InventoryMovement by updatedAt.
+	InventoryMovementOrderFieldUpdatedAt = &InventoryMovementOrderField{
+		Value: func(im *InventoryMovement) (ent.Value, error) {
+			return im.UpdatedAt, nil
+		},
+		column: inventorymovement.FieldUpdatedAt,
+		toTerm: inventorymovement.ByUpdatedAt,
+		toCursor: func(im *InventoryMovement) Cursor {
+			return Cursor{
+				ID:    im.ID,
+				Value: im.UpdatedAt,
+			}
+		},
+	}
+	// InventoryMovementOrderFieldCategory orders InventoryMovement by category.
+	InventoryMovementOrderFieldCategory = &InventoryMovementOrderField{
+		Value: func(im *InventoryMovement) (ent.Value, error) {
+			return im.Category, nil
+		},
+		column: inventorymovement.FieldCategory,
+		toTerm: inventorymovement.ByCategory,
+		toCursor: func(im *InventoryMovement) Cursor {
+			return Cursor{
+				ID:    im.ID,
+				Value: im.Category,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f InventoryMovementOrderField) String() string {
+	var str string
+	switch f.column {
+	case InventoryMovementOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case InventoryMovementOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	case InventoryMovementOrderFieldCategory.column:
+		str = "CATEGORY"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f InventoryMovementOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *InventoryMovementOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("InventoryMovementOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *InventoryMovementOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *InventoryMovementOrderFieldUpdatedAt
+	case "CATEGORY":
+		*f = *InventoryMovementOrderFieldCategory
+	default:
+		return fmt.Errorf("%s is not a valid InventoryMovementOrderField", str)
+	}
+	return nil
+}
+
+// InventoryMovementOrderField defines the ordering field of InventoryMovement.
+type InventoryMovementOrderField struct {
+	// Value extracts the ordering value from the given InventoryMovement.
+	Value    func(*InventoryMovement) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) inventorymovement.OrderOption
+	toCursor func(*InventoryMovement) Cursor
+}
+
+// InventoryMovementOrder defines the ordering of InventoryMovement.
+type InventoryMovementOrder struct {
+	Direction OrderDirection               `json:"direction"`
+	Field     *InventoryMovementOrderField `json:"field"`
+}
+
+// DefaultInventoryMovementOrder is the default ordering of InventoryMovement.
+var DefaultInventoryMovementOrder = &InventoryMovementOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &InventoryMovementOrderField{
+		Value: func(im *InventoryMovement) (ent.Value, error) {
+			return im.ID, nil
+		},
+		column: inventorymovement.FieldID,
+		toTerm: inventorymovement.ByID,
+		toCursor: func(im *InventoryMovement) Cursor {
+			return Cursor{ID: im.ID}
+		},
+	},
+}
+
+// ToEdge converts InventoryMovement into InventoryMovementEdge.
+func (im *InventoryMovement) ToEdge(order *InventoryMovementOrder) *InventoryMovementEdge {
+	if order == nil {
+		order = DefaultInventoryMovementOrder
+	}
+	return &InventoryMovementEdge{
+		Node:   im,
+		Cursor: order.Field.toCursor(im),
+	}
+}
+
+// InvoiceEdge is the edge representation of Invoice.
+type InvoiceEdge struct {
+	Node   *Invoice `json:"node"`
+	Cursor Cursor   `json:"cursor"`
+}
+
+// InvoiceConnection is the connection containing edges to Invoice.
+type InvoiceConnection struct {
+	Edges      []*InvoiceEdge `json:"edges"`
+	PageInfo   PageInfo       `json:"pageInfo"`
+	TotalCount int            `json:"totalCount"`
+}
+
+func (c *InvoiceConnection) build(nodes []*Invoice, pager *invoicePager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Invoice
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Invoice {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Invoice {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*InvoiceEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &InvoiceEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// InvoicePaginateOption enables pagination customization.
+type InvoicePaginateOption func(*invoicePager) error
+
+// WithInvoiceOrder configures pagination ordering.
+func WithInvoiceOrder(order []*InvoiceOrder) InvoicePaginateOption {
+	return func(pager *invoicePager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithInvoiceFilter configures pagination filter.
+func WithInvoiceFilter(filter func(*InvoiceQuery) (*InvoiceQuery, error)) InvoicePaginateOption {
+	return func(pager *invoicePager) error {
+		if filter == nil {
+			return errors.New("InvoiceQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type invoicePager struct {
+	reverse bool
+	order   []*InvoiceOrder
+	filter  func(*InvoiceQuery) (*InvoiceQuery, error)
+}
+
+func newInvoicePager(opts []InvoicePaginateOption, reverse bool) (*invoicePager, error) {
+	pager := &invoicePager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *invoicePager) applyFilter(query *InvoiceQuery) (*InvoiceQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *invoicePager) toCursor(i *Invoice) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(i).Value)
+	}
+	return Cursor{ID: i.ID, Value: cs}
+}
+
+func (p *invoicePager) applyCursors(query *InvoiceQuery, after, before *Cursor) (*InvoiceQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultInvoiceOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *invoicePager) applyOrder(query *InvoiceQuery) *InvoiceQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultInvoiceOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultInvoiceOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *invoicePager) orderExpr(query *InvoiceQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultInvoiceOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Invoice.
+func (i *InvoiceQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...InvoicePaginateOption,
+) (*InvoiceConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newInvoicePager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if i, err = pager.applyFilter(i); err != nil {
+		return nil, err
+	}
+	conn := &InvoiceConnection{Edges: []*InvoiceEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = i.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if i, err = pager.applyCursors(i, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		i.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := i.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	i = pager.applyOrder(i)
+	nodes, err := i.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// InvoiceOrderFieldCreatedAt orders Invoice by createdAt.
+	InvoiceOrderFieldCreatedAt = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.CreatedAt, nil
+		},
+		column: invoice.FieldCreatedAt,
+		toTerm: invoice.ByCreatedAt,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.CreatedAt,
+			}
+		},
+	}
+	// InvoiceOrderFieldUpdatedAt orders Invoice by updatedAt.
+	InvoiceOrderFieldUpdatedAt = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.UpdatedAt, nil
+		},
+		column: invoice.FieldUpdatedAt,
+		toTerm: invoice.ByUpdatedAt,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.UpdatedAt,
+			}
+		},
+	}
+	// InvoiceOrderFieldIssueDate orders Invoice by issueDate.
+	InvoiceOrderFieldIssueDate = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.IssueDate, nil
+		},
+		column: invoice.FieldIssueDate,
+		toTerm: invoice.ByIssueDate,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.IssueDate,
+			}
+		},
+	}
+	// InvoiceOrderFieldDueDate orders Invoice by dueDate.
+	InvoiceOrderFieldDueDate = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.DueDate, nil
+		},
+		column: invoice.FieldDueDate,
+		toTerm: invoice.ByDueDate,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.DueDate,
+			}
+		},
+	}
+	// InvoiceOrderFieldPaidAt orders Invoice by paidAt.
+	InvoiceOrderFieldPaidAt = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.PaidAt, nil
+		},
+		column: invoice.FieldPaidAt,
+		toTerm: invoice.ByPaidAt,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.PaidAt,
+			}
+		},
+	}
+	// InvoiceOrderFieldStatus orders Invoice by status.
+	InvoiceOrderFieldStatus = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.Status, nil
+		},
+		column: invoice.FieldStatus,
+		toTerm: invoice.ByStatus,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.Status,
+			}
+		},
+	}
+	// InvoiceOrderFieldTotal orders Invoice by total.
+	InvoiceOrderFieldTotal = &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.Total, nil
+		},
+		column: invoice.FieldTotal,
+		toTerm: invoice.ByTotal,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{
+				ID:    i.ID,
+				Value: i.Total,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f InvoiceOrderField) String() string {
+	var str string
+	switch f.column {
+	case InvoiceOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case InvoiceOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	case InvoiceOrderFieldIssueDate.column:
+		str = "ISSUE_DATE"
+	case InvoiceOrderFieldDueDate.column:
+		str = "DUE_DATE"
+	case InvoiceOrderFieldPaidAt.column:
+		str = "PAID_AT"
+	case InvoiceOrderFieldStatus.column:
+		str = "STATUS"
+	case InvoiceOrderFieldTotal.column:
+		str = "TOTAL"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f InvoiceOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *InvoiceOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("InvoiceOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *InvoiceOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *InvoiceOrderFieldUpdatedAt
+	case "ISSUE_DATE":
+		*f = *InvoiceOrderFieldIssueDate
+	case "DUE_DATE":
+		*f = *InvoiceOrderFieldDueDate
+	case "PAID_AT":
+		*f = *InvoiceOrderFieldPaidAt
+	case "STATUS":
+		*f = *InvoiceOrderFieldStatus
+	case "TOTAL":
+		*f = *InvoiceOrderFieldTotal
+	default:
+		return fmt.Errorf("%s is not a valid InvoiceOrderField", str)
+	}
+	return nil
+}
+
+// InvoiceOrderField defines the ordering field of Invoice.
+type InvoiceOrderField struct {
+	// Value extracts the ordering value from the given Invoice.
+	Value    func(*Invoice) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) invoice.OrderOption
+	toCursor func(*Invoice) Cursor
+}
+
+// InvoiceOrder defines the ordering of Invoice.
+type InvoiceOrder struct {
+	Direction OrderDirection     `json:"direction"`
+	Field     *InvoiceOrderField `json:"field"`
+}
+
+// DefaultInvoiceOrder is the default ordering of Invoice.
+var DefaultInvoiceOrder = &InvoiceOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &InvoiceOrderField{
+		Value: func(i *Invoice) (ent.Value, error) {
+			return i.ID, nil
+		},
+		column: invoice.FieldID,
+		toTerm: invoice.ByID,
+		toCursor: func(i *Invoice) Cursor {
+			return Cursor{ID: i.ID}
+		},
+	},
+}
+
+// ToEdge converts Invoice into InvoiceEdge.
+func (i *Invoice) ToEdge(order *InvoiceOrder) *InvoiceEdge {
+	if order == nil {
+		order = DefaultInvoiceOrder
+	}
+	return &InvoiceEdge{
+		Node:   i,
+		Cursor: order.Field.toCursor(i),
 	}
 }
 
@@ -2526,6 +3876,20 @@ var (
 			}
 		},
 	}
+	// MemberSignupTokenOrderFieldUpdatedAt orders MemberSignupToken by updatedAt.
+	MemberSignupTokenOrderFieldUpdatedAt = &MemberSignupTokenOrderField{
+		Value: func(mst *MemberSignupToken) (ent.Value, error) {
+			return mst.UpdatedAt, nil
+		},
+		column: membersignuptoken.FieldUpdatedAt,
+		toTerm: membersignuptoken.ByUpdatedAt,
+		toCursor: func(mst *MemberSignupToken) Cursor {
+			return Cursor{
+				ID:    mst.ID,
+				Value: mst.UpdatedAt,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -2534,6 +3898,8 @@ func (f MemberSignupTokenOrderField) String() string {
 	switch f.column {
 	case MemberSignupTokenOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case MemberSignupTokenOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	}
 	return str
 }
@@ -2552,6 +3918,8 @@ func (f *MemberSignupTokenOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *MemberSignupTokenOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *MemberSignupTokenOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid MemberSignupTokenOrderField", str)
 	}
@@ -2855,6 +4223,20 @@ var (
 			}
 		},
 	}
+	// PayableOrderFieldUpdatedAt orders Payable by updatedAt.
+	PayableOrderFieldUpdatedAt = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.UpdatedAt, nil
+		},
+		column: payable.FieldUpdatedAt,
+		toTerm: payable.ByUpdatedAt,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.UpdatedAt,
+			}
+		},
+	}
 	// PayableOrderFieldDueDate orders Payable by dueDate.
 	PayableOrderFieldDueDate = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
@@ -2891,6 +4273,8 @@ func (f PayableOrderField) String() string {
 	switch f.column {
 	case PayableOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case PayableOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case PayableOrderFieldDueDate.column:
 		str = "DUEDATE"
 	case PayableOrderFieldStatus.column:
@@ -2913,6 +4297,8 @@ func (f *PayableOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *PayableOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *PayableOrderFieldUpdatedAt
 	case "DUEDATE":
 		*f = *PayableOrderFieldDueDate
 	case "STATUS":
@@ -3184,6 +4570,20 @@ var (
 			}
 		},
 	}
+	// ProductOrderFieldUpdatedAt orders Product by updatedAt.
+	ProductOrderFieldUpdatedAt = &ProductOrderField{
+		Value: func(pr *Product) (ent.Value, error) {
+			return pr.UpdatedAt, nil
+		},
+		column: product.FieldUpdatedAt,
+		toTerm: product.ByUpdatedAt,
+		toCursor: func(pr *Product) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.UpdatedAt,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -3192,6 +4592,8 @@ func (f ProductOrderField) String() string {
 	switch f.column {
 	case ProductOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case ProductOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	}
 	return str
 }
@@ -3210,6 +4612,8 @@ func (f *ProductOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *ProductOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *ProductOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid ProductOrderField", str)
 	}
@@ -3513,6 +4917,20 @@ var (
 			}
 		},
 	}
+	// ProjectOrderFieldUpdatedAt orders Project by updatedAt.
+	ProjectOrderFieldUpdatedAt = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.UpdatedAt, nil
+		},
+		column: project.FieldUpdatedAt,
+		toTerm: project.ByUpdatedAt,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.UpdatedAt,
+			}
+		},
+	}
 	// ProjectOrderFieldStartDate orders Project by startDate.
 	ProjectOrderFieldStartDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
@@ -3563,6 +4981,8 @@ func (f ProjectOrderField) String() string {
 	switch f.column {
 	case ProjectOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case ProjectOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case ProjectOrderFieldStartDate.column:
 		str = "START_DATE"
 	case ProjectOrderFieldEndDate.column:
@@ -3587,6 +5007,8 @@ func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *ProjectOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *ProjectOrderFieldUpdatedAt
 	case "START_DATE":
 		*f = *ProjectOrderFieldStartDate
 	case "END_DATE":
@@ -4525,6 +5947,20 @@ var (
 			}
 		},
 	}
+	// ReceivableOrderFieldUpdatedAt orders Receivable by updatedAt.
+	ReceivableOrderFieldUpdatedAt = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.UpdatedAt, nil
+		},
+		column: receivable.FieldUpdatedAt,
+		toTerm: receivable.ByUpdatedAt,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.UpdatedAt,
+			}
+		},
+	}
 	// ReceivableOrderFieldDueDate orders Receivable by dueDate.
 	ReceivableOrderFieldDueDate = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
@@ -4561,6 +5997,8 @@ func (f ReceivableOrderField) String() string {
 	switch f.column {
 	case ReceivableOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case ReceivableOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case ReceivableOrderFieldDueDate.column:
 		str = "DUEDATE"
 	case ReceivableOrderFieldStatus.column:
@@ -4583,6 +6021,8 @@ func (f *ReceivableOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *ReceivableOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *ReceivableOrderFieldUpdatedAt
 	case "DUEDATE":
 		*f = *ReceivableOrderFieldDueDate
 	case "STATUS":
@@ -4854,6 +6294,20 @@ var (
 			}
 		},
 	}
+	// SupplierOrderFieldUpdatedAt orders Supplier by updatedAt.
+	SupplierOrderFieldUpdatedAt = &SupplierOrderField{
+		Value: func(s *Supplier) (ent.Value, error) {
+			return s.UpdatedAt, nil
+		},
+		column: supplier.FieldUpdatedAt,
+		toTerm: supplier.ByUpdatedAt,
+		toCursor: func(s *Supplier) Cursor {
+			return Cursor{
+				ID:    s.ID,
+				Value: s.UpdatedAt,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -4862,6 +6316,8 @@ func (f SupplierOrderField) String() string {
 	switch f.column {
 	case SupplierOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case SupplierOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	}
 	return str
 }
@@ -4880,6 +6336,8 @@ func (f *SupplierOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *SupplierOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *SupplierOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid SupplierOrderField", str)
 	}
@@ -5393,6 +6851,20 @@ var (
 			}
 		},
 	}
+	// TreasuryOrderFieldUpdatedAt orders Treasury by updatedAt.
+	TreasuryOrderFieldUpdatedAt = &TreasuryOrderField{
+		Value: func(t *Treasury) (ent.Value, error) {
+			return t.UpdatedAt, nil
+		},
+		column: treasury.FieldUpdatedAt,
+		toTerm: treasury.ByUpdatedAt,
+		toCursor: func(t *Treasury) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.UpdatedAt,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -5401,6 +6873,8 @@ func (f TreasuryOrderField) String() string {
 	switch f.column {
 	case TreasuryOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case TreasuryOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	}
 	return str
 }
@@ -5419,6 +6893,8 @@ func (f *TreasuryOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *TreasuryOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *TreasuryOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid TreasuryOrderField", str)
 	}
@@ -5686,6 +7162,20 @@ var (
 			}
 		},
 	}
+	// UserOrderFieldUpdatedAt orders User by updatedAt.
+	UserOrderFieldUpdatedAt = &UserOrderField{
+		Value: func(u *User) (ent.Value, error) {
+			return u.UpdatedAt, nil
+		},
+		column: user.FieldUpdatedAt,
+		toTerm: user.ByUpdatedAt,
+		toCursor: func(u *User) Cursor {
+			return Cursor{
+				ID:    u.ID,
+				Value: u.UpdatedAt,
+			}
+		},
+	}
 	// UserOrderFieldName orders User by name.
 	UserOrderFieldName = &UserOrderField{
 		Value: func(u *User) (ent.Value, error) {
@@ -5708,6 +7198,8 @@ func (f UserOrderField) String() string {
 	switch f.column {
 	case UserOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case UserOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case UserOrderFieldName.column:
 		str = "NAME"
 	}
@@ -5728,6 +7220,8 @@ func (f *UserOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *UserOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *UserOrderFieldUpdatedAt
 	case "NAME":
 		*f = *UserOrderFieldName
 	default:
@@ -6326,6 +7820,20 @@ var (
 			}
 		},
 	}
+	// WorkshiftOrderFieldUpdatedAt orders Workshift by updatedAt.
+	WorkshiftOrderFieldUpdatedAt = &WorkshiftOrderField{
+		Value: func(w *Workshift) (ent.Value, error) {
+			return w.UpdatedAt, nil
+		},
+		column: workshift.FieldUpdatedAt,
+		toTerm: workshift.ByUpdatedAt,
+		toCursor: func(w *Workshift) Cursor {
+			return Cursor{
+				ID:    w.ID,
+				Value: w.UpdatedAt,
+			}
+		},
+	}
 	// WorkshiftOrderFieldApprovedAt orders Workshift by approvedAt.
 	WorkshiftOrderFieldApprovedAt = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
@@ -6390,6 +7898,8 @@ func (f WorkshiftOrderField) String() string {
 	switch f.column {
 	case WorkshiftOrderFieldCreatedAt.column:
 		str = "CREATED_AT"
+	case WorkshiftOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case WorkshiftOrderFieldApprovedAt.column:
 		str = "APPROVED_AT"
 	case WorkshiftOrderFieldClockIn.column:
@@ -6416,6 +7926,8 @@ func (f *WorkshiftOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "CREATED_AT":
 		*f = *WorkshiftOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *WorkshiftOrderFieldUpdatedAt
 	case "APPROVED_AT":
 		*f = *WorkshiftOrderFieldApprovedAt
 	case "CLOCK_IN":

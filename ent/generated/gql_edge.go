@@ -96,6 +96,42 @@ func (c *Company) Files(ctx context.Context) (result []*File, err error) {
 	return result, err
 }
 
+func (c *Company) Inventory(ctx context.Context) (result []*Inventory, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedInventory(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.InventoryOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryInventory().All(ctx)
+	}
+	return result, err
+}
+
+func (c *Company) InventoryMovements(ctx context.Context) (result []*InventoryMovement, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedInventoryMovements(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.InventoryMovementsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryInventoryMovements().All(ctx)
+	}
+	return result, err
+}
+
+func (c *Company) Invoices(ctx context.Context) (result []*Invoice, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedInvoices(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.InvoicesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryInvoices().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) MemberSignupTokens(ctx context.Context) (result []*MemberSignupToken, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedMemberSignupTokens(graphql.GetFieldContext(ctx).Field.Alias)
@@ -280,6 +316,18 @@ func (c *Customer) Receivables(ctx context.Context) (result []*Receivable, err e
 	return result, err
 }
 
+func (c *Customer) Invoices(ctx context.Context) (result []*Invoice, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedInvoices(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.InvoicesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryInvoices().All(ctx)
+	}
+	return result, err
+}
+
 func (e *Employee) Company(ctx context.Context) (*Company, error) {
 	result, err := e.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
@@ -296,10 +344,90 @@ func (e *Employee) User(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
+func (e *Employee) Subordinates(ctx context.Context) (result []*Employee, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = e.NamedSubordinates(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = e.Edges.SubordinatesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = e.QuerySubordinates().All(ctx)
+	}
+	return result, err
+}
+
+func (e *Employee) Leader(ctx context.Context) (*Employee, error) {
+	result, err := e.Edges.LeaderOrErr()
+	if IsNotLoaded(err) {
+		result, err = e.QueryLeader().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (f *File) Company(ctx context.Context) (*Company, error) {
 	result, err := f.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
 		result, err = f.QueryCompany().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (i *Inventory) Company(ctx context.Context) (*Company, error) {
+	result, err := i.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = i.QueryCompany().Only(ctx)
+	}
+	return result, err
+}
+
+func (i *Inventory) Movements(ctx context.Context) (result []*InventoryMovement, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = i.NamedMovements(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = i.Edges.MovementsOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = i.QueryMovements().All(ctx)
+	}
+	return result, err
+}
+
+func (im *InventoryMovement) Company(ctx context.Context) (*Company, error) {
+	result, err := im.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = im.QueryCompany().Only(ctx)
+	}
+	return result, err
+}
+
+func (im *InventoryMovement) Inventory(ctx context.Context) (*Inventory, error) {
+	result, err := im.Edges.InventoryOrErr()
+	if IsNotLoaded(err) {
+		result, err = im.QueryInventory().Only(ctx)
+	}
+	return result, err
+}
+
+func (i *Invoice) Company(ctx context.Context) (*Company, error) {
+	result, err := i.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = i.QueryCompany().Only(ctx)
+	}
+	return result, err
+}
+
+func (i *Invoice) IssuedBy(ctx context.Context) (*User, error) {
+	result, err := i.Edges.IssuedByOrErr()
+	if IsNotLoaded(err) {
+		result, err = i.QueryIssuedBy().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (i *Invoice) Client(ctx context.Context) (*Customer, error) {
+	result, err := i.Edges.ClientOrErr()
+	if IsNotLoaded(err) {
+		result, err = i.QueryClient().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }
@@ -566,6 +694,18 @@ func (u *User) Employee(ctx context.Context) (*Employee, error) {
 		result, err = u.QueryEmployee().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (u *User) IssuedInvoices(ctx context.Context) (result []*Invoice, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = u.NamedIssuedInvoices(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = u.Edges.IssuedInvoicesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = u.QueryIssuedInvoices().All(ctx)
+	}
+	return result, err
 }
 
 func (u *User) CreatedProjects(ctx context.Context) (result []*Project, err error) {

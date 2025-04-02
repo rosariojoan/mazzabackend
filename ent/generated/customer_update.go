@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/receivable"
 	"time"
@@ -96,6 +97,12 @@ func (cu *CustomerUpdate) SetNillableCountry(s *string) *CustomerUpdate {
 	if s != nil {
 		cu.SetCountry(*s)
 	}
+	return cu
+}
+
+// ClearCountry clears the value of the "country" field.
+func (cu *CustomerUpdate) ClearCountry() *CustomerUpdate {
+	cu.mutation.ClearCountry()
 	return cu
 }
 
@@ -235,6 +242,21 @@ func (cu *CustomerUpdate) AddReceivables(r ...*Receivable) *CustomerUpdate {
 	return cu.AddReceivableIDs(ids...)
 }
 
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cu *CustomerUpdate) AddInvoiceIDs(ids ...int) *CustomerUpdate {
+	cu.mutation.AddInvoiceIDs(ids...)
+	return cu
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cu *CustomerUpdate) AddInvoices(i ...*Invoice) *CustomerUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.AddInvoiceIDs(ids...)
+}
+
 // Mutation returns the CustomerMutation object of the builder.
 func (cu *CustomerUpdate) Mutation() *CustomerMutation {
 	return cu.mutation
@@ -265,6 +287,27 @@ func (cu *CustomerUpdate) RemoveReceivables(r ...*Receivable) *CustomerUpdate {
 		ids[i] = r[i].ID
 	}
 	return cu.RemoveReceivableIDs(ids...)
+}
+
+// ClearInvoices clears all "invoices" edges to the Invoice entity.
+func (cu *CustomerUpdate) ClearInvoices() *CustomerUpdate {
+	cu.mutation.ClearInvoices()
+	return cu
+}
+
+// RemoveInvoiceIDs removes the "invoices" edge to Invoice entities by IDs.
+func (cu *CustomerUpdate) RemoveInvoiceIDs(ids ...int) *CustomerUpdate {
+	cu.mutation.RemoveInvoiceIDs(ids...)
+	return cu
+}
+
+// RemoveInvoices removes "invoices" edges to Invoice entities.
+func (cu *CustomerUpdate) RemoveInvoices(i ...*Invoice) *CustomerUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.RemoveInvoiceIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -353,6 +396,9 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
+	}
+	if cu.mutation.CountryCleared() {
+		_spec.ClearField(customer.FieldCountry, field.TypeString)
 	}
 	if value, ok := cu.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
@@ -455,6 +501,51 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cu.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedInvoicesIDs(); len(nodes) > 0 && !cu.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	_spec.AddModifiers(cu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -542,6 +633,12 @@ func (cuo *CustomerUpdateOne) SetNillableCountry(s *string) *CustomerUpdateOne {
 	if s != nil {
 		cuo.SetCountry(*s)
 	}
+	return cuo
+}
+
+// ClearCountry clears the value of the "country" field.
+func (cuo *CustomerUpdateOne) ClearCountry() *CustomerUpdateOne {
+	cuo.mutation.ClearCountry()
 	return cuo
 }
 
@@ -681,6 +778,21 @@ func (cuo *CustomerUpdateOne) AddReceivables(r ...*Receivable) *CustomerUpdateOn
 	return cuo.AddReceivableIDs(ids...)
 }
 
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cuo *CustomerUpdateOne) AddInvoiceIDs(ids ...int) *CustomerUpdateOne {
+	cuo.mutation.AddInvoiceIDs(ids...)
+	return cuo
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cuo *CustomerUpdateOne) AddInvoices(i ...*Invoice) *CustomerUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.AddInvoiceIDs(ids...)
+}
+
 // Mutation returns the CustomerMutation object of the builder.
 func (cuo *CustomerUpdateOne) Mutation() *CustomerMutation {
 	return cuo.mutation
@@ -711,6 +823,27 @@ func (cuo *CustomerUpdateOne) RemoveReceivables(r ...*Receivable) *CustomerUpdat
 		ids[i] = r[i].ID
 	}
 	return cuo.RemoveReceivableIDs(ids...)
+}
+
+// ClearInvoices clears all "invoices" edges to the Invoice entity.
+func (cuo *CustomerUpdateOne) ClearInvoices() *CustomerUpdateOne {
+	cuo.mutation.ClearInvoices()
+	return cuo
+}
+
+// RemoveInvoiceIDs removes the "invoices" edge to Invoice entities by IDs.
+func (cuo *CustomerUpdateOne) RemoveInvoiceIDs(ids ...int) *CustomerUpdateOne {
+	cuo.mutation.RemoveInvoiceIDs(ids...)
+	return cuo
+}
+
+// RemoveInvoices removes "invoices" edges to Invoice entities.
+func (cuo *CustomerUpdateOne) RemoveInvoices(i ...*Invoice) *CustomerUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.RemoveInvoiceIDs(ids...)
 }
 
 // Where appends a list predicates to the CustomerUpdate builder.
@@ -830,6 +963,9 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if value, ok := cuo.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
 	}
+	if cuo.mutation.CountryCleared() {
+		_spec.ClearField(customer.FieldCountry, field.TypeString)
+	}
 	if value, ok := cuo.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
 	}
@@ -924,6 +1060,51 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedInvoicesIDs(); len(nodes) > 0 && !cuo.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

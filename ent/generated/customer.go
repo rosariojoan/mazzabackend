@@ -29,11 +29,11 @@ type Customer struct {
 	// City holds the value of the "city" field.
 	City string `json:"city,omitempty"`
 	// Country holds the value of the "country" field.
-	Country string `json:"country,omitempty"`
+	Country *string `json:"country,omitempty"`
 	// Description holds the value of the "description" field.
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 	// Email holds the value of the "email" field.
-	Email string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 	// IsDefault holds the value of the "isDefault" field.
 	IsDefault bool `json:"isDefault,omitempty"`
 	// Name holds the value of the "name" field.
@@ -55,13 +55,16 @@ type CustomerEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// Receivables holds the value of the receivables edge.
 	Receivables []*Receivable `json:"receivables,omitempty"`
+	// Invoices holds the value of the invoices edge.
+	Invoices []*Invoice `json:"invoices,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 
 	namedReceivables map[string][]*Receivable
+	namedInvoices    map[string][]*Invoice
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -82,6 +85,15 @@ func (e CustomerEdges) ReceivablesOrErr() ([]*Receivable, error) {
 		return e.Receivables, nil
 	}
 	return nil, &NotLoadedError{edge: "receivables"}
+}
+
+// InvoicesOrErr returns the Invoices value or an error if the edge
+// was not loaded in eager-loading.
+func (e CustomerEdges) InvoicesOrErr() ([]*Invoice, error) {
+	if e.loadedTypes[2] {
+		return e.Invoices, nil
+	}
+	return nil, &NotLoadedError{edge: "invoices"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -155,19 +167,22 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field country", values[i])
 			} else if value.Valid {
-				c.Country = value.String
+				c.Country = new(string)
+				*c.Country = value.String
 			}
 		case customer.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
-				c.Description = value.String
+				c.Description = new(string)
+				*c.Description = value.String
 			}
 		case customer.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				c.Email = value.String
+				c.Email = new(string)
+				*c.Email = value.String
 			}
 		case customer.FieldIsDefault:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -223,6 +238,11 @@ func (c *Customer) QueryReceivables() *ReceivableQuery {
 	return NewCustomerClient(c.config).QueryReceivables(c)
 }
 
+// QueryInvoices queries the "invoices" edge of the Customer entity.
+func (c *Customer) QueryInvoices() *InvoiceQuery {
+	return NewCustomerClient(c.config).QueryInvoices(c)
+}
+
 // Update returns a builder for updating this Customer.
 // Note that you need to call Customer.Unwrap() before calling this method if this Customer
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -263,14 +283,20 @@ func (c *Customer) String() string {
 	builder.WriteString("city=")
 	builder.WriteString(c.City)
 	builder.WriteString(", ")
-	builder.WriteString("country=")
-	builder.WriteString(c.Country)
+	if v := c.Country; v != nil {
+		builder.WriteString("country=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("description=")
-	builder.WriteString(c.Description)
+	if v := c.Description; v != nil {
+		builder.WriteString("description=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("email=")
-	builder.WriteString(c.Email)
+	if v := c.Email; v != nil {
+		builder.WriteString("email=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("isDefault=")
 	builder.WriteString(fmt.Sprintf("%v", c.IsDefault))
@@ -308,6 +334,30 @@ func (c *Customer) appendNamedReceivables(name string, edges ...*Receivable) {
 		c.Edges.namedReceivables[name] = []*Receivable{}
 	} else {
 		c.Edges.namedReceivables[name] = append(c.Edges.namedReceivables[name], edges...)
+	}
+}
+
+// NamedInvoices returns the Invoices named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Customer) NamedInvoices(name string) ([]*Invoice, error) {
+	if c.Edges.namedInvoices == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedInvoices[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Customer) appendNamedInvoices(name string, edges ...*Invoice) {
+	if c.Edges.namedInvoices == nil {
+		c.Edges.namedInvoices = make(map[string][]*Invoice)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedInvoices[name] = []*Invoice{}
+	} else {
+		c.Edges.namedInvoices[name] = append(c.Edges.namedInvoices[name], edges...)
 	}
 }
 

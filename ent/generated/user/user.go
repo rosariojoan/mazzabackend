@@ -63,6 +63,8 @@ const (
 	EdgeCreatedMemberSignupTokens = "createdMemberSignupTokens"
 	// EdgeEmployee holds the string denoting the employee edge name in mutations.
 	EdgeEmployee = "employee"
+	// EdgeIssuedInvoices holds the string denoting the issuedinvoices edge name in mutations.
+	EdgeIssuedInvoices = "issuedInvoices"
 	// EdgeCreatedProjects holds the string denoting the createdprojects edge name in mutations.
 	EdgeCreatedProjects = "createdProjects"
 	// EdgeLeaderedProjects holds the string denoting the leaderedprojects edge name in mutations.
@@ -126,6 +128,13 @@ const (
 	EmployeeInverseTable = "employees"
 	// EmployeeColumn is the table column denoting the employee relation/edge.
 	EmployeeColumn = "user_employee"
+	// IssuedInvoicesTable is the table that holds the issuedInvoices relation/edge.
+	IssuedInvoicesTable = "invoices"
+	// IssuedInvoicesInverseTable is the table name for the Invoice entity.
+	// It exists in this package in order to avoid circular dependency with the "invoice" package.
+	IssuedInvoicesInverseTable = "invoices"
+	// IssuedInvoicesColumn is the table column denoting the issuedInvoices relation/edge.
+	IssuedInvoicesColumn = "user_issued_invoices"
 	// CreatedProjectsTable is the table that holds the createdProjects relation/edge.
 	CreatedProjectsTable = "projects"
 	// CreatedProjectsInverseTable is the table name for the Project entity.
@@ -457,6 +466,20 @@ func ByEmployeeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
+// ByIssuedInvoicesCount orders the results by issuedInvoices count.
+func ByIssuedInvoicesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newIssuedInvoicesStep(), opts...)
+	}
+}
+
+// ByIssuedInvoices orders the results by issuedInvoices terms.
+func ByIssuedInvoices(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newIssuedInvoicesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByCreatedProjectsCount orders the results by createdProjects count.
 func ByCreatedProjectsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -643,6 +666,13 @@ func newEmployeeStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(EmployeeInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2O, false, EmployeeTable, EmployeeColumn),
+	)
+}
+func newIssuedInvoicesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(IssuedInvoicesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, IssuedInvoicesTable, IssuedInvoicesColumn),
 	)
 }
 func newCreatedProjectsStep() *sqlgraph.Step {

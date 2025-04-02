@@ -70,6 +70,20 @@ func (ec *EmployeeCreate) SetName(s string) *EmployeeCreate {
 	return ec
 }
 
+// SetBirthdate sets the "birthdate" field.
+func (ec *EmployeeCreate) SetBirthdate(t time.Time) *EmployeeCreate {
+	ec.mutation.SetBirthdate(t)
+	return ec
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableBirthdate(t *time.Time) *EmployeeCreate {
+	if t != nil {
+		ec.SetBirthdate(*t)
+	}
+	return ec
+}
+
 // SetGender sets the "gender" field.
 func (ec *EmployeeCreate) SetGender(e employee.Gender) *EmployeeCreate {
 	ec.mutation.SetGender(e)
@@ -82,10 +96,16 @@ func (ec *EmployeeCreate) SetPosition(s string) *EmployeeCreate {
 	return ec
 }
 
-// SetNillablePosition sets the "position" field if the given value is not nil.
-func (ec *EmployeeCreate) SetNillablePosition(s *string) *EmployeeCreate {
+// SetDepartment sets the "department" field.
+func (ec *EmployeeCreate) SetDepartment(s string) *EmployeeCreate {
+	ec.mutation.SetDepartment(s)
+	return ec
+}
+
+// SetNillableDepartment sets the "department" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableDepartment(s *string) *EmployeeCreate {
 	if s != nil {
-		ec.SetPosition(*s)
+		ec.SetDepartment(*s)
 	}
 	return ec
 }
@@ -107,6 +127,76 @@ func (ec *EmployeeCreate) SetNillableEmail(s *string) *EmployeeCreate {
 // SetPhone sets the "phone" field.
 func (ec *EmployeeCreate) SetPhone(s string) *EmployeeCreate {
 	ec.mutation.SetPhone(s)
+	return ec
+}
+
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillablePhone(s *string) *EmployeeCreate {
+	if s != nil {
+		ec.SetPhone(*s)
+	}
+	return ec
+}
+
+// SetAvatar sets the "avatar" field.
+func (ec *EmployeeCreate) SetAvatar(s string) *EmployeeCreate {
+	ec.mutation.SetAvatar(s)
+	return ec
+}
+
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableAvatar(s *string) *EmployeeCreate {
+	if s != nil {
+		ec.SetAvatar(*s)
+	}
+	return ec
+}
+
+// SetHireDate sets the "hireDate" field.
+func (ec *EmployeeCreate) SetHireDate(t time.Time) *EmployeeCreate {
+	ec.mutation.SetHireDate(t)
+	return ec
+}
+
+// SetMonthlySalary sets the "monthlySalary" field.
+func (ec *EmployeeCreate) SetMonthlySalary(i int) *EmployeeCreate {
+	ec.mutation.SetMonthlySalary(i)
+	return ec
+}
+
+// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableMonthlySalary(i *int) *EmployeeCreate {
+	if i != nil {
+		ec.SetMonthlySalary(*i)
+	}
+	return ec
+}
+
+// SetStatus sets the "status" field.
+func (ec *EmployeeCreate) SetStatus(e employee.Status) *EmployeeCreate {
+	ec.mutation.SetStatus(e)
+	return ec
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableStatus(e *employee.Status) *EmployeeCreate {
+	if e != nil {
+		ec.SetStatus(*e)
+	}
+	return ec
+}
+
+// SetPerformaceScore sets the "performaceScore" field.
+func (ec *EmployeeCreate) SetPerformaceScore(f float64) *EmployeeCreate {
+	ec.mutation.SetPerformaceScore(f)
+	return ec
+}
+
+// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+func (ec *EmployeeCreate) SetNillablePerformaceScore(f *float64) *EmployeeCreate {
+	if f != nil {
+		ec.SetPerformaceScore(*f)
+	}
 	return ec
 }
 
@@ -146,6 +236,40 @@ func (ec *EmployeeCreate) SetNillableUserID(id *int) *EmployeeCreate {
 // SetUser sets the "user" edge to the User entity.
 func (ec *EmployeeCreate) SetUser(u *User) *EmployeeCreate {
 	return ec.SetUserID(u.ID)
+}
+
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (ec *EmployeeCreate) AddSubordinateIDs(ids ...int) *EmployeeCreate {
+	ec.mutation.AddSubordinateIDs(ids...)
+	return ec
+}
+
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (ec *EmployeeCreate) AddSubordinates(e ...*Employee) *EmployeeCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ec.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (ec *EmployeeCreate) SetLeaderID(id int) *EmployeeCreate {
+	ec.mutation.SetLeaderID(id)
+	return ec
+}
+
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (ec *EmployeeCreate) SetNillableLeaderID(id *int) *EmployeeCreate {
+	if id != nil {
+		ec = ec.SetLeaderID(*id)
+	}
+	return ec
+}
+
+// SetLeader sets the "leader" edge to the Employee entity.
+func (ec *EmployeeCreate) SetLeader(e *Employee) *EmployeeCreate {
+	return ec.SetLeaderID(e.ID)
 }
 
 // Mutation returns the EmployeeMutation object of the builder.
@@ -191,6 +315,22 @@ func (ec *EmployeeCreate) defaults() {
 		v := employee.DefaultUpdatedAt()
 		ec.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := ec.mutation.Department(); !ok {
+		v := employee.DefaultDepartment
+		ec.mutation.SetDepartment(v)
+	}
+	if _, ok := ec.mutation.MonthlySalary(); !ok {
+		v := employee.DefaultMonthlySalary
+		ec.mutation.SetMonthlySalary(v)
+	}
+	if _, ok := ec.mutation.Status(); !ok {
+		v := employee.DefaultStatus
+		ec.mutation.SetStatus(v)
+	}
+	if _, ok := ec.mutation.PerformaceScore(); !ok {
+		v := employee.DefaultPerformaceScore
+		ec.mutation.SetPerformaceScore(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -217,8 +357,29 @@ func (ec *EmployeeCreate) check() error {
 			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "Employee.gender": %w`, err)}
 		}
 	}
-	if _, ok := ec.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`generated: missing required field "Employee.phone"`)}
+	if _, ok := ec.mutation.Position(); !ok {
+		return &ValidationError{Name: "position", err: errors.New(`generated: missing required field "Employee.position"`)}
+	}
+	if _, ok := ec.mutation.HireDate(); !ok {
+		return &ValidationError{Name: "hireDate", err: errors.New(`generated: missing required field "Employee.hireDate"`)}
+	}
+	if _, ok := ec.mutation.MonthlySalary(); !ok {
+		return &ValidationError{Name: "monthlySalary", err: errors.New(`generated: missing required field "Employee.monthlySalary"`)}
+	}
+	if v, ok := ec.mutation.MonthlySalary(); ok {
+		if err := employee.MonthlySalaryValidator(v); err != nil {
+			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+		}
+	}
+	if v, ok := ec.mutation.Status(); ok {
+		if err := employee.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Employee.status": %w`, err)}
+		}
+	}
+	if v, ok := ec.mutation.PerformaceScore(); ok {
+		if err := employee.PerformaceScoreValidator(v); err != nil {
+			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+		}
 	}
 	return nil
 }
@@ -262,13 +423,21 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 		_spec.SetField(employee.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
+	if value, ok := ec.mutation.Birthdate(); ok {
+		_spec.SetField(employee.FieldBirthdate, field.TypeTime, value)
+		_node.Birthdate = &value
+	}
 	if value, ok := ec.mutation.Gender(); ok {
 		_spec.SetField(employee.FieldGender, field.TypeEnum, value)
 		_node.Gender = value
 	}
 	if value, ok := ec.mutation.Position(); ok {
 		_spec.SetField(employee.FieldPosition, field.TypeString, value)
-		_node.Position = &value
+		_node.Position = value
+	}
+	if value, ok := ec.mutation.Department(); ok {
+		_spec.SetField(employee.FieldDepartment, field.TypeString, value)
+		_node.Department = value
 	}
 	if value, ok := ec.mutation.Email(); ok {
 		_spec.SetField(employee.FieldEmail, field.TypeString, value)
@@ -276,7 +445,27 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := ec.mutation.Phone(); ok {
 		_spec.SetField(employee.FieldPhone, field.TypeString, value)
-		_node.Phone = value
+		_node.Phone = &value
+	}
+	if value, ok := ec.mutation.Avatar(); ok {
+		_spec.SetField(employee.FieldAvatar, field.TypeString, value)
+		_node.Avatar = &value
+	}
+	if value, ok := ec.mutation.HireDate(); ok {
+		_spec.SetField(employee.FieldHireDate, field.TypeTime, value)
+		_node.HireDate = value
+	}
+	if value, ok := ec.mutation.MonthlySalary(); ok {
+		_spec.SetField(employee.FieldMonthlySalary, field.TypeInt, value)
+		_node.MonthlySalary = value
+	}
+	if value, ok := ec.mutation.Status(); ok {
+		_spec.SetField(employee.FieldStatus, field.TypeEnum, value)
+		_node.Status = value
+	}
+	if value, ok := ec.mutation.PerformaceScore(); ok {
+		_spec.SetField(employee.FieldPerformaceScore, field.TypeFloat64, value)
+		_node.PerformaceScore = value
 	}
 	if nodes := ec.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -310,6 +499,39 @@ func (ec *EmployeeCreate) createSpec() (*Employee, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.user_employee = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ec.mutation.SubordinatesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ec.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.employee_subordinates = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

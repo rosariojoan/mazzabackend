@@ -72,6 +72,12 @@ const (
 	EdgeEmployees = "employees"
 	// EdgeFiles holds the string denoting the files edge name in mutations.
 	EdgeFiles = "files"
+	// EdgeInventory holds the string denoting the inventory edge name in mutations.
+	EdgeInventory = "inventory"
+	// EdgeInventoryMovements holds the string denoting the inventorymovements edge name in mutations.
+	EdgeInventoryMovements = "inventoryMovements"
+	// EdgeInvoices holds the string denoting the invoices edge name in mutations.
+	EdgeInvoices = "invoices"
 	// EdgeMemberSignupTokens holds the string denoting the membersignuptokens edge name in mutations.
 	EdgeMemberSignupTokens = "memberSignupTokens"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
@@ -140,6 +146,27 @@ const (
 	FilesInverseTable = "files"
 	// FilesColumn is the table column denoting the files relation/edge.
 	FilesColumn = "company_files"
+	// InventoryTable is the table that holds the inventory relation/edge.
+	InventoryTable = "inventories"
+	// InventoryInverseTable is the table name for the Inventory entity.
+	// It exists in this package in order to avoid circular dependency with the "inventory" package.
+	InventoryInverseTable = "inventories"
+	// InventoryColumn is the table column denoting the inventory relation/edge.
+	InventoryColumn = "company_inventory"
+	// InventoryMovementsTable is the table that holds the inventoryMovements relation/edge.
+	InventoryMovementsTable = "inventory_movements"
+	// InventoryMovementsInverseTable is the table name for the InventoryMovement entity.
+	// It exists in this package in order to avoid circular dependency with the "inventorymovement" package.
+	InventoryMovementsInverseTable = "inventory_movements"
+	// InventoryMovementsColumn is the table column denoting the inventoryMovements relation/edge.
+	InventoryMovementsColumn = "company_inventory_movements"
+	// InvoicesTable is the table that holds the invoices relation/edge.
+	InvoicesTable = "invoices"
+	// InvoicesInverseTable is the table name for the Invoice entity.
+	// It exists in this package in order to avoid circular dependency with the "invoice" package.
+	InvoicesInverseTable = "invoices"
+	// InvoicesColumn is the table column denoting the invoices relation/edge.
+	InvoicesColumn = "company_invoices"
 	// MemberSignupTokensTable is the table that holds the memberSignupTokens relation/edge.
 	MemberSignupTokensTable = "member_signup_tokens"
 	// MemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
@@ -503,6 +530,48 @@ func ByFiles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
+// ByInventoryCount orders the results by inventory count.
+func ByInventoryCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newInventoryStep(), opts...)
+	}
+}
+
+// ByInventory orders the results by inventory terms.
+func ByInventory(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInventoryStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByInventoryMovementsCount orders the results by inventoryMovements count.
+func ByInventoryMovementsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newInventoryMovementsStep(), opts...)
+	}
+}
+
+// ByInventoryMovements orders the results by inventoryMovements terms.
+func ByInventoryMovements(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInventoryMovementsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByInvoicesCount orders the results by invoices count.
+func ByInvoicesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newInvoicesStep(), opts...)
+	}
+}
+
+// ByInvoices orders the results by invoices terms.
+func ByInvoices(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInvoicesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByMemberSignupTokensCount orders the results by memberSignupTokens count.
 func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -703,6 +772,27 @@ func newFilesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(FilesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, FilesTable, FilesColumn),
+	)
+}
+func newInventoryStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InventoryInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, InventoryTable, InventoryColumn),
+	)
+}
+func newInventoryMovementsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InventoryMovementsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, InventoryMovementsTable, InventoryMovementsColumn),
+	)
+}
+func newInvoicesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InvoicesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, InvoicesTable, InvoicesColumn),
 	)
 }
 func newMemberSignupTokensStep() *sqlgraph.Step {

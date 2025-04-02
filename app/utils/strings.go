@@ -1,15 +1,13 @@
 package utils
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 // func includes[value comparable, array []string | []int](value, array) bool {
 func Includes(value string, array []string) bool {
-	for _, v := range array {
-		if value == v {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(array, value)
 }
 
 // Check if the given string starts with any one of the strings in the given array of strings

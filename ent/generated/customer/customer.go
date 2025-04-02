@@ -42,6 +42,8 @@ const (
 	EdgeCompany = "company"
 	// EdgeReceivables holds the string denoting the receivables edge name in mutations.
 	EdgeReceivables = "receivables"
+	// EdgeInvoices holds the string denoting the invoices edge name in mutations.
+	EdgeInvoices = "invoices"
 	// Table holds the table name of the customer in the database.
 	Table = "customers"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -58,6 +60,13 @@ const (
 	ReceivablesInverseTable = "receivables"
 	// ReceivablesColumn is the table column denoting the receivables relation/edge.
 	ReceivablesColumn = "customer_receivables"
+	// InvoicesTable is the table that holds the invoices relation/edge.
+	InvoicesTable = "invoices"
+	// InvoicesInverseTable is the table name for the Invoice entity.
+	// It exists in this package in order to avoid circular dependency with the "invoice" package.
+	InvoicesInverseTable = "invoices"
+	// InvoicesColumn is the table column denoting the invoices relation/edge.
+	InvoicesColumn = "customer_invoices"
 )
 
 // Columns holds all SQL columns for customer fields.
@@ -201,6 +210,20 @@ func ByReceivables(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newReceivablesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByInvoicesCount orders the results by invoices count.
+func ByInvoicesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newInvoicesStep(), opts...)
+	}
+}
+
+// ByInvoices orders the results by invoices terms.
+func ByInvoices(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInvoicesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -213,5 +236,12 @@ func newReceivablesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ReceivablesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ReceivablesTable, ReceivablesColumn),
+	)
+}
+func newInvoicesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InvoicesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, InvoicesTable, InvoicesColumn),
 	)
 }

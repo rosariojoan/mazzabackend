@@ -10,6 +10,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -305,6 +308,42 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.WithNamedFiles(alias, func(wq *FileQuery) {
+				*wq = *query
+			})
+		case "inventory":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InventoryClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedInventory(alias, func(wq *InventoryQuery) {
+				*wq = *query
+			})
+		case "inventorymovements":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InventoryMovementClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedInventoryMovements(alias, func(wq *InventoryMovementQuery) {
+				*wq = *query
+			})
+		case "invoices":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InvoiceClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedInvoices(alias, func(wq *InvoiceQuery) {
 				*wq = *query
 			})
 		case "membersignuptokens":
@@ -850,6 +889,18 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			c.WithNamedReceivables(alias, func(wq *ReceivableQuery) {
 				*wq = *query
 			})
+		case "invoices":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InvoiceClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedInvoices(alias, func(wq *InvoiceQuery) {
+				*wq = *query
+			})
 		case "createdat":
 			if _, ok := fieldSeen[customer.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, customer.FieldCreatedAt)
@@ -1020,6 +1071,28 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			e.withUser = query
+		case "subordinates":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&EmployeeClient{config: e.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			e.WithNamedSubordinates(alias, func(wq *EmployeeQuery) {
+				*wq = *query
+			})
+		case "leader":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&EmployeeClient{config: e.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			e.withLeader = query
 		case "createdat":
 			if _, ok := fieldSeen[employee.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, employee.FieldCreatedAt)
@@ -1040,6 +1113,11 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, employee.FieldName)
 				fieldSeen[employee.FieldName] = struct{}{}
 			}
+		case "birthdate":
+			if _, ok := fieldSeen[employee.FieldBirthdate]; !ok {
+				selectedFields = append(selectedFields, employee.FieldBirthdate)
+				fieldSeen[employee.FieldBirthdate] = struct{}{}
+			}
 		case "gender":
 			if _, ok := fieldSeen[employee.FieldGender]; !ok {
 				selectedFields = append(selectedFields, employee.FieldGender)
@@ -1050,6 +1128,11 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, employee.FieldPosition)
 				fieldSeen[employee.FieldPosition] = struct{}{}
 			}
+		case "department":
+			if _, ok := fieldSeen[employee.FieldDepartment]; !ok {
+				selectedFields = append(selectedFields, employee.FieldDepartment)
+				fieldSeen[employee.FieldDepartment] = struct{}{}
+			}
 		case "email":
 			if _, ok := fieldSeen[employee.FieldEmail]; !ok {
 				selectedFields = append(selectedFields, employee.FieldEmail)
@@ -1059,6 +1142,31 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			if _, ok := fieldSeen[employee.FieldPhone]; !ok {
 				selectedFields = append(selectedFields, employee.FieldPhone)
 				fieldSeen[employee.FieldPhone] = struct{}{}
+			}
+		case "avatar":
+			if _, ok := fieldSeen[employee.FieldAvatar]; !ok {
+				selectedFields = append(selectedFields, employee.FieldAvatar)
+				fieldSeen[employee.FieldAvatar] = struct{}{}
+			}
+		case "hiredate":
+			if _, ok := fieldSeen[employee.FieldHireDate]; !ok {
+				selectedFields = append(selectedFields, employee.FieldHireDate)
+				fieldSeen[employee.FieldHireDate] = struct{}{}
+			}
+		case "monthlysalary":
+			if _, ok := fieldSeen[employee.FieldMonthlySalary]; !ok {
+				selectedFields = append(selectedFields, employee.FieldMonthlySalary)
+				fieldSeen[employee.FieldMonthlySalary] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[employee.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, employee.FieldStatus)
+				fieldSeen[employee.FieldStatus] = struct{}{}
+			}
+		case "performacescore":
+			if _, ok := fieldSeen[employee.FieldPerformaceScore]; !ok {
+				selectedFields = append(selectedFields, employee.FieldPerformaceScore)
+				fieldSeen[employee.FieldPerformaceScore] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -1253,6 +1361,623 @@ func newFilePaginateArgs(rv map[string]any) *filePaginateArgs {
 	}
 	if v, ok := rv[whereField].(*FileWhereInput); ok {
 		args.opts = append(args.opts, WithFileFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (i *InventoryQuery) CollectFields(ctx context.Context, satisfies ...string) (*InventoryQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return i, nil
+	}
+	if err := i.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return i, nil
+}
+
+func (i *InventoryQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(inventory.Columns))
+		selectedFields = []string{inventory.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.withCompany = query
+		case "movements":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InventoryMovementClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.WithNamedMovements(alias, func(wq *InventoryMovementQuery) {
+				*wq = *query
+			})
+		case "createdat":
+			if _, ok := fieldSeen[inventory.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldCreatedAt)
+				fieldSeen[inventory.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[inventory.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldUpdatedAt)
+				fieldSeen[inventory.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[inventory.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldDeletedAt)
+				fieldSeen[inventory.FieldDeletedAt] = struct{}{}
+			}
+		case "name":
+			if _, ok := fieldSeen[inventory.FieldName]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldName)
+				fieldSeen[inventory.FieldName] = struct{}{}
+			}
+		case "category":
+			if _, ok := fieldSeen[inventory.FieldCategory]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldCategory)
+				fieldSeen[inventory.FieldCategory] = struct{}{}
+			}
+		case "quantity":
+			if _, ok := fieldSeen[inventory.FieldQuantity]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldQuantity)
+				fieldSeen[inventory.FieldQuantity] = struct{}{}
+			}
+		case "unit":
+			if _, ok := fieldSeen[inventory.FieldUnit]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldUnit)
+				fieldSeen[inventory.FieldUnit] = struct{}{}
+			}
+		case "minimumlevel":
+			if _, ok := fieldSeen[inventory.FieldMinimumLevel]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldMinimumLevel)
+				fieldSeen[inventory.FieldMinimumLevel] = struct{}{}
+			}
+		case "currentvalue":
+			if _, ok := fieldSeen[inventory.FieldCurrentValue]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldCurrentValue)
+				fieldSeen[inventory.FieldCurrentValue] = struct{}{}
+			}
+		case "notes":
+			if _, ok := fieldSeen[inventory.FieldNotes]; !ok {
+				selectedFields = append(selectedFields, inventory.FieldNotes)
+				fieldSeen[inventory.FieldNotes] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		i.Select(selectedFields...)
+	}
+	return nil
+}
+
+type inventoryPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []InventoryPaginateOption
+}
+
+func newInventoryPaginateArgs(rv map[string]any) *inventoryPaginateArgs {
+	args := &inventoryPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*InventoryOrder:
+			args.opts = append(args.opts, WithInventoryOrder(v))
+		case []any:
+			var orders []*InventoryOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &InventoryOrder{Field: &InventoryOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithInventoryOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*InventoryWhereInput); ok {
+		args.opts = append(args.opts, WithInventoryFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (im *InventoryMovementQuery) CollectFields(ctx context.Context, satisfies ...string) (*InventoryMovementQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return im, nil
+	}
+	if err := im.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return im, nil
+}
+
+func (im *InventoryMovementQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(inventorymovement.Columns))
+		selectedFields = []string{inventorymovement.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: im.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			im.withCompany = query
+		case "inventory":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InventoryClient{config: im.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			im.withInventory = query
+		case "createdat":
+			if _, ok := fieldSeen[inventorymovement.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldCreatedAt)
+				fieldSeen[inventorymovement.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[inventorymovement.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldUpdatedAt)
+				fieldSeen[inventorymovement.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[inventorymovement.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldDeletedAt)
+				fieldSeen[inventorymovement.FieldDeletedAt] = struct{}{}
+			}
+		case "category":
+			if _, ok := fieldSeen[inventorymovement.FieldCategory]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldCategory)
+				fieldSeen[inventorymovement.FieldCategory] = struct{}{}
+			}
+		case "quantity":
+			if _, ok := fieldSeen[inventorymovement.FieldQuantity]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldQuantity)
+				fieldSeen[inventorymovement.FieldQuantity] = struct{}{}
+			}
+		case "value":
+			if _, ok := fieldSeen[inventorymovement.FieldValue]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldValue)
+				fieldSeen[inventorymovement.FieldValue] = struct{}{}
+			}
+		case "date":
+			if _, ok := fieldSeen[inventorymovement.FieldDate]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldDate)
+				fieldSeen[inventorymovement.FieldDate] = struct{}{}
+			}
+		case "source":
+			if _, ok := fieldSeen[inventorymovement.FieldSource]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldSource)
+				fieldSeen[inventorymovement.FieldSource] = struct{}{}
+			}
+		case "destination":
+			if _, ok := fieldSeen[inventorymovement.FieldDestination]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldDestination)
+				fieldSeen[inventorymovement.FieldDestination] = struct{}{}
+			}
+		case "notes":
+			if _, ok := fieldSeen[inventorymovement.FieldNotes]; !ok {
+				selectedFields = append(selectedFields, inventorymovement.FieldNotes)
+				fieldSeen[inventorymovement.FieldNotes] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		im.Select(selectedFields...)
+	}
+	return nil
+}
+
+type inventorymovementPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []InventoryMovementPaginateOption
+}
+
+func newInventoryMovementPaginateArgs(rv map[string]any) *inventorymovementPaginateArgs {
+	args := &inventorymovementPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*InventoryMovementOrder:
+			args.opts = append(args.opts, WithInventoryMovementOrder(v))
+		case []any:
+			var orders []*InventoryMovementOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &InventoryMovementOrder{Field: &InventoryMovementOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithInventoryMovementOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*InventoryMovementWhereInput); ok {
+		args.opts = append(args.opts, WithInventoryMovementFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (i *InvoiceQuery) CollectFields(ctx context.Context, satisfies ...string) (*InvoiceQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return i, nil
+	}
+	if err := i.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return i, nil
+}
+
+func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(invoice.Columns))
+		selectedFields = []string{invoice.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.withCompany = query
+		case "issuedby":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&UserClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.withIssuedBy = query
+		case "client":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.withClient = query
+		case "createdat":
+			if _, ok := fieldSeen[invoice.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCreatedAt)
+				fieldSeen[invoice.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[invoice.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldUpdatedAt)
+				fieldSeen[invoice.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[invoice.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldDeletedAt)
+				fieldSeen[invoice.FieldDeletedAt] = struct{}{}
+			}
+		case "companylogo":
+			if _, ok := fieldSeen[invoice.FieldCompanyLogo]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyLogo)
+				fieldSeen[invoice.FieldCompanyLogo] = struct{}{}
+			}
+		case "companyname":
+			if _, ok := fieldSeen[invoice.FieldCompanyName]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyName)
+				fieldSeen[invoice.FieldCompanyName] = struct{}{}
+			}
+		case "companytaxid":
+			if _, ok := fieldSeen[invoice.FieldCompanyTaxID]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyTaxID)
+				fieldSeen[invoice.FieldCompanyTaxID] = struct{}{}
+			}
+		case "companyaddress":
+			if _, ok := fieldSeen[invoice.FieldCompanyAddress]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyAddress)
+				fieldSeen[invoice.FieldCompanyAddress] = struct{}{}
+			}
+		case "companycity":
+			if _, ok := fieldSeen[invoice.FieldCompanyCity]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyCity)
+				fieldSeen[invoice.FieldCompanyCity] = struct{}{}
+			}
+		case "companyemail":
+			if _, ok := fieldSeen[invoice.FieldCompanyEmail]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyEmail)
+				fieldSeen[invoice.FieldCompanyEmail] = struct{}{}
+			}
+		case "companyphone":
+			if _, ok := fieldSeen[invoice.FieldCompanyPhone]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCompanyPhone)
+				fieldSeen[invoice.FieldCompanyPhone] = struct{}{}
+			}
+		case "number":
+			if _, ok := fieldSeen[invoice.FieldNumber]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldNumber)
+				fieldSeen[invoice.FieldNumber] = struct{}{}
+			}
+		case "issuedate":
+			if _, ok := fieldSeen[invoice.FieldIssueDate]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldIssueDate)
+				fieldSeen[invoice.FieldIssueDate] = struct{}{}
+			}
+		case "duedate":
+			if _, ok := fieldSeen[invoice.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldDueDate)
+				fieldSeen[invoice.FieldDueDate] = struct{}{}
+			}
+		case "paidat":
+			if _, ok := fieldSeen[invoice.FieldPaidAt]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldPaidAt)
+				fieldSeen[invoice.FieldPaidAt] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[invoice.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldStatus)
+				fieldSeen[invoice.FieldStatus] = struct{}{}
+			}
+		case "customername":
+			if _, ok := fieldSeen[invoice.FieldCustomerName]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerName)
+				fieldSeen[invoice.FieldCustomerName] = struct{}{}
+			}
+		case "customertaxid":
+			if _, ok := fieldSeen[invoice.FieldCustomerTaxID]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerTaxID)
+				fieldSeen[invoice.FieldCustomerTaxID] = struct{}{}
+			}
+		case "customeraddress":
+			if _, ok := fieldSeen[invoice.FieldCustomerAddress]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerAddress)
+				fieldSeen[invoice.FieldCustomerAddress] = struct{}{}
+			}
+		case "customercity":
+			if _, ok := fieldSeen[invoice.FieldCustomerCity]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerCity)
+				fieldSeen[invoice.FieldCustomerCity] = struct{}{}
+			}
+		case "customeremail":
+			if _, ok := fieldSeen[invoice.FieldCustomerEmail]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerEmail)
+				fieldSeen[invoice.FieldCustomerEmail] = struct{}{}
+			}
+		case "customerphone":
+			if _, ok := fieldSeen[invoice.FieldCustomerPhone]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCustomerPhone)
+				fieldSeen[invoice.FieldCustomerPhone] = struct{}{}
+			}
+		case "items":
+			if _, ok := fieldSeen[invoice.FieldItems]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldItems)
+				fieldSeen[invoice.FieldItems] = struct{}{}
+			}
+		case "subtotal":
+			if _, ok := fieldSeen[invoice.FieldSubtotal]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldSubtotal)
+				fieldSeen[invoice.FieldSubtotal] = struct{}{}
+			}
+		case "tax":
+			if _, ok := fieldSeen[invoice.FieldTax]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldTax)
+				fieldSeen[invoice.FieldTax] = struct{}{}
+			}
+		case "total":
+			if _, ok := fieldSeen[invoice.FieldTotal]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldTotal)
+				fieldSeen[invoice.FieldTotal] = struct{}{}
+			}
+		case "notes":
+			if _, ok := fieldSeen[invoice.FieldNotes]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldNotes)
+				fieldSeen[invoice.FieldNotes] = struct{}{}
+			}
+		case "paymentmethod":
+			if _, ok := fieldSeen[invoice.FieldPaymentMethod]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldPaymentMethod)
+				fieldSeen[invoice.FieldPaymentMethod] = struct{}{}
+			}
+		case "bankname":
+			if _, ok := fieldSeen[invoice.FieldBankName]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldBankName)
+				fieldSeen[invoice.FieldBankName] = struct{}{}
+			}
+		case "bankagency":
+			if _, ok := fieldSeen[invoice.FieldBankAgency]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldBankAgency)
+				fieldSeen[invoice.FieldBankAgency] = struct{}{}
+			}
+		case "bankaccountnumber":
+			if _, ok := fieldSeen[invoice.FieldBankAccountNumber]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldBankAccountNumber)
+				fieldSeen[invoice.FieldBankAccountNumber] = struct{}{}
+			}
+		case "bankaccountname":
+			if _, ok := fieldSeen[invoice.FieldBankAccountName]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldBankAccountName)
+				fieldSeen[invoice.FieldBankAccountName] = struct{}{}
+			}
+		case "url":
+			if _, ok := fieldSeen[invoice.FieldURL]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldURL)
+				fieldSeen[invoice.FieldURL] = struct{}{}
+			}
+		case "filename":
+			if _, ok := fieldSeen[invoice.FieldFilename]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldFilename)
+				fieldSeen[invoice.FieldFilename] = struct{}{}
+			}
+		case "size":
+			if _, ok := fieldSeen[invoice.FieldSize]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldSize)
+				fieldSeen[invoice.FieldSize] = struct{}{}
+			}
+		case "keywords":
+			if _, ok := fieldSeen[invoice.FieldKeywords]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldKeywords)
+				fieldSeen[invoice.FieldKeywords] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		i.Select(selectedFields...)
+	}
+	return nil
+}
+
+type invoicePaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []InvoicePaginateOption
+}
+
+func newInvoicePaginateArgs(rv map[string]any) *invoicePaginateArgs {
+	args := &invoicePaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*InvoiceOrder:
+			args.opts = append(args.opts, WithInvoiceOrder(v))
+		case []any:
+			var orders []*InvoiceOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &InvoiceOrder{Field: &InvoiceOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithInvoiceOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*InvoiceWhereInput); ok {
+		args.opts = append(args.opts, WithInvoiceFilter(v.Filter))
 	}
 	return args
 }
@@ -2779,6 +3504,18 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.withEmployee = query
+		case "issuedinvoices":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InvoiceClient{config: u.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			u.WithNamedIssuedInvoices(alias, func(wq *InvoiceQuery) {
+				*wq = *query
+			})
 		case "createdprojects":
 			var (
 				alias = field.Alias

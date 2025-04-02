@@ -49,14 +49,14 @@ func LoginRequired(c *gin.Context) {
 		}
 
 		user, err := inits.Client.User.Get(c, int(claims["id"].(float64)))
-		if err != nil || user.ID == 0 {
+		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
-
+		// http.StatusForbidden
 		company, err := inits.Client.Company.Get(c, int(claims["companyID"].(float64)))
-		if company.ID == 0 || err != nil {
+		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
@@ -65,7 +65,7 @@ func LoginRequired(c *gin.Context) {
 		c.Set("user", user)
 		c.Set("company", company)
 		c.Set("companyID", company.ID)
-		
+
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}

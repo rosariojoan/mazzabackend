@@ -1,0 +1,75 @@
+package schema
+
+import (
+	"entgo.io/contrib/entgql"
+	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
+	"entgo.io/ent/schema/field"
+)
+
+// Invoice holds the schema definition for the Invoice entity.
+type Invoice struct {
+	ent.Schema
+}
+
+func (Invoice) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseModelMixin{},
+	}
+}
+
+var invoiceStatus = []string{"PENDING", "PAID", "DEFAULTED"}
+
+// Fields of the Invoice.
+func (Invoice) Fields() []ent.Field {
+	return []ent.Field{
+		field.String("number"),
+		field.Float("subtotal").Positive(),
+		field.Float("tax"),
+		field.Float("total").Positive().Annotations(entgql.OrderField("TOTAL")),
+		field.Time("paidAt").Nillable().Annotations(entgql.OrderField("PAID_AT")),
+		field.Int("terms").Default(0).Comment("number of days to pay the invoice"),
+		field.Enum("status").Values(invoiceStatus...).Default("PAID").Annotations(entgql.OrderField("STATUS")),
+		field.String("customerName").Default("other").Optional(),
+		field.String("notes").Nillable().Optional(),
+		field.String("storageURI").Nillable().Sensitive().Optional().Annotations(
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
+		field.String("filename").Annotations(
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
+		field.String("URL").Nillable().Optional().Annotations(
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
+		field.Float("size").Positive().Annotations(
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		).Comment("File size in KB"),
+		field.String("keywords").NotEmpty().MaxLen(255),
+	}
+}
+
+// Edges of the Invoice.
+func (Invoice) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.From("company", Company.Type).Ref("invoices").Unique().Required().Annotations(
+			entsql.OnDelete(entsql.Cascade),
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
+		edge.From("issuedBy", User.Type).Ref("issuedInvoices").Unique().Annotations(
+			entsql.OnDelete(entsql.SetNull),
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
+	}
+}
+
+// Enable query and mutation for the Invoice schema
+func (Invoice) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entgql.RelayConnection(),
+		entgql.QueryField(),
+		entgql.MultiOrder(),
+		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+	}
+}

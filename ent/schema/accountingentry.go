@@ -56,7 +56,7 @@ var accountTypes = []string{
 func (AccountingEntry) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("number").Positive(),
-		field.Int("group").Positive(),
+		field.Int("group").Positive().Annotations(entgql.OrderField("GROUP")),
 		field.Time("date").Default(time.Now).Annotations(entgql.OrderField("DATE")),
 		field.String("account").NotEmpty().Annotations(entgql.OrderField("ACCOUNT")),
 		field.String("label"),

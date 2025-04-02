@@ -1196,6 +1196,29 @@ func HasEmployeeWith(preds ...predicate.Employee) predicate.User {
 	})
 }
 
+// HasIssuedInvoices applies the HasEdge predicate on the "issuedInvoices" edge.
+func HasIssuedInvoices() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, IssuedInvoicesTable, IssuedInvoicesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasIssuedInvoicesWith applies the HasEdge predicate on the "issuedInvoices" edge with a given conditions (other predicates).
+func HasIssuedInvoicesWith(preds ...predicate.Invoice) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		step := newIssuedInvoicesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasCreatedProjects applies the HasEdge predicate on the "createdProjects" edge.
 func HasCreatedProjects() predicate.User {
 	return predicate.User(func(s *sql.Selector) {

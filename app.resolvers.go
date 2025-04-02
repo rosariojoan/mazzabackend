@@ -207,9 +207,11 @@ func (r *mutationResolver) CreateCustomer(ctx context.Context, input generated.C
 
 // UpdateCustomer is the resolver for the updateCustomer field.
 func (r *mutationResolver) UpdateCustomer(ctx context.Context, id int, input generated.UpdateCustomerInput) (*generated.Customer, error) {
-	companyQ := utils.CurrentCompanyQuery(&ctx)
-	filter := customer.HasCompanyWith(companyQ)
-	return generated.FromContext(ctx).Customer.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
+	_, activeCompany := utils.GetSession(&ctx)
+	companyFilter := customer.HasCompanyWith(company.ID(activeCompany.ID))
+	return generated.FromContext(ctx).Customer.UpdateOneID(id).
+		Where(companyFilter).SetInput(input).
+		Save(ctx)
 }
 
 // DeleteCustomer is the resolver for the deleteCustomer field.

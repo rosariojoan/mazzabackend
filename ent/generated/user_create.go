@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
@@ -333,6 +334,21 @@ func (uc *UserCreate) SetNillableEmployeeID(id *int) *UserCreate {
 // SetEmployee sets the "employee" edge to the Employee entity.
 func (uc *UserCreate) SetEmployee(e *Employee) *UserCreate {
 	return uc.SetEmployeeID(e.ID)
+}
+
+// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+func (uc *UserCreate) AddIssuedInvoiceIDs(ids ...int) *UserCreate {
+	uc.mutation.AddIssuedInvoiceIDs(ids...)
+	return uc
+}
+
+// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+func (uc *UserCreate) AddIssuedInvoices(i ...*Invoice) *UserCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return uc.AddIssuedInvoiceIDs(ids...)
 }
 
 // AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
@@ -771,6 +787,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := uc.mutation.IssuedInvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

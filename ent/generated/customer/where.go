@@ -430,6 +430,16 @@ func CountryHasSuffix(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldCountry, v))
 }
 
+// CountryIsNil applies the IsNil predicate on the "country" field.
+func CountryIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldCountry))
+}
+
+// CountryNotNil applies the NotNil predicate on the "country" field.
+func CountryNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldCountry))
+}
+
 // CountryEqualFold applies the EqualFold predicate on the "country" field.
 func CountryEqualFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEqualFold(FieldCountry, v))
@@ -843,6 +853,29 @@ func HasReceivables() predicate.Customer {
 func HasReceivablesWith(preds ...predicate.Receivable) predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
 		step := newReceivablesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasInvoices applies the HasEdge predicate on the "invoices" edge.
+func HasInvoices() predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InvoicesTable, InvoicesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInvoicesWith applies the HasEdge predicate on the "invoices" edge with a given conditions (other predicates).
+func HasInvoicesWith(preds ...predicate.Invoice) predicate.Customer {
+	return predicate.Customer(func(s *sql.Selector) {
+		step := newInvoicesStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

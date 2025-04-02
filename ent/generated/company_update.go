@@ -12,6 +12,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
@@ -528,6 +531,51 @@ func (cu *CompanyUpdate) AddFiles(f ...*File) *CompanyUpdate {
 	return cu.AddFileIDs(ids...)
 }
 
+// AddInventoryIDs adds the "inventory" edge to the Inventory entity by IDs.
+func (cu *CompanyUpdate) AddInventoryIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddInventoryIDs(ids...)
+	return cu
+}
+
+// AddInventory adds the "inventory" edges to the Inventory entity.
+func (cu *CompanyUpdate) AddInventory(i ...*Inventory) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.AddInventoryIDs(ids...)
+}
+
+// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+func (cu *CompanyUpdate) AddInventoryMovementIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddInventoryMovementIDs(ids...)
+	return cu
+}
+
+// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+func (cu *CompanyUpdate) AddInventoryMovements(i ...*InventoryMovement) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.AddInventoryMovementIDs(ids...)
+}
+
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cu *CompanyUpdate) AddInvoiceIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddInvoiceIDs(ids...)
+	return cu
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cu *CompanyUpdate) AddInvoices(i ...*Invoice) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.AddInvoiceIDs(ids...)
+}
+
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
 func (cu *CompanyUpdate) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddMemberSignupTokenIDs(ids...)
@@ -841,6 +889,69 @@ func (cu *CompanyUpdate) RemoveFiles(f ...*File) *CompanyUpdate {
 		ids[i] = f[i].ID
 	}
 	return cu.RemoveFileIDs(ids...)
+}
+
+// ClearInventory clears all "inventory" edges to the Inventory entity.
+func (cu *CompanyUpdate) ClearInventory() *CompanyUpdate {
+	cu.mutation.ClearInventory()
+	return cu
+}
+
+// RemoveInventoryIDs removes the "inventory" edge to Inventory entities by IDs.
+func (cu *CompanyUpdate) RemoveInventoryIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveInventoryIDs(ids...)
+	return cu
+}
+
+// RemoveInventory removes "inventory" edges to Inventory entities.
+func (cu *CompanyUpdate) RemoveInventory(i ...*Inventory) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.RemoveInventoryIDs(ids...)
+}
+
+// ClearInventoryMovements clears all "inventoryMovements" edges to the InventoryMovement entity.
+func (cu *CompanyUpdate) ClearInventoryMovements() *CompanyUpdate {
+	cu.mutation.ClearInventoryMovements()
+	return cu
+}
+
+// RemoveInventoryMovementIDs removes the "inventoryMovements" edge to InventoryMovement entities by IDs.
+func (cu *CompanyUpdate) RemoveInventoryMovementIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveInventoryMovementIDs(ids...)
+	return cu
+}
+
+// RemoveInventoryMovements removes "inventoryMovements" edges to InventoryMovement entities.
+func (cu *CompanyUpdate) RemoveInventoryMovements(i ...*InventoryMovement) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.RemoveInventoryMovementIDs(ids...)
+}
+
+// ClearInvoices clears all "invoices" edges to the Invoice entity.
+func (cu *CompanyUpdate) ClearInvoices() *CompanyUpdate {
+	cu.mutation.ClearInvoices()
+	return cu
+}
+
+// RemoveInvoiceIDs removes the "invoices" edge to Invoice entities by IDs.
+func (cu *CompanyUpdate) RemoveInvoiceIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveInvoiceIDs(ids...)
+	return cu
+}
+
+// RemoveInvoices removes "invoices" edges to Invoice entities.
+func (cu *CompanyUpdate) RemoveInvoices(i ...*Invoice) *CompanyUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cu.RemoveInvoiceIDs(ids...)
 }
 
 // ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
@@ -1523,6 +1634,141 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.InventoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedInventoryIDs(); len(nodes) > 0 && !cu.mutation.InventoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.InventoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.InventoryMovementsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedInventoryMovementsIDs(); len(nodes) > 0 && !cu.mutation.InventoryMovementsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.InventoryMovementsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedInvoicesIDs(); len(nodes) > 0 && !cu.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2559,6 +2805,51 @@ func (cuo *CompanyUpdateOne) AddFiles(f ...*File) *CompanyUpdateOne {
 	return cuo.AddFileIDs(ids...)
 }
 
+// AddInventoryIDs adds the "inventory" edge to the Inventory entity by IDs.
+func (cuo *CompanyUpdateOne) AddInventoryIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddInventoryIDs(ids...)
+	return cuo
+}
+
+// AddInventory adds the "inventory" edges to the Inventory entity.
+func (cuo *CompanyUpdateOne) AddInventory(i ...*Inventory) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.AddInventoryIDs(ids...)
+}
+
+// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+func (cuo *CompanyUpdateOne) AddInventoryMovementIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddInventoryMovementIDs(ids...)
+	return cuo
+}
+
+// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+func (cuo *CompanyUpdateOne) AddInventoryMovements(i ...*InventoryMovement) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.AddInventoryMovementIDs(ids...)
+}
+
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cuo *CompanyUpdateOne) AddInvoiceIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddInvoiceIDs(ids...)
+	return cuo
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cuo *CompanyUpdateOne) AddInvoices(i ...*Invoice) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.AddInvoiceIDs(ids...)
+}
+
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
 func (cuo *CompanyUpdateOne) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddMemberSignupTokenIDs(ids...)
@@ -2872,6 +3163,69 @@ func (cuo *CompanyUpdateOne) RemoveFiles(f ...*File) *CompanyUpdateOne {
 		ids[i] = f[i].ID
 	}
 	return cuo.RemoveFileIDs(ids...)
+}
+
+// ClearInventory clears all "inventory" edges to the Inventory entity.
+func (cuo *CompanyUpdateOne) ClearInventory() *CompanyUpdateOne {
+	cuo.mutation.ClearInventory()
+	return cuo
+}
+
+// RemoveInventoryIDs removes the "inventory" edge to Inventory entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveInventoryIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveInventoryIDs(ids...)
+	return cuo
+}
+
+// RemoveInventory removes "inventory" edges to Inventory entities.
+func (cuo *CompanyUpdateOne) RemoveInventory(i ...*Inventory) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.RemoveInventoryIDs(ids...)
+}
+
+// ClearInventoryMovements clears all "inventoryMovements" edges to the InventoryMovement entity.
+func (cuo *CompanyUpdateOne) ClearInventoryMovements() *CompanyUpdateOne {
+	cuo.mutation.ClearInventoryMovements()
+	return cuo
+}
+
+// RemoveInventoryMovementIDs removes the "inventoryMovements" edge to InventoryMovement entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveInventoryMovementIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveInventoryMovementIDs(ids...)
+	return cuo
+}
+
+// RemoveInventoryMovements removes "inventoryMovements" edges to InventoryMovement entities.
+func (cuo *CompanyUpdateOne) RemoveInventoryMovements(i ...*InventoryMovement) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.RemoveInventoryMovementIDs(ids...)
+}
+
+// ClearInvoices clears all "invoices" edges to the Invoice entity.
+func (cuo *CompanyUpdateOne) ClearInvoices() *CompanyUpdateOne {
+	cuo.mutation.ClearInvoices()
+	return cuo
+}
+
+// RemoveInvoiceIDs removes the "invoices" edge to Invoice entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveInvoiceIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveInvoiceIDs(ids...)
+	return cuo
+}
+
+// RemoveInvoices removes "invoices" edges to Invoice entities.
+func (cuo *CompanyUpdateOne) RemoveInvoices(i ...*Invoice) *CompanyUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cuo.RemoveInvoiceIDs(ids...)
 }
 
 // ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
@@ -3584,6 +3938,141 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.InventoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedInventoryIDs(); len(nodes) > 0 && !cuo.mutation.InventoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.InventoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.InventoryMovementsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedInventoryMovementsIDs(); len(nodes) > 0 && !cuo.mutation.InventoryMovementsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.InventoryMovementsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedInvoicesIDs(); len(nodes) > 0 && !cuo.mutation.InvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

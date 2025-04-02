@@ -11,15 +11,16 @@ import (
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/userrole"
+	"mazza/firebase"
 	"mazza/inits"
 )
 
 // Create company and a new user. Associate the new company with the new user.
 func Signup(ctx *gin.Context) {
 	var body struct {
-		Company   ent.CreateCompanyInput
-		User      ent.CreateUserInput
-		RoleNotes *string
+		CompanyInput  ent.CreateCompanyInput
+		UserInput     ent.CreateUserInput
+		UserRoleNotes string
 	}
 
 	tx, err := inits.Client.Tx(ctx)
@@ -43,33 +44,40 @@ func Signup(ctx *gin.Context) {
 	// }
 
 	// body.User.Password = pwdHash
-	body.Company.LastEntryDate = utils.StartOfYear(time.Now())
+	body.CompanyInput.LastEntryDate = utils.StartOfYear(time.Now())
 	trueValue := true
 	customerDescription := "Este cliente foi gerado automaticamente"
 	supplierDescription := "Este fornecedor foi gerado automaticamente"
 
-	newCompany, err := tx.Company.Create().SetInput(body.Company).Save(ctx)
+	newCompany, err := tx.Company.Create().SetInput(body.CompanyInput).Save(ctx)
 	if err != nil {
 		fmt.Println("err:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
 		return
 	}
-
+	// fmt.Println("\nnew comp ID:", newCompany.ID)
 	// body.User.CompanyIDs = append(body.User.CompanyIDs, newCompany.ID)
 	stock := 0
+	department := "geral"
+	userRole := userrole.RoleADMIN
+	userIsActive := true
+	phone := utils.GetValue(body.UserInput.Phone, "")
+
 	_, err = newCompany.Update().AddUsers(
-		tx.User.Create().SetInput(body.User).SetActive(true).AddAssignedRoles(
+		tx.User.Create().SetInput(body.UserInput).SetActive(userIsActive).AddCompanyIDs(newCompany.ID).AddAssignedRoles(
 			tx.UserRole.Create().SetInput(ent.CreateUserRoleInput{
-				Role:      userrole.RoleADMIN,
-				Notes:     *body.RoleNotes,
+				Role:      userRole,
+				Notes:     body.UserRoleNotes,
 				CompanyID: &newCompany.ID,
 			}).SaveX(ctx),
 		).SetEmployee(
 			tx.Employee.Create().SetInput(ent.CreateEmployeeInput{
-				Name:      body.User.Name,
-				Gender:    employee.GenderMale,
-				Phone:     utils.GetValue(newCompany.Phone, ""),
-				CompanyID: &newCompany.ID,
+				Name:       body.UserInput.Name,
+				Gender:     employee.GenderMale,
+				HireDate:   body.CompanyInput.EstablishedAt,
+				Department: &department,
+				Phone:      &phone,
+				CompanyID:  &newCompany.ID,
 			}).SaveX(ctx),
 		).SaveX(ctx),
 	).AddProducts(
@@ -80,13 +88,11 @@ func Signup(ctx *gin.Context) {
 		tx.Customer.Create().SetInput(ent.CreateCustomerInput{
 			Address:     "--",
 			City:        "--",
-			Country:     "--",
 			Description: &customerDescription,
-			IsDefault:   &trueValue,
 			Name:        "Clientes Diversos",
 			Phone:       "--",
 			TaxId:       "--",
-		}).SaveX(ctx),
+		}).SetIsDefault(true).SaveX(ctx),
 	).AddSuppliers(
 		tx.Supplier.Create().SetInput(ent.CreateSupplierInput{
 			Address:     "--",
@@ -107,6 +113,14 @@ func Signup(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("err:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
+		return
+	}
+
+	// Create a new user entry in the Firestore database
+	err = firebase.CreateUserEntry(ctx, newCompany.ID, body.UserInput.FirebaseUID, userIsActive, userRole)
+	if err != nil {
+		fmt.Println("could not create user:", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao registar usuário"})
 		return
 	}
 

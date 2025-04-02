@@ -59,6 +59,7 @@ func (User) Edges() []ent.Edge {
 		edge.To("createdMemberSignupTokens", MemberSignupToken.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 
 		edge.To("employee", Employee.Type).Annotations(entsql.OnDelete(entsql.Cascade)).Unique(),
+		edge.To("issuedInvoices", Invoice.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 		edge.To("createdProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represents the projects created by the user"),
 		edge.To("leaderedProjects", Project.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("Represents the projects leadered or supervised by the user"),
 		edge.To("assignedProjectTasks", ProjectTask.Type).Annotations(entsql.OnDelete(entsql.SetNull)).Comment("These are the project tasks assigned to the user and he is responsible for them"),

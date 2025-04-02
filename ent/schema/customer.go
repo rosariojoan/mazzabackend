@@ -26,10 +26,11 @@ func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("address"),
 		field.String("city").Annotations(entgql.OrderField("CITY")),
-		field.String("country"),
-		field.String("description").Optional(),
-		field.String("email").Optional(),
-		field.Bool("isDefault").Default(false).Optional(),
+		field.String("country").Nillable().Optional().Annotations(),
+		field.String("description").Nillable().Optional(),
+		field.String("email").Nillable().Optional(),
+		field.Bool("isDefault").Default(false).Optional().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
 		field.String("name").NotEmpty(),
 		field.String("phone"),
 		field.String("taxId").NotEmpty(),
@@ -48,8 +49,12 @@ func (Customer) Indexes() []ent.Index {
 // Edges of the Customer.
 func (Customer) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("customers").Unique(),                         // a client can belong to only one company
-		edge.To("receivables", Receivable.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a client can have many receivables
+		edge.From("company", Company.Type).Ref("customers").Unique().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)), // a client can belong to only one company
+		edge.To("receivables", Receivable.Type).Annotations(entsql.OnDelete(entsql.Cascade)).
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)), // a client can have many receivables
+		edge.To("invoices", Invoice.Type).Annotations(entsql.OnDelete(entsql.SetNull)).
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)), // a client can have many invoices
 	}
 }
 

@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/project"
@@ -394,6 +395,21 @@ func (uu *UserUpdate) SetEmployee(e *Employee) *UserUpdate {
 	return uu.SetEmployeeID(e.ID)
 }
 
+// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+func (uu *UserUpdate) AddIssuedInvoiceIDs(ids ...int) *UserUpdate {
+	uu.mutation.AddIssuedInvoiceIDs(ids...)
+	return uu
+}
+
+// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+func (uu *UserUpdate) AddIssuedInvoices(i ...*Invoice) *UserUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return uu.AddIssuedInvoiceIDs(ids...)
+}
+
 // AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
 func (uu *UserUpdate) AddCreatedProjectIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddCreatedProjectIDs(ids...)
@@ -649,6 +665,27 @@ func (uu *UserUpdate) RemoveCreatedMemberSignupTokens(m ...*MemberSignupToken) *
 func (uu *UserUpdate) ClearEmployee() *UserUpdate {
 	uu.mutation.ClearEmployee()
 	return uu
+}
+
+// ClearIssuedInvoices clears all "issuedInvoices" edges to the Invoice entity.
+func (uu *UserUpdate) ClearIssuedInvoices() *UserUpdate {
+	uu.mutation.ClearIssuedInvoices()
+	return uu
+}
+
+// RemoveIssuedInvoiceIDs removes the "issuedInvoices" edge to Invoice entities by IDs.
+func (uu *UserUpdate) RemoveIssuedInvoiceIDs(ids ...int) *UserUpdate {
+	uu.mutation.RemoveIssuedInvoiceIDs(ids...)
+	return uu
+}
+
+// RemoveIssuedInvoices removes "issuedInvoices" edges to Invoice entities.
+func (uu *UserUpdate) RemoveIssuedInvoices(i ...*Invoice) *UserUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return uu.RemoveIssuedInvoiceIDs(ids...)
 }
 
 // ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
@@ -1254,6 +1291,51 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uu.mutation.IssuedInvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedIssuedInvoicesIDs(); len(nodes) > 0 && !uu.mutation.IssuedInvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.IssuedInvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2043,6 +2125,21 @@ func (uuo *UserUpdateOne) SetEmployee(e *Employee) *UserUpdateOne {
 	return uuo.SetEmployeeID(e.ID)
 }
 
+// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+func (uuo *UserUpdateOne) AddIssuedInvoiceIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.AddIssuedInvoiceIDs(ids...)
+	return uuo
+}
+
+// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+func (uuo *UserUpdateOne) AddIssuedInvoices(i ...*Invoice) *UserUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return uuo.AddIssuedInvoiceIDs(ids...)
+}
+
 // AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
 func (uuo *UserUpdateOne) AddCreatedProjectIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddCreatedProjectIDs(ids...)
@@ -2298,6 +2395,27 @@ func (uuo *UserUpdateOne) RemoveCreatedMemberSignupTokens(m ...*MemberSignupToke
 func (uuo *UserUpdateOne) ClearEmployee() *UserUpdateOne {
 	uuo.mutation.ClearEmployee()
 	return uuo
+}
+
+// ClearIssuedInvoices clears all "issuedInvoices" edges to the Invoice entity.
+func (uuo *UserUpdateOne) ClearIssuedInvoices() *UserUpdateOne {
+	uuo.mutation.ClearIssuedInvoices()
+	return uuo
+}
+
+// RemoveIssuedInvoiceIDs removes the "issuedInvoices" edge to Invoice entities by IDs.
+func (uuo *UserUpdateOne) RemoveIssuedInvoiceIDs(ids ...int) *UserUpdateOne {
+	uuo.mutation.RemoveIssuedInvoiceIDs(ids...)
+	return uuo
+}
+
+// RemoveIssuedInvoices removes "issuedInvoices" edges to Invoice entities.
+func (uuo *UserUpdateOne) RemoveIssuedInvoices(i ...*Invoice) *UserUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return uuo.RemoveIssuedInvoiceIDs(ids...)
 }
 
 // ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
@@ -2933,6 +3051,51 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if uuo.mutation.IssuedInvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedIssuedInvoicesIDs(); len(nodes) > 0 && !uuo.mutation.IssuedInvoicesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.IssuedInvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.IssuedInvoicesTable,
+			Columns: []string{user.IssuedInvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

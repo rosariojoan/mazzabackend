@@ -42,7 +42,7 @@ func (r *mutationResolver) InitialSetup(ctx context.Context, input model.Initial
 	_, err := r.client.Company.UpdateOneID(company.ID).
 		SetVatRate(input.CompanyInfo.VatRate).
 		SetIndustry(input.CompanyInfo.Industry).
-		SetIncompleteSetup(true).
+		SetIncompleteSetup(false).
 		Save(ctx)
 	if err != nil {
 		fmt.Println("InitialSetup company info update err:", err)

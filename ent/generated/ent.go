@@ -12,6 +12,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -97,6 +100,9 @@ func checkColumn(table, column string) error {
 			customer.Table:          customer.ValidColumn,
 			employee.Table:          employee.ValidColumn,
 			file.Table:              file.ValidColumn,
+			inventory.Table:         inventory.ValidColumn,
+			inventorymovement.Table: inventorymovement.ValidColumn,
+			invoice.Table:           invoice.ValidColumn,
 			membersignuptoken.Table: membersignuptoken.ValidColumn,
 			payable.Table:           payable.ValidColumn,
 			product.Table:           product.ValidColumn,

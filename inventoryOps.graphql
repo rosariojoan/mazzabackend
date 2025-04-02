@@ -1,0 +1,17 @@
+# Reserved for inventory operations
+
+type InventoryCategoryCount {
+  category: InventoryCategory!
+  count: Int!
+}
+
+extend type Mutation {
+    createInventoryMovement(input: CreateInventoryMovementInput!): InventoryMovement!
+    createInventory(input: CreateInventoryInput!): Inventory!
+    updateInventory(id: ID!, input: UpdateInventoryInput!): Inventory!
+    deleteInventory(id: ID!): Boolean!
+}
+
+extend type Query {
+    countInventoryCategories: [InventoryCategoryCount!]!
+}

@@ -24,6 +24,15 @@ type Employee func(*sql.Selector)
 // File is the predicate function for file builders.
 type File func(*sql.Selector)
 
+// Inventory is the predicate function for inventory builders.
+type Inventory func(*sql.Selector)
+
+// InventoryMovement is the predicate function for inventorymovement builders.
+type InventoryMovement func(*sql.Selector)
+
+// Invoice is the predicate function for invoice builders.
+type Invoice func(*sql.Selector)
+
 // MemberSignupToken is the predicate function for membersignuptoken builders.
 type MemberSignupToken func(*sql.Selector)
 

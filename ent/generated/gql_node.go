@@ -11,6 +11,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -58,6 +61,15 @@ func (n *Employee) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *File) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *Inventory) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *InventoryMovement) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *Invoice) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *MemberSignupToken) IsNode() {}
@@ -220,6 +232,42 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.File.Query().
 			Where(file.ID(id))
 		query, err := query.CollectFields(ctx, "File")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case inventory.Table:
+		query := c.Inventory.Query().
+			Where(inventory.ID(id))
+		query, err := query.CollectFields(ctx, "Inventory")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case inventorymovement.Table:
+		query := c.InventoryMovement.Query().
+			Where(inventorymovement.ID(id))
+		query, err := query.CollectFields(ctx, "InventoryMovement")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case invoice.Table:
+		query := c.Invoice.Query().
+			Where(invoice.ID(id))
+		query, err := query.CollectFields(ctx, "Invoice")
 		if err != nil {
 			return nil, err
 		}
@@ -541,6 +589,54 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.File.Query().
 			Where(file.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "File")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case inventory.Table:
+		query := c.Inventory.Query().
+			Where(inventory.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "Inventory")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case inventorymovement.Table:
+		query := c.InventoryMovement.Query().
+			Where(inventorymovement.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "InventoryMovement")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case invoice.Table:
+		query := c.Invoice.Query().
+			Where(invoice.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "Invoice")
 		if err != nil {
 			return nil, err
 		}

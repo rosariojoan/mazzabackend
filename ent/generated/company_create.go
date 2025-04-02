@@ -12,6 +12,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -398,6 +401,51 @@ func (cc *CompanyCreate) AddFiles(f ...*File) *CompanyCreate {
 		ids[i] = f[i].ID
 	}
 	return cc.AddFileIDs(ids...)
+}
+
+// AddInventoryIDs adds the "inventory" edge to the Inventory entity by IDs.
+func (cc *CompanyCreate) AddInventoryIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddInventoryIDs(ids...)
+	return cc
+}
+
+// AddInventory adds the "inventory" edges to the Inventory entity.
+func (cc *CompanyCreate) AddInventory(i ...*Inventory) *CompanyCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cc.AddInventoryIDs(ids...)
+}
+
+// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+func (cc *CompanyCreate) AddInventoryMovementIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddInventoryMovementIDs(ids...)
+	return cc
+}
+
+// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+func (cc *CompanyCreate) AddInventoryMovements(i ...*InventoryMovement) *CompanyCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cc.AddInventoryMovementIDs(ids...)
+}
+
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cc *CompanyCreate) AddInvoiceIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddInvoiceIDs(ids...)
+	return cc
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cc *CompanyCreate) AddInvoices(i ...*Invoice) *CompanyCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cc.AddInvoiceIDs(ids...)
 }
 
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
@@ -901,6 +949,54 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(file.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.InventoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryTable,
+			Columns: []string{company.InventoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventory.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.InventoryMovementsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InventoryMovementsTable,
+			Columns: []string{company.InventoryMovementsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(inventorymovement.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.InvoicesTable,
+			Columns: []string{company.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

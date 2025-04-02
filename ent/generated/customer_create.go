@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/receivable"
 	"time"
 
@@ -79,6 +80,14 @@ func (cc *CustomerCreate) SetCity(s string) *CustomerCreate {
 // SetCountry sets the "country" field.
 func (cc *CustomerCreate) SetCountry(s string) *CustomerCreate {
 	cc.mutation.SetCountry(s)
+	return cc
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableCountry(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetCountry(*s)
+	}
 	return cc
 }
 
@@ -176,6 +185,21 @@ func (cc *CustomerCreate) AddReceivables(r ...*Receivable) *CustomerCreate {
 	return cc.AddReceivableIDs(ids...)
 }
 
+// AddInvoiceIDs adds the "invoices" edge to the Invoice entity by IDs.
+func (cc *CustomerCreate) AddInvoiceIDs(ids ...int) *CustomerCreate {
+	cc.mutation.AddInvoiceIDs(ids...)
+	return cc
+}
+
+// AddInvoices adds the "invoices" edges to the Invoice entity.
+func (cc *CustomerCreate) AddInvoices(i ...*Invoice) *CustomerCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return cc.AddInvoiceIDs(ids...)
+}
+
 // Mutation returns the CustomerMutation object of the builder.
 func (cc *CustomerCreate) Mutation() *CustomerMutation {
 	return cc.mutation
@@ -238,9 +262,6 @@ func (cc *CustomerCreate) check() error {
 	}
 	if _, ok := cc.mutation.City(); !ok {
 		return &ValidationError{Name: "city", err: errors.New(`generated: missing required field "Customer.city"`)}
-	}
-	if _, ok := cc.mutation.Country(); !ok {
-		return &ValidationError{Name: "country", err: errors.New(`generated: missing required field "Customer.country"`)}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Customer.name"`)}
@@ -309,15 +330,15 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := cc.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
-		_node.Country = value
+		_node.Country = &value
 	}
 	if value, ok := cc.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
-		_node.Description = value
+		_node.Description = &value
 	}
 	if value, ok := cc.mutation.Email(); ok {
 		_spec.SetField(customer.FieldEmail, field.TypeString, value)
-		_node.Email = value
+		_node.Email = &value
 	}
 	if value, ok := cc.mutation.IsDefault(); ok {
 		_spec.SetField(customer.FieldIsDefault, field.TypeBool, value)
@@ -361,6 +382,22 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.InvoicesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   customer.InvoicesTable,
+			Columns: []string{customer.InvoicesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

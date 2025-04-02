@@ -8,6 +8,8 @@ import (
 	"mazza/ent/generated"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/companydocument"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/invoice"
 	"strconv"
 	"time"
 )
@@ -123,17 +125,14 @@ type InitialSetupInput struct {
 	CompanyInfo     *CompanyInfoInput           `json:"companyInfo"`
 }
 
-type Invoice struct {
-	Date            string           `json:"date"`
-	Filename        string           `json:"filename"`
-	Keywords        string           `json:"keywords"`
-	Number          string           `json:"number"`
-	PaymentDetails  *PaymentDetails  `json:"paymentDetails"`
-	Title           *string          `json:"title,omitempty"`
-	IssuerDetails   *InvoiceIssuer   `json:"issuerDetails"`
-	CustomerDetails *InvoiceCustomer `json:"customerDetails"`
-	Body            [][]string       `json:"body"`
-	Totals          *InvoiceTotals   `json:"totals"`
+type InventoryCategoryCount struct {
+	Category inventory.Category `json:"category"`
+	Count    int                `json:"count"`
+}
+
+type InvoiceCount struct {
+	Status invoice.Status `json:"status"`
+	Count  int            `json:"count"`
 }
 
 type InvoiceCustomer struct {
@@ -147,8 +146,8 @@ type InvoiceCustomer struct {
 }
 
 type InvoiceInput struct {
-	AccountingEntryData *BaseEntryRegistrationInput `json:"accountingEntryData"`
-	InvoiceData         *Invoice                    `json:"invoiceData"`
+	AccountingEntryData *BaseEntryRegistrationInput   `json:"accountingEntryData"`
+	InvoiceData         *generated.CreateInvoiceInput `json:"invoiceData"`
 }
 
 type InvoiceIssuanceOutput struct {
@@ -260,7 +259,7 @@ type RevenueTrendOutput struct {
 }
 
 type SalesQuotationInput struct {
-	InvoiceData *Invoice `json:"invoiceData"`
+	InvoiceData *generated.CreateInvoiceInput `json:"invoiceData"`
 }
 
 type SignupInput struct {

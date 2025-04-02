@@ -80,6 +80,42 @@ func (f FileFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.FileMutation", m)
 }
 
+// The InventoryFunc type is an adapter to allow the use of ordinary
+// function as Inventory mutator.
+type InventoryFunc func(context.Context, *generated.InventoryMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f InventoryFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.InventoryMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.InventoryMutation", m)
+}
+
+// The InventoryMovementFunc type is an adapter to allow the use of ordinary
+// function as InventoryMovement mutator.
+type InventoryMovementFunc func(context.Context, *generated.InventoryMovementMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f InventoryMovementFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.InventoryMovementMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.InventoryMovementMutation", m)
+}
+
+// The InvoiceFunc type is an adapter to allow the use of ordinary
+// function as Invoice mutator.
+type InvoiceFunc func(context.Context, *generated.InvoiceMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f InvoiceFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.InvoiceMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.InvoiceMutation", m)
+}
+
 // The MemberSignupTokenFunc type is an adapter to allow the use of ordinary
 // function as MemberSignupToken mutator.
 type MemberSignupTokenFunc func(context.Context, *generated.MemberSignupTokenMutation) (generated.Value, error)

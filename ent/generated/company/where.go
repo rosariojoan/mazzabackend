@@ -1668,6 +1668,75 @@ func HasFilesWith(preds ...predicate.File) predicate.Company {
 	})
 }
 
+// HasInventory applies the HasEdge predicate on the "inventory" edge.
+func HasInventory() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InventoryTable, InventoryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInventoryWith applies the HasEdge predicate on the "inventory" edge with a given conditions (other predicates).
+func HasInventoryWith(preds ...predicate.Inventory) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newInventoryStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasInventoryMovements applies the HasEdge predicate on the "inventoryMovements" edge.
+func HasInventoryMovements() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InventoryMovementsTable, InventoryMovementsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInventoryMovementsWith applies the HasEdge predicate on the "inventoryMovements" edge with a given conditions (other predicates).
+func HasInventoryMovementsWith(preds ...predicate.InventoryMovement) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newInventoryMovementsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasInvoices applies the HasEdge predicate on the "invoices" edge.
+func HasInvoices() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InvoicesTable, InvoicesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInvoicesWith applies the HasEdge predicate on the "invoices" edge with a given conditions (other predicates).
+func HasInvoicesWith(preds ...predicate.Invoice) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newInvoicesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasMemberSignupTokens applies the HasEdge predicate on the "memberSignupTokens" edge.
 func HasMemberSignupTokens() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {

@@ -4,6 +4,7 @@ package generated
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 	"mazza/ent/generated/company"
@@ -20,15 +21,18 @@ import (
 // EmployeeQuery is the builder for querying Employee entities.
 type EmployeeQuery struct {
 	config
-	ctx         *QueryContext
-	order       []employee.OrderOption
-	inters      []Interceptor
-	predicates  []predicate.Employee
-	withCompany *CompanyQuery
-	withUser    *UserQuery
-	withFKs     bool
-	loadTotal   []func(context.Context, []*Employee) error
-	modifiers   []func(*sql.Selector)
+	ctx                   *QueryContext
+	order                 []employee.OrderOption
+	inters                []Interceptor
+	predicates            []predicate.Employee
+	withCompany           *CompanyQuery
+	withUser              *UserQuery
+	withSubordinates      *EmployeeQuery
+	withLeader            *EmployeeQuery
+	withFKs               bool
+	loadTotal             []func(context.Context, []*Employee) error
+	modifiers             []func(*sql.Selector)
+	withNamedSubordinates map[string]*EmployeeQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -102,6 +106,50 @@ func (eq *EmployeeQuery) QueryUser() *UserQuery {
 			sqlgraph.From(employee.Table, employee.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, employee.UserTable, employee.UserColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(eq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySubordinates chains the current query on the "subordinates" edge.
+func (eq *EmployeeQuery) QuerySubordinates() *EmployeeQuery {
+	query := (&EmployeeClient{config: eq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := eq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := eq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(employee.Table, employee.FieldID, selector),
+			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, employee.SubordinatesTable, employee.SubordinatesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(eq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLeader chains the current query on the "leader" edge.
+func (eq *EmployeeQuery) QueryLeader() *EmployeeQuery {
+	query := (&EmployeeClient{config: eq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := eq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := eq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(employee.Table, employee.FieldID, selector),
+			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, employee.LeaderTable, employee.LeaderColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(eq.driver.Dialect(), step)
 		return fromU, nil
@@ -296,13 +344,15 @@ func (eq *EmployeeQuery) Clone() *EmployeeQuery {
 		return nil
 	}
 	return &EmployeeQuery{
-		config:      eq.config,
-		ctx:         eq.ctx.Clone(),
-		order:       append([]employee.OrderOption{}, eq.order...),
-		inters:      append([]Interceptor{}, eq.inters...),
-		predicates:  append([]predicate.Employee{}, eq.predicates...),
-		withCompany: eq.withCompany.Clone(),
-		withUser:    eq.withUser.Clone(),
+		config:           eq.config,
+		ctx:              eq.ctx.Clone(),
+		order:            append([]employee.OrderOption{}, eq.order...),
+		inters:           append([]Interceptor{}, eq.inters...),
+		predicates:       append([]predicate.Employee{}, eq.predicates...),
+		withCompany:      eq.withCompany.Clone(),
+		withUser:         eq.withUser.Clone(),
+		withSubordinates: eq.withSubordinates.Clone(),
+		withLeader:       eq.withLeader.Clone(),
 		// clone intermediate query.
 		sql:       eq.sql.Clone(),
 		path:      eq.path,
@@ -329,6 +379,28 @@ func (eq *EmployeeQuery) WithUser(opts ...func(*UserQuery)) *EmployeeQuery {
 		opt(query)
 	}
 	eq.withUser = query
+	return eq
+}
+
+// WithSubordinates tells the query-builder to eager-load the nodes that are connected to
+// the "subordinates" edge. The optional arguments are used to configure the query builder of the edge.
+func (eq *EmployeeQuery) WithSubordinates(opts ...func(*EmployeeQuery)) *EmployeeQuery {
+	query := (&EmployeeClient{config: eq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	eq.withSubordinates = query
+	return eq
+}
+
+// WithLeader tells the query-builder to eager-load the nodes that are connected to
+// the "leader" edge. The optional arguments are used to configure the query builder of the edge.
+func (eq *EmployeeQuery) WithLeader(opts ...func(*EmployeeQuery)) *EmployeeQuery {
+	query := (&EmployeeClient{config: eq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	eq.withLeader = query
 	return eq
 }
 
@@ -411,12 +483,14 @@ func (eq *EmployeeQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Emp
 		nodes       = []*Employee{}
 		withFKs     = eq.withFKs
 		_spec       = eq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [4]bool{
 			eq.withCompany != nil,
 			eq.withUser != nil,
+			eq.withSubordinates != nil,
+			eq.withLeader != nil,
 		}
 	)
-	if eq.withCompany != nil || eq.withUser != nil {
+	if eq.withCompany != nil || eq.withUser != nil || eq.withLeader != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -452,6 +526,26 @@ func (eq *EmployeeQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Emp
 	if query := eq.withUser; query != nil {
 		if err := eq.loadUser(ctx, query, nodes, nil,
 			func(n *Employee, e *User) { n.Edges.User = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := eq.withSubordinates; query != nil {
+		if err := eq.loadSubordinates(ctx, query, nodes,
+			func(n *Employee) { n.Edges.Subordinates = []*Employee{} },
+			func(n *Employee, e *Employee) { n.Edges.Subordinates = append(n.Edges.Subordinates, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := eq.withLeader; query != nil {
+		if err := eq.loadLeader(ctx, query, nodes, nil,
+			func(n *Employee, e *Employee) { n.Edges.Leader = e }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range eq.withNamedSubordinates {
+		if err := eq.loadSubordinates(ctx, query, nodes,
+			func(n *Employee) { n.appendNamedSubordinates(name) },
+			func(n *Employee, e *Employee) { n.appendNamedSubordinates(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -520,6 +614,69 @@ func (eq *EmployeeQuery) loadUser(ctx context.Context, query *UserQuery, nodes [
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "user_employee" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (eq *EmployeeQuery) loadSubordinates(ctx context.Context, query *EmployeeQuery, nodes []*Employee, init func(*Employee), assign func(*Employee, *Employee)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Employee)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Employee(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(employee.SubordinatesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.employee_subordinates
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "employee_subordinates" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "employee_subordinates" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (eq *EmployeeQuery) loadLeader(ctx context.Context, query *EmployeeQuery, nodes []*Employee, init func(*Employee), assign func(*Employee, *Employee)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Employee)
+	for i := range nodes {
+		if nodes[i].employee_subordinates == nil {
+			continue
+		}
+		fk := *nodes[i].employee_subordinates
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(employee.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "employee_subordinates" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -619,6 +776,20 @@ func (eq *EmployeeQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (eq *EmployeeQuery) Modify(modifiers ...func(s *sql.Selector)) *EmployeeSelect {
 	eq.modifiers = append(eq.modifiers, modifiers...)
 	return eq.Select()
+}
+
+// WithNamedSubordinates tells the query-builder to eager-load the nodes that are connected to the "subordinates"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (eq *EmployeeQuery) WithNamedSubordinates(name string, opts ...func(*EmployeeQuery)) *EmployeeQuery {
+	query := (&EmployeeClient{config: eq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if eq.withNamedSubordinates == nil {
+		eq.withNamedSubordinates = make(map[string]*EmployeeQuery)
+	}
+	eq.withNamedSubordinates[name] = query
+	return eq
 }
 
 // EmployeeGroupBy is the group-by builder for Employee entities.

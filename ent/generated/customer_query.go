@@ -9,6 +9,7 @@ import (
 	"math"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/receivable"
 
@@ -27,10 +28,12 @@ type CustomerQuery struct {
 	predicates           []predicate.Customer
 	withCompany          *CompanyQuery
 	withReceivables      *ReceivableQuery
+	withInvoices         *InvoiceQuery
 	withFKs              bool
 	loadTotal            []func(context.Context, []*Customer) error
 	modifiers            []func(*sql.Selector)
 	withNamedReceivables map[string]*ReceivableQuery
+	withNamedInvoices    map[string]*InvoiceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -104,6 +107,28 @@ func (cq *CustomerQuery) QueryReceivables() *ReceivableQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(receivable.Table, receivable.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, customer.ReceivablesTable, customer.ReceivablesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryInvoices chains the current query on the "invoices" edge.
+func (cq *CustomerQuery) QueryInvoices() *InvoiceQuery {
+	query := (&InvoiceClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.InvoicesTable, customer.InvoicesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -305,6 +330,7 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		predicates:      append([]predicate.Customer{}, cq.predicates...),
 		withCompany:     cq.withCompany.Clone(),
 		withReceivables: cq.withReceivables.Clone(),
+		withInvoices:    cq.withInvoices.Clone(),
 		// clone intermediate query.
 		sql:       cq.sql.Clone(),
 		path:      cq.path,
@@ -331,6 +357,17 @@ func (cq *CustomerQuery) WithReceivables(opts ...func(*ReceivableQuery)) *Custom
 		opt(query)
 	}
 	cq.withReceivables = query
+	return cq
+}
+
+// WithInvoices tells the query-builder to eager-load the nodes that are connected to
+// the "invoices" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithInvoices(opts ...func(*InvoiceQuery)) *CustomerQuery {
+	query := (&InvoiceClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withInvoices = query
 	return cq
 }
 
@@ -413,9 +450,10 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 		nodes       = []*Customer{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			cq.withCompany != nil,
 			cq.withReceivables != nil,
+			cq.withInvoices != nil,
 		}
 	)
 	if cq.withCompany != nil {
@@ -458,10 +496,24 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 			return nil, err
 		}
 	}
+	if query := cq.withInvoices; query != nil {
+		if err := cq.loadInvoices(ctx, query, nodes,
+			func(n *Customer) { n.Edges.Invoices = []*Invoice{} },
+			func(n *Customer, e *Invoice) { n.Edges.Invoices = append(n.Edges.Invoices, e) }); err != nil {
+			return nil, err
+		}
+	}
 	for name, query := range cq.withNamedReceivables {
 		if err := cq.loadReceivables(ctx, query, nodes,
 			func(n *Customer) { n.appendNamedReceivables(name) },
 			func(n *Customer, e *Receivable) { n.appendNamedReceivables(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedInvoices {
+		if err := cq.loadInvoices(ctx, query, nodes,
+			func(n *Customer) { n.appendNamedInvoices(name) },
+			func(n *Customer, e *Invoice) { n.appendNamedInvoices(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -531,6 +583,37 @@ func (cq *CustomerQuery) loadReceivables(ctx context.Context, query *ReceivableQ
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "customer_receivables" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (cq *CustomerQuery) loadInvoices(ctx context.Context, query *InvoiceQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *Invoice)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Customer)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Invoice(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(customer.InvoicesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.customer_invoices
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "customer_invoices" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "customer_invoices" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -641,6 +724,20 @@ func (cq *CustomerQuery) WithNamedReceivables(name string, opts ...func(*Receiva
 		cq.withNamedReceivables = make(map[string]*ReceivableQuery)
 	}
 	cq.withNamedReceivables[name] = query
+	return cq
+}
+
+// WithNamedInvoices tells the query-builder to eager-load the nodes that are connected to the "invoices"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithNamedInvoices(name string, opts ...func(*InvoiceQuery)) *CustomerQuery {
+	query := (&InvoiceClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedInvoices == nil {
+		cq.withNamedInvoices = make(map[string]*InvoiceQuery)
+	}
+	cq.withNamedInvoices[name] = query
 	return cq
 }
 

@@ -73,6 +73,8 @@ type UserEdges struct {
 	CreatedMemberSignupTokens []*MemberSignupToken `json:"createdMemberSignupTokens,omitempty"`
 	// Employee holds the value of the employee edge.
 	Employee *Employee `json:"employee,omitempty"`
+	// IssuedInvoices holds the value of the issuedInvoices edge.
+	IssuedInvoices []*Invoice `json:"issuedInvoices,omitempty"`
 	// Represents the projects created by the user
 	CreatedProjects []*Project `json:"createdProjects,omitempty"`
 	// Represents the projects leadered or supervised by the user
@@ -95,15 +97,16 @@ type UserEdges struct {
 	ApprovedDocuments []*CompanyDocument `json:"approvedDocuments,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [17]bool
+	loadedTypes [18]bool
 	// totalCount holds the count of the edges above.
-	totalCount [17]map[string]int
+	totalCount [18]map[string]int
 
 	namedAccountingEntries         map[string][]*AccountingEntry
 	namedCompany                   map[string][]*Company
 	namedAssignedRoles             map[string][]*UserRole
 	namedSubordinates              map[string][]*User
 	namedCreatedMemberSignupTokens map[string][]*MemberSignupToken
+	namedIssuedInvoices            map[string][]*Invoice
 	namedCreatedProjects           map[string][]*Project
 	namedLeaderedProjects          map[string][]*Project
 	namedAssignedProjectTasks      map[string][]*ProjectTask
@@ -183,10 +186,19 @@ func (e UserEdges) EmployeeOrErr() (*Employee, error) {
 	return nil, &NotLoadedError{edge: "employee"}
 }
 
+// IssuedInvoicesOrErr returns the IssuedInvoices value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) IssuedInvoicesOrErr() ([]*Invoice, error) {
+	if e.loadedTypes[7] {
+		return e.IssuedInvoices, nil
+	}
+	return nil, &NotLoadedError{edge: "issuedInvoices"}
+}
+
 // CreatedProjectsOrErr returns the CreatedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[7] {
+	if e.loadedTypes[8] {
 		return e.CreatedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "createdProjects"}
@@ -195,7 +207,7 @@ func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
 // LeaderedProjectsOrErr returns the LeaderedProjects value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[8] {
+	if e.loadedTypes[9] {
 		return e.LeaderedProjects, nil
 	}
 	return nil, &NotLoadedError{edge: "leaderedProjects"}
@@ -204,7 +216,7 @@ func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
 // AssignedProjectTasksOrErr returns the AssignedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[9] {
+	if e.loadedTypes[10] {
 		return e.AssignedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "assignedProjectTasks"}
@@ -213,7 +225,7 @@ func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
 // ParticipatedProjectTasksOrErr returns the ParticipatedProjectTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[10] {
+	if e.loadedTypes[11] {
 		return e.ParticipatedProjectTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "participatedProjectTasks"}
@@ -222,7 +234,7 @@ func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
 // CreatedTasksOrErr returns the CreatedTasks value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
-	if e.loadedTypes[11] {
+	if e.loadedTypes[12] {
 		return e.CreatedTasks, nil
 	}
 	return nil, &NotLoadedError{edge: "createdTasks"}
@@ -231,7 +243,7 @@ func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[12] {
+	if e.loadedTypes[13] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -240,7 +252,7 @@ func (e UserEdges) TokensOrErr() ([]*Token, error) {
 // ApprovedWorkShiftsOrErr returns the ApprovedWorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[14] {
 		return e.ApprovedWorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "approvedWorkShifts"}
@@ -249,7 +261,7 @@ func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[14] {
+	if e.loadedTypes[15] {
 		return e.WorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "workShifts"}
@@ -258,7 +270,7 @@ func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 // UploadedDocumentsOrErr returns the UploadedDocuments value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
-	if e.loadedTypes[15] {
+	if e.loadedTypes[16] {
 		return e.UploadedDocuments, nil
 	}
 	return nil, &NotLoadedError{edge: "uploadedDocuments"}
@@ -267,7 +279,7 @@ func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
 // ApprovedDocumentsOrErr returns the ApprovedDocuments value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) ApprovedDocumentsOrErr() ([]*CompanyDocument, error) {
-	if e.loadedTypes[16] {
+	if e.loadedTypes[17] {
 		return e.ApprovedDocuments, nil
 	}
 	return nil, &NotLoadedError{edge: "approvedDocuments"}
@@ -468,6 +480,11 @@ func (u *User) QueryCreatedMemberSignupTokens() *MemberSignupTokenQuery {
 // QueryEmployee queries the "employee" edge of the User entity.
 func (u *User) QueryEmployee() *EmployeeQuery {
 	return NewUserClient(u.config).QueryEmployee(u)
+}
+
+// QueryIssuedInvoices queries the "issuedInvoices" edge of the User entity.
+func (u *User) QueryIssuedInvoices() *InvoiceQuery {
+	return NewUserClient(u.config).QueryIssuedInvoices(u)
 }
 
 // QueryCreatedProjects queries the "createdProjects" edge of the User entity.
@@ -727,6 +744,30 @@ func (u *User) appendNamedCreatedMemberSignupTokens(name string, edges ...*Membe
 		u.Edges.namedCreatedMemberSignupTokens[name] = []*MemberSignupToken{}
 	} else {
 		u.Edges.namedCreatedMemberSignupTokens[name] = append(u.Edges.namedCreatedMemberSignupTokens[name], edges...)
+	}
+}
+
+// NamedIssuedInvoices returns the IssuedInvoices named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (u *User) NamedIssuedInvoices(name string) ([]*Invoice, error) {
+	if u.Edges.namedIssuedInvoices == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := u.Edges.namedIssuedInvoices[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (u *User) appendNamedIssuedInvoices(name string, edges ...*Invoice) {
+	if u.Edges.namedIssuedInvoices == nil {
+		u.Edges.namedIssuedInvoices = make(map[string][]*Invoice)
+	}
+	if len(edges) == 0 {
+		u.Edges.namedIssuedInvoices[name] = []*Invoice{}
+	} else {
+		u.Edges.namedIssuedInvoices[name] = append(u.Edges.namedIssuedInvoices[name], edges...)
 	}
 }
 

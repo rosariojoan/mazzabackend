@@ -54,7 +54,7 @@ func Login(ctx *gin.Context) {
 		First(ctx)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		return
 	}
 
@@ -68,7 +68,7 @@ func Login(ctx *gin.Context) {
 	companies, err := inits.Client.User.Query().Where(user.IDEQ(currentUser.ID)).QueryCompany().All(ctx)
 	if err != nil || len(companies) == 0 {
 		// return nil, fmt.Errorf("there are no companies associated with this user")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		return
 	}
 
@@ -79,7 +79,7 @@ func Login(ctx *gin.Context) {
 		err = inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
 			return
 		}
 		inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
@@ -87,7 +87,7 @@ func Login(ctx *gin.Context) {
 		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearFcmToken().Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
 			return
 		}
 	}

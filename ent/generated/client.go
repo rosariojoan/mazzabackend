@@ -17,6 +17,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -56,6 +59,12 @@ type Client struct {
 	Employee *EmployeeClient
 	// File is the client for interacting with the File builders.
 	File *FileClient
+	// Inventory is the client for interacting with the Inventory builders.
+	Inventory *InventoryClient
+	// InventoryMovement is the client for interacting with the InventoryMovement builders.
+	InventoryMovement *InventoryMovementClient
+	// Invoice is the client for interacting with the Invoice builders.
+	Invoice *InvoiceClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -101,6 +110,9 @@ func (c *Client) init() {
 	c.Customer = NewCustomerClient(c.config)
 	c.Employee = NewEmployeeClient(c.config)
 	c.File = NewFileClient(c.config)
+	c.Inventory = NewInventoryClient(c.config)
+	c.InventoryMovement = NewInventoryMovementClient(c.config)
+	c.Invoice = NewInvoiceClient(c.config)
 	c.MemberSignupToken = NewMemberSignupTokenClient(c.config)
 	c.Payable = NewPayableClient(c.config)
 	c.Product = NewProductClient(c.config)
@@ -212,6 +224,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Customer:          NewCustomerClient(cfg),
 		Employee:          NewEmployeeClient(cfg),
 		File:              NewFileClient(cfg),
+		Inventory:         NewInventoryClient(cfg),
+		InventoryMovement: NewInventoryMovementClient(cfg),
+		Invoice:           NewInvoiceClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -250,6 +265,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Customer:          NewCustomerClient(cfg),
 		Employee:          NewEmployeeClient(cfg),
 		File:              NewFileClient(cfg),
+		Inventory:         NewInventoryClient(cfg),
+		InventoryMovement: NewInventoryMovementClient(cfg),
+		Invoice:           NewInvoiceClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -293,9 +311,9 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.MemberSignupToken, c.Payable, c.Product, c.Project, c.ProjectMilestone,
-		c.ProjectTask, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User,
-		c.UserRole, c.Workshift,
+		c.Inventory, c.InventoryMovement, c.Invoice, c.MemberSignupToken, c.Payable,
+		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
+		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -306,9 +324,9 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.MemberSignupToken, c.Payable, c.Product, c.Project, c.ProjectMilestone,
-		c.ProjectTask, c.Receivable, c.Supplier, c.Token, c.Treasury, c.User,
-		c.UserRole, c.Workshift,
+		c.Inventory, c.InventoryMovement, c.Invoice, c.MemberSignupToken, c.Payable,
+		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
+		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -329,6 +347,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Employee.mutate(ctx, m)
 	case *FileMutation:
 		return c.File.mutate(ctx, m)
+	case *InventoryMutation:
+		return c.Inventory.mutate(ctx, m)
+	case *InventoryMovementMutation:
+		return c.InventoryMovement.mutate(ctx, m)
+	case *InvoiceMutation:
+		return c.Invoice.mutate(ctx, m)
 	case *MemberSignupTokenMutation:
 		return c.MemberSignupToken.mutate(ctx, m)
 	case *PayableMutation:
@@ -722,6 +746,54 @@ func (c *CompanyClient) QueryFiles(co *Company) *FileQuery {
 			sqlgraph.From(company.Table, company.FieldID, id),
 			sqlgraph.To(file.Table, file.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.FilesTable, company.FilesColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInventory queries the inventory edge of a Company.
+func (c *CompanyClient) QueryInventory(co *Company) *InventoryQuery {
+	query := (&InventoryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(inventory.Table, inventory.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.InventoryTable, company.InventoryColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInventoryMovements queries the inventoryMovements edge of a Company.
+func (c *CompanyClient) QueryInventoryMovements(co *Company) *InventoryMovementQuery {
+	query := (&InventoryMovementClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(inventorymovement.Table, inventorymovement.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.InventoryMovementsTable, company.InventoryMovementsColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInvoices queries the invoices edge of a Company.
+func (c *CompanyClient) QueryInvoices(co *Company) *InvoiceQuery {
+	query := (&InvoiceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.InvoicesTable, company.InvoicesColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -1267,6 +1339,22 @@ func (c *CustomerClient) QueryReceivables(cu *Customer) *ReceivableQuery {
 	return query
 }
 
+// QueryInvoices queries the invoices edge of a Customer.
+func (c *CustomerClient) QueryInvoices(cu *Customer) *InvoiceQuery {
+	query := (&InvoiceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.InvoicesTable, customer.InvoicesColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CustomerClient) Hooks() []Hook {
 	return c.hooks.Customer
@@ -1425,6 +1513,38 @@ func (c *EmployeeClient) QueryUser(e *Employee) *UserQuery {
 			sqlgraph.From(employee.Table, employee.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, employee.UserTable, employee.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QuerySubordinates queries the subordinates edge of a Employee.
+func (c *EmployeeClient) QuerySubordinates(e *Employee) *EmployeeQuery {
+	query := (&EmployeeClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := e.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(employee.Table, employee.FieldID, id),
+			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, employee.SubordinatesTable, employee.SubordinatesColumn),
+		)
+		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryLeader queries the leader edge of a Employee.
+func (c *EmployeeClient) QueryLeader(e *Employee) *EmployeeQuery {
+	query := (&EmployeeClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := e.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(employee.Table, employee.FieldID, id),
+			sqlgraph.To(employee.Table, employee.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, employee.LeaderTable, employee.LeaderColumn),
 		)
 		fromV = sqlgraph.Neighbors(e.driver.Dialect(), step)
 		return fromV, nil
@@ -1603,6 +1723,517 @@ func (c *FileClient) mutate(ctx context.Context, m *FileMutation) (Value, error)
 		return (&FileDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown File mutation op: %q", m.Op())
+	}
+}
+
+// InventoryClient is a client for the Inventory schema.
+type InventoryClient struct {
+	config
+}
+
+// NewInventoryClient returns a client for the Inventory from the given config.
+func NewInventoryClient(c config) *InventoryClient {
+	return &InventoryClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `inventory.Hooks(f(g(h())))`.
+func (c *InventoryClient) Use(hooks ...Hook) {
+	c.hooks.Inventory = append(c.hooks.Inventory, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `inventory.Intercept(f(g(h())))`.
+func (c *InventoryClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Inventory = append(c.inters.Inventory, interceptors...)
+}
+
+// Create returns a builder for creating a Inventory entity.
+func (c *InventoryClient) Create() *InventoryCreate {
+	mutation := newInventoryMutation(c.config, OpCreate)
+	return &InventoryCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Inventory entities.
+func (c *InventoryClient) CreateBulk(builders ...*InventoryCreate) *InventoryCreateBulk {
+	return &InventoryCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *InventoryClient) MapCreateBulk(slice any, setFunc func(*InventoryCreate, int)) *InventoryCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &InventoryCreateBulk{err: fmt.Errorf("calling to InventoryClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*InventoryCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &InventoryCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Inventory.
+func (c *InventoryClient) Update() *InventoryUpdate {
+	mutation := newInventoryMutation(c.config, OpUpdate)
+	return &InventoryUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InventoryClient) UpdateOne(i *Inventory) *InventoryUpdateOne {
+	mutation := newInventoryMutation(c.config, OpUpdateOne, withInventory(i))
+	return &InventoryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InventoryClient) UpdateOneID(id int) *InventoryUpdateOne {
+	mutation := newInventoryMutation(c.config, OpUpdateOne, withInventoryID(id))
+	return &InventoryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Inventory.
+func (c *InventoryClient) Delete() *InventoryDelete {
+	mutation := newInventoryMutation(c.config, OpDelete)
+	return &InventoryDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *InventoryClient) DeleteOne(i *Inventory) *InventoryDeleteOne {
+	return c.DeleteOneID(i.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *InventoryClient) DeleteOneID(id int) *InventoryDeleteOne {
+	builder := c.Delete().Where(inventory.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InventoryDeleteOne{builder}
+}
+
+// Query returns a query builder for Inventory.
+func (c *InventoryClient) Query() *InventoryQuery {
+	return &InventoryQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeInventory},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Inventory entity by its id.
+func (c *InventoryClient) Get(ctx context.Context, id int) (*Inventory, error) {
+	return c.Query().Where(inventory.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InventoryClient) GetX(ctx context.Context, id int) *Inventory {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a Inventory.
+func (c *InventoryClient) QueryCompany(i *Inventory) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inventory.Table, inventory.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inventory.CompanyTable, inventory.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMovements queries the movements edge of a Inventory.
+func (c *InventoryClient) QueryMovements(i *Inventory) *InventoryMovementQuery {
+	query := (&InventoryMovementClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inventory.Table, inventory.FieldID, id),
+			sqlgraph.To(inventorymovement.Table, inventorymovement.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, inventory.MovementsTable, inventory.MovementsColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InventoryClient) Hooks() []Hook {
+	return c.hooks.Inventory
+}
+
+// Interceptors returns the client interceptors.
+func (c *InventoryClient) Interceptors() []Interceptor {
+	return c.inters.Inventory
+}
+
+func (c *InventoryClient) mutate(ctx context.Context, m *InventoryMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&InventoryCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&InventoryUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&InventoryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&InventoryDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Inventory mutation op: %q", m.Op())
+	}
+}
+
+// InventoryMovementClient is a client for the InventoryMovement schema.
+type InventoryMovementClient struct {
+	config
+}
+
+// NewInventoryMovementClient returns a client for the InventoryMovement from the given config.
+func NewInventoryMovementClient(c config) *InventoryMovementClient {
+	return &InventoryMovementClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `inventorymovement.Hooks(f(g(h())))`.
+func (c *InventoryMovementClient) Use(hooks ...Hook) {
+	c.hooks.InventoryMovement = append(c.hooks.InventoryMovement, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `inventorymovement.Intercept(f(g(h())))`.
+func (c *InventoryMovementClient) Intercept(interceptors ...Interceptor) {
+	c.inters.InventoryMovement = append(c.inters.InventoryMovement, interceptors...)
+}
+
+// Create returns a builder for creating a InventoryMovement entity.
+func (c *InventoryMovementClient) Create() *InventoryMovementCreate {
+	mutation := newInventoryMovementMutation(c.config, OpCreate)
+	return &InventoryMovementCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of InventoryMovement entities.
+func (c *InventoryMovementClient) CreateBulk(builders ...*InventoryMovementCreate) *InventoryMovementCreateBulk {
+	return &InventoryMovementCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *InventoryMovementClient) MapCreateBulk(slice any, setFunc func(*InventoryMovementCreate, int)) *InventoryMovementCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &InventoryMovementCreateBulk{err: fmt.Errorf("calling to InventoryMovementClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*InventoryMovementCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &InventoryMovementCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for InventoryMovement.
+func (c *InventoryMovementClient) Update() *InventoryMovementUpdate {
+	mutation := newInventoryMovementMutation(c.config, OpUpdate)
+	return &InventoryMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InventoryMovementClient) UpdateOne(im *InventoryMovement) *InventoryMovementUpdateOne {
+	mutation := newInventoryMovementMutation(c.config, OpUpdateOne, withInventoryMovement(im))
+	return &InventoryMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InventoryMovementClient) UpdateOneID(id int) *InventoryMovementUpdateOne {
+	mutation := newInventoryMovementMutation(c.config, OpUpdateOne, withInventoryMovementID(id))
+	return &InventoryMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for InventoryMovement.
+func (c *InventoryMovementClient) Delete() *InventoryMovementDelete {
+	mutation := newInventoryMovementMutation(c.config, OpDelete)
+	return &InventoryMovementDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *InventoryMovementClient) DeleteOne(im *InventoryMovement) *InventoryMovementDeleteOne {
+	return c.DeleteOneID(im.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *InventoryMovementClient) DeleteOneID(id int) *InventoryMovementDeleteOne {
+	builder := c.Delete().Where(inventorymovement.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InventoryMovementDeleteOne{builder}
+}
+
+// Query returns a query builder for InventoryMovement.
+func (c *InventoryMovementClient) Query() *InventoryMovementQuery {
+	return &InventoryMovementQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeInventoryMovement},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a InventoryMovement entity by its id.
+func (c *InventoryMovementClient) Get(ctx context.Context, id int) (*InventoryMovement, error) {
+	return c.Query().Where(inventorymovement.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InventoryMovementClient) GetX(ctx context.Context, id int) *InventoryMovement {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a InventoryMovement.
+func (c *InventoryMovementClient) QueryCompany(im *InventoryMovement) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := im.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inventorymovement.Table, inventorymovement.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inventorymovement.CompanyTable, inventorymovement.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(im.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInventory queries the inventory edge of a InventoryMovement.
+func (c *InventoryMovementClient) QueryInventory(im *InventoryMovement) *InventoryQuery {
+	query := (&InventoryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := im.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inventorymovement.Table, inventorymovement.FieldID, id),
+			sqlgraph.To(inventory.Table, inventory.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inventorymovement.InventoryTable, inventorymovement.InventoryColumn),
+		)
+		fromV = sqlgraph.Neighbors(im.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InventoryMovementClient) Hooks() []Hook {
+	return c.hooks.InventoryMovement
+}
+
+// Interceptors returns the client interceptors.
+func (c *InventoryMovementClient) Interceptors() []Interceptor {
+	return c.inters.InventoryMovement
+}
+
+func (c *InventoryMovementClient) mutate(ctx context.Context, m *InventoryMovementMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&InventoryMovementCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&InventoryMovementUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&InventoryMovementUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&InventoryMovementDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown InventoryMovement mutation op: %q", m.Op())
+	}
+}
+
+// InvoiceClient is a client for the Invoice schema.
+type InvoiceClient struct {
+	config
+}
+
+// NewInvoiceClient returns a client for the Invoice from the given config.
+func NewInvoiceClient(c config) *InvoiceClient {
+	return &InvoiceClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `invoice.Hooks(f(g(h())))`.
+func (c *InvoiceClient) Use(hooks ...Hook) {
+	c.hooks.Invoice = append(c.hooks.Invoice, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `invoice.Intercept(f(g(h())))`.
+func (c *InvoiceClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Invoice = append(c.inters.Invoice, interceptors...)
+}
+
+// Create returns a builder for creating a Invoice entity.
+func (c *InvoiceClient) Create() *InvoiceCreate {
+	mutation := newInvoiceMutation(c.config, OpCreate)
+	return &InvoiceCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Invoice entities.
+func (c *InvoiceClient) CreateBulk(builders ...*InvoiceCreate) *InvoiceCreateBulk {
+	return &InvoiceCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *InvoiceClient) MapCreateBulk(slice any, setFunc func(*InvoiceCreate, int)) *InvoiceCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &InvoiceCreateBulk{err: fmt.Errorf("calling to InvoiceClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*InvoiceCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &InvoiceCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Invoice.
+func (c *InvoiceClient) Update() *InvoiceUpdate {
+	mutation := newInvoiceMutation(c.config, OpUpdate)
+	return &InvoiceUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InvoiceClient) UpdateOne(i *Invoice) *InvoiceUpdateOne {
+	mutation := newInvoiceMutation(c.config, OpUpdateOne, withInvoice(i))
+	return &InvoiceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InvoiceClient) UpdateOneID(id int) *InvoiceUpdateOne {
+	mutation := newInvoiceMutation(c.config, OpUpdateOne, withInvoiceID(id))
+	return &InvoiceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Invoice.
+func (c *InvoiceClient) Delete() *InvoiceDelete {
+	mutation := newInvoiceMutation(c.config, OpDelete)
+	return &InvoiceDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *InvoiceClient) DeleteOne(i *Invoice) *InvoiceDeleteOne {
+	return c.DeleteOneID(i.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *InvoiceClient) DeleteOneID(id int) *InvoiceDeleteOne {
+	builder := c.Delete().Where(invoice.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InvoiceDeleteOne{builder}
+}
+
+// Query returns a query builder for Invoice.
+func (c *InvoiceClient) Query() *InvoiceQuery {
+	return &InvoiceQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeInvoice},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Invoice entity by its id.
+func (c *InvoiceClient) Get(ctx context.Context, id int) (*Invoice, error) {
+	return c.Query().Where(invoice.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InvoiceClient) GetX(ctx context.Context, id int) *Invoice {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a Invoice.
+func (c *InvoiceClient) QueryCompany(i *Invoice) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(invoice.Table, invoice.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, invoice.CompanyTable, invoice.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryIssuedBy queries the issuedBy edge of a Invoice.
+func (c *InvoiceClient) QueryIssuedBy(i *Invoice) *UserQuery {
+	query := (&UserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(invoice.Table, invoice.FieldID, id),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, invoice.IssuedByTable, invoice.IssuedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryClient queries the client edge of a Invoice.
+func (c *InvoiceClient) QueryClient(i *Invoice) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(invoice.Table, invoice.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, invoice.ClientTable, invoice.ClientColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InvoiceClient) Hooks() []Hook {
+	return c.hooks.Invoice
+}
+
+// Interceptors returns the client interceptors.
+func (c *InvoiceClient) Interceptors() []Interceptor {
+	return c.inters.Invoice
+}
+
+func (c *InvoiceClient) mutate(ctx context.Context, m *InvoiceMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&InvoiceCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&InvoiceUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&InvoiceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&InvoiceDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Invoice mutation op: %q", m.Op())
 	}
 }
 
@@ -3493,6 +4124,22 @@ func (c *UserClient) QueryEmployee(u *User) *EmployeeQuery {
 	return query
 }
 
+// QueryIssuedInvoices queries the issuedInvoices edge of a User.
+func (c *UserClient) QueryIssuedInvoices(u *User) *InvoiceQuery {
+	query := (&InvoiceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := u.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, id),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.IssuedInvoicesTable, user.IssuedInvoicesColumn),
+		)
+		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryCreatedProjects queries the createdProjects edge of a User.
 func (c *UserClient) QueryCreatedProjects(u *User) *ProjectQuery {
 	query := (&ProjectClient{config: c.config}).Query()
@@ -4076,15 +4723,16 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File,
-		MemberSignupToken, Payable, Product, Project, ProjectMilestone, ProjectTask,
-		Receivable, Supplier, Token, Treasury, User, UserRole, Workshift []ent.Hook
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
+		InventoryMovement, Invoice, MemberSignupToken, Payable, Product, Project,
+		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
+		UserRole, Workshift []ent.Hook
 	}
 	inters struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File,
-		MemberSignupToken, Payable, Product, Project, ProjectMilestone, ProjectTask,
-		Receivable, Supplier, Token, Treasury, User, UserRole,
-		Workshift []ent.Interceptor
+		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
+		InventoryMovement, Invoice, MemberSignupToken, Payable, Product, Project,
+		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
+		UserRole, Workshift []ent.Interceptor
 	}
 )
 

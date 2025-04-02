@@ -161,7 +161,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "address", Type: field.TypeString},
 		{Name: "city", Type: field.TypeString},
-		{Name: "country", Type: field.TypeString},
+		{Name: "country", Type: field.TypeString, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "email", Type: field.TypeString, Nullable: true},
 		{Name: "is_default", Type: field.TypeBool, Nullable: true, Default: false},
@@ -203,11 +203,19 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
+		{Name: "birthdate", Type: field.TypeTime, Nullable: true},
 		{Name: "gender", Type: field.TypeEnum, Enums: []string{"male", "female"}},
-		{Name: "position", Type: field.TypeString, Nullable: true},
+		{Name: "position", Type: field.TypeString},
+		{Name: "department", Type: field.TypeString, Nullable: true, Default: "geral"},
 		{Name: "email", Type: field.TypeString, Nullable: true},
-		{Name: "phone", Type: field.TypeString},
+		{Name: "phone", Type: field.TypeString, Nullable: true},
+		{Name: "avatar", Type: field.TypeString, Nullable: true},
+		{Name: "hire_date", Type: field.TypeTime},
+		{Name: "monthly_salary", Type: field.TypeInt, Default: 0},
+		{Name: "status", Type: field.TypeEnum, Nullable: true, Enums: []string{"ACTIVE", "ON_LEAVE"}, Default: "ACTIVE"},
+		{Name: "performace_score", Type: field.TypeFloat64, Nullable: true, Default: 0},
 		{Name: "company_employees", Type: field.TypeInt, Nullable: true},
+		{Name: "employee_subordinates", Type: field.TypeInt, Nullable: true},
 		{Name: "user_employee", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// EmployeesTable holds the schema information for the "employees" table.
@@ -218,13 +226,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "employees_companies_employees",
-				Columns:    []*schema.Column{EmployeesColumns[9]},
+				Columns:    []*schema.Column{EmployeesColumns[16]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
+				Symbol:     "employees_employees_subordinates",
+				Columns:    []*schema.Column{EmployeesColumns[17]},
+				RefColumns: []*schema.Column{EmployeesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
 				Symbol:     "employees_users_employee",
-				Columns:    []*schema.Column{EmployeesColumns[10]},
+				Columns:    []*schema.Column{EmployeesColumns[18]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -255,6 +269,157 @@ var (
 				Columns:    []*schema.Column{FilesColumns[10]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// InventoriesColumns holds the columns for the "inventories" table.
+	InventoriesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"RAW_MATERIALS", "FINISHED_GOODS", "SUPPLIES", "EQUIPMENT", "OTHER"}},
+		{Name: "quantity", Type: field.TypeFloat64},
+		{Name: "unit", Type: field.TypeString},
+		{Name: "minimum_level", Type: field.TypeFloat64},
+		{Name: "current_value", Type: field.TypeFloat64},
+		{Name: "notes", Type: field.TypeString},
+		{Name: "company_inventory", Type: field.TypeInt},
+	}
+	// InventoriesTable holds the schema information for the "inventories" table.
+	InventoriesTable = &schema.Table{
+		Name:       "inventories",
+		Columns:    InventoriesColumns,
+		PrimaryKey: []*schema.Column{InventoriesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "inventories_companies_inventory",
+				Columns:    []*schema.Column{InventoriesColumns[11]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "inventory_name_company_inventory",
+				Unique:  true,
+				Columns: []*schema.Column{InventoriesColumns[4], InventoriesColumns[11]},
+			},
+		},
+	}
+	// InventoryMovementsColumns holds the columns for the "inventory_movements" table.
+	InventoryMovementsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"IN", "OUT", "ADJUSTMENT"}},
+		{Name: "quantity", Type: field.TypeFloat64},
+		{Name: "value", Type: field.TypeFloat64},
+		{Name: "date", Type: field.TypeTime},
+		{Name: "source", Type: field.TypeString, Nullable: true},
+		{Name: "destination", Type: field.TypeString, Nullable: true},
+		{Name: "notes", Type: field.TypeString},
+		{Name: "company_inventory_movements", Type: field.TypeInt},
+		{Name: "inventory_movements", Type: field.TypeInt},
+	}
+	// InventoryMovementsTable holds the schema information for the "inventory_movements" table.
+	InventoryMovementsTable = &schema.Table{
+		Name:       "inventory_movements",
+		Columns:    InventoryMovementsColumns,
+		PrimaryKey: []*schema.Column{InventoryMovementsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "inventory_movements_companies_inventoryMovements",
+				Columns:    []*schema.Column{InventoryMovementsColumns[11]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "inventory_movements_inventories_movements",
+				Columns:    []*schema.Column{InventoryMovementsColumns[12]},
+				RefColumns: []*schema.Column{InventoriesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// InvoicesColumns holds the columns for the "invoices" table.
+	InvoicesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "company_logo", Type: field.TypeString, Nullable: true},
+		{Name: "company_name", Type: field.TypeString},
+		{Name: "company_tax_id", Type: field.TypeString, Nullable: true},
+		{Name: "company_address", Type: field.TypeString},
+		{Name: "company_city", Type: field.TypeString},
+		{Name: "company_email", Type: field.TypeString, Nullable: true},
+		{Name: "company_phone", Type: field.TypeString, Nullable: true},
+		{Name: "number", Type: field.TypeString, Nullable: true},
+		{Name: "issue_date", Type: field.TypeTime},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "paid_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"DRAFT", "CANCELED", "PENDING", "PAID", "OVERDUE", "DEFAULTED"}, Default: "PAID"},
+		{Name: "customer_name", Type: field.TypeString, Nullable: true, Default: "other"},
+		{Name: "customer_tax_id", Type: field.TypeString, Nullable: true},
+		{Name: "customer_address", Type: field.TypeString, Nullable: true},
+		{Name: "customer_city", Type: field.TypeString, Nullable: true},
+		{Name: "customer_email", Type: field.TypeString, Nullable: true},
+		{Name: "customer_phone", Type: field.TypeString, Nullable: true},
+		{Name: "items", Type: field.TypeString},
+		{Name: "subtotal", Type: field.TypeFloat64},
+		{Name: "tax", Type: field.TypeFloat64},
+		{Name: "total", Type: field.TypeFloat64},
+		{Name: "notes", Type: field.TypeString, Nullable: true},
+		{Name: "payment_method", Type: field.TypeString, Nullable: true},
+		{Name: "bank_name", Type: field.TypeString, Nullable: true},
+		{Name: "bank_agency", Type: field.TypeString, Nullable: true},
+		{Name: "bank_account_number", Type: field.TypeString, Nullable: true},
+		{Name: "bank_account_name", Type: field.TypeString, Nullable: true},
+		{Name: "storage_uri", Type: field.TypeString, Nullable: true},
+		{Name: "url", Type: field.TypeString, Nullable: true},
+		{Name: "filename", Type: field.TypeString, Nullable: true},
+		{Name: "size", Type: field.TypeFloat64, Nullable: true},
+		{Name: "keywords", Type: field.TypeString, Size: 255},
+		{Name: "company_invoices", Type: field.TypeInt},
+		{Name: "customer_invoices", Type: field.TypeInt, Nullable: true},
+		{Name: "user_issued_invoices", Type: field.TypeInt, Nullable: true},
+	}
+	// InvoicesTable holds the schema information for the "invoices" table.
+	InvoicesTable = &schema.Table{
+		Name:       "invoices",
+		Columns:    InvoicesColumns,
+		PrimaryKey: []*schema.Column{InvoicesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "invoices_companies_invoices",
+				Columns:    []*schema.Column{InvoicesColumns[37]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "invoices_customers_invoices",
+				Columns:    []*schema.Column{InvoicesColumns[38]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "invoices_users_issuedInvoices",
+				Columns:    []*schema.Column{InvoicesColumns[39]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "invoice_number_company_invoices",
+				Unique:  true,
+				Columns: []*schema.Column{InvoicesColumns[11], InvoicesColumns[37]},
+				Annotation: &entsql.IndexAnnotation{
+					Where: "number IS NOT NULL",
+				},
 			},
 		},
 	}
@@ -791,6 +956,9 @@ var (
 		CustomersTable,
 		EmployeesTable,
 		FilesTable,
+		InventoriesTable,
+		InventoryMovementsTable,
+		InvoicesTable,
 		MemberSignupTokensTable,
 		PayablesTable,
 		ProductsTable,
@@ -818,8 +986,15 @@ func init() {
 	CompanyDocumentsTable.ForeignKeys[2].RefTable = UsersTable
 	CustomersTable.ForeignKeys[0].RefTable = CompaniesTable
 	EmployeesTable.ForeignKeys[0].RefTable = CompaniesTable
-	EmployeesTable.ForeignKeys[1].RefTable = UsersTable
+	EmployeesTable.ForeignKeys[1].RefTable = EmployeesTable
+	EmployeesTable.ForeignKeys[2].RefTable = UsersTable
 	FilesTable.ForeignKeys[0].RefTable = CompaniesTable
+	InventoriesTable.ForeignKeys[0].RefTable = CompaniesTable
+	InventoryMovementsTable.ForeignKeys[0].RefTable = CompaniesTable
+	InventoryMovementsTable.ForeignKeys[1].RefTable = InventoriesTable
+	InvoicesTable.ForeignKeys[0].RefTable = CompaniesTable
+	InvoicesTable.ForeignKeys[1].RefTable = CustomersTable
+	InvoicesTable.ForeignKeys[2].RefTable = UsersTable
 	MemberSignupTokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	MemberSignupTokensTable.ForeignKeys[1].RefTable = UsersTable
 	PayablesTable.ForeignKeys[0].RefTable = CompaniesTable

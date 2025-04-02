@@ -11,6 +11,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/project"
@@ -40,6 +41,7 @@ type UserQuery struct {
 	withLeader                         *UserQuery
 	withCreatedMemberSignupTokens      *MemberSignupTokenQuery
 	withEmployee                       *EmployeeQuery
+	withIssuedInvoices                 *InvoiceQuery
 	withCreatedProjects                *ProjectQuery
 	withLeaderedProjects               *ProjectQuery
 	withAssignedProjectTasks           *ProjectTaskQuery
@@ -58,6 +60,7 @@ type UserQuery struct {
 	withNamedAssignedRoles             map[string]*UserRoleQuery
 	withNamedSubordinates              map[string]*UserQuery
 	withNamedCreatedMemberSignupTokens map[string]*MemberSignupTokenQuery
+	withNamedIssuedInvoices            map[string]*InvoiceQuery
 	withNamedCreatedProjects           map[string]*ProjectQuery
 	withNamedLeaderedProjects          map[string]*ProjectQuery
 	withNamedAssignedProjectTasks      map[string]*ProjectTaskQuery
@@ -251,6 +254,28 @@ func (uq *UserQuery) QueryEmployee() *EmployeeQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(employee.Table, employee.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, user.EmployeeTable, user.EmployeeColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryIssuedInvoices chains the current query on the "issuedInvoices" edge.
+func (uq *UserQuery) QueryIssuedInvoices() *InvoiceQuery {
+	query := (&InvoiceClient{config: uq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := uq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := uq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(user.Table, user.FieldID, selector),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, user.IssuedInvoicesTable, user.IssuedInvoicesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -677,6 +702,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 		withLeader:                    uq.withLeader.Clone(),
 		withCreatedMemberSignupTokens: uq.withCreatedMemberSignupTokens.Clone(),
 		withEmployee:                  uq.withEmployee.Clone(),
+		withIssuedInvoices:            uq.withIssuedInvoices.Clone(),
 		withCreatedProjects:           uq.withCreatedProjects.Clone(),
 		withLeaderedProjects:          uq.withLeaderedProjects.Clone(),
 		withAssignedProjectTasks:      uq.withAssignedProjectTasks.Clone(),
@@ -768,6 +794,17 @@ func (uq *UserQuery) WithEmployee(opts ...func(*EmployeeQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withEmployee = query
+	return uq
+}
+
+// WithIssuedInvoices tells the query-builder to eager-load the nodes that are connected to
+// the "issuedInvoices" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithIssuedInvoices(opts ...func(*InvoiceQuery)) *UserQuery {
+	query := (&InvoiceClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	uq.withIssuedInvoices = query
 	return uq
 }
 
@@ -960,7 +997,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		nodes       = []*User{}
 		withFKs     = uq.withFKs
 		_spec       = uq.querySpec()
-		loadedTypes = [17]bool{
+		loadedTypes = [18]bool{
 			uq.withAccountingEntries != nil,
 			uq.withCompany != nil,
 			uq.withAssignedRoles != nil,
@@ -968,6 +1005,7 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 			uq.withLeader != nil,
 			uq.withCreatedMemberSignupTokens != nil,
 			uq.withEmployee != nil,
+			uq.withIssuedInvoices != nil,
 			uq.withCreatedProjects != nil,
 			uq.withLeaderedProjects != nil,
 			uq.withAssignedProjectTasks != nil,
@@ -1053,6 +1091,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	if query := uq.withEmployee; query != nil {
 		if err := uq.loadEmployee(ctx, query, nodes, nil,
 			func(n *User, e *Employee) { n.Edges.Employee = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := uq.withIssuedInvoices; query != nil {
+		if err := uq.loadIssuedInvoices(ctx, query, nodes,
+			func(n *User) { n.Edges.IssuedInvoices = []*Invoice{} },
+			func(n *User, e *Invoice) { n.Edges.IssuedInvoices = append(n.Edges.IssuedInvoices, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1160,6 +1205,13 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 		if err := uq.loadCreatedMemberSignupTokens(ctx, query, nodes,
 			func(n *User) { n.appendNamedCreatedMemberSignupTokens(name) },
 			func(n *User, e *MemberSignupToken) { n.appendNamedCreatedMemberSignupTokens(name, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range uq.withNamedIssuedInvoices {
+		if err := uq.loadIssuedInvoices(ctx, query, nodes,
+			func(n *User) { n.appendNamedIssuedInvoices(name) },
+			func(n *User, e *Invoice) { n.appendNamedIssuedInvoices(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1481,6 +1533,37 @@ func (uq *UserQuery) loadEmployee(ctx context.Context, query *EmployeeQuery, nod
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "user_employee" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (uq *UserQuery) loadIssuedInvoices(ctx context.Context, query *InvoiceQuery, nodes []*User, init func(*User), assign func(*User, *Invoice)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*User)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Invoice(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(user.IssuedInvoicesColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.user_issued_invoices
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "user_issued_invoices" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "user_issued_invoices" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -1987,6 +2070,20 @@ func (uq *UserQuery) WithNamedCreatedMemberSignupTokens(name string, opts ...fun
 		uq.withNamedCreatedMemberSignupTokens = make(map[string]*MemberSignupTokenQuery)
 	}
 	uq.withNamedCreatedMemberSignupTokens[name] = query
+	return uq
+}
+
+// WithNamedIssuedInvoices tells the query-builder to eager-load the nodes that are connected to the "issuedInvoices"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithNamedIssuedInvoices(name string, opts ...func(*InvoiceQuery)) *UserQuery {
+	query := (&InvoiceClient{config: uq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if uq.withNamedIssuedInvoices == nil {
+		uq.withNamedIssuedInvoices = make(map[string]*InvoiceQuery)
+	}
+	uq.withNamedIssuedInvoices[name] = query
 	return uq
 }
 

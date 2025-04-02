@@ -71,6 +71,26 @@ func (eu *EmployeeUpdate) SetNillableName(s *string) *EmployeeUpdate {
 	return eu
 }
 
+// SetBirthdate sets the "birthdate" field.
+func (eu *EmployeeUpdate) SetBirthdate(t time.Time) *EmployeeUpdate {
+	eu.mutation.SetBirthdate(t)
+	return eu
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableBirthdate(t *time.Time) *EmployeeUpdate {
+	if t != nil {
+		eu.SetBirthdate(*t)
+	}
+	return eu
+}
+
+// ClearBirthdate clears the value of the "birthdate" field.
+func (eu *EmployeeUpdate) ClearBirthdate() *EmployeeUpdate {
+	eu.mutation.ClearBirthdate()
+	return eu
+}
+
 // SetGender sets the "gender" field.
 func (eu *EmployeeUpdate) SetGender(e employee.Gender) *EmployeeUpdate {
 	eu.mutation.SetGender(e)
@@ -99,9 +119,23 @@ func (eu *EmployeeUpdate) SetNillablePosition(s *string) *EmployeeUpdate {
 	return eu
 }
 
-// ClearPosition clears the value of the "position" field.
-func (eu *EmployeeUpdate) ClearPosition() *EmployeeUpdate {
-	eu.mutation.ClearPosition()
+// SetDepartment sets the "department" field.
+func (eu *EmployeeUpdate) SetDepartment(s string) *EmployeeUpdate {
+	eu.mutation.SetDepartment(s)
+	return eu
+}
+
+// SetNillableDepartment sets the "department" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableDepartment(s *string) *EmployeeUpdate {
+	if s != nil {
+		eu.SetDepartment(*s)
+	}
+	return eu
+}
+
+// ClearDepartment clears the value of the "department" field.
+func (eu *EmployeeUpdate) ClearDepartment() *EmployeeUpdate {
+	eu.mutation.ClearDepartment()
 	return eu
 }
 
@@ -136,6 +170,114 @@ func (eu *EmployeeUpdate) SetNillablePhone(s *string) *EmployeeUpdate {
 	if s != nil {
 		eu.SetPhone(*s)
 	}
+	return eu
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (eu *EmployeeUpdate) ClearPhone() *EmployeeUpdate {
+	eu.mutation.ClearPhone()
+	return eu
+}
+
+// SetAvatar sets the "avatar" field.
+func (eu *EmployeeUpdate) SetAvatar(s string) *EmployeeUpdate {
+	eu.mutation.SetAvatar(s)
+	return eu
+}
+
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableAvatar(s *string) *EmployeeUpdate {
+	if s != nil {
+		eu.SetAvatar(*s)
+	}
+	return eu
+}
+
+// ClearAvatar clears the value of the "avatar" field.
+func (eu *EmployeeUpdate) ClearAvatar() *EmployeeUpdate {
+	eu.mutation.ClearAvatar()
+	return eu
+}
+
+// SetHireDate sets the "hireDate" field.
+func (eu *EmployeeUpdate) SetHireDate(t time.Time) *EmployeeUpdate {
+	eu.mutation.SetHireDate(t)
+	return eu
+}
+
+// SetNillableHireDate sets the "hireDate" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableHireDate(t *time.Time) *EmployeeUpdate {
+	if t != nil {
+		eu.SetHireDate(*t)
+	}
+	return eu
+}
+
+// SetMonthlySalary sets the "monthlySalary" field.
+func (eu *EmployeeUpdate) SetMonthlySalary(i int) *EmployeeUpdate {
+	eu.mutation.ResetMonthlySalary()
+	eu.mutation.SetMonthlySalary(i)
+	return eu
+}
+
+// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableMonthlySalary(i *int) *EmployeeUpdate {
+	if i != nil {
+		eu.SetMonthlySalary(*i)
+	}
+	return eu
+}
+
+// AddMonthlySalary adds i to the "monthlySalary" field.
+func (eu *EmployeeUpdate) AddMonthlySalary(i int) *EmployeeUpdate {
+	eu.mutation.AddMonthlySalary(i)
+	return eu
+}
+
+// SetStatus sets the "status" field.
+func (eu *EmployeeUpdate) SetStatus(e employee.Status) *EmployeeUpdate {
+	eu.mutation.SetStatus(e)
+	return eu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableStatus(e *employee.Status) *EmployeeUpdate {
+	if e != nil {
+		eu.SetStatus(*e)
+	}
+	return eu
+}
+
+// ClearStatus clears the value of the "status" field.
+func (eu *EmployeeUpdate) ClearStatus() *EmployeeUpdate {
+	eu.mutation.ClearStatus()
+	return eu
+}
+
+// SetPerformaceScore sets the "performaceScore" field.
+func (eu *EmployeeUpdate) SetPerformaceScore(f float64) *EmployeeUpdate {
+	eu.mutation.ResetPerformaceScore()
+	eu.mutation.SetPerformaceScore(f)
+	return eu
+}
+
+// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillablePerformaceScore(f *float64) *EmployeeUpdate {
+	if f != nil {
+		eu.SetPerformaceScore(*f)
+	}
+	return eu
+}
+
+// AddPerformaceScore adds f to the "performaceScore" field.
+func (eu *EmployeeUpdate) AddPerformaceScore(f float64) *EmployeeUpdate {
+	eu.mutation.AddPerformaceScore(f)
+	return eu
+}
+
+// ClearPerformaceScore clears the value of the "performaceScore" field.
+func (eu *EmployeeUpdate) ClearPerformaceScore() *EmployeeUpdate {
+	eu.mutation.ClearPerformaceScore()
 	return eu
 }
 
@@ -177,6 +319,40 @@ func (eu *EmployeeUpdate) SetUser(u *User) *EmployeeUpdate {
 	return eu.SetUserID(u.ID)
 }
 
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (eu *EmployeeUpdate) AddSubordinateIDs(ids ...int) *EmployeeUpdate {
+	eu.mutation.AddSubordinateIDs(ids...)
+	return eu
+}
+
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (eu *EmployeeUpdate) AddSubordinates(e ...*Employee) *EmployeeUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return eu.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (eu *EmployeeUpdate) SetLeaderID(id int) *EmployeeUpdate {
+	eu.mutation.SetLeaderID(id)
+	return eu
+}
+
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (eu *EmployeeUpdate) SetNillableLeaderID(id *int) *EmployeeUpdate {
+	if id != nil {
+		eu = eu.SetLeaderID(*id)
+	}
+	return eu
+}
+
+// SetLeader sets the "leader" edge to the Employee entity.
+func (eu *EmployeeUpdate) SetLeader(e *Employee) *EmployeeUpdate {
+	return eu.SetLeaderID(e.ID)
+}
+
 // Mutation returns the EmployeeMutation object of the builder.
 func (eu *EmployeeUpdate) Mutation() *EmployeeMutation {
 	return eu.mutation
@@ -191,6 +367,33 @@ func (eu *EmployeeUpdate) ClearCompany() *EmployeeUpdate {
 // ClearUser clears the "user" edge to the User entity.
 func (eu *EmployeeUpdate) ClearUser() *EmployeeUpdate {
 	eu.mutation.ClearUser()
+	return eu
+}
+
+// ClearSubordinates clears all "subordinates" edges to the Employee entity.
+func (eu *EmployeeUpdate) ClearSubordinates() *EmployeeUpdate {
+	eu.mutation.ClearSubordinates()
+	return eu
+}
+
+// RemoveSubordinateIDs removes the "subordinates" edge to Employee entities by IDs.
+func (eu *EmployeeUpdate) RemoveSubordinateIDs(ids ...int) *EmployeeUpdate {
+	eu.mutation.RemoveSubordinateIDs(ids...)
+	return eu
+}
+
+// RemoveSubordinates removes "subordinates" edges to Employee entities.
+func (eu *EmployeeUpdate) RemoveSubordinates(e ...*Employee) *EmployeeUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return eu.RemoveSubordinateIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the Employee entity.
+func (eu *EmployeeUpdate) ClearLeader() *EmployeeUpdate {
+	eu.mutation.ClearLeader()
 	return eu
 }
 
@@ -242,6 +445,21 @@ func (eu *EmployeeUpdate) check() error {
 			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "Employee.gender": %w`, err)}
 		}
 	}
+	if v, ok := eu.mutation.MonthlySalary(); ok {
+		if err := employee.MonthlySalaryValidator(v); err != nil {
+			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+		}
+	}
+	if v, ok := eu.mutation.Status(); ok {
+		if err := employee.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Employee.status": %w`, err)}
+		}
+	}
+	if v, ok := eu.mutation.PerformaceScore(); ok {
+		if err := employee.PerformaceScoreValidator(v); err != nil {
+			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -275,14 +493,23 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := eu.mutation.Name(); ok {
 		_spec.SetField(employee.FieldName, field.TypeString, value)
 	}
+	if value, ok := eu.mutation.Birthdate(); ok {
+		_spec.SetField(employee.FieldBirthdate, field.TypeTime, value)
+	}
+	if eu.mutation.BirthdateCleared() {
+		_spec.ClearField(employee.FieldBirthdate, field.TypeTime)
+	}
 	if value, ok := eu.mutation.Gender(); ok {
 		_spec.SetField(employee.FieldGender, field.TypeEnum, value)
 	}
 	if value, ok := eu.mutation.Position(); ok {
 		_spec.SetField(employee.FieldPosition, field.TypeString, value)
 	}
-	if eu.mutation.PositionCleared() {
-		_spec.ClearField(employee.FieldPosition, field.TypeString)
+	if value, ok := eu.mutation.Department(); ok {
+		_spec.SetField(employee.FieldDepartment, field.TypeString, value)
+	}
+	if eu.mutation.DepartmentCleared() {
+		_spec.ClearField(employee.FieldDepartment, field.TypeString)
 	}
 	if value, ok := eu.mutation.Email(); ok {
 		_spec.SetField(employee.FieldEmail, field.TypeString, value)
@@ -292,6 +519,39 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := eu.mutation.Phone(); ok {
 		_spec.SetField(employee.FieldPhone, field.TypeString, value)
+	}
+	if eu.mutation.PhoneCleared() {
+		_spec.ClearField(employee.FieldPhone, field.TypeString)
+	}
+	if value, ok := eu.mutation.Avatar(); ok {
+		_spec.SetField(employee.FieldAvatar, field.TypeString, value)
+	}
+	if eu.mutation.AvatarCleared() {
+		_spec.ClearField(employee.FieldAvatar, field.TypeString)
+	}
+	if value, ok := eu.mutation.HireDate(); ok {
+		_spec.SetField(employee.FieldHireDate, field.TypeTime, value)
+	}
+	if value, ok := eu.mutation.MonthlySalary(); ok {
+		_spec.SetField(employee.FieldMonthlySalary, field.TypeInt, value)
+	}
+	if value, ok := eu.mutation.AddedMonthlySalary(); ok {
+		_spec.AddField(employee.FieldMonthlySalary, field.TypeInt, value)
+	}
+	if value, ok := eu.mutation.Status(); ok {
+		_spec.SetField(employee.FieldStatus, field.TypeEnum, value)
+	}
+	if eu.mutation.StatusCleared() {
+		_spec.ClearField(employee.FieldStatus, field.TypeEnum)
+	}
+	if value, ok := eu.mutation.PerformaceScore(); ok {
+		_spec.SetField(employee.FieldPerformaceScore, field.TypeFloat64, value)
+	}
+	if value, ok := eu.mutation.AddedPerformaceScore(); ok {
+		_spec.AddField(employee.FieldPerformaceScore, field.TypeFloat64, value)
+	}
+	if eu.mutation.PerformaceScoreCleared() {
+		_spec.ClearField(employee.FieldPerformaceScore, field.TypeFloat64)
 	}
 	if eu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -344,6 +604,80 @@ func (eu *EmployeeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if eu.mutation.SubordinatesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := eu.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !eu.mutation.SubordinatesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := eu.mutation.SubordinatesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if eu.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := eu.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -413,6 +747,26 @@ func (euo *EmployeeUpdateOne) SetNillableName(s *string) *EmployeeUpdateOne {
 	return euo
 }
 
+// SetBirthdate sets the "birthdate" field.
+func (euo *EmployeeUpdateOne) SetBirthdate(t time.Time) *EmployeeUpdateOne {
+	euo.mutation.SetBirthdate(t)
+	return euo
+}
+
+// SetNillableBirthdate sets the "birthdate" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableBirthdate(t *time.Time) *EmployeeUpdateOne {
+	if t != nil {
+		euo.SetBirthdate(*t)
+	}
+	return euo
+}
+
+// ClearBirthdate clears the value of the "birthdate" field.
+func (euo *EmployeeUpdateOne) ClearBirthdate() *EmployeeUpdateOne {
+	euo.mutation.ClearBirthdate()
+	return euo
+}
+
 // SetGender sets the "gender" field.
 func (euo *EmployeeUpdateOne) SetGender(e employee.Gender) *EmployeeUpdateOne {
 	euo.mutation.SetGender(e)
@@ -441,9 +795,23 @@ func (euo *EmployeeUpdateOne) SetNillablePosition(s *string) *EmployeeUpdateOne 
 	return euo
 }
 
-// ClearPosition clears the value of the "position" field.
-func (euo *EmployeeUpdateOne) ClearPosition() *EmployeeUpdateOne {
-	euo.mutation.ClearPosition()
+// SetDepartment sets the "department" field.
+func (euo *EmployeeUpdateOne) SetDepartment(s string) *EmployeeUpdateOne {
+	euo.mutation.SetDepartment(s)
+	return euo
+}
+
+// SetNillableDepartment sets the "department" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableDepartment(s *string) *EmployeeUpdateOne {
+	if s != nil {
+		euo.SetDepartment(*s)
+	}
+	return euo
+}
+
+// ClearDepartment clears the value of the "department" field.
+func (euo *EmployeeUpdateOne) ClearDepartment() *EmployeeUpdateOne {
+	euo.mutation.ClearDepartment()
 	return euo
 }
 
@@ -478,6 +846,114 @@ func (euo *EmployeeUpdateOne) SetNillablePhone(s *string) *EmployeeUpdateOne {
 	if s != nil {
 		euo.SetPhone(*s)
 	}
+	return euo
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (euo *EmployeeUpdateOne) ClearPhone() *EmployeeUpdateOne {
+	euo.mutation.ClearPhone()
+	return euo
+}
+
+// SetAvatar sets the "avatar" field.
+func (euo *EmployeeUpdateOne) SetAvatar(s string) *EmployeeUpdateOne {
+	euo.mutation.SetAvatar(s)
+	return euo
+}
+
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableAvatar(s *string) *EmployeeUpdateOne {
+	if s != nil {
+		euo.SetAvatar(*s)
+	}
+	return euo
+}
+
+// ClearAvatar clears the value of the "avatar" field.
+func (euo *EmployeeUpdateOne) ClearAvatar() *EmployeeUpdateOne {
+	euo.mutation.ClearAvatar()
+	return euo
+}
+
+// SetHireDate sets the "hireDate" field.
+func (euo *EmployeeUpdateOne) SetHireDate(t time.Time) *EmployeeUpdateOne {
+	euo.mutation.SetHireDate(t)
+	return euo
+}
+
+// SetNillableHireDate sets the "hireDate" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableHireDate(t *time.Time) *EmployeeUpdateOne {
+	if t != nil {
+		euo.SetHireDate(*t)
+	}
+	return euo
+}
+
+// SetMonthlySalary sets the "monthlySalary" field.
+func (euo *EmployeeUpdateOne) SetMonthlySalary(i int) *EmployeeUpdateOne {
+	euo.mutation.ResetMonthlySalary()
+	euo.mutation.SetMonthlySalary(i)
+	return euo
+}
+
+// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableMonthlySalary(i *int) *EmployeeUpdateOne {
+	if i != nil {
+		euo.SetMonthlySalary(*i)
+	}
+	return euo
+}
+
+// AddMonthlySalary adds i to the "monthlySalary" field.
+func (euo *EmployeeUpdateOne) AddMonthlySalary(i int) *EmployeeUpdateOne {
+	euo.mutation.AddMonthlySalary(i)
+	return euo
+}
+
+// SetStatus sets the "status" field.
+func (euo *EmployeeUpdateOne) SetStatus(e employee.Status) *EmployeeUpdateOne {
+	euo.mutation.SetStatus(e)
+	return euo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableStatus(e *employee.Status) *EmployeeUpdateOne {
+	if e != nil {
+		euo.SetStatus(*e)
+	}
+	return euo
+}
+
+// ClearStatus clears the value of the "status" field.
+func (euo *EmployeeUpdateOne) ClearStatus() *EmployeeUpdateOne {
+	euo.mutation.ClearStatus()
+	return euo
+}
+
+// SetPerformaceScore sets the "performaceScore" field.
+func (euo *EmployeeUpdateOne) SetPerformaceScore(f float64) *EmployeeUpdateOne {
+	euo.mutation.ResetPerformaceScore()
+	euo.mutation.SetPerformaceScore(f)
+	return euo
+}
+
+// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillablePerformaceScore(f *float64) *EmployeeUpdateOne {
+	if f != nil {
+		euo.SetPerformaceScore(*f)
+	}
+	return euo
+}
+
+// AddPerformaceScore adds f to the "performaceScore" field.
+func (euo *EmployeeUpdateOne) AddPerformaceScore(f float64) *EmployeeUpdateOne {
+	euo.mutation.AddPerformaceScore(f)
+	return euo
+}
+
+// ClearPerformaceScore clears the value of the "performaceScore" field.
+func (euo *EmployeeUpdateOne) ClearPerformaceScore() *EmployeeUpdateOne {
+	euo.mutation.ClearPerformaceScore()
 	return euo
 }
 
@@ -519,6 +995,40 @@ func (euo *EmployeeUpdateOne) SetUser(u *User) *EmployeeUpdateOne {
 	return euo.SetUserID(u.ID)
 }
 
+// AddSubordinateIDs adds the "subordinates" edge to the Employee entity by IDs.
+func (euo *EmployeeUpdateOne) AddSubordinateIDs(ids ...int) *EmployeeUpdateOne {
+	euo.mutation.AddSubordinateIDs(ids...)
+	return euo
+}
+
+// AddSubordinates adds the "subordinates" edges to the Employee entity.
+func (euo *EmployeeUpdateOne) AddSubordinates(e ...*Employee) *EmployeeUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euo.AddSubordinateIDs(ids...)
+}
+
+// SetLeaderID sets the "leader" edge to the Employee entity by ID.
+func (euo *EmployeeUpdateOne) SetLeaderID(id int) *EmployeeUpdateOne {
+	euo.mutation.SetLeaderID(id)
+	return euo
+}
+
+// SetNillableLeaderID sets the "leader" edge to the Employee entity by ID if the given value is not nil.
+func (euo *EmployeeUpdateOne) SetNillableLeaderID(id *int) *EmployeeUpdateOne {
+	if id != nil {
+		euo = euo.SetLeaderID(*id)
+	}
+	return euo
+}
+
+// SetLeader sets the "leader" edge to the Employee entity.
+func (euo *EmployeeUpdateOne) SetLeader(e *Employee) *EmployeeUpdateOne {
+	return euo.SetLeaderID(e.ID)
+}
+
 // Mutation returns the EmployeeMutation object of the builder.
 func (euo *EmployeeUpdateOne) Mutation() *EmployeeMutation {
 	return euo.mutation
@@ -533,6 +1043,33 @@ func (euo *EmployeeUpdateOne) ClearCompany() *EmployeeUpdateOne {
 // ClearUser clears the "user" edge to the User entity.
 func (euo *EmployeeUpdateOne) ClearUser() *EmployeeUpdateOne {
 	euo.mutation.ClearUser()
+	return euo
+}
+
+// ClearSubordinates clears all "subordinates" edges to the Employee entity.
+func (euo *EmployeeUpdateOne) ClearSubordinates() *EmployeeUpdateOne {
+	euo.mutation.ClearSubordinates()
+	return euo
+}
+
+// RemoveSubordinateIDs removes the "subordinates" edge to Employee entities by IDs.
+func (euo *EmployeeUpdateOne) RemoveSubordinateIDs(ids ...int) *EmployeeUpdateOne {
+	euo.mutation.RemoveSubordinateIDs(ids...)
+	return euo
+}
+
+// RemoveSubordinates removes "subordinates" edges to Employee entities.
+func (euo *EmployeeUpdateOne) RemoveSubordinates(e ...*Employee) *EmployeeUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euo.RemoveSubordinateIDs(ids...)
+}
+
+// ClearLeader clears the "leader" edge to the Employee entity.
+func (euo *EmployeeUpdateOne) ClearLeader() *EmployeeUpdateOne {
+	euo.mutation.ClearLeader()
 	return euo
 }
 
@@ -597,6 +1134,21 @@ func (euo *EmployeeUpdateOne) check() error {
 			return &ValidationError{Name: "gender", err: fmt.Errorf(`generated: validator failed for field "Employee.gender": %w`, err)}
 		}
 	}
+	if v, ok := euo.mutation.MonthlySalary(); ok {
+		if err := employee.MonthlySalaryValidator(v); err != nil {
+			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+		}
+	}
+	if v, ok := euo.mutation.Status(); ok {
+		if err := employee.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Employee.status": %w`, err)}
+		}
+	}
+	if v, ok := euo.mutation.PerformaceScore(); ok {
+		if err := employee.PerformaceScoreValidator(v); err != nil {
+			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -647,14 +1199,23 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 	if value, ok := euo.mutation.Name(); ok {
 		_spec.SetField(employee.FieldName, field.TypeString, value)
 	}
+	if value, ok := euo.mutation.Birthdate(); ok {
+		_spec.SetField(employee.FieldBirthdate, field.TypeTime, value)
+	}
+	if euo.mutation.BirthdateCleared() {
+		_spec.ClearField(employee.FieldBirthdate, field.TypeTime)
+	}
 	if value, ok := euo.mutation.Gender(); ok {
 		_spec.SetField(employee.FieldGender, field.TypeEnum, value)
 	}
 	if value, ok := euo.mutation.Position(); ok {
 		_spec.SetField(employee.FieldPosition, field.TypeString, value)
 	}
-	if euo.mutation.PositionCleared() {
-		_spec.ClearField(employee.FieldPosition, field.TypeString)
+	if value, ok := euo.mutation.Department(); ok {
+		_spec.SetField(employee.FieldDepartment, field.TypeString, value)
+	}
+	if euo.mutation.DepartmentCleared() {
+		_spec.ClearField(employee.FieldDepartment, field.TypeString)
 	}
 	if value, ok := euo.mutation.Email(); ok {
 		_spec.SetField(employee.FieldEmail, field.TypeString, value)
@@ -664,6 +1225,39 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 	}
 	if value, ok := euo.mutation.Phone(); ok {
 		_spec.SetField(employee.FieldPhone, field.TypeString, value)
+	}
+	if euo.mutation.PhoneCleared() {
+		_spec.ClearField(employee.FieldPhone, field.TypeString)
+	}
+	if value, ok := euo.mutation.Avatar(); ok {
+		_spec.SetField(employee.FieldAvatar, field.TypeString, value)
+	}
+	if euo.mutation.AvatarCleared() {
+		_spec.ClearField(employee.FieldAvatar, field.TypeString)
+	}
+	if value, ok := euo.mutation.HireDate(); ok {
+		_spec.SetField(employee.FieldHireDate, field.TypeTime, value)
+	}
+	if value, ok := euo.mutation.MonthlySalary(); ok {
+		_spec.SetField(employee.FieldMonthlySalary, field.TypeInt, value)
+	}
+	if value, ok := euo.mutation.AddedMonthlySalary(); ok {
+		_spec.AddField(employee.FieldMonthlySalary, field.TypeInt, value)
+	}
+	if value, ok := euo.mutation.Status(); ok {
+		_spec.SetField(employee.FieldStatus, field.TypeEnum, value)
+	}
+	if euo.mutation.StatusCleared() {
+		_spec.ClearField(employee.FieldStatus, field.TypeEnum)
+	}
+	if value, ok := euo.mutation.PerformaceScore(); ok {
+		_spec.SetField(employee.FieldPerformaceScore, field.TypeFloat64, value)
+	}
+	if value, ok := euo.mutation.AddedPerformaceScore(); ok {
+		_spec.AddField(employee.FieldPerformaceScore, field.TypeFloat64, value)
+	}
+	if euo.mutation.PerformaceScoreCleared() {
+		_spec.ClearField(employee.FieldPerformaceScore, field.TypeFloat64)
 	}
 	if euo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -716,6 +1310,80 @@ func (euo *EmployeeUpdateOne) sqlSave(ctx context.Context) (_node *Employee, err
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euo.mutation.SubordinatesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euo.mutation.RemovedSubordinatesIDs(); len(nodes) > 0 && !euo.mutation.SubordinatesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euo.mutation.SubordinatesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   employee.SubordinatesTable,
+			Columns: []string{employee.SubordinatesColumn},
+			Bidi:    true,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euo.mutation.LeaderCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euo.mutation.LeaderIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   employee.LeaderTable,
+			Columns: []string{employee.LeaderColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(employee.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

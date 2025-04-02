@@ -9,6 +9,9 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -197,6 +200,36 @@ func init() {
 	employeeDescName := employeeFields[0].Descriptor()
 	// employee.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	employee.NameValidator = employeeDescName.Validators[0].(func(string) error)
+	// employeeDescDepartment is the schema descriptor for department field.
+	employeeDescDepartment := employeeFields[4].Descriptor()
+	// employee.DefaultDepartment holds the default value on creation for the department field.
+	employee.DefaultDepartment = employeeDescDepartment.Default.(string)
+	// employeeDescMonthlySalary is the schema descriptor for monthlySalary field.
+	employeeDescMonthlySalary := employeeFields[9].Descriptor()
+	// employee.DefaultMonthlySalary holds the default value on creation for the monthlySalary field.
+	employee.DefaultMonthlySalary = employeeDescMonthlySalary.Default.(int)
+	// employee.MonthlySalaryValidator is a validator for the "monthlySalary" field. It is called by the builders before save.
+	employee.MonthlySalaryValidator = employeeDescMonthlySalary.Validators[0].(func(int) error)
+	// employeeDescPerformaceScore is the schema descriptor for performaceScore field.
+	employeeDescPerformaceScore := employeeFields[11].Descriptor()
+	// employee.DefaultPerformaceScore holds the default value on creation for the performaceScore field.
+	employee.DefaultPerformaceScore = employeeDescPerformaceScore.Default.(float64)
+	// employee.PerformaceScoreValidator is a validator for the "performaceScore" field. It is called by the builders before save.
+	employee.PerformaceScoreValidator = func() func(float64) error {
+		validators := employeeDescPerformaceScore.Validators
+		fns := [...]func(float64) error{
+			validators[0].(func(float64) error),
+			validators[1].(func(float64) error),
+		}
+		return func(performaceScore float64) error {
+			for _, fn := range fns {
+				if err := fn(performaceScore); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	fileMixin := schema.File{}.Mixin()
 	fileMixinFields0 := fileMixin[0].Fields()
 	_ = fileMixinFields0
@@ -216,6 +249,117 @@ func init() {
 	fileDescURI := fileFields[3].Descriptor()
 	// file.URIValidator is a validator for the "uri" field. It is called by the builders before save.
 	file.URIValidator = fileDescURI.Validators[0].(func(string) error)
+	inventoryMixin := schema.Inventory{}.Mixin()
+	inventoryMixinFields0 := inventoryMixin[0].Fields()
+	_ = inventoryMixinFields0
+	inventoryFields := schema.Inventory{}.Fields()
+	_ = inventoryFields
+	// inventoryDescCreatedAt is the schema descriptor for createdAt field.
+	inventoryDescCreatedAt := inventoryMixinFields0[0].Descriptor()
+	// inventory.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	inventory.DefaultCreatedAt = inventoryDescCreatedAt.Default.(func() time.Time)
+	// inventoryDescUpdatedAt is the schema descriptor for updatedAt field.
+	inventoryDescUpdatedAt := inventoryMixinFields0[1].Descriptor()
+	// inventory.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	inventory.DefaultUpdatedAt = inventoryDescUpdatedAt.Default.(func() time.Time)
+	// inventory.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	inventory.UpdateDefaultUpdatedAt = inventoryDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// inventoryDescName is the schema descriptor for name field.
+	inventoryDescName := inventoryFields[0].Descriptor()
+	// inventory.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	inventory.NameValidator = inventoryDescName.Validators[0].(func(string) error)
+	// inventoryDescQuantity is the schema descriptor for quantity field.
+	inventoryDescQuantity := inventoryFields[2].Descriptor()
+	// inventory.QuantityValidator is a validator for the "quantity" field. It is called by the builders before save.
+	inventory.QuantityValidator = inventoryDescQuantity.Validators[0].(func(float64) error)
+	// inventoryDescMinimumLevel is the schema descriptor for minimumLevel field.
+	inventoryDescMinimumLevel := inventoryFields[4].Descriptor()
+	// inventory.MinimumLevelValidator is a validator for the "minimumLevel" field. It is called by the builders before save.
+	inventory.MinimumLevelValidator = inventoryDescMinimumLevel.Validators[0].(func(float64) error)
+	// inventoryDescCurrentValue is the schema descriptor for currentValue field.
+	inventoryDescCurrentValue := inventoryFields[5].Descriptor()
+	// inventory.CurrentValueValidator is a validator for the "currentValue" field. It is called by the builders before save.
+	inventory.CurrentValueValidator = inventoryDescCurrentValue.Validators[0].(func(float64) error)
+	// inventoryDescNotes is the schema descriptor for notes field.
+	inventoryDescNotes := inventoryFields[6].Descriptor()
+	// inventory.NotesValidator is a validator for the "notes" field. It is called by the builders before save.
+	inventory.NotesValidator = inventoryDescNotes.Validators[0].(func(string) error)
+	inventorymovementMixin := schema.InventoryMovement{}.Mixin()
+	inventorymovementMixinFields0 := inventorymovementMixin[0].Fields()
+	_ = inventorymovementMixinFields0
+	inventorymovementFields := schema.InventoryMovement{}.Fields()
+	_ = inventorymovementFields
+	// inventorymovementDescCreatedAt is the schema descriptor for createdAt field.
+	inventorymovementDescCreatedAt := inventorymovementMixinFields0[0].Descriptor()
+	// inventorymovement.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	inventorymovement.DefaultCreatedAt = inventorymovementDescCreatedAt.Default.(func() time.Time)
+	// inventorymovementDescUpdatedAt is the schema descriptor for updatedAt field.
+	inventorymovementDescUpdatedAt := inventorymovementMixinFields0[1].Descriptor()
+	// inventorymovement.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	inventorymovement.DefaultUpdatedAt = inventorymovementDescUpdatedAt.Default.(func() time.Time)
+	// inventorymovement.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	inventorymovement.UpdateDefaultUpdatedAt = inventorymovementDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// inventorymovementDescDate is the schema descriptor for date field.
+	inventorymovementDescDate := inventorymovementFields[3].Descriptor()
+	// inventorymovement.DefaultDate holds the default value on creation for the date field.
+	inventorymovement.DefaultDate = inventorymovementDescDate.Default.(func() time.Time)
+	invoiceMixin := schema.Invoice{}.Mixin()
+	invoiceMixinFields0 := invoiceMixin[0].Fields()
+	_ = invoiceMixinFields0
+	invoiceFields := schema.Invoice{}.Fields()
+	_ = invoiceFields
+	// invoiceDescCreatedAt is the schema descriptor for createdAt field.
+	invoiceDescCreatedAt := invoiceMixinFields0[0].Descriptor()
+	// invoice.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	invoice.DefaultCreatedAt = invoiceDescCreatedAt.Default.(func() time.Time)
+	// invoiceDescUpdatedAt is the schema descriptor for updatedAt field.
+	invoiceDescUpdatedAt := invoiceMixinFields0[1].Descriptor()
+	// invoice.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	invoice.DefaultUpdatedAt = invoiceDescUpdatedAt.Default.(func() time.Time)
+	// invoice.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	invoice.UpdateDefaultUpdatedAt = invoiceDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// invoiceDescCustomerName is the schema descriptor for customerName field.
+	invoiceDescCustomerName := invoiceFields[12].Descriptor()
+	// invoice.DefaultCustomerName holds the default value on creation for the customerName field.
+	invoice.DefaultCustomerName = invoiceDescCustomerName.Default.(string)
+	// invoiceDescItems is the schema descriptor for items field.
+	invoiceDescItems := invoiceFields[18].Descriptor()
+	// invoice.ItemsValidator is a validator for the "items" field. It is called by the builders before save.
+	invoice.ItemsValidator = invoiceDescItems.Validators[0].(func(string) error)
+	// invoiceDescSubtotal is the schema descriptor for subtotal field.
+	invoiceDescSubtotal := invoiceFields[19].Descriptor()
+	// invoice.SubtotalValidator is a validator for the "subtotal" field. It is called by the builders before save.
+	invoice.SubtotalValidator = invoiceDescSubtotal.Validators[0].(func(float64) error)
+	// invoiceDescTax is the schema descriptor for tax field.
+	invoiceDescTax := invoiceFields[20].Descriptor()
+	// invoice.TaxValidator is a validator for the "tax" field. It is called by the builders before save.
+	invoice.TaxValidator = invoiceDescTax.Validators[0].(func(float64) error)
+	// invoiceDescTotal is the schema descriptor for total field.
+	invoiceDescTotal := invoiceFields[21].Descriptor()
+	// invoice.TotalValidator is a validator for the "total" field. It is called by the builders before save.
+	invoice.TotalValidator = invoiceDescTotal.Validators[0].(func(float64) error)
+	// invoiceDescSize is the schema descriptor for size field.
+	invoiceDescSize := invoiceFields[31].Descriptor()
+	// invoice.SizeValidator is a validator for the "size" field. It is called by the builders before save.
+	invoice.SizeValidator = invoiceDescSize.Validators[0].(func(float64) error)
+	// invoiceDescKeywords is the schema descriptor for keywords field.
+	invoiceDescKeywords := invoiceFields[32].Descriptor()
+	// invoice.KeywordsValidator is a validator for the "keywords" field. It is called by the builders before save.
+	invoice.KeywordsValidator = func() func(string) error {
+		validators := invoiceDescKeywords.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(keywords string) error {
+			for _, fn := range fns {
+				if err := fn(keywords); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	membersignuptokenMixin := schema.MemberSignupToken{}.Mixin()
 	membersignuptokenMixinFields0 := membersignuptokenMixin[0].Fields()
 	_ = membersignuptokenMixinFields0

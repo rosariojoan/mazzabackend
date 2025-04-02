@@ -11,6 +11,8 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
@@ -70,6 +72,42 @@ func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], fi
 		ctx, after, first, before, last,
 		generated.WithFileOrder(orderBy),
 		generated.WithFileFilter(where.Filter),
+	)
+}
+
+// Inventories is the resolver for the inventories field.
+func (r *queryResolver) Inventories(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryOrder, where *generated.InventoryWhereInput) (*generated.InventoryConnection, error) {
+	_, currentCompany := utils.GetSession(&ctx)
+	companyFilter := inventory.HasCompanyWith(company.IDEQ(currentCompany.ID))
+
+	return r.client.Inventory.Query().Where(companyFilter).Paginate(
+		ctx, after, first, before, last,
+		generated.WithInventoryOrder(orderBy),
+		generated.WithInventoryFilter(where.Filter),
+	)
+}
+
+// InventoryMovements is the resolver for the inventoryMovements field.
+func (r *queryResolver) InventoryMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryMovementOrder, where *generated.InventoryMovementWhereInput) (*generated.InventoryMovementConnection, error) {
+	_, currentCompany := utils.GetSession(&ctx)
+	companyFilter := inventorymovement.HasCompanyWith(company.IDEQ(currentCompany.ID))
+
+	return r.client.InventoryMovement.Query().Where(companyFilter).Paginate(
+		ctx, after, first, before, last,
+		generated.WithInventoryMovementOrder(orderBy),
+		generated.WithInventoryMovementFilter(where.Filter),
+	)
+}
+
+// Invoices is the resolver for the invoices field.
+func (r *queryResolver) Invoices(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InvoiceOrder, where *generated.InvoiceWhereInput) (*generated.InvoiceConnection, error) {
+	_, currentCompany := utils.GetSession(&ctx)
+	companyQ := company.IDEQ(currentCompany.ID)
+	// generated.CreateInvoiceInput
+	return r.client.Invoice.Query().QueryCompany().Where(companyQ).QueryInvoices().Paginate(
+		ctx, after, first, before, last,
+		generated.WithInvoiceOrder(orderBy),
+		generated.WithInvoiceFilter(where.Filter),
 	)
 }
 

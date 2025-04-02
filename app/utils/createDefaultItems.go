@@ -12,6 +12,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	descr := "Gerado automaticamente"
 	isDefault := true
 	stock := 0
+	
 	defaultProduct, err := client.Product.Create().SetInput(ent.CreateProductInput{
 		Stock: &stock,
 	}).Save(ctx)
@@ -21,10 +22,9 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 
 	defaultCustomer, err := client.Customer.Create().SetInput(ent.CreateCustomerInput{
 		Description: &descr,
-		IsDefault:   &isDefault,
 		Name:        "Clientes diversos",
 		TaxId:       "----",
-	}).Save(ctx)
+	}).SetIsDefault(true).Save(ctx)
 	if err == nil {
 		companyClient.AddCustomers(defaultCustomer)
 	}

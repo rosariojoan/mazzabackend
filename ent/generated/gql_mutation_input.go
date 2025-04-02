@@ -7,6 +7,9 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/file"
+	"mazza/ent/generated/inventory"
+	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
@@ -182,6 +185,9 @@ type CreateCompanyInput struct {
 	DocumentIDs          []int
 	EmployeeIDs          []int
 	FileIDs              []int
+	InventoryIDs         []int
+	InventoryMovementIDs []int
+	InvoiceIDs           []int
 	MemberSignupTokenIDs []int
 	ProductIDs           []int
 	ProjectIDs           []int
@@ -257,6 +263,15 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.FileIDs; len(v) > 0 {
 		m.AddFileIDs(v...)
+	}
+	if v := i.InventoryIDs; len(v) > 0 {
+		m.AddInventoryIDs(v...)
+	}
+	if v := i.InventoryMovementIDs; len(v) > 0 {
+		m.AddInventoryMovementIDs(v...)
+	}
+	if v := i.InvoiceIDs; len(v) > 0 {
+		m.AddInvoiceIDs(v...)
 	}
 	if v := i.MemberSignupTokenIDs; len(v) > 0 {
 		m.AddMemberSignupTokenIDs(v...)
@@ -349,6 +364,15 @@ type UpdateCompanyInput struct {
 	ClearFiles                 bool
 	AddFileIDs                 []int
 	RemoveFileIDs              []int
+	ClearInventory             bool
+	AddInventoryIDs            []int
+	RemoveInventoryIDs         []int
+	ClearInventoryMovements    bool
+	AddInventoryMovementIDs    []int
+	RemoveInventoryMovementIDs []int
+	ClearInvoices              bool
+	AddInvoiceIDs              []int
+	RemoveInvoiceIDs           []int
 	ClearMemberSignupTokens    bool
 	AddMemberSignupTokenIDs    []int
 	RemoveMemberSignupTokenIDs []int
@@ -522,6 +546,33 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveFileIDs; len(v) > 0 {
 		m.RemoveFileIDs(v...)
+	}
+	if i.ClearInventory {
+		m.ClearInventory()
+	}
+	if v := i.AddInventoryIDs; len(v) > 0 {
+		m.AddInventoryIDs(v...)
+	}
+	if v := i.RemoveInventoryIDs; len(v) > 0 {
+		m.RemoveInventoryIDs(v...)
+	}
+	if i.ClearInventoryMovements {
+		m.ClearInventoryMovements()
+	}
+	if v := i.AddInventoryMovementIDs; len(v) > 0 {
+		m.AddInventoryMovementIDs(v...)
+	}
+	if v := i.RemoveInventoryMovementIDs; len(v) > 0 {
+		m.RemoveInventoryMovementIDs(v...)
+	}
+	if i.ClearInvoices {
+		m.ClearInvoices()
+	}
+	if v := i.AddInvoiceIDs; len(v) > 0 {
+		m.AddInvoiceIDs(v...)
+	}
+	if v := i.RemoveInvoiceIDs; len(v) > 0 {
+		m.RemoveInvoiceIDs(v...)
 	}
 	if i.ClearMemberSignupTokens {
 		m.ClearMemberSignupTokens()
@@ -768,42 +819,32 @@ func (c *CompanyDocumentUpdateOne) SetInput(i UpdateCompanyDocumentInput) *Compa
 
 // CreateCustomerInput represents a mutation input for creating customers.
 type CreateCustomerInput struct {
-	Address       string
-	City          string
-	Country       string
-	Description   *string
-	Email         *string
-	IsDefault     *bool
-	Name          string
-	Phone         string
-	TaxId         string
-	CompanyID     *int
-	ReceivableIDs []int
+	Address     string
+	City        string
+	Country     *string
+	Description *string
+	Email       *string
+	Name        string
+	Phone       string
+	TaxId       string
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
 func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	m.SetAddress(i.Address)
 	m.SetCity(i.City)
-	m.SetCountry(i.Country)
+	if v := i.Country; v != nil {
+		m.SetCountry(*v)
+	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
-	if v := i.IsDefault; v != nil {
-		m.SetIsDefault(*v)
-	}
 	m.SetName(i.Name)
 	m.SetPhone(i.Phone)
 	m.SetTaxId(i.TaxId)
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if v := i.ReceivableIDs; len(v) > 0 {
-		m.AddReceivableIDs(v...)
-	}
 }
 
 // SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
@@ -814,23 +855,17 @@ func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
 
 // UpdateCustomerInput represents a mutation input for updating customers.
 type UpdateCustomerInput struct {
-	Address             *string
-	City                *string
-	Country             *string
-	ClearDescription    bool
-	Description         *string
-	ClearEmail          bool
-	Email               *string
-	ClearIsDefault      bool
-	IsDefault           *bool
-	Name                *string
-	Phone               *string
-	TaxId               *string
-	ClearCompany        bool
-	CompanyID           *int
-	ClearReceivables    bool
-	AddReceivableIDs    []int
-	RemoveReceivableIDs []int
+	Address          *string
+	City             *string
+	ClearCountry     bool
+	Country          *string
+	ClearDescription bool
+	Description      *string
+	ClearEmail       bool
+	Email            *string
+	Name             *string
+	Phone            *string
+	TaxId            *string
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
@@ -840,6 +875,9 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.City; v != nil {
 		m.SetCity(*v)
+	}
+	if i.ClearCountry {
+		m.ClearCountry()
 	}
 	if v := i.Country; v != nil {
 		m.SetCountry(*v)
@@ -856,12 +894,6 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
-	if i.ClearIsDefault {
-		m.ClearIsDefault()
-	}
-	if v := i.IsDefault; v != nil {
-		m.SetIsDefault(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
@@ -870,21 +902,6 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	}
 	if v := i.TaxId; v != nil {
 		m.SetTaxId(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-	if i.ClearReceivables {
-		m.ClearReceivables()
-	}
-	if v := i.AddReceivableIDs; len(v) > 0 {
-		m.AddReceivableIDs(v...)
-	}
-	if v := i.RemoveReceivableIDs; len(v) > 0 {
-		m.RemoveReceivableIDs(v...)
 	}
 }
 
@@ -902,31 +919,65 @@ func (c *CustomerUpdateOne) SetInput(i UpdateCustomerInput) *CustomerUpdateOne {
 
 // CreateEmployeeInput represents a mutation input for creating employees.
 type CreateEmployeeInput struct {
-	Name      string
-	Gender    employee.Gender
-	Position  *string
-	Email     *string
-	Phone     string
-	CompanyID *int
-	UserID    *int
+	Name            string
+	Birthdate       *time.Time
+	Gender          employee.Gender
+	Position        string
+	Department      *string
+	Email           *string
+	Phone           *string
+	Avatar          *string
+	HireDate        time.Time
+	MonthlySalary   *int
+	Status          *employee.Status
+	PerformaceScore *float64
+	CompanyID       *int
+	UserID          *int
+	SubordinateIDs  []int
+	LeaderID        *int
 }
 
 // Mutate applies the CreateEmployeeInput on the EmployeeMutation builder.
 func (i *CreateEmployeeInput) Mutate(m *EmployeeMutation) {
 	m.SetName(i.Name)
+	if v := i.Birthdate; v != nil {
+		m.SetBirthdate(*v)
+	}
 	m.SetGender(i.Gender)
-	if v := i.Position; v != nil {
-		m.SetPosition(*v)
+	m.SetPosition(i.Position)
+	if v := i.Department; v != nil {
+		m.SetDepartment(*v)
 	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
-	m.SetPhone(i.Phone)
+	if v := i.Phone; v != nil {
+		m.SetPhone(*v)
+	}
+	if v := i.Avatar; v != nil {
+		m.SetAvatar(*v)
+	}
+	m.SetHireDate(i.HireDate)
+	if v := i.MonthlySalary; v != nil {
+		m.SetMonthlySalary(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.PerformaceScore; v != nil {
+		m.SetPerformaceScore(*v)
+	}
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
+	}
+	if v := i.SubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 }
 
@@ -938,17 +989,34 @@ func (c *EmployeeCreate) SetInput(i CreateEmployeeInput) *EmployeeCreate {
 
 // UpdateEmployeeInput represents a mutation input for updating employees.
 type UpdateEmployeeInput struct {
-	Name          *string
-	Gender        *employee.Gender
-	ClearPosition bool
-	Position      *string
-	ClearEmail    bool
-	Email         *string
-	Phone         *string
-	ClearCompany  bool
-	CompanyID     *int
-	ClearUser     bool
-	UserID        *int
+	Name                 *string
+	ClearBirthdate       bool
+	Birthdate            *time.Time
+	Gender               *employee.Gender
+	Position             *string
+	ClearDepartment      bool
+	Department           *string
+	ClearEmail           bool
+	Email                *string
+	ClearPhone           bool
+	Phone                *string
+	ClearAvatar          bool
+	Avatar               *string
+	HireDate             *time.Time
+	MonthlySalary        *int
+	ClearStatus          bool
+	Status               *employee.Status
+	ClearPerformaceScore bool
+	PerformaceScore      *float64
+	ClearCompany         bool
+	CompanyID            *int
+	ClearUser            bool
+	UserID               *int
+	ClearSubordinates    bool
+	AddSubordinateIDs    []int
+	RemoveSubordinateIDs []int
+	ClearLeader          bool
+	LeaderID             *int
 }
 
 // Mutate applies the UpdateEmployeeInput on the EmployeeMutation builder.
@@ -956,14 +1024,23 @@ func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
+	if i.ClearBirthdate {
+		m.ClearBirthdate()
+	}
+	if v := i.Birthdate; v != nil {
+		m.SetBirthdate(*v)
+	}
 	if v := i.Gender; v != nil {
 		m.SetGender(*v)
 	}
-	if i.ClearPosition {
-		m.ClearPosition()
-	}
 	if v := i.Position; v != nil {
 		m.SetPosition(*v)
+	}
+	if i.ClearDepartment {
+		m.ClearDepartment()
+	}
+	if v := i.Department; v != nil {
+		m.SetDepartment(*v)
 	}
 	if i.ClearEmail {
 		m.ClearEmail()
@@ -971,8 +1048,35 @@ func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
 	}
+	if i.ClearPhone {
+		m.ClearPhone()
+	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if i.ClearAvatar {
+		m.ClearAvatar()
+	}
+	if v := i.Avatar; v != nil {
+		m.SetAvatar(*v)
+	}
+	if v := i.HireDate; v != nil {
+		m.SetHireDate(*v)
+	}
+	if v := i.MonthlySalary; v != nil {
+		m.SetMonthlySalary(*v)
+	}
+	if i.ClearStatus {
+		m.ClearStatus()
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearPerformaceScore {
+		m.ClearPerformaceScore()
+	}
+	if v := i.PerformaceScore; v != nil {
+		m.SetPerformaceScore(*v)
 	}
 	if i.ClearCompany {
 		m.ClearCompany()
@@ -985,6 +1089,21 @@ func (i *UpdateEmployeeInput) Mutate(m *EmployeeMutation) {
 	}
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
+	}
+	if i.ClearSubordinates {
+		m.ClearSubordinates()
+	}
+	if v := i.AddSubordinateIDs; len(v) > 0 {
+		m.AddSubordinateIDs(v...)
+	}
+	if v := i.RemoveSubordinateIDs; len(v) > 0 {
+		m.RemoveSubordinateIDs(v...)
+	}
+	if i.ClearLeader {
+		m.ClearLeader()
+	}
+	if v := i.LeaderID; v != nil {
+		m.SetLeaderID(*v)
 	}
 }
 
@@ -1078,6 +1197,544 @@ func (c *FileUpdate) SetInput(i UpdateFileInput) *FileUpdate {
 
 // SetInput applies the change-set in the UpdateFileInput on the FileUpdateOne builder.
 func (c *FileUpdateOne) SetInput(i UpdateFileInput) *FileUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateInventoryInput represents a mutation input for creating inventories.
+type CreateInventoryInput struct {
+	Name         string
+	Category     inventory.Category
+	Quantity     float64
+	Unit         string
+	MinimumLevel float64
+	CurrentValue float64
+	Notes        string
+}
+
+// Mutate applies the CreateInventoryInput on the InventoryMutation builder.
+func (i *CreateInventoryInput) Mutate(m *InventoryMutation) {
+	m.SetName(i.Name)
+	m.SetCategory(i.Category)
+	m.SetQuantity(i.Quantity)
+	m.SetUnit(i.Unit)
+	m.SetMinimumLevel(i.MinimumLevel)
+	m.SetCurrentValue(i.CurrentValue)
+	m.SetNotes(i.Notes)
+}
+
+// SetInput applies the change-set in the CreateInventoryInput on the InventoryCreate builder.
+func (c *InventoryCreate) SetInput(i CreateInventoryInput) *InventoryCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateInventoryInput represents a mutation input for updating inventories.
+type UpdateInventoryInput struct {
+	Name         *string
+	Category     *inventory.Category
+	Quantity     *float64
+	Unit         *string
+	MinimumLevel *float64
+	CurrentValue *float64
+	Notes        *string
+}
+
+// Mutate applies the UpdateInventoryInput on the InventoryMutation builder.
+func (i *UpdateInventoryInput) Mutate(m *InventoryMutation) {
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.Category; v != nil {
+		m.SetCategory(*v)
+	}
+	if v := i.Quantity; v != nil {
+		m.SetQuantity(*v)
+	}
+	if v := i.Unit; v != nil {
+		m.SetUnit(*v)
+	}
+	if v := i.MinimumLevel; v != nil {
+		m.SetMinimumLevel(*v)
+	}
+	if v := i.CurrentValue; v != nil {
+		m.SetCurrentValue(*v)
+	}
+	if v := i.Notes; v != nil {
+		m.SetNotes(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateInventoryInput on the InventoryUpdate builder.
+func (c *InventoryUpdate) SetInput(i UpdateInventoryInput) *InventoryUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateInventoryInput on the InventoryUpdateOne builder.
+func (c *InventoryUpdateOne) SetInput(i UpdateInventoryInput) *InventoryUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateInventoryMovementInput represents a mutation input for creating inventorymovements.
+type CreateInventoryMovementInput struct {
+	Category    inventorymovement.Category
+	Quantity    float64
+	Value       float64
+	Date        *time.Time
+	Source      *string
+	Destination *string
+	Notes       string
+	InventoryID int
+}
+
+// Mutate applies the CreateInventoryMovementInput on the InventoryMovementMutation builder.
+func (i *CreateInventoryMovementInput) Mutate(m *InventoryMovementMutation) {
+	m.SetCategory(i.Category)
+	m.SetQuantity(i.Quantity)
+	m.SetValue(i.Value)
+	if v := i.Date; v != nil {
+		m.SetDate(*v)
+	}
+	if v := i.Source; v != nil {
+		m.SetSource(*v)
+	}
+	if v := i.Destination; v != nil {
+		m.SetDestination(*v)
+	}
+	m.SetNotes(i.Notes)
+	m.SetInventoryID(i.InventoryID)
+}
+
+// SetInput applies the change-set in the CreateInventoryMovementInput on the InventoryMovementCreate builder.
+func (c *InventoryMovementCreate) SetInput(i CreateInventoryMovementInput) *InventoryMovementCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateInventoryMovementInput represents a mutation input for updating inventorymovements.
+type UpdateInventoryMovementInput struct {
+	Category         *inventorymovement.Category
+	Quantity         *float64
+	Value            *float64
+	Date             *time.Time
+	ClearSource      bool
+	Source           *string
+	ClearDestination bool
+	Destination      *string
+	Notes            *string
+}
+
+// Mutate applies the UpdateInventoryMovementInput on the InventoryMovementMutation builder.
+func (i *UpdateInventoryMovementInput) Mutate(m *InventoryMovementMutation) {
+	if v := i.Category; v != nil {
+		m.SetCategory(*v)
+	}
+	if v := i.Quantity; v != nil {
+		m.SetQuantity(*v)
+	}
+	if v := i.Value; v != nil {
+		m.SetValue(*v)
+	}
+	if v := i.Date; v != nil {
+		m.SetDate(*v)
+	}
+	if i.ClearSource {
+		m.ClearSource()
+	}
+	if v := i.Source; v != nil {
+		m.SetSource(*v)
+	}
+	if i.ClearDestination {
+		m.ClearDestination()
+	}
+	if v := i.Destination; v != nil {
+		m.SetDestination(*v)
+	}
+	if v := i.Notes; v != nil {
+		m.SetNotes(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateInventoryMovementInput on the InventoryMovementUpdate builder.
+func (c *InventoryMovementUpdate) SetInput(i UpdateInventoryMovementInput) *InventoryMovementUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateInventoryMovementInput on the InventoryMovementUpdateOne builder.
+func (c *InventoryMovementUpdateOne) SetInput(i UpdateInventoryMovementInput) *InventoryMovementUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateInvoiceInput represents a mutation input for creating invoices.
+type CreateInvoiceInput struct {
+	CompanyLogo       *string
+	CompanyName       string
+	CompanyTaxID      *string
+	CompanyAddress    string
+	CompanyCity       string
+	CompanyEmail      *string
+	CompanyPhone      *string
+	Number            *string
+	IssueDate         time.Time
+	DueDate           time.Time
+	PaidAt            *time.Time
+	Status            *invoice.Status
+	CustomerName      *string
+	CustomerTaxID     *string
+	CustomerAddress   *string
+	CustomerCity      *string
+	CustomerEmail     *string
+	CustomerPhone     *string
+	Items             string
+	Subtotal          float64
+	Tax               float64
+	Total             float64
+	Notes             *string
+	PaymentMethod     *string
+	BankName          *string
+	BankAgency        *string
+	BankAccountNumber *string
+	BankAccountName   *string
+	StorageURI        *string
+	URL               *string
+	Filename          *string
+	Size              *float64
+	Keywords          string
+	ClientID          *int
+}
+
+// Mutate applies the CreateInvoiceInput on the InvoiceMutation builder.
+func (i *CreateInvoiceInput) Mutate(m *InvoiceMutation) {
+	if v := i.CompanyLogo; v != nil {
+		m.SetCompanyLogo(*v)
+	}
+	m.SetCompanyName(i.CompanyName)
+	if v := i.CompanyTaxID; v != nil {
+		m.SetCompanyTaxID(*v)
+	}
+	m.SetCompanyAddress(i.CompanyAddress)
+	m.SetCompanyCity(i.CompanyCity)
+	if v := i.CompanyEmail; v != nil {
+		m.SetCompanyEmail(*v)
+	}
+	if v := i.CompanyPhone; v != nil {
+		m.SetCompanyPhone(*v)
+	}
+	if v := i.Number; v != nil {
+		m.SetNumber(*v)
+	}
+	m.SetIssueDate(i.IssueDate)
+	m.SetDueDate(i.DueDate)
+	if v := i.PaidAt; v != nil {
+		m.SetPaidAt(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.CustomerName; v != nil {
+		m.SetCustomerName(*v)
+	}
+	if v := i.CustomerTaxID; v != nil {
+		m.SetCustomerTaxID(*v)
+	}
+	if v := i.CustomerAddress; v != nil {
+		m.SetCustomerAddress(*v)
+	}
+	if v := i.CustomerCity; v != nil {
+		m.SetCustomerCity(*v)
+	}
+	if v := i.CustomerEmail; v != nil {
+		m.SetCustomerEmail(*v)
+	}
+	if v := i.CustomerPhone; v != nil {
+		m.SetCustomerPhone(*v)
+	}
+	m.SetItems(i.Items)
+	m.SetSubtotal(i.Subtotal)
+	m.SetTax(i.Tax)
+	m.SetTotal(i.Total)
+	if v := i.Notes; v != nil {
+		m.SetNotes(*v)
+	}
+	if v := i.PaymentMethod; v != nil {
+		m.SetPaymentMethod(*v)
+	}
+	if v := i.BankName; v != nil {
+		m.SetBankName(*v)
+	}
+	if v := i.BankAgency; v != nil {
+		m.SetBankAgency(*v)
+	}
+	if v := i.BankAccountNumber; v != nil {
+		m.SetBankAccountNumber(*v)
+	}
+	if v := i.BankAccountName; v != nil {
+		m.SetBankAccountName(*v)
+	}
+	if v := i.StorageURI; v != nil {
+		m.SetStorageURI(*v)
+	}
+	if v := i.URL; v != nil {
+		m.SetURL(*v)
+	}
+	if v := i.Filename; v != nil {
+		m.SetFilename(*v)
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	m.SetKeywords(i.Keywords)
+	if v := i.ClientID; v != nil {
+		m.SetClientID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateInvoiceInput on the InvoiceCreate builder.
+func (c *InvoiceCreate) SetInput(i CreateInvoiceInput) *InvoiceCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateInvoiceInput represents a mutation input for updating invoices.
+type UpdateInvoiceInput struct {
+	ClearCompanyLogo       bool
+	CompanyLogo            *string
+	CompanyName            *string
+	ClearCompanyTaxID      bool
+	CompanyTaxID           *string
+	CompanyAddress         *string
+	CompanyCity            *string
+	ClearCompanyEmail      bool
+	CompanyEmail           *string
+	ClearCompanyPhone      bool
+	CompanyPhone           *string
+	ClearNumber            bool
+	Number                 *string
+	IssueDate              *time.Time
+	DueDate                *time.Time
+	ClearPaidAt            bool
+	PaidAt                 *time.Time
+	Status                 *invoice.Status
+	ClearCustomerName      bool
+	CustomerName           *string
+	ClearCustomerTaxID     bool
+	CustomerTaxID          *string
+	ClearCustomerAddress   bool
+	CustomerAddress        *string
+	ClearCustomerCity      bool
+	CustomerCity           *string
+	ClearCustomerEmail     bool
+	CustomerEmail          *string
+	ClearCustomerPhone     bool
+	CustomerPhone          *string
+	Items                  *string
+	Subtotal               *float64
+	Tax                    *float64
+	Total                  *float64
+	ClearNotes             bool
+	Notes                  *string
+	ClearPaymentMethod     bool
+	PaymentMethod          *string
+	ClearBankName          bool
+	BankName               *string
+	ClearBankAgency        bool
+	BankAgency             *string
+	ClearBankAccountNumber bool
+	BankAccountNumber      *string
+	ClearBankAccountName   bool
+	BankAccountName        *string
+	ClearStorageURI        bool
+	StorageURI             *string
+	ClearURL               bool
+	URL                    *string
+	ClearFilename          bool
+	Filename               *string
+	ClearSize              bool
+	Size                   *float64
+	Keywords               *string
+}
+
+// Mutate applies the UpdateInvoiceInput on the InvoiceMutation builder.
+func (i *UpdateInvoiceInput) Mutate(m *InvoiceMutation) {
+	if i.ClearCompanyLogo {
+		m.ClearCompanyLogo()
+	}
+	if v := i.CompanyLogo; v != nil {
+		m.SetCompanyLogo(*v)
+	}
+	if v := i.CompanyName; v != nil {
+		m.SetCompanyName(*v)
+	}
+	if i.ClearCompanyTaxID {
+		m.ClearCompanyTaxID()
+	}
+	if v := i.CompanyTaxID; v != nil {
+		m.SetCompanyTaxID(*v)
+	}
+	if v := i.CompanyAddress; v != nil {
+		m.SetCompanyAddress(*v)
+	}
+	if v := i.CompanyCity; v != nil {
+		m.SetCompanyCity(*v)
+	}
+	if i.ClearCompanyEmail {
+		m.ClearCompanyEmail()
+	}
+	if v := i.CompanyEmail; v != nil {
+		m.SetCompanyEmail(*v)
+	}
+	if i.ClearCompanyPhone {
+		m.ClearCompanyPhone()
+	}
+	if v := i.CompanyPhone; v != nil {
+		m.SetCompanyPhone(*v)
+	}
+	if i.ClearNumber {
+		m.ClearNumber()
+	}
+	if v := i.Number; v != nil {
+		m.SetNumber(*v)
+	}
+	if v := i.IssueDate; v != nil {
+		m.SetIssueDate(*v)
+	}
+	if v := i.DueDate; v != nil {
+		m.SetDueDate(*v)
+	}
+	if i.ClearPaidAt {
+		m.ClearPaidAt()
+	}
+	if v := i.PaidAt; v != nil {
+		m.SetPaidAt(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearCustomerName {
+		m.ClearCustomerName()
+	}
+	if v := i.CustomerName; v != nil {
+		m.SetCustomerName(*v)
+	}
+	if i.ClearCustomerTaxID {
+		m.ClearCustomerTaxID()
+	}
+	if v := i.CustomerTaxID; v != nil {
+		m.SetCustomerTaxID(*v)
+	}
+	if i.ClearCustomerAddress {
+		m.ClearCustomerAddress()
+	}
+	if v := i.CustomerAddress; v != nil {
+		m.SetCustomerAddress(*v)
+	}
+	if i.ClearCustomerCity {
+		m.ClearCustomerCity()
+	}
+	if v := i.CustomerCity; v != nil {
+		m.SetCustomerCity(*v)
+	}
+	if i.ClearCustomerEmail {
+		m.ClearCustomerEmail()
+	}
+	if v := i.CustomerEmail; v != nil {
+		m.SetCustomerEmail(*v)
+	}
+	if i.ClearCustomerPhone {
+		m.ClearCustomerPhone()
+	}
+	if v := i.CustomerPhone; v != nil {
+		m.SetCustomerPhone(*v)
+	}
+	if v := i.Items; v != nil {
+		m.SetItems(*v)
+	}
+	if v := i.Subtotal; v != nil {
+		m.SetSubtotal(*v)
+	}
+	if v := i.Tax; v != nil {
+		m.SetTax(*v)
+	}
+	if v := i.Total; v != nil {
+		m.SetTotal(*v)
+	}
+	if i.ClearNotes {
+		m.ClearNotes()
+	}
+	if v := i.Notes; v != nil {
+		m.SetNotes(*v)
+	}
+	if i.ClearPaymentMethod {
+		m.ClearPaymentMethod()
+	}
+	if v := i.PaymentMethod; v != nil {
+		m.SetPaymentMethod(*v)
+	}
+	if i.ClearBankName {
+		m.ClearBankName()
+	}
+	if v := i.BankName; v != nil {
+		m.SetBankName(*v)
+	}
+	if i.ClearBankAgency {
+		m.ClearBankAgency()
+	}
+	if v := i.BankAgency; v != nil {
+		m.SetBankAgency(*v)
+	}
+	if i.ClearBankAccountNumber {
+		m.ClearBankAccountNumber()
+	}
+	if v := i.BankAccountNumber; v != nil {
+		m.SetBankAccountNumber(*v)
+	}
+	if i.ClearBankAccountName {
+		m.ClearBankAccountName()
+	}
+	if v := i.BankAccountName; v != nil {
+		m.SetBankAccountName(*v)
+	}
+	if i.ClearStorageURI {
+		m.ClearStorageURI()
+	}
+	if v := i.StorageURI; v != nil {
+		m.SetStorageURI(*v)
+	}
+	if i.ClearURL {
+		m.ClearURL()
+	}
+	if v := i.URL; v != nil {
+		m.SetURL(*v)
+	}
+	if i.ClearFilename {
+		m.ClearFilename()
+	}
+	if v := i.Filename; v != nil {
+		m.SetFilename(*v)
+	}
+	if i.ClearSize {
+		m.ClearSize()
+	}
+	if v := i.Size; v != nil {
+		m.SetSize(*v)
+	}
+	if v := i.Keywords; v != nil {
+		m.SetKeywords(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateInvoiceInput on the InvoiceUpdate builder.
+func (c *InvoiceUpdate) SetInput(i UpdateInvoiceInput) *InvoiceUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateInvoiceInput on the InvoiceUpdateOne builder.
+func (c *InvoiceUpdateOne) SetInput(i UpdateInvoiceInput) *InvoiceUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -1937,6 +2594,7 @@ type CreateUserInput struct {
 	LeaderID                    *int
 	CreatedMemberSignupTokenIDs []int
 	EmployeeID                  *int
+	IssuedInvoiceIDs            []int
 	CreatedProjectIDs           []int
 	LeaderedProjectIDs          []int
 	AssignedProjectTaskIDs      []int
@@ -1993,6 +2651,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
+	}
+	if v := i.IssuedInvoiceIDs; len(v) > 0 {
+		m.AddIssuedInvoiceIDs(v...)
 	}
 	if v := i.CreatedProjectIDs; len(v) > 0 {
 		m.AddCreatedProjectIDs(v...)
@@ -2070,6 +2731,9 @@ type UpdateUserInput struct {
 	RemoveCreatedMemberSignupTokenIDs []int
 	ClearEmployee                     bool
 	EmployeeID                        *int
+	ClearIssuedInvoices               bool
+	AddIssuedInvoiceIDs               []int
+	RemoveIssuedInvoiceIDs            []int
 	ClearCreatedProjects              bool
 	AddCreatedProjectIDs              []int
 	RemoveCreatedProjectIDs           []int
@@ -2208,6 +2872,15 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.EmployeeID; v != nil {
 		m.SetEmployeeID(*v)
+	}
+	if i.ClearIssuedInvoices {
+		m.ClearIssuedInvoices()
+	}
+	if v := i.AddIssuedInvoiceIDs; len(v) > 0 {
+		m.AddIssuedInvoiceIDs(v...)
+	}
+	if v := i.RemoveIssuedInvoiceIDs; len(v) > 0 {
+		m.RemoveIssuedInvoiceIDs(v...)
 	}
 	if i.ClearCreatedProjects {
 		m.ClearCreatedProjects()

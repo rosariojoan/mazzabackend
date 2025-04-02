@@ -27,20 +27,35 @@ type Employee struct {
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Birthdate holds the value of the "birthdate" field.
+	Birthdate *time.Time `json:"birthdate,omitempty"`
 	// Gender holds the value of the "gender" field.
 	Gender employee.Gender `json:"gender,omitempty"`
 	// Position holds the value of the "position" field.
-	Position *string `json:"position,omitempty"`
+	Position string `json:"position,omitempty"`
+	// Department holds the value of the "department" field.
+	Department string `json:"department,omitempty"`
 	// Email holds the value of the "email" field.
 	Email *string `json:"email,omitempty"`
 	// Phone holds the value of the "phone" field.
-	Phone string `json:"phone,omitempty"`
+	Phone *string `json:"phone,omitempty"`
+	// Avatar holds the value of the "avatar" field.
+	Avatar *string `json:"avatar,omitempty"`
+	// HireDate holds the value of the "hireDate" field.
+	HireDate time.Time `json:"hireDate,omitempty"`
+	// MonthlySalary holds the value of the "monthlySalary" field.
+	MonthlySalary int `json:"monthlySalary,omitempty"`
+	// Status holds the value of the "status" field.
+	Status employee.Status `json:"status,omitempty"`
+	// PerformaceScore holds the value of the "performaceScore" field.
+	PerformaceScore float64 `json:"performaceScore,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EmployeeQuery when eager-loading is set.
-	Edges             EmployeeEdges `json:"edges"`
-	company_employees *int
-	user_employee     *int
-	selectValues      sql.SelectValues
+	Edges                 EmployeeEdges `json:"edges"`
+	company_employees     *int
+	employee_subordinates *int
+	user_employee         *int
+	selectValues          sql.SelectValues
 }
 
 // EmployeeEdges holds the relations/edges for other nodes in the graph.
@@ -49,11 +64,17 @@ type EmployeeEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
+	// Subordinates holds the value of the subordinates edge.
+	Subordinates []*Employee `json:"subordinates,omitempty"`
+	// Leader holds the value of the leader edge.
+	Leader *Employee `json:"leader,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [4]map[string]int
+
+	namedSubordinates map[string][]*Employee
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -78,20 +99,44 @@ func (e EmployeeEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
+// SubordinatesOrErr returns the Subordinates value or an error if the edge
+// was not loaded in eager-loading.
+func (e EmployeeEdges) SubordinatesOrErr() ([]*Employee, error) {
+	if e.loadedTypes[2] {
+		return e.Subordinates, nil
+	}
+	return nil, &NotLoadedError{edge: "subordinates"}
+}
+
+// LeaderOrErr returns the Leader value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e EmployeeEdges) LeaderOrErr() (*Employee, error) {
+	if e.Leader != nil {
+		return e.Leader, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: employee.Label}
+	}
+	return nil, &NotLoadedError{edge: "leader"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Employee) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case employee.FieldID:
+		case employee.FieldPerformaceScore:
+			values[i] = new(sql.NullFloat64)
+		case employee.FieldID, employee.FieldMonthlySalary:
 			values[i] = new(sql.NullInt64)
-		case employee.FieldName, employee.FieldGender, employee.FieldPosition, employee.FieldEmail, employee.FieldPhone:
+		case employee.FieldName, employee.FieldGender, employee.FieldPosition, employee.FieldDepartment, employee.FieldEmail, employee.FieldPhone, employee.FieldAvatar, employee.FieldStatus:
 			values[i] = new(sql.NullString)
-		case employee.FieldCreatedAt, employee.FieldUpdatedAt, employee.FieldDeletedAt:
+		case employee.FieldCreatedAt, employee.FieldUpdatedAt, employee.FieldDeletedAt, employee.FieldBirthdate, employee.FieldHireDate:
 			values[i] = new(sql.NullTime)
 		case employee.ForeignKeys[0]: // company_employees
 			values[i] = new(sql.NullInt64)
-		case employee.ForeignKeys[1]: // user_employee
+		case employee.ForeignKeys[1]: // employee_subordinates
+			values[i] = new(sql.NullInt64)
+		case employee.ForeignKeys[2]: // user_employee
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -139,6 +184,13 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				e.Name = value.String
 			}
+		case employee.FieldBirthdate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field birthdate", values[i])
+			} else if value.Valid {
+				e.Birthdate = new(time.Time)
+				*e.Birthdate = value.Time
+			}
 		case employee.FieldGender:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field gender", values[i])
@@ -149,8 +201,13 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field position", values[i])
 			} else if value.Valid {
-				e.Position = new(string)
-				*e.Position = value.String
+				e.Position = value.String
+			}
+		case employee.FieldDepartment:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field department", values[i])
+			} else if value.Valid {
+				e.Department = value.String
 			}
 		case employee.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -163,7 +220,39 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field phone", values[i])
 			} else if value.Valid {
-				e.Phone = value.String
+				e.Phone = new(string)
+				*e.Phone = value.String
+			}
+		case employee.FieldAvatar:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field avatar", values[i])
+			} else if value.Valid {
+				e.Avatar = new(string)
+				*e.Avatar = value.String
+			}
+		case employee.FieldHireDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field hireDate", values[i])
+			} else if value.Valid {
+				e.HireDate = value.Time
+			}
+		case employee.FieldMonthlySalary:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field monthlySalary", values[i])
+			} else if value.Valid {
+				e.MonthlySalary = int(value.Int64)
+			}
+		case employee.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				e.Status = employee.Status(value.String)
+			}
+		case employee.FieldPerformaceScore:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field performaceScore", values[i])
+			} else if value.Valid {
+				e.PerformaceScore = value.Float64
 			}
 		case employee.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -173,6 +262,13 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 				*e.company_employees = int(value.Int64)
 			}
 		case employee.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field employee_subordinates", value)
+			} else if value.Valid {
+				e.employee_subordinates = new(int)
+				*e.employee_subordinates = int(value.Int64)
+			}
+		case employee.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_employee", value)
 			} else if value.Valid {
@@ -200,6 +296,16 @@ func (e *Employee) QueryCompany() *CompanyQuery {
 // QueryUser queries the "user" edge of the Employee entity.
 func (e *Employee) QueryUser() *UserQuery {
 	return NewEmployeeClient(e.config).QueryUser(e)
+}
+
+// QuerySubordinates queries the "subordinates" edge of the Employee entity.
+func (e *Employee) QuerySubordinates() *EmployeeQuery {
+	return NewEmployeeClient(e.config).QuerySubordinates(e)
+}
+
+// QueryLeader queries the "leader" edge of the Employee entity.
+func (e *Employee) QueryLeader() *EmployeeQuery {
+	return NewEmployeeClient(e.config).QueryLeader(e)
 }
 
 // Update returns a builder for updating this Employee.
@@ -239,23 +345,72 @@ func (e *Employee) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(e.Name)
 	builder.WriteString(", ")
+	if v := e.Birthdate; v != nil {
+		builder.WriteString("birthdate=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
 	builder.WriteString("gender=")
 	builder.WriteString(fmt.Sprintf("%v", e.Gender))
 	builder.WriteString(", ")
-	if v := e.Position; v != nil {
-		builder.WriteString("position=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("position=")
+	builder.WriteString(e.Position)
+	builder.WriteString(", ")
+	builder.WriteString("department=")
+	builder.WriteString(e.Department)
 	builder.WriteString(", ")
 	if v := e.Email; v != nil {
 		builder.WriteString("email=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("phone=")
-	builder.WriteString(e.Phone)
+	if v := e.Phone; v != nil {
+		builder.WriteString("phone=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := e.Avatar; v != nil {
+		builder.WriteString("avatar=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	builder.WriteString("hireDate=")
+	builder.WriteString(e.HireDate.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("monthlySalary=")
+	builder.WriteString(fmt.Sprintf("%v", e.MonthlySalary))
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", e.Status))
+	builder.WriteString(", ")
+	builder.WriteString("performaceScore=")
+	builder.WriteString(fmt.Sprintf("%v", e.PerformaceScore))
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedSubordinates returns the Subordinates named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (e *Employee) NamedSubordinates(name string) ([]*Employee, error) {
+	if e.Edges.namedSubordinates == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := e.Edges.namedSubordinates[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (e *Employee) appendNamedSubordinates(name string, edges ...*Employee) {
+	if e.Edges.namedSubordinates == nil {
+		e.Edges.namedSubordinates = make(map[string][]*Employee)
+	}
+	if len(edges) == 0 {
+		e.Edges.namedSubordinates[name] = []*Employee{}
+	} else {
+		e.Edges.namedSubordinates[name] = append(e.Edges.namedSubordinates[name], edges...)
+	}
 }
 
 // Employees is a parsable slice of Employee.

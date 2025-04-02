@@ -66,19 +66,6 @@ input PaymentDetails {
   dueDate: String!
 }
 
-input Invoice {
-  date: String!
-  filename: String!
-  keywords: String!
-  number: String!
-  paymentDetails: PaymentDetails!
-  title: String
-  issuerDetails: InvoiceIssuer!
-  customerDetails: InvoiceCustomer!
-  body: [[String!]!]!
-  totals: InvoiceTotals!
-}
-
 enum BaseOperationType {
   SALES
   SALES_RETURN
@@ -124,11 +111,11 @@ input BaseEntryRegistrationInput {
 
 input InvoiceInput {
   accountingEntryData: BaseEntryRegistrationInput!
-  invoiceData: Invoice!
+  invoiceData: CreateInvoiceInput!
 }
 
 input SalesQuotationInput {
-  invoiceData: Invoice!
+  invoiceData: CreateInvoiceInput!
 }
 
 input LedgerDownloadInput {
@@ -220,10 +207,17 @@ type InvoiceIssuanceOutput {
   fileUrl: String!
 }
 
+type InvoiceCount {
+  status: InvoiceStatus!
+  count: Int!
+}
+
 # -------------------------------------------------
 extend type Mutation {
   issueSalesQuotation(input: SalesQuotationInput!): InvoiceIssuanceOutput!
   issueInvoice(input: InvoiceInput!): InvoiceIssuanceOutput!
+  createInvoiceDraft(input: CreateInvoiceInput!): Invoice!
+  deleteInvoiceDraft(id: ID!): Boolean!
   registerAccountingEntries(input: BaseEntryRegistrationInput!): String
 }
 
@@ -238,4 +232,6 @@ extend type Query {
   downloadIncomeStatement(where: ReportInput!): FileDetailsOutput!
   downloadBalanceSheet(where: ReportInput!): FileDetailsOutput!
   # downloadCashFlow(where: CashFlowDownloadInput!): FileDetailsOutput!
+
+  countInvoices: [InvoiceCount!]!
 }
