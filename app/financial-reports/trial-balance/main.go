@@ -89,6 +89,7 @@ func GetTrialBalance(
 	sqlStr := fmt.Sprintf(`
 		SELECT
 			account,
+			account_type,
 			sum(debit) AS debit,
 			sum(credit) AS credit,
 			CASE 
@@ -119,7 +120,7 @@ func GetTrialBalance(
 	defer rows.Close()
 	for rows.Next() {
 		var item model.TrialBalanceRowItem
-		if err := rows.Scan(&item.Account, &item.Debit, &item.Credit, &item.Balance); err != nil {
+		if err := rows.Scan(&item.Account, &item.AccountType, &item.Debit, &item.Credit, &item.Balance); err != nil {
 			// Check for a scan error. Query rows will be closed with defer.
 			fmt.Println("err:", err)
 			return nil, err

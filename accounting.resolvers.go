@@ -109,7 +109,23 @@ func (r *mutationResolver) DeleteInvoiceDraft(ctx context.Context, id int) (bool
 
 // RegisterAccountingEntries is the resolver for the registerAccountingEntries field.
 func (r *mutationResolver) RegisterAccountingEntries(ctx context.Context, input model.BaseEntryRegistrationInput) (*string, error) {
-	return accountingentry.RegisterAccountingOperations(ctx, r.client, input)
+	tx, err := r.client.Tx(ctx)
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	result, err := accountingentry.RegisterAccountingOperations(ctx, tx, input)
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	if err = tx.Commit(); err != nil {
+		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+	return result, nil
 }
 
 // TrialBalance is the resolver for the trialBalance field.

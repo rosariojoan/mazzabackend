@@ -3,6 +3,7 @@ package accountingentry
 import (
 	"context"
 	"fmt"
+	"mazza/ent/generated"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/receivable"
@@ -11,7 +12,8 @@ import (
 	"mazza/mazza/generated/model"
 )
 
-func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input model.BaseEntryRegistrationInput) (*string, error) {
+/* Pass in a database transaction. The caller function should commit the transaction if this operation returns no error */
+func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input model.BaseEntryRegistrationInput) (*string, error) {
 	currentUser, currentCompany := u.GetSession(&ctx)
 	companyQ := u.CurrentCompanyQuery(&ctx)
 	// country, lang := "mz", "pt"
@@ -19,11 +21,6 @@ func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input
 	// if err != nil {
 	// 	return nil, err
 	// }
-	tx, err := client.Tx(ctx)
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
 
 	if input.CashInput != nil {
 		_ = tx.Treasury.Update().Where(treasury.HasCompanyWith(companyQ)).AddBalance(*input.CashInput).SaveX(ctx)
@@ -34,7 +31,7 @@ func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input
 	}
 
 	var accountingEntries []*ent.AccountingEntryCreate
-	var entryCounter = GetEntryCounter(ctx, client, currentCompany.ID)
+	var entryCounter = GetEntryCounter(ctx, tx.Client(), currentCompany.ID)
 
 	if input.ReceivableInput != nil {
 		_ = tx.Receivable.Create().SetInput(ent.CreateReceivableInput{
@@ -88,7 +85,7 @@ func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input
 
 	// Save changes:
 	// 1. Accounting entries
-	_, err = tx.AccountingEntry.CreateBulk(accountingEntries...).Save(ctx)
+	_, err := tx.AccountingEntry.CreateBulk(accountingEntries...).Save(ctx)
 	if err != nil {
 		fmt.Println("##", err)
 		return nil, err
@@ -108,12 +105,6 @@ func RegisterAccountingOperations(ctx context.Context, client *ent.Client, input
 		if err != nil {
 			return nil, fmt.Errorf("an error occurred while processing the entry")
 		}
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
 	}
 
 	output := "new accounting entry was recorded successfully"

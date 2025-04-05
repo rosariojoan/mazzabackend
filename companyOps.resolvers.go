@@ -24,9 +24,19 @@ import (
 // InitialSetup is the resolver for the initialSetup field.
 func (r *mutationResolver) InitialSetup(ctx context.Context, input model.InitialSetupInput) (*string, error) {
 	if input.AccountingEntry != nil {
-		_, err := accountingentry.RegisterAccountingOperations(ctx, r.client, *input.AccountingEntry)
+		tx, err := r.client.Tx(ctx)
+		if err != nil {
+			fmt.Println("err:", err)
+			return nil, fmt.Errorf("an error occurred")
+		}
+
+		_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *input.AccountingEntry)
 		if err != nil {
 			fmt.Println("InitialSetup RegisterAccountingOperations err:", err)
+			return nil, fmt.Errorf("an error occurred")
+		}
+		if err = tx.Commit(); err != nil {
+			fmt.Println("err:", err)
 			return nil, fmt.Errorf("an error occurred")
 		}
 	}

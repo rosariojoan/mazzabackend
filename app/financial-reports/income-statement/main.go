@@ -46,8 +46,8 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 
 	result = &model.IncomeStatementOuput{
 		IsProvisional: true,
-		Revenues:      []*model.ReportRowItem{},
-		Expenses:      []*model.ReportRowItem{},
+		Revenues:      []*model.IncomeStatementRowItem{},
+		Expenses:      []*model.IncomeStatementRowItem{},
 		Period: &model.Period{
 			Start: utils.StartOfYear(endDate),
 			End:   endDate,
@@ -65,15 +65,15 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 	// 	GROUP BY account_type, account
 	// 	ORDER BY account ASC
 	sqlStr := fmt.Sprintf(`
-		SELECT account_type, account, sum(balance) AS balance
+		SELECT account_type, account, category, sum(balance) AS balance
 		FROM (
-			SELECT account_type, LEFT (account, 3) AS account, sum(amount) AS balance
+			SELECT account_type, LEFT (account, 3) AS account, category, sum(amount) AS balance
 			FROM accounting_entries
 			WHERE company_accounting_entries = %d AND date <= '%s' AND account_type IN ('%s', '%s', '%s', '%s', '%s', '%s', '%s')
-			GROUP BY account_type, account
+			GROUP BY account_type, account, category
 			ORDER BY account ASC
 		) AS summary
-		GROUP BY account_type, account
+		GROUP BY account_type, account, category
 		`,
 		currentCompany.ID,
 		endDate.Format(time.RFC3339), // Convert time to RFC3339 format which PostgreSQL accepts
@@ -92,11 +92,12 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 		return nil, err
 	}
 
-	var scannedRows []data
+	// var scannedRows []data
+	var scannedRows []model.IncomeStatementRowItem
 	defer rows.Close()
 	for rows.Next() {
-		var item data
-		if err := rows.Scan(&item.AccountType, &item.Account, &item.Balance); err != nil {
+		var item model.IncomeStatementRowItem
+		if err := rows.Scan(&item.AccountType, &item.Account, &item.Category, &item.Value); err != nil {
 			// Check for a scan error. Query rows will be closed with defer.
 			fmt.Println("err:", err)
 			return nil, err
@@ -106,40 +107,46 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 
 	for _, entry := range scannedRows {
 		if entry.AccountType == accountingentry.AccountTypeREVENUE.String() {
-			result.Revenues = append(result.Revenues, &model.ReportRowItem{
+			result.Revenues = append(result.Revenues, &model.IncomeStatementRowItem{
 				Account: entry.Account,
+				AccountType: entry.AccountType,
+				Category: entry.Category,
 				Label:   accountNames[entry.Account],
-				Value:   entry.Balance,
+				Value:   entry.Value,
 			})
-			result.NetRevenue += entry.Balance
+			result.NetRevenue += entry.Value
 		} else if entry.AccountType == accountingentry.AccountTypeCONTRA_REVENUE.String() {
-			result.Revenues = append(result.Revenues, &model.ReportRowItem{
+			result.Revenues = append(result.Revenues, &model.IncomeStatementRowItem{
 				Account: entry.Account,
+				AccountType: entry.AccountType,
+				Category: entry.Category,
 				Label:   accountNames[entry.Account],
-				Value:   entry.Balance,
+				Value:   entry.Value,
 			})
-			result.NetRevenue -= entry.Balance
+			result.NetRevenue -= entry.Value
 
 		} else if entry.AccountType == accountingentry.AccountTypeEXPENSE.String() {
-			result.Expenses = append(result.Expenses, &model.ReportRowItem{
+			result.Expenses = append(result.Expenses, &model.IncomeStatementRowItem{
 				Account: entry.Account,
+				AccountType: entry.AccountType,
+				Category: entry.Category,
 				Label:   accountNames[entry.Account],
-				Value:   entry.Balance,
+				Value:   entry.Value,
 			})
-			result.TotalExpenses += entry.Balance
+			result.TotalExpenses += entry.Value
 		} else if entry.AccountType == accountingentry.AccountTypeCONTRA_EXPENSE.String() {
-			result.TotalExpenses -= entry.Balance
+			result.TotalExpenses -= entry.Value
 
 		} else if entry.AccountType == accountingentry.AccountTypeTAX_EXPENSE.String() {
-			result.TaxExpense += entry.Balance
+			result.TaxExpense += entry.Value
 		}
 	}
 
 	if result.Revenues == nil {
-		result.Revenues = []*model.ReportRowItem{} // empty slice
+		result.Revenues = []*model.IncomeStatementRowItem{} // empty slice
 	}
 	if result.Expenses == nil {
-		result.Expenses = []*model.ReportRowItem{} // empty slice
+		result.Expenses = []*model.IncomeStatementRowItem{} // empty slice
 	}
 
 	result.EarningsBeforeTax = result.NetRevenue - result.TotalExpenses

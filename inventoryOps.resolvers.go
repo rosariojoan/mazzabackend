@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	accountingentry "mazza/app/accountingEntry"
 	"mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/inventory"
@@ -17,7 +18,7 @@ import (
 )
 
 // CreateInventoryMovement is the resolver for the createInventoryMovement field.
-func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput) (*generated.InventoryMovement, error) {
+func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error) {
 	_, activeCompany := utils.GetSession(&ctx)
 	// var movement *generated.InventoryMovement
 	var quantity float64
@@ -72,6 +73,15 @@ func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input ge
 	if err != nil {
 		fmt.Println("err:", err)
 		return nil, err
+	}
+
+	if accountingEntry != nil {
+		// Create accounting entry
+		_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *accountingEntry)
+		if err != nil {
+			fmt.Println("err:", err)
+			return nil, fmt.Errorf("an error occurred")
+		}	
 	}
 
 	err = tx.Commit()

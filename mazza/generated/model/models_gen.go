@@ -109,15 +109,23 @@ type FileOutput struct {
 }
 
 type IncomeStatementOuput struct {
-	Revenues          []*ReportRowItem `json:"revenues"`
-	NetRevenue        float64          `json:"netRevenue"`
-	Expenses          []*ReportRowItem `json:"expenses"`
-	TotalExpenses     float64          `json:"totalExpenses"`
-	EarningsBeforeTax float64          `json:"earningsBeforeTax"`
-	TaxExpense        float64          `json:"taxExpense"`
-	NetIncome         float64          `json:"netIncome"`
-	Period            *Period          `json:"period"`
-	IsProvisional     bool             `json:"isProvisional"`
+	Revenues          []*IncomeStatementRowItem `json:"revenues"`
+	NetRevenue        float64                   `json:"netRevenue"`
+	Expenses          []*IncomeStatementRowItem `json:"expenses"`
+	TotalExpenses     float64                   `json:"totalExpenses"`
+	EarningsBeforeTax float64                   `json:"earningsBeforeTax"`
+	TaxExpense        float64                   `json:"taxExpense"`
+	NetIncome         float64                   `json:"netIncome"`
+	Period            *Period                   `json:"period"`
+	IsProvisional     bool                      `json:"isProvisional"`
+}
+
+type IncomeStatementRowItem struct {
+	Account     string  `json:"account"`
+	AccountType string  `json:"accountType"`
+	Category    string  `json:"category"`
+	Label       string  `json:"label"`
+	Value       float64 `json:"value"`
 }
 
 type InitialSetupInput struct {
@@ -276,11 +284,12 @@ type TreasuryAggregatePayload struct {
 }
 
 type TrialBalanceRowItem struct {
-	Account string  `json:"account"`
-	Label   string  `json:"label"`
-	Debit   float64 `json:"debit"`
-	Credit  float64 `json:"credit"`
-	Balance float64 `json:"balance"`
+	Account     string  `json:"account"`
+	AccountType string  `json:"accountType"`
+	Label       string  `json:"label"`
+	Debit       float64 `json:"debit"`
+	Credit      float64 `json:"credit"`
+	Balance     float64 `json:"balance"`
 }
 
 type VerifyMemberSignupTokenInput struct {

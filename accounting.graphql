@@ -130,6 +130,7 @@ input ReportInput {
 
 type TrialBalanceRowItem {
   account: String!
+  accountType: String!
   label: String!
   debit: Float!
   credit: Float!
@@ -168,10 +169,19 @@ type Equity {
   totalEquity: Float!
 }
 
+
+type IncomeStatementRowItem {
+  account: String!
+  accountType: String!
+  category: String!
+  label: String!
+  value: Float!
+}
+
 type IncomeStatementOuput {
-  revenues: [ReportRowItem]!
+  revenues: [IncomeStatementRowItem!]!
   netRevenue: Float!
-  expenses: [ReportRowItem]!
+  expenses: [IncomeStatementRowItem!]!
   totalExpenses: Float!
   earningsBeforeTax: Float!
   taxExpense: Float!
