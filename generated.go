@@ -58903,7 +58903,7 @@ func (ec *executionContext) unmarshalInputInvoiceInput(ctx context.Context, obj 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"accountingEntryData", "invoiceData"}
+	fieldsInOrder := [...]string{"accountingEntryData", "invoiceData", "inventoryMovements"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -58924,6 +58924,13 @@ func (ec *executionContext) unmarshalInputInvoiceInput(ctx context.Context, obj 
 				return it, err
 			}
 			it.InvoiceData = data
+		case "inventoryMovements":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("inventoryMovements"))
+			data, err := ec.unmarshalOCreateInventoryMovementInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCreateInventoryMovementInputᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.InventoryMovements = data
 		}
 	}
 
@@ -84826,6 +84833,11 @@ func (ec *executionContext) unmarshalNCreateInventoryMovementInput2mazzaᚋent�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNCreateInventoryMovementInput2ᚖmazzaᚋentᚋgeneratedᚐCreateInventoryMovementInput(ctx context.Context, v interface{}) (*generated.CreateInventoryMovementInput, error) {
+	res, err := ec.unmarshalInputCreateInventoryMovementInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNCreateInvoiceInput2mazzaᚋentᚋgeneratedᚐCreateInvoiceInput(ctx context.Context, v interface{}) (generated.CreateInvoiceInput, error) {
 	res, err := ec.unmarshalInputCreateInvoiceInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -88310,6 +88322,26 @@ func (ec *executionContext) unmarshalOCreateCompanyInput2ᚖmazzaᚋentᚋgenera
 	}
 	res, err := ec.unmarshalInputCreateCompanyInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOCreateInventoryMovementInput2ᚕᚖmazzaᚋentᚋgeneratedᚐCreateInventoryMovementInputᚄ(ctx context.Context, v interface{}) ([]*generated.CreateInventoryMovementInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*generated.CreateInventoryMovementInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNCreateInventoryMovementInput2ᚖmazzaᚋentᚋgeneratedᚐCreateInventoryMovementInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalOCursor2ᚖentgoᚗioᚋcontribᚋentgqlᚐCursor(ctx context.Context, v interface{}) (*entgql.Cursor[int], error) {

@@ -112,6 +112,7 @@ input BaseEntryRegistrationInput {
 input InvoiceInput {
   accountingEntryData: BaseEntryRegistrationInput!
   invoiceData: CreateInvoiceInput!
+  inventoryMovements: [CreateInventoryMovementInput!]
 }
 
 input SalesQuotationInput {

@@ -154,8 +154,9 @@ type InvoiceCustomer struct {
 }
 
 type InvoiceInput struct {
-	AccountingEntryData *BaseEntryRegistrationInput   `json:"accountingEntryData"`
-	InvoiceData         *generated.CreateInvoiceInput `json:"invoiceData"`
+	AccountingEntryData *BaseEntryRegistrationInput               `json:"accountingEntryData"`
+	InvoiceData         *generated.CreateInvoiceInput             `json:"invoiceData"`
+	InventoryMovements  []*generated.CreateInventoryMovementInput `json:"inventoryMovements,omitempty"`
 }
 
 type InvoiceIssuanceOutput struct {

@@ -31,6 +31,8 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
+
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	// Security headers

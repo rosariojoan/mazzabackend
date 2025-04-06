@@ -112,6 +112,7 @@ func Signup(ctx *gin.Context) {
 
 	if err != nil {
 		fmt.Println("err:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
 		return
 	}
@@ -120,6 +121,7 @@ func Signup(ctx *gin.Context) {
 	err = firebase.CreateUserEntry(ctx, newCompany.ID, body.UserInput.FirebaseUID, userIsActive, userRole)
 	if err != nil {
 		fmt.Println("could not create user:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "ocorreu um erro ao registar usuário"})
 		return
 	}
@@ -127,6 +129,7 @@ func Signup(ctx *gin.Context) {
 	err = tx.Commit()
 	if err != nil {
 		fmt.Println("err:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
 		return
 	}

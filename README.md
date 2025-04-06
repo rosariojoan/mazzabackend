@@ -15,6 +15,9 @@ Check and update dependencies: `go mod tidy`
 To generate models, run: `go generate .`
 
 
+## Backend
+`captain.meumestre.20250110.xyz`
+
 ## Docker
 Build containers: `docker compose up --build`
 Run the containers: `docker compose up`

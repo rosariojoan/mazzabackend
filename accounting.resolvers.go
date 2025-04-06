@@ -39,16 +39,47 @@ func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.Invoice
 		return nil, fmt.Errorf("invalid invoice number. refresh company details")
 	}
 
-	result, err := r.RegisterAccountingEntries(ctx, *input.AccountingEntryData)
+	// Start db transaction
+	tx, err := r.client.Tx(ctx)
 	if err != nil {
+		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	result, err := accountingentry.RegisterAccountingOperations(ctx, tx, *input.AccountingEntryData)
+	if err != nil {
+		_ = tx.Rollback()
 		fmt.Println("InvoiceIssuance err:", err)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
+	if input.InventoryMovements != nil {
+		// Create inventory movement
+		for _, movement := range input.InventoryMovements {
+			// input := generated.CreateInventoryMovementInput{
+			// 	Category:    movement.Category,
+			// 	Quantity:    movement.Quantity,
+			// 	Value:       movement.Value,
+			// 	Date:        movement.Date,
+			// 	Source:      movement.Source,
+			// 	Destination: movement.Destination,
+			// 	Notes:       movement.Notes,
+			// 	InventoryID: movement,
+			// }
+			_, err := accountingentry.CreateInventoryMovement(ctx, tx, *movement, nil)
+			if err != nil {
+				fmt.Println("InvoiceIssuance err:", err)
+				return nil, fmt.Errorf("an error occurred")
+			}
+		}
+	}
+
 	// Update the number of issued invoices in the company model
-	_, err = r.client.Company.UpdateOneID(activeCompany.ID).AddLastInvoiceNumber(1).Save(ctx)
+	_, err = tx.Company.UpdateOneID(activeCompany.ID).AddLastInvoiceNumber(1).Save(ctx)
 	if err != nil {
+		_ = tx.Rollback()
 		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
 	}
 
 	// Create invoice entry
@@ -57,14 +88,22 @@ func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.Invoice
 	// if input.InvoiceData.Terms != nil && *input.InvoiceData.Terms > 0 {
 	// 	status = invoice.StatusPENDING
 	// }
-	invoiceEntry, err := r.client.Invoice.Create().SetInput(*input.InvoiceData).
+	invoiceEntry, err := tx.Invoice.Create().SetInput(*input.InvoiceData).
 		SetCompanyID(activeCompany.ID).
 		SetIssuedByID(activeUser.ID).
 		Save(ctx)
 	if err != nil {
+		_ = tx.Rollback()
 		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
 	}
 	_ = invoiceEntry
+
+	if err = tx.Commit(); err != nil {
+		fmt.Println("err:", err)
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("an error occurred")
+	}
 
 	output := model.InvoiceIssuanceOutput{
 		Message: *result,

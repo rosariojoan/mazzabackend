@@ -7,46 +7,44 @@ package mazza
 import (
 	"context"
 	"fmt"
-	"math"
 	accountingentry "mazza/app/accountingEntry"
 	"mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/inventory"
-	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
 )
 
 // CreateInventoryMovement is the resolver for the createInventoryMovement field.
 func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error) {
-	_, activeCompany := utils.GetSession(&ctx)
+	// _, activeCompany := utils.GetSession(&ctx)
 	// var movement *generated.InventoryMovement
-	var quantity float64
-	var value float64
+	// var quantity float64
+	// var value float64
 
-	if input.Category == inventorymovement.CategoryOUT {
-		// Check if there is enough inventory for this movement
-		inventoryItem, err := r.client.Inventory.Query().Where(
-			inventory.ID(input.InventoryID),
-			inventory.HasCompanyWith(company.ID(activeCompany.ID)),
-			inventory.QuantityGTE(input.Quantity),
-		).First(ctx)
-		if err != nil {
-			fmt.Println("CreateInventoryMovement inventory err:", err)
-			return nil, fmt.Errorf("not enough inventory")
-		}
+	// if input.Category == inventorymovement.CategoryOUT {
+	// 	// Check if there is enough inventory for this movement
+	// 	inventoryItem, err := r.client.Inventory.Query().Where(
+	// 		inventory.ID(input.InventoryID),
+	// 		inventory.HasCompanyWith(company.ID(activeCompany.ID)),
+	// 		inventory.QuantityGTE(input.Quantity),
+	// 	).First(ctx)
+	// 	if err != nil {
+	// 		fmt.Println("CreateInventoryMovement inventory err:", err)
+	// 		return nil, fmt.Errorf("not enough inventory")
+	// 	}
 
-		quantity = -input.Quantity
-		if inventoryItem.Quantity > 0 {
-			unitValue := inventoryItem.CurrentValue / inventoryItem.Quantity
-			value = unitValue * quantity
-		} else {
-			value = 0
-		}
-	} else {
-		quantity = input.Quantity
-		value = input.Value
-	}
+	// 	quantity = -input.Quantity
+	// 	if inventoryItem.Quantity > 0 {
+	// 		unitValue := inventoryItem.CurrentValue / inventoryItem.Quantity
+	// 		value = unitValue * quantity
+	// 	} else {
+	// 		value = 0
+	// 	}
+	// } else {
+	// 	quantity = input.Quantity
+	// 	value = input.Value
+	// }
 
 	tx, err := r.client.Tx(ctx)
 	if err != nil {
@@ -54,39 +52,46 @@ func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input ge
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	movement, err := tx.InventoryMovement.Create().
-		SetInput(input).
-		SetValue(math.Abs(value)).
-		SetCompanyID(activeCompany.ID).
-		Save(ctx)
+	movement, err := accountingentry.CreateInventoryMovement(ctx, tx, input, accountingEntry)
 	if err != nil {
 		fmt.Println("err:", err)
-		return nil, err
+		return nil, fmt.Errorf("an error occurred")
 	}
 
-	// Update inventory
-	_, err = tx.Inventory.UpdateOneID(input.InventoryID).
-		Where(inventory.HasCompanyWith(company.ID(activeCompany.ID))).
-		AddQuantity(quantity).
-		AddCurrentValue(value).
-		Save(ctx)
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, err
-	}
+	// movement, err := tx.InventoryMovement.Create().
+	// 	SetInput(input).
+	// 	SetValue(math.Abs(value)).
+	// 	SetCompanyID(activeCompany.ID).
+	// 	Save(ctx)
+	// if err != nil {
+	// 	fmt.Println("err:", err)
+	// 	return nil, err
+	// }
 
-	if accountingEntry != nil {
-		// Create accounting entry
-		_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *accountingEntry)
-		if err != nil {
-			fmt.Println("err:", err)
-			return nil, fmt.Errorf("an error occurred")
-		}	
-	}
+	// // Update inventory
+	// _, err = tx.Inventory.UpdateOneID(input.InventoryID).
+	// 	Where(inventory.HasCompanyWith(company.ID(activeCompany.ID))).
+	// 	AddQuantity(quantity).
+	// 	AddCurrentValue(value).
+	// 	Save(ctx)
+	// if err != nil {
+	// 	fmt.Println("err:", err)
+	// 	return nil, err
+	// }
+
+	// if accountingEntry != nil {
+	// 	// Create accounting entry
+	// 	_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *accountingEntry)
+	// 	if err != nil {
+	// 		fmt.Println("err:", err)
+	// 		return nil, fmt.Errorf("an error occurred")
+	// 	}
+	// }
 
 	err = tx.Commit()
 	if err != nil {
 		fmt.Println("err:", err)
+		_ = tx.Rollback()
 		return nil, fmt.Errorf("an error occurred")
 	}
 

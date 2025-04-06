@@ -6,6 +6,7 @@ import (
 	"log"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/migrate"
+	"os"
 
 	"entgo.io/ent/dialect"
 	entsql "entgo.io/ent/dialect/sql"
@@ -19,7 +20,7 @@ func InitDB(ctx context.Context) {
 	// db, err := ent.Open(dialect.Postgres, "host=localhost port=5432 user=arafate dbname=mazza2 sslmode=disable")
 	// os.Getenv("DATABASE_URL")
 	// Open new connection
-	databaseUrl := "postgres://arafate:@localhost:5432/mazza"
+	databaseUrl := os.Getenv("DB_URL")
 	db, err := sql.Open("pgx", databaseUrl)
 	if err != nil {
 		log.Fatalf("failed opening connection to the db: %v", err)

@@ -76,6 +76,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 		).Save(ctx)
 	if err != nil {
 		fmt.Println("InvitedUserSignup create user err:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "an error occurred"})
 		return
 	}
@@ -99,6 +100,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 	_, err = tx.Client().MemberSignupToken.UpdateOneID(token.ID).SetAlreadyUsed(true).AddNumberAccessed(1).Save(ctx)
 	if err != nil {
 		fmt.Println("InvitedUserSignup token invalidation err:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "an error occurred"})
 		return
 	}
@@ -107,6 +109,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 	err = firebase.CreateUserEntry(ctx, companyID, newUser.FirebaseUID, userIsActive, roleInput.Role)
 	if err != nil {
 		fmt.Println("could not create user:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "an error occurred"})
 		return
 	}
@@ -114,6 +117,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 	err = tx.Commit()
 	if err != nil {
 		fmt.Println("err:", err)
+		_ = tx.Rollback()
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "an error occurred"})
 		return
 	}
