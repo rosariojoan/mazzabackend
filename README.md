@@ -16,7 +16,8 @@ To generate models, run: `go generate .`
 
 
 ## Backend
-`captain.meumestre.20250110.xyz`
+Deployed via Caprover: `https://caprover.com/`
+Link: `captain.meumestre.20250110.xyz`
 
 ## Docker
 Build containers: `docker compose up --build`
