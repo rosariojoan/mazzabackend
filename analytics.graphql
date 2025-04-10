@@ -15,7 +15,17 @@ type RevenueTrendOutput {
     amount: Float!
 }
 
+type HomepageAnalytics {
+    revenueFrequency: TimeRange!
+    revenueAggregation: [RevenueTrendOutput!]!
+    pendingInvoices: Int!
+    overdueTasks: Int!
+    activeProjects: Int!
+    recentTransactions: [AccountingEntry!]!
+}
+
 extend type Query {
     expensesBreakdown(range: TimeRange!): [ExpensesBreakdownOutput!]!
     revenueTrend(range: TimeRange!): [RevenueTrendOutput!]!
+    homepageAnalytics: HomepageAnalytics!
 }

@@ -90,6 +90,10 @@ func (Invoice) Edges() []ent.Edge {
 			entsql.OnDelete(entsql.SetNull),
 			entgql.Skip(entgql.SkipMutationUpdateInput),
 		),
+		edge.To("receivable", Receivable.Type).Unique().Annotations(
+			entgql.Skip(entgql.SkipMutationUpdateInput),
+			entsql.OnDelete(entsql.SetNull),
+		),
 	}
 }
 

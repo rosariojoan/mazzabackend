@@ -461,7 +461,7 @@ func init() {
 	// project.DescriptionValidator is a validator for the "description" field. It is called by the builders before save.
 	project.DescriptionValidator = projectDescDescription.Validators[0].(func(string) error)
 	// projectDescProgress is the schema descriptor for progress field.
-	projectDescProgress := projectFields[4].Descriptor()
+	projectDescProgress := projectFields[6].Descriptor()
 	// project.DefaultProgress holds the default value on creation for the progress field.
 	project.DefaultProgress = projectDescProgress.Default.(float64)
 	// project.ProgressValidator is a validator for the "progress" field. It is called by the builders before save.

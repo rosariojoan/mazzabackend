@@ -12153,6 +12153,8 @@ type InvoiceMutation struct {
 	clearedissuedBy   bool
 	client            *int
 	clearedclient     bool
+	receivable        *int
+	clearedreceivable bool
 	done              bool
 	oldValue          func(context.Context) (*Invoice, error)
 	predicates        []predicate.Invoice
@@ -14049,6 +14051,45 @@ func (m *InvoiceMutation) ResetClient() {
 	m.clearedclient = false
 }
 
+// SetReceivableID sets the "receivable" edge to the Receivable entity by id.
+func (m *InvoiceMutation) SetReceivableID(id int) {
+	m.receivable = &id
+}
+
+// ClearReceivable clears the "receivable" edge to the Receivable entity.
+func (m *InvoiceMutation) ClearReceivable() {
+	m.clearedreceivable = true
+}
+
+// ReceivableCleared reports if the "receivable" edge to the Receivable entity was cleared.
+func (m *InvoiceMutation) ReceivableCleared() bool {
+	return m.clearedreceivable
+}
+
+// ReceivableID returns the "receivable" edge ID in the mutation.
+func (m *InvoiceMutation) ReceivableID() (id int, exists bool) {
+	if m.receivable != nil {
+		return *m.receivable, true
+	}
+	return
+}
+
+// ReceivableIDs returns the "receivable" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ReceivableID instead. It exists only for internal usage by the builders.
+func (m *InvoiceMutation) ReceivableIDs() (ids []int) {
+	if id := m.receivable; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetReceivable resets all changes to the "receivable" edge.
+func (m *InvoiceMutation) ResetReceivable() {
+	m.receivable = nil
+	m.clearedreceivable = false
+}
+
 // Where appends a list predicates to the InvoiceMutation builder.
 func (m *InvoiceMutation) Where(ps ...predicate.Invoice) {
 	m.predicates = append(m.predicates, ps...)
@@ -14969,7 +15010,7 @@ func (m *InvoiceMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *InvoiceMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.company != nil {
 		edges = append(edges, invoice.EdgeCompany)
 	}
@@ -14978,6 +15019,9 @@ func (m *InvoiceMutation) AddedEdges() []string {
 	}
 	if m.client != nil {
 		edges = append(edges, invoice.EdgeClient)
+	}
+	if m.receivable != nil {
+		edges = append(edges, invoice.EdgeReceivable)
 	}
 	return edges
 }
@@ -14998,13 +15042,17 @@ func (m *InvoiceMutation) AddedIDs(name string) []ent.Value {
 		if id := m.client; id != nil {
 			return []ent.Value{*id}
 		}
+	case invoice.EdgeReceivable:
+		if id := m.receivable; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *InvoiceMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	return edges
 }
 
@@ -15016,7 +15064,7 @@ func (m *InvoiceMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *InvoiceMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedcompany {
 		edges = append(edges, invoice.EdgeCompany)
 	}
@@ -15025,6 +15073,9 @@ func (m *InvoiceMutation) ClearedEdges() []string {
 	}
 	if m.clearedclient {
 		edges = append(edges, invoice.EdgeClient)
+	}
+	if m.clearedreceivable {
+		edges = append(edges, invoice.EdgeReceivable)
 	}
 	return edges
 }
@@ -15039,6 +15090,8 @@ func (m *InvoiceMutation) EdgeCleared(name string) bool {
 		return m.clearedissuedBy
 	case invoice.EdgeClient:
 		return m.clearedclient
+	case invoice.EdgeReceivable:
+		return m.clearedreceivable
 	}
 	return false
 }
@@ -15056,6 +15109,9 @@ func (m *InvoiceMutation) ClearEdge(name string) error {
 	case invoice.EdgeClient:
 		m.ClearClient()
 		return nil
+	case invoice.EdgeReceivable:
+		m.ClearReceivable()
+		return nil
 	}
 	return fmt.Errorf("unknown Invoice unique edge %s", name)
 }
@@ -15072,6 +15128,9 @@ func (m *InvoiceMutation) ResetEdge(name string) error {
 		return nil
 	case invoice.EdgeClient:
 		m.ResetClient()
+		return nil
+	case invoice.EdgeReceivable:
+		m.ResetReceivable()
 		return nil
 	}
 	return fmt.Errorf("unknown Invoice edge %s", name)
@@ -17827,8 +17886,10 @@ type ProjectMutation struct {
 	deletedAt         *time.Time
 	name              *string
 	description       *string
-	startDate         *time.Time
-	endDate           *time.Time
+	plannedStartDate  *time.Time
+	actualStartDate   *time.Time
+	plannedEndDate    *time.Time
+	actualEndDate     *time.Time
 	progress          *float64
 	addprogress       *float64
 	status            *project.Status
@@ -18141,76 +18202,174 @@ func (m *ProjectMutation) ResetDescription() {
 	m.description = nil
 }
 
-// SetStartDate sets the "startDate" field.
-func (m *ProjectMutation) SetStartDate(t time.Time) {
-	m.startDate = &t
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (m *ProjectMutation) SetPlannedStartDate(t time.Time) {
+	m.plannedStartDate = &t
 }
 
-// StartDate returns the value of the "startDate" field in the mutation.
-func (m *ProjectMutation) StartDate() (r time.Time, exists bool) {
-	v := m.startDate
+// PlannedStartDate returns the value of the "plannedStartDate" field in the mutation.
+func (m *ProjectMutation) PlannedStartDate() (r time.Time, exists bool) {
+	v := m.plannedStartDate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStartDate returns the old "startDate" field's value of the Project entity.
+// OldPlannedStartDate returns the old "plannedStartDate" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldStartDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectMutation) OldPlannedStartDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldPlannedStartDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartDate requires an ID field in the mutation")
+		return v, errors.New("OldPlannedStartDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldPlannedStartDate: %w", err)
 	}
-	return oldValue.StartDate, nil
+	return oldValue.PlannedStartDate, nil
 }
 
-// ResetStartDate resets all changes to the "startDate" field.
-func (m *ProjectMutation) ResetStartDate() {
-	m.startDate = nil
+// ResetPlannedStartDate resets all changes to the "plannedStartDate" field.
+func (m *ProjectMutation) ResetPlannedStartDate() {
+	m.plannedStartDate = nil
 }
 
-// SetEndDate sets the "endDate" field.
-func (m *ProjectMutation) SetEndDate(t time.Time) {
-	m.endDate = &t
+// SetActualStartDate sets the "actualStartDate" field.
+func (m *ProjectMutation) SetActualStartDate(t time.Time) {
+	m.actualStartDate = &t
 }
 
-// EndDate returns the value of the "endDate" field in the mutation.
-func (m *ProjectMutation) EndDate() (r time.Time, exists bool) {
-	v := m.endDate
+// ActualStartDate returns the value of the "actualStartDate" field in the mutation.
+func (m *ProjectMutation) ActualStartDate() (r time.Time, exists bool) {
+	v := m.actualStartDate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEndDate returns the old "endDate" field's value of the Project entity.
+// OldActualStartDate returns the old "actualStartDate" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectMutation) OldEndDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectMutation) OldActualStartDate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldActualStartDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEndDate requires an ID field in the mutation")
+		return v, errors.New("OldActualStartDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldActualStartDate: %w", err)
 	}
-	return oldValue.EndDate, nil
+	return oldValue.ActualStartDate, nil
 }
 
-// ResetEndDate resets all changes to the "endDate" field.
-func (m *ProjectMutation) ResetEndDate() {
-	m.endDate = nil
+// ClearActualStartDate clears the value of the "actualStartDate" field.
+func (m *ProjectMutation) ClearActualStartDate() {
+	m.actualStartDate = nil
+	m.clearedFields[project.FieldActualStartDate] = struct{}{}
+}
+
+// ActualStartDateCleared returns if the "actualStartDate" field was cleared in this mutation.
+func (m *ProjectMutation) ActualStartDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldActualStartDate]
+	return ok
+}
+
+// ResetActualStartDate resets all changes to the "actualStartDate" field.
+func (m *ProjectMutation) ResetActualStartDate() {
+	m.actualStartDate = nil
+	delete(m.clearedFields, project.FieldActualStartDate)
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (m *ProjectMutation) SetPlannedEndDate(t time.Time) {
+	m.plannedEndDate = &t
+}
+
+// PlannedEndDate returns the value of the "plannedEndDate" field in the mutation.
+func (m *ProjectMutation) PlannedEndDate() (r time.Time, exists bool) {
+	v := m.plannedEndDate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPlannedEndDate returns the old "plannedEndDate" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldPlannedEndDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPlannedEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPlannedEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPlannedEndDate: %w", err)
+	}
+	return oldValue.PlannedEndDate, nil
+}
+
+// ResetPlannedEndDate resets all changes to the "plannedEndDate" field.
+func (m *ProjectMutation) ResetPlannedEndDate() {
+	m.plannedEndDate = nil
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (m *ProjectMutation) SetActualEndDate(t time.Time) {
+	m.actualEndDate = &t
+}
+
+// ActualEndDate returns the value of the "actualEndDate" field in the mutation.
+func (m *ProjectMutation) ActualEndDate() (r time.Time, exists bool) {
+	v := m.actualEndDate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldActualEndDate returns the old "actualEndDate" field's value of the Project entity.
+// If the Project object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectMutation) OldActualEndDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldActualEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldActualEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldActualEndDate: %w", err)
+	}
+	return oldValue.ActualEndDate, nil
+}
+
+// ClearActualEndDate clears the value of the "actualEndDate" field.
+func (m *ProjectMutation) ClearActualEndDate() {
+	m.actualEndDate = nil
+	m.clearedFields[project.FieldActualEndDate] = struct{}{}
+}
+
+// ActualEndDateCleared returns if the "actualEndDate" field was cleared in this mutation.
+func (m *ProjectMutation) ActualEndDateCleared() bool {
+	_, ok := m.clearedFields[project.FieldActualEndDate]
+	return ok
+}
+
+// ResetActualEndDate resets all changes to the "actualEndDate" field.
+func (m *ProjectMutation) ResetActualEndDate() {
+	m.actualEndDate = nil
+	delete(m.clearedFields, project.FieldActualEndDate)
 }
 
 // SetProgress sets the "progress" field.
@@ -18564,7 +18723,7 @@ func (m *ProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 11)
 	if m.createdAt != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
@@ -18580,11 +18739,17 @@ func (m *ProjectMutation) Fields() []string {
 	if m.description != nil {
 		fields = append(fields, project.FieldDescription)
 	}
-	if m.startDate != nil {
-		fields = append(fields, project.FieldStartDate)
+	if m.plannedStartDate != nil {
+		fields = append(fields, project.FieldPlannedStartDate)
 	}
-	if m.endDate != nil {
-		fields = append(fields, project.FieldEndDate)
+	if m.actualStartDate != nil {
+		fields = append(fields, project.FieldActualStartDate)
+	}
+	if m.plannedEndDate != nil {
+		fields = append(fields, project.FieldPlannedEndDate)
+	}
+	if m.actualEndDate != nil {
+		fields = append(fields, project.FieldActualEndDate)
 	}
 	if m.progress != nil {
 		fields = append(fields, project.FieldProgress)
@@ -18610,10 +18775,14 @@ func (m *ProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case project.FieldDescription:
 		return m.Description()
-	case project.FieldStartDate:
-		return m.StartDate()
-	case project.FieldEndDate:
-		return m.EndDate()
+	case project.FieldPlannedStartDate:
+		return m.PlannedStartDate()
+	case project.FieldActualStartDate:
+		return m.ActualStartDate()
+	case project.FieldPlannedEndDate:
+		return m.PlannedEndDate()
+	case project.FieldActualEndDate:
+		return m.ActualEndDate()
 	case project.FieldProgress:
 		return m.Progress()
 	case project.FieldStatus:
@@ -18637,10 +18806,14 @@ func (m *ProjectMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldName(ctx)
 	case project.FieldDescription:
 		return m.OldDescription(ctx)
-	case project.FieldStartDate:
-		return m.OldStartDate(ctx)
-	case project.FieldEndDate:
-		return m.OldEndDate(ctx)
+	case project.FieldPlannedStartDate:
+		return m.OldPlannedStartDate(ctx)
+	case project.FieldActualStartDate:
+		return m.OldActualStartDate(ctx)
+	case project.FieldPlannedEndDate:
+		return m.OldPlannedEndDate(ctx)
+	case project.FieldActualEndDate:
+		return m.OldActualEndDate(ctx)
 	case project.FieldProgress:
 		return m.OldProgress(ctx)
 	case project.FieldStatus:
@@ -18689,19 +18862,33 @@ func (m *ProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDescription(v)
 		return nil
-	case project.FieldStartDate:
+	case project.FieldPlannedStartDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetStartDate(v)
+		m.SetPlannedStartDate(v)
 		return nil
-	case project.FieldEndDate:
+	case project.FieldActualStartDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetEndDate(v)
+		m.SetActualStartDate(v)
+		return nil
+	case project.FieldPlannedEndDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPlannedEndDate(v)
+		return nil
+	case project.FieldActualEndDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetActualEndDate(v)
 		return nil
 	case project.FieldProgress:
 		v, ok := value.(float64)
@@ -18765,6 +18952,12 @@ func (m *ProjectMutation) ClearedFields() []string {
 	if m.FieldCleared(project.FieldDeletedAt) {
 		fields = append(fields, project.FieldDeletedAt)
 	}
+	if m.FieldCleared(project.FieldActualStartDate) {
+		fields = append(fields, project.FieldActualStartDate)
+	}
+	if m.FieldCleared(project.FieldActualEndDate) {
+		fields = append(fields, project.FieldActualEndDate)
+	}
 	return fields
 }
 
@@ -18781,6 +18974,12 @@ func (m *ProjectMutation) ClearField(name string) error {
 	switch name {
 	case project.FieldDeletedAt:
 		m.ClearDeletedAt()
+		return nil
+	case project.FieldActualStartDate:
+		m.ClearActualStartDate()
+		return nil
+	case project.FieldActualEndDate:
+		m.ClearActualEndDate()
 		return nil
 	}
 	return fmt.Errorf("unknown Project nullable field %s", name)
@@ -18805,11 +19004,17 @@ func (m *ProjectMutation) ResetField(name string) error {
 	case project.FieldDescription:
 		m.ResetDescription()
 		return nil
-	case project.FieldStartDate:
-		m.ResetStartDate()
+	case project.FieldPlannedStartDate:
+		m.ResetPlannedStartDate()
 		return nil
-	case project.FieldEndDate:
-		m.ResetEndDate()
+	case project.FieldActualStartDate:
+		m.ResetActualStartDate()
+		return nil
+	case project.FieldPlannedEndDate:
+		m.ResetPlannedEndDate()
+		return nil
+	case project.FieldActualEndDate:
+		m.ResetActualEndDate()
 		return nil
 	case project.FieldProgress:
 		m.ResetProgress()
@@ -19822,7 +20027,7 @@ func (m *ProjectTaskMutation) EndDate() (r time.Time, exists bool) {
 // OldEndDate returns the old "endDate" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldEndDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectTaskMutation) OldEndDate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
 	}
@@ -19836,9 +20041,22 @@ func (m *ProjectTaskMutation) OldEndDate(ctx context.Context) (v time.Time, err 
 	return oldValue.EndDate, nil
 }
 
+// ClearEndDate clears the value of the "endDate" field.
+func (m *ProjectTaskMutation) ClearEndDate() {
+	m.endDate = nil
+	m.clearedFields[projecttask.FieldEndDate] = struct{}{}
+}
+
+// EndDateCleared returns if the "endDate" field was cleared in this mutation.
+func (m *ProjectTaskMutation) EndDateCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldEndDate]
+	return ok
+}
+
 // ResetEndDate resets all changes to the "endDate" field.
 func (m *ProjectTaskMutation) ResetEndDate() {
 	m.endDate = nil
+	delete(m.clearedFields, projecttask.FieldEndDate)
 }
 
 // SetDescription sets the "description" field.
@@ -20374,6 +20592,9 @@ func (m *ProjectTaskMutation) ClearedFields() []string {
 	if m.FieldCleared(projecttask.FieldLocation) {
 		fields = append(fields, projecttask.FieldLocation)
 	}
+	if m.FieldCleared(projecttask.FieldEndDate) {
+		fields = append(fields, projecttask.FieldEndDate)
+	}
 	if m.FieldCleared(projecttask.FieldDescription) {
 		fields = append(fields, projecttask.FieldDescription)
 	}
@@ -20396,6 +20617,9 @@ func (m *ProjectTaskMutation) ClearField(name string) error {
 		return nil
 	case projecttask.FieldLocation:
 		m.ClearLocation()
+		return nil
+	case projecttask.FieldEndDate:
+		m.ClearEndDate()
 		return nil
 	case projecttask.FieldDescription:
 		m.ClearDescription()
@@ -20625,6 +20849,8 @@ type ReceivableMutation struct {
 	clearedFields         map[string]struct{}
 	company               *int
 	clearedcompany        bool
+	invoice               *int
+	clearedinvoice        bool
 	done                  bool
 	oldValue              func(context.Context) (*Receivable, error)
 	predicates            []predicate.Receivable
@@ -21200,6 +21426,45 @@ func (m *ReceivableMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
+// SetInvoiceID sets the "invoice" edge to the Invoice entity by id.
+func (m *ReceivableMutation) SetInvoiceID(id int) {
+	m.invoice = &id
+}
+
+// ClearInvoice clears the "invoice" edge to the Invoice entity.
+func (m *ReceivableMutation) ClearInvoice() {
+	m.clearedinvoice = true
+}
+
+// InvoiceCleared reports if the "invoice" edge to the Invoice entity was cleared.
+func (m *ReceivableMutation) InvoiceCleared() bool {
+	return m.clearedinvoice
+}
+
+// InvoiceID returns the "invoice" edge ID in the mutation.
+func (m *ReceivableMutation) InvoiceID() (id int, exists bool) {
+	if m.invoice != nil {
+		return *m.invoice, true
+	}
+	return
+}
+
+// InvoiceIDs returns the "invoice" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// InvoiceID instead. It exists only for internal usage by the builders.
+func (m *ReceivableMutation) InvoiceIDs() (ids []int) {
+	if id := m.invoice; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetInvoice resets all changes to the "invoice" edge.
+func (m *ReceivableMutation) ResetInvoice() {
+	m.invoice = nil
+	m.clearedinvoice = false
+}
+
 // Where appends a list predicates to the ReceivableMutation builder.
 func (m *ReceivableMutation) Where(ps ...predicate.Receivable) {
 	m.predicates = append(m.predicates, ps...)
@@ -21534,9 +21799,12 @@ func (m *ReceivableMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *ReceivableMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.company != nil {
 		edges = append(edges, receivable.EdgeCompany)
+	}
+	if m.invoice != nil {
+		edges = append(edges, receivable.EdgeInvoice)
 	}
 	return edges
 }
@@ -21549,13 +21817,17 @@ func (m *ReceivableMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
+	case receivable.EdgeInvoice:
+		if id := m.invoice; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *ReceivableMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
@@ -21567,9 +21839,12 @@ func (m *ReceivableMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *ReceivableMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.clearedcompany {
 		edges = append(edges, receivable.EdgeCompany)
+	}
+	if m.clearedinvoice {
+		edges = append(edges, receivable.EdgeInvoice)
 	}
 	return edges
 }
@@ -21580,6 +21855,8 @@ func (m *ReceivableMutation) EdgeCleared(name string) bool {
 	switch name {
 	case receivable.EdgeCompany:
 		return m.clearedcompany
+	case receivable.EdgeInvoice:
+		return m.clearedinvoice
 	}
 	return false
 }
@@ -21591,6 +21868,9 @@ func (m *ReceivableMutation) ClearEdge(name string) error {
 	case receivable.EdgeCompany:
 		m.ClearCompany()
 		return nil
+	case receivable.EdgeInvoice:
+		m.ClearInvoice()
+		return nil
 	}
 	return fmt.Errorf("unknown Receivable unique edge %s", name)
 }
@@ -21601,6 +21881,9 @@ func (m *ReceivableMutation) ResetEdge(name string) error {
 	switch name {
 	case receivable.EdgeCompany:
 		m.ResetCompany()
+		return nil
+	case receivable.EdgeInvoice:
+		m.ResetInvoice()
 		return nil
 	}
 	return fmt.Errorf("unknown Receivable edge %s", name)

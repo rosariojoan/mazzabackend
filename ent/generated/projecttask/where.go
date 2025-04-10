@@ -470,6 +470,16 @@ func EndDateLTE(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLTE(FieldEndDate, v))
 }
 
+// EndDateIsNil applies the IsNil predicate on the "endDate" field.
+func EndDateIsNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIsNull(FieldEndDate))
+}
+
+// EndDateNotNil applies the NotNil predicate on the "endDate" field.
+func EndDateNotNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotNull(FieldEndDate))
+}
+
 // DescriptionEQ applies the EQ predicate on the "description" field.
 func DescriptionEQ(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldDescription, v))

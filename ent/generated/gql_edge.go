@@ -432,6 +432,14 @@ func (i *Invoice) Client(ctx context.Context) (*Customer, error) {
 	return result, MaskNotFound(err)
 }
 
+func (i *Invoice) Receivable(ctx context.Context) (*Receivable, error) {
+	result, err := i.Edges.ReceivableOrErr()
+	if IsNotLoaded(err) {
+		result, err = i.QueryReceivable().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (mst *MemberSignupToken) Company(ctx context.Context) (*Company, error) {
 	result, err := mst.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
@@ -572,6 +580,14 @@ func (r *Receivable) Company(ctx context.Context) (*Company, error) {
 	result, err := r.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
 		result, err = r.QueryCompany().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (r *Receivable) Invoice(ctx context.Context) (*Invoice, error) {
+	result, err := r.Edges.InvoiceOrErr()
+	if IsNotLoaded(err) {
+		result, err = r.QueryInvoice().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }

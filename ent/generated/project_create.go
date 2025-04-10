@@ -78,15 +78,43 @@ func (pc *ProjectCreate) SetDescription(s string) *ProjectCreate {
 	return pc
 }
 
-// SetStartDate sets the "startDate" field.
-func (pc *ProjectCreate) SetStartDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetStartDate(t)
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (pc *ProjectCreate) SetPlannedStartDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetPlannedStartDate(t)
 	return pc
 }
 
-// SetEndDate sets the "endDate" field.
-func (pc *ProjectCreate) SetEndDate(t time.Time) *ProjectCreate {
-	pc.mutation.SetEndDate(t)
+// SetActualStartDate sets the "actualStartDate" field.
+func (pc *ProjectCreate) SetActualStartDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetActualStartDate(t)
+	return pc
+}
+
+// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableActualStartDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetActualStartDate(*t)
+	}
+	return pc
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (pc *ProjectCreate) SetPlannedEndDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetPlannedEndDate(t)
+	return pc
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (pc *ProjectCreate) SetActualEndDate(t time.Time) *ProjectCreate {
+	pc.mutation.SetActualEndDate(t)
+	return pc
+}
+
+// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+func (pc *ProjectCreate) SetNillableActualEndDate(t *time.Time) *ProjectCreate {
+	if t != nil {
+		pc.SetActualEndDate(*t)
+	}
 	return pc
 }
 
@@ -282,11 +310,11 @@ func (pc *ProjectCreate) check() error {
 			return &ValidationError{Name: "description", err: fmt.Errorf(`generated: validator failed for field "Project.description": %w`, err)}
 		}
 	}
-	if _, ok := pc.mutation.StartDate(); !ok {
-		return &ValidationError{Name: "startDate", err: errors.New(`generated: missing required field "Project.startDate"`)}
+	if _, ok := pc.mutation.PlannedStartDate(); !ok {
+		return &ValidationError{Name: "plannedStartDate", err: errors.New(`generated: missing required field "Project.plannedStartDate"`)}
 	}
-	if _, ok := pc.mutation.EndDate(); !ok {
-		return &ValidationError{Name: "endDate", err: errors.New(`generated: missing required field "Project.endDate"`)}
+	if _, ok := pc.mutation.PlannedEndDate(); !ok {
+		return &ValidationError{Name: "plannedEndDate", err: errors.New(`generated: missing required field "Project.plannedEndDate"`)}
 	}
 	if _, ok := pc.mutation.Progress(); !ok {
 		return &ValidationError{Name: "progress", err: errors.New(`generated: missing required field "Project.progress"`)}
@@ -350,13 +378,21 @@ func (pc *ProjectCreate) createSpec() (*Project, *sqlgraph.CreateSpec) {
 		_spec.SetField(project.FieldDescription, field.TypeString, value)
 		_node.Description = value
 	}
-	if value, ok := pc.mutation.StartDate(); ok {
-		_spec.SetField(project.FieldStartDate, field.TypeTime, value)
-		_node.StartDate = value
+	if value, ok := pc.mutation.PlannedStartDate(); ok {
+		_spec.SetField(project.FieldPlannedStartDate, field.TypeTime, value)
+		_node.PlannedStartDate = value
 	}
-	if value, ok := pc.mutation.EndDate(); ok {
-		_spec.SetField(project.FieldEndDate, field.TypeTime, value)
-		_node.EndDate = value
+	if value, ok := pc.mutation.ActualStartDate(); ok {
+		_spec.SetField(project.FieldActualStartDate, field.TypeTime, value)
+		_node.ActualStartDate = &value
+	}
+	if value, ok := pc.mutation.PlannedEndDate(); ok {
+		_spec.SetField(project.FieldPlannedEndDate, field.TypeTime, value)
+		_node.PlannedEndDate = value
+	}
+	if value, ok := pc.mutation.ActualEndDate(); ok {
+		_spec.SetField(project.FieldActualEndDate, field.TypeTime, value)
+		_node.ActualEndDate = &value
 	}
 	if value, ok := pc.mutation.Progress(); ok {
 		_spec.SetField(project.FieldProgress, field.TypeFloat64, value)

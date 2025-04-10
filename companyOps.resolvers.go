@@ -30,7 +30,7 @@ func (r *mutationResolver) InitialSetup(ctx context.Context, input model.Initial
 			return nil, fmt.Errorf("an error occurred")
 		}
 
-		_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *input.AccountingEntry)
+		_, err = accountingentry.RegisterAccountingOperations(ctx, tx, *input.AccountingEntry, nil)
 		if err != nil {
 			fmt.Println("InitialSetup RegisterAccountingOperations err:", err)
 			return nil, fmt.Errorf("an error occurred")

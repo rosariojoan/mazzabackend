@@ -5,42 +5,78 @@ import (
 	"fmt"
 
 	// "mazza/app/utils"
-	ent "mazza/ent/generated"
+	"mazza/ent/generated"
+	"mazza/ent/generated/company"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/utils"
+	"mazza/firebase"
 )
 
-type contact struct {
-	ID          uint
-	CompanyName string
-	Name        string
-	Email       string
-	IsAdmin     bool
-}
-
-func Unsubscribe(ctx *context.Context) error {
-	client := ent.FromContext(*ctx)
-	currentUser, company := utils.GetSession(ctx)
-	if currentUser == nil || company == nil {
+// Delete the current company and unsubscribe all associated users
+func Unsubscribe(ctx *context.Context, client *generated.Client) error {
+	// client := ent.FromContext(*ctx)
+	activeUser, activeCompany := utils.GetSession(ctx)
+	if activeUser == nil || activeCompany == nil {
 		return fmt.Errorf("unauthorized")
 	}
 
-	fmt.Println("ctx:", currentUser, company, client)
-	// contacts := map[int]contact{}
-	// fmt.Println("user:", user, company)
-
-	// Check if the user is admin
-	isAdmin, err := currentUser.QueryAssignedRoles().Where(userrole.RoleEQ(userrole.RoleADMIN)).Exist(*ctx)
+	// Check if user is an admin of the active company
+	isAdmin, err := activeUser.QueryAssignedRoles().
+		Where(
+			userrole.HasCompanyWith(company.ID(activeCompany.ID)),
+			userrole.RoleEQ(userrole.RoleADMIN)).
+		Exist(*ctx)
 	if err != nil || !isAdmin {
 		fmt.Println("err:", err)
 		return fmt.Errorf("unauthorized")
 	}
 
-	allUsers, err := currentUser.QueryAssignedRoles().WithCompany().QueryUser().All(*ctx)
+	allUsers, err := activeCompany.QueryUsers().All(*ctx)
 	if err != nil || allUsers == nil {
 		fmt.Println("err:", err)
 		return fmt.Errorf("unauthorized")
 	}
+
+	var firebaseUIDs []string
+	for _, user := range allUsers {
+		firebaseUIDs = append(firebaseUIDs, user.FirebaseUID)
+	}
+
+	// Initiate transaction
+	tx, err := client.Tx(*ctx)
+	if err != nil {
+		fmt.Println("tx err:", err)
+		return fmt.Errorf("an error occurred")
+	}
+
+	_, err = tx.User.Delete().Where(
+		user.HasCompanyWith(company.ID(activeCompany.ID)),
+	).Exec(*ctx)
+	if err != nil {
+		fmt.Println("err:", err)
+		tx.Rollback()
+		return fmt.Errorf("an error occurred")
+	}
+
+	err = tx.Company.DeleteOneID(activeCompany.ID).Exec(*ctx)
+	if err != nil {
+		fmt.Println("err:", err)
+		tx.Rollback()
+		return fmt.Errorf("an error occurred")
+	}
+
+	// Delete all stored files of this company
+	go firebase.DeleteAllFilesFromCompany(activeCompany.ID)
+	go firebase.DeleteAllUsersFromCompany(activeCompany.ID, firebaseUIDs)
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("err:", err)
+		tx.Rollback()
+		return fmt.Errorf("an error occurred")
+	}
+
 	// companyGroup := []models.Company{company}
 	// inits.DB.Raw(`SELECT * FROM users WHERE id = ? AND deleted_at IS NULL`, company.ID).Find(&allUsers)
 
@@ -111,10 +147,4 @@ func Unsubscribe(ctx *context.Context) error {
 	// c.JSON(http.StatusOK, gin.H{"admin": isAdmin, "contacts": contacts})
 
 	return nil
-}
-
-// Send a farewell email to the deleted user.
-func sendFarewellEmail(contact *contact) {
-	// ...
-	fmt.Println("sent:", contact.ID)
 }

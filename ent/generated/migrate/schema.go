@@ -528,10 +528,12 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
-		{Name: "start_date", Type: field.TypeTime},
-		{Name: "end_date", Type: field.TypeTime},
+		{Name: "planned_start_date", Type: field.TypeTime},
+		{Name: "actual_start_date", Type: field.TypeTime, Nullable: true},
+		{Name: "planned_end_date", Type: field.TypeTime},
+		{Name: "actual_end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "progress", Type: field.TypeFloat64, Default: 0},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}, Default: "notStarted"},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed", "delayed"}, Default: "notStarted"},
 		{Name: "company_projects", Type: field.TypeInt, Nullable: true},
 		{Name: "user_created_projects", Type: field.TypeInt, Nullable: true},
 		{Name: "user_leadered_projects", Type: field.TypeInt, Nullable: true},
@@ -544,19 +546,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "projects_companies_projects",
-				Columns:    []*schema.Column{ProjectsColumns[10]},
+				Columns:    []*schema.Column{ProjectsColumns[12]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "projects_users_createdProjects",
-				Columns:    []*schema.Column{ProjectsColumns[11]},
+				Columns:    []*schema.Column{ProjectsColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "projects_users_leaderedProjects",
-				Columns:    []*schema.Column{ProjectsColumns[12]},
+				Columns:    []*schema.Column{ProjectsColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -565,7 +567,7 @@ var (
 			{
 				Name:    "project_name_company_projects",
 				Unique:  true,
-				Columns: []*schema.Column{ProjectsColumns[4], ProjectsColumns[10]},
+				Columns: []*schema.Column{ProjectsColumns[4], ProjectsColumns[12]},
 			},
 		},
 	}
@@ -606,7 +608,7 @@ var (
 		{Name: "location", Type: field.TypeString, Nullable: true},
 		{Name: "due_date", Type: field.TypeTime},
 		{Name: "start_date", Type: field.TypeTime},
-		{Name: "end_date", Type: field.TypeTime},
+		{Name: "end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}},
 		{Name: "project_tasks", Type: field.TypeInt},
@@ -661,6 +663,7 @@ var (
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"paid", "pending", "default"}},
 		{Name: "company_receivables", Type: field.TypeInt, Nullable: true},
 		{Name: "customer_receivables", Type: field.TypeInt, Nullable: true},
+		{Name: "invoice_receivable", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// ReceivablesTable holds the schema information for the "receivables" table.
 	ReceivablesTable = &schema.Table{
@@ -679,6 +682,12 @@ var (
 				Columns:    []*schema.Column{ReceivablesColumns[12]},
 				RefColumns: []*schema.Column{CustomersColumns[0]},
 				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "receivables_invoices_receivable",
+				Columns:    []*schema.Column{ReceivablesColumns[13]},
+				RefColumns: []*schema.Column{InvoicesColumns[0]},
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -1009,6 +1018,7 @@ func init() {
 	ProjectTasksTable.ForeignKeys[2].RefTable = UsersTable
 	ReceivablesTable.ForeignKeys[0].RefTable = CompaniesTable
 	ReceivablesTable.ForeignKeys[1].RefTable = CustomersTable
+	ReceivablesTable.ForeignKeys[2].RefTable = InvoicesTable
 	SuppliersTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	TokensTable.ForeignKeys[1].RefTable = UsersTable

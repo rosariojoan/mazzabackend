@@ -13,7 +13,7 @@ import (
 )
 
 /* Pass in a database transaction. The caller function should commit the transaction if this operation returns no error */
-func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input model.BaseEntryRegistrationInput) (*string, error) {
+func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input model.BaseEntryRegistrationInput, invoiceID *int) (*string, error) {
 	currentUser, currentCompany := u.GetSession(&ctx)
 	companyQ := u.CurrentCompanyQuery(&ctx)
 	// country, lang := "mz", "pt"

@@ -2212,6 +2212,22 @@ func (c *InvoiceClient) QueryClient(i *Invoice) *CustomerQuery {
 	return query
 }
 
+// QueryReceivable queries the receivable edge of a Invoice.
+func (c *InvoiceClient) QueryReceivable(i *Invoice) *ReceivableQuery {
+	query := (&ReceivableClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(invoice.Table, invoice.FieldID, id),
+			sqlgraph.To(receivable.Table, receivable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, invoice.ReceivableTable, invoice.ReceivableColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *InvoiceClient) Hooks() []Hook {
 	return c.hooks.Invoice
@@ -3393,6 +3409,22 @@ func (c *ReceivableClient) QueryCompany(r *Receivable) *CompanyQuery {
 			sqlgraph.From(receivable.Table, receivable.FieldID, id),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, receivable.CompanyTable, receivable.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInvoice queries the invoice edge of a Receivable.
+func (c *ReceivableClient) QueryInvoice(r *Receivable) *InvoiceQuery {
+	query := (&InvoiceClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(receivable.Table, receivable.FieldID, id),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, receivable.InvoiceTable, receivable.InvoiceColumn),
 		)
 		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
 		return fromV, nil

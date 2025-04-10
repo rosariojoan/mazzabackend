@@ -1405,6 +1405,7 @@ type CreateInvoiceInput struct {
 	Size              *float64
 	Keywords          string
 	ClientID          *int
+	ReceivableID      *int
 }
 
 // Mutate applies the CreateInvoiceInput on the InvoiceMutation builder.
@@ -1490,6 +1491,9 @@ func (i *CreateInvoiceInput) Mutate(m *InvoiceMutation) {
 	m.SetKeywords(i.Keywords)
 	if v := i.ClientID; v != nil {
 		m.SetClientID(*v)
+	}
+	if v := i.ReceivableID; v != nil {
+		m.SetReceivableID(*v)
 	}
 }
 
@@ -1967,25 +1971,33 @@ func (c *ProductUpdateOne) SetInput(i UpdateProductInput) *ProductUpdateOne {
 
 // CreateProjectInput represents a mutation input for creating projects.
 type CreateProjectInput struct {
-	Name         string
-	Description  string
-	StartDate    time.Time
-	EndDate      time.Time
-	Progress     *float64
-	Status       *project.Status
-	CompanyID    *int
-	CreatedByID  *int
-	LeaderID     *int
-	TaskIDs      []int
-	MilestoneIDs []int
+	Name             string
+	Description      string
+	PlannedStartDate time.Time
+	ActualStartDate  *time.Time
+	PlannedEndDate   time.Time
+	ActualEndDate    *time.Time
+	Progress         *float64
+	Status           *project.Status
+	CompanyID        *int
+	CreatedByID      *int
+	LeaderID         *int
+	TaskIDs          []int
+	MilestoneIDs     []int
 }
 
 // Mutate applies the CreateProjectInput on the ProjectMutation builder.
 func (i *CreateProjectInput) Mutate(m *ProjectMutation) {
 	m.SetName(i.Name)
 	m.SetDescription(i.Description)
-	m.SetStartDate(i.StartDate)
-	m.SetEndDate(i.EndDate)
+	m.SetPlannedStartDate(i.PlannedStartDate)
+	if v := i.ActualStartDate; v != nil {
+		m.SetActualStartDate(*v)
+	}
+	m.SetPlannedEndDate(i.PlannedEndDate)
+	if v := i.ActualEndDate; v != nil {
+		m.SetActualEndDate(*v)
+	}
 	if v := i.Progress; v != nil {
 		m.SetProgress(*v)
 	}
@@ -2017,24 +2029,28 @@ func (c *ProjectCreate) SetInput(i CreateProjectInput) *ProjectCreate {
 
 // UpdateProjectInput represents a mutation input for updating projects.
 type UpdateProjectInput struct {
-	Name               *string
-	Description        *string
-	StartDate          *time.Time
-	EndDate            *time.Time
-	Progress           *float64
-	Status             *project.Status
-	ClearCompany       bool
-	CompanyID          *int
-	ClearCreatedBy     bool
-	CreatedByID        *int
-	ClearLeader        bool
-	LeaderID           *int
-	ClearTasks         bool
-	AddTaskIDs         []int
-	RemoveTaskIDs      []int
-	ClearMilestones    bool
-	AddMilestoneIDs    []int
-	RemoveMilestoneIDs []int
+	Name                 *string
+	Description          *string
+	PlannedStartDate     *time.Time
+	ClearActualStartDate bool
+	ActualStartDate      *time.Time
+	PlannedEndDate       *time.Time
+	ClearActualEndDate   bool
+	ActualEndDate        *time.Time
+	Progress             *float64
+	Status               *project.Status
+	ClearCompany         bool
+	CompanyID            *int
+	ClearCreatedBy       bool
+	CreatedByID          *int
+	ClearLeader          bool
+	LeaderID             *int
+	ClearTasks           bool
+	AddTaskIDs           []int
+	RemoveTaskIDs        []int
+	ClearMilestones      bool
+	AddMilestoneIDs      []int
+	RemoveMilestoneIDs   []int
 }
 
 // Mutate applies the UpdateProjectInput on the ProjectMutation builder.
@@ -2045,11 +2061,23 @@ func (i *UpdateProjectInput) Mutate(m *ProjectMutation) {
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
-	if v := i.StartDate; v != nil {
-		m.SetStartDate(*v)
+	if v := i.PlannedStartDate; v != nil {
+		m.SetPlannedStartDate(*v)
 	}
-	if v := i.EndDate; v != nil {
-		m.SetEndDate(*v)
+	if i.ClearActualStartDate {
+		m.ClearActualStartDate()
+	}
+	if v := i.ActualStartDate; v != nil {
+		m.SetActualStartDate(*v)
+	}
+	if v := i.PlannedEndDate; v != nil {
+		m.SetPlannedEndDate(*v)
+	}
+	if i.ClearActualEndDate {
+		m.ClearActualEndDate()
+	}
+	if v := i.ActualEndDate; v != nil {
+		m.SetActualEndDate(*v)
 	}
 	if v := i.Progress; v != nil {
 		m.SetProgress(*v)
@@ -2167,7 +2195,7 @@ type CreateProjectTaskInput struct {
 	Location       *string
 	DueDate        time.Time
 	StartDate      time.Time
-	EndDate        time.Time
+	EndDate        *time.Time
 	Description    *string
 	Status         projecttask.Status
 	ProjectID      int
@@ -2189,7 +2217,9 @@ func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	}
 	m.SetDueDate(i.DueDate)
 	m.SetStartDate(i.StartDate)
-	m.SetEndDate(i.EndDate)
+	if v := i.EndDate; v != nil {
+		m.SetEndDate(*v)
+	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
@@ -2223,6 +2253,7 @@ type UpdateProjectTaskInput struct {
 	Location             *string
 	DueDate              *time.Time
 	StartDate            *time.Time
+	ClearEndDate         bool
 	EndDate              *time.Time
 	ClearDescription     bool
 	Description          *string
@@ -2257,6 +2288,9 @@ func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	}
 	if v := i.StartDate; v != nil {
 		m.SetStartDate(*v)
+	}
+	if i.ClearEndDate {
+		m.ClearEndDate()
 	}
 	if v := i.EndDate; v != nil {
 		m.SetEndDate(*v)
@@ -2321,6 +2355,7 @@ type CreateReceivableInput struct {
 	DueDate            time.Time
 	Status             receivable.Status
 	CompanyID          *int
+	InvoiceID          *int
 }
 
 // Mutate applies the CreateReceivableInput on the ReceivableMutation builder.
@@ -2336,6 +2371,9 @@ func (i *CreateReceivableInput) Mutate(m *ReceivableMutation) {
 	m.SetStatus(i.Status)
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
+	}
+	if v := i.InvoiceID; v != nil {
+		m.SetInvoiceID(*v)
 	}
 }
 

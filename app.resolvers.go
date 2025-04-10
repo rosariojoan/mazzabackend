@@ -187,11 +187,8 @@ func (r *mutationResolver) ResetPassword(ctx context.Context, input model.ResetP
 
 // Unsubscribe is the resolver for the unsubscribe field.
 func (r *mutationResolver) Unsubscribe(ctx context.Context, id int) (bool, error) {
-	err := auth.Unsubscribe(&ctx)
-	if err != nil {
-		return false, fmt.Errorf("not allowed")
-	}
-	return true, nil
+	err := auth.Unsubscribe(&ctx, r.client)
+	return true, err
 }
 
 // CreateUserRole is the resolver for the createUserRole field.
@@ -348,7 +345,7 @@ func (r *mutationResolver) DeleteProjectTask(ctx context.Context, id int) (bool,
 	_, currentCompany := utils.GetSession(&ctx)
 	filter := projecttask.HasProjectWith(project.HasCompanyWith(company.IDEQ(currentCompany.ID)))
 
-	if err := generated.FromContext(ctx).ProjectTask.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
+	if err := r.client.ProjectTask.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
 		fmt.Println("err:", err)
 		return false, fmt.Errorf("there was an error deleting the project task")
 	}

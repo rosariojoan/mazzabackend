@@ -7,6 +7,7 @@ package mazza
 import (
 	"context"
 	accountingentry "mazza/app/accountingEntry"
+	"mazza/app/analytics"
 	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
 )
@@ -24,4 +25,9 @@ func (r *queryResolver) RevenueTrend(ctx context.Context, rangeArg model.TimeRan
 	_ = currentCompany
 	trend, err := accountingentry.AggregateRevenue(ctx, *r.client.AccountingEntry, currentCompany.ID, rangeArg)
 	return trend, err
+}
+
+// HomepageAnalytics is the resolver for the homepageAnalytics field.
+func (r *queryResolver) HomepageAnalytics(ctx context.Context) (*model.HomepageAnalytics, error) {
+	return analytics.HomepageAnalytics(ctx, r.client)
 }

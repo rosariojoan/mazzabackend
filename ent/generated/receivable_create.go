@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/receivable"
 	"time"
 
@@ -130,6 +131,25 @@ func (rc *ReceivableCreate) SetNillableCompanyID(id *int) *ReceivableCreate {
 // SetCompany sets the "company" edge to the Company entity.
 func (rc *ReceivableCreate) SetCompany(c *Company) *ReceivableCreate {
 	return rc.SetCompanyID(c.ID)
+}
+
+// SetInvoiceID sets the "invoice" edge to the Invoice entity by ID.
+func (rc *ReceivableCreate) SetInvoiceID(id int) *ReceivableCreate {
+	rc.mutation.SetInvoiceID(id)
+	return rc
+}
+
+// SetNillableInvoiceID sets the "invoice" edge to the Invoice entity by ID if the given value is not nil.
+func (rc *ReceivableCreate) SetNillableInvoiceID(id *int) *ReceivableCreate {
+	if id != nil {
+		rc = rc.SetInvoiceID(*id)
+	}
+	return rc
+}
+
+// SetInvoice sets the "invoice" edge to the Invoice entity.
+func (rc *ReceivableCreate) SetInvoice(i *Invoice) *ReceivableCreate {
+	return rc.SetInvoiceID(i.ID)
 }
 
 // Mutation returns the ReceivableMutation object of the builder.
@@ -301,6 +321,23 @@ func (rc *ReceivableCreate) createSpec() (*Receivable, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_receivables = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := rc.mutation.InvoiceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   receivable.InvoiceTable,
+			Columns: []string{receivable.InvoiceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(invoice.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.invoice_receivable = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

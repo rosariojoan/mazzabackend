@@ -108,6 +108,15 @@ type FileOutput struct {
 	Data     string `json:"data"`
 }
 
+type HomepageAnalytics struct {
+	RevenueFrequency   TimeRange                    `json:"revenueFrequency"`
+	RevenueAggregation []*RevenueTrendOutput        `json:"revenueAggregation"`
+	PendingInvoices    int                          `json:"pendingInvoices"`
+	OverdueTasks       int                          `json:"overdueTasks"`
+	ActiveProjects     int                          `json:"activeProjects"`
+	RecentTransactions []*generated.AccountingEntry `json:"recentTransactions"`
+}
+
 type IncomeStatementOuput struct {
 	Revenues          []*IncomeStatementRowItem `json:"revenues"`
 	NetRevenue        float64                   `json:"netRevenue"`

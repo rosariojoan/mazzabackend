@@ -4,12 +4,14 @@ package generated
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/user"
 
 	"entgo.io/ent"
@@ -21,16 +23,17 @@ import (
 // InvoiceQuery is the builder for querying Invoice entities.
 type InvoiceQuery struct {
 	config
-	ctx          *QueryContext
-	order        []invoice.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.Invoice
-	withCompany  *CompanyQuery
-	withIssuedBy *UserQuery
-	withClient   *CustomerQuery
-	withFKs      bool
-	loadTotal    []func(context.Context, []*Invoice) error
-	modifiers    []func(*sql.Selector)
+	ctx            *QueryContext
+	order          []invoice.OrderOption
+	inters         []Interceptor
+	predicates     []predicate.Invoice
+	withCompany    *CompanyQuery
+	withIssuedBy   *UserQuery
+	withClient     *CustomerQuery
+	withReceivable *ReceivableQuery
+	withFKs        bool
+	loadTotal      []func(context.Context, []*Invoice) error
+	modifiers      []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -126,6 +129,28 @@ func (iq *InvoiceQuery) QueryClient() *CustomerQuery {
 			sqlgraph.From(invoice.Table, invoice.FieldID, selector),
 			sqlgraph.To(customer.Table, customer.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, invoice.ClientTable, invoice.ClientColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryReceivable chains the current query on the "receivable" edge.
+func (iq *InvoiceQuery) QueryReceivable() *ReceivableQuery {
+	query := (&ReceivableClient{config: iq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := iq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := iq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(invoice.Table, invoice.FieldID, selector),
+			sqlgraph.To(receivable.Table, receivable.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, invoice.ReceivableTable, invoice.ReceivableColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
 		return fromU, nil
@@ -320,14 +345,15 @@ func (iq *InvoiceQuery) Clone() *InvoiceQuery {
 		return nil
 	}
 	return &InvoiceQuery{
-		config:       iq.config,
-		ctx:          iq.ctx.Clone(),
-		order:        append([]invoice.OrderOption{}, iq.order...),
-		inters:       append([]Interceptor{}, iq.inters...),
-		predicates:   append([]predicate.Invoice{}, iq.predicates...),
-		withCompany:  iq.withCompany.Clone(),
-		withIssuedBy: iq.withIssuedBy.Clone(),
-		withClient:   iq.withClient.Clone(),
+		config:         iq.config,
+		ctx:            iq.ctx.Clone(),
+		order:          append([]invoice.OrderOption{}, iq.order...),
+		inters:         append([]Interceptor{}, iq.inters...),
+		predicates:     append([]predicate.Invoice{}, iq.predicates...),
+		withCompany:    iq.withCompany.Clone(),
+		withIssuedBy:   iq.withIssuedBy.Clone(),
+		withClient:     iq.withClient.Clone(),
+		withReceivable: iq.withReceivable.Clone(),
 		// clone intermediate query.
 		sql:       iq.sql.Clone(),
 		path:      iq.path,
@@ -365,6 +391,17 @@ func (iq *InvoiceQuery) WithClient(opts ...func(*CustomerQuery)) *InvoiceQuery {
 		opt(query)
 	}
 	iq.withClient = query
+	return iq
+}
+
+// WithReceivable tells the query-builder to eager-load the nodes that are connected to
+// the "receivable" edge. The optional arguments are used to configure the query builder of the edge.
+func (iq *InvoiceQuery) WithReceivable(opts ...func(*ReceivableQuery)) *InvoiceQuery {
+	query := (&ReceivableClient{config: iq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	iq.withReceivable = query
 	return iq
 }
 
@@ -447,10 +484,11 @@ func (iq *InvoiceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Invo
 		nodes       = []*Invoice{}
 		withFKs     = iq.withFKs
 		_spec       = iq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			iq.withCompany != nil,
 			iq.withIssuedBy != nil,
 			iq.withClient != nil,
+			iq.withReceivable != nil,
 		}
 	)
 	if iq.withCompany != nil || iq.withIssuedBy != nil || iq.withClient != nil {
@@ -495,6 +533,12 @@ func (iq *InvoiceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Invo
 	if query := iq.withClient; query != nil {
 		if err := iq.loadClient(ctx, query, nodes, nil,
 			func(n *Invoice, e *Customer) { n.Edges.Client = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := iq.withReceivable; query != nil {
+		if err := iq.loadReceivable(ctx, query, nodes, nil,
+			func(n *Invoice, e *Receivable) { n.Edges.Receivable = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -599,6 +643,34 @@ func (iq *InvoiceQuery) loadClient(ctx context.Context, query *CustomerQuery, no
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (iq *InvoiceQuery) loadReceivable(ctx context.Context, query *ReceivableQuery, nodes []*Invoice, init func(*Invoice), assign func(*Invoice, *Receivable)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Invoice)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+	}
+	query.withFKs = true
+	query.Where(predicate.Receivable(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(invoice.ReceivableColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.invoice_receivable
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "invoice_receivable" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "invoice_receivable" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }

@@ -172,6 +172,7 @@ func (r *queryResolver) Receivables(ctx context.Context, after *entgql.Cursor[in
 		Paginate(
 			ctx, after, first, before, last,
 			generated.WithReceivableFilter(where.Filter),
+			generated.WithReceivableOrder(orderBy),
 		)
 }
 

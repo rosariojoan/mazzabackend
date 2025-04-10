@@ -1738,6 +1738,16 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			i.withClient = query
+		case "receivable":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&ReceivableClient{config: i.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			i.withReceivable = query
 		case "createdat":
 			if _, ok := fieldSeen[invoice.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCreatedAt)
@@ -2516,15 +2526,25 @@ func (pr *ProjectQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, project.FieldDescription)
 				fieldSeen[project.FieldDescription] = struct{}{}
 			}
-		case "startdate":
-			if _, ok := fieldSeen[project.FieldStartDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldStartDate)
-				fieldSeen[project.FieldStartDate] = struct{}{}
+		case "plannedstartdate":
+			if _, ok := fieldSeen[project.FieldPlannedStartDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldPlannedStartDate)
+				fieldSeen[project.FieldPlannedStartDate] = struct{}{}
 			}
-		case "enddate":
-			if _, ok := fieldSeen[project.FieldEndDate]; !ok {
-				selectedFields = append(selectedFields, project.FieldEndDate)
-				fieldSeen[project.FieldEndDate] = struct{}{}
+		case "actualstartdate":
+			if _, ok := fieldSeen[project.FieldActualStartDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldActualStartDate)
+				fieldSeen[project.FieldActualStartDate] = struct{}{}
+			}
+		case "plannedenddate":
+			if _, ok := fieldSeen[project.FieldPlannedEndDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldPlannedEndDate)
+				fieldSeen[project.FieldPlannedEndDate] = struct{}{}
+			}
+		case "actualenddate":
+			if _, ok := fieldSeen[project.FieldActualEndDate]; !ok {
+				selectedFields = append(selectedFields, project.FieldActualEndDate)
+				fieldSeen[project.FieldActualEndDate] = struct{}{}
 			}
 		case "progress":
 			if _, ok := fieldSeen[project.FieldProgress]; !ok {
@@ -2907,6 +2927,16 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 				return err
 			}
 			r.withCompany = query
+		case "invoice":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&InvoiceClient{config: r.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			r.withInvoice = query
 		case "createdat":
 			if _, ok := fieldSeen[receivable.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldCreatedAt)

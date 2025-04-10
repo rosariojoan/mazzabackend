@@ -32,7 +32,7 @@ type ProjectTask struct {
 	// StartDate holds the value of the "startDate" field.
 	StartDate time.Time `json:"startDate,omitempty"`
 	// EndDate holds the value of the "endDate" field.
-	EndDate time.Time `json:"endDate,omitempty"`
+	EndDate *time.Time `json:"endDate,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// Status holds the value of the "status" field.
@@ -197,7 +197,8 @@ func (pt *ProjectTask) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field endDate", values[i])
 			} else if value.Valid {
-				pt.EndDate = value.Time
+				pt.EndDate = new(time.Time)
+				*pt.EndDate = value.Time
 			}
 		case projecttask.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -311,8 +312,10 @@ func (pt *ProjectTask) String() string {
 	builder.WriteString("startDate=")
 	builder.WriteString(pt.StartDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("endDate=")
-	builder.WriteString(pt.EndDate.Format(time.ANSIC))
+	if v := pt.EndDate; v != nil {
+		builder.WriteString("endDate=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(pt.Description)

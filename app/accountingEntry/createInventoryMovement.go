@@ -65,7 +65,7 @@ func CreateInventoryMovement(ctx context.Context, tx *generated.Tx, input genera
 
 	if accountingEntry != nil {
 		// Create accounting entry
-		_, err = RegisterAccountingOperations(ctx, tx, *accountingEntry)
+		_, err = RegisterAccountingOperations(ctx, tx, *accountingEntry, nil)
 		if err != nil {
 			fmt.Println("err:", err)
 			return nil, fmt.Errorf("an error occurred")

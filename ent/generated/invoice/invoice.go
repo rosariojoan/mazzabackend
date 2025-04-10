@@ -95,6 +95,8 @@ const (
 	EdgeIssuedBy = "issuedBy"
 	// EdgeClient holds the string denoting the client edge name in mutations.
 	EdgeClient = "client"
+	// EdgeReceivable holds the string denoting the receivable edge name in mutations.
+	EdgeReceivable = "receivable"
 	// Table holds the table name of the invoice in the database.
 	Table = "invoices"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -118,6 +120,13 @@ const (
 	ClientInverseTable = "customers"
 	// ClientColumn is the table column denoting the client relation/edge.
 	ClientColumn = "customer_invoices"
+	// ReceivableTable is the table that holds the receivable relation/edge.
+	ReceivableTable = "receivables"
+	// ReceivableInverseTable is the table name for the Receivable entity.
+	// It exists in this package in order to avoid circular dependency with the "receivable" package.
+	ReceivableInverseTable = "receivables"
+	// ReceivableColumn is the table column denoting the receivable relation/edge.
+	ReceivableColumn = "invoice_receivable"
 )
 
 // Columns holds all SQL columns for invoice fields.
@@ -445,6 +454,13 @@ func ByClientField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newClientStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByReceivableField orders the results by receivable field.
+func ByReceivableField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newReceivableStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -464,6 +480,13 @@ func newClientStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ClientInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, ClientTable, ClientColumn),
+	)
+}
+func newReceivableStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ReceivableInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, false, ReceivableTable, ReceivableColumn),
 	)
 }
 

@@ -29,10 +29,14 @@ type Project struct {
 	Name string `json:"name,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
-	// StartDate holds the value of the "startDate" field.
-	StartDate time.Time `json:"startDate,omitempty" startDate`
-	// EndDate holds the value of the "endDate" field.
-	EndDate time.Time `json:"endDate,omitempty"`
+	// PlannedStartDate holds the value of the "plannedStartDate" field.
+	PlannedStartDate time.Time `json:"plannedStartDate,omitempty" plannedStartDate`
+	// ActualStartDate holds the value of the "actualStartDate" field.
+	ActualStartDate *time.Time `json:"actualStartDate,omitempty" actualStartDate`
+	// PlannedEndDate holds the value of the "plannedEndDate" field.
+	PlannedEndDate time.Time `json:"plannedEndDate,omitempty"`
+	// ActualEndDate holds the value of the "actualEndDate" field.
+	ActualEndDate *time.Time `json:"actualEndDate,omitempty"`
 	// Progress holds the value of the "progress" field.
 	Progress float64 `json:"progress,omitempty"`
 	// Status holds the value of the "status" field.
@@ -130,7 +134,7 @@ func (*Project) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case project.FieldName, project.FieldDescription, project.FieldStatus:
 			values[i] = new(sql.NullString)
-		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldDeletedAt, project.FieldStartDate, project.FieldEndDate:
+		case project.FieldCreatedAt, project.FieldUpdatedAt, project.FieldDeletedAt, project.FieldPlannedStartDate, project.FieldActualStartDate, project.FieldPlannedEndDate, project.FieldActualEndDate:
 			values[i] = new(sql.NullTime)
 		case project.ForeignKeys[0]: // company_projects
 			values[i] = new(sql.NullInt64)
@@ -190,17 +194,31 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.Description = value.String
 			}
-		case project.FieldStartDate:
+		case project.FieldPlannedStartDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field startDate", values[i])
+				return fmt.Errorf("unexpected type %T for field plannedStartDate", values[i])
 			} else if value.Valid {
-				pr.StartDate = value.Time
+				pr.PlannedStartDate = value.Time
 			}
-		case project.FieldEndDate:
+		case project.FieldActualStartDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field endDate", values[i])
+				return fmt.Errorf("unexpected type %T for field actualStartDate", values[i])
 			} else if value.Valid {
-				pr.EndDate = value.Time
+				pr.ActualStartDate = new(time.Time)
+				*pr.ActualStartDate = value.Time
+			}
+		case project.FieldPlannedEndDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field plannedEndDate", values[i])
+			} else if value.Valid {
+				pr.PlannedEndDate = value.Time
+			}
+		case project.FieldActualEndDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field actualEndDate", values[i])
+			} else if value.Valid {
+				pr.ActualEndDate = new(time.Time)
+				*pr.ActualEndDate = value.Time
 			}
 		case project.FieldProgress:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -313,11 +331,21 @@ func (pr *Project) String() string {
 	builder.WriteString("description=")
 	builder.WriteString(pr.Description)
 	builder.WriteString(", ")
-	builder.WriteString("startDate=")
-	builder.WriteString(pr.StartDate.Format(time.ANSIC))
+	builder.WriteString("plannedStartDate=")
+	builder.WriteString(pr.PlannedStartDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("endDate=")
-	builder.WriteString(pr.EndDate.Format(time.ANSIC))
+	if v := pr.ActualStartDate; v != nil {
+		builder.WriteString("actualStartDate=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("plannedEndDate=")
+	builder.WriteString(pr.PlannedEndDate.Format(time.ANSIC))
+	builder.WriteString(", ")
+	if v := pr.ActualEndDate; v != nil {
+		builder.WriteString("actualEndDate=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("progress=")
 	builder.WriteString(fmt.Sprintf("%v", pr.Progress))

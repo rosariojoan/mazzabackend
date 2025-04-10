@@ -3,6 +3,7 @@ package schema
 import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
@@ -36,6 +37,10 @@ func (Receivable) Fields() []ent.Field {
 func (Receivable) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("receivables").Unique(), // a receivable can belong to only one company
+		edge.From("invoice", Invoice.Type).Ref("receivable").Unique().Annotations(
+			entgql.Skip(entgql.SkipMutationUpdateInput),
+			entsql.OnDelete(entsql.SetNull),
+		),
 	}
 }
 

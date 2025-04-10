@@ -53,6 +53,7 @@ func AggregateExpenses(ctx context.Context, client generated.AccountingEntryClie
 
 func AggregateRevenue(ctx context.Context, client generated.AccountingEntryClient, companyID int, timeRange model.TimeRange) ([]*model.RevenueTrendOutput, error) {
 	var sqlStr string
+	fmt.Println("timeRange:", timeRange)
 	if timeRange == model.TimeRangeWeek || timeRange == model.TimeRangeMonth {
 		sqlStr = `
 			SELECT
@@ -67,8 +68,8 @@ func AggregateRevenue(ctx context.Context, client generated.AccountingEntryClien
 			WHERE
 				company_accounting_entries = $1  -- Only select the accounting entries from the given company
 				AND account_type = $2
-				AND date >= DATE_TRUNC($3, CURRENT_DATE)
-				AND date <= CURRENT_DATE
+				AND date >= DATE_TRUNC($3, CURRENT_DATE)  -- Transaction date greater than or equal to the beginning of timeRange
+				AND date <= now()
 			GROUP BY
 				date::date
 			ORDER BY
@@ -89,7 +90,7 @@ func AggregateRevenue(ctx context.Context, client generated.AccountingEntryClien
 				company_accounting_entries = $1  -- Only select the accounting entries from the given company
 				AND account_type = $2
 				AND date >= DATE_TRUNC($3, CURRENT_DATE)
-				AND date <= CURRENT_DATE
+				AND date <= now()
 			GROUP BY
 				DATE_TRUNC('month', date)
 			ORDER BY

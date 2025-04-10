@@ -39,6 +39,8 @@ const (
 	FieldStatus = "status"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
+	// EdgeInvoice holds the string denoting the invoice edge name in mutations.
+	EdgeInvoice = "invoice"
 	// Table holds the table name of the receivable in the database.
 	Table = "receivables"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -48,6 +50,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_receivables"
+	// InvoiceTable is the table that holds the invoice relation/edge.
+	InvoiceTable = "receivables"
+	// InvoiceInverseTable is the table name for the Invoice entity.
+	// It exists in this package in order to avoid circular dependency with the "invoice" package.
+	InvoiceInverseTable = "invoices"
+	// InvoiceColumn is the table column denoting the invoice relation/edge.
+	InvoiceColumn = "invoice_receivable"
 )
 
 // Columns holds all SQL columns for receivable fields.
@@ -70,6 +79,7 @@ var Columns = []string{
 var ForeignKeys = []string{
 	"company_receivables",
 	"customer_receivables",
+	"invoice_receivable",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -188,11 +198,25 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByInvoiceField orders the results by invoice field.
+func ByInvoiceField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInvoiceStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+	)
+}
+func newInvoiceStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InvoiceInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, true, InvoiceTable, InvoiceColumn),
 	)
 }
 

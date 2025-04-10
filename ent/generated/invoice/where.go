@@ -2574,6 +2574,29 @@ func HasClientWith(preds ...predicate.Customer) predicate.Invoice {
 	})
 }
 
+// HasReceivable applies the HasEdge predicate on the "receivable" edge.
+func HasReceivable() predicate.Invoice {
+	return predicate.Invoice(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, false, ReceivableTable, ReceivableColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasReceivableWith applies the HasEdge predicate on the "receivable" edge with a given conditions (other predicates).
+func HasReceivableWith(preds ...predicate.Receivable) predicate.Invoice {
+	return predicate.Invoice(func(s *sql.Selector) {
+		step := newReceivableStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Invoice) predicate.Invoice {
 	return predicate.Invoice(sql.AndPredicates(predicates...))

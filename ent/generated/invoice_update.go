@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/user"
 	"time"
 
@@ -729,6 +730,25 @@ func (iu *InvoiceUpdate) SetClient(c *Customer) *InvoiceUpdate {
 	return iu.SetClientID(c.ID)
 }
 
+// SetReceivableID sets the "receivable" edge to the Receivable entity by ID.
+func (iu *InvoiceUpdate) SetReceivableID(id int) *InvoiceUpdate {
+	iu.mutation.SetReceivableID(id)
+	return iu
+}
+
+// SetNillableReceivableID sets the "receivable" edge to the Receivable entity by ID if the given value is not nil.
+func (iu *InvoiceUpdate) SetNillableReceivableID(id *int) *InvoiceUpdate {
+	if id != nil {
+		iu = iu.SetReceivableID(*id)
+	}
+	return iu
+}
+
+// SetReceivable sets the "receivable" edge to the Receivable entity.
+func (iu *InvoiceUpdate) SetReceivable(r *Receivable) *InvoiceUpdate {
+	return iu.SetReceivableID(r.ID)
+}
+
 // Mutation returns the InvoiceMutation object of the builder.
 func (iu *InvoiceUpdate) Mutation() *InvoiceMutation {
 	return iu.mutation
@@ -749,6 +769,12 @@ func (iu *InvoiceUpdate) ClearIssuedBy() *InvoiceUpdate {
 // ClearClient clears the "client" edge to the Customer entity.
 func (iu *InvoiceUpdate) ClearClient() *InvoiceUpdate {
 	iu.mutation.ClearClient()
+	return iu
+}
+
+// ClearReceivable clears the "receivable" edge to the Receivable entity.
+func (iu *InvoiceUpdate) ClearReceivable() *InvoiceUpdate {
+	iu.mutation.ClearReceivable()
 	return iu
 }
 
@@ -1115,6 +1141,35 @@ func (iu *InvoiceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if iu.mutation.ReceivableCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   invoice.ReceivableTable,
+			Columns: []string{invoice.ReceivableColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iu.mutation.ReceivableIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   invoice.ReceivableTable,
+			Columns: []string{invoice.ReceivableColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1841,6 +1896,25 @@ func (iuo *InvoiceUpdateOne) SetClient(c *Customer) *InvoiceUpdateOne {
 	return iuo.SetClientID(c.ID)
 }
 
+// SetReceivableID sets the "receivable" edge to the Receivable entity by ID.
+func (iuo *InvoiceUpdateOne) SetReceivableID(id int) *InvoiceUpdateOne {
+	iuo.mutation.SetReceivableID(id)
+	return iuo
+}
+
+// SetNillableReceivableID sets the "receivable" edge to the Receivable entity by ID if the given value is not nil.
+func (iuo *InvoiceUpdateOne) SetNillableReceivableID(id *int) *InvoiceUpdateOne {
+	if id != nil {
+		iuo = iuo.SetReceivableID(*id)
+	}
+	return iuo
+}
+
+// SetReceivable sets the "receivable" edge to the Receivable entity.
+func (iuo *InvoiceUpdateOne) SetReceivable(r *Receivable) *InvoiceUpdateOne {
+	return iuo.SetReceivableID(r.ID)
+}
+
 // Mutation returns the InvoiceMutation object of the builder.
 func (iuo *InvoiceUpdateOne) Mutation() *InvoiceMutation {
 	return iuo.mutation
@@ -1861,6 +1935,12 @@ func (iuo *InvoiceUpdateOne) ClearIssuedBy() *InvoiceUpdateOne {
 // ClearClient clears the "client" edge to the Customer entity.
 func (iuo *InvoiceUpdateOne) ClearClient() *InvoiceUpdateOne {
 	iuo.mutation.ClearClient()
+	return iuo
+}
+
+// ClearReceivable clears the "receivable" edge to the Receivable entity.
+func (iuo *InvoiceUpdateOne) ClearReceivable() *InvoiceUpdateOne {
+	iuo.mutation.ClearReceivable()
 	return iuo
 }
 
@@ -2257,6 +2337,35 @@ func (iuo *InvoiceUpdateOne) sqlSave(ctx context.Context) (_node *Invoice, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if iuo.mutation.ReceivableCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   invoice.ReceivableTable,
+			Columns: []string{invoice.ReceivableColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iuo.mutation.ReceivableIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: false,
+			Table:   invoice.ReceivableTable,
+			Columns: []string{invoice.ReceivableColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(receivable.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

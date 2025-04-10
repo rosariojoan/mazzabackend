@@ -9,11 +9,13 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
+	"firebase.google.com/go/auth"
 	"firebase.google.com/go/messaging"
 	"google.golang.org/api/option"
 )
 
 var (
+	Auth            *auth.Client
 	FCM             *messaging.Client
 	FirebaseStorage *storage.BucketHandle
 	Firestore       *firestore.Client
@@ -56,11 +58,17 @@ func InitFirebase() error {
 
 	config := &firebase.Config{StorageBucket: os.Getenv("FIREBASE_BUCKET")}
 	opt := option.WithCredentialsJSON(serviceAccountJSON)
+	// _ = serviceAccountJSON
 	// opt := option.WithCredentialsFile(os.Getenv("FIREBASE_CONFIG_FILE"))
 
 	app, err := firebase.NewApp(ctx, config, opt)
 	if err != nil {
 		log.Fatal("Firebase initialization error:", err)
+	}
+
+	Auth, err = app.Auth(ctx)
+	if err != nil {
+		log.Fatal("Firebase auth initialization error:", err)
 	}
 
 	// Initialize Messaging client

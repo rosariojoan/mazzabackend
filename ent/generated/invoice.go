@@ -7,6 +7,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/user"
 	"strings"
 	"time"
@@ -109,11 +110,13 @@ type InvoiceEdges struct {
 	IssuedBy *User `json:"issuedBy,omitempty"`
 	// Client holds the value of the client edge.
 	Client *Customer `json:"client,omitempty"`
+	// Receivable holds the value of the receivable edge.
+	Receivable *Receivable `json:"receivable,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [4]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -147,6 +150,17 @@ func (e InvoiceEdges) ClientOrErr() (*Customer, error) {
 		return nil, &NotFoundError{label: customer.Label}
 	}
 	return nil, &NotLoadedError{edge: "client"}
+}
+
+// ReceivableOrErr returns the Receivable value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e InvoiceEdges) ReceivableOrErr() (*Receivable, error) {
+	if e.Receivable != nil {
+		return e.Receivable, nil
+	} else if e.loadedTypes[3] {
+		return nil, &NotFoundError{label: receivable.Label}
+	}
+	return nil, &NotLoadedError{edge: "receivable"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -474,6 +488,11 @@ func (i *Invoice) QueryIssuedBy() *UserQuery {
 // QueryClient queries the "client" edge of the Invoice entity.
 func (i *Invoice) QueryClient() *CustomerQuery {
 	return NewInvoiceClient(i.config).QueryClient(i)
+}
+
+// QueryReceivable queries the "receivable" edge of the Invoice entity.
+func (i *Invoice) QueryReceivable() *ReceivableQuery {
+	return NewInvoiceClient(i.config).QueryReceivable(i)
 }
 
 // Update returns a builder for updating this Invoice.

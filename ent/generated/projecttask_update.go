@@ -122,6 +122,12 @@ func (ptu *ProjectTaskUpdate) SetNillableEndDate(t *time.Time) *ProjectTaskUpdat
 	return ptu
 }
 
+// ClearEndDate clears the value of the "endDate" field.
+func (ptu *ProjectTaskUpdate) ClearEndDate() *ProjectTaskUpdate {
+	ptu.mutation.ClearEndDate()
+	return ptu
+}
+
 // SetDescription sets the "description" field.
 func (ptu *ProjectTaskUpdate) SetDescription(s string) *ProjectTaskUpdate {
 	ptu.mutation.SetDescription(s)
@@ -366,6 +372,9 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ptu.mutation.EndDate(); ok {
 		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	}
+	if ptu.mutation.EndDateCleared() {
+		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
 	}
 	if value, ok := ptu.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
@@ -633,6 +642,12 @@ func (ptuo *ProjectTaskUpdateOne) SetNillableEndDate(t *time.Time) *ProjectTaskU
 	if t != nil {
 		ptuo.SetEndDate(*t)
 	}
+	return ptuo
+}
+
+// ClearEndDate clears the value of the "endDate" field.
+func (ptuo *ProjectTaskUpdateOne) ClearEndDate() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearEndDate()
 	return ptuo
 }
 
@@ -910,6 +925,9 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 	}
 	if value, ok := ptuo.mutation.EndDate(); ok {
 		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	}
+	if ptuo.mutation.EndDateCleared() {
+		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
 	}
 	if value, ok := ptuo.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)

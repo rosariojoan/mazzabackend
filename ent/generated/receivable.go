@@ -5,6 +5,7 @@ package generated
 import (
 	"fmt"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/receivable"
 	"strings"
 	"time"
@@ -43,6 +44,7 @@ type Receivable struct {
 	Edges                ReceivableEdges `json:"edges"`
 	company_receivables  *int
 	customer_receivables *int
+	invoice_receivable   *int
 	selectValues         sql.SelectValues
 }
 
@@ -50,11 +52,13 @@ type Receivable struct {
 type ReceivableEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
+	// Invoice holds the value of the invoice edge.
+	Invoice *Invoice `json:"invoice,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
-	totalCount [1]map[string]int
+	totalCount [2]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -66,6 +70,17 @@ func (e ReceivableEdges) CompanyOrErr() (*Company, error) {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "company"}
+}
+
+// InvoiceOrErr returns the Invoice value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e ReceivableEdges) InvoiceOrErr() (*Invoice, error) {
+	if e.Invoice != nil {
+		return e.Invoice, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: invoice.Label}
+	}
+	return nil, &NotLoadedError{edge: "invoice"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -84,6 +99,8 @@ func (*Receivable) scanValues(columns []string) ([]any, error) {
 		case receivable.ForeignKeys[0]: // company_receivables
 			values[i] = new(sql.NullInt64)
 		case receivable.ForeignKeys[1]: // customer_receivables
+			values[i] = new(sql.NullInt64)
+		case receivable.ForeignKeys[2]: // invoice_receivable
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -181,6 +198,13 @@ func (r *Receivable) assignValues(columns []string, values []any) error {
 				r.customer_receivables = new(int)
 				*r.customer_receivables = int(value.Int64)
 			}
+		case receivable.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field invoice_receivable", value)
+			} else if value.Valid {
+				r.invoice_receivable = new(int)
+				*r.invoice_receivable = int(value.Int64)
+			}
 		default:
 			r.selectValues.Set(columns[i], values[i])
 		}
@@ -197,6 +221,11 @@ func (r *Receivable) Value(name string) (ent.Value, error) {
 // QueryCompany queries the "company" edge of the Receivable entity.
 func (r *Receivable) QueryCompany() *CompanyQuery {
 	return NewReceivableClient(r.config).QueryCompany(r)
+}
+
+// QueryInvoice queries the "invoice" edge of the Receivable entity.
+func (r *Receivable) QueryInvoice() *InvoiceQuery {
+	return NewReceivableClient(r.config).QueryInvoice(r)
 }
 
 // Update returns a builder for updating this Receivable.

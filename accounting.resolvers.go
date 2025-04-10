@@ -27,90 +27,7 @@ func (r *mutationResolver) IssueSalesQuotation(ctx context.Context, input model.
 
 // IssueInvoice is the resolver for the issueInvoice field.
 func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.InvoiceInput) (*model.InvoiceIssuanceOutput, error) {
-	activeUser, activeCompany := utils.GetSession(&ctx)
-	// FIRST, CHECK THAT THE INVOICE NUMBER DOES NOT EXIST FOR THE COMPANY
-	exists, err := r.client.Invoice.Query().Where(
-		invoice.HasCompanyWith(company.ID(activeCompany.ID)),
-		invoice.Number(*input.InvoiceData.Number),
-	).Exist(ctx)
-
-	if exists {
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("invalid invoice number. refresh company details")
-	}
-
-	// Start db transaction
-	tx, err := r.client.Tx(ctx)
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	result, err := accountingentry.RegisterAccountingOperations(ctx, tx, *input.AccountingEntryData)
-	if err != nil {
-		_ = tx.Rollback()
-		fmt.Println("InvoiceIssuance err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	if input.InventoryMovements != nil {
-		// Create inventory movement
-		for _, movement := range input.InventoryMovements {
-			// input := generated.CreateInventoryMovementInput{
-			// 	Category:    movement.Category,
-			// 	Quantity:    movement.Quantity,
-			// 	Value:       movement.Value,
-			// 	Date:        movement.Date,
-			// 	Source:      movement.Source,
-			// 	Destination: movement.Destination,
-			// 	Notes:       movement.Notes,
-			// 	InventoryID: movement,
-			// }
-			_, err := accountingentry.CreateInventoryMovement(ctx, tx, *movement, nil)
-			if err != nil {
-				fmt.Println("InvoiceIssuance err:", err)
-				return nil, fmt.Errorf("an error occurred")
-			}
-		}
-	}
-
-	// Update the number of issued invoices in the company model
-	_, err = tx.Company.UpdateOneID(activeCompany.ID).AddLastInvoiceNumber(1).Save(ctx)
-	if err != nil {
-		_ = tx.Rollback()
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	// Create invoice entry
-	// status := invoice.StatusPAID
-	// status := *input.InvoiceData.Status
-	// if input.InvoiceData.Terms != nil && *input.InvoiceData.Terms > 0 {
-	// 	status = invoice.StatusPENDING
-	// }
-	invoiceEntry, err := tx.Invoice.Create().SetInput(*input.InvoiceData).
-		SetCompanyID(activeCompany.ID).
-		SetIssuedByID(activeUser.ID).
-		Save(ctx)
-	if err != nil {
-		_ = tx.Rollback()
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-	_ = invoiceEntry
-
-	if err = tx.Commit(); err != nil {
-		fmt.Println("err:", err)
-		_ = tx.Rollback()
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	output := model.InvoiceIssuanceOutput{
-		Message: *result,
-		FileURL: *input.InvoiceData.URL,
-	}
-
-	return &output, nil
+	return accountingentry.IssueInvoice(ctx, r.client, input)
 }
 
 // CreateInvoiceDraft is the resolver for the createInvoiceDraft field.
@@ -154,7 +71,7 @@ func (r *mutationResolver) RegisterAccountingEntries(ctx context.Context, input 
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	result, err := accountingentry.RegisterAccountingOperations(ctx, tx, input)
+	result, err := accountingentry.RegisterAccountingOperations(ctx, tx, input, nil)
 	if err != nil {
 		fmt.Println("err:", err)
 		return nil, fmt.Errorf("an error occurred")

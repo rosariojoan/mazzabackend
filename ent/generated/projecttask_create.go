@@ -81,6 +81,14 @@ func (ptc *ProjectTaskCreate) SetEndDate(t time.Time) *ProjectTaskCreate {
 	return ptc
 }
 
+// SetNillableEndDate sets the "endDate" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableEndDate(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetEndDate(*t)
+	}
+	return ptc
+}
+
 // SetDescription sets the "description" field.
 func (ptc *ProjectTaskCreate) SetDescription(s string) *ProjectTaskCreate {
 	ptc.mutation.SetDescription(s)
@@ -251,9 +259,6 @@ func (ptc *ProjectTaskCreate) check() error {
 	if _, ok := ptc.mutation.StartDate(); !ok {
 		return &ValidationError{Name: "startDate", err: errors.New(`generated: missing required field "ProjectTask.startDate"`)}
 	}
-	if _, ok := ptc.mutation.EndDate(); !ok {
-		return &ValidationError{Name: "endDate", err: errors.New(`generated: missing required field "ProjectTask.endDate"`)}
-	}
 	if _, ok := ptc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "ProjectTask.status"`)}
 	}
@@ -317,7 +322,7 @@ func (ptc *ProjectTaskCreate) createSpec() (*ProjectTask, *sqlgraph.CreateSpec) 
 	}
 	if value, ok := ptc.mutation.EndDate(); ok {
 		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
-		_node.EndDate = value
+		_node.EndDate = &value
 	}
 	if value, ok := ptc.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)

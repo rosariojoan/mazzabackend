@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/receivable"
 
@@ -24,6 +25,7 @@ type ReceivableQuery struct {
 	inters      []Interceptor
 	predicates  []predicate.Receivable
 	withCompany *CompanyQuery
+	withInvoice *InvoiceQuery
 	withFKs     bool
 	loadTotal   []func(context.Context, []*Receivable) error
 	modifiers   []func(*sql.Selector)
@@ -78,6 +80,28 @@ func (rq *ReceivableQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(receivable.Table, receivable.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, receivable.CompanyTable, receivable.CompanyColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(rq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryInvoice chains the current query on the "invoice" edge.
+func (rq *ReceivableQuery) QueryInvoice() *InvoiceQuery {
+	query := (&InvoiceClient{config: rq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := rq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := rq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(receivable.Table, receivable.FieldID, selector),
+			sqlgraph.To(invoice.Table, invoice.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, receivable.InvoiceTable, receivable.InvoiceColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(rq.driver.Dialect(), step)
 		return fromU, nil
@@ -278,6 +302,7 @@ func (rq *ReceivableQuery) Clone() *ReceivableQuery {
 		inters:      append([]Interceptor{}, rq.inters...),
 		predicates:  append([]predicate.Receivable{}, rq.predicates...),
 		withCompany: rq.withCompany.Clone(),
+		withInvoice: rq.withInvoice.Clone(),
 		// clone intermediate query.
 		sql:       rq.sql.Clone(),
 		path:      rq.path,
@@ -293,6 +318,17 @@ func (rq *ReceivableQuery) WithCompany(opts ...func(*CompanyQuery)) *ReceivableQ
 		opt(query)
 	}
 	rq.withCompany = query
+	return rq
+}
+
+// WithInvoice tells the query-builder to eager-load the nodes that are connected to
+// the "invoice" edge. The optional arguments are used to configure the query builder of the edge.
+func (rq *ReceivableQuery) WithInvoice(opts ...func(*InvoiceQuery)) *ReceivableQuery {
+	query := (&InvoiceClient{config: rq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	rq.withInvoice = query
 	return rq
 }
 
@@ -375,11 +411,12 @@ func (rq *ReceivableQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*R
 		nodes       = []*Receivable{}
 		withFKs     = rq.withFKs
 		_spec       = rq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			rq.withCompany != nil,
+			rq.withInvoice != nil,
 		}
 	)
-	if rq.withCompany != nil {
+	if rq.withCompany != nil || rq.withInvoice != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -409,6 +446,12 @@ func (rq *ReceivableQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*R
 	if query := rq.withCompany; query != nil {
 		if err := rq.loadCompany(ctx, query, nodes, nil,
 			func(n *Receivable, e *Company) { n.Edges.Company = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := rq.withInvoice; query != nil {
+		if err := rq.loadInvoice(ctx, query, nodes, nil,
+			func(n *Receivable, e *Invoice) { n.Edges.Invoice = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -445,6 +488,38 @@ func (rq *ReceivableQuery) loadCompany(ctx context.Context, query *CompanyQuery,
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "company_receivables" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (rq *ReceivableQuery) loadInvoice(ctx context.Context, query *InvoiceQuery, nodes []*Receivable, init func(*Receivable), assign func(*Receivable, *Invoice)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Receivable)
+	for i := range nodes {
+		if nodes[i].invoice_receivable == nil {
+			continue
+		}
+		fk := *nodes[i].invoice_receivable
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(invoice.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "invoice_receivable" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

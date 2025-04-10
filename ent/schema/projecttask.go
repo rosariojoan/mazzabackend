@@ -33,7 +33,7 @@ func (ProjectTask) Fields() []ent.Field {
 		field.String("location").Optional().Comment("Where is task will be executed"),
 		field.Time("dueDate").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
 		field.Time("startDate").Annotations(entgql.OrderField("START_DATE")),
-		field.Time("endDate").Annotations(entgql.OrderField("END_DATE")),
+		field.Time("endDate").Nillable().Optional().Annotations(entgql.OrderField("END_DATE")),
 		field.String("description").Optional(),
 		field.Enum("status").Values("notStarted", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
 	}
@@ -102,20 +102,29 @@ func (ProjectTask) Hooks() []ent.Hook {
 						total := len(tasks)
 						inProgress := 0
 						completed := 0
+						hasStartedTask := false
 						for _, task := range tasks {
 							if task.Status == projecttask.StatusCompleted {
 								completed += 1
 							} else if task.Status == projecttask.StatusInProgress {
 								inProgress += 1
 							}
+
+							if task.Status != projecttask.StatusNotStarted {
+								hasStartedTask = true
+							}
 						}
-						progress := math.Min(float64(completed)/float64(total), 1)
+
+						var progress float64 = 0
+						if total > 0 {
+							progress = math.Min(float64(completed)/float64(total), 1)
+						}
 
 						projectUpdate := m.Client().Project.UpdateOneID(projectID).SetProgress(progress)
 						if progress == 1 {
 							// A project is marked as completed when all the tasks are completed
 							projectUpdate.SetStatus(project.StatusCompleted)
-						} else if inProgress > 0 && progress > 0 {
+						} else if (inProgress > 0 && progress > 0) || hasStartedTask {
 							// If there is any task in progress, the project is in progress
 							projectUpdate.SetStatus(project.StatusInProgress)
 						} else {

@@ -4931,31 +4931,73 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldStartDate orders Project by startDate.
-	ProjectOrderFieldStartDate = &ProjectOrderField{
+	// ProjectOrderFieldPlannedStartDate orders Project by plannedStartDate.
+	ProjectOrderFieldPlannedStartDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
-			return pr.StartDate, nil
+			return pr.PlannedStartDate, nil
 		},
-		column: project.FieldStartDate,
-		toTerm: project.ByStartDate,
+		column: project.FieldPlannedStartDate,
+		toTerm: project.ByPlannedStartDate,
 		toCursor: func(pr *Project) Cursor {
 			return Cursor{
 				ID:    pr.ID,
-				Value: pr.StartDate,
+				Value: pr.PlannedStartDate,
 			}
 		},
 	}
-	// ProjectOrderFieldEndDate orders Project by endDate.
-	ProjectOrderFieldEndDate = &ProjectOrderField{
+	// ProjectOrderFieldActualStartDate orders Project by actualStartDate.
+	ProjectOrderFieldActualStartDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
-			return pr.EndDate, nil
+			return pr.ActualStartDate, nil
 		},
-		column: project.FieldEndDate,
-		toTerm: project.ByEndDate,
+		column: project.FieldActualStartDate,
+		toTerm: project.ByActualStartDate,
 		toCursor: func(pr *Project) Cursor {
 			return Cursor{
 				ID:    pr.ID,
-				Value: pr.EndDate,
+				Value: pr.ActualStartDate,
+			}
+		},
+	}
+	// ProjectOrderFieldPlannedEndDate orders Project by plannedEndDate.
+	ProjectOrderFieldPlannedEndDate = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.PlannedEndDate, nil
+		},
+		column: project.FieldPlannedEndDate,
+		toTerm: project.ByPlannedEndDate,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.PlannedEndDate,
+			}
+		},
+	}
+	// ProjectOrderFieldActualEndDate orders Project by actualEndDate.
+	ProjectOrderFieldActualEndDate = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.ActualEndDate, nil
+		},
+		column: project.FieldActualEndDate,
+		toTerm: project.ByActualEndDate,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.ActualEndDate,
+			}
+		},
+	}
+	// ProjectOrderFieldProgress orders Project by progress.
+	ProjectOrderFieldProgress = &ProjectOrderField{
+		Value: func(pr *Project) (ent.Value, error) {
+			return pr.Progress, nil
+		},
+		column: project.FieldProgress,
+		toTerm: project.ByProgress,
+		toCursor: func(pr *Project) Cursor {
+			return Cursor{
+				ID:    pr.ID,
+				Value: pr.Progress,
 			}
 		},
 	}
@@ -4983,10 +5025,16 @@ func (f ProjectOrderField) String() string {
 		str = "CREATED_AT"
 	case ProjectOrderFieldUpdatedAt.column:
 		str = "UPDATED_AT"
-	case ProjectOrderFieldStartDate.column:
-		str = "START_DATE"
-	case ProjectOrderFieldEndDate.column:
-		str = "END_DATE"
+	case ProjectOrderFieldPlannedStartDate.column:
+		str = "PLANNED_START_DATE"
+	case ProjectOrderFieldActualStartDate.column:
+		str = "ACTUAL_START_DATE"
+	case ProjectOrderFieldPlannedEndDate.column:
+		str = "PLANNED_END_DATE"
+	case ProjectOrderFieldActualEndDate.column:
+		str = "ACTUAL_END_DATE"
+	case ProjectOrderFieldProgress.column:
+		str = "PROGRESS"
 	case ProjectOrderFieldStatus.column:
 		str = "STATUS"
 	}
@@ -5009,10 +5057,16 @@ func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *ProjectOrderFieldCreatedAt
 	case "UPDATED_AT":
 		*f = *ProjectOrderFieldUpdatedAt
-	case "START_DATE":
-		*f = *ProjectOrderFieldStartDate
-	case "END_DATE":
-		*f = *ProjectOrderFieldEndDate
+	case "PLANNED_START_DATE":
+		*f = *ProjectOrderFieldPlannedStartDate
+	case "ACTUAL_START_DATE":
+		*f = *ProjectOrderFieldActualStartDate
+	case "PLANNED_END_DATE":
+		*f = *ProjectOrderFieldPlannedEndDate
+	case "ACTUAL_END_DATE":
+		*f = *ProjectOrderFieldActualEndDate
+	case "PROGRESS":
+		*f = *ProjectOrderFieldProgress
 	case "STATUS":
 		*f = *ProjectOrderFieldStatus
 	default:
