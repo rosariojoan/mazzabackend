@@ -6,11 +6,44 @@ package mazza
 
 import (
 	"context"
+	"fmt"
 	accountingentry "mazza/app/accountingEntry"
 	"mazza/app/analytics"
 	"mazza/ent/utils"
+	"mazza/inits"
 	"mazza/mazza/generated/model"
+
+	"firebase.google.com/go/messaging"
 )
+
+// Notify is the resolver for the notify field.
+func (r *mutationResolver) Notify(ctx context.Context, input *model.Notif) (*string, error) {
+	targetUser, err := r.client.User.Get(ctx, input.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	var data map[string]string
+	if input.Data != nil {
+		data = map[string]string{"data": *input.Data}
+	}
+	var notification *messaging.Notification
+	if input.Notification != nil {
+		notification = &messaging.Notification{
+			Title: input.Notification.Title,
+			Body:  input.Notification.Body,
+		}
+	}
+	_, err = inits.FCM.Send(ctx, &messaging.Message{
+		Token:        *targetUser.FcmToken,
+		Data:         data,
+		Notification: notification,
+	})
+	if err != nil {
+		fmt.Println("send notif err:", err)
+	}
+	return nil, nil
+}
 
 // ExpensesBreakdown is the resolver for the expensesBreakdown field.
 func (r *queryResolver) ExpensesBreakdown(ctx context.Context, rangeArg model.TimeRange) ([]*model.ExpensesBreakdownOutput, error) {

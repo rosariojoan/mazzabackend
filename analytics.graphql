@@ -24,8 +24,23 @@ type HomepageAnalytics {
     recentTransactions: [AccountingEntry!]!
 }
 
+input NotifNotif {
+    title: String!
+    body: String!
+}
+
+input Notif {
+    userID: Int!
+    notification: NotifNotif
+    data: String
+}
+
 extend type Query {
     expensesBreakdown(range: TimeRange!): [ExpensesBreakdownOutput!]!
     revenueTrend(range: TimeRange!): [RevenueTrendOutput!]!
     homepageAnalytics: HomepageAnalytics!
+}
+
+extend type Mutation {
+    notify(input: Notif): String
 }

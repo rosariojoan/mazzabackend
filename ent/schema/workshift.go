@@ -2,12 +2,12 @@ package schema
 
 import (
 	"context"
-	"mazza/app/notifications"
 	gen "mazza/ent/generated"
 	"mazza/ent/generated/hook"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/workshift"
 	"mazza/ent/utils"
+	"mazza/firebase"
 	"time"
 
 	"entgo.io/contrib/entgql"
@@ -106,19 +106,19 @@ func (Workshift) Hooks() []ent.Hook {
 							UserID    int       `json:"userID"`
 							TimeSent  time.Time `json:"timeSent"`
 						}{
-							AlertType: notifications.AlertType.WorkShiftApprovalRequest,
+							AlertType: firebase.AlertType.WorkShiftApprovalRequest,
 							UserID:    leader.ID,
 							TimeSent:  time.Now(),
 						}
 
 						go func() {
-							dataMap, err := notifications.GetMap(data)
+							dataMap, err := firebase.GetMap(data)
 							if err != nil {
 								return
 							}
 							// Send notification to the closest, available driver
 							title := "Novo timesheet submetido"
-							notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
+							firebase.SendDataNotification([]string{*leader.FcmToken}, &title, dataMap)
 						}()
 					}
 
@@ -168,19 +168,19 @@ func (Workshift) Hooks() []ent.Hook {
 						UserID    int       `json:"userID"`
 						TimeSent  time.Time `json:"timeSent"`
 					}{
-						AlertType: notifications.AlertType.WorkShifUpdateRequest,
+						AlertType: firebase.AlertType.WorkShifUpdateRequest,
 						UserID:    leader.ID,
 						TimeSent:  time.Now(),
 					}
 
 					go func() {
-						dataMap, err := notifications.GetMap(data)
+						dataMap, err := firebase.GetMap(data)
 						if err != nil {
 							return
 						}
 						// Send notification to the closest, available driver
 						title := "Timesheet"
-						notifications.SendDataNotification(*leader.FcmToken, &title, dataMap)
+						firebase.SendDataNotification([]string{*leader.FcmToken}, &title, dataMap)
 					}()
 					_ = leader
 					return next.Mutate(ctx, m)

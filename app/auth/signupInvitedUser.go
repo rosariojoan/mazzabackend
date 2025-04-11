@@ -1,17 +1,23 @@
 package auth
 
 import (
+	"context"
 	"fmt"
 	"net/http"
+	"time"
 
+	"firebase.google.com/go/messaging"
 	"github.com/gin-gonic/gin"
+
 	// generated "mazza/ent/generated"
 
 	"mazza/app/utils"
 	"mazza/ent/generated"
 	ent "mazza/ent/generated"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/employee"
 	"mazza/ent/generated/membersignuptoken"
+	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/firebase"
 	"mazza/inits"
@@ -121,6 +127,37 @@ func SignupInvitedUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "an error occurred"})
 		return
 	}
+
+	// Notify to admin user
+	go (func() {
+		adminUsers, err := inits.Client.User.Query().Where(
+			user.HasCompanyWith(company.ID(companyID)),
+			user.HasAssignedRolesWith(
+				userrole.RoleEQ(userrole.RoleADMIN),
+				userrole.HasCompanyWith(company.ID(companyID)),
+			),
+		).All(ctx)
+
+		if err == nil {
+			notifCtx, cancel := context.WithTimeout(ctx, time.Second*30)
+			defer cancel()
+
+			for _, admin := range adminUsers {
+				_, err := inits.FCM.Send(notifCtx, &messaging.Message{
+					Token: *admin.FcmToken,
+					Data: map[string]string{
+						"type":     "invitedUserRegistration",
+						"username": newUser.Name,
+						"email":    newUser.Email,
+					},
+					Notification: &messaging.Notification{},
+				})
+				if err != nil {
+					fmt.Println("send notif err:", err)
+				}
+			}
+		}
+	})()
 
 	ctx.JSON(http.StatusCreated, gin.H{"data": "usuário registado"})
 }

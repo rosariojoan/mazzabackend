@@ -218,6 +218,17 @@ type LoginOutput struct {
 	TTL          int                  `json:"ttl"`
 }
 
+type Notif struct {
+	UserID       int         `json:"userID"`
+	Notification *NotifNotif `json:"notification,omitempty"`
+	Data         *string     `json:"data,omitempty"`
+}
+
+type NotifNotif struct {
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}
+
 type PayableInput struct {
 	Amount  float64   `json:"amount"`
 	Name    string    `json:"name"`

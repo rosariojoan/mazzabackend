@@ -535,6 +535,7 @@ type ComplexityRoot struct {
 		InvitedUserSignup         func(childComplexity int, input model.InvitedUserSignupInput) int
 		IssueInvoice              func(childComplexity int, input model.InvoiceInput) int
 		IssueSalesQuotation       func(childComplexity int, input model.SalesQuotationInput) int
+		Notify                    func(childComplexity int, input *model.Notif) int
 		RegisterAccountingEntries func(childComplexity int, input model.BaseEntryRegistrationInput) int
 		RemoveUser                func(childComplexity int, id int) int
 		ResetPassword             func(childComplexity int, input model.ResetPasswordInput) int
@@ -935,6 +936,7 @@ type MutationResolver interface {
 	CreateInvoiceDraft(ctx context.Context, input generated.CreateInvoiceInput) (*generated.Invoice, error)
 	DeleteInvoiceDraft(ctx context.Context, id int) (bool, error)
 	RegisterAccountingEntries(ctx context.Context, input model.BaseEntryRegistrationInput) (*string, error)
+	Notify(ctx context.Context, input *model.Notif) (*string, error)
 	InitialSetup(ctx context.Context, input model.InitialSetupInput) (*string, error)
 	UploadDocument(ctx context.Context, input generated.CreateCompanyDocumentInput) (*generated.CompanyDocument, error)
 	UpdateDocument(ctx context.Context, id int, input generated.UpdateCompanyDocumentInput) (*generated.CompanyDocument, error)
@@ -3584,6 +3586,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.IssueSalesQuotation(childComplexity, args["input"].(model.SalesQuotationInput)), true
 
+	case "Mutation.notify":
+		if e.complexity.Mutation.Notify == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_notify_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.Notify(childComplexity, args["input"].(*model.Notif)), true
+
 	case "Mutation.registerAccountingEntries":
 		if e.complexity.Mutation.RegisterAccountingEntries == nil {
 			break
@@ -5823,6 +5837,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputLoginInput,
 		ec.unmarshalInputMemberSignupTokenOrder,
 		ec.unmarshalInputMemberSignupTokenWhereInput,
+		ec.unmarshalInputNotif,
+		ec.unmarshalInputNotifNotif,
 		ec.unmarshalInputPayableInput,
 		ec.unmarshalInputPayableOrder,
 		ec.unmarshalInputPayableWhereInput,
@@ -7136,6 +7152,38 @@ func (ec *executionContext) field_Mutation_issueSalesQuotation_argsInput(
 	}
 
 	var zeroVal model.SalesQuotationInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_notify_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Mutation_notify_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_notify_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*model.Notif, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal *model.Notif
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalONotif2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐNotif(ctx, tmp)
+	}
+
+	var zeroVal *model.Notif
 	return zeroVal, nil
 }
 
@@ -30708,6 +30756,58 @@ func (ec *executionContext) fieldContext_Mutation_registerAccountingEntries(ctx 
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_registerAccountingEntries_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_notify(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_notify(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().Notify(rctx, fc.Args["input"].(*model.Notif))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_notify(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_notify_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -64177,6 +64277,81 @@ func (ec *executionContext) unmarshalInputMemberSignupTokenWhereInput(ctx contex
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNotif(ctx context.Context, obj interface{}) (model.Notif, error) {
+	var it model.Notif
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"userID", "notification", "data"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
+		case "notification":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notification"))
+			data, err := ec.unmarshalONotifNotif2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐNotifNotif(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Notification = data
+		case "data":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("data"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Data = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNotifNotif(ctx context.Context, obj interface{}) (model.NotifNotif, error) {
+	var it model.NotifNotif
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"title", "body"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "title":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Title = data
+		case "body":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("body"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Body = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputPayableInput(ctx context.Context, obj interface{}) (model.PayableInput, error) {
 	var it model.PayableInput
 	asMap := map[string]interface{}{}
@@ -80929,6 +81104,10 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_registerAccountingEntries(ctx, field)
 			})
+		case "notify":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_notify(ctx, field)
+			})
 		case "initialSetup":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_initialSetup(ctx, field)
@@ -91405,6 +91584,22 @@ func (ec *executionContext) marshalONode2mazzaᚋentᚋgeneratedᚐNoder(ctx con
 		return graphql.Null
 	}
 	return ec._Node(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalONotif2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐNotif(ctx context.Context, v interface{}) (*model.Notif, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNotif(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalONotifNotif2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐNotifNotif(ctx context.Context, v interface{}) (*model.NotifNotif, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNotifNotif(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalOPayable2ᚕᚖmazzaᚋentᚋgeneratedᚐPayableᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Payable) graphql.Marshaler {

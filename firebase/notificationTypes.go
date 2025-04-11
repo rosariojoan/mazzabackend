@@ -1,4 +1,4 @@
-package notifications
+package firebase
 
 var AlertType = struct {
 	AssignedWorkTask         string
