@@ -24,6 +24,7 @@ import (
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
 	"mazza/ent/utils"
+	"mazza/firebase"
 	"mazza/mazza/generated/model"
 	"strings"
 	"time"
@@ -144,30 +145,39 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input generated.Creat
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, id int, input generated.UpdateUserInput, companyLogo *model.ProfilePhotoInput) (*generated.User, error) {
 	client := generated.FromContext(ctx)
-	currentUser, currentCompany := utils.GetSession(&ctx)
-	if currentUser == nil {
+	activeUser, activeCompany := utils.GetSession(&ctx)
+	if activeUser == nil {
 		return nil, fmt.Errorf("unauthorized")
 	}
 
 	// Beside from admin, users can only update themselves
-	if currentUser.ID == id {
+	if activeUser.ID == id {
 		return client.User.UpdateOneID(id).SetInput(input).Save(ctx)
 	}
 
 	// Check if the current user is admin. If yes, perform the update
-	_, err := currentUser.QueryAssignedRoles().Where(
-		userrole.HasCompanyWith(company.ID(currentCompany.ID)),
+	_, err := activeUser.QueryAssignedRoles().Where(
+		userrole.HasCompanyWith(company.ID(activeCompany.ID)),
 		userrole.Or(
 			userrole.RoleEQ(userrole.RoleADMIN),
 			userrole.RoleEQ(userrole.RoleSUPERUSER),
 		),
 	).Exist(ctx)
 	if err != nil {
-		fmt.Println("user:", currentCompany.ID, currentUser.Name, err)
+		fmt.Println("user:", activeCompany.ID, activeUser.Name, err)
 		return nil, fmt.Errorf("unauthorized")
 	}
 
-	return client.User.UpdateOneID(id).SetInput(input).Save(ctx)
+	updatedUser, err := client.User.UpdateOneID(id).SetInput(input).Save(ctx)
+
+	if input.Active != nil {
+		role, err := updatedUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.ID(activeCompany.ID))).First(ctx)
+		if err == nil {
+			go firebase.UpdateUser(activeCompany.ID, activeCompany.Name, updatedUser.FirebaseUID, input.Active, role.Role, updatedUser.ExpoPushToken)
+		}
+	}
+
+	return updatedUser, err
 }
 
 // ForgotPassword is the resolver for the forgotPassword field.
@@ -187,7 +197,8 @@ func (r *mutationResolver) ResetPassword(ctx context.Context, input model.ResetP
 
 // Unsubscribe is the resolver for the unsubscribe field.
 func (r *mutationResolver) Unsubscribe(ctx context.Context, id int) (bool, error) {
-	err := auth.Unsubscribe(&ctx, r.client)
+	activeUser, activeCompany := utils.GetSession(&ctx)
+	err := auth.Unsubscribe(&ctx, r.client, activeUser, activeCompany)
 	return true, err
 }
 

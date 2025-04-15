@@ -593,7 +593,7 @@ func init() {
 	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[2].Descriptor()
+	userDescEmail := userFields[3].Descriptor()
 	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	user.EmailValidator = func() func(string) error {
 		validators := userDescEmail.Validators
@@ -611,7 +611,7 @@ func init() {
 		}
 	}()
 	// userDescActive is the schema descriptor for active field.
-	userDescActive := userFields[12].Descriptor()
+	userDescActive := userFields[13].Descriptor()
 	// user.DefaultActive holds the default value on creation for the active field.
 	user.DefaultActive = userDescActive.Default.(bool)
 	userroleFields := schema.UserRole{}.Fields()

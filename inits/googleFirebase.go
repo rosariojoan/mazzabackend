@@ -11,6 +11,7 @@ import (
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	"firebase.google.com/go/messaging"
+	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 	"google.golang.org/api/option"
 )
 
@@ -19,6 +20,8 @@ var (
 	FCM             *messaging.Client
 	FirebaseStorage *storage.BucketHandle
 	Firestore       *firestore.Client
+	// Use this variable to send push notification to the client
+	ExpoClient      *expo.PushClient
 )
 
 type ServiceAccount struct {
@@ -93,6 +96,9 @@ func InitFirebase() error {
 	if err != nil {
 		log.Fatal("Firebase storage initialization error:", err)
 	}
+
+	// Expo client
+	ExpoClient = expo.NewPushClient(nil)
 
 	return err
 }

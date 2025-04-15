@@ -13,11 +13,11 @@ type Token struct {
 	ent.Schema
 }
 
-// Fields of the Token.
+// Fields of the Token
 func (Token) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("expiry"),
-		field.Enum("category").Values("passwordReset", "invitation"),
+		field.Enum("category").Values("ACCOUNT_DELETE"),
 		field.String("token").NotEmpty(),
 	}
 }
@@ -35,6 +35,6 @@ func (Token) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		// 		entgql.RelayConnection(),
 		entgql.QueryField(),
-		// 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
+		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
 	}
 }

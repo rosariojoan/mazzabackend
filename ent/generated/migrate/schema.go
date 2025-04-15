@@ -738,7 +738,7 @@ var (
 	TokensColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "expiry", Type: field.TypeTime},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"passwordReset", "invitation"}},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"ACCOUNT_DELETE"}},
 		{Name: "token", Type: field.TypeString},
 		{Name: "company_tokens", Type: field.TypeInt, Nullable: true},
 		{Name: "user_tokens", Type: field.TypeInt, Nullable: true},
@@ -794,6 +794,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "firebase_uid", Type: field.TypeString, Unique: true},
 		{Name: "fcm_token", Type: field.TypeString, Nullable: true},
+		{Name: "expo_push_token", Type: field.TypeString, Nullable: true},
 		{Name: "email", Type: field.TypeString, Unique: true},
 		{Name: "name", Type: field.TypeString},
 		{Name: "address", Type: field.TypeString, Nullable: true},
@@ -815,7 +816,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_subordinates",
-				Columns:    []*schema.Column{UsersColumns[17]},
+				Columns:    []*schema.Column{UsersColumns[18]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

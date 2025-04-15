@@ -2,14 +2,12 @@ package middlewares
 
 import (
 	"fmt"
+	"mazza/app/utils"
 	"mazza/inits"
 	"net/http"
-	"os"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 /* A valid access token should have a user ID and a company ID. */
@@ -27,13 +25,7 @@ func LoginRequired(c *gin.Context) {
 		tokenString = strings.Split(_tokenString[0], " ")[1]
 	}
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(os.Getenv("SECRET_KEY")), nil
-	})
-
+	claims, err := utils.ParseJWTToken(tokenString)
 	if err != nil {
 		fmt.Println("err 2:", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
@@ -41,33 +33,23 @@ func LoginRequired(c *gin.Context) {
 		return
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		user, err := inits.Client.User.Get(c, int(claims["id"].(float64)))
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		// http.StatusForbidden
-		company, err := inits.Client.Company.Get(c, int(claims["companyID"].(float64)))
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		c.Set("user", user)
-		c.Set("company", company)
-		c.Set("companyID", company.ID)
-
-	} else {
+	user, err := inits.Client.User.Get(c, int(claims["id"].(float64)))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		c.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
+	// http.StatusForbidden
+	company, err := inits.Client.Company.Get(c, int(claims["companyID"].(float64)))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	c.Set("user", user)
+	c.Set("company", company)
+	c.Set("companyID", company.ID)
+
 	c.Next()
 }

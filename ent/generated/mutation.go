@@ -24186,6 +24186,7 @@ type UserMutation struct {
 	deletedAt                        *time.Time
 	firebaseUID                      *string
 	fcmToken                         *string
+	expoPushToken                    *string
 	email                            *string
 	name                             *string
 	address                          *string
@@ -24557,6 +24558,55 @@ func (m *UserMutation) FcmTokenCleared() bool {
 func (m *UserMutation) ResetFcmToken() {
 	m.fcmToken = nil
 	delete(m.clearedFields, user.FieldFcmToken)
+}
+
+// SetExpoPushToken sets the "expoPushToken" field.
+func (m *UserMutation) SetExpoPushToken(s string) {
+	m.expoPushToken = &s
+}
+
+// ExpoPushToken returns the value of the "expoPushToken" field in the mutation.
+func (m *UserMutation) ExpoPushToken() (r string, exists bool) {
+	v := m.expoPushToken
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpoPushToken returns the old "expoPushToken" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldExpoPushToken(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpoPushToken is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpoPushToken requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpoPushToken: %w", err)
+	}
+	return oldValue.ExpoPushToken, nil
+}
+
+// ClearExpoPushToken clears the value of the "expoPushToken" field.
+func (m *UserMutation) ClearExpoPushToken() {
+	m.expoPushToken = nil
+	m.clearedFields[user.FieldExpoPushToken] = struct{}{}
+}
+
+// ExpoPushTokenCleared returns if the "expoPushToken" field was cleared in this mutation.
+func (m *UserMutation) ExpoPushTokenCleared() bool {
+	_, ok := m.clearedFields[user.FieldExpoPushToken]
+	return ok
+}
+
+// ResetExpoPushToken resets all changes to the "expoPushToken" field.
+func (m *UserMutation) ResetExpoPushToken() {
+	m.expoPushToken = nil
+	delete(m.clearedFields, user.FieldExpoPushToken)
 }
 
 // SetEmail sets the "email" field.
@@ -25027,7 +25077,7 @@ func (m *UserMutation) Active() (r bool, exists bool) {
 // OldActive returns the old "active" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldActive(ctx context.Context) (v *bool, err error) {
+func (m *UserMutation) OldActive(ctx context.Context) (v bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldActive is only allowed on UpdateOne operations")
 	}
@@ -26022,7 +26072,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 17)
 	if m.createdAt != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -26037,6 +26087,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.fcmToken != nil {
 		fields = append(fields, user.FieldFcmToken)
+	}
+	if m.expoPushToken != nil {
+		fields = append(fields, user.FieldExpoPushToken)
 	}
 	if m.email != nil {
 		fields = append(fields, user.FieldEmail)
@@ -26089,6 +26142,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.FirebaseUID()
 	case user.FieldFcmToken:
 		return m.FcmToken()
+	case user.FieldExpoPushToken:
+		return m.ExpoPushToken()
 	case user.FieldEmail:
 		return m.Email()
 	case user.FieldName:
@@ -26130,6 +26185,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldFirebaseUID(ctx)
 	case user.FieldFcmToken:
 		return m.OldFcmToken(ctx)
+	case user.FieldExpoPushToken:
+		return m.OldExpoPushToken(ctx)
 	case user.FieldEmail:
 		return m.OldEmail(ctx)
 	case user.FieldName:
@@ -26195,6 +26252,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetFcmToken(v)
+		return nil
+	case user.FieldExpoPushToken:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpoPushToken(v)
 		return nil
 	case user.FieldEmail:
 		v, ok := value.(string)
@@ -26309,6 +26373,9 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldFcmToken) {
 		fields = append(fields, user.FieldFcmToken)
 	}
+	if m.FieldCleared(user.FieldExpoPushToken) {
+		fields = append(fields, user.FieldExpoPushToken)
+	}
 	if m.FieldCleared(user.FieldAddress) {
 		fields = append(fields, user.FieldAddress)
 	}
@@ -26349,6 +26416,9 @@ func (m *UserMutation) ClearField(name string) error {
 		return nil
 	case user.FieldFcmToken:
 		m.ClearFcmToken()
+		return nil
+	case user.FieldExpoPushToken:
+		m.ClearExpoPushToken()
 		return nil
 	case user.FieldAddress:
 		m.ClearAddress()
@@ -26393,6 +26463,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldFcmToken:
 		m.ResetFcmToken()
+		return nil
+	case user.FieldExpoPushToken:
+		m.ResetExpoPushToken()
 		return nil
 	case user.FieldEmail:
 		m.ResetEmail()

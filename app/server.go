@@ -58,6 +58,8 @@ func main() {
 		authRouter.POST("/signup-invited-user", auth.SignupInvitedUser)
 		authRouter.POST("/verify-invitation-token", auth.VerifyMemberInvitationToken)
 		authRouter.POST("/login", auth.Login)
+		authRouter.POST("/delete-request", auth.UnsubscriptionRequest)
+		authRouter.POST("/confirm-delete", auth.ConfirmDeleteUser)
 		authRouter.POST("/forgot-password")
 		authRouter.POST("/verify-password")
 

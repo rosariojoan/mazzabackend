@@ -15,6 +15,7 @@ import (
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 	"mazza/ent/generated/receivable"
+	"mazza/ent/generated/token"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/ent/generated/workshift"
@@ -2561,6 +2562,82 @@ func (c *SupplierUpdateOne) SetInput(i UpdateSupplierInput) *SupplierUpdateOne {
 	return c
 }
 
+// CreateTokenInput represents a mutation input for creating tokens.
+type CreateTokenInput struct {
+	Expiry    time.Time
+	Category  token.Category
+	Token     string
+	CompanyID *int
+	UserID    *int
+}
+
+// Mutate applies the CreateTokenInput on the TokenMutation builder.
+func (i *CreateTokenInput) Mutate(m *TokenMutation) {
+	m.SetExpiry(i.Expiry)
+	m.SetCategory(i.Category)
+	m.SetToken(i.Token)
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateTokenInput on the TokenCreate builder.
+func (c *TokenCreate) SetInput(i CreateTokenInput) *TokenCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateTokenInput represents a mutation input for updating tokens.
+type UpdateTokenInput struct {
+	Expiry       *time.Time
+	Category     *token.Category
+	Token        *string
+	ClearCompany bool
+	CompanyID    *int
+	ClearUser    bool
+	UserID       *int
+}
+
+// Mutate applies the UpdateTokenInput on the TokenMutation builder.
+func (i *UpdateTokenInput) Mutate(m *TokenMutation) {
+	if v := i.Expiry; v != nil {
+		m.SetExpiry(*v)
+	}
+	if v := i.Category; v != nil {
+		m.SetCategory(*v)
+	}
+	if v := i.Token; v != nil {
+		m.SetToken(*v)
+	}
+	if i.ClearCompany {
+		m.ClearCompany()
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+	if i.ClearUser {
+		m.ClearUser()
+	}
+	if v := i.UserID; v != nil {
+		m.SetUserID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateTokenInput on the TokenUpdate builder.
+func (c *TokenUpdate) SetInput(i UpdateTokenInput) *TokenUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateTokenInput on the TokenUpdateOne builder.
+func (c *TokenUpdateOne) SetInput(i UpdateTokenInput) *TokenUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
 // CreateTreasuryInput represents a mutation input for creating treasuries.
 type CreateTreasuryInput struct {
 	Balance   float64
@@ -2617,6 +2694,7 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 type CreateUserInput struct {
 	FirebaseUID                 string
 	FcmToken                    *string
+	ExpoPushToken               *string
 	Email                       string
 	Name                        string
 	Address                     *string
@@ -2650,6 +2728,9 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	m.SetFirebaseUID(i.FirebaseUID)
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
+	}
+	if v := i.ExpoPushToken; v != nil {
+		m.SetExpoPushToken(*v)
 	}
 	m.SetEmail(i.Email)
 	m.SetName(i.Name)
@@ -2736,6 +2817,8 @@ type UpdateUserInput struct {
 	FirebaseUID                       *string
 	ClearFcmToken                     bool
 	FcmToken                          *string
+	ClearExpoPushToken                bool
+	ExpoPushToken                     *string
 	Name                              *string
 	ClearAddress                      bool
 	Address                           *string
@@ -2811,6 +2894,12 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	}
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
+	}
+	if i.ClearExpoPushToken {
+		m.ClearExpoPushToken()
+	}
+	if v := i.ExpoPushToken; v != nil {
+		m.SetExpoPushToken(*v)
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)

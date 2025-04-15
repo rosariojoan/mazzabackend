@@ -93,6 +93,20 @@ func (uc *UserCreate) SetNillableFcmToken(s *string) *UserCreate {
 	return uc
 }
 
+// SetExpoPushToken sets the "expoPushToken" field.
+func (uc *UserCreate) SetExpoPushToken(s string) *UserCreate {
+	uc.mutation.SetExpoPushToken(s)
+	return uc
+}
+
+// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+func (uc *UserCreate) SetNillableExpoPushToken(s *string) *UserCreate {
+	if s != nil {
+		uc.SetExpoPushToken(*s)
+	}
+	return uc
+}
+
 // SetEmail sets the "email" field.
 func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	uc.mutation.SetEmail(s)
@@ -637,6 +651,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldFcmToken, field.TypeString, value)
 		_node.FcmToken = &value
 	}
+	if value, ok := uc.mutation.ExpoPushToken(); ok {
+		_spec.SetField(user.FieldExpoPushToken, field.TypeString, value)
+		_node.ExpoPushToken = &value
+	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 		_node.Email = value
@@ -679,7 +697,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.Active(); ok {
 		_spec.SetField(user.FieldActive, field.TypeBool, value)
-		_node.Active = &value
+		_node.Active = value
 	}
 	if nodes := uc.mutation.AccountingEntriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -1,13 +1,12 @@
 package auth
 
 import (
-	"context"
 	"fmt"
 	"net/http"
-	"time"
+	"strconv"
 
-	"firebase.google.com/go/messaging"
 	"github.com/gin-gonic/gin"
+	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 
 	// generated "mazza/ent/generated"
 
@@ -121,6 +120,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 	}
 
 	err = tx.Commit()
+	// tx.Rollback()
 	if err != nil {
 		fmt.Println("err:", err)
 		_ = tx.Rollback()
@@ -132,30 +132,35 @@ func SignupInvitedUser(ctx *gin.Context) {
 	go (func() {
 		adminUsers, err := inits.Client.User.Query().Where(
 			user.HasCompanyWith(company.ID(companyID)),
+			user.Active(true),
+			user.IDNEQ(newUser.ID),
+			user.ExpoPushTokenNotNil(),
 			user.HasAssignedRolesWith(
 				userrole.RoleEQ(userrole.RoleADMIN),
 				userrole.HasCompanyWith(company.ID(companyID)),
 			),
 		).All(ctx)
 
-		if err == nil {
-			notifCtx, cancel := context.WithTimeout(ctx, time.Second*30)
-			defer cancel()
-
+		if err == nil && len(adminUsers) > 0 {
+			var tokens []expo.ExponentPushToken
 			for _, admin := range adminUsers {
-				_, err := inits.FCM.Send(notifCtx, &messaging.Message{
-					Token: *admin.FcmToken,
-					Data: map[string]string{
-						"type":     "invitedUserRegistration",
-						"username": newUser.Name,
-						"email":    newUser.Email,
-					},
-					Notification: &messaging.Notification{},
-				})
-				if err != nil {
-					fmt.Println("send notif err:", err)
-				}
+				tokens = append(tokens, expo.ExponentPushToken(*admin.ExpoPushToken))
 			}
+			_, err := inits.ExpoClient.Publish(&expo.PushMessage{
+				To:    tokens,
+				Title: "Novo utilizador",
+				Body:  fmt.Sprintf("%s registou-se na sua empresa. Podes activar a conta do novo utilizador.", newUser.Unwrap().Name),
+				Data: map[string]string{
+					"type":      firebase.AlertType.InvitedUserRegistration,
+					"userID":    strconv.Itoa(newUser.ID),
+					"companyID": strconv.Itoa(companyID),
+				},
+				Sound: "default",
+			})
+			if err != nil {
+				fmt.Println("send notif err:", err)
+			}
+			// response.
 		}
 	})()
 

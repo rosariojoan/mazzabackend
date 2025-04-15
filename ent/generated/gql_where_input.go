@@ -13510,6 +13510,23 @@ type UserWhereInput struct {
 	FcmTokenEqualFold    *string  `json:"fcmtokenEqualFold,omitempty"`
 	FcmTokenContainsFold *string  `json:"fcmtokenContainsFold,omitempty"`
 
+	// "expoPushToken" field predicates.
+	ExpoPushToken             *string  `json:"expopushtoken,omitempty"`
+	ExpoPushTokenNEQ          *string  `json:"expopushtokenNEQ,omitempty"`
+	ExpoPushTokenIn           []string `json:"expopushtokenIn,omitempty"`
+	ExpoPushTokenNotIn        []string `json:"expopushtokenNotIn,omitempty"`
+	ExpoPushTokenGT           *string  `json:"expopushtokenGT,omitempty"`
+	ExpoPushTokenGTE          *string  `json:"expopushtokenGTE,omitempty"`
+	ExpoPushTokenLT           *string  `json:"expopushtokenLT,omitempty"`
+	ExpoPushTokenLTE          *string  `json:"expopushtokenLTE,omitempty"`
+	ExpoPushTokenContains     *string  `json:"expopushtokenContains,omitempty"`
+	ExpoPushTokenHasPrefix    *string  `json:"expopushtokenHasPrefix,omitempty"`
+	ExpoPushTokenHasSuffix    *string  `json:"expopushtokenHasSuffix,omitempty"`
+	ExpoPushTokenIsNil        bool     `json:"expopushtokenIsNil,omitempty"`
+	ExpoPushTokenNotNil       bool     `json:"expopushtokenNotNil,omitempty"`
+	ExpoPushTokenEqualFold    *string  `json:"expopushtokenEqualFold,omitempty"`
+	ExpoPushTokenContainsFold *string  `json:"expopushtokenContainsFold,omitempty"`
+
 	// "email" field predicates.
 	Email             *string  `json:"email,omitempty"`
 	EmailNEQ          *string  `json:"emailNEQ,omitempty"`
@@ -13988,6 +14005,51 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.FcmTokenContainsFold != nil {
 		predicates = append(predicates, user.FcmTokenContainsFold(*i.FcmTokenContainsFold))
+	}
+	if i.ExpoPushToken != nil {
+		predicates = append(predicates, user.ExpoPushTokenEQ(*i.ExpoPushToken))
+	}
+	if i.ExpoPushTokenNEQ != nil {
+		predicates = append(predicates, user.ExpoPushTokenNEQ(*i.ExpoPushTokenNEQ))
+	}
+	if len(i.ExpoPushTokenIn) > 0 {
+		predicates = append(predicates, user.ExpoPushTokenIn(i.ExpoPushTokenIn...))
+	}
+	if len(i.ExpoPushTokenNotIn) > 0 {
+		predicates = append(predicates, user.ExpoPushTokenNotIn(i.ExpoPushTokenNotIn...))
+	}
+	if i.ExpoPushTokenGT != nil {
+		predicates = append(predicates, user.ExpoPushTokenGT(*i.ExpoPushTokenGT))
+	}
+	if i.ExpoPushTokenGTE != nil {
+		predicates = append(predicates, user.ExpoPushTokenGTE(*i.ExpoPushTokenGTE))
+	}
+	if i.ExpoPushTokenLT != nil {
+		predicates = append(predicates, user.ExpoPushTokenLT(*i.ExpoPushTokenLT))
+	}
+	if i.ExpoPushTokenLTE != nil {
+		predicates = append(predicates, user.ExpoPushTokenLTE(*i.ExpoPushTokenLTE))
+	}
+	if i.ExpoPushTokenContains != nil {
+		predicates = append(predicates, user.ExpoPushTokenContains(*i.ExpoPushTokenContains))
+	}
+	if i.ExpoPushTokenHasPrefix != nil {
+		predicates = append(predicates, user.ExpoPushTokenHasPrefix(*i.ExpoPushTokenHasPrefix))
+	}
+	if i.ExpoPushTokenHasSuffix != nil {
+		predicates = append(predicates, user.ExpoPushTokenHasSuffix(*i.ExpoPushTokenHasSuffix))
+	}
+	if i.ExpoPushTokenIsNil {
+		predicates = append(predicates, user.ExpoPushTokenIsNil())
+	}
+	if i.ExpoPushTokenNotNil {
+		predicates = append(predicates, user.ExpoPushTokenNotNil())
+	}
+	if i.ExpoPushTokenEqualFold != nil {
+		predicates = append(predicates, user.ExpoPushTokenEqualFold(*i.ExpoPushTokenEqualFold))
+	}
+	if i.ExpoPushTokenContainsFold != nil {
+		predicates = append(predicates, user.ExpoPushTokenContainsFold(*i.ExpoPushTokenContainsFold))
 	}
 	if i.Email != nil {
 		predicates = append(predicates, user.EmailEQ(*i.Email))

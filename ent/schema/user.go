@@ -27,6 +27,7 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("firebaseUID").NotEmpty().Unique().Sensitive(),
 		field.String("fcmToken").Nillable().Optional().Sensitive(),
+		field.String("expoPushToken").Nillable().Optional().Sensitive(),
 		field.String("email").NotEmpty().Unique().Immutable().Validate(func(s string) error {
 			_, err := mail.ParseAddress(s)
 			return err
@@ -42,7 +43,7 @@ func (User) Fields() []ent.Field {
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)).
 			Comment("It can be the last time the user opened the app and synced with the backend."),
 		field.Enum("gender").Values("male", "female"),
-		field.Bool("active").Default(false).Nillable().Annotations(entgql.Skip(entgql.SkipMutationCreateInput)),
+		field.Bool("active").Default(false).Annotations(entgql.Skip(entgql.SkipMutationCreateInput)),
 		// field.String("password").Sensitive(),
 		// field.String("username").Unique().Annotations(entgql.OrderField("USERNAME")),
 	}

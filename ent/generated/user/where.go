@@ -80,6 +80,11 @@ func FcmToken(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldFcmToken, v))
 }
 
+// ExpoPushToken applies equality check predicate on the "expoPushToken" field. It's identical to ExpoPushTokenEQ.
+func ExpoPushToken(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldExpoPushToken, v))
+}
+
 // Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
 func Email(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldEmail, v))
@@ -398,6 +403,81 @@ func FcmTokenEqualFold(v string) predicate.User {
 // FcmTokenContainsFold applies the ContainsFold predicate on the "fcmToken" field.
 func FcmTokenContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldFcmToken, v))
+}
+
+// ExpoPushTokenEQ applies the EQ predicate on the "expoPushToken" field.
+func ExpoPushTokenEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenNEQ applies the NEQ predicate on the "expoPushToken" field.
+func ExpoPushTokenNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenIn applies the In predicate on the "expoPushToken" field.
+func ExpoPushTokenIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldExpoPushToken, vs...))
+}
+
+// ExpoPushTokenNotIn applies the NotIn predicate on the "expoPushToken" field.
+func ExpoPushTokenNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldExpoPushToken, vs...))
+}
+
+// ExpoPushTokenGT applies the GT predicate on the "expoPushToken" field.
+func ExpoPushTokenGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenGTE applies the GTE predicate on the "expoPushToken" field.
+func ExpoPushTokenGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenLT applies the LT predicate on the "expoPushToken" field.
+func ExpoPushTokenLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenLTE applies the LTE predicate on the "expoPushToken" field.
+func ExpoPushTokenLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenContains applies the Contains predicate on the "expoPushToken" field.
+func ExpoPushTokenContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenHasPrefix applies the HasPrefix predicate on the "expoPushToken" field.
+func ExpoPushTokenHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenHasSuffix applies the HasSuffix predicate on the "expoPushToken" field.
+func ExpoPushTokenHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenIsNil applies the IsNil predicate on the "expoPushToken" field.
+func ExpoPushTokenIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldExpoPushToken))
+}
+
+// ExpoPushTokenNotNil applies the NotNil predicate on the "expoPushToken" field.
+func ExpoPushTokenNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldExpoPushToken))
+}
+
+// ExpoPushTokenEqualFold applies the EqualFold predicate on the "expoPushToken" field.
+func ExpoPushTokenEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldExpoPushToken, v))
+}
+
+// ExpoPushTokenContainsFold applies the ContainsFold predicate on the "expoPushToken" field.
+func ExpoPushTokenContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldExpoPushToken, v))
 }
 
 // EmailEQ applies the EQ predicate on the "email" field.

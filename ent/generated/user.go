@@ -28,6 +28,8 @@ type User struct {
 	FirebaseUID string `json:"-"`
 	// FcmToken holds the value of the "fcmToken" field.
 	FcmToken *string `json:"-"`
+	// ExpoPushToken holds the value of the "expoPushToken" field.
+	ExpoPushToken *string `json:"-"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
 	// Name holds the value of the "name" field.
@@ -49,7 +51,7 @@ type User struct {
 	// Gender holds the value of the "gender" field.
 	Gender user.Gender `json:"gender,omitempty"`
 	// Active holds the value of the "active" field.
-	Active *bool `json:"active,omitempty"`
+	Active bool `json:"active,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges             UserEdges `json:"edges"`
@@ -294,7 +296,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldEmail, user.FieldName, user.FieldAddress, user.FieldAvatar, user.FieldPhotoURL, user.FieldDepartment, user.FieldPhone, user.FieldGender:
+		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldExpoPushToken, user.FieldEmail, user.FieldName, user.FieldAddress, user.FieldAvatar, user.FieldPhotoURL, user.FieldDepartment, user.FieldPhone, user.FieldGender:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldBirthdate, user.FieldLastLogin:
 			values[i] = new(sql.NullTime)
@@ -352,6 +354,13 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.FcmToken = new(string)
 				*u.FcmToken = value.String
+			}
+		case user.FieldExpoPushToken:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field expoPushToken", values[i])
+			} else if value.Valid {
+				u.ExpoPushToken = new(string)
+				*u.ExpoPushToken = value.String
 			}
 		case user.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -424,8 +433,7 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field active", values[i])
 			} else if value.Valid {
-				u.Active = new(bool)
-				*u.Active = value.Bool
+				u.Active = value.Bool
 			}
 		case user.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -575,6 +583,8 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("fcmToken=<sensitive>")
 	builder.WriteString(", ")
+	builder.WriteString("expoPushToken=<sensitive>")
+	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
 	builder.WriteString(", ")
@@ -619,10 +629,8 @@ func (u *User) String() string {
 	builder.WriteString("gender=")
 	builder.WriteString(fmt.Sprintf("%v", u.Gender))
 	builder.WriteString(", ")
-	if v := u.Active; v != nil {
-		builder.WriteString("active=")
-		builder.WriteString(fmt.Sprintf("%v", *v))
-	}
+	builder.WriteString("active=")
+	builder.WriteString(fmt.Sprintf("%v", u.Active))
 	builder.WriteByte(')')
 	return builder.String()
 }

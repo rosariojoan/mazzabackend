@@ -17,7 +17,7 @@ func SendFCMMessage(ctx context.Context, message *messaging.Message) error {
 	// if err != nil {
 	// 	return err
 	// }
-
+	
 	// // Get the Messaging client
 	// messagingClient := firebaseUtil.GetMessagingClient()
 
@@ -38,7 +38,7 @@ func SendDataNotification(FCMTokens []string, title *string, data map[string]str
 			Title: *title,
 			Body:  "",
 		},
-		Data:  data,
+		Data:   data,
 		Tokens: FCMTokens,
 		// Topic: "test-topic",
 		// Token: "ezKh5hXeTeuNtMh4CXtIHj:APA91bEA21Qvt9knhB_iKydYYjJO5Ks48dNEcUGfjSGPzNMQvGOAQ21NmlsJDDyN5QetWP9np8JJNTMW4pkzMTgn3Mz5S17FtBqtKBouOP73DWsGIiK1I5f1LLcANMgDXe4AqvtCALr-",

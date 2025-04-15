@@ -19,8 +19,8 @@ import (
 )
 
 type LoginInput struct {
-	FirebaseUID string
-	FcmToken    *string
+	FirebaseUID   string
+	ExpoPushToken *string
 }
 
 type LoginOutput struct {
@@ -34,7 +34,7 @@ type LoginOutput struct {
 }
 
 /* User login via JWT token */
-// func Login(ctx *context.Context, username string, password string, fcmToken *string) (data *LoginOutput, err error) {
+// func Login(ctx *context.Context, username string, password string, ExpoPushToken *string) (data *LoginOutput, err error) {
 func Login(ctx *gin.Context) {
 	// client := ent.FromContext(ctx)
 	var input LoginInput
@@ -44,7 +44,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 		return
 	}
-	// fmt.Println("\n ++ client:", input, *input.FcmToken)
+	
 	currentUser, err := inits.Client.User.Query().
 		Where(user.And(
 			user.FirebaseUID(input.FirebaseUID),
@@ -74,17 +74,20 @@ func Login(ctx *gin.Context) {
 
 	activeCompanyID := companies[0].ID
 
-	// Update user FCM token
-	if input.FcmToken != nil {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
+	// Update user ExpoPushToken
+	if input.ExpoPushToken != nil {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).SetExpoPushToken(*input.ExpoPushToken).Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
 			return
 		}
-		inits.Client.User.Update().Where(user.IDNEQ(currentUser.ID), user.FcmTokenEQ(*input.FcmToken)).ClearFcmToken().Exec(ctx)
+		inits.Client.User.Update().Where(
+			user.IDNEQ(currentUser.ID),
+			user.ExpoPushToken(*input.ExpoPushToken),
+		).ClearExpoPushToken().Exec(ctx)
 	} else {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearFcmToken().Exec(ctx)
+		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearExpoPushToken().Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})

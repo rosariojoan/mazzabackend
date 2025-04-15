@@ -9,14 +9,15 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
-	"mazza/ent/utils"
 	"mazza/firebase"
+	"mazza/inits"
+
+	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
 // Delete the current company and unsubscribe all associated users
-func Unsubscribe(ctx *context.Context, client *generated.Client) error {
+func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *generated.User, activeCompany *generated.Company) error {
 	// client := ent.FromContext(*ctx)
-	activeUser, activeCompany := utils.GetSession(ctx)
 	if activeUser == nil || activeCompany == nil {
 		return fmt.Errorf("unauthorized")
 	}
@@ -76,6 +77,43 @@ func Unsubscribe(ctx *context.Context, client *generated.Client) error {
 		tx.Rollback()
 		return fmt.Errorf("an error occurred")
 	}
+
+	// Notify user and company admin
+	var expoPushTokens []expo.ExponentPushToken
+	for _, user := range allUsers {
+		if user.ExpoPushToken != nil && user.ID != activeUser.ID {
+			expoPushTokens = append(expoPushTokens, expo.ExponentPushToken(*user.ExpoPushToken))
+		}
+	}
+
+	var messages []expo.PushMessage
+	if len(expoPushTokens) > 0 {
+		messages = append(messages, expo.PushMessage{
+			To:    expoPushTokens,
+			Title: "Utilizador Excluído",
+			Body:  fmt.Sprintf("A conta de %s foi excluída da empresa %s", activeUser.Name, activeCompany.Name),
+			Sound: "default",
+			Priority: expo.HighPriority,
+		})
+	}
+	if activeUser.ExpoPushToken != nil {
+		tokens := []expo.ExponentPushToken{
+			expo.ExponentPushToken(*activeUser.ExpoPushToken),
+		}
+		messages = append(messages, expo.PushMessage{
+			To:    tokens,
+			Title: "Utilizador Excluído",
+			Body:  fmt.Sprintf("A tua conta foi excluída da empresa %s", activeCompany.Name),
+			Sound: "default",
+			Priority: expo.HighPriority,
+		})
+	}
+
+	if len(messages) > 0 {
+		_, _ = inits.ExpoClient.PublishMultiple(messages)
+	}
+	
+	return nil
 
 	// companyGroup := []models.Company{company}
 	// inits.DB.Raw(`SELECT * FROM users WHERE id = ? AND deleted_at IS NULL`, company.ID).Find(&allUsers)
@@ -145,6 +183,4 @@ func Unsubscribe(ctx *context.Context, client *generated.Client) error {
 
 	// // c.JSON(http.StatusOK, gin.H{"message": "User was successfully unsubscribed"})
 	// c.JSON(http.StatusOK, gin.H{"admin": isAdmin, "contacts": contacts})
-
-	return nil
 }

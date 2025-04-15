@@ -1,6 +1,7 @@
 package email
 
 import (
+	"fmt"
 	html "html/template"
 	"log"
 	text "text/template"
@@ -16,22 +17,24 @@ func SendPasswordResetToken(name string, emailAddress string, token string) {
 		Token: token,
 	}
 
-	htmlTemplate, err := html.ParseFiles("./app/utils/email/password_reset.html")
+	htmlTemplate, err := html.ParseFiles("./app/utils/email/templates/password_reset.html")
 	if err != nil {
 		log.Default().Printf("1. failed to load email template: %s", err)
 		return
 	}
 
-	textTemplate, err := text.ParseFiles("./app/utils/email/password_reset.html")
+	textTemplate, err := text.ParseFiles("./app/utils/email/templates/password_reset.html")
 	if err != nil {
 		log.Default().Printf("2. failed to load email template: %s", err)
 		return
 	}
 
-	sendEmail(
+	err = sendEmail(
 		emailRecipient{Name: name, Address: emailAddress},
 		subject,
 		&template{Html: htmlTemplate, Text: textTemplate},
 		data,
 	)
+
+	fmt.Println("err:", err)
 }

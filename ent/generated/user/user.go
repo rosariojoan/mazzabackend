@@ -27,6 +27,8 @@ const (
 	FieldFirebaseUID = "firebase_uid"
 	// FieldFcmToken holds the string denoting the fcmtoken field in the database.
 	FieldFcmToken = "fcm_token"
+	// FieldExpoPushToken holds the string denoting the expopushtoken field in the database.
+	FieldExpoPushToken = "expo_push_token"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldName holds the string denoting the name field in the database.
@@ -213,6 +215,7 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldFirebaseUID,
 	FieldFcmToken,
+	FieldExpoPushToken,
 	FieldEmail,
 	FieldName,
 	FieldAddress,
@@ -325,6 +328,11 @@ func ByFirebaseUID(opts ...sql.OrderTermOption) OrderOption {
 // ByFcmToken orders the results by the fcmToken field.
 func ByFcmToken(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFcmToken, opts...).ToFunc()
+}
+
+// ByExpoPushToken orders the results by the expoPushToken field.
+func ByExpoPushToken(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldExpoPushToken, opts...).ToFunc()
 }
 
 // ByEmail orders the results by the email field.

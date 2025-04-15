@@ -16,6 +16,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/johnfercher/maroto/v2 v2.1.3
 	github.com/joho/godotenv v1.5.1
+	github.com/oliveroneill/exponent-server-sdk-golang v0.0.0-20210823140141-d050598be512
 	github.com/vektah/gqlparser/v2 v2.5.16
 	github.com/wneessen/go-mail v0.4.4
 	golang.org/x/crypto v0.27.0
@@ -23,6 +24,8 @@ require (
 	golang.org/x/text v0.18.0
 	google.golang.org/api v0.196.0
 )
+
+require gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 
 require (
 	ariga.io/atlas v0.25.1-0.20240717145915-af51d3945208 // indirect
@@ -115,6 +118,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/grpc v1.66.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

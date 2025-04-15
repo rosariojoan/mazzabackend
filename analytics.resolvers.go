@@ -10,10 +10,11 @@ import (
 	accountingentry "mazza/app/accountingEntry"
 	"mazza/app/analytics"
 	"mazza/ent/utils"
+	"mazza/firebase"
 	"mazza/inits"
 	"mazza/mazza/generated/model"
 
-	"firebase.google.com/go/messaging"
+	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
 // Notify is the resolver for the notify field.
@@ -23,25 +24,37 @@ func (r *mutationResolver) Notify(ctx context.Context, input *model.Notif) (*str
 		return nil, err
 	}
 
-	var data map[string]string
-	if input.Data != nil {
-		data = map[string]string{"data": *input.Data}
+	// var data map[string]string
+	// if input.Data != nil {
+	// 	data = map[string]string{"data": *input.Data}
+	// }
+	// var notification *messaging.Notification
+	// if input.Notification != nil {
+	// 	notification = &messaging.Notification{
+	// 		Title: input.Notification.Title,
+	// 		Body:  input.Notification.Body,
+	// 	}
+	// }
+
+	if targetUser.ExpoPushToken == nil {
+		return nil, nil
 	}
-	var notification *messaging.Notification
-	if input.Notification != nil {
-		notification = &messaging.Notification{
-			Title: input.Notification.Title,
-			Body:  input.Notification.Body,
-		}
-	}
-	_, err = inits.FCM.Send(ctx, &messaging.Message{
-		Token:        *targetUser.FcmToken,
-		Data:         data,
-		Notification: notification,
+
+	token := expo.ExponentPushToken(*targetUser.ExpoPushToken)
+	_, err = inits.ExpoClient.Publish(&expo.PushMessage{
+		To:    []expo.ExponentPushToken{token},
+		Title: input.Notification.Title,
+		Body:  input.Notification.Body,
+		Data: map[string]string{
+			"type": firebase.AlertType.InvitedUserRegistration,
+		},
+		Sound:    "default",
+		Priority: expo.HighPriority,
 	})
 	if err != nil {
 		fmt.Println("send notif err:", err)
 	}
+
 	return nil, nil
 }
 

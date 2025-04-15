@@ -5810,6 +5810,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateProjectTaskInput,
 		ec.unmarshalInputCreateReceivableInput,
 		ec.unmarshalInputCreateSupplierInput,
+		ec.unmarshalInputCreateTokenInput,
 		ec.unmarshalInputCreateTreasuryInput,
 		ec.unmarshalInputCreateUserInput,
 		ec.unmarshalInputCreateUserRoleInput,
@@ -5880,6 +5881,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputUpdateProjectTaskInput,
 		ec.unmarshalInputUpdateReceivableInput,
 		ec.unmarshalInputUpdateSupplierInput,
+		ec.unmarshalInputUpdateTokenInput,
 		ec.unmarshalInputUpdateTreasuryInput,
 		ec.unmarshalInputUpdateUserInput,
 		ec.unmarshalInputUpdateUserRoleInput,
@@ -43172,9 +43174,9 @@ func (ec *executionContext) _User_active(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*bool)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNBoolean2ᚖbool(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_active(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -54350,6 +54352,61 @@ func (ec *executionContext) unmarshalInputCreateSupplierInput(ctx context.Contex
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputCreateTokenInput(ctx context.Context, obj interface{}) (generated.CreateTokenInput, error) {
+	var it generated.CreateTokenInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"expiry", "category", "token", "companyID", "userID"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "expiry":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiry"))
+			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Expiry = data
+		case "category":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
+			data, err := ec.unmarshalNTokenCategory2mazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Category = data
+		case "token":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("token"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Token = data
+		case "companyID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompanyID = data
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputCreateTreasuryInput(ctx context.Context, obj interface{}) (generated.CreateTreasuryInput, error) {
 	var it generated.CreateTreasuryInput
 	asMap := map[string]interface{}{}
@@ -54391,7 +54448,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "email", "name", "address", "avatar", "photourl", "department", "phone", "birthdate", "gender", "accountingentryIDs", "assignedroleIDs", "subordinateIDs", "leaderID", "createdmembersignuptokenIDs", "employeeID", "issuedinvoiceIDs", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "createdtaskIDs", "tokenIDs", "approvedworkshiftIDs", "workshiftIDs", "uploadeddocumentIDs", "approveddocumentIDs"}
+	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "expopushtoken", "email", "name", "address", "avatar", "photourl", "department", "phone", "birthdate", "gender", "accountingentryIDs", "assignedroleIDs", "subordinateIDs", "leaderID", "createdmembersignuptokenIDs", "employeeID", "issuedinvoiceIDs", "createdprojectIDs", "leaderedprojectIDs", "assignedprojecttaskIDs", "participatedprojecttaskIDs", "createdtaskIDs", "tokenIDs", "approvedworkshiftIDs", "workshiftIDs", "uploadeddocumentIDs", "approveddocumentIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -54412,6 +54469,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.FcmToken = data
+		case "expopushtoken":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expopushtoken"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpoPushToken = data
 		case "email":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -73012,6 +73076,75 @@ func (ec *executionContext) unmarshalInputUpdateSupplierInput(ctx context.Contex
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateTokenInput(ctx context.Context, obj interface{}) (generated.UpdateTokenInput, error) {
+	var it generated.UpdateTokenInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"expiry", "category", "token", "companyID", "clearCompany", "userID", "clearUser"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "expiry":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expiry"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Expiry = data
+		case "category":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("category"))
+			data, err := ec.unmarshalOTokenCategory2ᚖmazzaᚋentᚋgeneratedᚋtokenᚐCategory(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Category = data
+		case "token":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("token"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Token = data
+		case "companyID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("companyID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CompanyID = data
+		case "clearCompany":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearCompany"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearCompany = data
+		case "userID":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userID"))
+			data, err := ec.unmarshalOID2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UserID = data
+		case "clearUser":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearUser"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearUser = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateTreasuryInput(ctx context.Context, obj interface{}) (generated.UpdateTreasuryInput, error) {
 	var it generated.UpdateTreasuryInput
 	asMap := map[string]interface{}{}
@@ -73060,7 +73193,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "clearFcmToken", "name", "address", "clearAddress", "avatar", "clearAvatar", "photourl", "clearPhotoURL", "department", "clearDepartment", "phone", "clearPhone", "birthdate", "clearBirthdate", "gender", "active", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "addCreatedMemberSignupTokenIDs", "removeCreatedMemberSignupTokenIDs", "clearCreatedMemberSignupTokens", "employeeID", "clearEmployee", "addIssuedInvoiceIDs", "removeIssuedInvoiceIDs", "clearIssuedInvoices", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUploadedDocumentIDs", "removeUploadedDocumentIDs", "clearUploadedDocuments", "addApprovedDocumentIDs", "removeApprovedDocumentIDs", "clearApprovedDocuments"}
+	fieldsInOrder := [...]string{"firebaseuid", "fcmtoken", "clearFcmToken", "expopushtoken", "clearExpoPushToken", "name", "address", "clearAddress", "avatar", "clearAvatar", "photourl", "clearPhotoURL", "department", "clearDepartment", "phone", "clearPhone", "birthdate", "clearBirthdate", "gender", "active", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCompanyIDs", "removeCompanyIDs", "addAssignedRoleIDs", "removeAssignedRoleIDs", "clearAssignedRoles", "addSubordinateIDs", "removeSubordinateIDs", "clearSubordinates", "leaderID", "clearLeader", "addCreatedMemberSignupTokenIDs", "removeCreatedMemberSignupTokenIDs", "clearCreatedMemberSignupTokens", "employeeID", "clearEmployee", "addIssuedInvoiceIDs", "removeIssuedInvoiceIDs", "clearIssuedInvoices", "addCreatedProjectIDs", "removeCreatedProjectIDs", "clearCreatedProjects", "addLeaderedProjectIDs", "removeLeaderedProjectIDs", "clearLeaderedProjects", "addAssignedProjectTaskIDs", "removeAssignedProjectTaskIDs", "clearAssignedProjectTasks", "addParticipatedProjectTaskIDs", "removeParticipatedProjectTaskIDs", "clearParticipatedProjectTasks", "addTokenIDs", "removeTokenIDs", "clearTokens", "addApprovedWorkShiftIDs", "removeApprovedWorkShiftIDs", "clearApprovedWorkShifts", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUploadedDocumentIDs", "removeUploadedDocumentIDs", "clearUploadedDocuments", "addApprovedDocumentIDs", "removeApprovedDocumentIDs", "clearApprovedDocuments"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -73088,6 +73221,20 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.ClearFcmToken = data
+		case "expopushtoken":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("expopushtoken"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ExpoPushToken = data
+		case "clearExpoPushToken":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearExpoPushToken"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearExpoPushToken = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -86018,27 +86165,6 @@ func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interf
 
 func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.SelectionSet, v bool) graphql.Marshaler {
 	res := graphql.MarshalBoolean(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
-}
-
-func (ec *executionContext) unmarshalNBoolean2ᚖbool(ctx context.Context, v interface{}) (*bool, error) {
-	res, err := graphql.UnmarshalBoolean(v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNBoolean2ᚖbool(ctx context.Context, sel ast.SelectionSet, v *bool) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	res := graphql.MarshalBoolean(*v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")

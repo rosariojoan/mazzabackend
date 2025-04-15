@@ -100,6 +100,26 @@ func (uu *UserUpdate) ClearFcmToken() *UserUpdate {
 	return uu
 }
 
+// SetExpoPushToken sets the "expoPushToken" field.
+func (uu *UserUpdate) SetExpoPushToken(s string) *UserUpdate {
+	uu.mutation.SetExpoPushToken(s)
+	return uu
+}
+
+// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableExpoPushToken(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetExpoPushToken(*s)
+	}
+	return uu
+}
+
+// ClearExpoPushToken clears the value of the "expoPushToken" field.
+func (uu *UserUpdate) ClearExpoPushToken() *UserUpdate {
+	uu.mutation.ClearExpoPushToken()
+	return uu
+}
+
 // SetName sets the "name" field.
 func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	uu.mutation.SetName(s)
@@ -964,6 +984,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.FcmTokenCleared() {
 		_spec.ClearField(user.FieldFcmToken, field.TypeString)
 	}
+	if value, ok := uu.mutation.ExpoPushToken(); ok {
+		_spec.SetField(user.FieldExpoPushToken, field.TypeString, value)
+	}
+	if uu.mutation.ExpoPushTokenCleared() {
+		_spec.ClearField(user.FieldExpoPushToken, field.TypeString)
+	}
 	if value, ok := uu.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
 	}
@@ -1827,6 +1853,26 @@ func (uuo *UserUpdateOne) SetNillableFcmToken(s *string) *UserUpdateOne {
 // ClearFcmToken clears the value of the "fcmToken" field.
 func (uuo *UserUpdateOne) ClearFcmToken() *UserUpdateOne {
 	uuo.mutation.ClearFcmToken()
+	return uuo
+}
+
+// SetExpoPushToken sets the "expoPushToken" field.
+func (uuo *UserUpdateOne) SetExpoPushToken(s string) *UserUpdateOne {
+	uuo.mutation.SetExpoPushToken(s)
+	return uuo
+}
+
+// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableExpoPushToken(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetExpoPushToken(*s)
+	}
+	return uuo
+}
+
+// ClearExpoPushToken clears the value of the "expoPushToken" field.
+func (uuo *UserUpdateOne) ClearExpoPushToken() *UserUpdateOne {
+	uuo.mutation.ClearExpoPushToken()
 	return uuo
 }
 
@@ -2723,6 +2769,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.FcmTokenCleared() {
 		_spec.ClearField(user.FieldFcmToken, field.TypeString)
+	}
+	if value, ok := uuo.mutation.ExpoPushToken(); ok {
+		_spec.SetField(user.FieldExpoPushToken, field.TypeString, value)
+	}
+	if uuo.mutation.ExpoPushTokenCleared() {
+		_spec.ClearField(user.FieldExpoPushToken, field.TypeString)
 	}
 	if value, ok := uuo.mutation.Name(); ok {
 		_spec.SetField(user.FieldName, field.TypeString, value)
