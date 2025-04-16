@@ -89,10 +89,10 @@ func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *gen
 	var messages []expo.PushMessage
 	if len(expoPushTokens) > 0 {
 		messages = append(messages, expo.PushMessage{
-			To:    expoPushTokens,
-			Title: "Utilizador Excluído",
-			Body:  fmt.Sprintf("A conta de %s foi excluída da empresa %s", activeUser.Name, activeCompany.Name),
-			Sound: "default",
+			To:       expoPushTokens,
+			Title:    "Utilizador Excluído",
+			Body:     fmt.Sprintf("A conta de %s foi excluída da empresa %s", activeUser.Name, activeCompany.Name),
+			Sound:    "default",
 			Priority: expo.HighPriority,
 		})
 	}
@@ -101,10 +101,10 @@ func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *gen
 			expo.ExponentPushToken(*activeUser.ExpoPushToken),
 		}
 		messages = append(messages, expo.PushMessage{
-			To:    tokens,
-			Title: "Utilizador Excluído",
-			Body:  fmt.Sprintf("A tua conta foi excluída da empresa %s", activeCompany.Name),
-			Sound: "default",
+			To:       tokens,
+			Title:    "Utilizador Excluído",
+			Body:     fmt.Sprintf("A tua conta foi excluída da empresa %s", activeCompany.Name),
+			Sound:    "default",
 			Priority: expo.HighPriority,
 		})
 	}
@@ -112,7 +112,7 @@ func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *gen
 	if len(messages) > 0 {
 		_, _ = inits.ExpoClient.PublishMultiple(messages)
 	}
-	
+
 	return nil
 
 	// companyGroup := []models.Company{company}

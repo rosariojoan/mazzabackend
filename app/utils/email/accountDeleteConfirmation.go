@@ -12,24 +12,30 @@ import (
 func SendAccountDeleteConfirmation(name string, emailAddress string, token string, validity string) {
 	subject := "Eliminação da Conta"
 	data := struct {
-		Link string
-		Year int
+		Link        string
+		Year        int
 		CompanyName string
-		Validity string
+		Validity    string
 	}{
-		Link: fmt.Sprintf("%s/account/unsubscribe?token=%s", os.Getenv("WEB_HOME_PAGE"), token),
-		Year: time.Now().Year(),
+		Link:        fmt.Sprintf("%s/account/unsubscribe?token=%s", os.Getenv("WEB_HOME_PAGE"), token),
+		Year:        time.Now().Year(),
 		CompanyName: os.Getenv("COMPANY_NAME"),
-		Validity: validity,
+		Validity:    validity,
 	}
 
-	htmlTemplate, err := html.ParseFiles("./app/utils/email/templates/account_delete_request.html")
+	var filePath string
+	if os.Getenv("DEBUG") == "true" {
+		filePath = "./app/utils/email/templates/account_delete_request.html"
+	} else {
+		filePath = "./app/build/utils/email/templates/account_delete_request.html"
+	}
+	htmlTemplate, err := html.ParseFiles(filePath)
 	if err != nil {
 		log.Default().Printf("1. failed to load email template: %s", err)
 		return
 	}
 
-	textTemplate, err := text.ParseFiles("./app/utils/email/templates/account_delete_request.html")
+	textTemplate, err := text.ParseFiles(filePath)
 	if err != nil {
 		log.Default().Printf("2. failed to load email template: %s", err)
 		return

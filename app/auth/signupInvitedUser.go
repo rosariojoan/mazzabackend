@@ -155,7 +155,8 @@ func SignupInvitedUser(ctx *gin.Context) {
 					"userID":    strconv.Itoa(newUser.ID),
 					"companyID": strconv.Itoa(companyID),
 				},
-				Sound: "default",
+				Sound:    "default",
+				Priority: expo.HighPriority,
 			})
 			if err != nil {
 				fmt.Println("send notif err:", err)

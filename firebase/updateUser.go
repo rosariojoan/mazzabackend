@@ -65,11 +65,12 @@ func UpdateUser(companyID int, companyName string, firebaseUID string, isActive 
 
 	token := []expo.ExponentPushToken{expo.ExponentPushToken(*expoPushToken)}
 	_, err = inits.ExpoClient.Publish(&expo.PushMessage{
-		To:    token,
-		Title: title,
-		Body:  body,
-		Data:  data,
-		Sound: "default",
+		To:       token,
+		Title:    title,
+		Body:     body,
+		Data:     data,
+		Sound:    "default",
+		Priority: expo.HighPriority,
 	})
 	if err != nil {
 		fmt.Println("send notif err:", err)
