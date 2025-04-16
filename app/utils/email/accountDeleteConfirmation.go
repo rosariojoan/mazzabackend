@@ -23,12 +23,13 @@ func SendAccountDeleteConfirmation(name string, emailAddress string, token strin
 		Validity:    validity,
 	}
 
-	var filePath string
-	if os.Getenv("DEBUG") == "true" {
-		filePath = "./app/utils/email/templates/account_delete_request.html"
-	} else {
-		filePath = "./app/build/utils/email/templates/account_delete_request.html"
-	}
+	// var filePath string
+	// if os.Getenv("DEBUG") == "true" {
+	// 	filePath = "./app/utils/email/templates/account_delete_request.html"
+	// } else {
+	// 	filePath = "./app/utils/email/templates/account_delete_request.html"
+	// }
+	filePath := "./app/utils/email/templates/account_delete_request.html"
 	htmlTemplate, err := html.ParseFiles(filePath)
 	if err != nil {
 		log.Default().Printf("1. failed to load email template: %s", err)

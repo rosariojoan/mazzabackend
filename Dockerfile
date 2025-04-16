@@ -48,6 +48,9 @@ WORKDIR /app
 # Copy the binary from the builder stage from the builder stage
 COPY --from=builder /app/build .
 
+# Copy the template files
+COPY --from=builder /app/app/utils/email/templates /app/app/utils/email/templates
+
 # Ensure the binary is executable
 RUN chmod +x /app/build
 
