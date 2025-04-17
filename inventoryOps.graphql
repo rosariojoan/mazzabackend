@@ -6,13 +6,13 @@ type InventoryCategoryCount {
 }
 
 extend type Mutation {
+    createInventory(input: CreateInventoryInput!): Inventory!
+    updateInventory(id: ID!, input: UpdateInventoryInput!): Inventory!
+    deleteInventory(id: ID!): Boolean!
     createInventoryMovement(
       input: CreateInventoryMovementInput!,
       accountingEntry: BaseEntryRegistrationInput
       ): InventoryMovement!
-    createInventory(input: CreateInventoryInput!): Inventory!
-    updateInventory(id: ID!, input: UpdateInventoryInput!): Inventory!
-    deleteInventory(id: ID!): Boolean!
 }
 
 extend type Query {

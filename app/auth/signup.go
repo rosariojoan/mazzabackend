@@ -100,7 +100,7 @@ func Signup(ctx *gin.Context) {
 			Country:     "--",
 			Description: supplierDescription,
 			IsDefault:   &trueValue,
-			Name:        "Clientes Diversos",
+			Name:        "Fornecedores Diversos",
 			Phone:       "--",
 			TaxId:       "--",
 		}).SaveX(ctx),

@@ -7,6 +7,7 @@ import (
 	"mazza/app/auth"
 	"mazza/app/middlewares"
 	"mazza/inits"
+	"net/http"
 
 	"os"
 
@@ -41,8 +42,8 @@ func main() {
 		// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid host header"})
 		// 	return
 		// }
-		ctx.Header("X-Frame-Options", "DENY") // Prevents clickjacking by disallowing framing
-		ctx.Header("X-XSS-Protection", "1; mode=block") // Enables XSS filtering in some older browsers
+		ctx.Header("X-Frame-Options", "DENY")                                                   // Prevents clickjacking by disallowing framing
+		ctx.Header("X-XSS-Protection", "1; mode=block")                                         // Enables XSS filtering in some older browsers
 		ctx.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload") // Enforces HTTPS
 		ctx.Header("Referrer-Policy", "strict-origin")
 		ctx.Header("X-Content-Type-Options", "nosniff") // Prevents MIME type sniffing
@@ -54,10 +55,10 @@ func main() {
 
 		// Handle OPTIONS method for CORS preflight
 		if ctx.Request.Method == "OPTIONS" {
-			ctx.AbortWithStatus(204)
+			ctx.AbortWithStatus(http.StatusNoContent)
 			return
 		}
-		
+
 		ctx.Next()
 	})
 
