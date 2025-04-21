@@ -33,7 +33,7 @@ func (Token) Edges() []ent.Edge {
 // Enable query and mutation for the Token schema
 func (Token) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		// 		entgql.RelayConnection(),
+		// entgql.RelayConnection(),
 		entgql.QueryField(),
 		entgql.Mutations(entgql.MutationCreate(), entgql.MutationUpdate()),
 	}

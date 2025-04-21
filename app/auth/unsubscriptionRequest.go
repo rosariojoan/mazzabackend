@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // Request account deletion. Create an expiring token if the user exists.
