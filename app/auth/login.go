@@ -44,7 +44,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid credentials"})
 		return
 	}
-	
+
 	currentUser, err := inits.Client.User.Query().
 		Where(user.And(
 			user.FirebaseUID(input.FirebaseUID),
@@ -74,27 +74,6 @@ func Login(ctx *gin.Context) {
 
 	activeCompanyID := companies[0].ID
 
-	// Update user ExpoPushToken
-	if input.ExpoPushToken != nil {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).SetExpoPushToken(*input.ExpoPushToken).Exec(ctx)
-		if err != nil {
-			fmt.Println("err:", err)
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
-			return
-		}
-		inits.Client.User.Update().Where(
-			user.IDNEQ(currentUser.ID),
-			user.ExpoPushToken(*input.ExpoPushToken),
-		).ClearExpoPushToken().Exec(ctx)
-	} else {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearExpoPushToken().Exec(ctx)
-		if err != nil {
-			fmt.Println("err:", err)
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
-			return
-		}
-	}
-
 	// Generate JWT token
 	duration := time.Hour * 24 * 30 // valid for 30 days
 	payload := jwt.MapClaims{
@@ -118,6 +97,27 @@ func Login(ctx *gin.Context) {
 	ttl, err := strconv.Atoi(os.Getenv("ACCESS_TOKEN_EXPIRE"))
 	if err != nil {
 		ttl = 2592000 // 30 days
+	}
+
+	// Update user ExpoPushToken
+	if input.ExpoPushToken != nil {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).SetExpoPushToken(*input.ExpoPushToken).Exec(ctx)
+		if err != nil {
+			fmt.Println("err:", err)
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			return
+		}
+		inits.Client.User.Update().Where(
+			user.IDNEQ(currentUser.ID),
+			user.ExpoPushToken(*input.ExpoPushToken),
+		).ClearExpoPushToken().Exec(ctx)
+	} else {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearExpoPushToken().Exec(ctx)
+		if err != nil {
+			fmt.Println("err:", err)
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
+			return
+		}
 	}
 
 	roles, err := currentUser.QueryAssignedRoles().Where(userrole.HasCompanyWith(company.ID(activeCompanyID))).All(ctx)

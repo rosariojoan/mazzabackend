@@ -79,7 +79,7 @@ func (r *queryResolver) Files(ctx context.Context, after *entgql.Cursor[int], fi
 func (r *queryResolver) Inventories(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryOrder, where *generated.InventoryWhereInput) (*generated.InventoryConnection, error) {
 	_, currentCompany := utils.GetSession(&ctx)
 	companyFilter := inventory.HasCompanyWith(company.IDEQ(currentCompany.ID))
-
+	fmt.Println("*** Inventories:", where.ID)
 	return r.client.Inventory.Query().Where(companyFilter).Paginate(
 		ctx, after, first, before, last,
 		generated.WithInventoryOrder(orderBy),
@@ -91,7 +91,7 @@ func (r *queryResolver) Inventories(ctx context.Context, after *entgql.Cursor[in
 func (r *queryResolver) InventoryMovements(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryMovementOrder, where *generated.InventoryMovementWhereInput) (*generated.InventoryMovementConnection, error) {
 	_, currentCompany := utils.GetSession(&ctx)
 	companyFilter := inventorymovement.HasCompanyWith(company.IDEQ(currentCompany.ID))
-
+	fmt.Println("*** InventoryMovements:", where.ID)
 	return r.client.InventoryMovement.Query().Where(companyFilter).Paginate(
 		ctx, after, first, before, last,
 		generated.WithInventoryMovementOrder(orderBy),
