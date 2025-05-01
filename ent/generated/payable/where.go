@@ -85,6 +85,11 @@ func Name(v string) predicate.Payable {
 	return predicate.Payable(sql.FieldEQ(FieldName, v))
 }
 
+// AmountInDefault applies equality check predicate on the "amountInDefault" field. It's identical to AmountInDefaultEQ.
+func AmountInDefault(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldEQ(FieldAmountInDefault, v))
+}
+
 // OutstandingBalance applies equality check predicate on the "outstandingBalance" field. It's identical to OutstandingBalanceEQ.
 func OutstandingBalance(v float64) predicate.Payable {
 	return predicate.Payable(sql.FieldEQ(FieldOutstandingBalance, v))
@@ -373,6 +378,46 @@ func NameEqualFold(v string) predicate.Payable {
 // NameContainsFold applies the ContainsFold predicate on the "name" field.
 func NameContainsFold(v string) predicate.Payable {
 	return predicate.Payable(sql.FieldContainsFold(FieldName, v))
+}
+
+// AmountInDefaultEQ applies the EQ predicate on the "amountInDefault" field.
+func AmountInDefaultEQ(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldEQ(FieldAmountInDefault, v))
+}
+
+// AmountInDefaultNEQ applies the NEQ predicate on the "amountInDefault" field.
+func AmountInDefaultNEQ(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldNEQ(FieldAmountInDefault, v))
+}
+
+// AmountInDefaultIn applies the In predicate on the "amountInDefault" field.
+func AmountInDefaultIn(vs ...float64) predicate.Payable {
+	return predicate.Payable(sql.FieldIn(FieldAmountInDefault, vs...))
+}
+
+// AmountInDefaultNotIn applies the NotIn predicate on the "amountInDefault" field.
+func AmountInDefaultNotIn(vs ...float64) predicate.Payable {
+	return predicate.Payable(sql.FieldNotIn(FieldAmountInDefault, vs...))
+}
+
+// AmountInDefaultGT applies the GT predicate on the "amountInDefault" field.
+func AmountInDefaultGT(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldGT(FieldAmountInDefault, v))
+}
+
+// AmountInDefaultGTE applies the GTE predicate on the "amountInDefault" field.
+func AmountInDefaultGTE(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldGTE(FieldAmountInDefault, v))
+}
+
+// AmountInDefaultLT applies the LT predicate on the "amountInDefault" field.
+func AmountInDefaultLT(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldLT(FieldAmountInDefault, v))
+}
+
+// AmountInDefaultLTE applies the LTE predicate on the "amountInDefault" field.
+func AmountInDefaultLTE(v float64) predicate.Payable {
+	return predicate.Payable(sql.FieldLTE(FieldAmountInDefault, v))
 }
 
 // OutstandingBalanceEQ applies the EQ predicate on the "outstandingBalance" field.

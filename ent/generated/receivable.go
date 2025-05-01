@@ -31,6 +31,8 @@ type Receivable struct {
 	Date time.Time `json:"date,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// AmountInDefault holds the value of the "amountInDefault" field.
+	AmountInDefault float64 `json:"amountInDefault,omitempty"`
 	// OutstandingBalance holds the value of the "outstandingBalance" field.
 	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
 	// TotalTransaction holds the value of the "totalTransaction" field.
@@ -88,7 +90,7 @@ func (*Receivable) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case receivable.FieldOutstandingBalance, receivable.FieldTotalTransaction:
+		case receivable.FieldAmountInDefault, receivable.FieldOutstandingBalance, receivable.FieldTotalTransaction:
 			values[i] = new(sql.NullFloat64)
 		case receivable.FieldID, receivable.FieldEntryGroup:
 			values[i] = new(sql.NullInt64)
@@ -159,6 +161,12 @@ func (r *Receivable) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				r.Name = value.String
+			}
+		case receivable.FieldAmountInDefault:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field amountInDefault", values[i])
+			} else if value.Valid {
+				r.AmountInDefault = value.Float64
 			}
 		case receivable.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -270,6 +278,9 @@ func (r *Receivable) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(r.Name)
+	builder.WriteString(", ")
+	builder.WriteString("amountInDefault=")
+	builder.WriteString(fmt.Sprintf("%v", r.AmountInDefault))
 	builder.WriteString(", ")
 	builder.WriteString("outstandingBalance=")
 	builder.WriteString(fmt.Sprintf("%v", r.OutstandingBalance))

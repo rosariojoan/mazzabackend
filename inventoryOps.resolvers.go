@@ -15,30 +15,6 @@ import (
 	"mazza/mazza/generated/model"
 )
 
-// CreateInventoryMovement is the resolver for the createInventoryMovement field.
-func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error) {
-	tx, err := r.client.Tx(ctx)
-	if err != nil {
-		fmt.Println("CreateInventoryMovement tx err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	movement, err := accountingentry.CreateInventoryMovement(ctx, tx, input, accountingEntry)
-	if err != nil {
-		fmt.Println("err:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-	
-	err = tx.Commit()
-	if err != nil {
-		fmt.Println("err:", err)
-		_ = tx.Rollback()
-		return nil, fmt.Errorf("an error occurred")
-	}
-
-	return movement, nil
-}
-
 // CreateInventory is the resolver for the createInventory field.
 func (r *mutationResolver) CreateInventory(ctx context.Context, input generated.CreateInventoryInput) (*generated.Inventory, error) {
 	_, activeCompany := utils.GetSession(&ctx)
@@ -74,6 +50,30 @@ func (r *mutationResolver) DeleteInventory(ctx context.Context, id int) (bool, e
 		return false, err
 	}
 	return true, err
+}
+
+// CreateInventoryMovement is the resolver for the createInventoryMovement field.
+func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error) {
+	tx, err := r.client.Tx(ctx)
+	if err != nil {
+		fmt.Println("CreateInventoryMovement tx err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	movement, err := accountingentry.CreateInventoryMovement(ctx, tx, input, accountingEntry)
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("err:", err)
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	return movement, nil
 }
 
 // CountInventoryCategories is the resolver for the countInventoryCategories field.

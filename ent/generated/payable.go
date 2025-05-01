@@ -30,6 +30,8 @@ type Payable struct {
 	Date time.Time `json:"date,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// AmountInDefault holds the value of the "amountInDefault" field.
+	AmountInDefault float64 `json:"amountInDefault,omitempty"`
 	// OutstandingBalance holds the value of the "outstandingBalance" field.
 	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
 	// TotalTransaction holds the value of the "totalTransaction" field.
@@ -73,7 +75,7 @@ func (*Payable) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case payable.FieldOutstandingBalance, payable.FieldTotalTransaction:
+		case payable.FieldAmountInDefault, payable.FieldOutstandingBalance, payable.FieldTotalTransaction:
 			values[i] = new(sql.NullFloat64)
 		case payable.FieldID, payable.FieldEntryGroup:
 			values[i] = new(sql.NullInt64)
@@ -142,6 +144,12 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				pa.Name = value.String
+			}
+		case payable.FieldAmountInDefault:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field amountInDefault", values[i])
+			} else if value.Valid {
+				pa.AmountInDefault = value.Float64
 			}
 		case payable.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -241,6 +249,9 @@ func (pa *Payable) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(pa.Name)
+	builder.WriteString(", ")
+	builder.WriteString("amountInDefault=")
+	builder.WriteString(fmt.Sprintf("%v", pa.AmountInDefault))
 	builder.WriteString(", ")
 	builder.WriteString("outstandingBalance=")
 	builder.WriteString(fmt.Sprintf("%v", pa.OutstandingBalance))

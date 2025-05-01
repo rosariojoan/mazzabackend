@@ -4237,6 +4237,62 @@ var (
 			}
 		},
 	}
+	// PayableOrderFieldDate orders Payable by date.
+	PayableOrderFieldDate = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.Date, nil
+		},
+		column: payable.FieldDate,
+		toTerm: payable.ByDate,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.Date,
+			}
+		},
+	}
+	// PayableOrderFieldAmountInDefault orders Payable by amountInDefault.
+	PayableOrderFieldAmountInDefault = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.AmountInDefault, nil
+		},
+		column: payable.FieldAmountInDefault,
+		toTerm: payable.ByAmountInDefault,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.AmountInDefault,
+			}
+		},
+	}
+	// PayableOrderFieldOutstandingBalance orders Payable by outstandingBalance.
+	PayableOrderFieldOutstandingBalance = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.OutstandingBalance, nil
+		},
+		column: payable.FieldOutstandingBalance,
+		toTerm: payable.ByOutstandingBalance,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.OutstandingBalance,
+			}
+		},
+	}
+	// PayableOrderFieldTotalTransaction orders Payable by totalTransaction.
+	PayableOrderFieldTotalTransaction = &PayableOrderField{
+		Value: func(pa *Payable) (ent.Value, error) {
+			return pa.TotalTransaction, nil
+		},
+		column: payable.FieldTotalTransaction,
+		toTerm: payable.ByTotalTransaction,
+		toCursor: func(pa *Payable) Cursor {
+			return Cursor{
+				ID:    pa.ID,
+				Value: pa.TotalTransaction,
+			}
+		},
+	}
 	// PayableOrderFieldDueDate orders Payable by dueDate.
 	PayableOrderFieldDueDate = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
@@ -4275,6 +4331,14 @@ func (f PayableOrderField) String() string {
 		str = "CREATED_AT"
 	case PayableOrderFieldUpdatedAt.column:
 		str = "UPDATED_AT"
+	case PayableOrderFieldDate.column:
+		str = "DATE"
+	case PayableOrderFieldAmountInDefault.column:
+		str = "AMOUNT_IN_DEFAULT"
+	case PayableOrderFieldOutstandingBalance.column:
+		str = "OUTSTANDING_BALANCE"
+	case PayableOrderFieldTotalTransaction.column:
+		str = "TOTAL_TRANSACTION"
 	case PayableOrderFieldDueDate.column:
 		str = "DUEDATE"
 	case PayableOrderFieldStatus.column:
@@ -4299,6 +4363,14 @@ func (f *PayableOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *PayableOrderFieldCreatedAt
 	case "UPDATED_AT":
 		*f = *PayableOrderFieldUpdatedAt
+	case "DATE":
+		*f = *PayableOrderFieldDate
+	case "AMOUNT_IN_DEFAULT":
+		*f = *PayableOrderFieldAmountInDefault
+	case "OUTSTANDING_BALANCE":
+		*f = *PayableOrderFieldOutstandingBalance
+	case "TOTAL_TRANSACTION":
+		*f = *PayableOrderFieldTotalTransaction
 	case "DUEDATE":
 		*f = *PayableOrderFieldDueDate
 	case "STATUS":
@@ -6015,6 +6087,62 @@ var (
 			}
 		},
 	}
+	// ReceivableOrderFieldDate orders Receivable by date.
+	ReceivableOrderFieldDate = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.Date, nil
+		},
+		column: receivable.FieldDate,
+		toTerm: receivable.ByDate,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.Date,
+			}
+		},
+	}
+	// ReceivableOrderFieldAmountInDefault orders Receivable by amountInDefault.
+	ReceivableOrderFieldAmountInDefault = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.AmountInDefault, nil
+		},
+		column: receivable.FieldAmountInDefault,
+		toTerm: receivable.ByAmountInDefault,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.AmountInDefault,
+			}
+		},
+	}
+	// ReceivableOrderFieldOutstandingBalance orders Receivable by outstandingBalance.
+	ReceivableOrderFieldOutstandingBalance = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.OutstandingBalance, nil
+		},
+		column: receivable.FieldOutstandingBalance,
+		toTerm: receivable.ByOutstandingBalance,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.OutstandingBalance,
+			}
+		},
+	}
+	// ReceivableOrderFieldTotalTransaction orders Receivable by totalTransaction.
+	ReceivableOrderFieldTotalTransaction = &ReceivableOrderField{
+		Value: func(r *Receivable) (ent.Value, error) {
+			return r.TotalTransaction, nil
+		},
+		column: receivable.FieldTotalTransaction,
+		toTerm: receivable.ByTotalTransaction,
+		toCursor: func(r *Receivable) Cursor {
+			return Cursor{
+				ID:    r.ID,
+				Value: r.TotalTransaction,
+			}
+		},
+	}
 	// ReceivableOrderFieldDueDate orders Receivable by dueDate.
 	ReceivableOrderFieldDueDate = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
@@ -6053,6 +6181,14 @@ func (f ReceivableOrderField) String() string {
 		str = "CREATED_AT"
 	case ReceivableOrderFieldUpdatedAt.column:
 		str = "UPDATED_AT"
+	case ReceivableOrderFieldDate.column:
+		str = "DATE"
+	case ReceivableOrderFieldAmountInDefault.column:
+		str = "AMOUNT_IN_DEFAULT"
+	case ReceivableOrderFieldOutstandingBalance.column:
+		str = "OUTSTANDING_BALANCE"
+	case ReceivableOrderFieldTotalTransaction.column:
+		str = "TOTAL_TRANSACTION"
 	case ReceivableOrderFieldDueDate.column:
 		str = "DUEDATE"
 	case ReceivableOrderFieldStatus.column:
@@ -6077,6 +6213,14 @@ func (f *ReceivableOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *ReceivableOrderFieldCreatedAt
 	case "UPDATED_AT":
 		*f = *ReceivableOrderFieldUpdatedAt
+	case "DATE":
+		*f = *ReceivableOrderFieldDate
+	case "AMOUNT_IN_DEFAULT":
+		*f = *ReceivableOrderFieldAmountInDefault
+	case "OUTSTANDING_BALANCE":
+		*f = *ReceivableOrderFieldOutstandingBalance
+	case "TOTAL_TRANSACTION":
+		*f = *ReceivableOrderFieldTotalTransaction
 	case "DUEDATE":
 		*f = *ReceivableOrderFieldDueDate
 	case "STATUS":

@@ -2223,6 +2223,11 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, payable.FieldName)
 				fieldSeen[payable.FieldName] = struct{}{}
 			}
+		case "amountindefault":
+			if _, ok := fieldSeen[payable.FieldAmountInDefault]; !ok {
+				selectedFields = append(selectedFields, payable.FieldAmountInDefault)
+				fieldSeen[payable.FieldAmountInDefault] = struct{}{}
+			}
 		case "outstandingbalance":
 			if _, ok := fieldSeen[payable.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, payable.FieldOutstandingBalance)
@@ -2966,6 +2971,11 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 			if _, ok := fieldSeen[receivable.FieldName]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldName)
 				fieldSeen[receivable.FieldName] = struct{}{}
+			}
+		case "amountindefault":
+			if _, ok := fieldSeen[receivable.FieldAmountInDefault]; !ok {
+				selectedFields = append(selectedFields, receivable.FieldAmountInDefault)
+				fieldSeen[receivable.FieldAmountInDefault] = struct{}{}
 			}
 		case "outstandingbalance":
 			if _, ok := fieldSeen[receivable.FieldOutstandingBalance]; !ok {

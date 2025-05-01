@@ -106,6 +106,27 @@ func (ru *ReceivableUpdate) SetNillableName(s *string) *ReceivableUpdate {
 	return ru
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (ru *ReceivableUpdate) SetAmountInDefault(f float64) *ReceivableUpdate {
+	ru.mutation.ResetAmountInDefault()
+	ru.mutation.SetAmountInDefault(f)
+	return ru
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (ru *ReceivableUpdate) SetNillableAmountInDefault(f *float64) *ReceivableUpdate {
+	if f != nil {
+		ru.SetAmountInDefault(*f)
+	}
+	return ru
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (ru *ReceivableUpdate) AddAmountInDefault(f float64) *ReceivableUpdate {
+	ru.mutation.AddAmountInDefault(f)
+	return ru
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (ru *ReceivableUpdate) SetOutstandingBalance(f float64) *ReceivableUpdate {
 	ru.mutation.ResetOutstandingBalance()
@@ -274,6 +295,21 @@ func (ru *ReceivableUpdate) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
 		}
 	}
+	if v, ok := ru.mutation.AmountInDefault(); ok {
+		if err := receivable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+		}
+	}
+	if v, ok := ru.mutation.OutstandingBalance(); ok {
+		if err := receivable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+		}
+	}
+	if v, ok := ru.mutation.TotalTransaction(); ok {
+		if err := receivable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+		}
+	}
 	if v, ok := ru.mutation.Status(); ok {
 		if err := receivable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Receivable.status": %w`, err)}
@@ -320,6 +356,12 @@ func (ru *ReceivableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ru.mutation.Name(); ok {
 		_spec.SetField(receivable.FieldName, field.TypeString, value)
+	}
+	if value, ok := ru.mutation.AmountInDefault(); ok {
+		_spec.SetField(receivable.FieldAmountInDefault, field.TypeFloat64, value)
+	}
+	if value, ok := ru.mutation.AddedAmountInDefault(); ok {
+		_spec.AddField(receivable.FieldAmountInDefault, field.TypeFloat64, value)
 	}
 	if value, ok := ru.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)
@@ -491,6 +533,27 @@ func (ruo *ReceivableUpdateOne) SetNillableName(s *string) *ReceivableUpdateOne 
 	if s != nil {
 		ruo.SetName(*s)
 	}
+	return ruo
+}
+
+// SetAmountInDefault sets the "amountInDefault" field.
+func (ruo *ReceivableUpdateOne) SetAmountInDefault(f float64) *ReceivableUpdateOne {
+	ruo.mutation.ResetAmountInDefault()
+	ruo.mutation.SetAmountInDefault(f)
+	return ruo
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (ruo *ReceivableUpdateOne) SetNillableAmountInDefault(f *float64) *ReceivableUpdateOne {
+	if f != nil {
+		ruo.SetAmountInDefault(*f)
+	}
+	return ruo
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (ruo *ReceivableUpdateOne) AddAmountInDefault(f float64) *ReceivableUpdateOne {
+	ruo.mutation.AddAmountInDefault(f)
 	return ruo
 }
 
@@ -675,6 +738,21 @@ func (ruo *ReceivableUpdateOne) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
 		}
 	}
+	if v, ok := ruo.mutation.AmountInDefault(); ok {
+		if err := receivable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+		}
+	}
+	if v, ok := ruo.mutation.OutstandingBalance(); ok {
+		if err := receivable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+		}
+	}
+	if v, ok := ruo.mutation.TotalTransaction(); ok {
+		if err := receivable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+		}
+	}
 	if v, ok := ruo.mutation.Status(); ok {
 		if err := receivable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Receivable.status": %w`, err)}
@@ -738,6 +816,12 @@ func (ruo *ReceivableUpdateOne) sqlSave(ctx context.Context) (_node *Receivable,
 	}
 	if value, ok := ruo.mutation.Name(); ok {
 		_spec.SetField(receivable.FieldName, field.TypeString, value)
+	}
+	if value, ok := ruo.mutation.AmountInDefault(); ok {
+		_spec.SetField(receivable.FieldAmountInDefault, field.TypeFloat64, value)
+	}
+	if value, ok := ruo.mutation.AddedAmountInDefault(); ok {
+		_spec.AddField(receivable.FieldAmountInDefault, field.TypeFloat64, value)
 	}
 	if value, ok := ruo.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)

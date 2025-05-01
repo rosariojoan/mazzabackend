@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"mazza/ent/generated"
 	ent "mazza/ent/generated"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/treasury"
@@ -14,8 +15,8 @@ import (
 
 /* Pass in a database transaction. The caller function should commit the transaction if this operation returns no error */
 func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input model.BaseEntryRegistrationInput, invoiceID *int) (*string, error) {
-	currentUser, currentCompany := u.GetSession(&ctx)
-	companyQ := u.CurrentCompanyQuery(&ctx)
+	currentUser, activeCompany := u.GetSession(&ctx)
+	companyQ := company.ID(activeCompany.ID)
 	// country, lang := "mz", "pt"
 	// accountNames, err := utils.LoadAccountNames(country, lang)
 	// if err != nil {
@@ -31,11 +32,11 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 	}
 
 	var accountingEntries []*ent.AccountingEntryCreate
-	var entryCounter = GetEntryCounter(ctx, tx.Client(), currentCompany.ID)
+	var entryCounter = GetEntryCounter(ctx, tx.Client(), activeCompany.ID)
 
 	if input.ReceivableInput != nil {
 		_ = tx.Receivable.Create().SetInput(ent.CreateReceivableInput{
-			CompanyID:          &currentCompany.ID,
+			CompanyID:          &activeCompany.ID,
 			EntryGroup:         entryCounter.Group,
 			Date:               input.Date,
 			OutstandingBalance: input.ReceivableInput.Amount,
@@ -43,11 +44,23 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 			DueDate:            input.ReceivableInput.DueDate,
 			Status:             receivable.StatusPending,
 		}).SaveX(ctx)
+	} else if input.ReceivableUpdateInput != nil {
+		addAmountInDefault := 0.0
+		if input.ReceivableUpdateInput.AddAmountInDefault != nil {
+			addAmountInDefault = *input.ReceivableUpdateInput.AddAmountInDefault
+		}
+		tx.Receivable.UpdateOneID(input.ReceivableUpdateInput.ID).Where(
+			receivable.ID(input.ReceivableUpdateInput.ID),
+			receivable.HasCompanyWith(company.ID(activeCompany.ID)),
+		).SetStatus(input.ReceivableUpdateInput.Status).
+			AddAmountInDefault(addAmountInDefault).
+			AddOutstandingBalance(input.ReceivableUpdateInput.AddBalance).
+			SaveX(ctx)
 	}
 
 	if input.PayableInput != nil {
 		_ = tx.Payable.Create().SetInput(ent.CreatePayableInput{
-			CompanyID:          &currentCompany.ID,
+			CompanyID:          &activeCompany.ID,
 			EntryGroup:         entryCounter.Group,
 			Date:               input.Date,
 			OutstandingBalance: input.PayableInput.Amount,
@@ -55,6 +68,18 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 			DueDate:            input.PayableInput.DueDate,
 			Status:             payable.StatusPending,
 		}).SaveX(ctx)
+	} else if input.PayableUpdateInput != nil {
+		addAmountInDefault := 0.0
+		if input.PayableUpdateInput.AddAmountInDefault != nil {
+			addAmountInDefault = *input.PayableUpdateInput.AddAmountInDefault
+		}
+		tx.Payable.UpdateOneID(input.PayableUpdateInput.ID).Where(
+			payable.ID(input.PayableUpdateInput.ID),
+			payable.HasCompanyWith(company.ID(activeCompany.ID)),
+		).SetStatus(input.PayableUpdateInput.Status).
+			AddAmountInDefault(addAmountInDefault).
+			AddOutstandingBalance(input.PayableUpdateInput.AddBalance).
+			SaveX(ctx)
 	}
 
 	entries := append(input.Main, input.Counterpart...)
@@ -66,7 +91,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 
 		var newEntry = tx.AccountingEntry.Create().
 			SetInput(ent.CreateAccountingEntryInput{
-				CompanyID:   &currentCompany.ID,
+				CompanyID:   &activeCompany.ID,
 				UserID:      &currentUser.ID,
 				Number:      entryCounter.Number,
 				Group:       entryCounter.Group,
@@ -92,7 +117,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 	}
 
 	// 2. Update company: last entry date
-	_, err = currentCompany.Update().SetLastEntryDate(input.Date).Save(ctx)
+	_, err = activeCompany.Update().SetLastEntryDate(input.Date).Save(ctx)
 	if err != nil {
 		fmt.Println("err", err)
 		return nil, err
@@ -100,7 +125,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 
 	// This the operation is part of the initial setup, remove the incomplete setup flag from the company
 	if input.OperationType == model.BaseOperationTypeInitialSetup {
-		_, err = tx.Company.UpdateOneID(currentCompany.ID).SetIncompleteSetup(false).Save(ctx)
+		_, err = tx.Company.UpdateOneID(activeCompany.ID).SetIncompleteSetup(false).Save(ctx)
 		fmt.Println("* err:", err, input.OperationType, model.BaseOperationTypeInitialSetup)
 		if err != nil {
 			return nil, fmt.Errorf("an error occurred while processing the entry")

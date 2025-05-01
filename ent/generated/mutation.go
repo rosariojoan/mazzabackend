@@ -16272,6 +16272,8 @@ type PayableMutation struct {
 	addentryGroup         *int
 	date                  *time.Time
 	name                  *string
+	amountInDefault       *float64
+	addamountInDefault    *float64
 	outstandingBalance    *float64
 	addoutstandingBalance *float64
 	totalTransaction      *float64
@@ -16633,6 +16635,62 @@ func (m *PayableMutation) ResetName() {
 	m.name = nil
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (m *PayableMutation) SetAmountInDefault(f float64) {
+	m.amountInDefault = &f
+	m.addamountInDefault = nil
+}
+
+// AmountInDefault returns the value of the "amountInDefault" field in the mutation.
+func (m *PayableMutation) AmountInDefault() (r float64, exists bool) {
+	v := m.amountInDefault
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmountInDefault returns the old "amountInDefault" field's value of the Payable entity.
+// If the Payable object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PayableMutation) OldAmountInDefault(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmountInDefault is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmountInDefault requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmountInDefault: %w", err)
+	}
+	return oldValue.AmountInDefault, nil
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (m *PayableMutation) AddAmountInDefault(f float64) {
+	if m.addamountInDefault != nil {
+		*m.addamountInDefault += f
+	} else {
+		m.addamountInDefault = &f
+	}
+}
+
+// AddedAmountInDefault returns the value that was added to the "amountInDefault" field in this mutation.
+func (m *PayableMutation) AddedAmountInDefault() (r float64, exists bool) {
+	v := m.addamountInDefault
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAmountInDefault resets all changes to the "amountInDefault" field.
+func (m *PayableMutation) ResetAmountInDefault() {
+	m.amountInDefault = nil
+	m.addamountInDefault = nil
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (m *PayableMutation) SetOutstandingBalance(f float64) {
 	m.outstandingBalance = &f
@@ -16890,7 +16948,7 @@ func (m *PayableMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PayableMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.createdAt != nil {
 		fields = append(fields, payable.FieldCreatedAt)
 	}
@@ -16908,6 +16966,9 @@ func (m *PayableMutation) Fields() []string {
 	}
 	if m.name != nil {
 		fields = append(fields, payable.FieldName)
+	}
+	if m.amountInDefault != nil {
+		fields = append(fields, payable.FieldAmountInDefault)
 	}
 	if m.outstandingBalance != nil {
 		fields = append(fields, payable.FieldOutstandingBalance)
@@ -16941,6 +17002,8 @@ func (m *PayableMutation) Field(name string) (ent.Value, bool) {
 		return m.Date()
 	case payable.FieldName:
 		return m.Name()
+	case payable.FieldAmountInDefault:
+		return m.AmountInDefault()
 	case payable.FieldOutstandingBalance:
 		return m.OutstandingBalance()
 	case payable.FieldTotalTransaction:
@@ -16970,6 +17033,8 @@ func (m *PayableMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDate(ctx)
 	case payable.FieldName:
 		return m.OldName(ctx)
+	case payable.FieldAmountInDefault:
+		return m.OldAmountInDefault(ctx)
 	case payable.FieldOutstandingBalance:
 		return m.OldOutstandingBalance(ctx)
 	case payable.FieldTotalTransaction:
@@ -17029,6 +17094,13 @@ func (m *PayableMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
+	case payable.FieldAmountInDefault:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmountInDefault(v)
+		return nil
 	case payable.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
@@ -17068,6 +17140,9 @@ func (m *PayableMutation) AddedFields() []string {
 	if m.addentryGroup != nil {
 		fields = append(fields, payable.FieldEntryGroup)
 	}
+	if m.addamountInDefault != nil {
+		fields = append(fields, payable.FieldAmountInDefault)
+	}
 	if m.addoutstandingBalance != nil {
 		fields = append(fields, payable.FieldOutstandingBalance)
 	}
@@ -17084,6 +17159,8 @@ func (m *PayableMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case payable.FieldEntryGroup:
 		return m.AddedEntryGroup()
+	case payable.FieldAmountInDefault:
+		return m.AddedAmountInDefault()
 	case payable.FieldOutstandingBalance:
 		return m.AddedOutstandingBalance()
 	case payable.FieldTotalTransaction:
@@ -17103,6 +17180,13 @@ func (m *PayableMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddEntryGroup(v)
+		return nil
+	case payable.FieldAmountInDefault:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAmountInDefault(v)
 		return nil
 	case payable.FieldOutstandingBalance:
 		v, ok := value.(float64)
@@ -17171,6 +17255,9 @@ func (m *PayableMutation) ResetField(name string) error {
 		return nil
 	case payable.FieldName:
 		m.ResetName()
+		return nil
+	case payable.FieldAmountInDefault:
+		m.ResetAmountInDefault()
 		return nil
 	case payable.FieldOutstandingBalance:
 		m.ResetOutstandingBalance()
@@ -20840,6 +20927,8 @@ type ReceivableMutation struct {
 	addentryGroup         *int
 	date                  *time.Time
 	name                  *string
+	amountInDefault       *float64
+	addamountInDefault    *float64
 	outstandingBalance    *float64
 	addoutstandingBalance *float64
 	totalTransaction      *float64
@@ -21203,6 +21292,62 @@ func (m *ReceivableMutation) ResetName() {
 	m.name = nil
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (m *ReceivableMutation) SetAmountInDefault(f float64) {
+	m.amountInDefault = &f
+	m.addamountInDefault = nil
+}
+
+// AmountInDefault returns the value of the "amountInDefault" field in the mutation.
+func (m *ReceivableMutation) AmountInDefault() (r float64, exists bool) {
+	v := m.amountInDefault
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmountInDefault returns the old "amountInDefault" field's value of the Receivable entity.
+// If the Receivable object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReceivableMutation) OldAmountInDefault(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmountInDefault is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmountInDefault requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmountInDefault: %w", err)
+	}
+	return oldValue.AmountInDefault, nil
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (m *ReceivableMutation) AddAmountInDefault(f float64) {
+	if m.addamountInDefault != nil {
+		*m.addamountInDefault += f
+	} else {
+		m.addamountInDefault = &f
+	}
+}
+
+// AddedAmountInDefault returns the value that was added to the "amountInDefault" field in this mutation.
+func (m *ReceivableMutation) AddedAmountInDefault() (r float64, exists bool) {
+	v := m.addamountInDefault
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAmountInDefault resets all changes to the "amountInDefault" field.
+func (m *ReceivableMutation) ResetAmountInDefault() {
+	m.amountInDefault = nil
+	m.addamountInDefault = nil
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (m *ReceivableMutation) SetOutstandingBalance(f float64) {
 	m.outstandingBalance = &f
@@ -21499,7 +21644,7 @@ func (m *ReceivableMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ReceivableMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.createdAt != nil {
 		fields = append(fields, receivable.FieldCreatedAt)
 	}
@@ -21517,6 +21662,9 @@ func (m *ReceivableMutation) Fields() []string {
 	}
 	if m.name != nil {
 		fields = append(fields, receivable.FieldName)
+	}
+	if m.amountInDefault != nil {
+		fields = append(fields, receivable.FieldAmountInDefault)
 	}
 	if m.outstandingBalance != nil {
 		fields = append(fields, receivable.FieldOutstandingBalance)
@@ -21550,6 +21698,8 @@ func (m *ReceivableMutation) Field(name string) (ent.Value, bool) {
 		return m.Date()
 	case receivable.FieldName:
 		return m.Name()
+	case receivable.FieldAmountInDefault:
+		return m.AmountInDefault()
 	case receivable.FieldOutstandingBalance:
 		return m.OutstandingBalance()
 	case receivable.FieldTotalTransaction:
@@ -21579,6 +21729,8 @@ func (m *ReceivableMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldDate(ctx)
 	case receivable.FieldName:
 		return m.OldName(ctx)
+	case receivable.FieldAmountInDefault:
+		return m.OldAmountInDefault(ctx)
 	case receivable.FieldOutstandingBalance:
 		return m.OldOutstandingBalance(ctx)
 	case receivable.FieldTotalTransaction:
@@ -21638,6 +21790,13 @@ func (m *ReceivableMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
+	case receivable.FieldAmountInDefault:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmountInDefault(v)
+		return nil
 	case receivable.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
@@ -21677,6 +21836,9 @@ func (m *ReceivableMutation) AddedFields() []string {
 	if m.addentryGroup != nil {
 		fields = append(fields, receivable.FieldEntryGroup)
 	}
+	if m.addamountInDefault != nil {
+		fields = append(fields, receivable.FieldAmountInDefault)
+	}
 	if m.addoutstandingBalance != nil {
 		fields = append(fields, receivable.FieldOutstandingBalance)
 	}
@@ -21693,6 +21855,8 @@ func (m *ReceivableMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case receivable.FieldEntryGroup:
 		return m.AddedEntryGroup()
+	case receivable.FieldAmountInDefault:
+		return m.AddedAmountInDefault()
 	case receivable.FieldOutstandingBalance:
 		return m.AddedOutstandingBalance()
 	case receivable.FieldTotalTransaction:
@@ -21712,6 +21876,13 @@ func (m *ReceivableMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddEntryGroup(v)
+		return nil
+	case receivable.FieldAmountInDefault:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAmountInDefault(v)
 		return nil
 	case receivable.FieldOutstandingBalance:
 		v, ok := value.(float64)
@@ -21780,6 +21951,9 @@ func (m *ReceivableMutation) ResetField(name string) error {
 		return nil
 	case receivable.FieldName:
 		m.ResetName()
+		return nil
+	case receivable.FieldAmountInDefault:
+		m.ResetAmountInDefault()
 		return nil
 	case receivable.FieldOutstandingBalance:
 		m.ResetOutstandingBalance()

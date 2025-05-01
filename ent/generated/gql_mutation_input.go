@@ -1831,6 +1831,7 @@ type CreatePayableInput struct {
 	EntryGroup         int
 	Date               time.Time
 	Name               *string
+	AmountInDefault    *float64
 	OutstandingBalance float64
 	TotalTransaction   float64
 	DueDate            time.Time
@@ -1844,6 +1845,9 @@ func (i *CreatePayableInput) Mutate(m *PayableMutation) {
 	m.SetDate(i.Date)
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.AmountInDefault; v != nil {
+		m.SetAmountInDefault(*v)
 	}
 	m.SetOutstandingBalance(i.OutstandingBalance)
 	m.SetTotalTransaction(i.TotalTransaction)
@@ -1865,6 +1869,7 @@ type UpdatePayableInput struct {
 	EntryGroup         *int
 	Date               *time.Time
 	Name               *string
+	AmountInDefault    *float64
 	OutstandingBalance *float64
 	TotalTransaction   *float64
 	DueDate            *time.Time
@@ -1883,6 +1888,9 @@ func (i *UpdatePayableInput) Mutate(m *PayableMutation) {
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.AmountInDefault; v != nil {
+		m.SetAmountInDefault(*v)
 	}
 	if v := i.OutstandingBalance; v != nil {
 		m.SetOutstandingBalance(*v)
@@ -2351,6 +2359,7 @@ type CreateReceivableInput struct {
 	EntryGroup         int
 	Date               time.Time
 	Name               *string
+	AmountInDefault    *float64
 	OutstandingBalance float64
 	TotalTransaction   float64
 	DueDate            time.Time
@@ -2365,6 +2374,9 @@ func (i *CreateReceivableInput) Mutate(m *ReceivableMutation) {
 	m.SetDate(i.Date)
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.AmountInDefault; v != nil {
+		m.SetAmountInDefault(*v)
 	}
 	m.SetOutstandingBalance(i.OutstandingBalance)
 	m.SetTotalTransaction(i.TotalTransaction)
@@ -2389,6 +2401,7 @@ type UpdateReceivableInput struct {
 	EntryGroup         *int
 	Date               *time.Time
 	Name               *string
+	AmountInDefault    *float64
 	OutstandingBalance *float64
 	TotalTransaction   *float64
 	DueDate            *time.Time
@@ -2407,6 +2420,9 @@ func (i *UpdateReceivableInput) Mutate(m *ReceivableMutation) {
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
+	}
+	if v := i.AmountInDefault; v != nil {
+		m.SetAmountInDefault(*v)
 	}
 	if v := i.OutstandingBalance; v != nil {
 		m.SetOutstandingBalance(*v)

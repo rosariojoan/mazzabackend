@@ -78,6 +78,7 @@ func main() {
 
 	}
 
+	router.GET("/gql", playgroundHandler())
 	gqlRouter := router.Group("/", middlewares.LoginRequired)
 	{
 		gqlRouter.POST("query", graphqlHandler())

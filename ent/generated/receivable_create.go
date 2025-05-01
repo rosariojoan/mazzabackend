@@ -90,6 +90,20 @@ func (rc *ReceivableCreate) SetNillableName(s *string) *ReceivableCreate {
 	return rc
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (rc *ReceivableCreate) SetAmountInDefault(f float64) *ReceivableCreate {
+	rc.mutation.SetAmountInDefault(f)
+	return rc
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (rc *ReceivableCreate) SetNillableAmountInDefault(f *float64) *ReceivableCreate {
+	if f != nil {
+		rc.SetAmountInDefault(*f)
+	}
+	return rc
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (rc *ReceivableCreate) SetOutstandingBalance(f float64) *ReceivableCreate {
 	rc.mutation.SetOutstandingBalance(f)
@@ -199,6 +213,10 @@ func (rc *ReceivableCreate) defaults() {
 		v := receivable.DefaultName
 		rc.mutation.SetName(v)
 	}
+	if _, ok := rc.mutation.AmountInDefault(); !ok {
+		v := receivable.DefaultAmountInDefault
+		rc.mutation.SetAmountInDefault(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -223,11 +241,29 @@ func (rc *ReceivableCreate) check() error {
 	if _, ok := rc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Receivable.name"`)}
 	}
+	if _, ok := rc.mutation.AmountInDefault(); !ok {
+		return &ValidationError{Name: "amountInDefault", err: errors.New(`generated: missing required field "Receivable.amountInDefault"`)}
+	}
+	if v, ok := rc.mutation.AmountInDefault(); ok {
+		if err := receivable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+		}
+	}
 	if _, ok := rc.mutation.OutstandingBalance(); !ok {
 		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Receivable.outstandingBalance"`)}
 	}
+	if v, ok := rc.mutation.OutstandingBalance(); ok {
+		if err := receivable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+		}
+	}
 	if _, ok := rc.mutation.TotalTransaction(); !ok {
 		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Receivable.totalTransaction"`)}
+	}
+	if v, ok := rc.mutation.TotalTransaction(); ok {
+		if err := receivable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+		}
 	}
 	if _, ok := rc.mutation.DueDate(); !ok {
 		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Receivable.dueDate"`)}
@@ -289,6 +325,10 @@ func (rc *ReceivableCreate) createSpec() (*Receivable, *sqlgraph.CreateSpec) {
 	if value, ok := rc.mutation.Name(); ok {
 		_spec.SetField(receivable.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := rc.mutation.AmountInDefault(); ok {
+		_spec.SetField(receivable.FieldAmountInDefault, field.TypeFloat64, value)
+		_node.AmountInDefault = value
 	}
 	if value, ok := rc.mutation.OutstandingBalance(); ok {
 		_spec.SetField(receivable.FieldOutstandingBalance, field.TypeFloat64, value)

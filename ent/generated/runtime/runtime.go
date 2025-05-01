@@ -416,6 +416,20 @@ func init() {
 	payableDescName := payableFields[2].Descriptor()
 	// payable.DefaultName holds the default value on creation for the name field.
 	payable.DefaultName = payableDescName.Default.(string)
+	// payableDescAmountInDefault is the schema descriptor for amountInDefault field.
+	payableDescAmountInDefault := payableFields[3].Descriptor()
+	// payable.DefaultAmountInDefault holds the default value on creation for the amountInDefault field.
+	payable.DefaultAmountInDefault = payableDescAmountInDefault.Default.(float64)
+	// payable.AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	payable.AmountInDefaultValidator = payableDescAmountInDefault.Validators[0].(func(float64) error)
+	// payableDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	payableDescOutstandingBalance := payableFields[4].Descriptor()
+	// payable.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	payable.OutstandingBalanceValidator = payableDescOutstandingBalance.Validators[0].(func(float64) error)
+	// payableDescTotalTransaction is the schema descriptor for totalTransaction field.
+	payableDescTotalTransaction := payableFields[5].Descriptor()
+	// payable.TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	payable.TotalTransactionValidator = payableDescTotalTransaction.Validators[0].(func(float64) error)
 	productMixin := schema.Product{}.Mixin()
 	productMixinFields0 := productMixin[0].Fields()
 	_ = productMixinFields0
@@ -525,6 +539,20 @@ func init() {
 	receivableDescName := receivableFields[2].Descriptor()
 	// receivable.DefaultName holds the default value on creation for the name field.
 	receivable.DefaultName = receivableDescName.Default.(string)
+	// receivableDescAmountInDefault is the schema descriptor for amountInDefault field.
+	receivableDescAmountInDefault := receivableFields[3].Descriptor()
+	// receivable.DefaultAmountInDefault holds the default value on creation for the amountInDefault field.
+	receivable.DefaultAmountInDefault = receivableDescAmountInDefault.Default.(float64)
+	// receivable.AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	receivable.AmountInDefaultValidator = receivableDescAmountInDefault.Validators[0].(func(float64) error)
+	// receivableDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	receivableDescOutstandingBalance := receivableFields[4].Descriptor()
+	// receivable.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	receivable.OutstandingBalanceValidator = receivableDescOutstandingBalance.Validators[0].(func(float64) error)
+	// receivableDescTotalTransaction is the schema descriptor for totalTransaction field.
+	receivableDescTotalTransaction := receivableFields[5].Descriptor()
+	// receivable.TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	receivable.TotalTransactionValidator = receivableDescTotalTransaction.Validators[0].(func(float64) error)
 	supplierMixin := schema.Supplier{}.Mixin()
 	supplierMixinFields0 := supplierMixin[0].Fields()
 	_ = supplierMixinFields0

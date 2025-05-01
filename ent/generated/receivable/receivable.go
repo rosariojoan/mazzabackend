@@ -29,6 +29,8 @@ const (
 	FieldDate = "date"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldAmountInDefault holds the string denoting the amountindefault field in the database.
+	FieldAmountInDefault = "amount_in_default"
 	// FieldOutstandingBalance holds the string denoting the outstandingbalance field in the database.
 	FieldOutstandingBalance = "outstanding_balance"
 	// FieldTotalTransaction holds the string denoting the totaltransaction field in the database.
@@ -68,6 +70,7 @@ var Columns = []string{
 	FieldEntryGroup,
 	FieldDate,
 	FieldName,
+	FieldAmountInDefault,
 	FieldOutstandingBalance,
 	FieldTotalTransaction,
 	FieldDueDate,
@@ -108,6 +111,14 @@ var (
 	EntryGroupValidator func(int) error
 	// DefaultName holds the default value on creation for the "name" field.
 	DefaultName string
+	// DefaultAmountInDefault holds the default value on creation for the "amountInDefault" field.
+	DefaultAmountInDefault float64
+	// AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	AmountInDefaultValidator func(float64) error
+	// OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	OutstandingBalanceValidator func(float64) error
+	// TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	TotalTransactionValidator func(float64) error
 )
 
 // Status defines the type for the "status" enum field.
@@ -117,6 +128,7 @@ type Status string
 const (
 	StatusPaid    Status = "paid"
 	StatusPending Status = "pending"
+	StatusOverdue Status = "overdue"
 	StatusDefault Status = "default"
 )
 
@@ -127,7 +139,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusPaid, StatusPending, StatusDefault:
+	case StatusPaid, StatusPending, StatusOverdue, StatusDefault:
 		return nil
 	default:
 		return fmt.Errorf("receivable: invalid enum value for status field: %q", s)
@@ -170,6 +182,11 @@ func ByDate(opts ...sql.OrderTermOption) OrderOption {
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
+}
+
+// ByAmountInDefault orders the results by the amountInDefault field.
+func ByAmountInDefault(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAmountInDefault, opts...).ToFunc()
 }
 
 // ByOutstandingBalance orders the results by the outstandingBalance field.

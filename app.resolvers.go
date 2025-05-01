@@ -516,35 +516,6 @@ func (r *queryResolver) Customers(ctx context.Context, where *generated.Customer
 	return query.All(ctx)
 }
 
-// AggregateCustomers is the resolver for the aggregateCustomers field.
-func (r *queryResolver) AggregateCustomers(ctx context.Context, where *generated.CustomerWhereInput, groupBy []model.CustomersGroupBy) ([]*model.CustomerAggregationOutput, error) {
-	_, currentCompany := utils.GetSession(&ctx)
-	var result []*model.CustomerAggregationOutput
-	var agg []struct {
-		Company int `json:"company_customers"`
-		Count   int `json:"count"`
-	}
-
-	query, err := where.Filter(r.client.Customer.Query())
-	if err != nil {
-		return nil, err
-	}
-	err = query.Where(customer.HasCompanyWith(company.IDEQ(currentCompany.ID))).
-		GroupBy(customer.CompanyColumn).
-		Aggregate(generated.Count()).Scan(ctx, &agg)
-
-	if err == nil {
-		for _, item := range agg {
-			result = append(result, &model.CustomerAggregationOutput{
-				Company: &item.Company,
-				Count:   &item.Count,
-			})
-		}
-	}
-
-	return result, err
-}
-
 // AggregateReceivables is the resolver for the aggregateReceivables field.
 func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error) {
 	_, currentCompany := utils.GetSession(&ctx)

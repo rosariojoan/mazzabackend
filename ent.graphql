@@ -1353,6 +1353,7 @@ input CreatePayableInput {
   entrygroup: Int!
   date: Time!
   name: String
+  amountindefault: Float
   outstandingbalance: Float!
   totaltransaction: Float!
   duedate: Time!
@@ -1426,6 +1427,7 @@ input CreateReceivableInput {
   entrygroup: Int!
   date: Time!
   name: String
+  amountindefault: Float
   outstandingbalance: Float!
   totaltransaction: Float!
   duedate: Time!
@@ -3786,6 +3788,7 @@ type Payable implements Node {
   entrygroup: Int! @goField(name: "EntryGroup", forceResolver: false)
   date: Time!
   name: String!
+  amountindefault: Float! @goField(name: "AmountInDefault", forceResolver: false)
   outstandingbalance: Float! @goField(name: "OutstandingBalance", forceResolver: false)
   totaltransaction: Float! @goField(name: "TotalTransaction", forceResolver: false)
   duedate: Time! @goField(name: "DueDate", forceResolver: false)
@@ -3841,6 +3844,10 @@ Properties by which Payable connections can be ordered.
 enum PayableOrderField {
   CREATED_AT
   UPDATED_AT
+  DATE
+  AMOUNT_IN_DEFAULT
+  OUTSTANDING_BALANCE
+  TOTAL_TRANSACTION
   DUEDATE
   STATUS
 }
@@ -3850,6 +3857,7 @@ PayableStatus is enum for the field status
 enum PayableStatus @goModel(model: "mazza/ent/generated/payable.Status") {
   paid
   pending
+  overdue
   default
 }
 """
@@ -3944,6 +3952,17 @@ input PayableWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  amountInDefault field predicates
+  """
+  amountindefault: Float
+  amountindefaultNEQ: Float
+  amountindefaultIn: [Float!]
+  amountindefaultNotIn: [Float!]
+  amountindefaultGT: Float
+  amountindefaultGTE: Float
+  amountindefaultLT: Float
+  amountindefaultLTE: Float
   """
   outstandingBalance field predicates
   """
@@ -5028,6 +5047,7 @@ type Receivable implements Node {
   entrygroup: Int! @goField(name: "EntryGroup", forceResolver: false)
   date: Time!
   name: String!
+  amountindefault: Float! @goField(name: "AmountInDefault", forceResolver: false)
   outstandingbalance: Float! @goField(name: "OutstandingBalance", forceResolver: false)
   totaltransaction: Float! @goField(name: "TotalTransaction", forceResolver: false)
   duedate: Time! @goField(name: "DueDate", forceResolver: false)
@@ -5084,6 +5104,10 @@ Properties by which Receivable connections can be ordered.
 enum ReceivableOrderField {
   CREATED_AT
   UPDATED_AT
+  DATE
+  AMOUNT_IN_DEFAULT
+  OUTSTANDING_BALANCE
+  TOTAL_TRANSACTION
   DUEDATE
   STATUS
 }
@@ -5093,6 +5117,7 @@ ReceivableStatus is enum for the field status
 enum ReceivableStatus @goModel(model: "mazza/ent/generated/receivable.Status") {
   paid
   pending
+  overdue
   default
 }
 """
@@ -5187,6 +5212,17 @@ input ReceivableWhereInput {
   nameHasSuffix: String
   nameEqualFold: String
   nameContainsFold: String
+  """
+  amountInDefault field predicates
+  """
+  amountindefault: Float
+  amountindefaultNEQ: Float
+  amountindefaultIn: [Float!]
+  amountindefaultNotIn: [Float!]
+  amountindefaultGT: Float
+  amountindefaultGTE: Float
+  amountindefaultLT: Float
+  amountindefaultLTE: Float
   """
   outstandingBalance field predicates
   """
@@ -6000,6 +6036,7 @@ input UpdatePayableInput {
   entrygroup: Int
   date: Time
   name: String
+  amountindefault: Float
   outstandingbalance: Float
   totaltransaction: Float
   duedate: Time
@@ -6090,6 +6127,7 @@ input UpdateReceivableInput {
   entrygroup: Int
   date: Time
   name: String
+  amountindefault: Float
   outstandingbalance: Float
   totaltransaction: Float
   duedate: Time

@@ -10,6 +10,8 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/payable"
+	"mazza/ent/generated/receivable"
 	"strconv"
 	"time"
 )
@@ -38,17 +40,25 @@ type BalanceSheetOuput struct {
 }
 
 type BaseEntryRegistrationInput struct {
-	Main                  []*EntryItem      `json:"main"`
-	Counterpart           []*EntryItem      `json:"counterpart"`
-	Attachment            []string          `json:"attachment,omitempty"`
-	CashInput             *float64          `json:"cashInput,omitempty"`
-	Date                  time.Time         `json:"date"`
-	Description           *string           `json:"description,omitempty"`
-	OperationType         BaseOperationType `json:"operationType"`
-	PayableInput          *PayableInput     `json:"payableInput,omitempty"`
-	ProductInput          *int              `json:"productInput,omitempty"`
-	ReceivableInput       *ReceivableInput  `json:"receivableInput,omitempty"`
-	TotalTransactionValue float64           `json:"totalTransactionValue"`
+	Main                  []*EntryItem           `json:"main"`
+	Counterpart           []*EntryItem           `json:"counterpart"`
+	Attachment            []string               `json:"attachment,omitempty"`
+	CashInput             *float64               `json:"cashInput,omitempty"`
+	Date                  time.Time              `json:"date"`
+	Description           *string                `json:"description,omitempty"`
+	OperationType         BaseOperationType      `json:"operationType"`
+	PayableInput          *PayableInput          `json:"payableInput,omitempty"`
+	PayableUpdateInput    *PayableUpdateInput    `json:"payableUpdateInput,omitempty"`
+	ProductInput          *int                   `json:"productInput,omitempty"`
+	ReceivableInput       *ReceivableInput       `json:"receivableInput,omitempty"`
+	ReceivableUpdateInput *ReceivableUpdateInput `json:"receivableUpdateInput,omitempty"`
+	TotalTransactionValue float64                `json:"totalTransactionValue"`
+}
+
+type ClientList struct {
+	Name               string  `json:"name"`
+	OutstandingBalance float64 `json:"outstandingBalance"`
+	InvoiceCount       int     `json:"invoiceCount"`
 }
 
 type CompanyInfoInput struct {
@@ -59,11 +69,6 @@ type CompanyInfoInput struct {
 type CreateMemberSignupTokenOutput struct {
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expiresAt"`
-}
-
-type CustomerAggregationOutput struct {
-	Company *int `json:"company,omitempty"`
-	Count   *int `json:"count,omitempty"`
 }
 
 type DocumentCount struct {
@@ -236,6 +241,13 @@ type PayableInput struct {
 	DueDate time.Time `json:"dueDate"`
 }
 
+type PayableUpdateInput struct {
+	ID                 int            `json:"id"`
+	AddAmountInDefault *float64       `json:"addAmountInDefault,omitempty"`
+	AddBalance         float64        `json:"addBalance"`
+	Status             payable.Status `json:"status"`
+}
+
 type PaymentDetails struct {
 	BankName      string `json:"bankName"`
 	AccountNumber string `json:"accountNumber"`
@@ -264,6 +276,13 @@ type ReceivableInput struct {
 	Name    string    `json:"name"`
 	Date    time.Time `json:"date"`
 	DueDate time.Time `json:"dueDate"`
+}
+
+type ReceivableUpdateInput struct {
+	ID                 int               `json:"id"`
+	AddAmountInDefault *float64          `json:"addAmountInDefault,omitempty"`
+	AddBalance         float64           `json:"addBalance"`
+	Status             receivable.Status `json:"status"`
 }
 
 type ReportInput struct {
@@ -296,6 +315,12 @@ type SignupInput struct {
 	UserInput        *generated.CreateUserInput    `json:"userInput"`
 	UserProfilePhoto *ProfilePhotoInput            `json:"userProfilePhoto,omitempty"`
 	CompanyLogo      *ProfilePhotoInput            `json:"companyLogo,omitempty"`
+}
+
+type SupplierList struct {
+	Name               string  `json:"name"`
+	OutstandingBalance float64 `json:"outstandingBalance"`
+	InvoiceCount       int     `json:"invoiceCount"`
 }
 
 type TreasuryAggregatePayload struct {

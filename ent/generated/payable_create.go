@@ -89,6 +89,20 @@ func (pc *PayableCreate) SetNillableName(s *string) *PayableCreate {
 	return pc
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (pc *PayableCreate) SetAmountInDefault(f float64) *PayableCreate {
+	pc.mutation.SetAmountInDefault(f)
+	return pc
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (pc *PayableCreate) SetNillableAmountInDefault(f *float64) *PayableCreate {
+	if f != nil {
+		pc.SetAmountInDefault(*f)
+	}
+	return pc
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (pc *PayableCreate) SetOutstandingBalance(f float64) *PayableCreate {
 	pc.mutation.SetOutstandingBalance(f)
@@ -179,6 +193,10 @@ func (pc *PayableCreate) defaults() {
 		v := payable.DefaultName
 		pc.mutation.SetName(v)
 	}
+	if _, ok := pc.mutation.AmountInDefault(); !ok {
+		v := payable.DefaultAmountInDefault
+		pc.mutation.SetAmountInDefault(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -203,11 +221,29 @@ func (pc *PayableCreate) check() error {
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Payable.name"`)}
 	}
+	if _, ok := pc.mutation.AmountInDefault(); !ok {
+		return &ValidationError{Name: "amountInDefault", err: errors.New(`generated: missing required field "Payable.amountInDefault"`)}
+	}
+	if v, ok := pc.mutation.AmountInDefault(); ok {
+		if err := payable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+		}
+	}
 	if _, ok := pc.mutation.OutstandingBalance(); !ok {
 		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Payable.outstandingBalance"`)}
 	}
+	if v, ok := pc.mutation.OutstandingBalance(); ok {
+		if err := payable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+		}
+	}
 	if _, ok := pc.mutation.TotalTransaction(); !ok {
 		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Payable.totalTransaction"`)}
+	}
+	if v, ok := pc.mutation.TotalTransaction(); ok {
+		if err := payable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+		}
 	}
 	if _, ok := pc.mutation.DueDate(); !ok {
 		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Payable.dueDate"`)}
@@ -269,6 +305,10 @@ func (pc *PayableCreate) createSpec() (*Payable, *sqlgraph.CreateSpec) {
 	if value, ok := pc.mutation.Name(); ok {
 		_spec.SetField(payable.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := pc.mutation.AmountInDefault(); ok {
+		_spec.SetField(payable.FieldAmountInDefault, field.TypeFloat64, value)
+		_node.AmountInDefault = value
 	}
 	if value, ok := pc.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)

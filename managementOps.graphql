@@ -1,0 +1,18 @@
+
+type ClientList {
+    name: String!
+    outstandingBalance: Float!
+    invoiceCount: Int!
+}
+
+type SupplierList {
+    name: String!
+    outstandingBalance: Float!
+    invoiceCount: Int!
+}
+
+
+extend type Query {
+    clientList(top: Int): [ClientList!]!
+    supplierList(top: Int): [SupplierList!]!
+}

@@ -9387,6 +9387,16 @@ type PayableWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
+	// "amountInDefault" field predicates.
+	AmountInDefault      *float64  `json:"amountindefault,omitempty"`
+	AmountInDefaultNEQ   *float64  `json:"amountindefaultNEQ,omitempty"`
+	AmountInDefaultIn    []float64 `json:"amountindefaultIn,omitempty"`
+	AmountInDefaultNotIn []float64 `json:"amountindefaultNotIn,omitempty"`
+	AmountInDefaultGT    *float64  `json:"amountindefaultGT,omitempty"`
+	AmountInDefaultGTE   *float64  `json:"amountindefaultGTE,omitempty"`
+	AmountInDefaultLT    *float64  `json:"amountindefaultLT,omitempty"`
+	AmountInDefaultLTE   *float64  `json:"amountindefaultLTE,omitempty"`
+
 	// "outstandingBalance" field predicates.
 	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
 	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
@@ -9687,6 +9697,30 @@ func (i *PayableWhereInput) P() (predicate.Payable, error) {
 	}
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, payable.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.AmountInDefault != nil {
+		predicates = append(predicates, payable.AmountInDefaultEQ(*i.AmountInDefault))
+	}
+	if i.AmountInDefaultNEQ != nil {
+		predicates = append(predicates, payable.AmountInDefaultNEQ(*i.AmountInDefaultNEQ))
+	}
+	if len(i.AmountInDefaultIn) > 0 {
+		predicates = append(predicates, payable.AmountInDefaultIn(i.AmountInDefaultIn...))
+	}
+	if len(i.AmountInDefaultNotIn) > 0 {
+		predicates = append(predicates, payable.AmountInDefaultNotIn(i.AmountInDefaultNotIn...))
+	}
+	if i.AmountInDefaultGT != nil {
+		predicates = append(predicates, payable.AmountInDefaultGT(*i.AmountInDefaultGT))
+	}
+	if i.AmountInDefaultGTE != nil {
+		predicates = append(predicates, payable.AmountInDefaultGTE(*i.AmountInDefaultGTE))
+	}
+	if i.AmountInDefaultLT != nil {
+		predicates = append(predicates, payable.AmountInDefaultLT(*i.AmountInDefaultLT))
+	}
+	if i.AmountInDefaultLTE != nil {
+		predicates = append(predicates, payable.AmountInDefaultLTE(*i.AmountInDefaultLTE))
 	}
 	if i.OutstandingBalance != nil {
 		predicates = append(predicates, payable.OutstandingBalanceEQ(*i.OutstandingBalance))
@@ -11701,6 +11735,16 @@ type ReceivableWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
+	// "amountInDefault" field predicates.
+	AmountInDefault      *float64  `json:"amountindefault,omitempty"`
+	AmountInDefaultNEQ   *float64  `json:"amountindefaultNEQ,omitempty"`
+	AmountInDefaultIn    []float64 `json:"amountindefaultIn,omitempty"`
+	AmountInDefaultNotIn []float64 `json:"amountindefaultNotIn,omitempty"`
+	AmountInDefaultGT    *float64  `json:"amountindefaultGT,omitempty"`
+	AmountInDefaultGTE   *float64  `json:"amountindefaultGTE,omitempty"`
+	AmountInDefaultLT    *float64  `json:"amountindefaultLT,omitempty"`
+	AmountInDefaultLTE   *float64  `json:"amountindefaultLTE,omitempty"`
+
 	// "outstandingBalance" field predicates.
 	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
 	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
@@ -12005,6 +12049,30 @@ func (i *ReceivableWhereInput) P() (predicate.Receivable, error) {
 	}
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, receivable.NameContainsFold(*i.NameContainsFold))
+	}
+	if i.AmountInDefault != nil {
+		predicates = append(predicates, receivable.AmountInDefaultEQ(*i.AmountInDefault))
+	}
+	if i.AmountInDefaultNEQ != nil {
+		predicates = append(predicates, receivable.AmountInDefaultNEQ(*i.AmountInDefaultNEQ))
+	}
+	if len(i.AmountInDefaultIn) > 0 {
+		predicates = append(predicates, receivable.AmountInDefaultIn(i.AmountInDefaultIn...))
+	}
+	if len(i.AmountInDefaultNotIn) > 0 {
+		predicates = append(predicates, receivable.AmountInDefaultNotIn(i.AmountInDefaultNotIn...))
+	}
+	if i.AmountInDefaultGT != nil {
+		predicates = append(predicates, receivable.AmountInDefaultGT(*i.AmountInDefaultGT))
+	}
+	if i.AmountInDefaultGTE != nil {
+		predicates = append(predicates, receivable.AmountInDefaultGTE(*i.AmountInDefaultGTE))
+	}
+	if i.AmountInDefaultLT != nil {
+		predicates = append(predicates, receivable.AmountInDefaultLT(*i.AmountInDefaultLT))
+	}
+	if i.AmountInDefaultLTE != nil {
+		predicates = append(predicates, receivable.AmountInDefaultLTE(*i.AmountInDefaultLTE))
 	}
 	if i.OutstandingBalance != nil {
 		predicates = append(predicates, receivable.OutstandingBalanceEQ(*i.OutstandingBalance))

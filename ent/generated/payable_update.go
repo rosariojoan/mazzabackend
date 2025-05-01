@@ -105,6 +105,27 @@ func (pu *PayableUpdate) SetNillableName(s *string) *PayableUpdate {
 	return pu
 }
 
+// SetAmountInDefault sets the "amountInDefault" field.
+func (pu *PayableUpdate) SetAmountInDefault(f float64) *PayableUpdate {
+	pu.mutation.ResetAmountInDefault()
+	pu.mutation.SetAmountInDefault(f)
+	return pu
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (pu *PayableUpdate) SetNillableAmountInDefault(f *float64) *PayableUpdate {
+	if f != nil {
+		pu.SetAmountInDefault(*f)
+	}
+	return pu
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (pu *PayableUpdate) AddAmountInDefault(f float64) *PayableUpdate {
+	pu.mutation.AddAmountInDefault(f)
+	return pu
+}
+
 // SetOutstandingBalance sets the "outstandingBalance" field.
 func (pu *PayableUpdate) SetOutstandingBalance(f float64) *PayableUpdate {
 	pu.mutation.ResetOutstandingBalance()
@@ -248,6 +269,21 @@ func (pu *PayableUpdate) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
 		}
 	}
+	if v, ok := pu.mutation.AmountInDefault(); ok {
+		if err := payable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.OutstandingBalance(); ok {
+		if err := payable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+		}
+	}
+	if v, ok := pu.mutation.TotalTransaction(); ok {
+		if err := payable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+		}
+	}
 	if v, ok := pu.mutation.Status(); ok {
 		if err := payable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Payable.status": %w`, err)}
@@ -294,6 +330,12 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := pu.mutation.Name(); ok {
 		_spec.SetField(payable.FieldName, field.TypeString, value)
+	}
+	if value, ok := pu.mutation.AmountInDefault(); ok {
+		_spec.SetField(payable.FieldAmountInDefault, field.TypeFloat64, value)
+	}
+	if value, ok := pu.mutation.AddedAmountInDefault(); ok {
+		_spec.AddField(payable.FieldAmountInDefault, field.TypeFloat64, value)
 	}
 	if value, ok := pu.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)
@@ -436,6 +478,27 @@ func (puo *PayableUpdateOne) SetNillableName(s *string) *PayableUpdateOne {
 	if s != nil {
 		puo.SetName(*s)
 	}
+	return puo
+}
+
+// SetAmountInDefault sets the "amountInDefault" field.
+func (puo *PayableUpdateOne) SetAmountInDefault(f float64) *PayableUpdateOne {
+	puo.mutation.ResetAmountInDefault()
+	puo.mutation.SetAmountInDefault(f)
+	return puo
+}
+
+// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+func (puo *PayableUpdateOne) SetNillableAmountInDefault(f *float64) *PayableUpdateOne {
+	if f != nil {
+		puo.SetAmountInDefault(*f)
+	}
+	return puo
+}
+
+// AddAmountInDefault adds f to the "amountInDefault" field.
+func (puo *PayableUpdateOne) AddAmountInDefault(f float64) *PayableUpdateOne {
+	puo.mutation.AddAmountInDefault(f)
 	return puo
 }
 
@@ -595,6 +658,21 @@ func (puo *PayableUpdateOne) check() error {
 			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
 		}
 	}
+	if v, ok := puo.mutation.AmountInDefault(); ok {
+		if err := payable.AmountInDefaultValidator(v); err != nil {
+			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.OutstandingBalance(); ok {
+		if err := payable.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+		}
+	}
+	if v, ok := puo.mutation.TotalTransaction(); ok {
+		if err := payable.TotalTransactionValidator(v); err != nil {
+			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+		}
+	}
 	if v, ok := puo.mutation.Status(); ok {
 		if err := payable.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Payable.status": %w`, err)}
@@ -658,6 +736,12 @@ func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err e
 	}
 	if value, ok := puo.mutation.Name(); ok {
 		_spec.SetField(payable.FieldName, field.TypeString, value)
+	}
+	if value, ok := puo.mutation.AmountInDefault(); ok {
+		_spec.SetField(payable.FieldAmountInDefault, field.TypeFloat64, value)
+	}
+	if value, ok := puo.mutation.AddedAmountInDefault(); ok {
+		_spec.AddField(payable.FieldAmountInDefault, field.TypeFloat64, value)
 	}
 	if value, ok := puo.mutation.OutstandingBalance(); ok {
 		_spec.SetField(payable.FieldOutstandingBalance, field.TypeFloat64, value)

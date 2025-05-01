@@ -62,11 +62,6 @@ type AgingBucket {
   count: Int
 }
 
-type CustomerAggregationOutput {
-  company: ID
-  count: Int
-}
-
 type ReceivableAggregationOutput {
   company: ID
   count: Int
@@ -92,10 +87,6 @@ extend type Query {
   companies(where: CompanyWhereInput): [Company!]!
 
   customers(where: CustomerWhereInput): [Customer!]!
-  aggregateCustomers(
-    where: CustomerWhereInput
-    groupBy: [CustomersGroupBy!]
-  ): [CustomerAggregationOutput!]!
 
   aggregateReceivables(
     where: ReceivableWhereInput

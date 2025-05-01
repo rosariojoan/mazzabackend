@@ -16,11 +16,25 @@ input ReceivableInput {
   dueDate: Time!
 }
 
+input ReceivableUpdateInput {
+  id: ID!
+  addAmountInDefault: Float
+  addBalance: Float!
+  status: ReceivableStatus!
+}
+
 input PayableInput {
   amount: Float!
   name: String!
   date: Time!
   dueDate: Time!
+}
+
+input PayableUpdateInput {
+  id: ID!
+  addAmountInDefault: Float
+  addBalance: Float!
+  status: PayableStatus!
 }
 
 input EntryItem {
@@ -104,8 +118,10 @@ input BaseEntryRegistrationInput {
   description: String
   operationType: BaseOperationType!
   payableInput: PayableInput
+  payableUpdateInput: PayableUpdateInput
   productInput: Int
   receivableInput: ReceivableInput
+  receivableUpdateInput: ReceivableUpdateInput
   totalTransactionValue: Float!
 }
 

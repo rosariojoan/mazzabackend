@@ -24,12 +24,13 @@ func (Receivable) Mixin() []ent.Mixin {
 func (Receivable) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("entryGroup").Positive(),
-		field.Time("date"),
+		field.Time("date").Annotations(entgql.OrderField("DATE")),
 		field.String("name").Default("Diversos"),
-		field.Float("outstandingBalance"),
-		field.Float("totalTransaction"),
+		field.Float("amountInDefault").Min(0).Default(0).Annotations(entgql.OrderField("AMOUNT_IN_DEFAULT")),
+		field.Float("outstandingBalance").Min(0).Annotations(entgql.OrderField("OUTSTANDING_BALANCE")),
+		field.Float("totalTransaction").Min(0).Annotations(entgql.OrderField("TOTAL_TRANSACTION")),
 		field.Time("dueDate").Annotations(entgql.OrderField("DUEDATE")),
-		field.Enum("status").Values("paid", "pending", "default").Annotations(entgql.OrderField("STATUS")),
+		field.Enum("status").Values("paid", "pending", "overdue", "default").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
