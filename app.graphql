@@ -41,31 +41,11 @@ enum CustomersGroupBy {
   CITY
 }
 
-enum ReceivablesGroupBy {
-  AGE
-  COMPANY
-  CUSTOMER
-  DAYSDUE
-  STATUS
-}
-
 enum ShiftGroupBy {
   APPROVED_AT
   CLOCK_IN
   CLOCK_OUT
   STATUS
-}
-
-type AgingBucket {
-  range: String!
-  totalAmount: Float!
-  count: Int
-}
-
-type ReceivableAggregationOutput {
-  company: ID
-  count: Int
-  sum: Float
 }
 
 type TreasuryAggregatePayload {
@@ -87,14 +67,6 @@ extend type Query {
   companies(where: CompanyWhereInput): [Company!]!
 
   customers(where: CustomerWhereInput): [Customer!]!
-
-  aggregateReceivables(
-    where: ReceivableWhereInput
-    groupBy: [ReceivablesGroupBy!]
-  ): [ReceivableAggregationOutput!]!
-
-  accountsReceivableAging: [AgingBucket!]!
-  accountsPayableAging: [AgingBucket!]!
 
   employees(where: EmployeeWhereInput): [Employee!]!
   products(where: ProductWhereInput): [Product!]!

@@ -1,4 +1,4 @@
-package clients
+package suppliers
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"mazza/mazza/generated/model"
 )
 
-func GetClientList(ctx context.Context, client *generated.Client, top *int) ([]*model.ClientList, error) {
+func GetSupplierList(ctx context.Context, client *generated.Client, top *int) ([]*model.SupplierList, error) {
 	_, activeCompany := utils.GetSession(&ctx)
 	if top == nil {
 		limit := 500
@@ -21,9 +21,9 @@ func GetClientList(ctx context.Context, client *generated.Client, top *int) ([]*
 		SUM(outstanding_balance) AS outstandingBalance,
 		COUNT(*) AS invoiceCount
 	FROM
-		receivables
+		payables
 	WHERE
-		company_receivables = %d
+		company_payables = %d
 		AND outstanding_balance > 0  -- Only include unpaid invoices
 	GROUP BY LOWER(name)
 	ORDER BY outstandingBalance DESC
@@ -36,17 +36,17 @@ func GetClientList(ctx context.Context, client *generated.Client, top *int) ([]*
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	var clientList []*model.ClientList
+	var supplierList []*model.SupplierList
 	defer rows.Close()
 	for rows.Next() {
-		var item model.ClientList
+		var item model.SupplierList
 		if err := rows.Scan(&item.Name, &item.OutstandingBalance, &item.InvoiceCount); err != nil {
 			// Check for a scan error. Query rows will be closed with defer.
 			fmt.Println("err:", err)
 			return nil, err
 		}
-		clientList = append(clientList, &item)
+		supplierList = append(supplierList, &item)
 	}
 
-	return clientList, err
+	return supplierList, err
 }

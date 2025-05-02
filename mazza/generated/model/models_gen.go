@@ -234,6 +234,12 @@ type NotifNotif struct {
 	Body  string `json:"body"`
 }
 
+type PayableAggregationOutput struct {
+	Company *int     `json:"company,omitempty"`
+	Count   *int     `json:"count,omitempty"`
+	Sum     *float64 `json:"sum,omitempty"`
+}
+
 type PayableInput struct {
 	Amount  float64   `json:"amount"`
 	Name    string    `json:"name"`
@@ -446,11 +452,55 @@ func (e CustomersGroupBy) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+type PayablesGroupBy string
+
+const (
+	PayablesGroupByAge     PayablesGroupBy = "AGE"
+	PayablesGroupByName    PayablesGroupBy = "NAME"
+	PayablesGroupByDaysdue PayablesGroupBy = "DAYSDUE"
+	PayablesGroupByStatus  PayablesGroupBy = "STATUS"
+)
+
+var AllPayablesGroupBy = []PayablesGroupBy{
+	PayablesGroupByAge,
+	PayablesGroupByName,
+	PayablesGroupByDaysdue,
+	PayablesGroupByStatus,
+}
+
+func (e PayablesGroupBy) IsValid() bool {
+	switch e {
+	case PayablesGroupByAge, PayablesGroupByName, PayablesGroupByDaysdue, PayablesGroupByStatus:
+		return true
+	}
+	return false
+}
+
+func (e PayablesGroupBy) String() string {
+	return string(e)
+}
+
+func (e *PayablesGroupBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PayablesGroupBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PayablesGroupBy", str)
+	}
+	return nil
+}
+
+func (e PayablesGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type ReceivablesGroupBy string
 
 const (
 	ReceivablesGroupByAge      ReceivablesGroupBy = "AGE"
-	ReceivablesGroupByCompany  ReceivablesGroupBy = "COMPANY"
 	ReceivablesGroupByCustomer ReceivablesGroupBy = "CUSTOMER"
 	ReceivablesGroupByDaysdue  ReceivablesGroupBy = "DAYSDUE"
 	ReceivablesGroupByStatus   ReceivablesGroupBy = "STATUS"
@@ -458,7 +508,6 @@ const (
 
 var AllReceivablesGroupBy = []ReceivablesGroupBy{
 	ReceivablesGroupByAge,
-	ReceivablesGroupByCompany,
 	ReceivablesGroupByCustomer,
 	ReceivablesGroupByDaysdue,
 	ReceivablesGroupByStatus,
@@ -466,7 +515,7 @@ var AllReceivablesGroupBy = []ReceivablesGroupBy{
 
 func (e ReceivablesGroupBy) IsValid() bool {
 	switch e {
-	case ReceivablesGroupByAge, ReceivablesGroupByCompany, ReceivablesGroupByCustomer, ReceivablesGroupByDaysdue, ReceivablesGroupByStatus:
+	case ReceivablesGroupByAge, ReceivablesGroupByCustomer, ReceivablesGroupByDaysdue, ReceivablesGroupByStatus:
 		return true
 	}
 	return false

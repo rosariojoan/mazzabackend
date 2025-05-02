@@ -581,6 +581,12 @@ type ComplexityRoot struct {
 		UpdatedAt          func(childComplexity int) int
 	}
 
+	PayableAggregationOutput struct {
+		Company func(childComplexity int) int
+		Count   func(childComplexity int) int
+		Sum     func(childComplexity int) int
+	}
+
 	PayableConnection struct {
 		Edges      func(childComplexity int) int
 		PageInfo   func(childComplexity int) int
@@ -675,8 +681,9 @@ type ComplexityRoot struct {
 
 	Query struct {
 		AccountingEntries        func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) int
-		AccountsPayableAging     func(childComplexity int) int
-		AccountsReceivableAging  func(childComplexity int) int
+		AccountsPayableAging     func(childComplexity int, name *string) int
+		AccountsReceivableAging  func(childComplexity int, name *string) int
+		AggregatePayables        func(childComplexity int, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) int
 		AggregateReceivables     func(childComplexity int, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) int
 		AggregateTreasury        func(childComplexity int, where *generated.TreasuryWhereInput) int
 		AggregateWorkShift       func(childComplexity int, where *generated.WorkshiftWhereInput, groupBy []model.ShiftGroupBy) int
@@ -989,9 +996,6 @@ type QueryResolver interface {
 	VerifyPasswordResetToken(ctx context.Context, token string) (bool, error)
 	Companies(ctx context.Context, where *generated.CompanyWhereInput) ([]*generated.Company, error)
 	Customers(ctx context.Context, where *generated.CustomerWhereInput) ([]*generated.Customer, error)
-	AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error)
-	AccountsReceivableAging(ctx context.Context) ([]*model.AgingBucket, error)
-	AccountsPayableAging(ctx context.Context) ([]*model.AgingBucket, error)
 	Employees(ctx context.Context, where *generated.EmployeeWhereInput) ([]*generated.Employee, error)
 	Products(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error)
 	LowStock(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error)
@@ -1012,6 +1016,10 @@ type QueryResolver interface {
 	CountInventoryCategories(ctx context.Context) ([]*model.InventoryCategoryCount, error)
 	ClientList(ctx context.Context, top *int) ([]*model.ClientList, error)
 	SupplierList(ctx context.Context, top *int) ([]*model.SupplierList, error)
+	AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error)
+	AggregatePayables(ctx context.Context, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) ([]*model.PayableAggregationOutput, error)
+	AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
+	AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
 }
 
 type executableSchema struct {
@@ -3963,6 +3971,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Payable.UpdatedAt(childComplexity), true
 
+	case "PayableAggregationOutput.company":
+		if e.complexity.PayableAggregationOutput.Company == nil {
+			break
+		}
+
+		return e.complexity.PayableAggregationOutput.Company(childComplexity), true
+
+	case "PayableAggregationOutput.count":
+		if e.complexity.PayableAggregationOutput.Count == nil {
+			break
+		}
+
+		return e.complexity.PayableAggregationOutput.Count(childComplexity), true
+
+	case "PayableAggregationOutput.sum":
+		if e.complexity.PayableAggregationOutput.Sum == nil {
+			break
+		}
+
+		return e.complexity.PayableAggregationOutput.Sum(childComplexity), true
+
 	case "PayableConnection.edges":
 		if e.complexity.PayableConnection.Edges == nil {
 			break
@@ -4393,14 +4422,36 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.AccountsPayableAging(childComplexity), true
+		args, err := ec.field_Query_accountsPayableAging_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AccountsPayableAging(childComplexity, args["name"].(*string)), true
 
 	case "Query.accountsReceivableAging":
 		if e.complexity.Query.AccountsReceivableAging == nil {
 			break
 		}
 
-		return e.complexity.Query.AccountsReceivableAging(childComplexity), true
+		args, err := ec.field_Query_accountsReceivableAging_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AccountsReceivableAging(childComplexity, args["name"].(*string)), true
+
+	case "Query.aggregatePayables":
+		if e.complexity.Query.AggregatePayables == nil {
+			break
+		}
+
+		args, err := ec.field_Query_aggregatePayables_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AggregatePayables(childComplexity, args["where"].(*generated.PayableWhereInput), args["groupBy"].([]model.PayablesGroupBy)), true
 
 	case "Query.aggregateReceivables":
 		if e.complexity.Query.AggregateReceivables == nil {
@@ -8466,6 +8517,129 @@ func (ec *executionContext) field_Query_accountingEntries_argsWhere(
 	}
 
 	var zeroVal *generated.AccountingEntryWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_accountsPayableAging_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_accountsPayableAging_argsName(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["name"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_accountsPayableAging_argsName(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["name"]
+	if !ok {
+		var zeroVal *string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+	if tmp, ok := rawArgs["name"]; ok {
+		return ec.unmarshalOString2ᚖstring(ctx, tmp)
+	}
+
+	var zeroVal *string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_accountsReceivableAging_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_accountsReceivableAging_argsName(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["name"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_accountsReceivableAging_argsName(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*string, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["name"]
+	if !ok {
+		var zeroVal *string
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+	if tmp, ok := rawArgs["name"]; ok {
+		return ec.unmarshalOString2ᚖstring(ctx, tmp)
+	}
+
+	var zeroVal *string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_aggregatePayables_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_aggregatePayables_argsWhere(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["where"] = arg0
+	arg1, err := ec.field_Query_aggregatePayables_argsGroupBy(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["groupBy"] = arg1
+	return args, nil
+}
+func (ec *executionContext) field_Query_aggregatePayables_argsWhere(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*generated.PayableWhereInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["where"]
+	if !ok {
+		var zeroVal *generated.PayableWhereInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("where"))
+	if tmp, ok := rawArgs["where"]; ok {
+		return ec.unmarshalOPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx, tmp)
+	}
+
+	var zeroVal *generated.PayableWhereInput
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_aggregatePayables_argsGroupBy(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) ([]model.PayablesGroupBy, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["groupBy"]
+	if !ok {
+		var zeroVal []model.PayablesGroupBy
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("groupBy"))
+	if tmp, ok := rawArgs["groupBy"]; ok {
+		return ec.unmarshalOPayablesGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupByᚄ(ctx, tmp)
+	}
+
+	var zeroVal []model.PayablesGroupBy
 	return zeroVal, nil
 }
 
@@ -32528,6 +32702,129 @@ func (ec *executionContext) fieldContext_Payable_company(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _PayableAggregationOutput_company(ctx context.Context, field graphql.CollectedField, obj *model.PayableAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PayableAggregationOutput_company(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Company, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOID2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PayableAggregationOutput_company(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PayableAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PayableAggregationOutput_count(ctx context.Context, field graphql.CollectedField, obj *model.PayableAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PayableAggregationOutput_count(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Count, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PayableAggregationOutput_count(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PayableAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PayableAggregationOutput_sum(ctx context.Context, field graphql.CollectedField, obj *model.PayableAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PayableAggregationOutput_sum(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sum, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PayableAggregationOutput_sum(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PayableAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _PayableConnection_edges(ctx context.Context, field graphql.CollectedField, obj *generated.PayableConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_PayableConnection_edges(ctx, field)
 	if err != nil {
@@ -37784,173 +38081,6 @@ func (ec *executionContext) fieldContext_Query_customers(ctx context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_aggregateReceivables(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_aggregateReceivables(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AggregateReceivables(rctx, fc.Args["where"].(*generated.ReceivableWhereInput), fc.Args["groupBy"].([]model.ReceivablesGroupBy))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.ReceivableAggregationOutput)
-	fc.Result = res
-	return ec.marshalNReceivableAggregationOutput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐReceivableAggregationOutputᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_aggregateReceivables(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "company":
-				return ec.fieldContext_ReceivableAggregationOutput_company(ctx, field)
-			case "count":
-				return ec.fieldContext_ReceivableAggregationOutput_count(ctx, field)
-			case "sum":
-				return ec.fieldContext_ReceivableAggregationOutput_sum(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ReceivableAggregationOutput", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_aggregateReceivables_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_accountsReceivableAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_accountsReceivableAging(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AccountsReceivableAging(rctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.AgingBucket)
-	fc.Result = res
-	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_accountsReceivableAging(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "range":
-				return ec.fieldContext_AgingBucket_range(ctx, field)
-			case "totalAmount":
-				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
-			case "count":
-				return ec.fieldContext_AgingBucket_count(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_accountsPayableAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_accountsPayableAging(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().AccountsPayableAging(rctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.AgingBucket)
-	fc.Result = res
-	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_accountsPayableAging(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "range":
-				return ec.fieldContext_AgingBucket_range(ctx, field)
-			case "totalAmount":
-				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
-			case "count":
-				return ec.fieldContext_AgingBucket_count(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Query_employees(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_employees(ctx, field)
 	if err != nil {
@@ -39403,6 +39533,258 @@ func (ec *executionContext) fieldContext_Query_supplierList(ctx context.Context,
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_supplierList_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_aggregateReceivables(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_aggregateReceivables(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AggregateReceivables(rctx, fc.Args["where"].(*generated.ReceivableWhereInput), fc.Args["groupBy"].([]model.ReceivablesGroupBy))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.ReceivableAggregationOutput)
+	fc.Result = res
+	return ec.marshalNReceivableAggregationOutput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐReceivableAggregationOutputᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_aggregateReceivables(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "company":
+				return ec.fieldContext_ReceivableAggregationOutput_company(ctx, field)
+			case "count":
+				return ec.fieldContext_ReceivableAggregationOutput_count(ctx, field)
+			case "sum":
+				return ec.fieldContext_ReceivableAggregationOutput_sum(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ReceivableAggregationOutput", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_aggregateReceivables_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_aggregatePayables(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_aggregatePayables(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AggregatePayables(rctx, fc.Args["where"].(*generated.PayableWhereInput), fc.Args["groupBy"].([]model.PayablesGroupBy))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.PayableAggregationOutput)
+	fc.Result = res
+	return ec.marshalNPayableAggregationOutput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayableAggregationOutputᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_aggregatePayables(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "company":
+				return ec.fieldContext_PayableAggregationOutput_company(ctx, field)
+			case "count":
+				return ec.fieldContext_PayableAggregationOutput_count(ctx, field)
+			case "sum":
+				return ec.fieldContext_PayableAggregationOutput_sum(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PayableAggregationOutput", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_aggregatePayables_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_accountsReceivableAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_accountsReceivableAging(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AccountsReceivableAging(rctx, fc.Args["name"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.AgingBucket)
+	fc.Result = res
+	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_accountsReceivableAging(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "range":
+				return ec.fieldContext_AgingBucket_range(ctx, field)
+			case "totalAmount":
+				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
+			case "count":
+				return ec.fieldContext_AgingBucket_count(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_accountsReceivableAging_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_accountsPayableAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_accountsPayableAging(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AccountsPayableAging(rctx, fc.Args["name"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.AgingBucket)
+	fc.Result = res
+	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_accountsPayableAging(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "range":
+				return ec.fieldContext_AgingBucket_range(ctx, field)
+			case "totalAmount":
+				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
+			case "count":
+				return ec.fieldContext_AgingBucket_count(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_accountsPayableAging_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -82198,6 +82580,46 @@ func (ec *executionContext) _Payable(ctx context.Context, sel ast.SelectionSet, 
 	return out
 }
 
+var payableAggregationOutputImplementors = []string{"PayableAggregationOutput"}
+
+func (ec *executionContext) _PayableAggregationOutput(ctx context.Context, sel ast.SelectionSet, obj *model.PayableAggregationOutput) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, payableAggregationOutputImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PayableAggregationOutput")
+		case "company":
+			out.Values[i] = ec._PayableAggregationOutput_company(ctx, field, obj)
+		case "count":
+			out.Values[i] = ec._PayableAggregationOutput_count(ctx, field, obj)
+		case "sum":
+			out.Values[i] = ec._PayableAggregationOutput_sum(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var payableConnectionImplementors = []string{"PayableConnection"}
 
 func (ec *executionContext) _PayableConnection(ctx context.Context, sel ast.SelectionSet, obj *generated.PayableConnection) graphql.Marshaler {
@@ -83821,72 +84243,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "aggregateReceivables":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_aggregateReceivables(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "accountsReceivableAging":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_accountsReceivableAging(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "accountsPayableAging":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_accountsPayableAging(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "employees":
 			field := field
 
@@ -84315,6 +84671,94 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_supplierList(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "aggregateReceivables":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_aggregateReceivables(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "aggregatePayables":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_aggregatePayables(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "accountsReceivableAging":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_accountsReceivableAging(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "accountsPayableAging":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_accountsPayableAging(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -88313,6 +88757,60 @@ func (ec *executionContext) marshalNPayable2ᚖmazzaᚋentᚋgeneratedᚐPayable
 	return ec._Payable(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNPayableAggregationOutput2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayableAggregationOutputᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.PayableAggregationOutput) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNPayableAggregationOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayableAggregationOutput(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNPayableAggregationOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayableAggregationOutput(ctx context.Context, sel ast.SelectionSet, v *model.PayableAggregationOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._PayableAggregationOutput(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNPayableConnection2mazzaᚋentᚋgeneratedᚐPayableConnection(ctx context.Context, sel ast.SelectionSet, v generated.PayableConnection) graphql.Marshaler {
 	return ec._PayableConnection(ctx, sel, &v)
 }
@@ -88361,6 +88859,16 @@ func (ec *executionContext) marshalNPayableStatus2mazzaᚋentᚋgeneratedᚋpaya
 func (ec *executionContext) unmarshalNPayableWhereInput2ᚖmazzaᚋentᚋgeneratedᚐPayableWhereInput(ctx context.Context, v interface{}) (*generated.PayableWhereInput, error) {
 	res, err := ec.unmarshalInputPayableWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNPayablesGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupBy(ctx context.Context, v interface{}) (model.PayablesGroupBy, error) {
+	var res model.PayablesGroupBy
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNPayablesGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupBy(ctx context.Context, sel ast.SelectionSet, v model.PayablesGroupBy) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalNPeriod2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐPeriod(ctx context.Context, sel ast.SelectionSet, v *model.Period) graphql.Marshaler {
@@ -92716,6 +93224,73 @@ func (ec *executionContext) unmarshalOPayableWhereInput2ᚖmazzaᚋentᚋgenerat
 	}
 	res, err := ec.unmarshalInputPayableWhereInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOPayablesGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupByᚄ(ctx context.Context, v interface{}) ([]model.PayablesGroupBy, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]model.PayablesGroupBy, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNPayablesGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupBy(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOPayablesGroupBy2ᚕmazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupByᚄ(ctx context.Context, sel ast.SelectionSet, v []model.PayablesGroupBy) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNPayablesGroupBy2mazzaᚋmazzaᚋgeneratedᚋmodelᚐPayablesGroupBy(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) marshalOProduct2ᚕᚖmazzaᚋentᚋgeneratedᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.Product) graphql.Marshaler {

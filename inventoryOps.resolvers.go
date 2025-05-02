@@ -43,9 +43,12 @@ func (r *mutationResolver) UpdateInventory(ctx context.Context, id int, input ge
 // DeleteInventory is the resolver for the deleteInventory field.
 func (r *mutationResolver) DeleteInventory(ctx context.Context, id int) (bool, error) {
 	_, activeCompany := utils.GetSession(&ctx)
-	err := r.client.Inventory.DeleteOneID(id).
-		Where(inventory.HasCompanyWith(company.ID(activeCompany.ID))).
-		Exec(ctx)
+
+	// Only allow deletions of items with zero inventory value
+	err := r.client.Inventory.DeleteOneID(id).Where(
+		inventory.HasCompanyWith(company.ID(activeCompany.ID)),
+		inventory.QuantityEQ(0),
+	).Exec(ctx)
 	if err != nil {
 		return false, err
 	}

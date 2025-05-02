@@ -33,7 +33,7 @@ func CreateInventoryMovement(ctx context.Context, tx *generated.Tx, input genera
 		quantity = -input.Quantity
 		if inventoryItem.Quantity > 0 {
 			unitValue := inventoryItem.CurrentValue / inventoryItem.Quantity
-			value = unitValue * quantity
+			value = math.Round(100*unitValue*quantity) / 100 // round to 2 decimals
 		} else {
 			value = 0
 		}

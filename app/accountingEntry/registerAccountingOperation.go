@@ -37,6 +37,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 	if input.ReceivableInput != nil {
 		_ = tx.Receivable.Create().SetInput(ent.CreateReceivableInput{
 			CompanyID:          &activeCompany.ID,
+			Name:               &input.ReceivableInput.Name,
 			EntryGroup:         entryCounter.Group,
 			Date:               input.Date,
 			OutstandingBalance: input.ReceivableInput.Amount,
@@ -61,6 +62,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 	if input.PayableInput != nil {
 		_ = tx.Payable.Create().SetInput(ent.CreatePayableInput{
 			CompanyID:          &activeCompany.ID,
+			Name:               &input.PayableInput.Name,
 			EntryGroup:         entryCounter.Group,
 			Date:               input.Date,
 			OutstandingBalance: input.PayableInput.Amount,

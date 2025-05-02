@@ -6,8 +6,9 @@ package mazza
 
 import (
 	"context"
-	"fmt"
 	"mazza/app/manager/clients"
+	"mazza/app/manager/suppliers"
+	"mazza/ent/generated"
 	"mazza/mazza/generated/model"
 )
 
@@ -18,5 +19,25 @@ func (r *queryResolver) ClientList(ctx context.Context, top *int) ([]*model.Clie
 
 // SupplierList is the resolver for the supplierList field.
 func (r *queryResolver) SupplierList(ctx context.Context, top *int) ([]*model.SupplierList, error) {
-	panic(fmt.Errorf("not implemented: SupplierList - supplierList"))
+	return suppliers.GetSupplierList(ctx, r.client, top)
+}
+
+// AggregateReceivables is the resolver for the aggregateReceivables field.
+func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error) {
+	return clients.AggregateReceivables(ctx, r.client, where, groupBy)
+}
+
+// AggregatePayables is the resolver for the aggregatePayables field.
+func (r *queryResolver) AggregatePayables(ctx context.Context, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) ([]*model.PayableAggregationOutput, error) {
+	return suppliers.AggregatePayables(ctx, r.client, where, groupBy)
+}
+
+// AccountsReceivableAging is the resolver for the accountsReceivableAging field.
+func (r *queryResolver) AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
+	return clients.AccountsReceivableAging(ctx, r.client, name)
+}
+
+// AccountsPayableAging is the resolver for the accountsPayableAging field.
+func (r *queryResolver) AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
+	return suppliers.AccountsPayableAging(ctx, r.client, name)
 }
