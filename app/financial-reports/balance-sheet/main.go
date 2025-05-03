@@ -55,7 +55,8 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 		return nil, fmt.Errorf("cannot retrieve balance sheet now")
 	}
 
-	incomeStatement, err := incomestatement.GetIncomeStatement(client, ctx, user, currentCompany, endDate)
+	startDate := utils.StartOfYear(endDate)
+	incomeStatement, err := incomestatement.GetIncomeStatement(client, ctx, user, currentCompany, startDate, endDate)
 	if err != nil {
 		return nil, fmt.Errorf("cannot retrieve balance sheet now")
 	}
@@ -65,14 +66,14 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 		IsProvisional: true,
 		Period: &model.Period{
 			Start: utils.StartOfYear(endDate),
-			End: endDate,
+			End:   endDate,
 		},
 		Assets: &model.Assets{
 			CurrentAssets: []*model.ReportRowItem{},
-			FixedAssets: []*model.ReportRowItem{},
+			FixedAssets:   []*model.ReportRowItem{},
 		},
 		Liabilities: &model.Liabilities{
-			CurrentLiabilities: []*model.ReportRowItem{},
+			CurrentLiabilities:    []*model.ReportRowItem{},
 			NonCurrentLiabilities: []*model.ReportRowItem{},
 		},
 		Equity: &model.Equity{

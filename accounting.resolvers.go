@@ -12,6 +12,7 @@ import (
 	incomestatement "mazza/app/financial-reports/income-statement"
 	"mazza/app/financial-reports/ledger"
 	trialbalance "mazza/app/financial-reports/trial-balance"
+	u "mazza/app/utils"
 	"mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/invoice"
@@ -92,9 +93,17 @@ func (r *queryResolver) TrialBalance(ctx context.Context, date time.Time) ([]*mo
 }
 
 // IncomeStatement is the resolver for the incomeStatement field.
-func (r *queryResolver) IncomeStatement(ctx context.Context, date time.Time) (*model.IncomeStatementOuput, error) {
+func (r *queryResolver) IncomeStatement(ctx context.Context, startDate *time.Time, endDate *time.Time) (*model.IncomeStatementOuput, error) {
 	user, company := utils.GetSession(&ctx)
-	output, err := incomestatement.GetIncomeStatement(r.client, ctx, *user, *company, date)
+	if startDate == nil {
+		startOfYear := u.StartOfYear(time.Now())
+		startDate = &startOfYear
+	}
+	if endDate == nil {
+		now := time.Now()
+		endDate = &now
+	}
+	output, err := incomestatement.GetIncomeStatement(r.client, ctx, *user, *company, *startDate, *endDate)
 	return output, err
 }
 

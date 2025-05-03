@@ -703,7 +703,7 @@ type ComplexityRoot struct {
 		ExpensesBreakdown        func(childComplexity int, rangeArg model.TimeRange) int
 		Files                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy *generated.FileOrder, where *generated.FileWhereInput) int
 		HomepageAnalytics        func(childComplexity int) int
-		IncomeStatement          func(childComplexity int, date time.Time) int
+		IncomeStatement          func(childComplexity int, startDate *time.Time, endDate *time.Time) int
 		Inventories              func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryOrder, where *generated.InventoryWhereInput) int
 		InventoryMovements       func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryMovementOrder, where *generated.InventoryMovementWhereInput) int
 		Invoices                 func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InvoiceOrder, where *generated.InvoiceWhereInput) int
@@ -983,7 +983,7 @@ type QueryResolver interface {
 	Tokens(ctx context.Context) ([]*generated.Token, error)
 	Workshifts(ctx context.Context) ([]*generated.Workshift, error)
 	TrialBalance(ctx context.Context, date time.Time) ([]*model.TrialBalanceRowItem, error)
-	IncomeStatement(ctx context.Context, date time.Time) (*model.IncomeStatementOuput, error)
+	IncomeStatement(ctx context.Context, startDate *time.Time, endDate *time.Time) (*model.IncomeStatementOuput, error)
 	BalanceSheet(ctx context.Context, date time.Time) (*model.BalanceSheetOuput, error)
 	DownloadLedger(ctx context.Context, where model.LedgerDownloadInput) (*model.FileDetailsOutput, error)
 	DownloadTrialBalance(ctx context.Context, where model.ReportInput) (*model.FileDetailsOutput, error)
@@ -4671,7 +4671,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.IncomeStatement(childComplexity, args["date"].(time.Time)), true
+		return e.complexity.Query.IncomeStatement(childComplexity, args["startDate"].(*time.Time), args["endDate"].(*time.Time)), true
 
 	case "Query.inventories":
 		if e.complexity.Query.Inventories == nil {
@@ -9450,32 +9450,59 @@ func (ec *executionContext) field_Query_files_argsWhere(
 func (ec *executionContext) field_Query_incomeStatement_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_incomeStatement_argsDate(ctx, rawArgs)
+	arg0, err := ec.field_Query_incomeStatement_argsStartDate(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["date"] = arg0
+	args["startDate"] = arg0
+	arg1, err := ec.field_Query_incomeStatement_argsEndDate(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["endDate"] = arg1
 	return args, nil
 }
-func (ec *executionContext) field_Query_incomeStatement_argsDate(
+func (ec *executionContext) field_Query_incomeStatement_argsStartDate(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (time.Time, error) {
+) (*time.Time, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["date"]
+	_, ok := rawArgs["startDate"]
 	if !ok {
-		var zeroVal time.Time
+		var zeroVal *time.Time
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("date"))
-	if tmp, ok := rawArgs["date"]; ok {
-		return ec.unmarshalNTime2timeᚐTime(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("startDate"))
+	if tmp, ok := rawArgs["startDate"]; ok {
+		return ec.unmarshalOTime2ᚖtimeᚐTime(ctx, tmp)
 	}
 
-	var zeroVal time.Time
+	var zeroVal *time.Time
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_incomeStatement_argsEndDate(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (*time.Time, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["endDate"]
+	if !ok {
+		var zeroVal *time.Time
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("endDate"))
+	if tmp, ok := rawArgs["endDate"]; ok {
+		return ec.unmarshalOTime2ᚖtimeᚐTime(ctx, tmp)
+	}
+
+	var zeroVal *time.Time
 	return zeroVal, nil
 }
 
@@ -37188,7 +37215,7 @@ func (ec *executionContext) _Query_incomeStatement(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().IncomeStatement(rctx, fc.Args["date"].(time.Time))
+		return ec.resolvers.Query().IncomeStatement(rctx, fc.Args["startDate"].(*time.Time), fc.Args["endDate"].(*time.Time))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
