@@ -45,14 +45,14 @@ FROM alpine:latest
 # Set the working directory
 WORKDIR /app
 
-# Copy the binary from the builder stage from the builder stage
+# Copy the binary from the builder stage
 COPY --from=builder /app/build .
 
 # Copy the template files
 COPY --from=builder /app/app/utils/email/templates /app/app/utils/email/templates
 
 # Copy assets
-COPY --from=builder /app/app/assets /app/assets
+COPY --from=builder /app/app/assets /app/app/assets
 
 # Ensure the binary is executable
 RUN chmod +x /app/build
