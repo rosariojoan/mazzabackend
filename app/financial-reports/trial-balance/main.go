@@ -114,7 +114,7 @@ func GetTrialBalance(
 	fmt.Println("TB excluded:", excluded)
 	rows, err := client.QueryContext(ctx, sqlStr)
 	if err != nil {
-		fmt.Println("GetTrialBalance err:", err)
+		fmt.Println("GetTrialBalance err 1:", err)
 		return nil, err
 	}
 
@@ -123,7 +123,7 @@ func GetTrialBalance(
 		var item model.TrialBalanceRowItem
 		if err := rows.Scan(&item.Account, &item.AccountType, &item.Debit, &item.Credit, &item.Balance); err != nil {
 			// Check for a scan error. Query rows will be closed with defer.
-			fmt.Println("GetTrialBalance err:", err)
+			fmt.Println("GetTrialBalance err 2:", err)
 			return nil, err
 		}
 		output = append(output, &item)
@@ -134,11 +134,13 @@ func GetTrialBalance(
 	// encounter an auto-commit error and be forced to rollback changes.
 	err = rows.Close()
 	if err != nil {
+		fmt.Println("GetTrialBalance err 3:", err)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
 	accountNames, err := utils.LoadAccountNames(country, lang)
 	if err != nil {
+		fmt.Println("GetTrialBalance err 4:", err)
 		return nil, fmt.Errorf("an error occurred")
 	}
 	for i, item := range output {
