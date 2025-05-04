@@ -52,14 +52,12 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 	}
 	balanceSheetAccounts, err := trialbalance.GetTrialBalance(client, ctx, user, currentCompany, endDate, excludedTypes)
 	if err != nil {
-		fmt.Println("GetBalanceSheet balanceSheetAccounts:", err)
 		return nil, fmt.Errorf("cannot retrieve balance sheet now")
 	}
 
 	startDate := utils.StartOfYear(endDate)
 	incomeStatement, err := incomestatement.GetIncomeStatement(client, ctx, user, currentCompany, startDate, endDate)
 	if err != nil {
-		fmt.Println("GetBalanceSheet incomeStatement:", err)
 		return nil, fmt.Errorf("cannot retrieve balance sheet now")
 	}
 

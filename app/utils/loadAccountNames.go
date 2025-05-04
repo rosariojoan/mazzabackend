@@ -9,7 +9,7 @@ import (
 
 // Load account names from the "app/assets/account_names.json" file
 func LoadAccountNames(country string, lang string) (accountNames map[string]string, err error) {
-	jsonFile, err := os.Open("app/assets/account_names.json")
+	jsonFile, err := os.Open("./app/assets/account_names.json")
 	if err != nil {
 		return
 	}
