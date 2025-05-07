@@ -2332,6 +2332,7 @@ InventoryCategory is enum for the field category
 enum InventoryCategory @goModel(model: "mazza/ent/generated/inventory.Category") {
   RAW_MATERIALS
   FINISHED_GOODS
+  MERCHANDISE
   SUPPLIES
   EQUIPMENT
   OTHER

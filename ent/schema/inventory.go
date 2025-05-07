@@ -24,6 +24,7 @@ func (Inventory) Mixin() []ent.Mixin {
 var inventoryCategories = []string{
 	"RAW_MATERIALS",
 	"FINISHED_GOODS",
+	"MERCHANDISE",
 	"SUPPLIES",
 	"EQUIPMENT",
 	"OTHER",

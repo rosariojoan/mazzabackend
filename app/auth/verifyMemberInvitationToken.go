@@ -46,11 +46,12 @@ func VerifyMemberInvitationToken(ctx *gin.Context) {
 	_, _ = currentToken.Update().AddNumberAccessed(1).Save(ctx)
 
 	var companies []struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
+		ID      string  `json:"id"`
+		Name    string  `json:"name"`
+		LogoURL *string `json:"logo_url"`
 	}
 
-	err = currentToken.QueryCompany().Select(company.FieldID, company.FieldName).Scan(ctx, &companies)
+	err = currentToken.QueryCompany().Select(company.FieldID, company.FieldName, company.FieldLogoURL).Scan(ctx, &companies)
 	if err != nil {
 		fmt.Println("VerifyMemberSignupToken get company err:", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid token"})

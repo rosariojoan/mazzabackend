@@ -40,6 +40,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 			Name:               &input.ReceivableInput.Name,
 			EntryGroup:         entryCounter.Group,
 			Date:               input.Date,
+			InvoiceID:          invoiceID,
 			OutstandingBalance: input.ReceivableInput.Amount,
 			TotalTransaction:   input.ReceivableInput.Amount,
 			DueDate:            input.ReceivableInput.DueDate,

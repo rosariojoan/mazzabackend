@@ -279,7 +279,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "category", Type: field.TypeEnum, Enums: []string{"RAW_MATERIALS", "FINISHED_GOODS", "SUPPLIES", "EQUIPMENT", "OTHER"}},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"RAW_MATERIALS", "FINISHED_GOODS", "MERCHANDISE", "SUPPLIES", "EQUIPMENT", "OTHER"}},
 		{Name: "quantity", Type: field.TypeFloat64},
 		{Name: "unit", Type: field.TypeString},
 		{Name: "minimum_level", Type: field.TypeFloat64},

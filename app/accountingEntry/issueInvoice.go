@@ -78,7 +78,7 @@ func IssueInvoice(ctx context.Context, client *generated.Client, input model.Inv
 		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
-
+	
 	// Create invoice entry
 	// status := invoice.StatusPAID
 	// status := *input.InvoiceData.Status
