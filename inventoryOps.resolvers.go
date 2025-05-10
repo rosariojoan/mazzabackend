@@ -16,14 +16,37 @@ import (
 )
 
 // CreateInventory is the resolver for the createInventory field.
-func (r *mutationResolver) CreateInventory(ctx context.Context, input generated.CreateInventoryInput) (*generated.Inventory, error) {
+func (r *mutationResolver) CreateInventory(ctx context.Context, input model.CreateInventoryInputData) (*generated.Inventory, error) {
 	_, activeCompany := utils.GetSession(&ctx)
-	newItem, err := r.client.Inventory.Create().
-		SetInput(input).SetCompanyID(activeCompany.ID).
+	tx, err := r.client.Tx(ctx)
+	if err != nil {
+		fmt.Println("CreateInventoryMovement tx err:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
+	newItem, err := tx.Inventory.Create().
+		SetInput(*input.CreateInventoryInput).SetCompanyID(activeCompany.ID).
 		Save(ctx)
 	if err != nil {
 		return nil, err
 	}
+	
+	if input.InventoryMovementInputData != nil {
+		input.InventoryMovementInputData.MovementInput.InventoryID = newItem.ID
+		_, err = accountingentry.CreateInventoryMovement(ctx, tx, *input.InventoryMovementInputData.MovementInput, input.InventoryMovementInputData.AccountingEntry)
+		if err != nil {
+			fmt.Println("err:", err)
+			return nil, fmt.Errorf("an error occurred")
+		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("err:", err)
+		_ = tx.Rollback()
+		return nil, fmt.Errorf("an error occurred")
+	}
+
 	return newItem, nil
 }
 
@@ -56,14 +79,14 @@ func (r *mutationResolver) DeleteInventory(ctx context.Context, id int) (bool, e
 }
 
 // CreateInventoryMovement is the resolver for the createInventoryMovement field.
-func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error) {
+func (r *mutationResolver) CreateInventoryMovement(ctx context.Context, input model.InventoryMovementInputData) (*generated.InventoryMovement, error) {
 	tx, err := r.client.Tx(ctx)
 	if err != nil {
 		fmt.Println("CreateInventoryMovement tx err:", err)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	movement, err := accountingentry.CreateInventoryMovement(ctx, tx, input, accountingEntry)
+	movement, err := accountingentry.CreateInventoryMovement(ctx, tx, *input.MovementInput, input.AccountingEntry)
 	if err != nil {
 		fmt.Println("err:", err)
 		return nil, fmt.Errorf("an error occurred")

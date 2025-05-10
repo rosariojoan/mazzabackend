@@ -5,14 +5,21 @@ type InventoryCategoryCount {
   count: Int!
 }
 
+input InventoryMovementInputData {
+  movementInput: CreateInventoryMovementInput!
+  accountingEntry: BaseEntryRegistrationInput
+}
+
+input CreateInventoryInputData {
+  createInventoryInput: CreateInventoryInput!
+  inventoryMovementInputData: InventoryMovementInputData
+}
+
 extend type Mutation {
-    createInventory(input: CreateInventoryInput!): Inventory!
+    createInventory(input: CreateInventoryInputData!): Inventory!
     updateInventory(id: ID!, input: UpdateInventoryInput!): Inventory!
     deleteInventory(id: ID!): Boolean!
-    createInventoryMovement(
-      input: CreateInventoryMovementInput!,
-      accountingEntry: BaseEntryRegistrationInput
-      ): InventoryMovement!
+    createInventoryMovement(input: InventoryMovementInputData!): InventoryMovement!
 }
 
 extend type Query {

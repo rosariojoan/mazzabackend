@@ -505,8 +505,8 @@ type ComplexityRoot struct {
 		CreateCompany             func(childComplexity int, input *generated.CreateCompanyInput, companyLogo *model.ProfilePhotoInput) int
 		CreateCustomer            func(childComplexity int, input generated.CreateCustomerInput) int
 		CreateEmployee            func(childComplexity int, input generated.CreateEmployeeInput) int
-		CreateInventory           func(childComplexity int, input generated.CreateInventoryInput) int
-		CreateInventoryMovement   func(childComplexity int, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) int
+		CreateInventory           func(childComplexity int, input model.CreateInventoryInputData) int
+		CreateInventoryMovement   func(childComplexity int, input model.InventoryMovementInputData) int
 		CreateInvoiceDraft        func(childComplexity int, input generated.CreateInvoiceInput) int
 		CreateProduct             func(childComplexity int, input generated.CreateProductInput) int
 		CreateProject             func(childComplexity int, input generated.CreateProjectInput) int
@@ -961,10 +961,10 @@ type MutationResolver interface {
 	GenerateMemberSignupToken(ctx context.Context, input generated.CreateMemberSignupTokenInput) (*model.CreateMemberSignupTokenOutput, error)
 	DeleteMemberSignupToken(ctx context.Context, id int) (*string, error)
 	RemoveUser(ctx context.Context, id int) (*string, error)
-	CreateInventory(ctx context.Context, input generated.CreateInventoryInput) (*generated.Inventory, error)
+	CreateInventory(ctx context.Context, input model.CreateInventoryInputData) (*generated.Inventory, error)
 	UpdateInventory(ctx context.Context, id int, input generated.UpdateInventoryInput) (*generated.Inventory, error)
 	DeleteInventory(ctx context.Context, id int) (bool, error)
-	CreateInventoryMovement(ctx context.Context, input generated.CreateInventoryMovementInput, accountingEntry *model.BaseEntryRegistrationInput) (*generated.InventoryMovement, error)
+	CreateInventoryMovement(ctx context.Context, input model.InventoryMovementInputData) (*generated.InventoryMovement, error)
 }
 type QueryResolver interface {
 	Node(ctx context.Context, id int) (generated.Noder, error)
@@ -3250,7 +3250,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateInventory(childComplexity, args["input"].(generated.CreateInventoryInput)), true
+		return e.complexity.Mutation.CreateInventory(childComplexity, args["input"].(model.CreateInventoryInputData)), true
 
 	case "Mutation.createInventoryMovement":
 		if e.complexity.Mutation.CreateInventoryMovement == nil {
@@ -3262,7 +3262,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateInventoryMovement(childComplexity, args["input"].(generated.CreateInventoryMovementInput), args["accountingEntry"].(*model.BaseEntryRegistrationInput)), true
+		return e.complexity.Mutation.CreateInventoryMovement(childComplexity, args["input"].(model.InventoryMovementInputData)), true
 
 	case "Mutation.createInvoiceDraft":
 		if e.complexity.Mutation.CreateInvoiceDraft == nil {
@@ -5916,6 +5916,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateEmployeeInput,
 		ec.unmarshalInputCreateFileInput,
 		ec.unmarshalInputCreateInventoryInput,
+		ec.unmarshalInputCreateInventoryInputData,
 		ec.unmarshalInputCreateInventoryMovementInput,
 		ec.unmarshalInputCreateInvoiceInput,
 		ec.unmarshalInputCreateMemberSignupTokenInput,
@@ -5940,6 +5941,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputFileOrder,
 		ec.unmarshalInputFileWhereInput,
 		ec.unmarshalInputInitialSetupInput,
+		ec.unmarshalInputInventoryMovementInputData,
 		ec.unmarshalInputInventoryMovementOrder,
 		ec.unmarshalInputInventoryMovementWhereInput,
 		ec.unmarshalInputInventoryOrder,
@@ -6265,54 +6267,27 @@ func (ec *executionContext) field_Mutation_createInventoryMovement_args(ctx cont
 		return nil, err
 	}
 	args["input"] = arg0
-	arg1, err := ec.field_Mutation_createInventoryMovement_argsAccountingEntry(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["accountingEntry"] = arg1
 	return args, nil
 }
 func (ec *executionContext) field_Mutation_createInventoryMovement_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (generated.CreateInventoryMovementInput, error) {
+) (model.InventoryMovementInputData, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal generated.CreateInventoryMovementInput
+		var zeroVal model.InventoryMovementInputData
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateInventoryMovementInput2mazzaᚋentᚋgeneratedᚐCreateInventoryMovementInput(ctx, tmp)
+		return ec.unmarshalNInventoryMovementInputData2mazzaᚋmazzaᚋgeneratedᚋmodelᚐInventoryMovementInputData(ctx, tmp)
 	}
 
-	var zeroVal generated.CreateInventoryMovementInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_createInventoryMovement_argsAccountingEntry(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (*model.BaseEntryRegistrationInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["accountingEntry"]
-	if !ok {
-		var zeroVal *model.BaseEntryRegistrationInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("accountingEntry"))
-	if tmp, ok := rawArgs["accountingEntry"]; ok {
-		return ec.unmarshalOBaseEntryRegistrationInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐBaseEntryRegistrationInput(ctx, tmp)
-	}
-
-	var zeroVal *model.BaseEntryRegistrationInput
+	var zeroVal model.InventoryMovementInputData
 	return zeroVal, nil
 }
 
@@ -6329,22 +6304,22 @@ func (ec *executionContext) field_Mutation_createInventory_args(ctx context.Cont
 func (ec *executionContext) field_Mutation_createInventory_argsInput(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (generated.CreateInventoryInput, error) {
+) (model.CreateInventoryInputData, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["input"]
 	if !ok {
-		var zeroVal generated.CreateInventoryInput
+		var zeroVal model.CreateInventoryInputData
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNCreateInventoryInput2mazzaᚋentᚋgeneratedᚐCreateInventoryInput(ctx, tmp)
+		return ec.unmarshalNCreateInventoryInputData2mazzaᚋmazzaᚋgeneratedᚋmodelᚐCreateInventoryInputData(ctx, tmp)
 	}
 
-	var zeroVal generated.CreateInventoryInput
+	var zeroVal model.CreateInventoryInputData
 	return zeroVal, nil
 }
 
@@ -31613,7 +31588,7 @@ func (ec *executionContext) _Mutation_createInventory(ctx context.Context, field
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateInventory(rctx, fc.Args["input"].(generated.CreateInventoryInput))
+		return ec.resolvers.Mutation().CreateInventory(rctx, fc.Args["input"].(model.CreateInventoryInputData))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -31834,7 +31809,7 @@ func (ec *executionContext) _Mutation_createInventoryMovement(ctx context.Contex
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateInventoryMovement(rctx, fc.Args["input"].(generated.CreateInventoryMovementInput), fc.Args["accountingEntry"].(*model.BaseEntryRegistrationInput))
+		return ec.resolvers.Mutation().CreateInventoryMovement(rctx, fc.Args["input"].(model.InventoryMovementInputData))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -54241,6 +54216,40 @@ func (ec *executionContext) unmarshalInputCreateInventoryInput(ctx context.Conte
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputCreateInventoryInputData(ctx context.Context, obj interface{}) (model.CreateInventoryInputData, error) {
+	var it model.CreateInventoryInputData
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"createInventoryInput", "inventoryMovementInputData"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "createInventoryInput":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createInventoryInput"))
+			data, err := ec.unmarshalNCreateInventoryInput2ᚖmazzaᚋentᚋgeneratedᚐCreateInventoryInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CreateInventoryInput = data
+		case "inventoryMovementInputData":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("inventoryMovementInputData"))
+			data, err := ec.unmarshalOInventoryMovementInputData2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInventoryMovementInputData(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.InventoryMovementInputData = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputCreateInventoryMovementInput(ctx context.Context, obj interface{}) (generated.CreateInventoryMovementInput, error) {
 	var it generated.CreateInventoryMovementInput
 	asMap := map[string]interface{}{}
@@ -58997,6 +59006,40 @@ func (ec *executionContext) unmarshalInputInitialSetupInput(ctx context.Context,
 				return it, err
 			}
 			it.CompanyInfo = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputInventoryMovementInputData(ctx context.Context, obj interface{}) (model.InventoryMovementInputData, error) {
+	var it model.InventoryMovementInputData
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"movementInput", "accountingEntry"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "movementInput":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("movementInput"))
+			data, err := ec.unmarshalNCreateInventoryMovementInput2ᚖmazzaᚋentᚋgeneratedᚐCreateInventoryMovementInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MovementInput = data
+		case "accountingEntry":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("accountingEntry"))
+			data, err := ec.unmarshalOBaseEntryRegistrationInput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐBaseEntryRegistrationInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AccountingEntry = data
 		}
 	}
 
@@ -87640,13 +87683,13 @@ func (ec *executionContext) unmarshalNCreateEmployeeInput2mazzaᚋentᚋgenerate
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateInventoryInput2mazzaᚋentᚋgeneratedᚐCreateInventoryInput(ctx context.Context, v interface{}) (generated.CreateInventoryInput, error) {
+func (ec *executionContext) unmarshalNCreateInventoryInput2ᚖmazzaᚋentᚋgeneratedᚐCreateInventoryInput(ctx context.Context, v interface{}) (*generated.CreateInventoryInput, error) {
 	res, err := ec.unmarshalInputCreateInventoryInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateInventoryMovementInput2mazzaᚋentᚋgeneratedᚐCreateInventoryMovementInput(ctx context.Context, v interface{}) (generated.CreateInventoryMovementInput, error) {
-	res, err := ec.unmarshalInputCreateInventoryMovementInput(ctx, v)
+func (ec *executionContext) unmarshalNCreateInventoryInputData2mazzaᚋmazzaᚋgeneratedᚋmodelᚐCreateInventoryInputData(ctx context.Context, v interface{}) (model.CreateInventoryInputData, error) {
+	res, err := ec.unmarshalInputCreateInventoryInputData(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -88438,6 +88481,11 @@ func (ec *executionContext) marshalNInventoryMovementConnection2ᚖmazzaᚋent�
 		return graphql.Null
 	}
 	return ec._InventoryMovementConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNInventoryMovementInputData2mazzaᚋmazzaᚋgeneratedᚋmodelᚐInventoryMovementInputData(ctx context.Context, v interface{}) (model.InventoryMovementInputData, error) {
+	res, err := ec.unmarshalInputInventoryMovementInputData(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNInventoryMovementOrder2ᚖmazzaᚋentᚋgeneratedᚐInventoryMovementOrder(ctx context.Context, v interface{}) (*generated.InventoryMovementOrder, error) {
@@ -92417,6 +92465,14 @@ func (ec *executionContext) marshalOInventoryMovementEdge2ᚖmazzaᚋentᚋgener
 		return graphql.Null
 	}
 	return ec._InventoryMovementEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOInventoryMovementInputData2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐInventoryMovementInputData(ctx context.Context, v interface{}) (*model.InventoryMovementInputData, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputInventoryMovementInputData(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOInventoryMovementOrder2ᚕᚖmazzaᚋentᚋgeneratedᚐInventoryMovementOrderᚄ(ctx context.Context, v interface{}) ([]*generated.InventoryMovementOrder, error) {

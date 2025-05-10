@@ -66,6 +66,11 @@ type CompanyInfoInput struct {
 	VatRate  float64 `json:"vatRate"`
 }
 
+type CreateInventoryInputData struct {
+	CreateInventoryInput       *generated.CreateInventoryInput `json:"createInventoryInput"`
+	InventoryMovementInputData *InventoryMovementInputData     `json:"inventoryMovementInputData,omitempty"`
+}
+
 type CreateMemberSignupTokenOutput struct {
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expiresAt"`
@@ -150,6 +155,11 @@ type InitialSetupInput struct {
 type InventoryCategoryCount struct {
 	Category inventory.Category `json:"category"`
 	Count    int                `json:"count"`
+}
+
+type InventoryMovementInputData struct {
+	MovementInput   *generated.CreateInventoryMovementInput `json:"movementInput"`
+	AccountingEntry *BaseEntryRegistrationInput             `json:"accountingEntry,omitempty"`
 }
 
 type InvoiceCount struct {
