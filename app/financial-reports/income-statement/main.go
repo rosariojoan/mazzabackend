@@ -137,7 +137,7 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 				AccountType: entry.AccountType,
 				Category:    entry.Category,
 				Label:       accountNames[entry.Account],
-				Value:       entry.Value,
+				Value:       -entry.Value,
 			})
 			result.NetRevenue -= entry.Value
 

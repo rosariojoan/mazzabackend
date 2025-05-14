@@ -11,6 +11,13 @@ type SupplierList {
     invoiceCount: Int!
 }
 
+type LoanProviderList {
+    name: String!
+    outstandingBalance: Float!
+    loansCount: Int!
+    averageInterestRate: Float!
+}
+
 type ReceivableAggregationOutput {
   company: ID
   count: Int
@@ -18,6 +25,12 @@ type ReceivableAggregationOutput {
 }
 
 type PayableAggregationOutput {
+  company: ID
+  count: Int
+  sum: Float
+}
+
+type LoanAggregationOutput {
   company: ID
   count: Int
   sum: Float
@@ -43,9 +56,16 @@ enum PayablesGroupBy {
   STATUS
 }
 
+enum LoansGroupBy {
+  category
+  provider
+  status
+}
+
 extend type Query {
     clientList(top: Int): [ClientList!]!
     supplierList(top: Int): [SupplierList!]!
+    loanProviderList(top: Int): [LoanProviderList!]!
 
     aggregateReceivables(
         where: ReceivableWhereInput
@@ -57,6 +77,12 @@ extend type Query {
         groupBy: [PayablesGroupBy!]
     ): [PayableAggregationOutput!]!
     
+    aggregateLoans(
+        where: LoanWhereInput
+        groupBy: [LoansGroupBy!]
+    ): [LoanAggregationOutput!]!
+
     accountsReceivableAging(name: String): [AgingBucket!]!
     accountsPayableAging(name: String): [AgingBucket!]!
+    loansAging(name: String): [AgingBucket!]!
 }

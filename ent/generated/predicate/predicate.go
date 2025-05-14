@@ -33,6 +33,9 @@ type InventoryMovement func(*sql.Selector)
 // Invoice is the predicate function for invoice builders.
 type Invoice func(*sql.Selector)
 
+// Loan is the predicate function for loan builders.
+type Loan func(*sql.Selector)
+
 // MemberSignupToken is the predicate function for membersignuptoken builders.
 type MemberSignupToken func(*sql.Selector)
 

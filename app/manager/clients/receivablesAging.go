@@ -46,7 +46,7 @@ func AccountsReceivableAging(ctx context.Context, client *generated.Client, name
 
 	// Conditionally add the name filter
 	var (
-		args       []interface{}
+		args       []any
 		nameClause string
 	)
 

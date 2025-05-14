@@ -32,6 +32,8 @@ type Tx struct {
 	InventoryMovement *InventoryMovementClient
 	// Invoice is the client for interacting with the Invoice builders.
 	Invoice *InvoiceClient
+	// Loan is the client for interacting with the Loan builders.
+	Loan *LoanClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -198,6 +200,7 @@ func (tx *Tx) init() {
 	tx.Inventory = NewInventoryClient(tx.config)
 	tx.InventoryMovement = NewInventoryMovementClient(tx.config)
 	tx.Invoice = NewInvoiceClient(tx.config)
+	tx.Loan = NewLoanClient(tx.config)
 	tx.MemberSignupToken = NewMemberSignupTokenClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
 	tx.Product = NewProductClient(tx.config)

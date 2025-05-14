@@ -81,23 +81,29 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 		},
 	}
 
+	// utils.PP(balanceSheetAccounts) // *********
 	for _, entry := range balanceSheetAccounts {
-		if utils.StartsWith(entry.Account, initials.CurrentAssets) {
+		if utils.StartsWith(entry.Account, initials.CurrentAssets) ||
+			// For receivable tax accounts
+			utils.StartsWith(entry.Account, initials.CurrentLiabilities) && entry.AccountType == "ASSET" {
 			result.Assets.CurrentAssets = append(result.Assets.CurrentAssets, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: entry.Balance})
 			result.Assets.TotalCurrentAssets += entry.Balance
 			result.Assets.TotalAssets += entry.Balance
 
 		} else if utils.StartsWith(entry.Account, initials.FixedAssets) {
-			result.Assets.FixedAssets = append(result.Assets.FixedAssets, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: entry.Balance})
-			result.Assets.TotalFixedAssets += entry.Balance
-			result.Assets.TotalAssets += entry.Balance
+			balance := entry.Balance
+			if entry.AccountType == accountingentry.AccountTypeCONTRA_ASSET.String() {
+				balance *= -1 // make it negative
+			}
+			result.Assets.FixedAssets = append(result.Assets.FixedAssets, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: balance})
+			result.Assets.TotalFixedAssets += balance
+			result.Assets.TotalAssets += balance
 
 		} else if utils.StartsWith(entry.Account, initials.CurrentLiabilities) {
 			result.Liabilities.CurrentLiabilities = append(result.Liabilities.CurrentLiabilities, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: entry.Balance})
 			result.Liabilities.TotalCurrentLiabilities += entry.Balance
 			result.Liabilities.TotalLiabilities += entry.Balance
 			result.TotalLiabilityAndEquity += entry.Balance
-
 		} else if utils.StartsWith(entry.Account, initials.NonCurrentLiabilities) {
 			result.Liabilities.NonCurrentLiabilities = append(result.Liabilities.NonCurrentLiabilities, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: entry.Balance})
 			result.Liabilities.TotalNonCurrentLiabilities += entry.Balance

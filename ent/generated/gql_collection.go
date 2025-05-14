@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -344,6 +345,18 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.WithNamedInvoices(alias, func(wq *InvoiceQuery) {
+				*wq = *query
+			})
+		case "loans":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedLoans(alias, func(wq *LoanQuery) {
 				*wq = *query
 			})
 		case "membersignuptokens":
@@ -1988,6 +2001,196 @@ func newInvoicePaginateArgs(rv map[string]any) *invoicePaginateArgs {
 	}
 	if v, ok := rv[whereField].(*InvoiceWhereInput); ok {
 		args.opts = append(args.opts, WithInvoiceFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (l *LoanQuery) CollectFields(ctx context.Context, satisfies ...string) (*LoanQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return l, nil
+	}
+	if err := l.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return l, nil
+}
+
+func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(loan.Columns))
+		selectedFields = []string{loan.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "company":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CompanyClient{config: l.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			l.withCompany = query
+		case "createdat":
+			if _, ok := fieldSeen[loan.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, loan.FieldCreatedAt)
+				fieldSeen[loan.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[loan.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, loan.FieldUpdatedAt)
+				fieldSeen[loan.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[loan.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, loan.FieldDeletedAt)
+				fieldSeen[loan.FieldDeletedAt] = struct{}{}
+			}
+		case "amount":
+			if _, ok := fieldSeen[loan.FieldAmount]; !ok {
+				selectedFields = append(selectedFields, loan.FieldAmount)
+				fieldSeen[loan.FieldAmount] = struct{}{}
+			}
+		case "category":
+			if _, ok := fieldSeen[loan.FieldCategory]; !ok {
+				selectedFields = append(selectedFields, loan.FieldCategory)
+				fieldSeen[loan.FieldCategory] = struct{}{}
+			}
+		case "collateral":
+			if _, ok := fieldSeen[loan.FieldCollateral]; !ok {
+				selectedFields = append(selectedFields, loan.FieldCollateral)
+				fieldSeen[loan.FieldCollateral] = struct{}{}
+			}
+		case "description":
+			if _, ok := fieldSeen[loan.FieldDescription]; !ok {
+				selectedFields = append(selectedFields, loan.FieldDescription)
+				fieldSeen[loan.FieldDescription] = struct{}{}
+			}
+		case "interestrate":
+			if _, ok := fieldSeen[loan.FieldInterestRate]; !ok {
+				selectedFields = append(selectedFields, loan.FieldInterestRate)
+				fieldSeen[loan.FieldInterestRate] = struct{}{}
+			}
+		case "installments":
+			if _, ok := fieldSeen[loan.FieldInstallments]; !ok {
+				selectedFields = append(selectedFields, loan.FieldInstallments)
+				fieldSeen[loan.FieldInstallments] = struct{}{}
+			}
+		case "maturitydate":
+			if _, ok := fieldSeen[loan.FieldMaturityDate]; !ok {
+				selectedFields = append(selectedFields, loan.FieldMaturityDate)
+				fieldSeen[loan.FieldMaturityDate] = struct{}{}
+			}
+		case "nextpayment":
+			if _, ok := fieldSeen[loan.FieldNextPayment]; !ok {
+				selectedFields = append(selectedFields, loan.FieldNextPayment)
+				fieldSeen[loan.FieldNextPayment] = struct{}{}
+			}
+		case "nextpaymentamount":
+			if _, ok := fieldSeen[loan.FieldNextPaymentAmount]; !ok {
+				selectedFields = append(selectedFields, loan.FieldNextPaymentAmount)
+				fieldSeen[loan.FieldNextPaymentAmount] = struct{}{}
+			}
+		case "outstandingamount":
+			if _, ok := fieldSeen[loan.FieldOutstandingAmount]; !ok {
+				selectedFields = append(selectedFields, loan.FieldOutstandingAmount)
+				fieldSeen[loan.FieldOutstandingAmount] = struct{}{}
+			}
+		case "paymentfrequency":
+			if _, ok := fieldSeen[loan.FieldPaymentFrequency]; !ok {
+				selectedFields = append(selectedFields, loan.FieldPaymentFrequency)
+				fieldSeen[loan.FieldPaymentFrequency] = struct{}{}
+			}
+		case "paidinstallments":
+			if _, ok := fieldSeen[loan.FieldPaidInstallments]; !ok {
+				selectedFields = append(selectedFields, loan.FieldPaidInstallments)
+				fieldSeen[loan.FieldPaidInstallments] = struct{}{}
+			}
+		case "provider":
+			if _, ok := fieldSeen[loan.FieldProvider]; !ok {
+				selectedFields = append(selectedFields, loan.FieldProvider)
+				fieldSeen[loan.FieldProvider] = struct{}{}
+			}
+		case "startdate":
+			if _, ok := fieldSeen[loan.FieldStartDate]; !ok {
+				selectedFields = append(selectedFields, loan.FieldStartDate)
+				fieldSeen[loan.FieldStartDate] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[loan.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, loan.FieldStatus)
+				fieldSeen[loan.FieldStatus] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		l.Select(selectedFields...)
+	}
+	return nil
+}
+
+type loanPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []LoanPaginateOption
+}
+
+func newLoanPaginateArgs(rv map[string]any) *loanPaginateArgs {
+	args := &loanPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*LoanOrder:
+			args.opts = append(args.opts, WithLoanOrder(v))
+		case []any:
+			var orders []*LoanOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &LoanOrder{Field: &LoanOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithLoanOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*LoanWhereInput); ok {
+		args.opts = append(args.opts, WithLoanFilter(v.Filter))
 	}
 	return args
 }

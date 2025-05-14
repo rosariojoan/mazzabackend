@@ -1737,6 +1737,29 @@ func HasInvoicesWith(preds ...predicate.Invoice) predicate.Company {
 	})
 }
 
+// HasLoans applies the HasEdge predicate on the "loans" edge.
+func HasLoans() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, LoansTable, LoansColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasLoansWith applies the HasEdge predicate on the "loans" edge with a given conditions (other predicates).
+func HasLoansWith(preds ...predicate.Loan) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newLoansStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasMemberSignupTokens applies the HasEdge predicate on the "memberSignupTokens" edge.
 func HasMemberSignupTokens() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {

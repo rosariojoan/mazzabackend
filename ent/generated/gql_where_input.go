@@ -14,6 +14,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
@@ -1079,6 +1080,10 @@ type CompanyWhereInput struct {
 	// "invoices" edge predicates.
 	HasInvoices     *bool                `json:"hasInvoices,omitempty"`
 	HasInvoicesWith []*InvoiceWhereInput `json:"hasInvoicesWith,omitempty"`
+
+	// "loans" edge predicates.
+	HasLoans     *bool             `json:"hasLoans,omitempty"`
+	HasLoansWith []*LoanWhereInput `json:"hasLoansWith,omitempty"`
 
 	// "memberSignupTokens" edge predicates.
 	HasMemberSignupTokens     *bool                          `json:"hasMemberSignupTokens,omitempty"`
@@ -2202,6 +2207,24 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, company.HasInvoicesWith(with...))
+	}
+	if i.HasLoans != nil {
+		p := company.HasLoans()
+		if !*i.HasLoans {
+			p = company.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasLoansWith) > 0 {
+		with := make([]predicate.Loan, 0, len(i.HasLoansWith))
+		for _, w := range i.HasLoansWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasLoansWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, company.HasLoansWith(with...))
 	}
 	if i.HasMemberSignupTokens != nil {
 		p := company.HasMemberSignupTokens()
@@ -8648,6 +8671,816 @@ func (i *InvoiceWhereInput) P() (predicate.Invoice, error) {
 		return predicates[0], nil
 	default:
 		return invoice.And(predicates...), nil
+	}
+}
+
+// LoanWhereInput represents a where input for filtering Loan queries.
+type LoanWhereInput struct {
+	Predicates []predicate.Loan  `json:"-"`
+	Not        *LoanWhereInput   `json:"not,omitempty"`
+	Or         []*LoanWhereInput `json:"or,omitempty"`
+	And        []*LoanWhereInput `json:"and,omitempty"`
+
+	// "id" field predicates.
+	ID      *int  `json:"id,omitempty"`
+	IDNEQ   *int  `json:"idNEQ,omitempty"`
+	IDIn    []int `json:"idIn,omitempty"`
+	IDNotIn []int `json:"idNotIn,omitempty"`
+	IDGT    *int  `json:"idGT,omitempty"`
+	IDGTE   *int  `json:"idGTE,omitempty"`
+	IDLT    *int  `json:"idLT,omitempty"`
+	IDLTE   *int  `json:"idLTE,omitempty"`
+
+	// "createdAt" field predicates.
+	CreatedAt      *time.Time  `json:"createdat,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+
+	// "updatedAt" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+
+	// "deletedAt" field predicates.
+	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+
+	// "amount" field predicates.
+	Amount      *float64  `json:"amount,omitempty"`
+	AmountNEQ   *float64  `json:"amountNEQ,omitempty"`
+	AmountIn    []float64 `json:"amountIn,omitempty"`
+	AmountNotIn []float64 `json:"amountNotIn,omitempty"`
+	AmountGT    *float64  `json:"amountGT,omitempty"`
+	AmountGTE   *float64  `json:"amountGTE,omitempty"`
+	AmountLT    *float64  `json:"amountLT,omitempty"`
+	AmountLTE   *float64  `json:"amountLTE,omitempty"`
+
+	// "category" field predicates.
+	Category      *loan.Category  `json:"category,omitempty"`
+	CategoryNEQ   *loan.Category  `json:"categoryNEQ,omitempty"`
+	CategoryIn    []loan.Category `json:"categoryIn,omitempty"`
+	CategoryNotIn []loan.Category `json:"categoryNotIn,omitempty"`
+
+	// "collateral" field predicates.
+	Collateral             *string  `json:"collateral,omitempty"`
+	CollateralNEQ          *string  `json:"collateralNEQ,omitempty"`
+	CollateralIn           []string `json:"collateralIn,omitempty"`
+	CollateralNotIn        []string `json:"collateralNotIn,omitempty"`
+	CollateralGT           *string  `json:"collateralGT,omitempty"`
+	CollateralGTE          *string  `json:"collateralGTE,omitempty"`
+	CollateralLT           *string  `json:"collateralLT,omitempty"`
+	CollateralLTE          *string  `json:"collateralLTE,omitempty"`
+	CollateralContains     *string  `json:"collateralContains,omitempty"`
+	CollateralHasPrefix    *string  `json:"collateralHasPrefix,omitempty"`
+	CollateralHasSuffix    *string  `json:"collateralHasSuffix,omitempty"`
+	CollateralIsNil        bool     `json:"collateralIsNil,omitempty"`
+	CollateralNotNil       bool     `json:"collateralNotNil,omitempty"`
+	CollateralEqualFold    *string  `json:"collateralEqualFold,omitempty"`
+	CollateralContainsFold *string  `json:"collateralContainsFold,omitempty"`
+
+	// "description" field predicates.
+	Description             *string  `json:"description,omitempty"`
+	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
+	DescriptionIn           []string `json:"descriptionIn,omitempty"`
+	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
+	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
+	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
+	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
+	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
+	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
+	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
+	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
+	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
+	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
+	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
+	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
+
+	// "interestRate" field predicates.
+	InterestRate      *float64  `json:"interestrate,omitempty"`
+	InterestRateNEQ   *float64  `json:"interestrateNEQ,omitempty"`
+	InterestRateIn    []float64 `json:"interestrateIn,omitempty"`
+	InterestRateNotIn []float64 `json:"interestrateNotIn,omitempty"`
+	InterestRateGT    *float64  `json:"interestrateGT,omitempty"`
+	InterestRateGTE   *float64  `json:"interestrateGTE,omitempty"`
+	InterestRateLT    *float64  `json:"interestrateLT,omitempty"`
+	InterestRateLTE   *float64  `json:"interestrateLTE,omitempty"`
+
+	// "installments" field predicates.
+	Installments      *int  `json:"installments,omitempty"`
+	InstallmentsNEQ   *int  `json:"installmentsNEQ,omitempty"`
+	InstallmentsIn    []int `json:"installmentsIn,omitempty"`
+	InstallmentsNotIn []int `json:"installmentsNotIn,omitempty"`
+	InstallmentsGT    *int  `json:"installmentsGT,omitempty"`
+	InstallmentsGTE   *int  `json:"installmentsGTE,omitempty"`
+	InstallmentsLT    *int  `json:"installmentsLT,omitempty"`
+	InstallmentsLTE   *int  `json:"installmentsLTE,omitempty"`
+
+	// "maturityDate" field predicates.
+	MaturityDate      *time.Time  `json:"maturitydate,omitempty"`
+	MaturityDateNEQ   *time.Time  `json:"maturitydateNEQ,omitempty"`
+	MaturityDateIn    []time.Time `json:"maturitydateIn,omitempty"`
+	MaturityDateNotIn []time.Time `json:"maturitydateNotIn,omitempty"`
+	MaturityDateGT    *time.Time  `json:"maturitydateGT,omitempty"`
+	MaturityDateGTE   *time.Time  `json:"maturitydateGTE,omitempty"`
+	MaturityDateLT    *time.Time  `json:"maturitydateLT,omitempty"`
+	MaturityDateLTE   *time.Time  `json:"maturitydateLTE,omitempty"`
+
+	// "nextPayment" field predicates.
+	NextPayment       *time.Time  `json:"nextpayment,omitempty"`
+	NextPaymentNEQ    *time.Time  `json:"nextpaymentNEQ,omitempty"`
+	NextPaymentIn     []time.Time `json:"nextpaymentIn,omitempty"`
+	NextPaymentNotIn  []time.Time `json:"nextpaymentNotIn,omitempty"`
+	NextPaymentGT     *time.Time  `json:"nextpaymentGT,omitempty"`
+	NextPaymentGTE    *time.Time  `json:"nextpaymentGTE,omitempty"`
+	NextPaymentLT     *time.Time  `json:"nextpaymentLT,omitempty"`
+	NextPaymentLTE    *time.Time  `json:"nextpaymentLTE,omitempty"`
+	NextPaymentIsNil  bool        `json:"nextpaymentIsNil,omitempty"`
+	NextPaymentNotNil bool        `json:"nextpaymentNotNil,omitempty"`
+
+	// "nextPaymentAmount" field predicates.
+	NextPaymentAmount       *float64  `json:"nextpaymentamount,omitempty"`
+	NextPaymentAmountNEQ    *float64  `json:"nextpaymentamountNEQ,omitempty"`
+	NextPaymentAmountIn     []float64 `json:"nextpaymentamountIn,omitempty"`
+	NextPaymentAmountNotIn  []float64 `json:"nextpaymentamountNotIn,omitempty"`
+	NextPaymentAmountGT     *float64  `json:"nextpaymentamountGT,omitempty"`
+	NextPaymentAmountGTE    *float64  `json:"nextpaymentamountGTE,omitempty"`
+	NextPaymentAmountLT     *float64  `json:"nextpaymentamountLT,omitempty"`
+	NextPaymentAmountLTE    *float64  `json:"nextpaymentamountLTE,omitempty"`
+	NextPaymentAmountIsNil  bool      `json:"nextpaymentamountIsNil,omitempty"`
+	NextPaymentAmountNotNil bool      `json:"nextpaymentamountNotNil,omitempty"`
+
+	// "outstandingAmount" field predicates.
+	OutstandingAmount      *float64  `json:"outstandingamount,omitempty"`
+	OutstandingAmountNEQ   *float64  `json:"outstandingamountNEQ,omitempty"`
+	OutstandingAmountIn    []float64 `json:"outstandingamountIn,omitempty"`
+	OutstandingAmountNotIn []float64 `json:"outstandingamountNotIn,omitempty"`
+	OutstandingAmountGT    *float64  `json:"outstandingamountGT,omitempty"`
+	OutstandingAmountGTE   *float64  `json:"outstandingamountGTE,omitempty"`
+	OutstandingAmountLT    *float64  `json:"outstandingamountLT,omitempty"`
+	OutstandingAmountLTE   *float64  `json:"outstandingamountLTE,omitempty"`
+
+	// "paymentFrequency" field predicates.
+	PaymentFrequency      *loan.PaymentFrequency  `json:"paymentfrequency,omitempty"`
+	PaymentFrequencyNEQ   *loan.PaymentFrequency  `json:"paymentfrequencyNEQ,omitempty"`
+	PaymentFrequencyIn    []loan.PaymentFrequency `json:"paymentfrequencyIn,omitempty"`
+	PaymentFrequencyNotIn []loan.PaymentFrequency `json:"paymentfrequencyNotIn,omitempty"`
+
+	// "paidInstallments" field predicates.
+	PaidInstallments      *int  `json:"paidinstallments,omitempty"`
+	PaidInstallmentsNEQ   *int  `json:"paidinstallmentsNEQ,omitempty"`
+	PaidInstallmentsIn    []int `json:"paidinstallmentsIn,omitempty"`
+	PaidInstallmentsNotIn []int `json:"paidinstallmentsNotIn,omitempty"`
+	PaidInstallmentsGT    *int  `json:"paidinstallmentsGT,omitempty"`
+	PaidInstallmentsGTE   *int  `json:"paidinstallmentsGTE,omitempty"`
+	PaidInstallmentsLT    *int  `json:"paidinstallmentsLT,omitempty"`
+	PaidInstallmentsLTE   *int  `json:"paidinstallmentsLTE,omitempty"`
+
+	// "provider" field predicates.
+	Provider             *string  `json:"provider,omitempty"`
+	ProviderNEQ          *string  `json:"providerNEQ,omitempty"`
+	ProviderIn           []string `json:"providerIn,omitempty"`
+	ProviderNotIn        []string `json:"providerNotIn,omitempty"`
+	ProviderGT           *string  `json:"providerGT,omitempty"`
+	ProviderGTE          *string  `json:"providerGTE,omitempty"`
+	ProviderLT           *string  `json:"providerLT,omitempty"`
+	ProviderLTE          *string  `json:"providerLTE,omitempty"`
+	ProviderContains     *string  `json:"providerContains,omitempty"`
+	ProviderHasPrefix    *string  `json:"providerHasPrefix,omitempty"`
+	ProviderHasSuffix    *string  `json:"providerHasSuffix,omitempty"`
+	ProviderEqualFold    *string  `json:"providerEqualFold,omitempty"`
+	ProviderContainsFold *string  `json:"providerContainsFold,omitempty"`
+
+	// "startDate" field predicates.
+	StartDate      *time.Time  `json:"startdate,omitempty"`
+	StartDateNEQ   *time.Time  `json:"startdateNEQ,omitempty"`
+	StartDateIn    []time.Time `json:"startdateIn,omitempty"`
+	StartDateNotIn []time.Time `json:"startdateNotIn,omitempty"`
+	StartDateGT    *time.Time  `json:"startdateGT,omitempty"`
+	StartDateGTE   *time.Time  `json:"startdateGTE,omitempty"`
+	StartDateLT    *time.Time  `json:"startdateLT,omitempty"`
+	StartDateLTE   *time.Time  `json:"startdateLTE,omitempty"`
+
+	// "status" field predicates.
+	Status      *loan.Status  `json:"status,omitempty"`
+	StatusNEQ   *loan.Status  `json:"statusNEQ,omitempty"`
+	StatusIn    []loan.Status `json:"statusIn,omitempty"`
+	StatusNotIn []loan.Status `json:"statusNotIn,omitempty"`
+
+	// "company" edge predicates.
+	HasCompany     *bool                `json:"hasCompany,omitempty"`
+	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
+}
+
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *LoanWhereInput) AddPredicates(predicates ...predicate.Loan) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
+// Filter applies the LoanWhereInput filter on the LoanQuery builder.
+func (i *LoanWhereInput) Filter(q *LoanQuery) (*LoanQuery, error) {
+	if i == nil {
+		return q, nil
+	}
+	p, err := i.P()
+	if err != nil {
+		if err == ErrEmptyLoanWhereInput {
+			return q, nil
+		}
+		return nil, err
+	}
+	return q.Where(p), nil
+}
+
+// ErrEmptyLoanWhereInput is returned in case the LoanWhereInput is empty.
+var ErrEmptyLoanWhereInput = errors.New("generated: empty predicate LoanWhereInput")
+
+// P returns a predicate for filtering loans.
+// An error is returned if the input is empty or invalid.
+func (i *LoanWhereInput) P() (predicate.Loan, error) {
+	var predicates []predicate.Loan
+	if i.Not != nil {
+		p, err := i.Not.P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'not'", err)
+		}
+		predicates = append(predicates, loan.Not(p))
+	}
+	switch n := len(i.Or); {
+	case n == 1:
+		p, err := i.Or[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'or'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		or := make([]predicate.Loan, 0, n)
+		for _, w := range i.Or {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'or'", err)
+			}
+			or = append(or, p)
+		}
+		predicates = append(predicates, loan.Or(or...))
+	}
+	switch n := len(i.And); {
+	case n == 1:
+		p, err := i.And[0].P()
+		if err != nil {
+			return nil, fmt.Errorf("%w: field 'and'", err)
+		}
+		predicates = append(predicates, p)
+	case n > 1:
+		and := make([]predicate.Loan, 0, n)
+		for _, w := range i.And {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'and'", err)
+			}
+			and = append(and, p)
+		}
+		predicates = append(predicates, loan.And(and...))
+	}
+	predicates = append(predicates, i.Predicates...)
+	if i.ID != nil {
+		predicates = append(predicates, loan.IDEQ(*i.ID))
+	}
+	if i.IDNEQ != nil {
+		predicates = append(predicates, loan.IDNEQ(*i.IDNEQ))
+	}
+	if len(i.IDIn) > 0 {
+		predicates = append(predicates, loan.IDIn(i.IDIn...))
+	}
+	if len(i.IDNotIn) > 0 {
+		predicates = append(predicates, loan.IDNotIn(i.IDNotIn...))
+	}
+	if i.IDGT != nil {
+		predicates = append(predicates, loan.IDGT(*i.IDGT))
+	}
+	if i.IDGTE != nil {
+		predicates = append(predicates, loan.IDGTE(*i.IDGTE))
+	}
+	if i.IDLT != nil {
+		predicates = append(predicates, loan.IDLT(*i.IDLT))
+	}
+	if i.IDLTE != nil {
+		predicates = append(predicates, loan.IDLTE(*i.IDLTE))
+	}
+	if i.CreatedAt != nil {
+		predicates = append(predicates, loan.CreatedAtEQ(*i.CreatedAt))
+	}
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, loan.CreatedAtNEQ(*i.CreatedAtNEQ))
+	}
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, loan.CreatedAtIn(i.CreatedAtIn...))
+	}
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, loan.CreatedAtNotIn(i.CreatedAtNotIn...))
+	}
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, loan.CreatedAtGT(*i.CreatedAtGT))
+	}
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, loan.CreatedAtGTE(*i.CreatedAtGTE))
+	}
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, loan.CreatedAtLT(*i.CreatedAtLT))
+	}
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, loan.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, loan.UpdatedAtEQ(*i.UpdatedAt))
+	}
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, loan.UpdatedAtNEQ(*i.UpdatedAtNEQ))
+	}
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, loan.UpdatedAtIn(i.UpdatedAtIn...))
+	}
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, loan.UpdatedAtNotIn(i.UpdatedAtNotIn...))
+	}
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, loan.UpdatedAtGT(*i.UpdatedAtGT))
+	}
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, loan.UpdatedAtGTE(*i.UpdatedAtGTE))
+	}
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, loan.UpdatedAtLT(*i.UpdatedAtLT))
+	}
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, loan.UpdatedAtLTE(*i.UpdatedAtLTE))
+	}
+	if i.DeletedAt != nil {
+		predicates = append(predicates, loan.DeletedAtEQ(*i.DeletedAt))
+	}
+	if i.DeletedAtNEQ != nil {
+		predicates = append(predicates, loan.DeletedAtNEQ(*i.DeletedAtNEQ))
+	}
+	if len(i.DeletedAtIn) > 0 {
+		predicates = append(predicates, loan.DeletedAtIn(i.DeletedAtIn...))
+	}
+	if len(i.DeletedAtNotIn) > 0 {
+		predicates = append(predicates, loan.DeletedAtNotIn(i.DeletedAtNotIn...))
+	}
+	if i.DeletedAtGT != nil {
+		predicates = append(predicates, loan.DeletedAtGT(*i.DeletedAtGT))
+	}
+	if i.DeletedAtGTE != nil {
+		predicates = append(predicates, loan.DeletedAtGTE(*i.DeletedAtGTE))
+	}
+	if i.DeletedAtLT != nil {
+		predicates = append(predicates, loan.DeletedAtLT(*i.DeletedAtLT))
+	}
+	if i.DeletedAtLTE != nil {
+		predicates = append(predicates, loan.DeletedAtLTE(*i.DeletedAtLTE))
+	}
+	if i.DeletedAtIsNil {
+		predicates = append(predicates, loan.DeletedAtIsNil())
+	}
+	if i.DeletedAtNotNil {
+		predicates = append(predicates, loan.DeletedAtNotNil())
+	}
+	if i.Amount != nil {
+		predicates = append(predicates, loan.AmountEQ(*i.Amount))
+	}
+	if i.AmountNEQ != nil {
+		predicates = append(predicates, loan.AmountNEQ(*i.AmountNEQ))
+	}
+	if len(i.AmountIn) > 0 {
+		predicates = append(predicates, loan.AmountIn(i.AmountIn...))
+	}
+	if len(i.AmountNotIn) > 0 {
+		predicates = append(predicates, loan.AmountNotIn(i.AmountNotIn...))
+	}
+	if i.AmountGT != nil {
+		predicates = append(predicates, loan.AmountGT(*i.AmountGT))
+	}
+	if i.AmountGTE != nil {
+		predicates = append(predicates, loan.AmountGTE(*i.AmountGTE))
+	}
+	if i.AmountLT != nil {
+		predicates = append(predicates, loan.AmountLT(*i.AmountLT))
+	}
+	if i.AmountLTE != nil {
+		predicates = append(predicates, loan.AmountLTE(*i.AmountLTE))
+	}
+	if i.Category != nil {
+		predicates = append(predicates, loan.CategoryEQ(*i.Category))
+	}
+	if i.CategoryNEQ != nil {
+		predicates = append(predicates, loan.CategoryNEQ(*i.CategoryNEQ))
+	}
+	if len(i.CategoryIn) > 0 {
+		predicates = append(predicates, loan.CategoryIn(i.CategoryIn...))
+	}
+	if len(i.CategoryNotIn) > 0 {
+		predicates = append(predicates, loan.CategoryNotIn(i.CategoryNotIn...))
+	}
+	if i.Collateral != nil {
+		predicates = append(predicates, loan.CollateralEQ(*i.Collateral))
+	}
+	if i.CollateralNEQ != nil {
+		predicates = append(predicates, loan.CollateralNEQ(*i.CollateralNEQ))
+	}
+	if len(i.CollateralIn) > 0 {
+		predicates = append(predicates, loan.CollateralIn(i.CollateralIn...))
+	}
+	if len(i.CollateralNotIn) > 0 {
+		predicates = append(predicates, loan.CollateralNotIn(i.CollateralNotIn...))
+	}
+	if i.CollateralGT != nil {
+		predicates = append(predicates, loan.CollateralGT(*i.CollateralGT))
+	}
+	if i.CollateralGTE != nil {
+		predicates = append(predicates, loan.CollateralGTE(*i.CollateralGTE))
+	}
+	if i.CollateralLT != nil {
+		predicates = append(predicates, loan.CollateralLT(*i.CollateralLT))
+	}
+	if i.CollateralLTE != nil {
+		predicates = append(predicates, loan.CollateralLTE(*i.CollateralLTE))
+	}
+	if i.CollateralContains != nil {
+		predicates = append(predicates, loan.CollateralContains(*i.CollateralContains))
+	}
+	if i.CollateralHasPrefix != nil {
+		predicates = append(predicates, loan.CollateralHasPrefix(*i.CollateralHasPrefix))
+	}
+	if i.CollateralHasSuffix != nil {
+		predicates = append(predicates, loan.CollateralHasSuffix(*i.CollateralHasSuffix))
+	}
+	if i.CollateralIsNil {
+		predicates = append(predicates, loan.CollateralIsNil())
+	}
+	if i.CollateralNotNil {
+		predicates = append(predicates, loan.CollateralNotNil())
+	}
+	if i.CollateralEqualFold != nil {
+		predicates = append(predicates, loan.CollateralEqualFold(*i.CollateralEqualFold))
+	}
+	if i.CollateralContainsFold != nil {
+		predicates = append(predicates, loan.CollateralContainsFold(*i.CollateralContainsFold))
+	}
+	if i.Description != nil {
+		predicates = append(predicates, loan.DescriptionEQ(*i.Description))
+	}
+	if i.DescriptionNEQ != nil {
+		predicates = append(predicates, loan.DescriptionNEQ(*i.DescriptionNEQ))
+	}
+	if len(i.DescriptionIn) > 0 {
+		predicates = append(predicates, loan.DescriptionIn(i.DescriptionIn...))
+	}
+	if len(i.DescriptionNotIn) > 0 {
+		predicates = append(predicates, loan.DescriptionNotIn(i.DescriptionNotIn...))
+	}
+	if i.DescriptionGT != nil {
+		predicates = append(predicates, loan.DescriptionGT(*i.DescriptionGT))
+	}
+	if i.DescriptionGTE != nil {
+		predicates = append(predicates, loan.DescriptionGTE(*i.DescriptionGTE))
+	}
+	if i.DescriptionLT != nil {
+		predicates = append(predicates, loan.DescriptionLT(*i.DescriptionLT))
+	}
+	if i.DescriptionLTE != nil {
+		predicates = append(predicates, loan.DescriptionLTE(*i.DescriptionLTE))
+	}
+	if i.DescriptionContains != nil {
+		predicates = append(predicates, loan.DescriptionContains(*i.DescriptionContains))
+	}
+	if i.DescriptionHasPrefix != nil {
+		predicates = append(predicates, loan.DescriptionHasPrefix(*i.DescriptionHasPrefix))
+	}
+	if i.DescriptionHasSuffix != nil {
+		predicates = append(predicates, loan.DescriptionHasSuffix(*i.DescriptionHasSuffix))
+	}
+	if i.DescriptionIsNil {
+		predicates = append(predicates, loan.DescriptionIsNil())
+	}
+	if i.DescriptionNotNil {
+		predicates = append(predicates, loan.DescriptionNotNil())
+	}
+	if i.DescriptionEqualFold != nil {
+		predicates = append(predicates, loan.DescriptionEqualFold(*i.DescriptionEqualFold))
+	}
+	if i.DescriptionContainsFold != nil {
+		predicates = append(predicates, loan.DescriptionContainsFold(*i.DescriptionContainsFold))
+	}
+	if i.InterestRate != nil {
+		predicates = append(predicates, loan.InterestRateEQ(*i.InterestRate))
+	}
+	if i.InterestRateNEQ != nil {
+		predicates = append(predicates, loan.InterestRateNEQ(*i.InterestRateNEQ))
+	}
+	if len(i.InterestRateIn) > 0 {
+		predicates = append(predicates, loan.InterestRateIn(i.InterestRateIn...))
+	}
+	if len(i.InterestRateNotIn) > 0 {
+		predicates = append(predicates, loan.InterestRateNotIn(i.InterestRateNotIn...))
+	}
+	if i.InterestRateGT != nil {
+		predicates = append(predicates, loan.InterestRateGT(*i.InterestRateGT))
+	}
+	if i.InterestRateGTE != nil {
+		predicates = append(predicates, loan.InterestRateGTE(*i.InterestRateGTE))
+	}
+	if i.InterestRateLT != nil {
+		predicates = append(predicates, loan.InterestRateLT(*i.InterestRateLT))
+	}
+	if i.InterestRateLTE != nil {
+		predicates = append(predicates, loan.InterestRateLTE(*i.InterestRateLTE))
+	}
+	if i.Installments != nil {
+		predicates = append(predicates, loan.InstallmentsEQ(*i.Installments))
+	}
+	if i.InstallmentsNEQ != nil {
+		predicates = append(predicates, loan.InstallmentsNEQ(*i.InstallmentsNEQ))
+	}
+	if len(i.InstallmentsIn) > 0 {
+		predicates = append(predicates, loan.InstallmentsIn(i.InstallmentsIn...))
+	}
+	if len(i.InstallmentsNotIn) > 0 {
+		predicates = append(predicates, loan.InstallmentsNotIn(i.InstallmentsNotIn...))
+	}
+	if i.InstallmentsGT != nil {
+		predicates = append(predicates, loan.InstallmentsGT(*i.InstallmentsGT))
+	}
+	if i.InstallmentsGTE != nil {
+		predicates = append(predicates, loan.InstallmentsGTE(*i.InstallmentsGTE))
+	}
+	if i.InstallmentsLT != nil {
+		predicates = append(predicates, loan.InstallmentsLT(*i.InstallmentsLT))
+	}
+	if i.InstallmentsLTE != nil {
+		predicates = append(predicates, loan.InstallmentsLTE(*i.InstallmentsLTE))
+	}
+	if i.MaturityDate != nil {
+		predicates = append(predicates, loan.MaturityDateEQ(*i.MaturityDate))
+	}
+	if i.MaturityDateNEQ != nil {
+		predicates = append(predicates, loan.MaturityDateNEQ(*i.MaturityDateNEQ))
+	}
+	if len(i.MaturityDateIn) > 0 {
+		predicates = append(predicates, loan.MaturityDateIn(i.MaturityDateIn...))
+	}
+	if len(i.MaturityDateNotIn) > 0 {
+		predicates = append(predicates, loan.MaturityDateNotIn(i.MaturityDateNotIn...))
+	}
+	if i.MaturityDateGT != nil {
+		predicates = append(predicates, loan.MaturityDateGT(*i.MaturityDateGT))
+	}
+	if i.MaturityDateGTE != nil {
+		predicates = append(predicates, loan.MaturityDateGTE(*i.MaturityDateGTE))
+	}
+	if i.MaturityDateLT != nil {
+		predicates = append(predicates, loan.MaturityDateLT(*i.MaturityDateLT))
+	}
+	if i.MaturityDateLTE != nil {
+		predicates = append(predicates, loan.MaturityDateLTE(*i.MaturityDateLTE))
+	}
+	if i.NextPayment != nil {
+		predicates = append(predicates, loan.NextPaymentEQ(*i.NextPayment))
+	}
+	if i.NextPaymentNEQ != nil {
+		predicates = append(predicates, loan.NextPaymentNEQ(*i.NextPaymentNEQ))
+	}
+	if len(i.NextPaymentIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentIn(i.NextPaymentIn...))
+	}
+	if len(i.NextPaymentNotIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentNotIn(i.NextPaymentNotIn...))
+	}
+	if i.NextPaymentGT != nil {
+		predicates = append(predicates, loan.NextPaymentGT(*i.NextPaymentGT))
+	}
+	if i.NextPaymentGTE != nil {
+		predicates = append(predicates, loan.NextPaymentGTE(*i.NextPaymentGTE))
+	}
+	if i.NextPaymentLT != nil {
+		predicates = append(predicates, loan.NextPaymentLT(*i.NextPaymentLT))
+	}
+	if i.NextPaymentLTE != nil {
+		predicates = append(predicates, loan.NextPaymentLTE(*i.NextPaymentLTE))
+	}
+	if i.NextPaymentIsNil {
+		predicates = append(predicates, loan.NextPaymentIsNil())
+	}
+	if i.NextPaymentNotNil {
+		predicates = append(predicates, loan.NextPaymentNotNil())
+	}
+	if i.NextPaymentAmount != nil {
+		predicates = append(predicates, loan.NextPaymentAmountEQ(*i.NextPaymentAmount))
+	}
+	if i.NextPaymentAmountNEQ != nil {
+		predicates = append(predicates, loan.NextPaymentAmountNEQ(*i.NextPaymentAmountNEQ))
+	}
+	if len(i.NextPaymentAmountIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentAmountIn(i.NextPaymentAmountIn...))
+	}
+	if len(i.NextPaymentAmountNotIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentAmountNotIn(i.NextPaymentAmountNotIn...))
+	}
+	if i.NextPaymentAmountGT != nil {
+		predicates = append(predicates, loan.NextPaymentAmountGT(*i.NextPaymentAmountGT))
+	}
+	if i.NextPaymentAmountGTE != nil {
+		predicates = append(predicates, loan.NextPaymentAmountGTE(*i.NextPaymentAmountGTE))
+	}
+	if i.NextPaymentAmountLT != nil {
+		predicates = append(predicates, loan.NextPaymentAmountLT(*i.NextPaymentAmountLT))
+	}
+	if i.NextPaymentAmountLTE != nil {
+		predicates = append(predicates, loan.NextPaymentAmountLTE(*i.NextPaymentAmountLTE))
+	}
+	if i.NextPaymentAmountIsNil {
+		predicates = append(predicates, loan.NextPaymentAmountIsNil())
+	}
+	if i.NextPaymentAmountNotNil {
+		predicates = append(predicates, loan.NextPaymentAmountNotNil())
+	}
+	if i.OutstandingAmount != nil {
+		predicates = append(predicates, loan.OutstandingAmountEQ(*i.OutstandingAmount))
+	}
+	if i.OutstandingAmountNEQ != nil {
+		predicates = append(predicates, loan.OutstandingAmountNEQ(*i.OutstandingAmountNEQ))
+	}
+	if len(i.OutstandingAmountIn) > 0 {
+		predicates = append(predicates, loan.OutstandingAmountIn(i.OutstandingAmountIn...))
+	}
+	if len(i.OutstandingAmountNotIn) > 0 {
+		predicates = append(predicates, loan.OutstandingAmountNotIn(i.OutstandingAmountNotIn...))
+	}
+	if i.OutstandingAmountGT != nil {
+		predicates = append(predicates, loan.OutstandingAmountGT(*i.OutstandingAmountGT))
+	}
+	if i.OutstandingAmountGTE != nil {
+		predicates = append(predicates, loan.OutstandingAmountGTE(*i.OutstandingAmountGTE))
+	}
+	if i.OutstandingAmountLT != nil {
+		predicates = append(predicates, loan.OutstandingAmountLT(*i.OutstandingAmountLT))
+	}
+	if i.OutstandingAmountLTE != nil {
+		predicates = append(predicates, loan.OutstandingAmountLTE(*i.OutstandingAmountLTE))
+	}
+	if i.PaymentFrequency != nil {
+		predicates = append(predicates, loan.PaymentFrequencyEQ(*i.PaymentFrequency))
+	}
+	if i.PaymentFrequencyNEQ != nil {
+		predicates = append(predicates, loan.PaymentFrequencyNEQ(*i.PaymentFrequencyNEQ))
+	}
+	if len(i.PaymentFrequencyIn) > 0 {
+		predicates = append(predicates, loan.PaymentFrequencyIn(i.PaymentFrequencyIn...))
+	}
+	if len(i.PaymentFrequencyNotIn) > 0 {
+		predicates = append(predicates, loan.PaymentFrequencyNotIn(i.PaymentFrequencyNotIn...))
+	}
+	if i.PaidInstallments != nil {
+		predicates = append(predicates, loan.PaidInstallmentsEQ(*i.PaidInstallments))
+	}
+	if i.PaidInstallmentsNEQ != nil {
+		predicates = append(predicates, loan.PaidInstallmentsNEQ(*i.PaidInstallmentsNEQ))
+	}
+	if len(i.PaidInstallmentsIn) > 0 {
+		predicates = append(predicates, loan.PaidInstallmentsIn(i.PaidInstallmentsIn...))
+	}
+	if len(i.PaidInstallmentsNotIn) > 0 {
+		predicates = append(predicates, loan.PaidInstallmentsNotIn(i.PaidInstallmentsNotIn...))
+	}
+	if i.PaidInstallmentsGT != nil {
+		predicates = append(predicates, loan.PaidInstallmentsGT(*i.PaidInstallmentsGT))
+	}
+	if i.PaidInstallmentsGTE != nil {
+		predicates = append(predicates, loan.PaidInstallmentsGTE(*i.PaidInstallmentsGTE))
+	}
+	if i.PaidInstallmentsLT != nil {
+		predicates = append(predicates, loan.PaidInstallmentsLT(*i.PaidInstallmentsLT))
+	}
+	if i.PaidInstallmentsLTE != nil {
+		predicates = append(predicates, loan.PaidInstallmentsLTE(*i.PaidInstallmentsLTE))
+	}
+	if i.Provider != nil {
+		predicates = append(predicates, loan.ProviderEQ(*i.Provider))
+	}
+	if i.ProviderNEQ != nil {
+		predicates = append(predicates, loan.ProviderNEQ(*i.ProviderNEQ))
+	}
+	if len(i.ProviderIn) > 0 {
+		predicates = append(predicates, loan.ProviderIn(i.ProviderIn...))
+	}
+	if len(i.ProviderNotIn) > 0 {
+		predicates = append(predicates, loan.ProviderNotIn(i.ProviderNotIn...))
+	}
+	if i.ProviderGT != nil {
+		predicates = append(predicates, loan.ProviderGT(*i.ProviderGT))
+	}
+	if i.ProviderGTE != nil {
+		predicates = append(predicates, loan.ProviderGTE(*i.ProviderGTE))
+	}
+	if i.ProviderLT != nil {
+		predicates = append(predicates, loan.ProviderLT(*i.ProviderLT))
+	}
+	if i.ProviderLTE != nil {
+		predicates = append(predicates, loan.ProviderLTE(*i.ProviderLTE))
+	}
+	if i.ProviderContains != nil {
+		predicates = append(predicates, loan.ProviderContains(*i.ProviderContains))
+	}
+	if i.ProviderHasPrefix != nil {
+		predicates = append(predicates, loan.ProviderHasPrefix(*i.ProviderHasPrefix))
+	}
+	if i.ProviderHasSuffix != nil {
+		predicates = append(predicates, loan.ProviderHasSuffix(*i.ProviderHasSuffix))
+	}
+	if i.ProviderEqualFold != nil {
+		predicates = append(predicates, loan.ProviderEqualFold(*i.ProviderEqualFold))
+	}
+	if i.ProviderContainsFold != nil {
+		predicates = append(predicates, loan.ProviderContainsFold(*i.ProviderContainsFold))
+	}
+	if i.StartDate != nil {
+		predicates = append(predicates, loan.StartDateEQ(*i.StartDate))
+	}
+	if i.StartDateNEQ != nil {
+		predicates = append(predicates, loan.StartDateNEQ(*i.StartDateNEQ))
+	}
+	if len(i.StartDateIn) > 0 {
+		predicates = append(predicates, loan.StartDateIn(i.StartDateIn...))
+	}
+	if len(i.StartDateNotIn) > 0 {
+		predicates = append(predicates, loan.StartDateNotIn(i.StartDateNotIn...))
+	}
+	if i.StartDateGT != nil {
+		predicates = append(predicates, loan.StartDateGT(*i.StartDateGT))
+	}
+	if i.StartDateGTE != nil {
+		predicates = append(predicates, loan.StartDateGTE(*i.StartDateGTE))
+	}
+	if i.StartDateLT != nil {
+		predicates = append(predicates, loan.StartDateLT(*i.StartDateLT))
+	}
+	if i.StartDateLTE != nil {
+		predicates = append(predicates, loan.StartDateLTE(*i.StartDateLTE))
+	}
+	if i.Status != nil {
+		predicates = append(predicates, loan.StatusEQ(*i.Status))
+	}
+	if i.StatusNEQ != nil {
+		predicates = append(predicates, loan.StatusNEQ(*i.StatusNEQ))
+	}
+	if len(i.StatusIn) > 0 {
+		predicates = append(predicates, loan.StatusIn(i.StatusIn...))
+	}
+	if len(i.StatusNotIn) > 0 {
+		predicates = append(predicates, loan.StatusNotIn(i.StatusNotIn...))
+	}
+
+	if i.HasCompany != nil {
+		p := loan.HasCompany()
+		if !*i.HasCompany {
+			p = loan.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasCompanyWith) > 0 {
+		with := make([]predicate.Company, 0, len(i.HasCompanyWith))
+		for _, w := range i.HasCompanyWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasCompanyWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, loan.HasCompanyWith(with...))
+	}
+	switch len(predicates) {
+	case 0:
+		return nil, ErrEmptyLoanWhereInput
+	case 1:
+		return predicates[0], nil
+	default:
+		return loan.And(predicates...), nil
 	}
 }
 

@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -360,6 +361,55 @@ func init() {
 			return nil
 		}
 	}()
+	loanMixin := schema.Loan{}.Mixin()
+	loanMixinFields0 := loanMixin[0].Fields()
+	_ = loanMixinFields0
+	loanFields := schema.Loan{}.Fields()
+	_ = loanFields
+	// loanDescCreatedAt is the schema descriptor for createdAt field.
+	loanDescCreatedAt := loanMixinFields0[0].Descriptor()
+	// loan.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	loan.DefaultCreatedAt = loanDescCreatedAt.Default.(func() time.Time)
+	// loanDescUpdatedAt is the schema descriptor for updatedAt field.
+	loanDescUpdatedAt := loanMixinFields0[1].Descriptor()
+	// loan.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	loan.DefaultUpdatedAt = loanDescUpdatedAt.Default.(func() time.Time)
+	// loan.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	loan.UpdateDefaultUpdatedAt = loanDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// loanDescAmount is the schema descriptor for amount field.
+	loanDescAmount := loanFields[0].Descriptor()
+	// loan.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
+	loan.AmountValidator = loanDescAmount.Validators[0].(func(float64) error)
+	// loanDescInterestRate is the schema descriptor for interestRate field.
+	loanDescInterestRate := loanFields[4].Descriptor()
+	// loan.InterestRateValidator is a validator for the "interestRate" field. It is called by the builders before save.
+	loan.InterestRateValidator = loanDescInterestRate.Validators[0].(func(float64) error)
+	// loanDescInstallments is the schema descriptor for installments field.
+	loanDescInstallments := loanFields[5].Descriptor()
+	// loan.InstallmentsValidator is a validator for the "installments" field. It is called by the builders before save.
+	loan.InstallmentsValidator = loanDescInstallments.Validators[0].(func(int) error)
+	// loanDescNextPaymentAmount is the schema descriptor for nextPaymentAmount field.
+	loanDescNextPaymentAmount := loanFields[8].Descriptor()
+	// loan.DefaultNextPaymentAmount holds the default value on creation for the nextPaymentAmount field.
+	loan.DefaultNextPaymentAmount = loanDescNextPaymentAmount.Default.(float64)
+	// loan.NextPaymentAmountValidator is a validator for the "nextPaymentAmount" field. It is called by the builders before save.
+	loan.NextPaymentAmountValidator = loanDescNextPaymentAmount.Validators[0].(func(float64) error)
+	// loanDescOutstandingAmount is the schema descriptor for outstandingAmount field.
+	loanDescOutstandingAmount := loanFields[9].Descriptor()
+	// loan.OutstandingAmountValidator is a validator for the "outstandingAmount" field. It is called by the builders before save.
+	loan.OutstandingAmountValidator = loanDescOutstandingAmount.Validators[0].(func(float64) error)
+	// loanDescPaidInstallments is the schema descriptor for paidInstallments field.
+	loanDescPaidInstallments := loanFields[11].Descriptor()
+	// loan.DefaultPaidInstallments holds the default value on creation for the paidInstallments field.
+	loan.DefaultPaidInstallments = loanDescPaidInstallments.Default.(int)
+	// loanDescProvider is the schema descriptor for provider field.
+	loanDescProvider := loanFields[12].Descriptor()
+	// loan.ProviderValidator is a validator for the "provider" field. It is called by the builders before save.
+	loan.ProviderValidator = loanDescProvider.Validators[0].(func(string) error)
+	// loanDescStartDate is the schema descriptor for startDate field.
+	loanDescStartDate := loanFields[13].Descriptor()
+	// loan.DefaultStartDate holds the default value on creation for the startDate field.
+	loan.DefaultStartDate = loanDescStartDate.Default.(func() time.Time)
 	membersignuptokenMixin := schema.MemberSignupToken{}.Mixin()
 	membersignuptokenMixinFields0 := membersignuptokenMixin[0].Fields()
 	_ = membersignuptokenMixinFields0

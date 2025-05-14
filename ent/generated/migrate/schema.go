@@ -423,6 +423,43 @@ var (
 			},
 		},
 	}
+	// LoansColumns holds the columns for the "loans" table.
+	LoansColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "amount", Type: field.TypeFloat64},
+		{Name: "category", Type: field.TypeEnum, Enums: []string{"auto", "equipment", "expansion", "line_of_credit", "mortgage", "personal", "working_capital"}},
+		{Name: "collateral", Type: field.TypeString, Nullable: true},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "interest_rate", Type: field.TypeFloat64},
+		{Name: "installments", Type: field.TypeInt},
+		{Name: "maturity_date", Type: field.TypeTime},
+		{Name: "next_payment", Type: field.TypeTime, Nullable: true},
+		{Name: "next_payment_amount", Type: field.TypeFloat64, Nullable: true, Default: 0},
+		{Name: "outstanding_amount", Type: field.TypeFloat64},
+		{Name: "payment_frequency", Type: field.TypeEnum, Enums: []string{"weekly", "biweekly", "monthly", "quartely", "semiannual", "annual"}, Default: "monthly"},
+		{Name: "paid_installments", Type: field.TypeInt, Default: 0},
+		{Name: "provider", Type: field.TypeString},
+		{Name: "start_date", Type: field.TypeTime},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"active", "paid"}},
+		{Name: "company_loans", Type: field.TypeInt, Nullable: true},
+	}
+	// LoansTable holds the schema information for the "loans" table.
+	LoansTable = &schema.Table{
+		Name:       "loans",
+		Columns:    LoansColumns,
+		PrimaryKey: []*schema.Column{LoansColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "loans_companies_loans",
+				Columns:    []*schema.Column{LoansColumns[19]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// MemberSignupTokensColumns holds the columns for the "member_signup_tokens" table.
 	MemberSignupTokensColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -971,6 +1008,7 @@ var (
 		InventoriesTable,
 		InventoryMovementsTable,
 		InvoicesTable,
+		LoansTable,
 		MemberSignupTokensTable,
 		PayablesTable,
 		ProductsTable,
@@ -1007,6 +1045,7 @@ func init() {
 	InvoicesTable.ForeignKeys[0].RefTable = CompaniesTable
 	InvoicesTable.ForeignKeys[1].RefTable = CustomersTable
 	InvoicesTable.ForeignKeys[2].RefTable = UsersTable
+	LoansTable.ForeignKeys[0].RefTable = CompaniesTable
 	MemberSignupTokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	MemberSignupTokensTable.ForeignKeys[1].RefTable = UsersTable
 	PayablesTable.ForeignKeys[0].RefTable = CompaniesTable

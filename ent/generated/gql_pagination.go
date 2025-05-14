@@ -16,6 +16,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -3617,6 +3618,353 @@ func (i *Invoice) ToEdge(order *InvoiceOrder) *InvoiceEdge {
 	return &InvoiceEdge{
 		Node:   i,
 		Cursor: order.Field.toCursor(i),
+	}
+}
+
+// LoanEdge is the edge representation of Loan.
+type LoanEdge struct {
+	Node   *Loan  `json:"node"`
+	Cursor Cursor `json:"cursor"`
+}
+
+// LoanConnection is the connection containing edges to Loan.
+type LoanConnection struct {
+	Edges      []*LoanEdge `json:"edges"`
+	PageInfo   PageInfo    `json:"pageInfo"`
+	TotalCount int         `json:"totalCount"`
+}
+
+func (c *LoanConnection) build(nodes []*Loan, pager *loanPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Loan
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Loan {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Loan {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*LoanEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &LoanEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// LoanPaginateOption enables pagination customization.
+type LoanPaginateOption func(*loanPager) error
+
+// WithLoanOrder configures pagination ordering.
+func WithLoanOrder(order []*LoanOrder) LoanPaginateOption {
+	return func(pager *loanPager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithLoanFilter configures pagination filter.
+func WithLoanFilter(filter func(*LoanQuery) (*LoanQuery, error)) LoanPaginateOption {
+	return func(pager *loanPager) error {
+		if filter == nil {
+			return errors.New("LoanQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type loanPager struct {
+	reverse bool
+	order   []*LoanOrder
+	filter  func(*LoanQuery) (*LoanQuery, error)
+}
+
+func newLoanPager(opts []LoanPaginateOption, reverse bool) (*loanPager, error) {
+	pager := &loanPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *loanPager) applyFilter(query *LoanQuery) (*LoanQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *loanPager) toCursor(l *Loan) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(l).Value)
+	}
+	return Cursor{ID: l.ID, Value: cs}
+}
+
+func (p *loanPager) applyCursors(query *LoanQuery, after, before *Cursor) (*LoanQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultLoanOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *loanPager) applyOrder(query *LoanQuery) *LoanQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultLoanOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultLoanOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *loanPager) orderExpr(query *LoanQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultLoanOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Loan.
+func (l *LoanQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...LoanPaginateOption,
+) (*LoanConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newLoanPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if l, err = pager.applyFilter(l); err != nil {
+		return nil, err
+	}
+	conn := &LoanConnection{Edges: []*LoanEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = l.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if l, err = pager.applyCursors(l, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		l.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := l.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	l = pager.applyOrder(l)
+	nodes, err := l.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// LoanOrderFieldCreatedAt orders Loan by createdAt.
+	LoanOrderFieldCreatedAt = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.CreatedAt, nil
+		},
+		column: loan.FieldCreatedAt,
+		toTerm: loan.ByCreatedAt,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.CreatedAt,
+			}
+		},
+	}
+	// LoanOrderFieldUpdatedAt orders Loan by updatedAt.
+	LoanOrderFieldUpdatedAt = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.UpdatedAt, nil
+		},
+		column: loan.FieldUpdatedAt,
+		toTerm: loan.ByUpdatedAt,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.UpdatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f LoanOrderField) String() string {
+	var str string
+	switch f.column {
+	case LoanOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case LoanOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f LoanOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *LoanOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("LoanOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *LoanOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *LoanOrderFieldUpdatedAt
+	default:
+		return fmt.Errorf("%s is not a valid LoanOrderField", str)
+	}
+	return nil
+}
+
+// LoanOrderField defines the ordering field of Loan.
+type LoanOrderField struct {
+	// Value extracts the ordering value from the given Loan.
+	Value    func(*Loan) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) loan.OrderOption
+	toCursor func(*Loan) Cursor
+}
+
+// LoanOrder defines the ordering of Loan.
+type LoanOrder struct {
+	Direction OrderDirection  `json:"direction"`
+	Field     *LoanOrderField `json:"field"`
+}
+
+// DefaultLoanOrder is the default ordering of Loan.
+var DefaultLoanOrder = &LoanOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.ID, nil
+		},
+		column: loan.FieldID,
+		toTerm: loan.ByID,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{ID: l.ID}
+		},
+	},
+}
+
+// ToEdge converts Loan into LoanEdge.
+func (l *Loan) ToEdge(order *LoanOrder) *LoanEdge {
+	if order == nil {
+		order = DefaultLoanOrder
+	}
+	return &LoanEdge{
+		Node:   l,
+		Cursor: order.Field.toCursor(l),
 	}
 }
 

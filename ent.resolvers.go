@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
@@ -109,6 +110,18 @@ func (r *queryResolver) Invoices(ctx context.Context, after *entgql.Cursor[int],
 		generated.WithInvoiceOrder(orderBy),
 		generated.WithInvoiceFilter(where.Filter),
 	)
+}
+
+// Loans is the resolver for the loans field.
+func (r *queryResolver) Loans(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanOrder, where *generated.LoanWhereInput) (*generated.LoanConnection, error) {
+	_, currentCompany := utils.GetSession(&ctx)
+	return currentCompany.QueryLoans().
+		Where(loan.HasCompanyWith(company.IDEQ(currentCompany.ID))).
+		Paginate(
+			ctx, after, first, before, last,
+			generated.WithLoanFilter(where.Filter),
+			generated.WithLoanOrder(orderBy),
+		)
 }
 
 // MemberSignupTokens is the resolver for the memberSignupTokens field.

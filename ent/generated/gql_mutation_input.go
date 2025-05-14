@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
@@ -189,6 +190,7 @@ type CreateCompanyInput struct {
 	InventoryIDs         []int
 	InventoryMovementIDs []int
 	InvoiceIDs           []int
+	LoanIDs              []int
 	MemberSignupTokenIDs []int
 	ProductIDs           []int
 	ProjectIDs           []int
@@ -273,6 +275,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.InvoiceIDs; len(v) > 0 {
 		m.AddInvoiceIDs(v...)
+	}
+	if v := i.LoanIDs; len(v) > 0 {
+		m.AddLoanIDs(v...)
 	}
 	if v := i.MemberSignupTokenIDs; len(v) > 0 {
 		m.AddMemberSignupTokenIDs(v...)
@@ -374,6 +379,9 @@ type UpdateCompanyInput struct {
 	ClearInvoices              bool
 	AddInvoiceIDs              []int
 	RemoveInvoiceIDs           []int
+	ClearLoans                 bool
+	AddLoanIDs                 []int
+	RemoveLoanIDs              []int
 	ClearMemberSignupTokens    bool
 	AddMemberSignupTokenIDs    []int
 	RemoveMemberSignupTokenIDs []int
@@ -574,6 +582,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveInvoiceIDs; len(v) > 0 {
 		m.RemoveInvoiceIDs(v...)
+	}
+	if i.ClearLoans {
+		m.ClearLoans()
+	}
+	if v := i.AddLoanIDs; len(v) > 0 {
+		m.AddLoanIDs(v...)
+	}
+	if v := i.RemoveLoanIDs; len(v) > 0 {
+		m.RemoveLoanIDs(v...)
 	}
 	if i.ClearMemberSignupTokens {
 		m.ClearMemberSignupTokens()
@@ -1740,6 +1757,172 @@ func (c *InvoiceUpdate) SetInput(i UpdateInvoiceInput) *InvoiceUpdate {
 
 // SetInput applies the change-set in the UpdateInvoiceInput on the InvoiceUpdateOne builder.
 func (c *InvoiceUpdateOne) SetInput(i UpdateInvoiceInput) *InvoiceUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateLoanInput represents a mutation input for creating loans.
+type CreateLoanInput struct {
+	Amount            float64
+	Category          loan.Category
+	Collateral        *string
+	Description       *string
+	InterestRate      float64
+	Installments      int
+	MaturityDate      time.Time
+	NextPayment       *time.Time
+	NextPaymentAmount *float64
+	OutstandingAmount float64
+	PaymentFrequency  *loan.PaymentFrequency
+	PaidInstallments  *int
+	Provider          string
+	StartDate         *time.Time
+	Status            loan.Status
+	CompanyID         *int
+}
+
+// Mutate applies the CreateLoanInput on the LoanMutation builder.
+func (i *CreateLoanInput) Mutate(m *LoanMutation) {
+	m.SetAmount(i.Amount)
+	m.SetCategory(i.Category)
+	if v := i.Collateral; v != nil {
+		m.SetCollateral(*v)
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	m.SetInterestRate(i.InterestRate)
+	m.SetInstallments(i.Installments)
+	m.SetMaturityDate(i.MaturityDate)
+	if v := i.NextPayment; v != nil {
+		m.SetNextPayment(*v)
+	}
+	if v := i.NextPaymentAmount; v != nil {
+		m.SetNextPaymentAmount(*v)
+	}
+	m.SetOutstandingAmount(i.OutstandingAmount)
+	if v := i.PaymentFrequency; v != nil {
+		m.SetPaymentFrequency(*v)
+	}
+	if v := i.PaidInstallments; v != nil {
+		m.SetPaidInstallments(*v)
+	}
+	m.SetProvider(i.Provider)
+	if v := i.StartDate; v != nil {
+		m.SetStartDate(*v)
+	}
+	m.SetStatus(i.Status)
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateLoanInput on the LoanCreate builder.
+func (c *LoanCreate) SetInput(i CreateLoanInput) *LoanCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateLoanInput represents a mutation input for updating loans.
+type UpdateLoanInput struct {
+	Amount                 *float64
+	Category               *loan.Category
+	ClearCollateral        bool
+	Collateral             *string
+	ClearDescription       bool
+	Description            *string
+	InterestRate           *float64
+	Installments           *int
+	MaturityDate           *time.Time
+	ClearNextPayment       bool
+	NextPayment            *time.Time
+	ClearNextPaymentAmount bool
+	NextPaymentAmount      *float64
+	OutstandingAmount      *float64
+	PaymentFrequency       *loan.PaymentFrequency
+	PaidInstallments       *int
+	Provider               *string
+	StartDate              *time.Time
+	Status                 *loan.Status
+	ClearCompany           bool
+	CompanyID              *int
+}
+
+// Mutate applies the UpdateLoanInput on the LoanMutation builder.
+func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
+	if v := i.Amount; v != nil {
+		m.SetAmount(*v)
+	}
+	if v := i.Category; v != nil {
+		m.SetCategory(*v)
+	}
+	if i.ClearCollateral {
+		m.ClearCollateral()
+	}
+	if v := i.Collateral; v != nil {
+		m.SetCollateral(*v)
+	}
+	if i.ClearDescription {
+		m.ClearDescription()
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.InterestRate; v != nil {
+		m.SetInterestRate(*v)
+	}
+	if v := i.Installments; v != nil {
+		m.SetInstallments(*v)
+	}
+	if v := i.MaturityDate; v != nil {
+		m.SetMaturityDate(*v)
+	}
+	if i.ClearNextPayment {
+		m.ClearNextPayment()
+	}
+	if v := i.NextPayment; v != nil {
+		m.SetNextPayment(*v)
+	}
+	if i.ClearNextPaymentAmount {
+		m.ClearNextPaymentAmount()
+	}
+	if v := i.NextPaymentAmount; v != nil {
+		m.SetNextPaymentAmount(*v)
+	}
+	if v := i.OutstandingAmount; v != nil {
+		m.SetOutstandingAmount(*v)
+	}
+	if v := i.PaymentFrequency; v != nil {
+		m.SetPaymentFrequency(*v)
+	}
+	if v := i.PaidInstallments; v != nil {
+		m.SetPaidInstallments(*v)
+	}
+	if v := i.Provider; v != nil {
+		m.SetProvider(*v)
+	}
+	if v := i.StartDate; v != nil {
+		m.SetStartDate(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearCompany {
+		m.ClearCompany()
+	}
+	if v := i.CompanyID; v != nil {
+		m.SetCompanyID(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateLoanInput on the LoanUpdate builder.
+func (c *LoanUpdate) SetInput(i UpdateLoanInput) *LoanUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateLoanInput on the LoanUpdateOne builder.
+func (c *LoanUpdateOne) SetInput(i UpdateLoanInput) *LoanUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }

@@ -7,6 +7,7 @@ package mazza
 import (
 	"context"
 	"mazza/app/manager/clients"
+	"mazza/app/manager/finance"
 	"mazza/app/manager/suppliers"
 	"mazza/ent/generated"
 	"mazza/mazza/generated/model"
@@ -22,6 +23,11 @@ func (r *queryResolver) SupplierList(ctx context.Context, top *int) ([]*model.Su
 	return suppliers.GetSupplierList(ctx, r.client, top)
 }
 
+// LoanProviderList is the resolver for the loanProviderList field.
+func (r *queryResolver) LoanProviderList(ctx context.Context, top *int) ([]*model.LoanProviderList, error) {
+	return finance.LoanProviderList(ctx, r.client, top)
+}
+
 // AggregateReceivables is the resolver for the aggregateReceivables field.
 func (r *queryResolver) AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error) {
 	return clients.AggregateReceivables(ctx, r.client, where, groupBy)
@@ -32,6 +38,11 @@ func (r *queryResolver) AggregatePayables(ctx context.Context, where *generated.
 	return suppliers.AggregatePayables(ctx, r.client, where, groupBy)
 }
 
+// AggregateLoans is the resolver for the aggregateLoans field.
+func (r *queryResolver) AggregateLoans(ctx context.Context, where *generated.LoanWhereInput, groupBy []model.LoansGroupBy) ([]*model.LoanAggregationOutput, error) {
+	return finance.AggregateLoans(ctx, r.client, where, groupBy)
+}
+
 // AccountsReceivableAging is the resolver for the accountsReceivableAging field.
 func (r *queryResolver) AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
 	return clients.AccountsReceivableAging(ctx, r.client, name)
@@ -40,4 +51,9 @@ func (r *queryResolver) AccountsReceivableAging(ctx context.Context, name *strin
 // AccountsPayableAging is the resolver for the accountsPayableAging field.
 func (r *queryResolver) AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
 	return suppliers.AccountsPayableAging(ctx, r.client, name)
+}
+
+// LoansAging is the resolver for the loansAging field.
+func (r *queryResolver) LoansAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
+	return finance.LoansAging(ctx, r.client, name)
 }

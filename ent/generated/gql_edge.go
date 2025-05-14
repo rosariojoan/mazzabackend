@@ -132,6 +132,18 @@ func (c *Company) Invoices(ctx context.Context) (result []*Invoice, err error) {
 	return result, err
 }
 
+func (c *Company) Loans(ctx context.Context) (result []*Loan, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedLoans(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.LoansOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryLoans().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) MemberSignupTokens(ctx context.Context) (result []*MemberSignupToken, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedMemberSignupTokens(graphql.GetFieldContext(ctx).Field.Alias)
@@ -436,6 +448,14 @@ func (i *Invoice) Receivable(ctx context.Context) (*Receivable, error) {
 	result, err := i.Edges.ReceivableOrErr()
 	if IsNotLoaded(err) {
 		result, err = i.QueryReceivable().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (l *Loan) Company(ctx context.Context) (*Company, error) {
+	result, err := l.Edges.CompanyOrErr()
+	if IsNotLoaded(err) {
+		result, err = l.QueryCompany().Only(ctx)
 	}
 	return result, MaskNotFound(err)
 }

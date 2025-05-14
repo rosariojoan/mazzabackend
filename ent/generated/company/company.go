@@ -78,6 +78,8 @@ const (
 	EdgeInventoryMovements = "inventoryMovements"
 	// EdgeInvoices holds the string denoting the invoices edge name in mutations.
 	EdgeInvoices = "invoices"
+	// EdgeLoans holds the string denoting the loans edge name in mutations.
+	EdgeLoans = "loans"
 	// EdgeMemberSignupTokens holds the string denoting the membersignuptokens edge name in mutations.
 	EdgeMemberSignupTokens = "memberSignupTokens"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
@@ -167,6 +169,13 @@ const (
 	InvoicesInverseTable = "invoices"
 	// InvoicesColumn is the table column denoting the invoices relation/edge.
 	InvoicesColumn = "company_invoices"
+	// LoansTable is the table that holds the loans relation/edge.
+	LoansTable = "loans"
+	// LoansInverseTable is the table name for the Loan entity.
+	// It exists in this package in order to avoid circular dependency with the "loan" package.
+	LoansInverseTable = "loans"
+	// LoansColumn is the table column denoting the loans relation/edge.
+	LoansColumn = "company_loans"
 	// MemberSignupTokensTable is the table that holds the memberSignupTokens relation/edge.
 	MemberSignupTokensTable = "member_signup_tokens"
 	// MemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
@@ -572,6 +581,20 @@ func ByInvoices(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
+// ByLoansCount orders the results by loans count.
+func ByLoansCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoansStep(), opts...)
+	}
+}
+
+// ByLoans orders the results by loans terms.
+func ByLoans(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoansStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByMemberSignupTokensCount orders the results by memberSignupTokens count.
 func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -793,6 +816,13 @@ func newInvoicesStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(InvoicesInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, InvoicesTable, InvoicesColumn),
+	)
+}
+func newLoansStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoansInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoansTable, LoansColumn),
 	)
 }
 func newMemberSignupTokensStep() *sqlgraph.Step {

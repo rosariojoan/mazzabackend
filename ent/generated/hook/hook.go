@@ -116,6 +116,18 @@ func (f InvoiceFunc) Mutate(ctx context.Context, m generated.Mutation) (generate
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.InvoiceMutation", m)
 }
 
+// The LoanFunc type is an adapter to allow the use of ordinary
+// function as Loan mutator.
+type LoanFunc func(context.Context, *generated.LoanMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LoanFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.LoanMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.LoanMutation", m)
+}
+
 // The MemberSignupTokenFunc type is an adapter to allow the use of ordinary
 // function as MemberSignupToken mutator.
 type MemberSignupTokenFunc func(context.Context, *generated.MemberSignupTokenMutation) (generated.Value, error)

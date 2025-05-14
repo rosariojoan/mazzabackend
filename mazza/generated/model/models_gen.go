@@ -218,6 +218,19 @@ type Liabilities struct {
 	TotalLiabilities           float64          `json:"totalLiabilities"`
 }
 
+type LoanAggregationOutput struct {
+	Company *int     `json:"company,omitempty"`
+	Count   *int     `json:"count,omitempty"`
+	Sum     *float64 `json:"sum,omitempty"`
+}
+
+type LoanProviderList struct {
+	Name                string  `json:"name"`
+	OutstandingBalance  float64 `json:"outstandingBalance"`
+	LoansCount          int     `json:"loansCount"`
+	AverageInterestRate float64 `json:"averageInterestRate"`
+}
+
 type LoginInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -379,6 +392,7 @@ const (
 	BaseOperationTypeSalesReturn    BaseOperationType = "SALES_RETURN"
 	BaseOperationTypePurchase       BaseOperationType = "PURCHASE"
 	BaseOperationTypePurchaseReturn BaseOperationType = "PURCHASE_RETURN"
+	BaseOperationTypeFinance        BaseOperationType = "FINANCE"
 	BaseOperationTypeOther          BaseOperationType = "OTHER"
 	BaseOperationTypeInitialSetup   BaseOperationType = "INITIAL_SETUP"
 )
@@ -388,13 +402,14 @@ var AllBaseOperationType = []BaseOperationType{
 	BaseOperationTypeSalesReturn,
 	BaseOperationTypePurchase,
 	BaseOperationTypePurchaseReturn,
+	BaseOperationTypeFinance,
 	BaseOperationTypeOther,
 	BaseOperationTypeInitialSetup,
 }
 
 func (e BaseOperationType) IsValid() bool {
 	switch e {
-	case BaseOperationTypeSales, BaseOperationTypeSalesReturn, BaseOperationTypePurchase, BaseOperationTypePurchaseReturn, BaseOperationTypeOther, BaseOperationTypeInitialSetup:
+	case BaseOperationTypeSales, BaseOperationTypeSalesReturn, BaseOperationTypePurchase, BaseOperationTypePurchaseReturn, BaseOperationTypeFinance, BaseOperationTypeOther, BaseOperationTypeInitialSetup:
 		return true
 	}
 	return false
@@ -459,6 +474,49 @@ func (e *CustomersGroupBy) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CustomersGroupBy) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type LoansGroupBy string
+
+const (
+	LoansGroupByCategory LoansGroupBy = "category"
+	LoansGroupByProvider LoansGroupBy = "provider"
+	LoansGroupByStatus   LoansGroupBy = "status"
+)
+
+var AllLoansGroupBy = []LoansGroupBy{
+	LoansGroupByCategory,
+	LoansGroupByProvider,
+	LoansGroupByStatus,
+}
+
+func (e LoansGroupBy) IsValid() bool {
+	switch e {
+	case LoansGroupByCategory, LoansGroupByProvider, LoansGroupByStatus:
+		return true
+	}
+	return false
+}
+
+func (e LoansGroupBy) String() string {
+	return string(e)
+}
+
+func (e *LoansGroupBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = LoansGroupBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid LoansGroupBy", str)
+	}
+	return nil
+}
+
+func (e LoansGroupBy) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 

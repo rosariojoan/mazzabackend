@@ -35,6 +35,7 @@ autobind:
   - mazza/ent/generated/file
   - mazza/ent/generated/inventory
   - mazza/ent/generated/inventorymovement
+  - mazza/ent/generated/loan
   - mazza/ent/generated/payable
   - mazza/ent/generated/product
   - mazza/ent/generated/receivable

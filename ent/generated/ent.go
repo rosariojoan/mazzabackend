@@ -15,6 +15,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -103,6 +104,7 @@ func checkColumn(table, column string) error {
 			inventory.Table:         inventory.ValidColumn,
 			inventorymovement.Table: inventorymovement.ValidColumn,
 			invoice.Table:           invoice.ValidColumn,
+			loan.Table:              loan.ValidColumn,
 			membersignuptoken.Table: membersignuptoken.ValidColumn,
 			payable.Table:           payable.ValidColumn,
 			product.Table:           product.ValidColumn,

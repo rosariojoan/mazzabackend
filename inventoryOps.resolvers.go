@@ -30,7 +30,7 @@ func (r *mutationResolver) CreateInventory(ctx context.Context, input model.Crea
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if input.InventoryMovementInputData != nil {
 		input.InventoryMovementInputData.MovementInput.InventoryID = newItem.ID
 		_, err = accountingentry.CreateInventoryMovement(ctx, tx, *input.InventoryMovementInputData.MovementInput, input.InventoryMovementInputData.AccountingEntry)

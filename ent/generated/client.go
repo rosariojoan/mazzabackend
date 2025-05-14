@@ -20,6 +20,7 @@ import (
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -65,6 +66,8 @@ type Client struct {
 	InventoryMovement *InventoryMovementClient
 	// Invoice is the client for interacting with the Invoice builders.
 	Invoice *InvoiceClient
+	// Loan is the client for interacting with the Loan builders.
+	Loan *LoanClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -113,6 +116,7 @@ func (c *Client) init() {
 	c.Inventory = NewInventoryClient(c.config)
 	c.InventoryMovement = NewInventoryMovementClient(c.config)
 	c.Invoice = NewInvoiceClient(c.config)
+	c.Loan = NewLoanClient(c.config)
 	c.MemberSignupToken = NewMemberSignupTokenClient(c.config)
 	c.Payable = NewPayableClient(c.config)
 	c.Product = NewProductClient(c.config)
@@ -227,6 +231,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Inventory:         NewInventoryClient(cfg),
 		InventoryMovement: NewInventoryMovementClient(cfg),
 		Invoice:           NewInvoiceClient(cfg),
+		Loan:              NewLoanClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -268,6 +273,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Inventory:         NewInventoryClient(cfg),
 		InventoryMovement: NewInventoryMovementClient(cfg),
 		Invoice:           NewInvoiceClient(cfg),
+		Loan:              NewLoanClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -311,9 +317,9 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Inventory, c.InventoryMovement, c.Invoice, c.MemberSignupToken, c.Payable,
-		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.Inventory, c.InventoryMovement, c.Invoice, c.Loan, c.MemberSignupToken,
+		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
+		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -324,9 +330,9 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Inventory, c.InventoryMovement, c.Invoice, c.MemberSignupToken, c.Payable,
-		c.Product, c.Project, c.ProjectMilestone, c.ProjectTask, c.Receivable,
-		c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.Inventory, c.InventoryMovement, c.Invoice, c.Loan, c.MemberSignupToken,
+		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
+		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -353,6 +359,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.InventoryMovement.mutate(ctx, m)
 	case *InvoiceMutation:
 		return c.Invoice.mutate(ctx, m)
+	case *LoanMutation:
+		return c.Loan.mutate(ctx, m)
 	case *MemberSignupTokenMutation:
 		return c.MemberSignupToken.mutate(ctx, m)
 	case *PayableMutation:
@@ -794,6 +802,22 @@ func (c *CompanyClient) QueryInvoices(co *Company) *InvoiceQuery {
 			sqlgraph.From(company.Table, company.FieldID, id),
 			sqlgraph.To(invoice.Table, invoice.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.InvoicesTable, company.InvoicesColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryLoans queries the loans edge of a Company.
+func (c *CompanyClient) QueryLoans(co *Company) *LoanQuery {
+	query := (&LoanClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.LoansTable, company.LoansColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -2250,6 +2274,155 @@ func (c *InvoiceClient) mutate(ctx context.Context, m *InvoiceMutation) (Value, 
 		return (&InvoiceDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown Invoice mutation op: %q", m.Op())
+	}
+}
+
+// LoanClient is a client for the Loan schema.
+type LoanClient struct {
+	config
+}
+
+// NewLoanClient returns a client for the Loan from the given config.
+func NewLoanClient(c config) *LoanClient {
+	return &LoanClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `loan.Hooks(f(g(h())))`.
+func (c *LoanClient) Use(hooks ...Hook) {
+	c.hooks.Loan = append(c.hooks.Loan, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `loan.Intercept(f(g(h())))`.
+func (c *LoanClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Loan = append(c.inters.Loan, interceptors...)
+}
+
+// Create returns a builder for creating a Loan entity.
+func (c *LoanClient) Create() *LoanCreate {
+	mutation := newLoanMutation(c.config, OpCreate)
+	return &LoanCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Loan entities.
+func (c *LoanClient) CreateBulk(builders ...*LoanCreate) *LoanCreateBulk {
+	return &LoanCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *LoanClient) MapCreateBulk(slice any, setFunc func(*LoanCreate, int)) *LoanCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &LoanCreateBulk{err: fmt.Errorf("calling to LoanClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*LoanCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &LoanCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Loan.
+func (c *LoanClient) Update() *LoanUpdate {
+	mutation := newLoanMutation(c.config, OpUpdate)
+	return &LoanUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LoanClient) UpdateOne(l *Loan) *LoanUpdateOne {
+	mutation := newLoanMutation(c.config, OpUpdateOne, withLoan(l))
+	return &LoanUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LoanClient) UpdateOneID(id int) *LoanUpdateOne {
+	mutation := newLoanMutation(c.config, OpUpdateOne, withLoanID(id))
+	return &LoanUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Loan.
+func (c *LoanClient) Delete() *LoanDelete {
+	mutation := newLoanMutation(c.config, OpDelete)
+	return &LoanDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LoanClient) DeleteOne(l *Loan) *LoanDeleteOne {
+	return c.DeleteOneID(l.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *LoanClient) DeleteOneID(id int) *LoanDeleteOne {
+	builder := c.Delete().Where(loan.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LoanDeleteOne{builder}
+}
+
+// Query returns a query builder for Loan.
+func (c *LoanClient) Query() *LoanQuery {
+	return &LoanQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeLoan},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Loan entity by its id.
+func (c *LoanClient) Get(ctx context.Context, id int) (*Loan, error) {
+	return c.Query().Where(loan.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LoanClient) GetX(ctx context.Context, id int) *Loan {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCompany queries the company edge of a Loan.
+func (c *LoanClient) QueryCompany(l *Loan) *CompanyQuery {
+	query := (&CompanyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, id),
+			sqlgraph.To(company.Table, company.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, loan.CompanyTable, loan.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *LoanClient) Hooks() []Hook {
+	return c.hooks.Loan
+}
+
+// Interceptors returns the client interceptors.
+func (c *LoanClient) Interceptors() []Interceptor {
+	return c.inters.Loan
+}
+
+func (c *LoanClient) mutate(ctx context.Context, m *LoanMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&LoanCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&LoanUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&LoanUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&LoanDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Loan mutation op: %q", m.Op())
 	}
 }
 
@@ -4756,13 +4929,13 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 type (
 	hooks struct {
 		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
-		InventoryMovement, Invoice, MemberSignupToken, Payable, Product, Project,
+		InventoryMovement, Invoice, Loan, MemberSignupToken, Payable, Product, Project,
 		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
 		UserRole, Workshift []ent.Hook
 	}
 	inters struct {
 		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
-		InventoryMovement, Invoice, MemberSignupToken, Payable, Product, Project,
+		InventoryMovement, Invoice, Loan, MemberSignupToken, Payable, Product, Project,
 		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
 		UserRole, Workshift []ent.Interceptor
 	}
