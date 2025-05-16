@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/user"
 	"time"
@@ -284,6 +285,25 @@ func (aeu *AccountingEntryUpdate) SetUser(u *User) *AccountingEntryUpdate {
 	return aeu.SetUserID(u.ID)
 }
 
+// SetLoanID sets the "loan" edge to the Loan entity by ID.
+func (aeu *AccountingEntryUpdate) SetLoanID(id int) *AccountingEntryUpdate {
+	aeu.mutation.SetLoanID(id)
+	return aeu
+}
+
+// SetNillableLoanID sets the "loan" edge to the Loan entity by ID if the given value is not nil.
+func (aeu *AccountingEntryUpdate) SetNillableLoanID(id *int) *AccountingEntryUpdate {
+	if id != nil {
+		aeu = aeu.SetLoanID(*id)
+	}
+	return aeu
+}
+
+// SetLoan sets the "loan" edge to the Loan entity.
+func (aeu *AccountingEntryUpdate) SetLoan(l *Loan) *AccountingEntryUpdate {
+	return aeu.SetLoanID(l.ID)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeu *AccountingEntryUpdate) Mutation() *AccountingEntryMutation {
 	return aeu.mutation
@@ -298,6 +318,12 @@ func (aeu *AccountingEntryUpdate) ClearCompany() *AccountingEntryUpdate {
 // ClearUser clears the "user" edge to the User entity.
 func (aeu *AccountingEntryUpdate) ClearUser() *AccountingEntryUpdate {
 	aeu.mutation.ClearUser()
+	return aeu
+}
+
+// ClearLoan clears the "loan" edge to the Loan entity.
+func (aeu *AccountingEntryUpdate) ClearLoan() *AccountingEntryUpdate {
+	aeu.mutation.ClearLoan()
 	return aeu
 }
 
@@ -485,6 +511,35 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeu.mutation.LoanCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.LoanTable,
+			Columns: []string{accountingentry.LoanColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeu.mutation.LoanIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.LoanTable,
+			Columns: []string{accountingentry.LoanColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -767,6 +822,25 @@ func (aeuo *AccountingEntryUpdateOne) SetUser(u *User) *AccountingEntryUpdateOne
 	return aeuo.SetUserID(u.ID)
 }
 
+// SetLoanID sets the "loan" edge to the Loan entity by ID.
+func (aeuo *AccountingEntryUpdateOne) SetLoanID(id int) *AccountingEntryUpdateOne {
+	aeuo.mutation.SetLoanID(id)
+	return aeuo
+}
+
+// SetNillableLoanID sets the "loan" edge to the Loan entity by ID if the given value is not nil.
+func (aeuo *AccountingEntryUpdateOne) SetNillableLoanID(id *int) *AccountingEntryUpdateOne {
+	if id != nil {
+		aeuo = aeuo.SetLoanID(*id)
+	}
+	return aeuo
+}
+
+// SetLoan sets the "loan" edge to the Loan entity.
+func (aeuo *AccountingEntryUpdateOne) SetLoan(l *Loan) *AccountingEntryUpdateOne {
+	return aeuo.SetLoanID(l.ID)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeuo *AccountingEntryUpdateOne) Mutation() *AccountingEntryMutation {
 	return aeuo.mutation
@@ -781,6 +855,12 @@ func (aeuo *AccountingEntryUpdateOne) ClearCompany() *AccountingEntryUpdateOne {
 // ClearUser clears the "user" edge to the User entity.
 func (aeuo *AccountingEntryUpdateOne) ClearUser() *AccountingEntryUpdateOne {
 	aeuo.mutation.ClearUser()
+	return aeuo
+}
+
+// ClearLoan clears the "loan" edge to the Loan entity.
+func (aeuo *AccountingEntryUpdateOne) ClearLoan() *AccountingEntryUpdateOne {
+	aeuo.mutation.ClearLoan()
 	return aeuo
 }
 
@@ -998,6 +1078,35 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeuo.mutation.LoanCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.LoanTable,
+			Columns: []string{accountingentry.LoanColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeuo.mutation.LoanIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   accountingentry.LoanTable,
+			Columns: []string{accountingentry.LoanColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

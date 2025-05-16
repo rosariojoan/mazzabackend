@@ -532,6 +532,22 @@ func (c *AccountingEntryClient) QueryUser(ae *AccountingEntry) *UserQuery {
 	return query
 }
 
+// QueryLoan queries the loan edge of a AccountingEntry.
+func (c *AccountingEntryClient) QueryLoan(ae *AccountingEntry) *LoanQuery {
+	query := (&LoanClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ae.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.LoanTable, accountingentry.LoanColumn),
+		)
+		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *AccountingEntryClient) Hooks() []Hook {
 	return c.hooks.AccountingEntry
@@ -2394,6 +2410,22 @@ func (c *LoanClient) QueryCompany(l *Loan) *CompanyQuery {
 			sqlgraph.From(loan.Table, loan.FieldID, id),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, loan.CompanyTable, loan.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTransactionHistory queries the transactionHistory edge of a Loan.
+func (c *LoanClient) QueryTransactionHistory(l *Loan) *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, id),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, loan.TransactionHistoryTable, loan.TransactionHistoryColumn),
 		)
 		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
 		return fromV, nil

@@ -24,7 +24,7 @@ func AggregateLoans(ctx context.Context, client *generated.Client, where *genera
 	}
 	err = query.Where(loan.HasCompanyWith(company.IDEQ(currentCompany.ID))).
 		// GroupBy().
-		Aggregate(generated.Count(), generated.Sum(loan.FieldOutstandingAmount)).Scan(ctx, &agg)
+		Aggregate(generated.Count(), generated.Sum(loan.FieldOutstandingBalance)).Scan(ctx, &agg)
 
 	if err == nil {
 		for _, item := range agg {

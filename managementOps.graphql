@@ -14,6 +14,7 @@ type SupplierList {
 type LoanProviderList {
     name: String!
     outstandingBalance: Float!
+    totalBorrowed: Float!
     loansCount: Int!
     averageInterestRate: Float!
 }
@@ -62,27 +63,46 @@ enum LoansGroupBy {
   status
 }
 
+input CreateLoanInputData {
+   loanInput: CreateLoanInput!
+   accountingEntry: BaseEntryRegistrationInput
+}
+
+input UpdateLoanInputData {
+   id: ID!
+   loanInput: UpdateLoanInput!
+   accountingEntry: BaseEntryRegistrationInput
+}
+
+#-----------------------------------------------
+extend type Mutation {
+   createLoan(input: CreateLoanInputData!): Loan!
+   updateLoan(input: UpdateLoanInputData!): Loan!
+}
+
 extend type Query {
-    clientList(top: Int): [ClientList!]!
-    supplierList(top: Int): [SupplierList!]!
-    loanProviderList(top: Int): [LoanProviderList!]!
+   clientList(top: Int): [ClientList!]!
+   supplierList(top: Int): [SupplierList!]!
+   loanProviderList(top: Int): [LoanProviderList!]!
 
-    aggregateReceivables(
-        where: ReceivableWhereInput
-        groupBy: [ReceivablesGroupBy!]
-    ): [ReceivableAggregationOutput!]!
+   getLoan(id: ID!): Loan!
 
-    aggregatePayables(
-        where: PayableWhereInput
-        groupBy: [PayablesGroupBy!]
-    ): [PayableAggregationOutput!]!
-    
-    aggregateLoans(
-        where: LoanWhereInput
-        groupBy: [LoansGroupBy!]
-    ): [LoanAggregationOutput!]!
+   aggregateReceivables(
+      where: ReceivableWhereInput
+      groupBy: [ReceivablesGroupBy!]
+   ): [ReceivableAggregationOutput!]!
 
-    accountsReceivableAging(name: String): [AgingBucket!]!
-    accountsPayableAging(name: String): [AgingBucket!]!
-    loansAging(name: String): [AgingBucket!]!
+   aggregatePayables(
+      where: PayableWhereInput
+      groupBy: [PayablesGroupBy!]
+   ): [PayableAggregationOutput!]!
+   
+   aggregateLoans(
+      where: LoanWhereInput
+      groupBy: [LoansGroupBy!]
+   ): [LoanAggregationOutput!]!
+
+   accountsReceivableAging(name: String): [AgingBucket!]!
+   accountsPayableAging(name: String): [AgingBucket!]!
+   loansAging(name: String): [AgingBucket!]!
 }

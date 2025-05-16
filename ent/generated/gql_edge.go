@@ -24,6 +24,14 @@ func (ae *AccountingEntry) User(ctx context.Context) (*User, error) {
 	return result, MaskNotFound(err)
 }
 
+func (ae *AccountingEntry) Loan(ctx context.Context) (*Loan, error) {
+	result, err := ae.Edges.LoanOrErr()
+	if IsNotLoaded(err) {
+		result, err = ae.QueryLoan().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (c *Company) AvailableRoles(ctx context.Context) (result []*UserRole, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedAvailableRoles(graphql.GetFieldContext(ctx).Field.Alias)
@@ -458,6 +466,18 @@ func (l *Loan) Company(ctx context.Context) (*Company, error) {
 		result, err = l.QueryCompany().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (l *Loan) TransactionHistory(ctx context.Context) (result []*AccountingEntry, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = l.NamedTransactionHistory(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = l.Edges.TransactionHistoryOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = l.QueryTransactionHistory().All(ctx)
+	}
+	return result, err
 }
 
 func (mst *MemberSignupToken) Company(ctx context.Context) (*Company, error) {

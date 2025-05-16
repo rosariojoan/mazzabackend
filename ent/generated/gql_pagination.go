@@ -3891,6 +3891,132 @@ var (
 			}
 		},
 	}
+	// LoanOrderFieldAmount orders Loan by amount.
+	LoanOrderFieldAmount = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.Amount, nil
+		},
+		column: loan.FieldAmount,
+		toTerm: loan.ByAmount,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.Amount,
+			}
+		},
+	}
+	// LoanOrderFieldCategory orders Loan by category.
+	LoanOrderFieldCategory = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.Category, nil
+		},
+		column: loan.FieldCategory,
+		toTerm: loan.ByCategory,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.Category,
+			}
+		},
+	}
+	// LoanOrderFieldInterestRate orders Loan by interestRate.
+	LoanOrderFieldInterestRate = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.InterestRate, nil
+		},
+		column: loan.FieldInterestRate,
+		toTerm: loan.ByInterestRate,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.InterestRate,
+			}
+		},
+	}
+	// LoanOrderFieldMaturityDate orders Loan by maturityDate.
+	LoanOrderFieldMaturityDate = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.MaturityDate, nil
+		},
+		column: loan.FieldMaturityDate,
+		toTerm: loan.ByMaturityDate,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.MaturityDate,
+			}
+		},
+	}
+	// LoanOrderFieldNextPayment orders Loan by nextPayment.
+	LoanOrderFieldNextPayment = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.NextPayment, nil
+		},
+		column: loan.FieldNextPayment,
+		toTerm: loan.ByNextPayment,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.NextPayment,
+			}
+		},
+	}
+	// LoanOrderFieldNextPaymentAmount orders Loan by nextPaymentAmount.
+	LoanOrderFieldNextPaymentAmount = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.NextPaymentAmount, nil
+		},
+		column: loan.FieldNextPaymentAmount,
+		toTerm: loan.ByNextPaymentAmount,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.NextPaymentAmount,
+			}
+		},
+	}
+	// LoanOrderFieldOutstandingBalance orders Loan by outstandingBalance.
+	LoanOrderFieldOutstandingBalance = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.OutstandingBalance, nil
+		},
+		column: loan.FieldOutstandingBalance,
+		toTerm: loan.ByOutstandingBalance,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.OutstandingBalance,
+			}
+		},
+	}
+	// LoanOrderFieldPaymentFrequency orders Loan by paymentFrequency.
+	LoanOrderFieldPaymentFrequency = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.PaymentFrequency, nil
+		},
+		column: loan.FieldPaymentFrequency,
+		toTerm: loan.ByPaymentFrequency,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.PaymentFrequency,
+			}
+		},
+	}
+	// LoanOrderFieldStartDate orders Loan by startDate.
+	LoanOrderFieldStartDate = &LoanOrderField{
+		Value: func(l *Loan) (ent.Value, error) {
+			return l.StartDate, nil
+		},
+		column: loan.FieldStartDate,
+		toTerm: loan.ByStartDate,
+		toCursor: func(l *Loan) Cursor {
+			return Cursor{
+				ID:    l.ID,
+				Value: l.StartDate,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -3901,6 +4027,24 @@ func (f LoanOrderField) String() string {
 		str = "CREATED_AT"
 	case LoanOrderFieldUpdatedAt.column:
 		str = "UPDATED_AT"
+	case LoanOrderFieldAmount.column:
+		str = "amount"
+	case LoanOrderFieldCategory.column:
+		str = "category"
+	case LoanOrderFieldInterestRate.column:
+		str = "interestRate"
+	case LoanOrderFieldMaturityDate.column:
+		str = "maturityDate"
+	case LoanOrderFieldNextPayment.column:
+		str = "nextPayment"
+	case LoanOrderFieldNextPaymentAmount.column:
+		str = "nextPaymentAmount"
+	case LoanOrderFieldOutstandingBalance.column:
+		str = "outstandingBalance"
+	case LoanOrderFieldPaymentFrequency.column:
+		str = "paymentFrequency"
+	case LoanOrderFieldStartDate.column:
+		str = "startDate"
 	}
 	return str
 }
@@ -3921,6 +4065,24 @@ func (f *LoanOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *LoanOrderFieldCreatedAt
 	case "UPDATED_AT":
 		*f = *LoanOrderFieldUpdatedAt
+	case "amount":
+		*f = *LoanOrderFieldAmount
+	case "category":
+		*f = *LoanOrderFieldCategory
+	case "interestRate":
+		*f = *LoanOrderFieldInterestRate
+	case "maturityDate":
+		*f = *LoanOrderFieldMaturityDate
+	case "nextPayment":
+		*f = *LoanOrderFieldNextPayment
+	case "nextPaymentAmount":
+		*f = *LoanOrderFieldNextPaymentAmount
+	case "outstandingBalance":
+		*f = *LoanOrderFieldOutstandingBalance
+	case "paymentFrequency":
+		*f = *LoanOrderFieldPaymentFrequency
+	case "startDate":
+		*f = *LoanOrderFieldStartDate
 	default:
 		return fmt.Errorf("%s is not a valid LoanOrderField", str)
 	}

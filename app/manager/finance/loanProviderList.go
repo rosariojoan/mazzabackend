@@ -18,9 +18,11 @@ func LoanProviderList(ctx context.Context, client *generated.Client, top *int) (
 
 	sqlStr := `
 	SELECT 
-		LOWER(provider) AS provider,
+		LOWER(provider) AS name,
 		SUM(outstanding_balance) AS outstandingBalance,
-		COUNT(*) AS invoiceCount
+		SUM(amount) AS totalBorrowed,
+		COUNT(*) AS loansCount,
+		AVG(interest_rate) AS averageInterestRate
 	FROM
 		loans
 	WHERE
@@ -40,15 +42,13 @@ func LoanProviderList(ctx context.Context, client *generated.Client, top *int) (
 	var scannedRows []*model.LoanProviderList
 	defer rows.Close()
 	for rows.Next() {
-		// var item model.LoanProviderList
-		// if err := rows.Scan(&item.Name, &item.Amount); err != nil {
-		// 	fmt.Println("err:", err)
-		// 	return nil, err
-		// }
-		// scannedRows = append(scannedRows, &item)
-		fmt.Println(rows)
+		var item model.LoanProviderList
+		if err := rows.Scan(&item.Name, &item.OutstandingBalance, &item.TotalBorrowed, &item.LoansCount, &item.AverageInterestRate); err != nil {
+			fmt.Println("err:", err)
+			return nil, err
+		}
+		scannedRows = append(scannedRows, &item)
 	}
 
-	_ = scannedRows
-	return nil, nil
+	return scannedRows, nil
 }

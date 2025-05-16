@@ -4,8 +4,10 @@ package generated
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
 	"mazza/ent/generated/predicate"
@@ -19,14 +21,16 @@ import (
 // LoanQuery is the builder for querying Loan entities.
 type LoanQuery struct {
 	config
-	ctx         *QueryContext
-	order       []loan.OrderOption
-	inters      []Interceptor
-	predicates  []predicate.Loan
-	withCompany *CompanyQuery
-	withFKs     bool
-	loadTotal   []func(context.Context, []*Loan) error
-	modifiers   []func(*sql.Selector)
+	ctx                         *QueryContext
+	order                       []loan.OrderOption
+	inters                      []Interceptor
+	predicates                  []predicate.Loan
+	withCompany                 *CompanyQuery
+	withTransactionHistory      *AccountingEntryQuery
+	withFKs                     bool
+	loadTotal                   []func(context.Context, []*Loan) error
+	modifiers                   []func(*sql.Selector)
+	withNamedTransactionHistory map[string]*AccountingEntryQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -78,6 +82,28 @@ func (lq *LoanQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(loan.Table, loan.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, loan.CompanyTable, loan.CompanyColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(lq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTransactionHistory chains the current query on the "transactionHistory" edge.
+func (lq *LoanQuery) QueryTransactionHistory() *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: lq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := lq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := lq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, selector),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, loan.TransactionHistoryTable, loan.TransactionHistoryColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(lq.driver.Dialect(), step)
 		return fromU, nil
@@ -272,12 +298,13 @@ func (lq *LoanQuery) Clone() *LoanQuery {
 		return nil
 	}
 	return &LoanQuery{
-		config:      lq.config,
-		ctx:         lq.ctx.Clone(),
-		order:       append([]loan.OrderOption{}, lq.order...),
-		inters:      append([]Interceptor{}, lq.inters...),
-		predicates:  append([]predicate.Loan{}, lq.predicates...),
-		withCompany: lq.withCompany.Clone(),
+		config:                 lq.config,
+		ctx:                    lq.ctx.Clone(),
+		order:                  append([]loan.OrderOption{}, lq.order...),
+		inters:                 append([]Interceptor{}, lq.inters...),
+		predicates:             append([]predicate.Loan{}, lq.predicates...),
+		withCompany:            lq.withCompany.Clone(),
+		withTransactionHistory: lq.withTransactionHistory.Clone(),
 		// clone intermediate query.
 		sql:       lq.sql.Clone(),
 		path:      lq.path,
@@ -293,6 +320,17 @@ func (lq *LoanQuery) WithCompany(opts ...func(*CompanyQuery)) *LoanQuery {
 		opt(query)
 	}
 	lq.withCompany = query
+	return lq
+}
+
+// WithTransactionHistory tells the query-builder to eager-load the nodes that are connected to
+// the "transactionHistory" edge. The optional arguments are used to configure the query builder of the edge.
+func (lq *LoanQuery) WithTransactionHistory(opts ...func(*AccountingEntryQuery)) *LoanQuery {
+	query := (&AccountingEntryClient{config: lq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	lq.withTransactionHistory = query
 	return lq
 }
 
@@ -375,8 +413,9 @@ func (lq *LoanQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Loan, e
 		nodes       = []*Loan{}
 		withFKs     = lq.withFKs
 		_spec       = lq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			lq.withCompany != nil,
+			lq.withTransactionHistory != nil,
 		}
 	)
 	if lq.withCompany != nil {
@@ -409,6 +448,20 @@ func (lq *LoanQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Loan, e
 	if query := lq.withCompany; query != nil {
 		if err := lq.loadCompany(ctx, query, nodes, nil,
 			func(n *Loan, e *Company) { n.Edges.Company = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := lq.withTransactionHistory; query != nil {
+		if err := lq.loadTransactionHistory(ctx, query, nodes,
+			func(n *Loan) { n.Edges.TransactionHistory = []*AccountingEntry{} },
+			func(n *Loan, e *AccountingEntry) { n.Edges.TransactionHistory = append(n.Edges.TransactionHistory, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range lq.withNamedTransactionHistory {
+		if err := lq.loadTransactionHistory(ctx, query, nodes,
+			func(n *Loan) { n.appendNamedTransactionHistory(name) },
+			func(n *Loan, e *AccountingEntry) { n.appendNamedTransactionHistory(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -449,6 +502,37 @@ func (lq *LoanQuery) loadCompany(ctx context.Context, query *CompanyQuery, nodes
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (lq *LoanQuery) loadTransactionHistory(ctx context.Context, query *AccountingEntryQuery, nodes []*Loan, init func(*Loan), assign func(*Loan, *AccountingEntry)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Loan)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.AccountingEntry(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(loan.TransactionHistoryColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.loan_transaction_history
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "loan_transaction_history" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "loan_transaction_history" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -544,6 +628,20 @@ func (lq *LoanQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (lq *LoanQuery) Modify(modifiers ...func(s *sql.Selector)) *LoanSelect {
 	lq.modifiers = append(lq.modifiers, modifiers...)
 	return lq.Select()
+}
+
+// WithNamedTransactionHistory tells the query-builder to eager-load the nodes that are connected to the "transactionHistory"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (lq *LoanQuery) WithNamedTransactionHistory(name string, opts ...func(*AccountingEntryQuery)) *LoanQuery {
+	query := (&AccountingEntryClient{config: lq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if lq.withNamedTransactionHistory == nil {
+		lq.withNamedTransactionHistory = make(map[string]*AccountingEntryQuery)
+	}
+	lq.withNamedTransactionHistory[name] = query
+	return lq
 }
 
 // LoanGroupBy is the group-by builder for Loan entities.

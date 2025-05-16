@@ -42,8 +42,8 @@ type Loan struct {
 	NextPayment time.Time `json:"nextPayment,omitempty"`
 	// NextPaymentAmount holds the value of the "nextPaymentAmount" field.
 	NextPaymentAmount float64 `json:"nextPaymentAmount,omitempty"`
-	// OutstandingAmount holds the value of the "outstandingAmount" field.
-	OutstandingAmount float64 `json:"outstandingAmount,omitempty"`
+	// OutstandingBalance holds the value of the "outstandingBalance" field.
+	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
 	// PaymentFrequency holds the value of the "paymentFrequency" field.
 	PaymentFrequency loan.PaymentFrequency `json:"paymentFrequency,omitempty"`
 	// PaidInstallments holds the value of the "paidInstallments" field.
@@ -65,11 +65,15 @@ type Loan struct {
 type LoanEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
+	// TransactionHistory holds the value of the transactionHistory edge.
+	TransactionHistory []*AccountingEntry `json:"transactionHistory,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 	// totalCount holds the count of the edges above.
-	totalCount [1]map[string]int
+	totalCount [2]map[string]int
+
+	namedTransactionHistory map[string][]*AccountingEntry
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -83,12 +87,21 @@ func (e LoanEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
+// TransactionHistoryOrErr returns the TransactionHistory value or an error if the edge
+// was not loaded in eager-loading.
+func (e LoanEdges) TransactionHistoryOrErr() ([]*AccountingEntry, error) {
+	if e.loadedTypes[1] {
+		return e.TransactionHistory, nil
+	}
+	return nil, &NotLoadedError{edge: "transactionHistory"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Loan) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case loan.FieldAmount, loan.FieldInterestRate, loan.FieldNextPaymentAmount, loan.FieldOutstandingAmount:
+		case loan.FieldAmount, loan.FieldInterestRate, loan.FieldNextPaymentAmount, loan.FieldOutstandingBalance:
 			values[i] = new(sql.NullFloat64)
 		case loan.FieldID, loan.FieldInstallments, loan.FieldPaidInstallments:
 			values[i] = new(sql.NullInt64)
@@ -192,11 +205,11 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				l.NextPaymentAmount = value.Float64
 			}
-		case loan.FieldOutstandingAmount:
+		case loan.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field outstandingAmount", values[i])
+				return fmt.Errorf("unexpected type %T for field outstandingBalance", values[i])
 			} else if value.Valid {
-				l.OutstandingAmount = value.Float64
+				l.OutstandingBalance = value.Float64
 			}
 		case loan.FieldPaymentFrequency:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -251,6 +264,11 @@ func (l *Loan) Value(name string) (ent.Value, error) {
 // QueryCompany queries the "company" edge of the Loan entity.
 func (l *Loan) QueryCompany() *CompanyQuery {
 	return NewLoanClient(l.config).QueryCompany(l)
+}
+
+// QueryTransactionHistory queries the "transactionHistory" edge of the Loan entity.
+func (l *Loan) QueryTransactionHistory() *AccountingEntryQuery {
+	return NewLoanClient(l.config).QueryTransactionHistory(l)
 }
 
 // Update returns a builder for updating this Loan.
@@ -314,8 +332,8 @@ func (l *Loan) String() string {
 	builder.WriteString("nextPaymentAmount=")
 	builder.WriteString(fmt.Sprintf("%v", l.NextPaymentAmount))
 	builder.WriteString(", ")
-	builder.WriteString("outstandingAmount=")
-	builder.WriteString(fmt.Sprintf("%v", l.OutstandingAmount))
+	builder.WriteString("outstandingBalance=")
+	builder.WriteString(fmt.Sprintf("%v", l.OutstandingBalance))
 	builder.WriteString(", ")
 	builder.WriteString("paymentFrequency=")
 	builder.WriteString(fmt.Sprintf("%v", l.PaymentFrequency))
@@ -333,6 +351,30 @@ func (l *Loan) String() string {
 	builder.WriteString(fmt.Sprintf("%v", l.Status))
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedTransactionHistory returns the TransactionHistory named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (l *Loan) NamedTransactionHistory(name string) ([]*AccountingEntry, error) {
+	if l.Edges.namedTransactionHistory == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := l.Edges.namedTransactionHistory[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (l *Loan) appendNamedTransactionHistory(name string, edges ...*AccountingEntry) {
+	if l.Edges.namedTransactionHistory == nil {
+		l.Edges.namedTransactionHistory = make(map[string][]*AccountingEntry)
+	}
+	if len(edges) == 0 {
+		l.Edges.namedTransactionHistory[name] = []*AccountingEntry{}
+	} else {
+		l.Edges.namedTransactionHistory[name] = append(l.Edges.namedTransactionHistory[name], edges...)
+	}
 }
 
 // Loans is a parsable slice of Loan.

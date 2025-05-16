@@ -81,7 +81,8 @@ func (AccountingEntry) Indexes() []ent.Index {
 func (AccountingEntry) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("accountingEntries").Unique(), // one company can have many accounting entries
-		edge.From("user", User.Type).Ref("accountingEntries").Unique(),       // one user can have many accounting entries
+		edge.From("user", User.Type).Ref("accountingEntries").Unique(),
+		edge.From("loan", Loan.Type).Ref("transactionHistory").Unique(),       // one user can have many accounting entries
 	}
 }
 

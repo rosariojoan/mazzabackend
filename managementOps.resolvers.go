@@ -10,8 +10,20 @@ import (
 	"mazza/app/manager/finance"
 	"mazza/app/manager/suppliers"
 	"mazza/ent/generated"
+	"mazza/ent/generated/loan"
+	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
 )
+
+// CreateLoan is the resolver for the createLoan field.
+func (r *mutationResolver) CreateLoan(ctx context.Context, input model.CreateLoanInputData) (*generated.Loan, error) {
+	return finance.CreateLoan(ctx, r.client, input)
+}
+
+// UpdateLoan is the resolver for the updateLoan field.
+func (r *mutationResolver) UpdateLoan(ctx context.Context, input model.UpdateLoanInputData) (*generated.Loan, error) {
+	return finance.UpdateLoan(ctx, r.client, input)
+}
 
 // ClientList is the resolver for the clientList field.
 func (r *queryResolver) ClientList(ctx context.Context, top *int) ([]*model.ClientList, error) {
@@ -26,6 +38,14 @@ func (r *queryResolver) SupplierList(ctx context.Context, top *int) ([]*model.Su
 // LoanProviderList is the resolver for the loanProviderList field.
 func (r *queryResolver) LoanProviderList(ctx context.Context, top *int) ([]*model.LoanProviderList, error) {
 	return finance.LoanProviderList(ctx, r.client, top)
+}
+
+// GetLoan is the resolver for the getLoan field.
+func (r *queryResolver) GetLoan(ctx context.Context, id int) (*generated.Loan, error) {
+	_, activeCompany := utils.GetSession(&ctx)
+	return activeCompany.QueryLoans().
+		Where(loan.ID(id)).
+		First(ctx)
 }
 
 // AggregateReceivables is the resolver for the aggregateReceivables field.

@@ -8,6 +8,7 @@ import (
 	"math"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/user"
 
@@ -26,6 +27,7 @@ type AccountingEntryQuery struct {
 	predicates  []predicate.AccountingEntry
 	withCompany *CompanyQuery
 	withUser    *UserQuery
+	withLoan    *LoanQuery
 	withFKs     bool
 	loadTotal   []func(context.Context, []*AccountingEntry) error
 	modifiers   []func(*sql.Selector)
@@ -102,6 +104,28 @@ func (aeq *AccountingEntryQuery) QueryUser() *UserQuery {
 			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.UserTable, accountingentry.UserColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLoan chains the current query on the "loan" edge.
+func (aeq *AccountingEntryQuery) QueryLoan() *LoanQuery {
+	query := (&LoanClient{config: aeq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := aeq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := aeq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.LoanTable, accountingentry.LoanColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
 		return fromU, nil
@@ -303,6 +327,7 @@ func (aeq *AccountingEntryQuery) Clone() *AccountingEntryQuery {
 		predicates:  append([]predicate.AccountingEntry{}, aeq.predicates...),
 		withCompany: aeq.withCompany.Clone(),
 		withUser:    aeq.withUser.Clone(),
+		withLoan:    aeq.withLoan.Clone(),
 		// clone intermediate query.
 		sql:       aeq.sql.Clone(),
 		path:      aeq.path,
@@ -329,6 +354,17 @@ func (aeq *AccountingEntryQuery) WithUser(opts ...func(*UserQuery)) *AccountingE
 		opt(query)
 	}
 	aeq.withUser = query
+	return aeq
+}
+
+// WithLoan tells the query-builder to eager-load the nodes that are connected to
+// the "loan" edge. The optional arguments are used to configure the query builder of the edge.
+func (aeq *AccountingEntryQuery) WithLoan(opts ...func(*LoanQuery)) *AccountingEntryQuery {
+	query := (&LoanClient{config: aeq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	aeq.withLoan = query
 	return aeq
 }
 
@@ -411,12 +447,13 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 		nodes       = []*AccountingEntry{}
 		withFKs     = aeq.withFKs
 		_spec       = aeq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			aeq.withCompany != nil,
 			aeq.withUser != nil,
+			aeq.withLoan != nil,
 		}
 	)
-	if aeq.withCompany != nil || aeq.withUser != nil {
+	if aeq.withCompany != nil || aeq.withUser != nil || aeq.withLoan != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -452,6 +489,12 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 	if query := aeq.withUser; query != nil {
 		if err := aeq.loadUser(ctx, query, nodes, nil,
 			func(n *AccountingEntry, e *User) { n.Edges.User = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := aeq.withLoan; query != nil {
+		if err := aeq.loadLoan(ctx, query, nodes, nil,
+			func(n *AccountingEntry, e *Loan) { n.Edges.Loan = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -520,6 +563,38 @@ func (aeq *AccountingEntryQuery) loadUser(ctx context.Context, query *UserQuery,
 		nodes, ok := nodeids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected foreign-key "user_accounting_entries" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (aeq *AccountingEntryQuery) loadLoan(ctx context.Context, query *LoanQuery, nodes []*AccountingEntry, init func(*AccountingEntry), assign func(*AccountingEntry, *Loan)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*AccountingEntry)
+	for i := range nodes {
+		if nodes[i].loan_transaction_history == nil {
+			continue
+		}
+		fk := *nodes[i].loan_transaction_history
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(loan.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "loan_transaction_history" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

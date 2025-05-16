@@ -51,6 +51,8 @@ const (
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
+	// EdgeLoan holds the string denoting the loan edge name in mutations.
+	EdgeLoan = "loan"
 	// Table holds the table name of the accountingentry in the database.
 	Table = "accounting_entries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -67,6 +69,13 @@ const (
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_accounting_entries"
+	// LoanTable is the table that holds the loan relation/edge.
+	LoanTable = "accounting_entries"
+	// LoanInverseTable is the table name for the Loan entity.
+	// It exists in this package in order to avoid circular dependency with the "loan" package.
+	LoanInverseTable = "loans"
+	// LoanColumn is the table column denoting the loan relation/edge.
+	LoanColumn = "loan_transaction_history"
 )
 
 // Columns holds all SQL columns for accountingentry fields.
@@ -93,6 +102,7 @@ var Columns = []string{
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_accounting_entries",
+	"loan_transaction_history",
 	"user_accounting_entries",
 }
 
@@ -263,6 +273,13 @@ func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newUserStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByLoanField orders the results by loan field.
+func ByLoanField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanStep(), sql.OrderByField(field, opts...))
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -275,6 +292,13 @@ func newUserStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(UserInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
+	)
+}
+func newLoanStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, LoanTable, LoanColumn),
 	)
 }
 

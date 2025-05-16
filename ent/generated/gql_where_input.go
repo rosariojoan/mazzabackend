@@ -206,6 +206,10 @@ type AccountingEntryWhereInput struct {
 	// "user" edge predicates.
 	HasUser     *bool             `json:"hasUser,omitempty"`
 	HasUserWith []*UserWhereInput `json:"hasUserWith,omitempty"`
+
+	// "loan" edge predicates.
+	HasLoan     *bool             `json:"hasLoan,omitempty"`
+	HasLoanWith []*LoanWhereInput `json:"hasLoanWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -699,6 +703,24 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, accountingentry.HasUserWith(with...))
+	}
+	if i.HasLoan != nil {
+		p := accountingentry.HasLoan()
+		if !*i.HasLoan {
+			p = accountingentry.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasLoanWith) > 0 {
+		with := make([]predicate.Loan, 0, len(i.HasLoanWith))
+		for _, w := range i.HasLoanWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasLoanWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, accountingentry.HasLoanWith(with...))
 	}
 	switch len(predicates) {
 	case 0:
@@ -8827,15 +8849,15 @@ type LoanWhereInput struct {
 	NextPaymentAmountIsNil  bool      `json:"nextpaymentamountIsNil,omitempty"`
 	NextPaymentAmountNotNil bool      `json:"nextpaymentamountNotNil,omitempty"`
 
-	// "outstandingAmount" field predicates.
-	OutstandingAmount      *float64  `json:"outstandingamount,omitempty"`
-	OutstandingAmountNEQ   *float64  `json:"outstandingamountNEQ,omitempty"`
-	OutstandingAmountIn    []float64 `json:"outstandingamountIn,omitempty"`
-	OutstandingAmountNotIn []float64 `json:"outstandingamountNotIn,omitempty"`
-	OutstandingAmountGT    *float64  `json:"outstandingamountGT,omitempty"`
-	OutstandingAmountGTE   *float64  `json:"outstandingamountGTE,omitempty"`
-	OutstandingAmountLT    *float64  `json:"outstandingamountLT,omitempty"`
-	OutstandingAmountLTE   *float64  `json:"outstandingamountLTE,omitempty"`
+	// "outstandingBalance" field predicates.
+	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
+	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
+	OutstandingBalanceIn    []float64 `json:"outstandingbalanceIn,omitempty"`
+	OutstandingBalanceNotIn []float64 `json:"outstandingbalanceNotIn,omitempty"`
+	OutstandingBalanceGT    *float64  `json:"outstandingbalanceGT,omitempty"`
+	OutstandingBalanceGTE   *float64  `json:"outstandingbalanceGTE,omitempty"`
+	OutstandingBalanceLT    *float64  `json:"outstandingbalanceLT,omitempty"`
+	OutstandingBalanceLTE   *float64  `json:"outstandingbalanceLTE,omitempty"`
 
 	// "paymentFrequency" field predicates.
 	PaymentFrequency      *loan.PaymentFrequency  `json:"paymentfrequency,omitempty"`
@@ -8887,6 +8909,10 @@ type LoanWhereInput struct {
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
+
+	// "transactionHistory" edge predicates.
+	HasTransactionHistory     *bool                        `json:"hasTransactionHistory,omitempty"`
+	HasTransactionHistoryWith []*AccountingEntryWhereInput `json:"hasTransactionHistoryWith,omitempty"`
 }
 
 // AddPredicates adds custom predicates to the where input to be used during the filtering phase.
@@ -9320,29 +9346,29 @@ func (i *LoanWhereInput) P() (predicate.Loan, error) {
 	if i.NextPaymentAmountNotNil {
 		predicates = append(predicates, loan.NextPaymentAmountNotNil())
 	}
-	if i.OutstandingAmount != nil {
-		predicates = append(predicates, loan.OutstandingAmountEQ(*i.OutstandingAmount))
+	if i.OutstandingBalance != nil {
+		predicates = append(predicates, loan.OutstandingBalanceEQ(*i.OutstandingBalance))
 	}
-	if i.OutstandingAmountNEQ != nil {
-		predicates = append(predicates, loan.OutstandingAmountNEQ(*i.OutstandingAmountNEQ))
+	if i.OutstandingBalanceNEQ != nil {
+		predicates = append(predicates, loan.OutstandingBalanceNEQ(*i.OutstandingBalanceNEQ))
 	}
-	if len(i.OutstandingAmountIn) > 0 {
-		predicates = append(predicates, loan.OutstandingAmountIn(i.OutstandingAmountIn...))
+	if len(i.OutstandingBalanceIn) > 0 {
+		predicates = append(predicates, loan.OutstandingBalanceIn(i.OutstandingBalanceIn...))
 	}
-	if len(i.OutstandingAmountNotIn) > 0 {
-		predicates = append(predicates, loan.OutstandingAmountNotIn(i.OutstandingAmountNotIn...))
+	if len(i.OutstandingBalanceNotIn) > 0 {
+		predicates = append(predicates, loan.OutstandingBalanceNotIn(i.OutstandingBalanceNotIn...))
 	}
-	if i.OutstandingAmountGT != nil {
-		predicates = append(predicates, loan.OutstandingAmountGT(*i.OutstandingAmountGT))
+	if i.OutstandingBalanceGT != nil {
+		predicates = append(predicates, loan.OutstandingBalanceGT(*i.OutstandingBalanceGT))
 	}
-	if i.OutstandingAmountGTE != nil {
-		predicates = append(predicates, loan.OutstandingAmountGTE(*i.OutstandingAmountGTE))
+	if i.OutstandingBalanceGTE != nil {
+		predicates = append(predicates, loan.OutstandingBalanceGTE(*i.OutstandingBalanceGTE))
 	}
-	if i.OutstandingAmountLT != nil {
-		predicates = append(predicates, loan.OutstandingAmountLT(*i.OutstandingAmountLT))
+	if i.OutstandingBalanceLT != nil {
+		predicates = append(predicates, loan.OutstandingBalanceLT(*i.OutstandingBalanceLT))
 	}
-	if i.OutstandingAmountLTE != nil {
-		predicates = append(predicates, loan.OutstandingAmountLTE(*i.OutstandingAmountLTE))
+	if i.OutstandingBalanceLTE != nil {
+		predicates = append(predicates, loan.OutstandingBalanceLTE(*i.OutstandingBalanceLTE))
 	}
 	if i.PaymentFrequency != nil {
 		predicates = append(predicates, loan.PaymentFrequencyEQ(*i.PaymentFrequency))
@@ -9473,6 +9499,24 @@ func (i *LoanWhereInput) P() (predicate.Loan, error) {
 			with = append(with, p)
 		}
 		predicates = append(predicates, loan.HasCompanyWith(with...))
+	}
+	if i.HasTransactionHistory != nil {
+		p := loan.HasTransactionHistory()
+		if !*i.HasTransactionHistory {
+			p = loan.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasTransactionHistoryWith) > 0 {
+		with := make([]predicate.AccountingEntry, 0, len(i.HasTransactionHistoryWith))
+		for _, w := range i.HasTransactionHistoryWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, fmt.Errorf("%w: field 'HasTransactionHistoryWith'", err)
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, loan.HasTransactionHistoryWith(with...))
 	}
 	switch len(predicates) {
 	case 0:

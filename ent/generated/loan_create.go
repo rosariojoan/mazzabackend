@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
 	"time"
@@ -149,9 +150,9 @@ func (lc *LoanCreate) SetNillableNextPaymentAmount(f *float64) *LoanCreate {
 	return lc
 }
 
-// SetOutstandingAmount sets the "outstandingAmount" field.
-func (lc *LoanCreate) SetOutstandingAmount(f float64) *LoanCreate {
-	lc.mutation.SetOutstandingAmount(f)
+// SetOutstandingBalance sets the "outstandingBalance" field.
+func (lc *LoanCreate) SetOutstandingBalance(f float64) *LoanCreate {
+	lc.mutation.SetOutstandingBalance(f)
 	return lc
 }
 
@@ -226,6 +227,21 @@ func (lc *LoanCreate) SetNillableCompanyID(id *int) *LoanCreate {
 // SetCompany sets the "company" edge to the Company entity.
 func (lc *LoanCreate) SetCompany(c *Company) *LoanCreate {
 	return lc.SetCompanyID(c.ID)
+}
+
+// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+func (lc *LoanCreate) AddTransactionHistoryIDs(ids ...int) *LoanCreate {
+	lc.mutation.AddTransactionHistoryIDs(ids...)
+	return lc
+}
+
+// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+func (lc *LoanCreate) AddTransactionHistory(a ...*AccountingEntry) *LoanCreate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return lc.AddTransactionHistoryIDs(ids...)
 }
 
 // Mutation returns the LoanMutation object of the builder.
@@ -337,12 +353,12 @@ func (lc *LoanCreate) check() error {
 			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
 		}
 	}
-	if _, ok := lc.mutation.OutstandingAmount(); !ok {
-		return &ValidationError{Name: "outstandingAmount", err: errors.New(`generated: missing required field "Loan.outstandingAmount"`)}
+	if _, ok := lc.mutation.OutstandingBalance(); !ok {
+		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Loan.outstandingBalance"`)}
 	}
-	if v, ok := lc.mutation.OutstandingAmount(); ok {
-		if err := loan.OutstandingAmountValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingAmount": %w`, err)}
+	if v, ok := lc.mutation.OutstandingBalance(); ok {
+		if err := loan.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.PaymentFrequency(); !ok {
@@ -449,9 +465,9 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		_spec.SetField(loan.FieldNextPaymentAmount, field.TypeFloat64, value)
 		_node.NextPaymentAmount = value
 	}
-	if value, ok := lc.mutation.OutstandingAmount(); ok {
-		_spec.SetField(loan.FieldOutstandingAmount, field.TypeFloat64, value)
-		_node.OutstandingAmount = value
+	if value, ok := lc.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loan.FieldOutstandingBalance, field.TypeFloat64, value)
+		_node.OutstandingBalance = value
 	}
 	if value, ok := lc.mutation.PaymentFrequency(); ok {
 		_spec.SetField(loan.FieldPaymentFrequency, field.TypeEnum, value)
@@ -488,6 +504,22 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_loans = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := lc.mutation.TransactionHistoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

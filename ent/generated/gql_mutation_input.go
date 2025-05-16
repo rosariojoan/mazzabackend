@@ -39,6 +39,7 @@ type CreateAccountingEntryInput struct {
 	Reversed    *bool
 	CompanyID   *int
 	UserID      *int
+	LoanID      *int
 }
 
 // Mutate applies the CreateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -69,6 +70,9 @@ func (i *CreateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
 	}
+	if v := i.LoanID; v != nil {
+		m.SetLoanID(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateAccountingEntryInput on the AccountingEntryCreate builder.
@@ -95,6 +99,8 @@ type UpdateAccountingEntryInput struct {
 	CompanyID    *int
 	ClearUser    bool
 	UserID       *int
+	ClearLoan    bool
+	LoanID       *int
 }
 
 // Mutate applies the UpdateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -146,6 +152,12 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	}
 	if v := i.UserID; v != nil {
 		m.SetUserID(*v)
+	}
+	if i.ClearLoan {
+		m.ClearLoan()
+	}
+	if v := i.LoanID; v != nil {
+		m.SetLoanID(*v)
 	}
 }
 
@@ -1763,22 +1775,22 @@ func (c *InvoiceUpdateOne) SetInput(i UpdateInvoiceInput) *InvoiceUpdateOne {
 
 // CreateLoanInput represents a mutation input for creating loans.
 type CreateLoanInput struct {
-	Amount            float64
-	Category          loan.Category
-	Collateral        *string
-	Description       *string
-	InterestRate      float64
-	Installments      int
-	MaturityDate      time.Time
-	NextPayment       *time.Time
-	NextPaymentAmount *float64
-	OutstandingAmount float64
-	PaymentFrequency  *loan.PaymentFrequency
-	PaidInstallments  *int
-	Provider          string
-	StartDate         *time.Time
-	Status            loan.Status
-	CompanyID         *int
+	Amount                float64
+	Category              loan.Category
+	Collateral            *string
+	Description           *string
+	InterestRate          float64
+	Installments          int
+	MaturityDate          time.Time
+	NextPayment           *time.Time
+	NextPaymentAmount     *float64
+	OutstandingBalance    float64
+	PaymentFrequency      *loan.PaymentFrequency
+	PaidInstallments      *int
+	Provider              string
+	StartDate             *time.Time
+	Status                loan.Status
+	TransactionHistoryIDs []int
 }
 
 // Mutate applies the CreateLoanInput on the LoanMutation builder.
@@ -1800,7 +1812,7 @@ func (i *CreateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.NextPaymentAmount; v != nil {
 		m.SetNextPaymentAmount(*v)
 	}
-	m.SetOutstandingAmount(i.OutstandingAmount)
+	m.SetOutstandingBalance(i.OutstandingBalance)
 	if v := i.PaymentFrequency; v != nil {
 		m.SetPaymentFrequency(*v)
 	}
@@ -1812,8 +1824,8 @@ func (i *CreateLoanInput) Mutate(m *LoanMutation) {
 		m.SetStartDate(*v)
 	}
 	m.SetStatus(i.Status)
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
+	if v := i.TransactionHistoryIDs; len(v) > 0 {
+		m.AddTransactionHistoryIDs(v...)
 	}
 }
 
@@ -1825,27 +1837,28 @@ func (c *LoanCreate) SetInput(i CreateLoanInput) *LoanCreate {
 
 // UpdateLoanInput represents a mutation input for updating loans.
 type UpdateLoanInput struct {
-	Amount                 *float64
-	Category               *loan.Category
-	ClearCollateral        bool
-	Collateral             *string
-	ClearDescription       bool
-	Description            *string
-	InterestRate           *float64
-	Installments           *int
-	MaturityDate           *time.Time
-	ClearNextPayment       bool
-	NextPayment            *time.Time
-	ClearNextPaymentAmount bool
-	NextPaymentAmount      *float64
-	OutstandingAmount      *float64
-	PaymentFrequency       *loan.PaymentFrequency
-	PaidInstallments       *int
-	Provider               *string
-	StartDate              *time.Time
-	Status                 *loan.Status
-	ClearCompany           bool
-	CompanyID              *int
+	Amount                      *float64
+	Category                    *loan.Category
+	ClearCollateral             bool
+	Collateral                  *string
+	ClearDescription            bool
+	Description                 *string
+	InterestRate                *float64
+	Installments                *int
+	MaturityDate                *time.Time
+	ClearNextPayment            bool
+	NextPayment                 *time.Time
+	ClearNextPaymentAmount      bool
+	NextPaymentAmount           *float64
+	OutstandingBalance          *float64
+	PaymentFrequency            *loan.PaymentFrequency
+	PaidInstallments            *int
+	Provider                    *string
+	StartDate                   *time.Time
+	Status                      *loan.Status
+	ClearTransactionHistory     bool
+	AddTransactionHistoryIDs    []int
+	RemoveTransactionHistoryIDs []int
 }
 
 // Mutate applies the UpdateLoanInput on the LoanMutation builder.
@@ -1889,8 +1902,8 @@ func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.NextPaymentAmount; v != nil {
 		m.SetNextPaymentAmount(*v)
 	}
-	if v := i.OutstandingAmount; v != nil {
-		m.SetOutstandingAmount(*v)
+	if v := i.OutstandingBalance; v != nil {
+		m.SetOutstandingBalance(*v)
 	}
 	if v := i.PaymentFrequency; v != nil {
 		m.SetPaymentFrequency(*v)
@@ -1907,11 +1920,14 @@ func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
-	if i.ClearCompany {
-		m.ClearCompany()
+	if i.ClearTransactionHistory {
+		m.ClearTransactionHistory()
 	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
+	if v := i.AddTransactionHistoryIDs; len(v) > 0 {
+		m.AddTransactionHistoryIDs(v...)
+	}
+	if v := i.RemoveTransactionHistoryIDs; len(v) > 0 {
+		m.RemoveTransactionHistoryIDs(v...)
 	}
 }
 

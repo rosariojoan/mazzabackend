@@ -74,6 +74,16 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			ae.withUser = query
+		case "loan":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanClient{config: ae.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ae.withLoan = query
 		case "createdat":
 			if _, ok := fieldSeen[accountingentry.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldCreatedAt)
@@ -2036,6 +2046,18 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			l.withCompany = query
+		case "transactionhistory":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&AccountingEntryClient{config: l.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			l.WithNamedTransactionHistory(alias, func(wq *AccountingEntryQuery) {
+				*wq = *query
+			})
 		case "createdat":
 			if _, ok := fieldSeen[loan.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, loan.FieldCreatedAt)
@@ -2096,10 +2118,10 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldNextPaymentAmount)
 				fieldSeen[loan.FieldNextPaymentAmount] = struct{}{}
 			}
-		case "outstandingamount":
-			if _, ok := fieldSeen[loan.FieldOutstandingAmount]; !ok {
-				selectedFields = append(selectedFields, loan.FieldOutstandingAmount)
-				fieldSeen[loan.FieldOutstandingAmount] = struct{}{}
+		case "outstandingbalance":
+			if _, ok := fieldSeen[loan.FieldOutstandingBalance]; !ok {
+				selectedFields = append(selectedFields, loan.FieldOutstandingBalance)
+				fieldSeen[loan.FieldOutstandingBalance] = struct{}{}
 			}
 		case "paymentfrequency":
 			if _, ok := fieldSeen[loan.FieldPaymentFrequency]; !ok {

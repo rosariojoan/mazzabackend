@@ -28,6 +28,7 @@ var (
 		{Name: "is_reversal", Type: field.TypeBool, Default: false},
 		{Name: "reversed", Type: field.TypeBool, Default: false},
 		{Name: "company_accounting_entries", Type: field.TypeInt, Nullable: true},
+		{Name: "loan_transaction_history", Type: field.TypeInt, Nullable: true},
 		{Name: "user_accounting_entries", Type: field.TypeInt, Nullable: true},
 	}
 	// AccountingEntriesTable holds the schema information for the "accounting_entries" table.
@@ -43,8 +44,14 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "accounting_entries_users_accountingEntries",
+				Symbol:     "accounting_entries_loans_transactionHistory",
 				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
+				RefColumns: []*schema.Column{LoansColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "accounting_entries_users_accountingEntries",
+				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -438,7 +445,7 @@ var (
 		{Name: "maturity_date", Type: field.TypeTime},
 		{Name: "next_payment", Type: field.TypeTime, Nullable: true},
 		{Name: "next_payment_amount", Type: field.TypeFloat64, Nullable: true, Default: 0},
-		{Name: "outstanding_amount", Type: field.TypeFloat64},
+		{Name: "outstanding_balance", Type: field.TypeFloat64},
 		{Name: "payment_frequency", Type: field.TypeEnum, Enums: []string{"weekly", "biweekly", "monthly", "quartely", "semiannual", "annual"}, Default: "monthly"},
 		{Name: "paid_installments", Type: field.TypeInt, Default: 0},
 		{Name: "provider", Type: field.TypeString},
@@ -1029,7 +1036,8 @@ var (
 
 func init() {
 	AccountingEntriesTable.ForeignKeys[0].RefTable = CompaniesTable
-	AccountingEntriesTable.ForeignKeys[1].RefTable = UsersTable
+	AccountingEntriesTable.ForeignKeys[1].RefTable = LoansTable
+	AccountingEntriesTable.ForeignKeys[2].RefTable = UsersTable
 	CompaniesTable.ForeignKeys[0].RefTable = CompaniesTable
 	CompanyDocumentsTable.ForeignKeys[0].RefTable = CompaniesTable
 	CompanyDocumentsTable.ForeignKeys[1].RefTable = UsersTable

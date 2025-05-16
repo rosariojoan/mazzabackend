@@ -394,10 +394,10 @@ func init() {
 	loan.DefaultNextPaymentAmount = loanDescNextPaymentAmount.Default.(float64)
 	// loan.NextPaymentAmountValidator is a validator for the "nextPaymentAmount" field. It is called by the builders before save.
 	loan.NextPaymentAmountValidator = loanDescNextPaymentAmount.Validators[0].(func(float64) error)
-	// loanDescOutstandingAmount is the schema descriptor for outstandingAmount field.
-	loanDescOutstandingAmount := loanFields[9].Descriptor()
-	// loan.OutstandingAmountValidator is a validator for the "outstandingAmount" field. It is called by the builders before save.
-	loan.OutstandingAmountValidator = loanDescOutstandingAmount.Validators[0].(func(float64) error)
+	// loanDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	loanDescOutstandingBalance := loanFields[9].Descriptor()
+	// loan.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	loan.OutstandingBalanceValidator = loanDescOutstandingBalance.Validators[0].(func(float64) error)
 	// loanDescPaidInstallments is the schema descriptor for paidInstallments field.
 	loanDescPaidInstallments := loanFields[11].Descriptor()
 	// loan.DefaultPaidInstallments holds the default value on creation for the paidInstallments field.

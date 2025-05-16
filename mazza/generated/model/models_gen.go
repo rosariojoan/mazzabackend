@@ -46,6 +46,7 @@ type BaseEntryRegistrationInput struct {
 	CashInput             *float64               `json:"cashInput,omitempty"`
 	Date                  time.Time              `json:"date"`
 	Description           *string                `json:"description,omitempty"`
+	LoanID                *int                   `json:"loanID,omitempty"`
 	OperationType         BaseOperationType      `json:"operationType"`
 	PayableInput          *PayableInput          `json:"payableInput,omitempty"`
 	PayableUpdateInput    *PayableUpdateInput    `json:"payableUpdateInput,omitempty"`
@@ -69,6 +70,11 @@ type CompanyInfoInput struct {
 type CreateInventoryInputData struct {
 	CreateInventoryInput       *generated.CreateInventoryInput `json:"createInventoryInput"`
 	InventoryMovementInputData *InventoryMovementInputData     `json:"inventoryMovementInputData,omitempty"`
+}
+
+type CreateLoanInputData struct {
+	LoanInput       *generated.CreateLoanInput  `json:"loanInput"`
+	AccountingEntry *BaseEntryRegistrationInput `json:"accountingEntry,omitempty"`
 }
 
 type CreateMemberSignupTokenOutput struct {
@@ -227,6 +233,7 @@ type LoanAggregationOutput struct {
 type LoanProviderList struct {
 	Name                string  `json:"name"`
 	OutstandingBalance  float64 `json:"outstandingBalance"`
+	TotalBorrowed       float64 `json:"totalBorrowed"`
 	LoansCount          int     `json:"loansCount"`
 	AverageInterestRate float64 `json:"averageInterestRate"`
 }
@@ -365,6 +372,12 @@ type TrialBalanceRowItem struct {
 	Debit       float64 `json:"debit"`
 	Credit      float64 `json:"credit"`
 	Balance     float64 `json:"balance"`
+}
+
+type UpdateLoanInputData struct {
+	ID              int                         `json:"id"`
+	LoanInput       *generated.UpdateLoanInput  `json:"loanInput"`
+	AccountingEntry *BaseEntryRegistrationInput `json:"accountingEntry,omitempty"`
 }
 
 type VerifyMemberSignupTokenInput struct {

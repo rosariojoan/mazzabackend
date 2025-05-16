@@ -41,8 +41,8 @@ const (
 	FieldNextPayment = "next_payment"
 	// FieldNextPaymentAmount holds the string denoting the nextpaymentamount field in the database.
 	FieldNextPaymentAmount = "next_payment_amount"
-	// FieldOutstandingAmount holds the string denoting the outstandingamount field in the database.
-	FieldOutstandingAmount = "outstanding_amount"
+	// FieldOutstandingBalance holds the string denoting the outstandingbalance field in the database.
+	FieldOutstandingBalance = "outstanding_balance"
 	// FieldPaymentFrequency holds the string denoting the paymentfrequency field in the database.
 	FieldPaymentFrequency = "payment_frequency"
 	// FieldPaidInstallments holds the string denoting the paidinstallments field in the database.
@@ -55,6 +55,8 @@ const (
 	FieldStatus = "status"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
+	// EdgeTransactionHistory holds the string denoting the transactionhistory edge name in mutations.
+	EdgeTransactionHistory = "transactionHistory"
 	// Table holds the table name of the loan in the database.
 	Table = "loans"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -64,6 +66,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_loans"
+	// TransactionHistoryTable is the table that holds the transactionHistory relation/edge.
+	TransactionHistoryTable = "accounting_entries"
+	// TransactionHistoryInverseTable is the table name for the AccountingEntry entity.
+	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
+	TransactionHistoryInverseTable = "accounting_entries"
+	// TransactionHistoryColumn is the table column denoting the transactionHistory relation/edge.
+	TransactionHistoryColumn = "loan_transaction_history"
 )
 
 // Columns holds all SQL columns for loan fields.
@@ -81,7 +90,7 @@ var Columns = []string{
 	FieldMaturityDate,
 	FieldNextPayment,
 	FieldNextPaymentAmount,
-	FieldOutstandingAmount,
+	FieldOutstandingBalance,
 	FieldPaymentFrequency,
 	FieldPaidInstallments,
 	FieldProvider,
@@ -127,8 +136,8 @@ var (
 	DefaultNextPaymentAmount float64
 	// NextPaymentAmountValidator is a validator for the "nextPaymentAmount" field. It is called by the builders before save.
 	NextPaymentAmountValidator func(float64) error
-	// OutstandingAmountValidator is a validator for the "outstandingAmount" field. It is called by the builders before save.
-	OutstandingAmountValidator func(float64) error
+	// OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	OutstandingBalanceValidator func(float64) error
 	// DefaultPaidInstallments holds the default value on creation for the "paidInstallments" field.
 	DefaultPaidInstallments int
 	// ProviderValidator is a validator for the "provider" field. It is called by the builders before save.
@@ -286,9 +295,9 @@ func ByNextPaymentAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNextPaymentAmount, opts...).ToFunc()
 }
 
-// ByOutstandingAmount orders the results by the outstandingAmount field.
-func ByOutstandingAmount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOutstandingAmount, opts...).ToFunc()
+// ByOutstandingBalance orders the results by the outstandingBalance field.
+func ByOutstandingBalance(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOutstandingBalance, opts...).ToFunc()
 }
 
 // ByPaymentFrequency orders the results by the paymentFrequency field.
@@ -322,11 +331,32 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCompanyStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByTransactionHistoryCount orders the results by transactionHistory count.
+func ByTransactionHistoryCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newTransactionHistoryStep(), opts...)
+	}
+}
+
+// ByTransactionHistory orders the results by transactionHistory terms.
+func ByTransactionHistory(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newTransactionHistoryStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+	)
+}
+func newTransactionHistoryStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(TransactionHistoryInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, TransactionHistoryTable, TransactionHistoryColumn),
 	)
 }
 

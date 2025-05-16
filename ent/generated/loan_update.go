@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
 	"mazza/ent/generated/predicate"
@@ -234,24 +235,24 @@ func (lu *LoanUpdate) ClearNextPaymentAmount() *LoanUpdate {
 	return lu
 }
 
-// SetOutstandingAmount sets the "outstandingAmount" field.
-func (lu *LoanUpdate) SetOutstandingAmount(f float64) *LoanUpdate {
-	lu.mutation.ResetOutstandingAmount()
-	lu.mutation.SetOutstandingAmount(f)
+// SetOutstandingBalance sets the "outstandingBalance" field.
+func (lu *LoanUpdate) SetOutstandingBalance(f float64) *LoanUpdate {
+	lu.mutation.ResetOutstandingBalance()
+	lu.mutation.SetOutstandingBalance(f)
 	return lu
 }
 
-// SetNillableOutstandingAmount sets the "outstandingAmount" field if the given value is not nil.
-func (lu *LoanUpdate) SetNillableOutstandingAmount(f *float64) *LoanUpdate {
+// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillableOutstandingBalance(f *float64) *LoanUpdate {
 	if f != nil {
-		lu.SetOutstandingAmount(*f)
+		lu.SetOutstandingBalance(*f)
 	}
 	return lu
 }
 
-// AddOutstandingAmount adds f to the "outstandingAmount" field.
-func (lu *LoanUpdate) AddOutstandingAmount(f float64) *LoanUpdate {
-	lu.mutation.AddOutstandingAmount(f)
+// AddOutstandingBalance adds f to the "outstandingBalance" field.
+func (lu *LoanUpdate) AddOutstandingBalance(f float64) *LoanUpdate {
+	lu.mutation.AddOutstandingBalance(f)
 	return lu
 }
 
@@ -351,6 +352,21 @@ func (lu *LoanUpdate) SetCompany(c *Company) *LoanUpdate {
 	return lu.SetCompanyID(c.ID)
 }
 
+// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+func (lu *LoanUpdate) AddTransactionHistoryIDs(ids ...int) *LoanUpdate {
+	lu.mutation.AddTransactionHistoryIDs(ids...)
+	return lu
+}
+
+// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+func (lu *LoanUpdate) AddTransactionHistory(a ...*AccountingEntry) *LoanUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return lu.AddTransactionHistoryIDs(ids...)
+}
+
 // Mutation returns the LoanMutation object of the builder.
 func (lu *LoanUpdate) Mutation() *LoanMutation {
 	return lu.mutation
@@ -360,6 +376,27 @@ func (lu *LoanUpdate) Mutation() *LoanMutation {
 func (lu *LoanUpdate) ClearCompany() *LoanUpdate {
 	lu.mutation.ClearCompany()
 	return lu
+}
+
+// ClearTransactionHistory clears all "transactionHistory" edges to the AccountingEntry entity.
+func (lu *LoanUpdate) ClearTransactionHistory() *LoanUpdate {
+	lu.mutation.ClearTransactionHistory()
+	return lu
+}
+
+// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to AccountingEntry entities by IDs.
+func (lu *LoanUpdate) RemoveTransactionHistoryIDs(ids ...int) *LoanUpdate {
+	lu.mutation.RemoveTransactionHistoryIDs(ids...)
+	return lu
+}
+
+// RemoveTransactionHistory removes "transactionHistory" edges to AccountingEntry entities.
+func (lu *LoanUpdate) RemoveTransactionHistory(a ...*AccountingEntry) *LoanUpdate {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return lu.RemoveTransactionHistoryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -425,9 +462,9 @@ func (lu *LoanUpdate) check() error {
 			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
 		}
 	}
-	if v, ok := lu.mutation.OutstandingAmount(); ok {
-		if err := loan.OutstandingAmountValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingAmount": %w`, err)}
+	if v, ok := lu.mutation.OutstandingBalance(); ok {
+		if err := loan.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.PaymentFrequency(); ok {
@@ -526,11 +563,11 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if lu.mutation.NextPaymentAmountCleared() {
 		_spec.ClearField(loan.FieldNextPaymentAmount, field.TypeFloat64)
 	}
-	if value, ok := lu.mutation.OutstandingAmount(); ok {
-		_spec.SetField(loan.FieldOutstandingAmount, field.TypeFloat64, value)
+	if value, ok := lu.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loan.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if value, ok := lu.mutation.AddedOutstandingAmount(); ok {
-		_spec.AddField(loan.FieldOutstandingAmount, field.TypeFloat64, value)
+	if value, ok := lu.mutation.AddedOutstandingBalance(); ok {
+		_spec.AddField(loan.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
 	if value, ok := lu.mutation.PaymentFrequency(); ok {
 		_spec.SetField(loan.FieldPaymentFrequency, field.TypeEnum, value)
@@ -572,6 +609,51 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if lu.mutation.TransactionHistoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.RemovedTransactionHistoryIDs(); len(nodes) > 0 && !lu.mutation.TransactionHistoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.TransactionHistoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -805,24 +887,24 @@ func (luo *LoanUpdateOne) ClearNextPaymentAmount() *LoanUpdateOne {
 	return luo
 }
 
-// SetOutstandingAmount sets the "outstandingAmount" field.
-func (luo *LoanUpdateOne) SetOutstandingAmount(f float64) *LoanUpdateOne {
-	luo.mutation.ResetOutstandingAmount()
-	luo.mutation.SetOutstandingAmount(f)
+// SetOutstandingBalance sets the "outstandingBalance" field.
+func (luo *LoanUpdateOne) SetOutstandingBalance(f float64) *LoanUpdateOne {
+	luo.mutation.ResetOutstandingBalance()
+	luo.mutation.SetOutstandingBalance(f)
 	return luo
 }
 
-// SetNillableOutstandingAmount sets the "outstandingAmount" field if the given value is not nil.
-func (luo *LoanUpdateOne) SetNillableOutstandingAmount(f *float64) *LoanUpdateOne {
+// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableOutstandingBalance(f *float64) *LoanUpdateOne {
 	if f != nil {
-		luo.SetOutstandingAmount(*f)
+		luo.SetOutstandingBalance(*f)
 	}
 	return luo
 }
 
-// AddOutstandingAmount adds f to the "outstandingAmount" field.
-func (luo *LoanUpdateOne) AddOutstandingAmount(f float64) *LoanUpdateOne {
-	luo.mutation.AddOutstandingAmount(f)
+// AddOutstandingBalance adds f to the "outstandingBalance" field.
+func (luo *LoanUpdateOne) AddOutstandingBalance(f float64) *LoanUpdateOne {
+	luo.mutation.AddOutstandingBalance(f)
 	return luo
 }
 
@@ -922,6 +1004,21 @@ func (luo *LoanUpdateOne) SetCompany(c *Company) *LoanUpdateOne {
 	return luo.SetCompanyID(c.ID)
 }
 
+// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+func (luo *LoanUpdateOne) AddTransactionHistoryIDs(ids ...int) *LoanUpdateOne {
+	luo.mutation.AddTransactionHistoryIDs(ids...)
+	return luo
+}
+
+// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+func (luo *LoanUpdateOne) AddTransactionHistory(a ...*AccountingEntry) *LoanUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return luo.AddTransactionHistoryIDs(ids...)
+}
+
 // Mutation returns the LoanMutation object of the builder.
 func (luo *LoanUpdateOne) Mutation() *LoanMutation {
 	return luo.mutation
@@ -931,6 +1028,27 @@ func (luo *LoanUpdateOne) Mutation() *LoanMutation {
 func (luo *LoanUpdateOne) ClearCompany() *LoanUpdateOne {
 	luo.mutation.ClearCompany()
 	return luo
+}
+
+// ClearTransactionHistory clears all "transactionHistory" edges to the AccountingEntry entity.
+func (luo *LoanUpdateOne) ClearTransactionHistory() *LoanUpdateOne {
+	luo.mutation.ClearTransactionHistory()
+	return luo
+}
+
+// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to AccountingEntry entities by IDs.
+func (luo *LoanUpdateOne) RemoveTransactionHistoryIDs(ids ...int) *LoanUpdateOne {
+	luo.mutation.RemoveTransactionHistoryIDs(ids...)
+	return luo
+}
+
+// RemoveTransactionHistory removes "transactionHistory" edges to AccountingEntry entities.
+func (luo *LoanUpdateOne) RemoveTransactionHistory(a ...*AccountingEntry) *LoanUpdateOne {
+	ids := make([]int, len(a))
+	for i := range a {
+		ids[i] = a[i].ID
+	}
+	return luo.RemoveTransactionHistoryIDs(ids...)
 }
 
 // Where appends a list predicates to the LoanUpdate builder.
@@ -1009,9 +1127,9 @@ func (luo *LoanUpdateOne) check() error {
 			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
 		}
 	}
-	if v, ok := luo.mutation.OutstandingAmount(); ok {
-		if err := loan.OutstandingAmountValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingAmount": %w`, err)}
+	if v, ok := luo.mutation.OutstandingBalance(); ok {
+		if err := loan.OutstandingBalanceValidator(v); err != nil {
+			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.PaymentFrequency(); ok {
@@ -1127,11 +1245,11 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 	if luo.mutation.NextPaymentAmountCleared() {
 		_spec.ClearField(loan.FieldNextPaymentAmount, field.TypeFloat64)
 	}
-	if value, ok := luo.mutation.OutstandingAmount(); ok {
-		_spec.SetField(loan.FieldOutstandingAmount, field.TypeFloat64, value)
+	if value, ok := luo.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loan.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if value, ok := luo.mutation.AddedOutstandingAmount(); ok {
-		_spec.AddField(loan.FieldOutstandingAmount, field.TypeFloat64, value)
+	if value, ok := luo.mutation.AddedOutstandingBalance(); ok {
+		_spec.AddField(loan.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
 	if value, ok := luo.mutation.PaymentFrequency(); ok {
 		_spec.SetField(loan.FieldPaymentFrequency, field.TypeEnum, value)
@@ -1173,6 +1291,51 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if luo.mutation.TransactionHistoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.RemovedTransactionHistoryIDs(); len(nodes) > 0 && !luo.mutation.TransactionHistoryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.TransactionHistoryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.TransactionHistoryTable,
+			Columns: []string{loan.TransactionHistoryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(accountingentry.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

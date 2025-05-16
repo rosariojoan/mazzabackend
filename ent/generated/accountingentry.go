@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/user"
 	"strings"
 	"time"
@@ -53,6 +54,7 @@ type AccountingEntry struct {
 	// The values are being populated by the AccountingEntryQuery when eager-loading is set.
 	Edges                      AccountingEntryEdges `json:"edges"`
 	company_accounting_entries *int
+	loan_transaction_history   *int
 	user_accounting_entries    *int
 	selectValues               sql.SelectValues
 }
@@ -63,11 +65,13 @@ type AccountingEntryEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
+	// Loan holds the value of the loan edge.
+	Loan *Loan `json:"loan,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -92,6 +96,17 @@ func (e AccountingEntryEdges) UserOrErr() (*User, error) {
 	return nil, &NotLoadedError{edge: "user"}
 }
 
+// LoanOrErr returns the Loan value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e AccountingEntryEdges) LoanOrErr() (*Loan, error) {
+	if e.Loan != nil {
+		return e.Loan, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: loan.Label}
+	}
+	return nil, &NotLoadedError{edge: "loan"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*AccountingEntry) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -109,7 +124,9 @@ func (*AccountingEntry) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case accountingentry.ForeignKeys[0]: // company_accounting_entries
 			values[i] = new(sql.NullInt64)
-		case accountingentry.ForeignKeys[1]: // user_accounting_entries
+		case accountingentry.ForeignKeys[1]: // loan_transaction_history
+			values[i] = new(sql.NullInt64)
+		case accountingentry.ForeignKeys[2]: // user_accounting_entries
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -232,6 +249,13 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			}
 		case accountingentry.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field loan_transaction_history", value)
+			} else if value.Valid {
+				ae.loan_transaction_history = new(int)
+				*ae.loan_transaction_history = int(value.Int64)
+			}
+		case accountingentry.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_accounting_entries", value)
 			} else if value.Valid {
 				ae.user_accounting_entries = new(int)
@@ -258,6 +282,11 @@ func (ae *AccountingEntry) QueryCompany() *CompanyQuery {
 // QueryUser queries the "user" edge of the AccountingEntry entity.
 func (ae *AccountingEntry) QueryUser() *UserQuery {
 	return NewAccountingEntryClient(ae.config).QueryUser(ae)
+}
+
+// QueryLoan queries the "loan" edge of the AccountingEntry entity.
+func (ae *AccountingEntry) QueryLoan() *LoanQuery {
+	return NewAccountingEntryClient(ae.config).QueryLoan(ae)
 }
 
 // Update returns a builder for updating this AccountingEntry.

@@ -117,6 +117,7 @@ input BaseEntryRegistrationInput {
   cashInput: Float
   date: Time!
   description: String
+  loanID: ID
   operationType: BaseOperationType!
   payableInput: PayableInput
   payableUpdateInput: PayableUpdateInput

@@ -110,9 +110,9 @@ func NextPaymentAmount(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldNextPaymentAmount, v))
 }
 
-// OutstandingAmount applies equality check predicate on the "outstandingAmount" field. It's identical to OutstandingAmountEQ.
-func OutstandingAmount(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldOutstandingAmount, v))
+// OutstandingBalance applies equality check predicate on the "outstandingBalance" field. It's identical to OutstandingBalanceEQ.
+func OutstandingBalance(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
 // PaidInstallments applies equality check predicate on the "paidInstallments" field. It's identical to PaidInstallmentsEQ.
@@ -690,44 +690,44 @@ func NextPaymentAmountNotNil() predicate.Loan {
 	return predicate.Loan(sql.FieldNotNull(FieldNextPaymentAmount))
 }
 
-// OutstandingAmountEQ applies the EQ predicate on the "outstandingAmount" field.
-func OutstandingAmountEQ(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldOutstandingAmount, v))
+// OutstandingBalanceEQ applies the EQ predicate on the "outstandingBalance" field.
+func OutstandingBalanceEQ(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingAmountNEQ applies the NEQ predicate on the "outstandingAmount" field.
-func OutstandingAmountNEQ(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldNEQ(FieldOutstandingAmount, v))
+// OutstandingBalanceNEQ applies the NEQ predicate on the "outstandingBalance" field.
+func OutstandingBalanceNEQ(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldNEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingAmountIn applies the In predicate on the "outstandingAmount" field.
-func OutstandingAmountIn(vs ...float64) predicate.Loan {
-	return predicate.Loan(sql.FieldIn(FieldOutstandingAmount, vs...))
+// OutstandingBalanceIn applies the In predicate on the "outstandingBalance" field.
+func OutstandingBalanceIn(vs ...float64) predicate.Loan {
+	return predicate.Loan(sql.FieldIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingAmountNotIn applies the NotIn predicate on the "outstandingAmount" field.
-func OutstandingAmountNotIn(vs ...float64) predicate.Loan {
-	return predicate.Loan(sql.FieldNotIn(FieldOutstandingAmount, vs...))
+// OutstandingBalanceNotIn applies the NotIn predicate on the "outstandingBalance" field.
+func OutstandingBalanceNotIn(vs ...float64) predicate.Loan {
+	return predicate.Loan(sql.FieldNotIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingAmountGT applies the GT predicate on the "outstandingAmount" field.
-func OutstandingAmountGT(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldGT(FieldOutstandingAmount, v))
+// OutstandingBalanceGT applies the GT predicate on the "outstandingBalance" field.
+func OutstandingBalanceGT(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldGT(FieldOutstandingBalance, v))
 }
 
-// OutstandingAmountGTE applies the GTE predicate on the "outstandingAmount" field.
-func OutstandingAmountGTE(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldGTE(FieldOutstandingAmount, v))
+// OutstandingBalanceGTE applies the GTE predicate on the "outstandingBalance" field.
+func OutstandingBalanceGTE(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldGTE(FieldOutstandingBalance, v))
 }
 
-// OutstandingAmountLT applies the LT predicate on the "outstandingAmount" field.
-func OutstandingAmountLT(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldLT(FieldOutstandingAmount, v))
+// OutstandingBalanceLT applies the LT predicate on the "outstandingBalance" field.
+func OutstandingBalanceLT(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldLT(FieldOutstandingBalance, v))
 }
 
-// OutstandingAmountLTE applies the LTE predicate on the "outstandingAmount" field.
-func OutstandingAmountLTE(v float64) predicate.Loan {
-	return predicate.Loan(sql.FieldLTE(FieldOutstandingAmount, v))
+// OutstandingBalanceLTE applies the LTE predicate on the "outstandingBalance" field.
+func OutstandingBalanceLTE(v float64) predicate.Loan {
+	return predicate.Loan(sql.FieldLTE(FieldOutstandingBalance, v))
 }
 
 // PaymentFrequencyEQ applies the EQ predicate on the "paymentFrequency" field.
@@ -930,6 +930,29 @@ func HasCompany() predicate.Loan {
 func HasCompanyWith(preds ...predicate.Company) predicate.Loan {
 	return predicate.Loan(func(s *sql.Selector) {
 		step := newCompanyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTransactionHistory applies the HasEdge predicate on the "transactionHistory" edge.
+func HasTransactionHistory() predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TransactionHistoryTable, TransactionHistoryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTransactionHistoryWith applies the HasEdge predicate on the "transactionHistory" edge with a given conditions (other predicates).
+func HasTransactionHistoryWith(preds ...predicate.AccountingEntry) predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := newTransactionHistoryStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

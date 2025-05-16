@@ -100,6 +100,8 @@ type AccountingEntryMutation struct {
 	clearedcompany bool
 	user           *int
 	cleareduser    bool
+	loan           *int
+	clearedloan    bool
 	done           bool
 	oldValue       func(context.Context) (*AccountingEntry, error)
 	predicates     []predicate.AccountingEntry
@@ -894,6 +896,45 @@ func (m *AccountingEntryMutation) ResetUser() {
 	m.cleareduser = false
 }
 
+// SetLoanID sets the "loan" edge to the Loan entity by id.
+func (m *AccountingEntryMutation) SetLoanID(id int) {
+	m.loan = &id
+}
+
+// ClearLoan clears the "loan" edge to the Loan entity.
+func (m *AccountingEntryMutation) ClearLoan() {
+	m.clearedloan = true
+}
+
+// LoanCleared reports if the "loan" edge to the Loan entity was cleared.
+func (m *AccountingEntryMutation) LoanCleared() bool {
+	return m.clearedloan
+}
+
+// LoanID returns the "loan" edge ID in the mutation.
+func (m *AccountingEntryMutation) LoanID() (id int, exists bool) {
+	if m.loan != nil {
+		return *m.loan, true
+	}
+	return
+}
+
+// LoanIDs returns the "loan" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// LoanID instead. It exists only for internal usage by the builders.
+func (m *AccountingEntryMutation) LoanIDs() (ids []int) {
+	if id := m.loan; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetLoan resets all changes to the "loan" edge.
+func (m *AccountingEntryMutation) ResetLoan() {
+	m.loan = nil
+	m.clearedloan = false
+}
+
 // Where appends a list predicates to the AccountingEntryMutation builder.
 func (m *AccountingEntryMutation) Where(ps ...predicate.AccountingEntry) {
 	m.predicates = append(m.predicates, ps...)
@@ -1313,12 +1354,15 @@ func (m *AccountingEntryMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *AccountingEntryMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.company != nil {
 		edges = append(edges, accountingentry.EdgeCompany)
 	}
 	if m.user != nil {
 		edges = append(edges, accountingentry.EdgeUser)
+	}
+	if m.loan != nil {
+		edges = append(edges, accountingentry.EdgeLoan)
 	}
 	return edges
 }
@@ -1335,13 +1379,17 @@ func (m *AccountingEntryMutation) AddedIDs(name string) []ent.Value {
 		if id := m.user; id != nil {
 			return []ent.Value{*id}
 		}
+	case accountingentry.EdgeLoan:
+		if id := m.loan; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *AccountingEntryMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	return edges
 }
 
@@ -1353,12 +1401,15 @@ func (m *AccountingEntryMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *AccountingEntryMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedcompany {
 		edges = append(edges, accountingentry.EdgeCompany)
 	}
 	if m.cleareduser {
 		edges = append(edges, accountingentry.EdgeUser)
+	}
+	if m.clearedloan {
+		edges = append(edges, accountingentry.EdgeLoan)
 	}
 	return edges
 }
@@ -1371,6 +1422,8 @@ func (m *AccountingEntryMutation) EdgeCleared(name string) bool {
 		return m.clearedcompany
 	case accountingentry.EdgeUser:
 		return m.cleareduser
+	case accountingentry.EdgeLoan:
+		return m.clearedloan
 	}
 	return false
 }
@@ -1385,6 +1438,9 @@ func (m *AccountingEntryMutation) ClearEdge(name string) error {
 	case accountingentry.EdgeUser:
 		m.ClearUser()
 		return nil
+	case accountingentry.EdgeLoan:
+		m.ClearLoan()
+		return nil
 	}
 	return fmt.Errorf("unknown AccountingEntry unique edge %s", name)
 }
@@ -1398,6 +1454,9 @@ func (m *AccountingEntryMutation) ResetEdge(name string) error {
 		return nil
 	case accountingentry.EdgeUser:
 		m.ResetUser()
+		return nil
+	case accountingentry.EdgeLoan:
+		m.ResetLoan()
 		return nil
 	}
 	return fmt.Errorf("unknown AccountingEntry edge %s", name)
@@ -15224,39 +15283,42 @@ func (m *InvoiceMutation) ResetEdge(name string) error {
 // LoanMutation represents an operation that mutates the Loan nodes in the graph.
 type LoanMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *int
-	createdAt            *time.Time
-	updatedAt            *time.Time
-	deletedAt            *time.Time
-	amount               *float64
-	addamount            *float64
-	category             *loan.Category
-	collateral           *string
-	description          *string
-	interestRate         *float64
-	addinterestRate      *float64
-	installments         *int
-	addinstallments      *int
-	maturityDate         *time.Time
-	nextPayment          *time.Time
-	nextPaymentAmount    *float64
-	addnextPaymentAmount *float64
-	outstandingAmount    *float64
-	addoutstandingAmount *float64
-	paymentFrequency     *loan.PaymentFrequency
-	paidInstallments     *int
-	addpaidInstallments  *int
-	provider             *string
-	startDate            *time.Time
-	status               *loan.Status
-	clearedFields        map[string]struct{}
-	company              *int
-	clearedcompany       bool
-	done                 bool
-	oldValue             func(context.Context) (*Loan, error)
-	predicates           []predicate.Loan
+	op                        Op
+	typ                       string
+	id                        *int
+	createdAt                 *time.Time
+	updatedAt                 *time.Time
+	deletedAt                 *time.Time
+	amount                    *float64
+	addamount                 *float64
+	category                  *loan.Category
+	collateral                *string
+	description               *string
+	interestRate              *float64
+	addinterestRate           *float64
+	installments              *int
+	addinstallments           *int
+	maturityDate              *time.Time
+	nextPayment               *time.Time
+	nextPaymentAmount         *float64
+	addnextPaymentAmount      *float64
+	outstandingBalance        *float64
+	addoutstandingBalance     *float64
+	paymentFrequency          *loan.PaymentFrequency
+	paidInstallments          *int
+	addpaidInstallments       *int
+	provider                  *string
+	startDate                 *time.Time
+	status                    *loan.Status
+	clearedFields             map[string]struct{}
+	company                   *int
+	clearedcompany            bool
+	transactionHistory        map[int]struct{}
+	removedtransactionHistory map[int]struct{}
+	clearedtransactionHistory bool
+	done                      bool
+	oldValue                  func(context.Context) (*Loan, error)
+	predicates                []predicate.Loan
 }
 
 var _ ent.Mutation = (*LoanMutation)(nil)
@@ -15935,60 +15997,60 @@ func (m *LoanMutation) ResetNextPaymentAmount() {
 	delete(m.clearedFields, loan.FieldNextPaymentAmount)
 }
 
-// SetOutstandingAmount sets the "outstandingAmount" field.
-func (m *LoanMutation) SetOutstandingAmount(f float64) {
-	m.outstandingAmount = &f
-	m.addoutstandingAmount = nil
+// SetOutstandingBalance sets the "outstandingBalance" field.
+func (m *LoanMutation) SetOutstandingBalance(f float64) {
+	m.outstandingBalance = &f
+	m.addoutstandingBalance = nil
 }
 
-// OutstandingAmount returns the value of the "outstandingAmount" field in the mutation.
-func (m *LoanMutation) OutstandingAmount() (r float64, exists bool) {
-	v := m.outstandingAmount
+// OutstandingBalance returns the value of the "outstandingBalance" field in the mutation.
+func (m *LoanMutation) OutstandingBalance() (r float64, exists bool) {
+	v := m.outstandingBalance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOutstandingAmount returns the old "outstandingAmount" field's value of the Loan entity.
+// OldOutstandingBalance returns the old "outstandingBalance" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoanMutation) OldOutstandingAmount(ctx context.Context) (v float64, err error) {
+func (m *LoanMutation) OldOutstandingBalance(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOutstandingAmount is only allowed on UpdateOne operations")
+		return v, errors.New("OldOutstandingBalance is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOutstandingAmount requires an ID field in the mutation")
+		return v, errors.New("OldOutstandingBalance requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOutstandingAmount: %w", err)
+		return v, fmt.Errorf("querying old value for OldOutstandingBalance: %w", err)
 	}
-	return oldValue.OutstandingAmount, nil
+	return oldValue.OutstandingBalance, nil
 }
 
-// AddOutstandingAmount adds f to the "outstandingAmount" field.
-func (m *LoanMutation) AddOutstandingAmount(f float64) {
-	if m.addoutstandingAmount != nil {
-		*m.addoutstandingAmount += f
+// AddOutstandingBalance adds f to the "outstandingBalance" field.
+func (m *LoanMutation) AddOutstandingBalance(f float64) {
+	if m.addoutstandingBalance != nil {
+		*m.addoutstandingBalance += f
 	} else {
-		m.addoutstandingAmount = &f
+		m.addoutstandingBalance = &f
 	}
 }
 
-// AddedOutstandingAmount returns the value that was added to the "outstandingAmount" field in this mutation.
-func (m *LoanMutation) AddedOutstandingAmount() (r float64, exists bool) {
-	v := m.addoutstandingAmount
+// AddedOutstandingBalance returns the value that was added to the "outstandingBalance" field in this mutation.
+func (m *LoanMutation) AddedOutstandingBalance() (r float64, exists bool) {
+	v := m.addoutstandingBalance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetOutstandingAmount resets all changes to the "outstandingAmount" field.
-func (m *LoanMutation) ResetOutstandingAmount() {
-	m.outstandingAmount = nil
-	m.addoutstandingAmount = nil
+// ResetOutstandingBalance resets all changes to the "outstandingBalance" field.
+func (m *LoanMutation) ResetOutstandingBalance() {
+	m.outstandingBalance = nil
+	m.addoutstandingBalance = nil
 }
 
 // SetPaymentFrequency sets the "paymentFrequency" field.
@@ -16230,6 +16292,60 @@ func (m *LoanMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
+// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by ids.
+func (m *LoanMutation) AddTransactionHistoryIDs(ids ...int) {
+	if m.transactionHistory == nil {
+		m.transactionHistory = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.transactionHistory[ids[i]] = struct{}{}
+	}
+}
+
+// ClearTransactionHistory clears the "transactionHistory" edge to the AccountingEntry entity.
+func (m *LoanMutation) ClearTransactionHistory() {
+	m.clearedtransactionHistory = true
+}
+
+// TransactionHistoryCleared reports if the "transactionHistory" edge to the AccountingEntry entity was cleared.
+func (m *LoanMutation) TransactionHistoryCleared() bool {
+	return m.clearedtransactionHistory
+}
+
+// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to the AccountingEntry entity by IDs.
+func (m *LoanMutation) RemoveTransactionHistoryIDs(ids ...int) {
+	if m.removedtransactionHistory == nil {
+		m.removedtransactionHistory = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.transactionHistory, ids[i])
+		m.removedtransactionHistory[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedTransactionHistory returns the removed IDs of the "transactionHistory" edge to the AccountingEntry entity.
+func (m *LoanMutation) RemovedTransactionHistoryIDs() (ids []int) {
+	for id := range m.removedtransactionHistory {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// TransactionHistoryIDs returns the "transactionHistory" edge IDs in the mutation.
+func (m *LoanMutation) TransactionHistoryIDs() (ids []int) {
+	for id := range m.transactionHistory {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetTransactionHistory resets all changes to the "transactionHistory" edge.
+func (m *LoanMutation) ResetTransactionHistory() {
+	m.transactionHistory = nil
+	m.clearedtransactionHistory = false
+	m.removedtransactionHistory = nil
+}
+
 // Where appends a list predicates to the LoanMutation builder.
 func (m *LoanMutation) Where(ps ...predicate.Loan) {
 	m.predicates = append(m.predicates, ps...)
@@ -16301,8 +16417,8 @@ func (m *LoanMutation) Fields() []string {
 	if m.nextPaymentAmount != nil {
 		fields = append(fields, loan.FieldNextPaymentAmount)
 	}
-	if m.outstandingAmount != nil {
-		fields = append(fields, loan.FieldOutstandingAmount)
+	if m.outstandingBalance != nil {
+		fields = append(fields, loan.FieldOutstandingBalance)
 	}
 	if m.paymentFrequency != nil {
 		fields = append(fields, loan.FieldPaymentFrequency)
@@ -16351,8 +16467,8 @@ func (m *LoanMutation) Field(name string) (ent.Value, bool) {
 		return m.NextPayment()
 	case loan.FieldNextPaymentAmount:
 		return m.NextPaymentAmount()
-	case loan.FieldOutstandingAmount:
-		return m.OutstandingAmount()
+	case loan.FieldOutstandingBalance:
+		return m.OutstandingBalance()
 	case loan.FieldPaymentFrequency:
 		return m.PaymentFrequency()
 	case loan.FieldPaidInstallments:
@@ -16396,8 +16512,8 @@ func (m *LoanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldNextPayment(ctx)
 	case loan.FieldNextPaymentAmount:
 		return m.OldNextPaymentAmount(ctx)
-	case loan.FieldOutstandingAmount:
-		return m.OldOutstandingAmount(ctx)
+	case loan.FieldOutstandingBalance:
+		return m.OldOutstandingBalance(ctx)
 	case loan.FieldPaymentFrequency:
 		return m.OldPaymentFrequency(ctx)
 	case loan.FieldPaidInstallments:
@@ -16501,12 +16617,12 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetNextPaymentAmount(v)
 		return nil
-	case loan.FieldOutstandingAmount:
+	case loan.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetOutstandingAmount(v)
+		m.SetOutstandingBalance(v)
 		return nil
 	case loan.FieldPaymentFrequency:
 		v, ok := value.(loan.PaymentFrequency)
@@ -16563,8 +16679,8 @@ func (m *LoanMutation) AddedFields() []string {
 	if m.addnextPaymentAmount != nil {
 		fields = append(fields, loan.FieldNextPaymentAmount)
 	}
-	if m.addoutstandingAmount != nil {
-		fields = append(fields, loan.FieldOutstandingAmount)
+	if m.addoutstandingBalance != nil {
+		fields = append(fields, loan.FieldOutstandingBalance)
 	}
 	if m.addpaidInstallments != nil {
 		fields = append(fields, loan.FieldPaidInstallments)
@@ -16585,8 +16701,8 @@ func (m *LoanMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedInstallments()
 	case loan.FieldNextPaymentAmount:
 		return m.AddedNextPaymentAmount()
-	case loan.FieldOutstandingAmount:
-		return m.AddedOutstandingAmount()
+	case loan.FieldOutstandingBalance:
+		return m.AddedOutstandingBalance()
 	case loan.FieldPaidInstallments:
 		return m.AddedPaidInstallments()
 	}
@@ -16626,12 +16742,12 @@ func (m *LoanMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddNextPaymentAmount(v)
 		return nil
-	case loan.FieldOutstandingAmount:
+	case loan.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddOutstandingAmount(v)
+		m.AddOutstandingBalance(v)
 		return nil
 	case loan.FieldPaidInstallments:
 		v, ok := value.(int)
@@ -16736,8 +16852,8 @@ func (m *LoanMutation) ResetField(name string) error {
 	case loan.FieldNextPaymentAmount:
 		m.ResetNextPaymentAmount()
 		return nil
-	case loan.FieldOutstandingAmount:
-		m.ResetOutstandingAmount()
+	case loan.FieldOutstandingBalance:
+		m.ResetOutstandingBalance()
 		return nil
 	case loan.FieldPaymentFrequency:
 		m.ResetPaymentFrequency()
@@ -16760,9 +16876,12 @@ func (m *LoanMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *LoanMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.company != nil {
 		edges = append(edges, loan.EdgeCompany)
+	}
+	if m.transactionHistory != nil {
+		edges = append(edges, loan.EdgeTransactionHistory)
 	}
 	return edges
 }
@@ -16775,27 +16894,47 @@ func (m *LoanMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
+	case loan.EdgeTransactionHistory:
+		ids := make([]ent.Value, 0, len(m.transactionHistory))
+		for id := range m.transactionHistory {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *LoanMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedtransactionHistory != nil {
+		edges = append(edges, loan.EdgeTransactionHistory)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *LoanMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case loan.EdgeTransactionHistory:
+		ids := make([]ent.Value, 0, len(m.removedtransactionHistory))
+		for id := range m.removedtransactionHistory {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *LoanMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.clearedcompany {
 		edges = append(edges, loan.EdgeCompany)
+	}
+	if m.clearedtransactionHistory {
+		edges = append(edges, loan.EdgeTransactionHistory)
 	}
 	return edges
 }
@@ -16806,6 +16945,8 @@ func (m *LoanMutation) EdgeCleared(name string) bool {
 	switch name {
 	case loan.EdgeCompany:
 		return m.clearedcompany
+	case loan.EdgeTransactionHistory:
+		return m.clearedtransactionHistory
 	}
 	return false
 }
@@ -16827,6 +16968,9 @@ func (m *LoanMutation) ResetEdge(name string) error {
 	switch name {
 	case loan.EdgeCompany:
 		m.ResetCompany()
+		return nil
+	case loan.EdgeTransactionHistory:
+		m.ResetTransactionHistory()
 		return nil
 	}
 	return fmt.Errorf("unknown Loan edge %s", name)

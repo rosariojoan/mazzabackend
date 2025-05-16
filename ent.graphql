@@ -19,6 +19,7 @@ type AccountingEntry implements Node {
   reversed: Boolean!
   company: Company
   user: User
+  loan: Loan
 }
 """
 AccountingEntryAccountType is enum for the field accountType
@@ -289,6 +290,11 @@ input AccountingEntryWhereInput {
   """
   hasUser: Boolean
   hasUserWith: [UserWhereInput!]
+  """
+  loan edge predicates
+  """
+  hasLoan: Boolean
+  hasLoanWith: [LoanWhereInput!]
 }
 type Company implements Node {
   id: ID!
@@ -1134,6 +1140,7 @@ input CreateAccountingEntryInput {
   reversed: Boolean
   companyID: ID
   userID: ID
+  loanID: ID
 }
 """
 CreateCompanyDocumentInput is used for create CompanyDocument object.
@@ -1349,13 +1356,13 @@ input CreateLoanInput {
   maturitydate: Time!
   nextpayment: Time
   nextpaymentamount: Float
-  outstandingamount: Float!
+  outstandingbalance: Float!
   paymentfrequency: LoanPaymentFrequency
   paidinstallments: Int
   provider: String!
   startdate: Time
   status: LoanStatus!
-  companyID: ID
+  transactionhistoryIDs: [ID!]
 }
 """
 CreateMemberSignupTokenInput is used for create MemberSignupToken object.
@@ -3515,13 +3522,14 @@ type Loan implements Node {
   maturitydate: Time! @goField(name: "MaturityDate", forceResolver: false)
   nextpayment: Time @goField(name: "NextPayment", forceResolver: false)
   nextpaymentamount: Float @goField(name: "NextPaymentAmount", forceResolver: false)
-  outstandingamount: Float! @goField(name: "OutstandingAmount", forceResolver: false)
+  outstandingbalance: Float! @goField(name: "OutstandingBalance", forceResolver: false)
   paymentfrequency: LoanPaymentFrequency! @goField(name: "PaymentFrequency", forceResolver: false)
   paidinstallments: Int! @goField(name: "PaidInstallments", forceResolver: false)
   provider: String!
   startdate: Time! @goField(name: "StartDate", forceResolver: false)
   status: LoanStatus!
   company: Company
+  transactionhistory: [AccountingEntry!] @goField(name: "TransactionHistory", forceResolver: false)
 }
 """
 LoanCategory is enum for the field category
@@ -3584,6 +3592,15 @@ Properties by which Loan connections can be ordered.
 enum LoanOrderField {
   CREATED_AT
   UPDATED_AT
+  amount
+  category
+  interestRate
+  maturityDate
+  nextPayment
+  nextPaymentAmount
+  outstandingBalance
+  paymentFrequency
+  startDate
 }
 """
 LoanPaymentFrequency is enum for the field paymentFrequency
@@ -3771,16 +3788,16 @@ input LoanWhereInput {
   nextpaymentamountIsNil: Boolean
   nextpaymentamountNotNil: Boolean
   """
-  outstandingAmount field predicates
+  outstandingBalance field predicates
   """
-  outstandingamount: Float
-  outstandingamountNEQ: Float
-  outstandingamountIn: [Float!]
-  outstandingamountNotIn: [Float!]
-  outstandingamountGT: Float
-  outstandingamountGTE: Float
-  outstandingamountLT: Float
-  outstandingamountLTE: Float
+  outstandingbalance: Float
+  outstandingbalanceNEQ: Float
+  outstandingbalanceIn: [Float!]
+  outstandingbalanceNotIn: [Float!]
+  outstandingbalanceGT: Float
+  outstandingbalanceGTE: Float
+  outstandingbalanceLT: Float
+  outstandingbalanceLTE: Float
   """
   paymentFrequency field predicates
   """
@@ -3838,6 +3855,11 @@ input LoanWhereInput {
   """
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
+  """
+  transactionHistory edge predicates
+  """
+  hasTransactionHistory: Boolean
+  hasTransactionHistoryWith: [AccountingEntryWhereInput!]
 }
 type MemberSignupToken implements Node {
   id: ID!
@@ -6112,6 +6134,8 @@ input UpdateAccountingEntryInput {
   clearCompany: Boolean
   userID: ID
   clearUser: Boolean
+  loanID: ID
+  clearLoan: Boolean
 }
 """
 UpdateCompanyDocumentInput is used for update CompanyDocument object.
@@ -6427,14 +6451,15 @@ input UpdateLoanInput {
   clearNextPayment: Boolean
   nextpaymentamount: Float
   clearNextPaymentAmount: Boolean
-  outstandingamount: Float
+  outstandingbalance: Float
   paymentfrequency: LoanPaymentFrequency
   paidinstallments: Int
   provider: String
   startdate: Time
   status: LoanStatus
-  companyID: ID
-  clearCompany: Boolean
+  addTransactionHistoryIDs: [ID!]
+  removeTransactionHistoryIDs: [ID!]
+  clearTransactionHistory: Boolean
 }
 """
 UpdateMemberSignupTokenInput is used for update MemberSignupToken object.

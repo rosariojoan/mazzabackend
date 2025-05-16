@@ -3,7 +3,6 @@ package accountingentry
 import (
 	"context"
 	"fmt"
-	"mazza/ent/generated"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
@@ -14,7 +13,7 @@ import (
 )
 
 /* Pass in a database transaction. The caller function should commit the transaction if this operation returns no error */
-func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input model.BaseEntryRegistrationInput, invoiceID *int) (*string, error) {
+func RegisterAccountingOperations(ctx context.Context, tx *ent.Tx, input model.BaseEntryRegistrationInput, invoiceID *int) (*string, error) {
 	currentUser, activeCompany := u.GetSession(&ctx)
 	companyQ := company.ID(activeCompany.ID)
 	// country, lang := "mz", "pt"
@@ -92,6 +91,11 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 		}
 		entryCounter.Number += 1
 
+		var loanID *int
+		if entry.Category == "cash" && input.LoanID != nil {
+			loanID = input.LoanID
+		}
+
 		var newEntry = tx.AccountingEntry.Create().
 			SetInput(ent.CreateAccountingEntryInput{
 				CompanyID:   &activeCompany.ID,
@@ -106,6 +110,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *generated.Tx, input m
 				Description: *input.Description,
 				AccountType: entry.AccountType,
 				IsDebit:     entry.IsDebit,
+				LoanID:      loanID,
 				// Files:       files,
 			})
 		accountingEntries = append(accountingEntries, newEntry)
