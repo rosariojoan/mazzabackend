@@ -73,6 +73,7 @@ func main() {
 		authRouter.POST("/login", auth.Login)
 		authRouter.POST("/delete-request", auth.UnsubscriptionRequest)
 		authRouter.POST("/confirm-delete", auth.ConfirmDeleteUser)
+		authRouter.POST("/check", auth.CheckUser)
 		authRouter.POST("/forgot-password")
 		authRouter.POST("/verify-password")
 
