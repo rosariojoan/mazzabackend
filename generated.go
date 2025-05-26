@@ -917,6 +917,7 @@ type ComplexityRoot struct {
 		Employee                  func(childComplexity int) int
 		Gender                    func(childComplexity int) int
 		ID                        func(childComplexity int) int
+		IsDemoUser                func(childComplexity int) int
 		IssuedInvoices            func(childComplexity int) int
 		LastLogin                 func(childComplexity int) int
 		Leader                    func(childComplexity int) int
@@ -6014,6 +6015,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.ID(childComplexity), true
+
+	case "User.isdemouser":
+		if e.complexity.User.IsDemoUser == nil {
+			break
+		}
+
+		return e.complexity.User.IsDemoUser(childComplexity), true
 
 	case "User.issuedinvoices":
 		if e.complexity.User.IssuedInvoices == nil {
@@ -13169,6 +13177,8 @@ func (ec *executionContext) fieldContext_AccountingEntry_user(_ context.Context,
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -16794,6 +16804,8 @@ func (ec *executionContext) fieldContext_Company_users(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -17915,6 +17927,8 @@ func (ec *executionContext) fieldContext_CompanyDocument_uploadedby(_ context.Co
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -18024,6 +18038,8 @@ func (ec *executionContext) fieldContext_CompanyDocument_approvedby(_ context.Co
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -20272,6 +20288,8 @@ func (ec *executionContext) fieldContext_Employee_user(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -26363,6 +26381,8 @@ func (ec *executionContext) fieldContext_Invoice_issuedby(_ context.Context, fie
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -28997,6 +29017,8 @@ func (ec *executionContext) fieldContext_LoginOutput_user(_ context.Context, fie
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -30120,6 +30142,8 @@ func (ec *executionContext) fieldContext_MemberSignupToken_createdby(_ context.C
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -30854,6 +30878,8 @@ func (ec *executionContext) fieldContext_Mutation_invitedUserSignup(ctx context.
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -30974,6 +31000,8 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -31097,6 +31125,8 @@ func (ec *executionContext) fieldContext_Mutation_updateUser(ctx context.Context
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -37069,6 +37099,8 @@ func (ec *executionContext) fieldContext_Project_createdby(_ context.Context, fi
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -37178,6 +37210,8 @@ func (ec *executionContext) fieldContext_Project_leader(_ context.Context, field
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -38397,6 +38431,8 @@ func (ec *executionContext) fieldContext_ProjectTask_assignee(_ context.Context,
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -38506,6 +38542,8 @@ func (ec *executionContext) fieldContext_ProjectTask_participants(_ context.Cont
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -38615,6 +38653,8 @@ func (ec *executionContext) fieldContext_ProjectTask_createdby(_ context.Context
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -41846,6 +41886,8 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -45770,6 +45812,8 @@ func (ec *executionContext) fieldContext_Token_user(_ context.Context, field gra
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -46754,6 +46798,47 @@ func (ec *executionContext) fieldContext_User_deletedat(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _User_isdemouser(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_isdemouser(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsDemoUser, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*bool)
+	fc.Result = res
+	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_isdemouser(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *generated.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_email(ctx, field)
 	if err != nil {
@@ -47531,6 +47616,8 @@ func (ec *executionContext) fieldContext_User_subordinates(_ context.Context, fi
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -47640,6 +47727,8 @@ func (ec *executionContext) fieldContext_User_leader(_ context.Context, field gr
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -49033,6 +49122,8 @@ func (ec *executionContext) fieldContext_UserRole_user(_ context.Context, field 
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -49955,6 +50046,8 @@ func (ec *executionContext) fieldContext_Workshift_user(_ context.Context, field
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -50064,6 +50157,8 @@ func (ec *executionContext) fieldContext_Workshift_approvedby(_ context.Context,
 				return ec.fieldContext_User_updatedat(ctx, field)
 			case "deletedat":
 				return ec.fieldContext_User_deletedat(ctx, field)
+			case "isdemouser":
+				return ec.fieldContext_User_isdemouser(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
@@ -80344,7 +80439,7 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "avatar", "avatarNEQ", "avatarIn", "avatarNotIn", "avatarGT", "avatarGTE", "avatarLT", "avatarLTE", "avatarContains", "avatarHasPrefix", "avatarHasSuffix", "avatarIsNil", "avatarNotNil", "avatarEqualFold", "avatarContainsFold", "photourl", "photourlNEQ", "photourlIn", "photourlNotIn", "photourlGT", "photourlGTE", "photourlLT", "photourlLTE", "photourlContains", "photourlHasPrefix", "photourlHasSuffix", "photourlIsNil", "photourlNotNil", "photourlEqualFold", "photourlContainsFold", "department", "departmentNEQ", "departmentIn", "departmentNotIn", "departmentGT", "departmentGTE", "departmentLT", "departmentLTE", "departmentContains", "departmentHasPrefix", "departmentHasSuffix", "departmentIsNil", "departmentNotNil", "departmentEqualFold", "departmentContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "birthdate", "birthdateNEQ", "birthdateIn", "birthdateNotIn", "birthdateGT", "birthdateGTE", "birthdateLT", "birthdateLTE", "birthdateIsNil", "birthdateNotNil", "lastlogin", "lastloginNEQ", "lastloginIn", "lastloginNotIn", "lastloginGT", "lastloginGTE", "lastloginLT", "lastloginLTE", "lastloginIsNil", "lastloginNotNil", "gender", "genderNEQ", "genderIn", "genderNotIn", "active", "activeNEQ", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasCreatedMemberSignupTokens", "hasCreatedMemberSignupTokensWith", "hasEmployee", "hasEmployeeWith", "hasIssuedInvoices", "hasIssuedInvoicesWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasTokens", "hasTokensWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUploadedDocuments", "hasUploadedDocumentsWith", "hasApprovedDocuments", "hasApprovedDocumentsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "isdemouser", "isdemouserNEQ", "isdemouserIsNil", "isdemouserNotNil", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailEqualFold", "emailContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "avatar", "avatarNEQ", "avatarIn", "avatarNotIn", "avatarGT", "avatarGTE", "avatarLT", "avatarLTE", "avatarContains", "avatarHasPrefix", "avatarHasSuffix", "avatarIsNil", "avatarNotNil", "avatarEqualFold", "avatarContainsFold", "photourl", "photourlNEQ", "photourlIn", "photourlNotIn", "photourlGT", "photourlGTE", "photourlLT", "photourlLTE", "photourlContains", "photourlHasPrefix", "photourlHasSuffix", "photourlIsNil", "photourlNotNil", "photourlEqualFold", "photourlContainsFold", "department", "departmentNEQ", "departmentIn", "departmentNotIn", "departmentGT", "departmentGTE", "departmentLT", "departmentLTE", "departmentContains", "departmentHasPrefix", "departmentHasSuffix", "departmentIsNil", "departmentNotNil", "departmentEqualFold", "departmentContainsFold", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "birthdate", "birthdateNEQ", "birthdateIn", "birthdateNotIn", "birthdateGT", "birthdateGTE", "birthdateLT", "birthdateLTE", "birthdateIsNil", "birthdateNotNil", "lastlogin", "lastloginNEQ", "lastloginIn", "lastloginNotIn", "lastloginGT", "lastloginGTE", "lastloginLT", "lastloginLTE", "lastloginIsNil", "lastloginNotNil", "gender", "genderNEQ", "genderIn", "genderNotIn", "active", "activeNEQ", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCompany", "hasCompanyWith", "hasAssignedRoles", "hasAssignedRolesWith", "hasSubordinates", "hasSubordinatesWith", "hasLeader", "hasLeaderWith", "hasCreatedMemberSignupTokens", "hasCreatedMemberSignupTokensWith", "hasEmployee", "hasEmployeeWith", "hasIssuedInvoices", "hasIssuedInvoicesWith", "hasCreatedProjects", "hasCreatedProjectsWith", "hasLeaderedProjects", "hasLeaderedProjectsWith", "hasAssignedProjectTasks", "hasAssignedProjectTasksWith", "hasParticipatedProjectTasks", "hasParticipatedProjectTasksWith", "hasCreatedTasks", "hasCreatedTasksWith", "hasTokens", "hasTokensWith", "hasApprovedWorkShifts", "hasApprovedWorkShiftsWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUploadedDocuments", "hasUploadedDocumentsWith", "hasApprovedDocuments", "hasApprovedDocumentsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -80610,6 +80705,34 @@ func (ec *executionContext) unmarshalInputUserWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.DeletedAtNotNil = data
+		case "isdemouser":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdemouser"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsDemoUser = data
+		case "isdemouserNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdemouserNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsDemoUserNEQ = data
+		case "isdemouserIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdemouserIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsDemoUserIsNil = data
+		case "isdemouserNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdemouserNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsDemoUserNotNil = data
 		case "email":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -91325,6 +91448,8 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "deletedat":
 			out.Values[i] = ec._User_deletedat(ctx, field, obj)
+		case "isdemouser":
+			out.Values[i] = ec._User_isdemouser(ctx, field, obj)
 		case "email":
 			out.Values[i] = ec._User_email(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

@@ -73,6 +73,20 @@ func (uc *UserCreate) SetNillableDeletedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetIsDemoUser sets the "isDemoUser" field.
+func (uc *UserCreate) SetIsDemoUser(b bool) *UserCreate {
+	uc.mutation.SetIsDemoUser(b)
+	return uc
+}
+
+// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+func (uc *UserCreate) SetNillableIsDemoUser(b *bool) *UserCreate {
+	if b != nil {
+		uc.SetIsDemoUser(*b)
+	}
+	return uc
+}
+
 // SetFirebaseUID sets the "firebaseUID" field.
 func (uc *UserCreate) SetFirebaseUID(s string) *UserCreate {
 	uc.mutation.SetFirebaseUID(s)
@@ -558,6 +572,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultUpdatedAt()
 		uc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := uc.mutation.IsDemoUser(); !ok {
+		v := user.DefaultIsDemoUser
+		uc.mutation.SetIsDemoUser(v)
+	}
 	if _, ok := uc.mutation.Active(); !ok {
 		v := user.DefaultActive
 		uc.mutation.SetActive(v)
@@ -642,6 +660,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.DeletedAt(); ok {
 		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := uc.mutation.IsDemoUser(); ok {
+		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)
+		_node.IsDemoUser = &value
 	}
 	if value, ok := uc.mutation.FirebaseUID(); ok {
 		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)

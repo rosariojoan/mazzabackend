@@ -838,6 +838,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "is_demo_user", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "firebase_uid", Type: field.TypeString, Unique: true},
 		{Name: "fcm_token", Type: field.TypeString, Nullable: true},
 		{Name: "expo_push_token", Type: field.TypeString, Nullable: true},
@@ -862,7 +863,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_subordinates",
-				Columns:    []*schema.Column{UsersColumns[18]},
+				Columns:    []*schema.Column{UsersColumns[19]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

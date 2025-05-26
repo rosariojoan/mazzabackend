@@ -14423,6 +14423,12 @@ type UserWhereInput struct {
 	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
 	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
 
+	// "isDemoUser" field predicates.
+	IsDemoUser       *bool `json:"isdemouser,omitempty"`
+	IsDemoUserNEQ    *bool `json:"isdemouserNEQ,omitempty"`
+	IsDemoUserIsNil  bool  `json:"isdemouserIsNil,omitempty"`
+	IsDemoUserNotNil bool  `json:"isdemouserNotNil,omitempty"`
+
 	// "firebaseUID" field predicates.
 	FirebaseUID             *string  `json:"firebaseuid,omitempty"`
 	FirebaseUIDNEQ          *string  `json:"firebaseuidNEQ,omitempty"`
@@ -14866,6 +14872,18 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 	}
 	if i.DeletedAtNotNil {
 		predicates = append(predicates, user.DeletedAtNotNil())
+	}
+	if i.IsDemoUser != nil {
+		predicates = append(predicates, user.IsDemoUserEQ(*i.IsDemoUser))
+	}
+	if i.IsDemoUserNEQ != nil {
+		predicates = append(predicates, user.IsDemoUserNEQ(*i.IsDemoUserNEQ))
+	}
+	if i.IsDemoUserIsNil {
+		predicates = append(predicates, user.IsDemoUserIsNil())
+	}
+	if i.IsDemoUserNotNil {
+		predicates = append(predicates, user.IsDemoUserNotNil())
 	}
 	if i.FirebaseUID != nil {
 		predicates = append(predicates, user.FirebaseUIDEQ(*i.FirebaseUID))

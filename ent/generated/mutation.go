@@ -26198,6 +26198,7 @@ type UserMutation struct {
 	createdAt                        *time.Time
 	updatedAt                        *time.Time
 	deletedAt                        *time.Time
+	isDemoUser                       *bool
 	firebaseUID                      *string
 	fcmToken                         *string
 	expoPushToken                    *string
@@ -26487,6 +26488,55 @@ func (m *UserMutation) DeletedAtCleared() bool {
 func (m *UserMutation) ResetDeletedAt() {
 	m.deletedAt = nil
 	delete(m.clearedFields, user.FieldDeletedAt)
+}
+
+// SetIsDemoUser sets the "isDemoUser" field.
+func (m *UserMutation) SetIsDemoUser(b bool) {
+	m.isDemoUser = &b
+}
+
+// IsDemoUser returns the value of the "isDemoUser" field in the mutation.
+func (m *UserMutation) IsDemoUser() (r bool, exists bool) {
+	v := m.isDemoUser
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDemoUser returns the old "isDemoUser" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldIsDemoUser(ctx context.Context) (v *bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsDemoUser is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsDemoUser requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDemoUser: %w", err)
+	}
+	return oldValue.IsDemoUser, nil
+}
+
+// ClearIsDemoUser clears the value of the "isDemoUser" field.
+func (m *UserMutation) ClearIsDemoUser() {
+	m.isDemoUser = nil
+	m.clearedFields[user.FieldIsDemoUser] = struct{}{}
+}
+
+// IsDemoUserCleared returns if the "isDemoUser" field was cleared in this mutation.
+func (m *UserMutation) IsDemoUserCleared() bool {
+	_, ok := m.clearedFields[user.FieldIsDemoUser]
+	return ok
+}
+
+// ResetIsDemoUser resets all changes to the "isDemoUser" field.
+func (m *UserMutation) ResetIsDemoUser() {
+	m.isDemoUser = nil
+	delete(m.clearedFields, user.FieldIsDemoUser)
 }
 
 // SetFirebaseUID sets the "firebaseUID" field.
@@ -28086,7 +28136,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 17)
+	fields := make([]string, 0, 18)
 	if m.createdAt != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -28095,6 +28145,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.deletedAt != nil {
 		fields = append(fields, user.FieldDeletedAt)
+	}
+	if m.isDemoUser != nil {
+		fields = append(fields, user.FieldIsDemoUser)
 	}
 	if m.firebaseUID != nil {
 		fields = append(fields, user.FieldFirebaseUID)
@@ -28152,6 +28205,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case user.FieldDeletedAt:
 		return m.DeletedAt()
+	case user.FieldIsDemoUser:
+		return m.IsDemoUser()
 	case user.FieldFirebaseUID:
 		return m.FirebaseUID()
 	case user.FieldFcmToken:
@@ -28195,6 +28250,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdatedAt(ctx)
 	case user.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
+	case user.FieldIsDemoUser:
+		return m.OldIsDemoUser(ctx)
 	case user.FieldFirebaseUID:
 		return m.OldFirebaseUID(ctx)
 	case user.FieldFcmToken:
@@ -28252,6 +28309,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeletedAt(v)
+		return nil
+	case user.FieldIsDemoUser:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDemoUser(v)
 		return nil
 	case user.FieldFirebaseUID:
 		v, ok := value.(string)
@@ -28384,6 +28448,9 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldDeletedAt) {
 		fields = append(fields, user.FieldDeletedAt)
 	}
+	if m.FieldCleared(user.FieldIsDemoUser) {
+		fields = append(fields, user.FieldIsDemoUser)
+	}
 	if m.FieldCleared(user.FieldFcmToken) {
 		fields = append(fields, user.FieldFcmToken)
 	}
@@ -28428,6 +28495,9 @@ func (m *UserMutation) ClearField(name string) error {
 	case user.FieldDeletedAt:
 		m.ClearDeletedAt()
 		return nil
+	case user.FieldIsDemoUser:
+		m.ClearIsDemoUser()
+		return nil
 	case user.FieldFcmToken:
 		m.ClearFcmToken()
 		return nil
@@ -28471,6 +28541,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldDeletedAt:
 		m.ResetDeletedAt()
+		return nil
+	case user.FieldIsDemoUser:
+		m.ResetIsDemoUser()
 		return nil
 	case user.FieldFirebaseUID:
 		m.ResetFirebaseUID()

@@ -6769,6 +6769,7 @@ type User implements Node {
   createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
   updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
   deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  isdemouser: Boolean @goField(name: "IsDemoUser", forceResolver: false)
   email: String!
   name: String!
   address: String
@@ -7000,6 +7001,13 @@ input UserWhereInput {
   deletedatLTE: Time
   deletedatIsNil: Boolean
   deletedatNotNil: Boolean
+  """
+  isDemoUser field predicates
+  """
+  isdemouser: Boolean
+  isdemouserNEQ: Boolean
+  isdemouserIsNil: Boolean
+  isdemouserNotNil: Boolean
   """
   email field predicates
   """

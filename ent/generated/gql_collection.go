@@ -3916,6 +3916,11 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldDeletedAt)
 				fieldSeen[user.FieldDeletedAt] = struct{}{}
 			}
+		case "isdemouser":
+			if _, ok := fieldSeen[user.FieldIsDemoUser]; !ok {
+				selectedFields = append(selectedFields, user.FieldIsDemoUser)
+				fieldSeen[user.FieldIsDemoUser] = struct{}{}
+			}
 		case "email":
 			if _, ok := fieldSeen[user.FieldEmail]; !ok {
 				selectedFields = append(selectedFields, user.FieldEmail)

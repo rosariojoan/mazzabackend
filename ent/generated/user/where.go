@@ -70,6 +70,11 @@ func DeletedAt(v time.Time) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDeletedAt, v))
 }
 
+// IsDemoUser applies equality check predicate on the "isDemoUser" field. It's identical to IsDemoUserEQ.
+func IsDemoUser(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsDemoUser, v))
+}
+
 // FirebaseUID applies equality check predicate on the "firebaseUID" field. It's identical to FirebaseUIDEQ.
 func FirebaseUID(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldFirebaseUID, v))
@@ -263,6 +268,26 @@ func DeletedAtIsNil() predicate.User {
 // DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
 func DeletedAtNotNil() predicate.User {
 	return predicate.User(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// IsDemoUserEQ applies the EQ predicate on the "isDemoUser" field.
+func IsDemoUserEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldIsDemoUser, v))
+}
+
+// IsDemoUserNEQ applies the NEQ predicate on the "isDemoUser" field.
+func IsDemoUserNEQ(v bool) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldIsDemoUser, v))
+}
+
+// IsDemoUserIsNil applies the IsNil predicate on the "isDemoUser" field.
+func IsDemoUserIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldIsDemoUser))
+}
+
+// IsDemoUserNotNil applies the NotNil predicate on the "isDemoUser" field.
+func IsDemoUserNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldIsDemoUser))
 }
 
 // FirebaseUIDEQ applies the EQ predicate on the "firebaseUID" field.

@@ -25,6 +25,8 @@ func (User) Mixin() []ent.Mixin {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
+		field.Bool("isDemoUser").Default(false).Nillable().Optional().Annotations(
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
 		field.String("firebaseUID").NotEmpty().Unique().Sensitive(),
 		field.String("fcmToken").Nillable().Optional().Sensitive(),
 		field.String("expoPushToken").Nillable().Optional().Sensitive(),

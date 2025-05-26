@@ -23,6 +23,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
+	// FieldIsDemoUser holds the string denoting the isdemouser field in the database.
+	FieldIsDemoUser = "is_demo_user"
 	// FieldFirebaseUID holds the string denoting the firebaseuid field in the database.
 	FieldFirebaseUID = "firebase_uid"
 	// FieldFcmToken holds the string denoting the fcmtoken field in the database.
@@ -213,6 +215,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldIsDemoUser,
 	FieldFirebaseUID,
 	FieldFcmToken,
 	FieldExpoPushToken,
@@ -266,6 +269,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultIsDemoUser holds the default value on creation for the "isDemoUser" field.
+	DefaultIsDemoUser bool
 	// FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	FirebaseUIDValidator func(string) error
 	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
@@ -318,6 +323,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByDeletedAt orders the results by the deletedAt field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
+}
+
+// ByIsDemoUser orders the results by the isDemoUser field.
+func ByIsDemoUser(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsDemoUser, opts...).ToFunc()
 }
 
 // ByFirebaseUID orders the results by the firebaseUID field.

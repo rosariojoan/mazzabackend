@@ -66,6 +66,26 @@ func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	return uu
 }
 
+// SetIsDemoUser sets the "isDemoUser" field.
+func (uu *UserUpdate) SetIsDemoUser(b bool) *UserUpdate {
+	uu.mutation.SetIsDemoUser(b)
+	return uu
+}
+
+// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableIsDemoUser(b *bool) *UserUpdate {
+	if b != nil {
+		uu.SetIsDemoUser(*b)
+	}
+	return uu
+}
+
+// ClearIsDemoUser clears the value of the "isDemoUser" field.
+func (uu *UserUpdate) ClearIsDemoUser() *UserUpdate {
+	uu.mutation.ClearIsDemoUser()
+	return uu
+}
+
 // SetFirebaseUID sets the "firebaseUID" field.
 func (uu *UserUpdate) SetFirebaseUID(s string) *UserUpdate {
 	uu.mutation.SetFirebaseUID(s)
@@ -975,6 +995,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := uu.mutation.IsDemoUser(); ok {
+		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)
+	}
+	if uu.mutation.IsDemoUserCleared() {
+		_spec.ClearField(user.FieldIsDemoUser, field.TypeBool)
+	}
 	if value, ok := uu.mutation.FirebaseUID(); ok {
 		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)
 	}
@@ -1819,6 +1845,26 @@ func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
 // ClearDeletedAt clears the value of the "deletedAt" field.
 func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	uuo.mutation.ClearDeletedAt()
+	return uuo
+}
+
+// SetIsDemoUser sets the "isDemoUser" field.
+func (uuo *UserUpdateOne) SetIsDemoUser(b bool) *UserUpdateOne {
+	uuo.mutation.SetIsDemoUser(b)
+	return uuo
+}
+
+// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableIsDemoUser(b *bool) *UserUpdateOne {
+	if b != nil {
+		uuo.SetIsDemoUser(*b)
+	}
+	return uuo
+}
+
+// ClearIsDemoUser clears the value of the "isDemoUser" field.
+func (uuo *UserUpdateOne) ClearIsDemoUser() *UserUpdateOne {
+	uuo.mutation.ClearIsDemoUser()
 	return uuo
 }
 
@@ -2760,6 +2806,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
+	}
+	if value, ok := uuo.mutation.IsDemoUser(); ok {
+		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)
+	}
+	if uuo.mutation.IsDemoUserCleared() {
+		_spec.ClearField(user.FieldIsDemoUser, field.TypeBool)
 	}
 	if value, ok := uuo.mutation.FirebaseUID(); ok {
 		_spec.SetField(user.FieldFirebaseUID, field.TypeString, value)

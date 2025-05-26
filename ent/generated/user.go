@@ -24,6 +24,8 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// IsDemoUser holds the value of the "isDemoUser" field.
+	IsDemoUser *bool `json:"isDemoUser,omitempty"`
 	// FirebaseUID holds the value of the "firebaseUID" field.
 	FirebaseUID string `json:"-"`
 	// FcmToken holds the value of the "fcmToken" field.
@@ -292,7 +294,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldActive:
+		case user.FieldIsDemoUser, user.FieldActive:
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
@@ -341,6 +343,13 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.DeletedAt = new(time.Time)
 				*u.DeletedAt = value.Time
+			}
+		case user.FieldIsDemoUser:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field isDemoUser", values[i])
+			} else if value.Valid {
+				u.IsDemoUser = new(bool)
+				*u.IsDemoUser = value.Bool
 			}
 		case user.FieldFirebaseUID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -577,6 +586,11 @@ func (u *User) String() string {
 	if v := u.DeletedAt; v != nil {
 		builder.WriteString("deletedAt=")
 		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := u.IsDemoUser; v != nil {
+		builder.WriteString("isDemoUser=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
 	builder.WriteString("firebaseUID=<sensitive>")

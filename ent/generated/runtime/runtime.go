@@ -666,12 +666,16 @@ func init() {
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// userDescIsDemoUser is the schema descriptor for isDemoUser field.
+	userDescIsDemoUser := userFields[0].Descriptor()
+	// user.DefaultIsDemoUser holds the default value on creation for the isDemoUser field.
+	user.DefaultIsDemoUser = userDescIsDemoUser.Default.(bool)
 	// userDescFirebaseUID is the schema descriptor for firebaseUID field.
-	userDescFirebaseUID := userFields[0].Descriptor()
+	userDescFirebaseUID := userFields[1].Descriptor()
 	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[3].Descriptor()
+	userDescEmail := userFields[4].Descriptor()
 	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	user.EmailValidator = func() func(string) error {
 		validators := userDescEmail.Validators
@@ -689,7 +693,7 @@ func init() {
 		}
 	}()
 	// userDescActive is the schema descriptor for active field.
-	userDescActive := userFields[13].Descriptor()
+	userDescActive := userFields[14].Descriptor()
 	// user.DefaultActive holds the default value on creation for the active field.
 	user.DefaultActive = userDescActive.Default.(bool)
 	userroleFields := schema.UserRole{}.Fields()
