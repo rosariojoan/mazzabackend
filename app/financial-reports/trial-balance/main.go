@@ -53,6 +53,12 @@ func GetTrialBalance(
 		Credit float64 `json:"credit"`
 	}{Debit: 0, Credit: 0}
 
+	accountNames, err := utils.LoadAccountNames(country, lang)
+	if err != nil {
+		fmt.Println("GetTrialBalance err 4:", err)
+		return nil, fmt.Errorf("an error occurred")
+	}
+
 	// sqlStr := fmt.Sprintf(`
 	// 	SELECT
 	// 		account,
@@ -123,7 +129,10 @@ func GetTrialBalance(
 			// Check for a scan error. Query rows will be closed with defer.
 			return nil, err
 		}
+		item.Label = accountNames[item.Account]
 		output = append(output, &item)
+		total.Debit += item.Debit
+		total.Credit += item.Credit
 	}
 
 	// If the database is being written to ensure to check for Close
@@ -132,17 +141,6 @@ func GetTrialBalance(
 	err = rows.Close()
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred")
-	}
-
-	accountNames, err := utils.LoadAccountNames(country, lang)
-	if err != nil {
-		fmt.Println("GetTrialBalance err 4:", err)
-		return nil, fmt.Errorf("an error occurred")
-	}
-	for i, item := range output {
-		output[i].Label = accountNames[item.Account]
-		total.Debit += item.Debit
-		total.Credit += item.Credit
 	}
 
 	// if len(excludeAccountTypes) > 0 {
