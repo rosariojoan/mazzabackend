@@ -109,6 +109,7 @@ func RegisterAccountingOperations(ctx context.Context, tx *ent.Tx, input model.B
 				Amount:      entry.Amount,
 				Description: *input.Description,
 				AccountType: entry.AccountType,
+				Main:        entry.Main,
 				IsDebit:     entry.IsDebit,
 				LoanID:      loanID,
 				// Files:       files,

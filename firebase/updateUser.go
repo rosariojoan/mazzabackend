@@ -3,12 +3,13 @@ package firebase
 import (
 	"context"
 	"fmt"
+	"mazza/app/notifications"
+	"mazza/app/notifications/expo"
 	"mazza/ent/generated/userrole"
 	"mazza/inits"
 	"time"
 
 	"cloud.google.com/go/firestore"
-	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
 func UpdateUser(companyID int, companyName string, firebaseUID string, isActive *bool, role userrole.Role, expoPushToken *string) error {
@@ -63,19 +64,15 @@ func UpdateUser(companyID int, companyName string, firebaseUID string, isActive 
 	// 	"company": companyName,
 	// }
 
-	token := []expo.ExponentPushToken{expo.ExponentPushToken(*expoPushToken)}
-	_, err = inits.ExpoClient.Publish(&expo.PushMessage{
+	token := []*expo.Token{expo.MustParseToken(*expoPushToken)}
+	go notifications.SendPushNotification(15*time.Second, []*expo.Message{{
 		To:       token,
 		Title:    title,
 		Body:     body,
 		Data:     data,
 		Sound:    "default",
 		Priority: expo.HighPriority,
-	})
-	if err != nil {
-		fmt.Println("send notif err:", err)
-		return err
-	}
-	fmt.Println("token:", token)
+	}})
+
 	return nil
 }

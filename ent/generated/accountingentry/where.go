@@ -105,6 +105,11 @@ func Category(v string) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldCategory, v))
 }
 
+// Main applies equality check predicate on the "main" field. It's identical to MainEQ.
+func Main(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldMain, v))
+}
+
 // IsDebit applies equality check predicate on the "isDebit" field. It's identical to IsDebitEQ.
 func IsDebit(v bool) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldEQ(FieldIsDebit, v))
@@ -688,6 +693,71 @@ func CategoryEqualFold(v string) predicate.AccountingEntry {
 // CategoryContainsFold applies the ContainsFold predicate on the "category" field.
 func CategoryContainsFold(v string) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.FieldContainsFold(FieldCategory, v))
+}
+
+// MainEQ applies the EQ predicate on the "main" field.
+func MainEQ(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEQ(FieldMain, v))
+}
+
+// MainNEQ applies the NEQ predicate on the "main" field.
+func MainNEQ(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNEQ(FieldMain, v))
+}
+
+// MainIn applies the In predicate on the "main" field.
+func MainIn(vs ...string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldIn(FieldMain, vs...))
+}
+
+// MainNotIn applies the NotIn predicate on the "main" field.
+func MainNotIn(vs ...string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldNotIn(FieldMain, vs...))
+}
+
+// MainGT applies the GT predicate on the "main" field.
+func MainGT(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGT(FieldMain, v))
+}
+
+// MainGTE applies the GTE predicate on the "main" field.
+func MainGTE(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldGTE(FieldMain, v))
+}
+
+// MainLT applies the LT predicate on the "main" field.
+func MainLT(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLT(FieldMain, v))
+}
+
+// MainLTE applies the LTE predicate on the "main" field.
+func MainLTE(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldLTE(FieldMain, v))
+}
+
+// MainContains applies the Contains predicate on the "main" field.
+func MainContains(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldContains(FieldMain, v))
+}
+
+// MainHasPrefix applies the HasPrefix predicate on the "main" field.
+func MainHasPrefix(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldHasPrefix(FieldMain, v))
+}
+
+// MainHasSuffix applies the HasSuffix predicate on the "main" field.
+func MainHasSuffix(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldHasSuffix(FieldMain, v))
+}
+
+// MainEqualFold applies the EqualFold predicate on the "main" field.
+func MainEqualFold(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldEqualFold(FieldMain, v))
+}
+
+// MainContainsFold applies the ContainsFold predicate on the "main" field.
+func MainContainsFold(v string) predicate.AccountingEntry {
+	return predicate.AccountingEntry(sql.FieldContainsFold(FieldMain, v))
 }
 
 // IsDebitEQ applies the EQ predicate on the "isDebit" field.

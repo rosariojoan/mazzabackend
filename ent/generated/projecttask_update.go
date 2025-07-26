@@ -94,37 +94,77 @@ func (ptu *ProjectTaskUpdate) SetNillableDueDate(t *time.Time) *ProjectTaskUpdat
 	return ptu
 }
 
-// SetStartDate sets the "startDate" field.
-func (ptu *ProjectTaskUpdate) SetStartDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetStartDate(t)
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (ptu *ProjectTaskUpdate) SetPlannedStartDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetPlannedStartDate(t)
 	return ptu
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableStartDate(t *time.Time) *ProjectTaskUpdate {
+// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillablePlannedStartDate(t *time.Time) *ProjectTaskUpdate {
 	if t != nil {
-		ptu.SetStartDate(*t)
+		ptu.SetPlannedStartDate(*t)
 	}
 	return ptu
 }
 
-// SetEndDate sets the "endDate" field.
-func (ptu *ProjectTaskUpdate) SetEndDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetEndDate(t)
+// SetActualStartDate sets the "actualStartDate" field.
+func (ptu *ProjectTaskUpdate) SetActualStartDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetActualStartDate(t)
 	return ptu
 }
 
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableEndDate(t *time.Time) *ProjectTaskUpdate {
+// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableActualStartDate(t *time.Time) *ProjectTaskUpdate {
 	if t != nil {
-		ptu.SetEndDate(*t)
+		ptu.SetActualStartDate(*t)
 	}
 	return ptu
 }
 
-// ClearEndDate clears the value of the "endDate" field.
-func (ptu *ProjectTaskUpdate) ClearEndDate() *ProjectTaskUpdate {
-	ptu.mutation.ClearEndDate()
+// ClearActualStartDate clears the value of the "actualStartDate" field.
+func (ptu *ProjectTaskUpdate) ClearActualStartDate() *ProjectTaskUpdate {
+	ptu.mutation.ClearActualStartDate()
+	return ptu
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (ptu *ProjectTaskUpdate) SetPlannedEndDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetPlannedEndDate(t)
+	return ptu
+}
+
+// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetPlannedEndDate(*t)
+	}
+	return ptu
+}
+
+// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
+func (ptu *ProjectTaskUpdate) ClearPlannedEndDate() *ProjectTaskUpdate {
+	ptu.mutation.ClearPlannedEndDate()
+	return ptu
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (ptu *ProjectTaskUpdate) SetActualEndDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetActualEndDate(t)
+	return ptu
+}
+
+// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableActualEndDate(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetActualEndDate(*t)
+	}
+	return ptu
+}
+
+// ClearActualEndDate clears the value of the "actualEndDate" field.
+func (ptu *ProjectTaskUpdate) ClearActualEndDate() *ProjectTaskUpdate {
+	ptu.mutation.ClearActualEndDate()
 	return ptu
 }
 
@@ -367,14 +407,26 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ptu.mutation.DueDate(); ok {
 		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
 	}
-	if value, ok := ptu.mutation.StartDate(); ok {
-		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
+	if value, ok := ptu.mutation.PlannedStartDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
 	}
-	if value, ok := ptu.mutation.EndDate(); ok {
-		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	if value, ok := ptu.mutation.ActualStartDate(); ok {
+		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
 	}
-	if ptu.mutation.EndDateCleared() {
-		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
+	if ptu.mutation.ActualStartDateCleared() {
+		_spec.ClearField(projecttask.FieldActualStartDate, field.TypeTime)
+	}
+	if value, ok := ptu.mutation.PlannedEndDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
+	}
+	if ptu.mutation.PlannedEndDateCleared() {
+		_spec.ClearField(projecttask.FieldPlannedEndDate, field.TypeTime)
+	}
+	if value, ok := ptu.mutation.ActualEndDate(); ok {
+		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
+	}
+	if ptu.mutation.ActualEndDateCleared() {
+		_spec.ClearField(projecttask.FieldActualEndDate, field.TypeTime)
 	}
 	if value, ok := ptu.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
@@ -617,37 +669,77 @@ func (ptuo *ProjectTaskUpdateOne) SetNillableDueDate(t *time.Time) *ProjectTaskU
 	return ptuo
 }
 
-// SetStartDate sets the "startDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetStartDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetStartDate(t)
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (ptuo *ProjectTaskUpdateOne) SetPlannedStartDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetPlannedStartDate(t)
 	return ptuo
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableStartDate(t *time.Time) *ProjectTaskUpdateOne {
+// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillablePlannedStartDate(t *time.Time) *ProjectTaskUpdateOne {
 	if t != nil {
-		ptuo.SetStartDate(*t)
+		ptuo.SetPlannedStartDate(*t)
 	}
 	return ptuo
 }
 
-// SetEndDate sets the "endDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetEndDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetEndDate(t)
+// SetActualStartDate sets the "actualStartDate" field.
+func (ptuo *ProjectTaskUpdateOne) SetActualStartDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetActualStartDate(t)
 	return ptuo
 }
 
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableEndDate(t *time.Time) *ProjectTaskUpdateOne {
+// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableActualStartDate(t *time.Time) *ProjectTaskUpdateOne {
 	if t != nil {
-		ptuo.SetEndDate(*t)
+		ptuo.SetActualStartDate(*t)
 	}
 	return ptuo
 }
 
-// ClearEndDate clears the value of the "endDate" field.
-func (ptuo *ProjectTaskUpdateOne) ClearEndDate() *ProjectTaskUpdateOne {
-	ptuo.mutation.ClearEndDate()
+// ClearActualStartDate clears the value of the "actualStartDate" field.
+func (ptuo *ProjectTaskUpdateOne) ClearActualStartDate() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearActualStartDate()
+	return ptuo
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (ptuo *ProjectTaskUpdateOne) SetPlannedEndDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetPlannedEndDate(t)
+	return ptuo
+}
+
+// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetPlannedEndDate(*t)
+	}
+	return ptuo
+}
+
+// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
+func (ptuo *ProjectTaskUpdateOne) ClearPlannedEndDate() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearPlannedEndDate()
+	return ptuo
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (ptuo *ProjectTaskUpdateOne) SetActualEndDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetActualEndDate(t)
+	return ptuo
+}
+
+// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableActualEndDate(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetActualEndDate(*t)
+	}
+	return ptuo
+}
+
+// ClearActualEndDate clears the value of the "actualEndDate" field.
+func (ptuo *ProjectTaskUpdateOne) ClearActualEndDate() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearActualEndDate()
 	return ptuo
 }
 
@@ -920,14 +1012,26 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 	if value, ok := ptuo.mutation.DueDate(); ok {
 		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
 	}
-	if value, ok := ptuo.mutation.StartDate(); ok {
-		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
+	if value, ok := ptuo.mutation.PlannedStartDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
 	}
-	if value, ok := ptuo.mutation.EndDate(); ok {
-		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	if value, ok := ptuo.mutation.ActualStartDate(); ok {
+		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
 	}
-	if ptuo.mutation.EndDateCleared() {
-		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
+	if ptuo.mutation.ActualStartDateCleared() {
+		_spec.ClearField(projecttask.FieldActualStartDate, field.TypeTime)
+	}
+	if value, ok := ptuo.mutation.PlannedEndDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
+	}
+	if ptuo.mutation.PlannedEndDateCleared() {
+		_spec.ClearField(projecttask.FieldPlannedEndDate, field.TypeTime)
+	}
+	if value, ok := ptuo.mutation.ActualEndDate(); ok {
+		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
+	}
+	if ptuo.mutation.ActualEndDateCleared() {
+		_spec.ClearField(projecttask.FieldActualEndDate, field.TypeTime)
 	}
 	if value, ok := ptuo.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)

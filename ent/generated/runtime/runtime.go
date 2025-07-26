@@ -69,12 +69,16 @@ func init() {
 	accountingentryDescCategory := accountingentryFields[8].Descriptor()
 	// accountingentry.DefaultCategory holds the default value on creation for the category field.
 	accountingentry.DefaultCategory = accountingentryDescCategory.Default.(string)
+	// accountingentryDescMain is the schema descriptor for main field.
+	accountingentryDescMain := accountingentryFields[9].Descriptor()
+	// accountingentry.DefaultMain holds the default value on creation for the main field.
+	accountingentry.DefaultMain = accountingentryDescMain.Default.(string)
 	// accountingentryDescIsReversal is the schema descriptor for isReversal field.
-	accountingentryDescIsReversal := accountingentryFields[10].Descriptor()
+	accountingentryDescIsReversal := accountingentryFields[11].Descriptor()
 	// accountingentry.DefaultIsReversal holds the default value on creation for the isReversal field.
 	accountingentry.DefaultIsReversal = accountingentryDescIsReversal.Default.(bool)
 	// accountingentryDescReversed is the schema descriptor for reversed field.
-	accountingentryDescReversed := accountingentryFields[11].Descriptor()
+	accountingentryDescReversed := accountingentryFields[12].Descriptor()
 	// accountingentry.DefaultReversed holds the default value on creation for the reversed field.
 	accountingentry.DefaultReversed = accountingentryDescReversed.Default.(bool)
 	companyMixin := schema.Company{}.Mixin()

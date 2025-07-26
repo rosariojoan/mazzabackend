@@ -34,6 +34,7 @@ type CreateAccountingEntryInput struct {
 	Description string
 	AccountType accountingentry.AccountType
 	Category    *string
+	Main        *string
 	IsDebit     bool
 	IsReversal  *bool
 	Reversed    *bool
@@ -56,6 +57,9 @@ func (i *CreateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	m.SetAccountType(i.AccountType)
 	if v := i.Category; v != nil {
 		m.SetCategory(*v)
+	}
+	if v := i.Main; v != nil {
+		m.SetMain(*v)
 	}
 	m.SetIsDebit(i.IsDebit)
 	if v := i.IsReversal; v != nil {
@@ -92,6 +96,7 @@ type UpdateAccountingEntryInput struct {
 	Description  *string
 	AccountType  *accountingentry.AccountType
 	Category     *string
+	Main         *string
 	IsDebit      *bool
 	IsReversal   *bool
 	Reversed     *bool
@@ -131,6 +136,9 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	}
 	if v := i.Category; v != nil {
 		m.SetCategory(*v)
+	}
+	if v := i.Main; v != nil {
+		m.SetMain(*v)
 	}
 	if v := i.IsDebit; v != nil {
 		m.SetIsDebit(*v)
@@ -2397,20 +2405,22 @@ func (c *ProjectMilestoneUpdateOne) SetInput(i UpdateProjectMilestoneInput) *Pro
 
 // CreateProjectTaskInput represents a mutation input for creating projecttasks.
 type CreateProjectTaskInput struct {
-	CreatedAt      *time.Time
-	Name           string
-	AssigneeName   string
-	Location       *string
-	DueDate        time.Time
-	StartDate      time.Time
-	EndDate        *time.Time
-	Description    *string
-	Status         projecttask.Status
-	ProjectID      int
-	AssigneeID     *int
-	ParticipantIDs []int
-	CreatedByID    *int
-	WorkShiftIDs   []int
+	CreatedAt        *time.Time
+	Name             string
+	AssigneeName     string
+	Location         *string
+	DueDate          time.Time
+	PlannedStartDate time.Time
+	ActualStartDate  *time.Time
+	PlannedEndDate   *time.Time
+	ActualEndDate    *time.Time
+	Description      *string
+	Status           projecttask.Status
+	ProjectID        int
+	AssigneeID       *int
+	ParticipantIDs   []int
+	CreatedByID      *int
+	WorkShiftIDs     []int
 }
 
 // Mutate applies the CreateProjectTaskInput on the ProjectTaskMutation builder.
@@ -2424,9 +2434,15 @@ func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 		m.SetLocation(*v)
 	}
 	m.SetDueDate(i.DueDate)
-	m.SetStartDate(i.StartDate)
-	if v := i.EndDate; v != nil {
-		m.SetEndDate(*v)
+	m.SetPlannedStartDate(i.PlannedStartDate)
+	if v := i.ActualStartDate; v != nil {
+		m.SetActualStartDate(*v)
+	}
+	if v := i.PlannedEndDate; v != nil {
+		m.SetPlannedEndDate(*v)
+	}
+	if v := i.ActualEndDate; v != nil {
+		m.SetActualEndDate(*v)
 	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
@@ -2460,9 +2476,13 @@ type UpdateProjectTaskInput struct {
 	ClearLocation        bool
 	Location             *string
 	DueDate              *time.Time
-	StartDate            *time.Time
-	ClearEndDate         bool
-	EndDate              *time.Time
+	PlannedStartDate     *time.Time
+	ClearActualStartDate bool
+	ActualStartDate      *time.Time
+	ClearPlannedEndDate  bool
+	PlannedEndDate       *time.Time
+	ClearActualEndDate   bool
+	ActualEndDate        *time.Time
 	ClearDescription     bool
 	Description          *string
 	Status               *projecttask.Status
@@ -2494,14 +2514,26 @@ func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	if v := i.DueDate; v != nil {
 		m.SetDueDate(*v)
 	}
-	if v := i.StartDate; v != nil {
-		m.SetStartDate(*v)
+	if v := i.PlannedStartDate; v != nil {
+		m.SetPlannedStartDate(*v)
 	}
-	if i.ClearEndDate {
-		m.ClearEndDate()
+	if i.ClearActualStartDate {
+		m.ClearActualStartDate()
 	}
-	if v := i.EndDate; v != nil {
-		m.SetEndDate(*v)
+	if v := i.ActualStartDate; v != nil {
+		m.SetActualStartDate(*v)
+	}
+	if i.ClearPlannedEndDate {
+		m.ClearPlannedEndDate()
+	}
+	if v := i.PlannedEndDate; v != nil {
+		m.SetPlannedEndDate(*v)
+	}
+	if i.ClearActualEndDate {
+		m.ClearActualEndDate()
+	}
+	if v := i.ActualEndDate; v != nil {
+		m.SetActualEndDate(*v)
 	}
 	if i.ClearDescription {
 		m.ClearDescription()

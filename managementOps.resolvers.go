@@ -6,6 +6,7 @@ package mazza
 
 import (
 	"context"
+	"mazza/app/manager/cash"
 	"mazza/app/manager/clients"
 	"mazza/app/manager/finance"
 	"mazza/app/manager/suppliers"
@@ -61,6 +62,11 @@ func (r *queryResolver) AggregatePayables(ctx context.Context, where *generated.
 // AggregateLoans is the resolver for the aggregateLoans field.
 func (r *queryResolver) AggregateLoans(ctx context.Context, where *generated.LoanWhereInput, groupBy []model.LoansGroupBy) ([]*model.LoanAggregationOutput, error) {
 	return finance.AggregateLoans(ctx, r.client, where, groupBy)
+}
+
+// AggregateCash is the resolver for the aggregateCash field.
+func (r *queryResolver) AggregateCash(ctx context.Context, input model.AggregateCashInput) (*model.CashAggregationOutput, error) {
+	return cash.AggregateCash(ctx, r.client, &input)
 }
 
 // AccountsReceivableAging is the resolver for the accountsReceivableAging field.

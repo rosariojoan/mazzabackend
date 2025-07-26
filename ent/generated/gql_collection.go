@@ -144,6 +144,11 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, accountingentry.FieldCategory)
 				fieldSeen[accountingentry.FieldCategory] = struct{}{}
 			}
+		case "main":
+			if _, ok := fieldSeen[accountingentry.FieldMain]; !ok {
+				selectedFields = append(selectedFields, accountingentry.FieldMain)
+				fieldSeen[accountingentry.FieldMain] = struct{}{}
+			}
 		case "isdebit":
 			if _, ok := fieldSeen[accountingentry.FieldIsDebit]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldIsDebit)
@@ -3037,15 +3042,25 @@ func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.Ope
 				selectedFields = append(selectedFields, projecttask.FieldDueDate)
 				fieldSeen[projecttask.FieldDueDate] = struct{}{}
 			}
-		case "startdate":
-			if _, ok := fieldSeen[projecttask.FieldStartDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldStartDate)
-				fieldSeen[projecttask.FieldStartDate] = struct{}{}
+		case "plannedstartdate":
+			if _, ok := fieldSeen[projecttask.FieldPlannedStartDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldPlannedStartDate)
+				fieldSeen[projecttask.FieldPlannedStartDate] = struct{}{}
 			}
-		case "enddate":
-			if _, ok := fieldSeen[projecttask.FieldEndDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldEndDate)
-				fieldSeen[projecttask.FieldEndDate] = struct{}{}
+		case "actualstartdate":
+			if _, ok := fieldSeen[projecttask.FieldActualStartDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldActualStartDate)
+				fieldSeen[projecttask.FieldActualStartDate] = struct{}{}
+			}
+		case "plannedenddate":
+			if _, ok := fieldSeen[projecttask.FieldPlannedEndDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldPlannedEndDate)
+				fieldSeen[projecttask.FieldPlannedEndDate] = struct{}{}
+			}
+		case "actualenddate":
+			if _, ok := fieldSeen[projecttask.FieldActualEndDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldActualEndDate)
+				fieldSeen[projecttask.FieldActualEndDate] = struct{}{}
 			}
 		case "description":
 			if _, ok := fieldSeen[projecttask.FieldDescription]; !ok {

@@ -28,10 +28,10 @@ func (Project) Fields() []ent.Field {
 		field.String("description").NotEmpty(),
 		field.Time("plannedStartDate").StructTag("plannedStartDate").Annotations(entgql.OrderField("PLANNED_START_DATE")),
 		field.Time("actualStartDate").StructTag("actualStartDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_START_DATE")),
-		field.Time("plannedEndDate").Annotations(entgql.OrderField("PLANNED_END_DATE")),
-		field.Time("actualEndDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_END_DATE")),
+		field.Time("plannedEndDate").StructTag("plannedEndDate").Annotations(entgql.OrderField("PLANNED_END_DATE")),
+		field.Time("actualEndDate").StructTag("actualEndDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_END_DATE")),
 		field.Float("progress").Min(0).Max(1).Default(0).Annotations(entgql.OrderField("PROGRESS")),
-		field.Enum("status").Values("notStarted", "inProgress", "completed", "delayed").Default("notStarted").Annotations(entgql.OrderField("STATUS")),
+		field.Enum("status").Values("pending", "inProgress", "completed", "delayed").Default("pending").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 

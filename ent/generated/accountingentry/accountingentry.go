@@ -41,6 +41,8 @@ const (
 	FieldAccountType = "account_type"
 	// FieldCategory holds the string denoting the category field in the database.
 	FieldCategory = "category"
+	// FieldMain holds the string denoting the main field in the database.
+	FieldMain = "main"
 	// FieldIsDebit holds the string denoting the isdebit field in the database.
 	FieldIsDebit = "is_debit"
 	// FieldIsReversal holds the string denoting the isreversal field in the database.
@@ -93,6 +95,7 @@ var Columns = []string{
 	FieldDescription,
 	FieldAccountType,
 	FieldCategory,
+	FieldMain,
 	FieldIsDebit,
 	FieldIsReversal,
 	FieldReversed,
@@ -138,6 +141,8 @@ var (
 	AccountValidator func(string) error
 	// DefaultCategory holds the default value on creation for the "category" field.
 	DefaultCategory string
+	// DefaultMain holds the default value on creation for the "main" field.
+	DefaultMain string
 	// DefaultIsReversal holds the default value on creation for the "isReversal" field.
 	DefaultIsReversal bool
 	// DefaultReversed holds the default value on creation for the "reversed" field.
@@ -243,6 +248,11 @@ func ByAccountType(opts ...sql.OrderTermOption) OrderOption {
 // ByCategory orders the results by the category field.
 func ByCategory(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCategory, opts...).ToFunc()
+}
+
+// ByMain orders the results by the main field.
+func ByMain(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMain, opts...).ToFunc()
 }
 
 // ByIsDebit orders the results by the isDebit field.

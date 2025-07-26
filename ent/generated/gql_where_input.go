@@ -187,6 +187,21 @@ type AccountingEntryWhereInput struct {
 	CategoryEqualFold    *string  `json:"categoryEqualFold,omitempty"`
 	CategoryContainsFold *string  `json:"categoryContainsFold,omitempty"`
 
+	// "main" field predicates.
+	Main             *string  `json:"main,omitempty"`
+	MainNEQ          *string  `json:"mainNEQ,omitempty"`
+	MainIn           []string `json:"mainIn,omitempty"`
+	MainNotIn        []string `json:"mainNotIn,omitempty"`
+	MainGT           *string  `json:"mainGT,omitempty"`
+	MainGTE          *string  `json:"mainGTE,omitempty"`
+	MainLT           *string  `json:"mainLT,omitempty"`
+	MainLTE          *string  `json:"mainLTE,omitempty"`
+	MainContains     *string  `json:"mainContains,omitempty"`
+	MainHasPrefix    *string  `json:"mainHasPrefix,omitempty"`
+	MainHasSuffix    *string  `json:"mainHasSuffix,omitempty"`
+	MainEqualFold    *string  `json:"mainEqualFold,omitempty"`
+	MainContainsFold *string  `json:"mainContainsFold,omitempty"`
+
 	// "isDebit" field predicates.
 	IsDebit    *bool `json:"isdebit,omitempty"`
 	IsDebitNEQ *bool `json:"isdebitNEQ,omitempty"`
@@ -648,6 +663,45 @@ func (i *AccountingEntryWhereInput) P() (predicate.AccountingEntry, error) {
 	}
 	if i.CategoryContainsFold != nil {
 		predicates = append(predicates, accountingentry.CategoryContainsFold(*i.CategoryContainsFold))
+	}
+	if i.Main != nil {
+		predicates = append(predicates, accountingentry.MainEQ(*i.Main))
+	}
+	if i.MainNEQ != nil {
+		predicates = append(predicates, accountingentry.MainNEQ(*i.MainNEQ))
+	}
+	if len(i.MainIn) > 0 {
+		predicates = append(predicates, accountingentry.MainIn(i.MainIn...))
+	}
+	if len(i.MainNotIn) > 0 {
+		predicates = append(predicates, accountingentry.MainNotIn(i.MainNotIn...))
+	}
+	if i.MainGT != nil {
+		predicates = append(predicates, accountingentry.MainGT(*i.MainGT))
+	}
+	if i.MainGTE != nil {
+		predicates = append(predicates, accountingentry.MainGTE(*i.MainGTE))
+	}
+	if i.MainLT != nil {
+		predicates = append(predicates, accountingentry.MainLT(*i.MainLT))
+	}
+	if i.MainLTE != nil {
+		predicates = append(predicates, accountingentry.MainLTE(*i.MainLTE))
+	}
+	if i.MainContains != nil {
+		predicates = append(predicates, accountingentry.MainContains(*i.MainContains))
+	}
+	if i.MainHasPrefix != nil {
+		predicates = append(predicates, accountingentry.MainHasPrefix(*i.MainHasPrefix))
+	}
+	if i.MainHasSuffix != nil {
+		predicates = append(predicates, accountingentry.MainHasSuffix(*i.MainHasSuffix))
+	}
+	if i.MainEqualFold != nil {
+		predicates = append(predicates, accountingentry.MainEqualFold(*i.MainEqualFold))
+	}
+	if i.MainContainsFold != nil {
+		predicates = append(predicates, accountingentry.MainContainsFold(*i.MainContainsFold))
 	}
 	if i.IsDebit != nil {
 		predicates = append(predicates, accountingentry.IsDebitEQ(*i.IsDebit))
@@ -11978,27 +12032,51 @@ type ProjectTaskWhereInput struct {
 	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
 	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
 
-	// "startDate" field predicates.
-	StartDate      *time.Time  `json:"startdate,omitempty"`
-	StartDateNEQ   *time.Time  `json:"startdateNEQ,omitempty"`
-	StartDateIn    []time.Time `json:"startdateIn,omitempty"`
-	StartDateNotIn []time.Time `json:"startdateNotIn,omitempty"`
-	StartDateGT    *time.Time  `json:"startdateGT,omitempty"`
-	StartDateGTE   *time.Time  `json:"startdateGTE,omitempty"`
-	StartDateLT    *time.Time  `json:"startdateLT,omitempty"`
-	StartDateLTE   *time.Time  `json:"startdateLTE,omitempty"`
+	// "plannedStartDate" field predicates.
+	PlannedStartDate      *time.Time  `json:"plannedstartdate,omitempty"`
+	PlannedStartDateNEQ   *time.Time  `json:"plannedstartdateNEQ,omitempty"`
+	PlannedStartDateIn    []time.Time `json:"plannedstartdateIn,omitempty"`
+	PlannedStartDateNotIn []time.Time `json:"plannedstartdateNotIn,omitempty"`
+	PlannedStartDateGT    *time.Time  `json:"plannedstartdateGT,omitempty"`
+	PlannedStartDateGTE   *time.Time  `json:"plannedstartdateGTE,omitempty"`
+	PlannedStartDateLT    *time.Time  `json:"plannedstartdateLT,omitempty"`
+	PlannedStartDateLTE   *time.Time  `json:"plannedstartdateLTE,omitempty"`
 
-	// "endDate" field predicates.
-	EndDate       *time.Time  `json:"enddate,omitempty"`
-	EndDateNEQ    *time.Time  `json:"enddateNEQ,omitempty"`
-	EndDateIn     []time.Time `json:"enddateIn,omitempty"`
-	EndDateNotIn  []time.Time `json:"enddateNotIn,omitempty"`
-	EndDateGT     *time.Time  `json:"enddateGT,omitempty"`
-	EndDateGTE    *time.Time  `json:"enddateGTE,omitempty"`
-	EndDateLT     *time.Time  `json:"enddateLT,omitempty"`
-	EndDateLTE    *time.Time  `json:"enddateLTE,omitempty"`
-	EndDateIsNil  bool        `json:"enddateIsNil,omitempty"`
-	EndDateNotNil bool        `json:"enddateNotNil,omitempty"`
+	// "actualStartDate" field predicates.
+	ActualStartDate       *time.Time  `json:"actualstartdate,omitempty"`
+	ActualStartDateNEQ    *time.Time  `json:"actualstartdateNEQ,omitempty"`
+	ActualStartDateIn     []time.Time `json:"actualstartdateIn,omitempty"`
+	ActualStartDateNotIn  []time.Time `json:"actualstartdateNotIn,omitempty"`
+	ActualStartDateGT     *time.Time  `json:"actualstartdateGT,omitempty"`
+	ActualStartDateGTE    *time.Time  `json:"actualstartdateGTE,omitempty"`
+	ActualStartDateLT     *time.Time  `json:"actualstartdateLT,omitempty"`
+	ActualStartDateLTE    *time.Time  `json:"actualstartdateLTE,omitempty"`
+	ActualStartDateIsNil  bool        `json:"actualstartdateIsNil,omitempty"`
+	ActualStartDateNotNil bool        `json:"actualstartdateNotNil,omitempty"`
+
+	// "plannedEndDate" field predicates.
+	PlannedEndDate       *time.Time  `json:"plannedenddate,omitempty"`
+	PlannedEndDateNEQ    *time.Time  `json:"plannedenddateNEQ,omitempty"`
+	PlannedEndDateIn     []time.Time `json:"plannedenddateIn,omitempty"`
+	PlannedEndDateNotIn  []time.Time `json:"plannedenddateNotIn,omitempty"`
+	PlannedEndDateGT     *time.Time  `json:"plannedenddateGT,omitempty"`
+	PlannedEndDateGTE    *time.Time  `json:"plannedenddateGTE,omitempty"`
+	PlannedEndDateLT     *time.Time  `json:"plannedenddateLT,omitempty"`
+	PlannedEndDateLTE    *time.Time  `json:"plannedenddateLTE,omitempty"`
+	PlannedEndDateIsNil  bool        `json:"plannedenddateIsNil,omitempty"`
+	PlannedEndDateNotNil bool        `json:"plannedenddateNotNil,omitempty"`
+
+	// "actualEndDate" field predicates.
+	ActualEndDate       *time.Time  `json:"actualenddate,omitempty"`
+	ActualEndDateNEQ    *time.Time  `json:"actualenddateNEQ,omitempty"`
+	ActualEndDateIn     []time.Time `json:"actualenddateIn,omitempty"`
+	ActualEndDateNotIn  []time.Time `json:"actualenddateNotIn,omitempty"`
+	ActualEndDateGT     *time.Time  `json:"actualenddateGT,omitempty"`
+	ActualEndDateGTE    *time.Time  `json:"actualenddateGTE,omitempty"`
+	ActualEndDateLT     *time.Time  `json:"actualenddateLT,omitempty"`
+	ActualEndDateLTE    *time.Time  `json:"actualenddateLTE,omitempty"`
+	ActualEndDateIsNil  bool        `json:"actualenddateIsNil,omitempty"`
+	ActualEndDateNotNil bool        `json:"actualenddateNotNil,omitempty"`
 
 	// "description" field predicates.
 	Description             *string  `json:"description,omitempty"`
@@ -12316,59 +12394,119 @@ func (i *ProjectTaskWhereInput) P() (predicate.ProjectTask, error) {
 	if i.DueDateLTE != nil {
 		predicates = append(predicates, projecttask.DueDateLTE(*i.DueDateLTE))
 	}
-	if i.StartDate != nil {
-		predicates = append(predicates, projecttask.StartDateEQ(*i.StartDate))
+	if i.PlannedStartDate != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateEQ(*i.PlannedStartDate))
 	}
-	if i.StartDateNEQ != nil {
-		predicates = append(predicates, projecttask.StartDateNEQ(*i.StartDateNEQ))
+	if i.PlannedStartDateNEQ != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateNEQ(*i.PlannedStartDateNEQ))
 	}
-	if len(i.StartDateIn) > 0 {
-		predicates = append(predicates, projecttask.StartDateIn(i.StartDateIn...))
+	if len(i.PlannedStartDateIn) > 0 {
+		predicates = append(predicates, projecttask.PlannedStartDateIn(i.PlannedStartDateIn...))
 	}
-	if len(i.StartDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.StartDateNotIn(i.StartDateNotIn...))
+	if len(i.PlannedStartDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.PlannedStartDateNotIn(i.PlannedStartDateNotIn...))
 	}
-	if i.StartDateGT != nil {
-		predicates = append(predicates, projecttask.StartDateGT(*i.StartDateGT))
+	if i.PlannedStartDateGT != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateGT(*i.PlannedStartDateGT))
 	}
-	if i.StartDateGTE != nil {
-		predicates = append(predicates, projecttask.StartDateGTE(*i.StartDateGTE))
+	if i.PlannedStartDateGTE != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateGTE(*i.PlannedStartDateGTE))
 	}
-	if i.StartDateLT != nil {
-		predicates = append(predicates, projecttask.StartDateLT(*i.StartDateLT))
+	if i.PlannedStartDateLT != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateLT(*i.PlannedStartDateLT))
 	}
-	if i.StartDateLTE != nil {
-		predicates = append(predicates, projecttask.StartDateLTE(*i.StartDateLTE))
+	if i.PlannedStartDateLTE != nil {
+		predicates = append(predicates, projecttask.PlannedStartDateLTE(*i.PlannedStartDateLTE))
 	}
-	if i.EndDate != nil {
-		predicates = append(predicates, projecttask.EndDateEQ(*i.EndDate))
+	if i.ActualStartDate != nil {
+		predicates = append(predicates, projecttask.ActualStartDateEQ(*i.ActualStartDate))
 	}
-	if i.EndDateNEQ != nil {
-		predicates = append(predicates, projecttask.EndDateNEQ(*i.EndDateNEQ))
+	if i.ActualStartDateNEQ != nil {
+		predicates = append(predicates, projecttask.ActualStartDateNEQ(*i.ActualStartDateNEQ))
 	}
-	if len(i.EndDateIn) > 0 {
-		predicates = append(predicates, projecttask.EndDateIn(i.EndDateIn...))
+	if len(i.ActualStartDateIn) > 0 {
+		predicates = append(predicates, projecttask.ActualStartDateIn(i.ActualStartDateIn...))
 	}
-	if len(i.EndDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.EndDateNotIn(i.EndDateNotIn...))
+	if len(i.ActualStartDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.ActualStartDateNotIn(i.ActualStartDateNotIn...))
 	}
-	if i.EndDateGT != nil {
-		predicates = append(predicates, projecttask.EndDateGT(*i.EndDateGT))
+	if i.ActualStartDateGT != nil {
+		predicates = append(predicates, projecttask.ActualStartDateGT(*i.ActualStartDateGT))
 	}
-	if i.EndDateGTE != nil {
-		predicates = append(predicates, projecttask.EndDateGTE(*i.EndDateGTE))
+	if i.ActualStartDateGTE != nil {
+		predicates = append(predicates, projecttask.ActualStartDateGTE(*i.ActualStartDateGTE))
 	}
-	if i.EndDateLT != nil {
-		predicates = append(predicates, projecttask.EndDateLT(*i.EndDateLT))
+	if i.ActualStartDateLT != nil {
+		predicates = append(predicates, projecttask.ActualStartDateLT(*i.ActualStartDateLT))
 	}
-	if i.EndDateLTE != nil {
-		predicates = append(predicates, projecttask.EndDateLTE(*i.EndDateLTE))
+	if i.ActualStartDateLTE != nil {
+		predicates = append(predicates, projecttask.ActualStartDateLTE(*i.ActualStartDateLTE))
 	}
-	if i.EndDateIsNil {
-		predicates = append(predicates, projecttask.EndDateIsNil())
+	if i.ActualStartDateIsNil {
+		predicates = append(predicates, projecttask.ActualStartDateIsNil())
 	}
-	if i.EndDateNotNil {
-		predicates = append(predicates, projecttask.EndDateNotNil())
+	if i.ActualStartDateNotNil {
+		predicates = append(predicates, projecttask.ActualStartDateNotNil())
+	}
+	if i.PlannedEndDate != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateEQ(*i.PlannedEndDate))
+	}
+	if i.PlannedEndDateNEQ != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateNEQ(*i.PlannedEndDateNEQ))
+	}
+	if len(i.PlannedEndDateIn) > 0 {
+		predicates = append(predicates, projecttask.PlannedEndDateIn(i.PlannedEndDateIn...))
+	}
+	if len(i.PlannedEndDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.PlannedEndDateNotIn(i.PlannedEndDateNotIn...))
+	}
+	if i.PlannedEndDateGT != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateGT(*i.PlannedEndDateGT))
+	}
+	if i.PlannedEndDateGTE != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateGTE(*i.PlannedEndDateGTE))
+	}
+	if i.PlannedEndDateLT != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateLT(*i.PlannedEndDateLT))
+	}
+	if i.PlannedEndDateLTE != nil {
+		predicates = append(predicates, projecttask.PlannedEndDateLTE(*i.PlannedEndDateLTE))
+	}
+	if i.PlannedEndDateIsNil {
+		predicates = append(predicates, projecttask.PlannedEndDateIsNil())
+	}
+	if i.PlannedEndDateNotNil {
+		predicates = append(predicates, projecttask.PlannedEndDateNotNil())
+	}
+	if i.ActualEndDate != nil {
+		predicates = append(predicates, projecttask.ActualEndDateEQ(*i.ActualEndDate))
+	}
+	if i.ActualEndDateNEQ != nil {
+		predicates = append(predicates, projecttask.ActualEndDateNEQ(*i.ActualEndDateNEQ))
+	}
+	if len(i.ActualEndDateIn) > 0 {
+		predicates = append(predicates, projecttask.ActualEndDateIn(i.ActualEndDateIn...))
+	}
+	if len(i.ActualEndDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.ActualEndDateNotIn(i.ActualEndDateNotIn...))
+	}
+	if i.ActualEndDateGT != nil {
+		predicates = append(predicates, projecttask.ActualEndDateGT(*i.ActualEndDateGT))
+	}
+	if i.ActualEndDateGTE != nil {
+		predicates = append(predicates, projecttask.ActualEndDateGTE(*i.ActualEndDateGTE))
+	}
+	if i.ActualEndDateLT != nil {
+		predicates = append(predicates, projecttask.ActualEndDateLT(*i.ActualEndDateLT))
+	}
+	if i.ActualEndDateLTE != nil {
+		predicates = append(predicates, projecttask.ActualEndDateLTE(*i.ActualEndDateLTE))
+	}
+	if i.ActualEndDateIsNil {
+		predicates = append(predicates, projecttask.ActualEndDateIsNil())
+	}
+	if i.ActualEndDateNotNil {
+		predicates = append(predicates, projecttask.ActualEndDateNotNil())
 	}
 	if i.Description != nil {
 		predicates = append(predicates, projecttask.DescriptionEQ(*i.Description))

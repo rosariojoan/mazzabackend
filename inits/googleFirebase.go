@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"mazza/app/notifications/expo"
 	"os"
 
 	"cloud.google.com/go/firestore"
@@ -11,7 +12,8 @@ import (
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"firebase.google.com/go/v4/messaging"
-	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
+
+	// expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 	"google.golang.org/api/option"
 )
 
@@ -21,7 +23,7 @@ var (
 	FirebaseStorage *storage.BucketHandle
 	Firestore       *firestore.Client
 	// Use this variable to send push notification to the client
-	ExpoClient *expo.PushClient
+	ExpoClient *expo.Client
 )
 
 type ServiceAccount struct {
@@ -98,7 +100,7 @@ func InitFirebase() error {
 	}
 
 	// Expo client
-	ExpoClient = expo.NewPushClient(nil)
+	ExpoClient = expo.NewClient(nil)
 
 	return err
 }

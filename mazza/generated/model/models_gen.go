@@ -16,6 +16,11 @@ import (
 	"time"
 )
 
+type AggregateCashInput struct {
+	StartDate *time.Time `json:"startDate,omitempty"`
+	EndDate   time.Time  `json:"endDate"`
+}
+
 type AgingBucket struct {
 	Range       string  `json:"range"`
 	TotalAmount float64 `json:"totalAmount"`
@@ -56,6 +61,12 @@ type BaseEntryRegistrationInput struct {
 	TotalTransactionValue float64                `json:"totalTransactionValue"`
 }
 
+type CashAggregationOutput struct {
+	Inflow  *float64 `json:"inflow,omitempty"`
+	Outflow *float64 `json:"outflow,omitempty"`
+	Balance *float64 `json:"balance,omitempty"`
+}
+
 type ClientList struct {
 	Name               string  `json:"name"`
 	OutstandingBalance float64 `json:"outstandingBalance"`
@@ -94,6 +105,7 @@ type EntryItem struct {
 	IsDebit     bool                        `json:"isDebit"`
 	Label       string                      `json:"label"`
 	Category    string                      `json:"category"`
+	Main        *string                     `json:"main,omitempty"`
 }
 
 type EntryProductInput struct {

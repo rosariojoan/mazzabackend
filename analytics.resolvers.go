@@ -6,15 +6,14 @@ package mazza
 
 import (
 	"context"
-	"fmt"
 	accountingentry "mazza/app/accountingEntry"
 	"mazza/app/analytics"
+	"mazza/app/notifications"
+	"mazza/app/notifications/expo"
 	"mazza/ent/utils"
 	"mazza/firebase"
-	"mazza/inits"
 	"mazza/mazza/generated/model"
-
-	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
+	"time"
 )
 
 // Notify is the resolver for the notify field.
@@ -40,9 +39,9 @@ func (r *mutationResolver) Notify(ctx context.Context, input *model.Notif) (*str
 		return nil, nil
 	}
 
-	token := expo.ExponentPushToken(*targetUser.ExpoPushToken)
-	_, err = inits.ExpoClient.Publish(&expo.PushMessage{
-		To:    []expo.ExponentPushToken{token},
+	token := []*expo.Token{expo.MustParseToken(*targetUser.ExpoPushToken)}
+	notifications.SendPushNotification(15*time.Second, []*expo.Message{{
+		To:    token,
 		Title: input.Notification.Title,
 		Body:  input.Notification.Body,
 		Data: map[string]string{
@@ -50,10 +49,7 @@ func (r *mutationResolver) Notify(ctx context.Context, input *model.Notif) (*str
 		},
 		Sound:    "default",
 		Priority: expo.HighPriority,
-	})
-	if err != nil {
-		fmt.Println("send notif err:", err)
-	}
+	}})
 
 	return nil, nil
 }

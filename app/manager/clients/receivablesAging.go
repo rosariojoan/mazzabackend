@@ -64,7 +64,7 @@ func AccountsReceivableAging(ctx context.Context, client *generated.Client, name
 
 	// Final query with conditional clause
 	finalQuery := fmt.Sprintf(query, nameClause)
-	
+
 	rows, err := client.QueryContext(ctx, finalQuery, args...)
 	if err != nil {
 		fmt.Println("err:", err)

@@ -69,22 +69,50 @@ func (ptc *ProjectTaskCreate) SetDueDate(t time.Time) *ProjectTaskCreate {
 	return ptc
 }
 
-// SetStartDate sets the "startDate" field.
-func (ptc *ProjectTaskCreate) SetStartDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetStartDate(t)
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (ptc *ProjectTaskCreate) SetPlannedStartDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetPlannedStartDate(t)
 	return ptc
 }
 
-// SetEndDate sets the "endDate" field.
-func (ptc *ProjectTaskCreate) SetEndDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetEndDate(t)
+// SetActualStartDate sets the "actualStartDate" field.
+func (ptc *ProjectTaskCreate) SetActualStartDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetActualStartDate(t)
 	return ptc
 }
 
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ptc *ProjectTaskCreate) SetNillableEndDate(t *time.Time) *ProjectTaskCreate {
+// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableActualStartDate(t *time.Time) *ProjectTaskCreate {
 	if t != nil {
-		ptc.SetEndDate(*t)
+		ptc.SetActualStartDate(*t)
+	}
+	return ptc
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (ptc *ProjectTaskCreate) SetPlannedEndDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetPlannedEndDate(t)
+	return ptc
+}
+
+// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetPlannedEndDate(*t)
+	}
+	return ptc
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (ptc *ProjectTaskCreate) SetActualEndDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetActualEndDate(t)
+	return ptc
+}
+
+// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableActualEndDate(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetActualEndDate(*t)
 	}
 	return ptc
 }
@@ -256,8 +284,8 @@ func (ptc *ProjectTaskCreate) check() error {
 	if _, ok := ptc.mutation.DueDate(); !ok {
 		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "ProjectTask.dueDate"`)}
 	}
-	if _, ok := ptc.mutation.StartDate(); !ok {
-		return &ValidationError{Name: "startDate", err: errors.New(`generated: missing required field "ProjectTask.startDate"`)}
+	if _, ok := ptc.mutation.PlannedStartDate(); !ok {
+		return &ValidationError{Name: "plannedStartDate", err: errors.New(`generated: missing required field "ProjectTask.plannedStartDate"`)}
 	}
 	if _, ok := ptc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "ProjectTask.status"`)}
@@ -316,13 +344,21 @@ func (ptc *ProjectTaskCreate) createSpec() (*ProjectTask, *sqlgraph.CreateSpec) 
 		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
 		_node.DueDate = value
 	}
-	if value, ok := ptc.mutation.StartDate(); ok {
-		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
-		_node.StartDate = value
+	if value, ok := ptc.mutation.PlannedStartDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
+		_node.PlannedStartDate = value
 	}
-	if value, ok := ptc.mutation.EndDate(); ok {
-		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
-		_node.EndDate = &value
+	if value, ok := ptc.mutation.ActualStartDate(); ok {
+		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
+		_node.ActualStartDate = &value
+	}
+	if value, ok := ptc.mutation.PlannedEndDate(); ok {
+		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
+		_node.PlannedEndDate = &value
+	}
+	if value, ok := ptc.mutation.ActualEndDate(); ok {
+		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
+		_node.ActualEndDate = &value
 	}
 	if value, ok := ptc.mutation.Description(); ok {
 		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)

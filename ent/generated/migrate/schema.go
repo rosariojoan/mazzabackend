@@ -24,6 +24,7 @@ var (
 		{Name: "description", Type: field.TypeString},
 		{Name: "account_type", Type: field.TypeEnum, Enums: []string{"ASSET", "LIABILITY", "EQUITY", "REVENUE", "EXPENSE", "TAX_EXPENSE", "INCOME", "DIVIDEND_EXPENSE", "CONTRA_ASSET", "CONTRA_LIABILITY", "CONTRA_REVENUE", "CONTRA_EXPENSE"}},
 		{Name: "category", Type: field.TypeString, Default: ""},
+		{Name: "main", Type: field.TypeString, Default: ""},
 		{Name: "is_debit", Type: field.TypeBool},
 		{Name: "is_reversal", Type: field.TypeBool, Default: false},
 		{Name: "reversed", Type: field.TypeBool, Default: false},
@@ -39,19 +40,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "accounting_entries_companies_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[16]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "accounting_entries_loans_transactionHistory",
-				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
 				RefColumns: []*schema.Column{LoansColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "accounting_entries_users_accountingEntries",
-				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
+				Columns:    []*schema.Column{AccountingEntriesColumns[19]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -60,7 +61,7 @@ var (
 			{
 				Name:    "accountingentry_number_company_accounting_entries",
 				Unique:  true,
-				Columns: []*schema.Column{AccountingEntriesColumns[4], AccountingEntriesColumns[16]},
+				Columns: []*schema.Column{AccountingEntriesColumns[4], AccountingEntriesColumns[17]},
 			},
 		},
 	}
@@ -578,7 +579,7 @@ var (
 		{Name: "planned_end_date", Type: field.TypeTime},
 		{Name: "actual_end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "progress", Type: field.TypeFloat64, Default: 0},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed", "delayed"}, Default: "notStarted"},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"pending", "inProgress", "completed", "delayed"}, Default: "pending"},
 		{Name: "company_projects", Type: field.TypeInt, Nullable: true},
 		{Name: "user_created_projects", Type: field.TypeInt, Nullable: true},
 		{Name: "user_leadered_projects", Type: field.TypeInt, Nullable: true},
@@ -652,10 +653,12 @@ var (
 		{Name: "assignee_name", Type: field.TypeString},
 		{Name: "location", Type: field.TypeString, Nullable: true},
 		{Name: "due_date", Type: field.TypeTime},
-		{Name: "start_date", Type: field.TypeTime},
-		{Name: "end_date", Type: field.TypeTime, Nullable: true},
+		{Name: "planned_start_date", Type: field.TypeTime},
+		{Name: "actual_start_date", Type: field.TypeTime, Nullable: true},
+		{Name: "planned_end_date", Type: field.TypeTime, Nullable: true},
+		{Name: "actual_end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"notStarted", "inProgress", "completed"}},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"pending", "inProgress", "completed"}},
 		{Name: "project_tasks", Type: field.TypeInt},
 		{Name: "user_assigned_project_tasks", Type: field.TypeInt, Nullable: true},
 		{Name: "user_created_tasks", Type: field.TypeInt, Nullable: true},
@@ -668,19 +671,19 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "project_tasks_projects_tasks",
-				Columns:    []*schema.Column{ProjectTasksColumns[10]},
+				Columns:    []*schema.Column{ProjectTasksColumns[12]},
 				RefColumns: []*schema.Column{ProjectsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
 				Symbol:     "project_tasks_users_assignedProjectTasks",
-				Columns:    []*schema.Column{ProjectTasksColumns[11]},
+				Columns:    []*schema.Column{ProjectTasksColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "project_tasks_users_createdTasks",
-				Columns:    []*schema.Column{ProjectTasksColumns[12]},
+				Columns:    []*schema.Column{ProjectTasksColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -689,7 +692,7 @@ var (
 			{
 				Name:    "projecttask_name_project_tasks",
 				Unique:  true,
-				Columns: []*schema.Column{ProjectTasksColumns[2], ProjectTasksColumns[10]},
+				Columns: []*schema.Column{ProjectTasksColumns[2], ProjectTasksColumns[12]},
 			},
 		},
 	}

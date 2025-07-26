@@ -92,6 +92,7 @@ type AccountingEntryMutation struct {
 	description    *string
 	accountType    *accountingentry.AccountType
 	category       *string
+	main           *string
 	isDebit        *bool
 	isReversal     *bool
 	reversed       *bool
@@ -710,6 +711,42 @@ func (m *AccountingEntryMutation) ResetCategory() {
 	m.category = nil
 }
 
+// SetMain sets the "main" field.
+func (m *AccountingEntryMutation) SetMain(s string) {
+	m.main = &s
+}
+
+// Main returns the value of the "main" field in the mutation.
+func (m *AccountingEntryMutation) Main() (r string, exists bool) {
+	v := m.main
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMain returns the old "main" field's value of the AccountingEntry entity.
+// If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AccountingEntryMutation) OldMain(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMain is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMain requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMain: %w", err)
+	}
+	return oldValue.Main, nil
+}
+
+// ResetMain resets all changes to the "main" field.
+func (m *AccountingEntryMutation) ResetMain() {
+	m.main = nil
+}
+
 // SetIsDebit sets the "isDebit" field.
 func (m *AccountingEntryMutation) SetIsDebit(b bool) {
 	m.isDebit = &b
@@ -969,7 +1006,7 @@ func (m *AccountingEntryMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AccountingEntryMutation) Fields() []string {
-	fields := make([]string, 0, 15)
+	fields := make([]string, 0, 16)
 	if m.createdAt != nil {
 		fields = append(fields, accountingentry.FieldCreatedAt)
 	}
@@ -1005,6 +1042,9 @@ func (m *AccountingEntryMutation) Fields() []string {
 	}
 	if m.category != nil {
 		fields = append(fields, accountingentry.FieldCategory)
+	}
+	if m.main != nil {
+		fields = append(fields, accountingentry.FieldMain)
 	}
 	if m.isDebit != nil {
 		fields = append(fields, accountingentry.FieldIsDebit)
@@ -1047,6 +1087,8 @@ func (m *AccountingEntryMutation) Field(name string) (ent.Value, bool) {
 		return m.AccountType()
 	case accountingentry.FieldCategory:
 		return m.Category()
+	case accountingentry.FieldMain:
+		return m.Main()
 	case accountingentry.FieldIsDebit:
 		return m.IsDebit()
 	case accountingentry.FieldIsReversal:
@@ -1086,6 +1128,8 @@ func (m *AccountingEntryMutation) OldField(ctx context.Context, name string) (en
 		return m.OldAccountType(ctx)
 	case accountingentry.FieldCategory:
 		return m.OldCategory(ctx)
+	case accountingentry.FieldMain:
+		return m.OldMain(ctx)
 	case accountingentry.FieldIsDebit:
 		return m.OldIsDebit(ctx)
 	case accountingentry.FieldIsReversal:
@@ -1184,6 +1228,13 @@ func (m *AccountingEntryMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCategory(v)
+		return nil
+	case accountingentry.FieldMain:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMain(v)
 		return nil
 	case accountingentry.FieldIsDebit:
 		v, ok := value.(bool)
@@ -1338,6 +1389,9 @@ func (m *AccountingEntryMutation) ResetField(name string) error {
 		return nil
 	case accountingentry.FieldCategory:
 		m.ResetCategory()
+		return nil
+	case accountingentry.FieldMain:
+		m.ResetMain()
 		return nil
 	case accountingentry.FieldIsDebit:
 		m.ResetIsDebit()
@@ -21575,8 +21629,10 @@ type ProjectTaskMutation struct {
 	assigneeName        *string
 	location            *string
 	dueDate             *time.Time
-	startDate           *time.Time
-	endDate             *time.Time
+	plannedStartDate    *time.Time
+	actualStartDate     *time.Time
+	plannedEndDate      *time.Time
+	actualEndDate       *time.Time
 	description         *string
 	status              *projecttask.Status
 	clearedFields       map[string]struct{}
@@ -21901,89 +21957,187 @@ func (m *ProjectTaskMutation) ResetDueDate() {
 	m.dueDate = nil
 }
 
-// SetStartDate sets the "startDate" field.
-func (m *ProjectTaskMutation) SetStartDate(t time.Time) {
-	m.startDate = &t
+// SetPlannedStartDate sets the "plannedStartDate" field.
+func (m *ProjectTaskMutation) SetPlannedStartDate(t time.Time) {
+	m.plannedStartDate = &t
 }
 
-// StartDate returns the value of the "startDate" field in the mutation.
-func (m *ProjectTaskMutation) StartDate() (r time.Time, exists bool) {
-	v := m.startDate
+// PlannedStartDate returns the value of the "plannedStartDate" field in the mutation.
+func (m *ProjectTaskMutation) PlannedStartDate() (r time.Time, exists bool) {
+	v := m.plannedStartDate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStartDate returns the old "startDate" field's value of the ProjectTask entity.
+// OldPlannedStartDate returns the old "plannedStartDate" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldStartDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectTaskMutation) OldPlannedStartDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldPlannedStartDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartDate requires an ID field in the mutation")
+		return v, errors.New("OldPlannedStartDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldPlannedStartDate: %w", err)
 	}
-	return oldValue.StartDate, nil
+	return oldValue.PlannedStartDate, nil
 }
 
-// ResetStartDate resets all changes to the "startDate" field.
-func (m *ProjectTaskMutation) ResetStartDate() {
-	m.startDate = nil
+// ResetPlannedStartDate resets all changes to the "plannedStartDate" field.
+func (m *ProjectTaskMutation) ResetPlannedStartDate() {
+	m.plannedStartDate = nil
 }
 
-// SetEndDate sets the "endDate" field.
-func (m *ProjectTaskMutation) SetEndDate(t time.Time) {
-	m.endDate = &t
+// SetActualStartDate sets the "actualStartDate" field.
+func (m *ProjectTaskMutation) SetActualStartDate(t time.Time) {
+	m.actualStartDate = &t
 }
 
-// EndDate returns the value of the "endDate" field in the mutation.
-func (m *ProjectTaskMutation) EndDate() (r time.Time, exists bool) {
-	v := m.endDate
+// ActualStartDate returns the value of the "actualStartDate" field in the mutation.
+func (m *ProjectTaskMutation) ActualStartDate() (r time.Time, exists bool) {
+	v := m.actualStartDate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEndDate returns the old "endDate" field's value of the ProjectTask entity.
+// OldActualStartDate returns the old "actualStartDate" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldEndDate(ctx context.Context) (v *time.Time, err error) {
+func (m *ProjectTaskMutation) OldActualStartDate(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldActualStartDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEndDate requires an ID field in the mutation")
+		return v, errors.New("OldActualStartDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldActualStartDate: %w", err)
 	}
-	return oldValue.EndDate, nil
+	return oldValue.ActualStartDate, nil
 }
 
-// ClearEndDate clears the value of the "endDate" field.
-func (m *ProjectTaskMutation) ClearEndDate() {
-	m.endDate = nil
-	m.clearedFields[projecttask.FieldEndDate] = struct{}{}
+// ClearActualStartDate clears the value of the "actualStartDate" field.
+func (m *ProjectTaskMutation) ClearActualStartDate() {
+	m.actualStartDate = nil
+	m.clearedFields[projecttask.FieldActualStartDate] = struct{}{}
 }
 
-// EndDateCleared returns if the "endDate" field was cleared in this mutation.
-func (m *ProjectTaskMutation) EndDateCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldEndDate]
+// ActualStartDateCleared returns if the "actualStartDate" field was cleared in this mutation.
+func (m *ProjectTaskMutation) ActualStartDateCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldActualStartDate]
 	return ok
 }
 
-// ResetEndDate resets all changes to the "endDate" field.
-func (m *ProjectTaskMutation) ResetEndDate() {
-	m.endDate = nil
-	delete(m.clearedFields, projecttask.FieldEndDate)
+// ResetActualStartDate resets all changes to the "actualStartDate" field.
+func (m *ProjectTaskMutation) ResetActualStartDate() {
+	m.actualStartDate = nil
+	delete(m.clearedFields, projecttask.FieldActualStartDate)
+}
+
+// SetPlannedEndDate sets the "plannedEndDate" field.
+func (m *ProjectTaskMutation) SetPlannedEndDate(t time.Time) {
+	m.plannedEndDate = &t
+}
+
+// PlannedEndDate returns the value of the "plannedEndDate" field in the mutation.
+func (m *ProjectTaskMutation) PlannedEndDate() (r time.Time, exists bool) {
+	v := m.plannedEndDate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPlannedEndDate returns the old "plannedEndDate" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldPlannedEndDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPlannedEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPlannedEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPlannedEndDate: %w", err)
+	}
+	return oldValue.PlannedEndDate, nil
+}
+
+// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
+func (m *ProjectTaskMutation) ClearPlannedEndDate() {
+	m.plannedEndDate = nil
+	m.clearedFields[projecttask.FieldPlannedEndDate] = struct{}{}
+}
+
+// PlannedEndDateCleared returns if the "plannedEndDate" field was cleared in this mutation.
+func (m *ProjectTaskMutation) PlannedEndDateCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldPlannedEndDate]
+	return ok
+}
+
+// ResetPlannedEndDate resets all changes to the "plannedEndDate" field.
+func (m *ProjectTaskMutation) ResetPlannedEndDate() {
+	m.plannedEndDate = nil
+	delete(m.clearedFields, projecttask.FieldPlannedEndDate)
+}
+
+// SetActualEndDate sets the "actualEndDate" field.
+func (m *ProjectTaskMutation) SetActualEndDate(t time.Time) {
+	m.actualEndDate = &t
+}
+
+// ActualEndDate returns the value of the "actualEndDate" field in the mutation.
+func (m *ProjectTaskMutation) ActualEndDate() (r time.Time, exists bool) {
+	v := m.actualEndDate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldActualEndDate returns the old "actualEndDate" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldActualEndDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldActualEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldActualEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldActualEndDate: %w", err)
+	}
+	return oldValue.ActualEndDate, nil
+}
+
+// ClearActualEndDate clears the value of the "actualEndDate" field.
+func (m *ProjectTaskMutation) ClearActualEndDate() {
+	m.actualEndDate = nil
+	m.clearedFields[projecttask.FieldActualEndDate] = struct{}{}
+}
+
+// ActualEndDateCleared returns if the "actualEndDate" field was cleared in this mutation.
+func (m *ProjectTaskMutation) ActualEndDateCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldActualEndDate]
+	return ok
+}
+
+// ResetActualEndDate resets all changes to the "actualEndDate" field.
+func (m *ProjectTaskMutation) ResetActualEndDate() {
+	m.actualEndDate = nil
+	delete(m.clearedFields, projecttask.FieldActualEndDate)
 }
 
 // SetDescription sets the "description" field.
@@ -22330,7 +22484,7 @@ func (m *ProjectTaskMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProjectTaskMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 11)
 	if m.createdAt != nil {
 		fields = append(fields, projecttask.FieldCreatedAt)
 	}
@@ -22346,11 +22500,17 @@ func (m *ProjectTaskMutation) Fields() []string {
 	if m.dueDate != nil {
 		fields = append(fields, projecttask.FieldDueDate)
 	}
-	if m.startDate != nil {
-		fields = append(fields, projecttask.FieldStartDate)
+	if m.plannedStartDate != nil {
+		fields = append(fields, projecttask.FieldPlannedStartDate)
 	}
-	if m.endDate != nil {
-		fields = append(fields, projecttask.FieldEndDate)
+	if m.actualStartDate != nil {
+		fields = append(fields, projecttask.FieldActualStartDate)
+	}
+	if m.plannedEndDate != nil {
+		fields = append(fields, projecttask.FieldPlannedEndDate)
+	}
+	if m.actualEndDate != nil {
+		fields = append(fields, projecttask.FieldActualEndDate)
 	}
 	if m.description != nil {
 		fields = append(fields, projecttask.FieldDescription)
@@ -22376,10 +22536,14 @@ func (m *ProjectTaskMutation) Field(name string) (ent.Value, bool) {
 		return m.Location()
 	case projecttask.FieldDueDate:
 		return m.DueDate()
-	case projecttask.FieldStartDate:
-		return m.StartDate()
-	case projecttask.FieldEndDate:
-		return m.EndDate()
+	case projecttask.FieldPlannedStartDate:
+		return m.PlannedStartDate()
+	case projecttask.FieldActualStartDate:
+		return m.ActualStartDate()
+	case projecttask.FieldPlannedEndDate:
+		return m.PlannedEndDate()
+	case projecttask.FieldActualEndDate:
+		return m.ActualEndDate()
 	case projecttask.FieldDescription:
 		return m.Description()
 	case projecttask.FieldStatus:
@@ -22403,10 +22567,14 @@ func (m *ProjectTaskMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldLocation(ctx)
 	case projecttask.FieldDueDate:
 		return m.OldDueDate(ctx)
-	case projecttask.FieldStartDate:
-		return m.OldStartDate(ctx)
-	case projecttask.FieldEndDate:
-		return m.OldEndDate(ctx)
+	case projecttask.FieldPlannedStartDate:
+		return m.OldPlannedStartDate(ctx)
+	case projecttask.FieldActualStartDate:
+		return m.OldActualStartDate(ctx)
+	case projecttask.FieldPlannedEndDate:
+		return m.OldPlannedEndDate(ctx)
+	case projecttask.FieldActualEndDate:
+		return m.OldActualEndDate(ctx)
 	case projecttask.FieldDescription:
 		return m.OldDescription(ctx)
 	case projecttask.FieldStatus:
@@ -22455,19 +22623,33 @@ func (m *ProjectTaskMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDueDate(v)
 		return nil
-	case projecttask.FieldStartDate:
+	case projecttask.FieldPlannedStartDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetStartDate(v)
+		m.SetPlannedStartDate(v)
 		return nil
-	case projecttask.FieldEndDate:
+	case projecttask.FieldActualStartDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetEndDate(v)
+		m.SetActualStartDate(v)
+		return nil
+	case projecttask.FieldPlannedEndDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPlannedEndDate(v)
+		return nil
+	case projecttask.FieldActualEndDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetActualEndDate(v)
 		return nil
 	case projecttask.FieldDescription:
 		v, ok := value.(string)
@@ -22519,8 +22701,14 @@ func (m *ProjectTaskMutation) ClearedFields() []string {
 	if m.FieldCleared(projecttask.FieldLocation) {
 		fields = append(fields, projecttask.FieldLocation)
 	}
-	if m.FieldCleared(projecttask.FieldEndDate) {
-		fields = append(fields, projecttask.FieldEndDate)
+	if m.FieldCleared(projecttask.FieldActualStartDate) {
+		fields = append(fields, projecttask.FieldActualStartDate)
+	}
+	if m.FieldCleared(projecttask.FieldPlannedEndDate) {
+		fields = append(fields, projecttask.FieldPlannedEndDate)
+	}
+	if m.FieldCleared(projecttask.FieldActualEndDate) {
+		fields = append(fields, projecttask.FieldActualEndDate)
 	}
 	if m.FieldCleared(projecttask.FieldDescription) {
 		fields = append(fields, projecttask.FieldDescription)
@@ -22545,8 +22733,14 @@ func (m *ProjectTaskMutation) ClearField(name string) error {
 	case projecttask.FieldLocation:
 		m.ClearLocation()
 		return nil
-	case projecttask.FieldEndDate:
-		m.ClearEndDate()
+	case projecttask.FieldActualStartDate:
+		m.ClearActualStartDate()
+		return nil
+	case projecttask.FieldPlannedEndDate:
+		m.ClearPlannedEndDate()
+		return nil
+	case projecttask.FieldActualEndDate:
+		m.ClearActualEndDate()
 		return nil
 	case projecttask.FieldDescription:
 		m.ClearDescription()
@@ -22574,11 +22768,17 @@ func (m *ProjectTaskMutation) ResetField(name string) error {
 	case projecttask.FieldDueDate:
 		m.ResetDueDate()
 		return nil
-	case projecttask.FieldStartDate:
-		m.ResetStartDate()
+	case projecttask.FieldPlannedStartDate:
+		m.ResetPlannedStartDate()
 		return nil
-	case projecttask.FieldEndDate:
-		m.ResetEndDate()
+	case projecttask.FieldActualStartDate:
+		m.ResetActualStartDate()
+		return nil
+	case projecttask.FieldPlannedEndDate:
+		m.ResetPlannedEndDate()
+		return nil
+	case projecttask.FieldActualEndDate:
+		m.ResetActualEndDate()
 		return nil
 	case projecttask.FieldDescription:
 		m.ResetDescription()

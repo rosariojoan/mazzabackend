@@ -135,6 +135,20 @@ func (aec *AccountingEntryCreate) SetNillableCategory(s *string) *AccountingEntr
 	return aec
 }
 
+// SetMain sets the "main" field.
+func (aec *AccountingEntryCreate) SetMain(s string) *AccountingEntryCreate {
+	aec.mutation.SetMain(s)
+	return aec
+}
+
+// SetNillableMain sets the "main" field if the given value is not nil.
+func (aec *AccountingEntryCreate) SetNillableMain(s *string) *AccountingEntryCreate {
+	if s != nil {
+		aec.SetMain(*s)
+	}
+	return aec
+}
+
 // SetIsDebit sets the "isDebit" field.
 func (aec *AccountingEntryCreate) SetIsDebit(b bool) *AccountingEntryCreate {
 	aec.mutation.SetIsDebit(b)
@@ -277,6 +291,10 @@ func (aec *AccountingEntryCreate) defaults() {
 		v := accountingentry.DefaultCategory
 		aec.mutation.SetCategory(v)
 	}
+	if _, ok := aec.mutation.Main(); !ok {
+		v := accountingentry.DefaultMain
+		aec.mutation.SetMain(v)
+	}
 	if _, ok := aec.mutation.IsReversal(); !ok {
 		v := accountingentry.DefaultIsReversal
 		aec.mutation.SetIsReversal(v)
@@ -341,6 +359,9 @@ func (aec *AccountingEntryCreate) check() error {
 	}
 	if _, ok := aec.mutation.Category(); !ok {
 		return &ValidationError{Name: "category", err: errors.New(`generated: missing required field "AccountingEntry.category"`)}
+	}
+	if _, ok := aec.mutation.Main(); !ok {
+		return &ValidationError{Name: "main", err: errors.New(`generated: missing required field "AccountingEntry.main"`)}
 	}
 	if _, ok := aec.mutation.IsDebit(); !ok {
 		return &ValidationError{Name: "isDebit", err: errors.New(`generated: missing required field "AccountingEntry.isDebit"`)}
@@ -424,6 +445,10 @@ func (aec *AccountingEntryCreate) createSpec() (*AccountingEntry, *sqlgraph.Crea
 	if value, ok := aec.mutation.Category(); ok {
 		_spec.SetField(accountingentry.FieldCategory, field.TypeString, value)
 		_node.Category = value
+	}
+	if value, ok := aec.mutation.Main(); ok {
+		_spec.SetField(accountingentry.FieldMain, field.TypeString, value)
+		_node.Main = value
 	}
 	if value, ok := aec.mutation.IsDebit(); ok {
 		_spec.SetField(accountingentry.FieldIsDebit, field.TypeBool, value)

@@ -83,6 +83,7 @@ type ComplexityRoot struct {
 		IsReversal  func(childComplexity int) int
 		Label       func(childComplexity int) int
 		Loan        func(childComplexity int) int
+		Main        func(childComplexity int) int
 		Number      func(childComplexity int) int
 		Reversed    func(childComplexity int) int
 		UpdatedAt   func(childComplexity int) int
@@ -121,6 +122,12 @@ type ComplexityRoot struct {
 		Liabilities             func(childComplexity int) int
 		Period                  func(childComplexity int) int
 		TotalLiabilityAndEquity func(childComplexity int) int
+	}
+
+	CashAggregationOutput struct {
+		Balance func(childComplexity int) int
+		Inflow  func(childComplexity int) int
+		Outflow func(childComplexity int) int
 	}
 
 	ClientList struct {
@@ -705,21 +712,23 @@ type ComplexityRoot struct {
 	}
 
 	ProjectTask struct {
-		Assignee     func(childComplexity int) int
-		AssigneeName func(childComplexity int) int
-		CreatedAt    func(childComplexity int) int
-		CreatedBy    func(childComplexity int) int
-		Description  func(childComplexity int) int
-		DueDate      func(childComplexity int) int
-		EndDate      func(childComplexity int) int
-		ID           func(childComplexity int) int
-		Location     func(childComplexity int) int
-		Name         func(childComplexity int) int
-		Participants func(childComplexity int) int
-		Project      func(childComplexity int) int
-		StartDate    func(childComplexity int) int
-		Status       func(childComplexity int) int
-		WorkShifts   func(childComplexity int) int
+		ActualEndDate    func(childComplexity int) int
+		ActualStartDate  func(childComplexity int) int
+		Assignee         func(childComplexity int) int
+		AssigneeName     func(childComplexity int) int
+		CreatedAt        func(childComplexity int) int
+		CreatedBy        func(childComplexity int) int
+		Description      func(childComplexity int) int
+		DueDate          func(childComplexity int) int
+		ID               func(childComplexity int) int
+		Location         func(childComplexity int) int
+		Name             func(childComplexity int) int
+		Participants     func(childComplexity int) int
+		PlannedEndDate   func(childComplexity int) int
+		PlannedStartDate func(childComplexity int) int
+		Project          func(childComplexity int) int
+		Status           func(childComplexity int) int
+		WorkShifts       func(childComplexity int) int
 	}
 
 	ProjectTaskConnection struct {
@@ -737,6 +746,7 @@ type ComplexityRoot struct {
 		AccountingEntries        func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.AccountingEntryOrder, where *generated.AccountingEntryWhereInput) int
 		AccountsPayableAging     func(childComplexity int, name *string) int
 		AccountsReceivableAging  func(childComplexity int, name *string) int
+		AggregateCash            func(childComplexity int, input model.AggregateCashInput) int
 		AggregateLoans           func(childComplexity int, where *generated.LoanWhereInput, groupBy []model.LoansGroupBy) int
 		AggregatePayables        func(childComplexity int, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) int
 		AggregateReceivables     func(childComplexity int, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) int
@@ -1084,6 +1094,7 @@ type QueryResolver interface {
 	AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error)
 	AggregatePayables(ctx context.Context, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) ([]*model.PayableAggregationOutput, error)
 	AggregateLoans(ctx context.Context, where *generated.LoanWhereInput, groupBy []model.LoansGroupBy) ([]*model.LoanAggregationOutput, error)
+	AggregateCash(ctx context.Context, input model.AggregateCashInput) (*model.CashAggregationOutput, error)
 	AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
 	AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
 	LoansAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
@@ -1212,6 +1223,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.AccountingEntry.Loan(childComplexity), true
+
+	case "AccountingEntry.main":
+		if e.complexity.AccountingEntry.Main == nil {
+			break
+		}
+
+		return e.complexity.AccountingEntry.Main(childComplexity), true
 
 	case "AccountingEntry.number":
 		if e.complexity.AccountingEntry.Number == nil {
@@ -1373,6 +1391,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.BalanceSheetOuput.TotalLiabilityAndEquity(childComplexity), true
+
+	case "CashAggregationOutput.balance":
+		if e.complexity.CashAggregationOutput.Balance == nil {
+			break
+		}
+
+		return e.complexity.CashAggregationOutput.Balance(childComplexity), true
+
+	case "CashAggregationOutput.inflow":
+		if e.complexity.CashAggregationOutput.Inflow == nil {
+			break
+		}
+
+		return e.complexity.CashAggregationOutput.Inflow(childComplexity), true
+
+	case "CashAggregationOutput.outflow":
+		if e.complexity.CashAggregationOutput.Outflow == nil {
+			break
+		}
+
+		return e.complexity.CashAggregationOutput.Outflow(childComplexity), true
 
 	case "ClientList.invoiceCount":
 		if e.complexity.ClientList.InvoiceCount == nil {
@@ -4608,6 +4647,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProjectMilestone.Project(childComplexity), true
 
+	case "ProjectTask.actualenddate":
+		if e.complexity.ProjectTask.ActualEndDate == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.ActualEndDate(childComplexity), true
+
+	case "ProjectTask.actualstartdate":
+		if e.complexity.ProjectTask.ActualStartDate == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.ActualStartDate(childComplexity), true
+
 	case "ProjectTask.assignee":
 		if e.complexity.ProjectTask.Assignee == nil {
 			break
@@ -4650,13 +4703,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProjectTask.DueDate(childComplexity), true
 
-	case "ProjectTask.enddate":
-		if e.complexity.ProjectTask.EndDate == nil {
-			break
-		}
-
-		return e.complexity.ProjectTask.EndDate(childComplexity), true
-
 	case "ProjectTask.id":
 		if e.complexity.ProjectTask.ID == nil {
 			break
@@ -4685,19 +4731,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ProjectTask.Participants(childComplexity), true
 
+	case "ProjectTask.plannedenddate":
+		if e.complexity.ProjectTask.PlannedEndDate == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.PlannedEndDate(childComplexity), true
+
+	case "ProjectTask.plannedstartdate":
+		if e.complexity.ProjectTask.PlannedStartDate == nil {
+			break
+		}
+
+		return e.complexity.ProjectTask.PlannedStartDate(childComplexity), true
+
 	case "ProjectTask.project":
 		if e.complexity.ProjectTask.Project == nil {
 			break
 		}
 
 		return e.complexity.ProjectTask.Project(childComplexity), true
-
-	case "ProjectTask.startdate":
-		if e.complexity.ProjectTask.StartDate == nil {
-			break
-		}
-
-		return e.complexity.ProjectTask.StartDate(childComplexity), true
 
 	case "ProjectTask.status":
 		if e.complexity.ProjectTask.Status == nil {
@@ -4783,6 +4836,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.AccountsReceivableAging(childComplexity, args["name"].(*string)), true
+
+	case "Query.aggregateCash":
+		if e.complexity.Query.AggregateCash == nil {
+			break
+		}
+
+		args, err := ec.field_Query_aggregateCash_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.AggregateCash(childComplexity, args["input"].(model.AggregateCashInput)), true
 
 	case "Query.aggregateLoans":
 		if e.complexity.Query.AggregateLoans == nil {
@@ -6313,6 +6378,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputAccountingEntryOrder,
 		ec.unmarshalInputAccountingEntryWhereInput,
+		ec.unmarshalInputAggregateCashInput,
 		ec.unmarshalInputBaseEntryRegistrationInput,
 		ec.unmarshalInputCompanyDocumentOrder,
 		ec.unmarshalInputCompanyDocumentWhereInput,
@@ -9036,6 +9102,38 @@ func (ec *executionContext) field_Query_accountsReceivableAging_argsName(
 	}
 
 	var zeroVal *string
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_aggregateCash_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	arg0, err := ec.field_Query_aggregateCash_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Query_aggregateCash_argsInput(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (model.AggregateCashInput, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["input"]
+	if !ok {
+		var zeroVal model.AggregateCashInput
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNAggregateCashInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐAggregateCashInput(ctx, tmp)
+	}
+
+	var zeroVal model.AggregateCashInput
 	return zeroVal, nil
 }
 
@@ -12868,6 +12966,50 @@ func (ec *executionContext) fieldContext_AccountingEntry_category(_ context.Cont
 	return fc, nil
 }
 
+func (ec *executionContext) _AccountingEntry_main(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AccountingEntry_main(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Main, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AccountingEntry_main(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AccountingEntry",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _AccountingEntry_isdebit(ctx context.Context, field graphql.CollectedField, obj *generated.AccountingEntry) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 	if err != nil {
@@ -13536,6 +13678,8 @@ func (ec *executionContext) fieldContext_AccountingEntryEdge_node(_ context.Cont
 				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 			case "category":
 				return ec.fieldContext_AccountingEntry_category(ctx, field)
+			case "main":
+				return ec.fieldContext_AccountingEntry_main(ctx, field)
 			case "isdebit":
 				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 			case "isreversal":
@@ -14259,6 +14403,129 @@ func (ec *executionContext) fieldContext_BalanceSheetOuput_isProvisional(_ conte
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CashAggregationOutput_inflow(ctx context.Context, field graphql.CollectedField, obj *model.CashAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CashAggregationOutput_inflow(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Inflow, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CashAggregationOutput_inflow(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CashAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CashAggregationOutput_outflow(ctx context.Context, field graphql.CollectedField, obj *model.CashAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CashAggregationOutput_outflow(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Outflow, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CashAggregationOutput_outflow(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CashAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CashAggregationOutput_balance(ctx context.Context, field graphql.CollectedField, obj *model.CashAggregationOutput) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CashAggregationOutput_balance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Balance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CashAggregationOutput_balance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CashAggregationOutput",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -15490,6 +15757,8 @@ func (ec *executionContext) fieldContext_Company_accountingentries(_ context.Con
 				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 			case "category":
 				return ec.fieldContext_AccountingEntry_category(ctx, field)
+			case "main":
+				return ec.fieldContext_AccountingEntry_main(ctx, field)
 			case "isdebit":
 				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 			case "isreversal":
@@ -22045,6 +22314,8 @@ func (ec *executionContext) fieldContext_HomepageAnalytics_recentTransactions(_ 
 				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 			case "category":
 				return ec.fieldContext_AccountingEntry_category(ctx, field)
+			case "main":
+				return ec.fieldContext_AccountingEntry_main(ctx, field)
 			case "isdebit":
 				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 			case "isreversal":
@@ -28334,6 +28605,8 @@ func (ec *executionContext) fieldContext_Loan_transactionhistory(_ context.Conte
 				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 			case "category":
 				return ec.fieldContext_AccountingEntry_category(ctx, field)
+			case "main":
+				return ec.fieldContext_AccountingEntry_main(ctx, field)
 			case "isdebit":
 				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 			case "isreversal":
@@ -32371,10 +32644,14 @@ func (ec *executionContext) fieldContext_Mutation_createProjectTask(ctx context.
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -32458,10 +32735,14 @@ func (ec *executionContext) fieldContext_Mutation_updateProjectTask(ctx context.
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -37325,10 +37606,14 @@ func (ec *executionContext) fieldContext_Project_tasks(_ context.Context, field 
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -38137,8 +38422,8 @@ func (ec *executionContext) fieldContext_ProjectTask_duedate(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectTask_startdate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectTask_startdate(ctx, field)
+func (ec *executionContext) _ProjectTask_plannedstartdate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -38151,7 +38436,7 @@ func (ec *executionContext) _ProjectTask_startdate(ctx context.Context, field gr
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.StartDate, nil
+		return obj.PlannedStartDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -38168,7 +38453,7 @@ func (ec *executionContext) _ProjectTask_startdate(ctx context.Context, field gr
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectTask_startdate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ProjectTask_plannedstartdate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ProjectTask",
 		Field:      field,
@@ -38181,8 +38466,8 @@ func (ec *executionContext) fieldContext_ProjectTask_startdate(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectTask_enddate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectTask_enddate(ctx, field)
+func (ec *executionContext) _ProjectTask_actualstartdate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -38195,7 +38480,7 @@ func (ec *executionContext) _ProjectTask_enddate(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.EndDate, nil
+		return obj.ActualStartDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -38209,7 +38494,89 @@ func (ec *executionContext) _ProjectTask_enddate(ctx context.Context, field grap
 	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectTask_enddate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ProjectTask_actualstartdate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectTask",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectTask_plannedenddate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PlannedEndDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectTask_plannedenddate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ProjectTask",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ProjectTask_actualenddate(ctx context.Context, field graphql.CollectedField, obj *generated.ProjectTask) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ProjectTask_actualenddate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ActualEndDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ProjectTask_actualenddate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ProjectTask",
 		Field:      field,
@@ -38992,10 +39359,14 @@ func (ec *executionContext) fieldContext_ProjectTaskEdge_node(_ context.Context,
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -41584,10 +41955,14 @@ func (ec *executionContext) fieldContext_Query_retrieveProjectTask(ctx context.C
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -42851,6 +43226,69 @@ func (ec *executionContext) fieldContext_Query_aggregateLoans(ctx context.Contex
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_aggregateLoans_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_aggregateCash(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_aggregateCash(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().AggregateCash(rctx, fc.Args["input"].(model.AggregateCashInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.CashAggregationOutput)
+	fc.Result = res
+	return ec.marshalNCashAggregationOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐCashAggregationOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_aggregateCash(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "inflow":
+				return ec.fieldContext_CashAggregationOutput_inflow(ctx, field)
+			case "outflow":
+				return ec.fieldContext_CashAggregationOutput_outflow(ctx, field)
+			case "balance":
+				return ec.fieldContext_CashAggregationOutput_balance(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CashAggregationOutput", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_aggregateCash_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -47364,6 +47802,8 @@ func (ec *executionContext) fieldContext_User_accountingentries(_ context.Contex
 				return ec.fieldContext_AccountingEntry_accounttype(ctx, field)
 			case "category":
 				return ec.fieldContext_AccountingEntry_category(ctx, field)
+			case "main":
+				return ec.fieldContext_AccountingEntry_main(ctx, field)
 			case "isdebit":
 				return ec.fieldContext_AccountingEntry_isdebit(ctx, field)
 			case "isreversal":
@@ -48275,10 +48715,14 @@ func (ec *executionContext) fieldContext_User_assignedprojecttasks(_ context.Con
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -48348,10 +48792,14 @@ func (ec *executionContext) fieldContext_User_participatedprojecttasks(_ context
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -48421,10 +48869,14 @@ func (ec *executionContext) fieldContext_User_createdtasks(_ context.Context, fi
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -50272,10 +50724,14 @@ func (ec *executionContext) fieldContext_Workshift_task(_ context.Context, field
 				return ec.fieldContext_ProjectTask_location(ctx, field)
 			case "duedate":
 				return ec.fieldContext_ProjectTask_duedate(ctx, field)
-			case "startdate":
-				return ec.fieldContext_ProjectTask_startdate(ctx, field)
-			case "enddate":
-				return ec.fieldContext_ProjectTask_enddate(ctx, field)
+			case "plannedstartdate":
+				return ec.fieldContext_ProjectTask_plannedstartdate(ctx, field)
+			case "actualstartdate":
+				return ec.fieldContext_ProjectTask_actualstartdate(ctx, field)
+			case "plannedenddate":
+				return ec.fieldContext_ProjectTask_plannedenddate(ctx, field)
+			case "actualenddate":
+				return ec.fieldContext_ProjectTask_actualenddate(ctx, field)
 			case "description":
 				return ec.fieldContext_ProjectTask_description(ctx, field)
 			case "status":
@@ -52273,7 +52729,7 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "number", "numberNEQ", "numberIn", "numberNotIn", "numberGT", "numberGTE", "numberLT", "numberLTE", "group", "groupNEQ", "groupIn", "groupNotIn", "groupGT", "groupGTE", "groupLT", "groupLTE", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "account", "accountNEQ", "accountIn", "accountNotIn", "accountGT", "accountGTE", "accountLT", "accountLTE", "accountContains", "accountHasPrefix", "accountHasSuffix", "accountEqualFold", "accountContainsFold", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "accounttype", "accounttypeNEQ", "accounttypeIn", "accounttypeNotIn", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "categoryGT", "categoryGTE", "categoryLT", "categoryLTE", "categoryContains", "categoryHasPrefix", "categoryHasSuffix", "categoryEqualFold", "categoryContainsFold", "isdebit", "isdebitNEQ", "isreversal", "isreversalNEQ", "reversed", "reversedNEQ", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasLoan", "hasLoanWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "number", "numberNEQ", "numberIn", "numberNotIn", "numberGT", "numberGTE", "numberLT", "numberLTE", "group", "groupNEQ", "groupIn", "groupNotIn", "groupGT", "groupGTE", "groupLT", "groupLTE", "date", "dateNEQ", "dateIn", "dateNotIn", "dateGT", "dateGTE", "dateLT", "dateLTE", "account", "accountNEQ", "accountIn", "accountNotIn", "accountGT", "accountGTE", "accountLT", "accountLTE", "accountContains", "accountHasPrefix", "accountHasSuffix", "accountEqualFold", "accountContainsFold", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "accounttype", "accounttypeNEQ", "accounttypeIn", "accounttypeNotIn", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "categoryGT", "categoryGTE", "categoryLT", "categoryLTE", "categoryContains", "categoryHasPrefix", "categoryHasSuffix", "categoryEqualFold", "categoryContainsFold", "main", "mainNEQ", "mainIn", "mainNotIn", "mainGT", "mainGTE", "mainLT", "mainLTE", "mainContains", "mainHasPrefix", "mainHasSuffix", "mainEqualFold", "mainContainsFold", "isdebit", "isdebitNEQ", "isreversal", "isreversalNEQ", "reversed", "reversedNEQ", "hasCompany", "hasCompanyWith", "hasUser", "hasUserWith", "hasLoan", "hasLoanWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -53155,6 +53611,97 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 				return it, err
 			}
 			it.CategoryContainsFold = data
+		case "main":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("main"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Main = data
+		case "mainNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainNEQ = data
+		case "mainIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainIn = data
+		case "mainNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainNotIn = data
+		case "mainGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainGT = data
+		case "mainGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainGTE = data
+		case "mainLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainLT = data
+		case "mainLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainLTE = data
+		case "mainContains":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainContains = data
+		case "mainHasPrefix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainHasPrefix = data
+		case "mainHasSuffix":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainHasSuffix = data
+		case "mainEqualFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainEqualFold = data
+		case "mainContainsFold":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("mainContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MainContainsFold = data
 		case "isdebit":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdebit"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -53239,6 +53786,40 @@ func (ec *executionContext) unmarshalInputAccountingEntryWhereInput(ctx context.
 				return it, err
 			}
 			it.HasLoanWith = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputAggregateCashInput(ctx context.Context, obj interface{}) (model.AggregateCashInput, error) {
+	var it model.AggregateCashInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"startDate", "endDate"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "startDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.StartDate = data
+		case "endDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("endDate"))
+			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.EndDate = data
 		}
 	}
 
@@ -56733,7 +57314,7 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "category", "isdebit", "isreversal", "reversed", "companyID", "userID", "loanID"}
+	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "category", "main", "isdebit", "isreversal", "reversed", "companyID", "userID", "loanID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -56803,6 +57384,13 @@ func (ec *executionContext) unmarshalInputCreateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.Category = data
+		case "main":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("main"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Main = data
 		case "isdebit":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdebit"))
 			data, err := ec.unmarshalNBoolean2bool(ctx, v)
@@ -58459,7 +59047,7 @@ func (ec *executionContext) unmarshalInputCreateProjectTaskInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"createdat", "name", "assigneename", "location", "duedate", "startdate", "enddate", "description", "status", "projectID", "assigneeID", "participantIDs", "createdbyID", "workshiftIDs"}
+	fieldsInOrder := [...]string{"createdat", "name", "assigneename", "location", "duedate", "plannedstartdate", "actualstartdate", "plannedenddate", "actualenddate", "description", "status", "projectID", "assigneeID", "participantIDs", "createdbyID", "workshiftIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -58501,20 +59089,34 @@ func (ec *executionContext) unmarshalInputCreateProjectTaskInput(ctx context.Con
 				return it, err
 			}
 			it.DueDate = data
-		case "startdate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdate"))
+		case "plannedstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdate"))
 			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDate = data
-		case "enddate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddate"))
+			it.PlannedStartDate = data
+		case "actualstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDate = data
+			it.ActualStartDate = data
+		case "plannedenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDate = data
+		case "actualenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDate = data
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -61696,7 +62298,7 @@ func (ec *executionContext) unmarshalInputEntryItem(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"account", "accountType", "amount", "isDebit", "label", "category"}
+	fieldsInOrder := [...]string{"account", "accountType", "amount", "isDebit", "label", "category", "main"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61745,6 +62347,13 @@ func (ec *executionContext) unmarshalInputEntryItem(ctx context.Context, obj int
 				return it, err
 			}
 			it.Category = data
+		case "main":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("main"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Main = data
 		}
 	}
 
@@ -71809,7 +72418,7 @@ func (ec *executionContext) unmarshalInputProjectTaskWhereInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "createdatIsNil", "createdatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "assigneename", "assigneenameNEQ", "assigneenameIn", "assigneenameNotIn", "assigneenameGT", "assigneenameGTE", "assigneenameLT", "assigneenameLTE", "assigneenameContains", "assigneenameHasPrefix", "assigneenameHasSuffix", "assigneenameEqualFold", "assigneenameContainsFold", "location", "locationNEQ", "locationIn", "locationNotIn", "locationGT", "locationGTE", "locationLT", "locationLTE", "locationContains", "locationHasPrefix", "locationHasSuffix", "locationIsNil", "locationNotNil", "locationEqualFold", "locationContainsFold", "duedate", "duedateNEQ", "duedateIn", "duedateNotIn", "duedateGT", "duedateGTE", "duedateLT", "duedateLTE", "startdate", "startdateNEQ", "startdateIn", "startdateNotIn", "startdateGT", "startdateGTE", "startdateLT", "startdateLTE", "enddate", "enddateNEQ", "enddateIn", "enddateNotIn", "enddateGT", "enddateGTE", "enddateLT", "enddateLTE", "enddateIsNil", "enddateNotNil", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasProject", "hasProjectWith", "hasAssignee", "hasAssigneeWith", "hasParticipants", "hasParticipantsWith", "hasCreatedBy", "hasCreatedByWith", "hasWorkShifts", "hasWorkShiftsWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "createdatIsNil", "createdatNotNil", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "assigneename", "assigneenameNEQ", "assigneenameIn", "assigneenameNotIn", "assigneenameGT", "assigneenameGTE", "assigneenameLT", "assigneenameLTE", "assigneenameContains", "assigneenameHasPrefix", "assigneenameHasSuffix", "assigneenameEqualFold", "assigneenameContainsFold", "location", "locationNEQ", "locationIn", "locationNotIn", "locationGT", "locationGTE", "locationLT", "locationLTE", "locationContains", "locationHasPrefix", "locationHasSuffix", "locationIsNil", "locationNotNil", "locationEqualFold", "locationContainsFold", "duedate", "duedateNEQ", "duedateIn", "duedateNotIn", "duedateGT", "duedateGTE", "duedateLT", "duedateLTE", "plannedstartdate", "plannedstartdateNEQ", "plannedstartdateIn", "plannedstartdateNotIn", "plannedstartdateGT", "plannedstartdateGTE", "plannedstartdateLT", "plannedstartdateLTE", "actualstartdate", "actualstartdateNEQ", "actualstartdateIn", "actualstartdateNotIn", "actualstartdateGT", "actualstartdateGTE", "actualstartdateLT", "actualstartdateLTE", "actualstartdateIsNil", "actualstartdateNotNil", "plannedenddate", "plannedenddateNEQ", "plannedenddateIn", "plannedenddateNotIn", "plannedenddateGT", "plannedenddateGTE", "plannedenddateLT", "plannedenddateLTE", "plannedenddateIsNil", "plannedenddateNotNil", "actualenddate", "actualenddateNEQ", "actualenddateIn", "actualenddateNotIn", "actualenddateGT", "actualenddateGTE", "actualenddateLT", "actualenddateLTE", "actualenddateIsNil", "actualenddateNotNil", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "status", "statusNEQ", "statusIn", "statusNotIn", "hasProject", "hasProjectWith", "hasAssignee", "hasAssigneeWith", "hasParticipants", "hasParticipantsWith", "hasCreatedBy", "hasCreatedByWith", "hasWorkShifts", "hasWorkShiftsWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -72306,132 +72915,272 @@ func (ec *executionContext) unmarshalInputProjectTaskWhereInput(ctx context.Cont
 				return it, err
 			}
 			it.DueDateLTE = data
-		case "startdate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdate"))
+		case "plannedstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDate = data
-		case "startdateNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateNEQ"))
+			it.PlannedStartDate = data
+		case "plannedstartdateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateNEQ"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateNEQ = data
-		case "startdateIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateIn"))
+			it.PlannedStartDateNEQ = data
+		case "plannedstartdateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateIn = data
-		case "startdateNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateNotIn"))
+			it.PlannedStartDateIn = data
+		case "plannedstartdateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateNotIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateNotIn = data
-		case "startdateGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateGT"))
+			it.PlannedStartDateNotIn = data
+		case "plannedstartdateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateGT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateGT = data
-		case "startdateGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateGTE"))
+			it.PlannedStartDateGT = data
+		case "plannedstartdateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateGTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateGTE = data
-		case "startdateLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateLT"))
+			it.PlannedStartDateGTE = data
+		case "plannedstartdateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateLT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateLT = data
-		case "startdateLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdateLTE"))
+			it.PlannedStartDateLT = data
+		case "plannedstartdateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdateLTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDateLTE = data
-		case "enddate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddate"))
+			it.PlannedStartDateLTE = data
+		case "actualstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDate = data
-		case "enddateNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateNEQ"))
+			it.ActualStartDate = data
+		case "actualstartdateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateNEQ"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateNEQ = data
-		case "enddateIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateIn"))
+			it.ActualStartDateNEQ = data
+		case "actualstartdateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateIn = data
-		case "enddateNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateNotIn"))
+			it.ActualStartDateIn = data
+		case "actualstartdateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateNotIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateNotIn = data
-		case "enddateGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateGT"))
+			it.ActualStartDateNotIn = data
+		case "actualstartdateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateGT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateGT = data
-		case "enddateGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateGTE"))
+			it.ActualStartDateGT = data
+		case "actualstartdateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateGTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateGTE = data
-		case "enddateLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateLT"))
+			it.ActualStartDateGTE = data
+		case "actualstartdateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateLT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateLT = data
-		case "enddateLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateLTE"))
+			it.ActualStartDateLT = data
+		case "actualstartdateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateLTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateLTE = data
-		case "enddateIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateIsNil"))
+			it.ActualStartDateLTE = data
+		case "actualstartdateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateIsNil = data
-		case "enddateNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddateNotNil"))
+			it.ActualStartDateIsNil = data
+		case "actualstartdateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdateNotNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDateNotNil = data
+			it.ActualStartDateNotNil = data
+		case "plannedenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDate = data
+		case "plannedenddateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateNEQ = data
+		case "plannedenddateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateIn = data
+		case "plannedenddateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateNotIn = data
+		case "plannedenddateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateGT = data
+		case "plannedenddateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateGTE = data
+		case "plannedenddateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateLT = data
+		case "plannedenddateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateLTE = data
+		case "plannedenddateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateIsNil = data
+		case "plannedenddateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDateNotNil = data
+		case "actualenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDate = data
+		case "actualenddateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateNEQ"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateNEQ = data
+		case "actualenddateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateIn = data
+		case "actualenddateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateNotIn"))
+			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateNotIn = data
+		case "actualenddateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateGT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateGT = data
+		case "actualenddateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateGTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateGTE = data
+		case "actualenddateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateLT"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateLT = data
+		case "actualenddateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateLTE"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateLTE = data
+		case "actualenddateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateIsNil = data
+		case "actualenddateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDateNotNil = data
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -76342,7 +77091,7 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "category", "isdebit", "isreversal", "reversed", "companyID", "clearCompany", "userID", "clearUser", "loanID", "clearLoan"}
+	fieldsInOrder := [...]string{"number", "group", "date", "account", "label", "amount", "description", "accounttype", "category", "main", "isdebit", "isreversal", "reversed", "companyID", "clearCompany", "userID", "clearUser", "loanID", "clearLoan"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -76412,6 +77161,13 @@ func (ec *executionContext) unmarshalInputUpdateAccountingEntryInput(ctx context
 				return it, err
 			}
 			it.Category = data
+		case "main":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("main"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Main = data
 		case "isdebit":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isdebit"))
 			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
@@ -78881,7 +79637,7 @@ func (ec *executionContext) unmarshalInputUpdateProjectTaskInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "assigneename", "location", "clearLocation", "duedate", "startdate", "enddate", "clearEndDate", "description", "clearDescription", "status", "projectID", "assigneeID", "clearAssignee", "addParticipantIDs", "removeParticipantIDs", "clearParticipants", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts"}
+	fieldsInOrder := [...]string{"name", "assigneename", "location", "clearLocation", "duedate", "plannedstartdate", "actualstartdate", "clearActualStartDate", "plannedenddate", "clearPlannedEndDate", "actualenddate", "clearActualEndDate", "description", "clearDescription", "status", "projectID", "assigneeID", "clearAssignee", "addParticipantIDs", "removeParticipantIDs", "clearParticipants", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -78923,27 +79679,55 @@ func (ec *executionContext) unmarshalInputUpdateProjectTaskInput(ctx context.Con
 				return it, err
 			}
 			it.DueDate = data
-		case "startdate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("startdate"))
+		case "plannedstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedstartdate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.StartDate = data
-		case "enddate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("enddate"))
+			it.PlannedStartDate = data
+		case "actualstartdate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualstartdate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.EndDate = data
-		case "clearEndDate":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearEndDate"))
+			it.ActualStartDate = data
+		case "clearActualStartDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearActualStartDate"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearEndDate = data
+			it.ClearActualStartDate = data
+		case "plannedenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("plannedenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.PlannedEndDate = data
+		case "clearPlannedEndDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearPlannedEndDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearPlannedEndDate = data
+		case "actualenddate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("actualenddate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ActualEndDate = data
+		case "clearActualEndDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearActualEndDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearActualEndDate = data
 		case "description":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -83260,6 +84044,11 @@ func (ec *executionContext) _AccountingEntry(ctx context.Context, sel ast.Select
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
+		case "main":
+			out.Values[i] = ec._AccountingEntry_main(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
 		case "isdebit":
 			out.Values[i] = ec._AccountingEntry_isdebit(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -83630,6 +84419,46 @@ func (ec *executionContext) _BalanceSheetOuput(ctx context.Context, sel ast.Sele
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var cashAggregationOutputImplementors = []string{"CashAggregationOutput"}
+
+func (ec *executionContext) _CashAggregationOutput(ctx context.Context, sel ast.SelectionSet, obj *model.CashAggregationOutput) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, cashAggregationOutputImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CashAggregationOutput")
+		case "inflow":
+			out.Values[i] = ec._CashAggregationOutput_inflow(ctx, field, obj)
+		case "outflow":
+			out.Values[i] = ec._CashAggregationOutput_outflow(ctx, field, obj)
+		case "balance":
+			out.Values[i] = ec._CashAggregationOutput_balance(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -88898,13 +89727,17 @@ func (ec *executionContext) _ProjectTask(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "startdate":
-			out.Values[i] = ec._ProjectTask_startdate(ctx, field, obj)
+		case "plannedstartdate":
+			out.Values[i] = ec._ProjectTask_plannedstartdate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "enddate":
-			out.Values[i] = ec._ProjectTask_enddate(ctx, field, obj)
+		case "actualstartdate":
+			out.Values[i] = ec._ProjectTask_actualstartdate(ctx, field, obj)
+		case "plannedenddate":
+			out.Values[i] = ec._ProjectTask_plannedenddate(ctx, field, obj)
+		case "actualenddate":
+			out.Values[i] = ec._ProjectTask_actualenddate(ctx, field, obj)
 		case "description":
 			out.Values[i] = ec._ProjectTask_description(ctx, field, obj)
 		case "status":
@@ -90404,6 +91237,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_aggregateLoans(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "aggregateCash":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_aggregateCash(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -92981,6 +93836,11 @@ func (ec *executionContext) unmarshalNAccountingEntryWhereInput2ᚖmazzaᚋent�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNAggregateCashInput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐAggregateCashInput(ctx context.Context, v interface{}) (model.AggregateCashInput, error) {
+	res, err := ec.unmarshalInputAggregateCashInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.AgingBucket) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -93092,6 +93952,20 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNCashAggregationOutput2mazzaᚋmazzaᚋgeneratedᚋmodelᚐCashAggregationOutput(ctx context.Context, sel ast.SelectionSet, v model.CashAggregationOutput) graphql.Marshaler {
+	return ec._CashAggregationOutput(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCashAggregationOutput2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐCashAggregationOutput(ctx context.Context, sel ast.SelectionSet, v *model.CashAggregationOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._CashAggregationOutput(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNClientList2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐClientListᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.ClientList) graphql.Marshaler {

@@ -147,12 +147,12 @@ var (
 // Status defines the type for the "status" enum field.
 type Status string
 
-// StatusNotStarted is the default value of the Status enum.
-const DefaultStatus = StatusNotStarted
+// StatusPending is the default value of the Status enum.
+const DefaultStatus = StatusPending
 
 // Status values.
 const (
-	StatusNotStarted Status = "notStarted"
+	StatusPending    Status = "pending"
 	StatusInProgress Status = "inProgress"
 	StatusCompleted  Status = "completed"
 	StatusDelayed    Status = "delayed"
@@ -165,7 +165,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusNotStarted, StatusInProgress, StatusCompleted, StatusDelayed:
+	case StatusPending, StatusInProgress, StatusCompleted, StatusDelayed:
 		return nil
 	default:
 		return fmt.Errorf("project: invalid enum value for status field: %q", s)

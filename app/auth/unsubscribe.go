@@ -3,16 +3,16 @@ package auth
 import (
 	"context"
 	"fmt"
+	"time"
 
 	// "mazza/app/utils"
+	"mazza/app/notifications"
+	"mazza/app/notifications/expo"
 	"mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/user"
 	"mazza/ent/generated/userrole"
 	"mazza/firebase"
-	"mazza/inits"
-
-	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
 // Delete the current company and unsubscribe all associated users
@@ -79,38 +79,31 @@ func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *gen
 	}
 
 	// Notify user and company admin
-	var expoPushTokens []expo.ExponentPushToken
+	var pushTokens []*expo.Token
 	for _, user := range allUsers {
 		if user.ExpoPushToken != nil && user.ID != activeUser.ID {
-			expoPushTokens = append(expoPushTokens, expo.ExponentPushToken(*user.ExpoPushToken))
+			pushTokens = append(pushTokens, expo.MustParseToken(*user.ExpoPushToken))
 		}
 	}
 
-	var messages []expo.PushMessage
-	if len(expoPushTokens) > 0 {
-		messages = append(messages, expo.PushMessage{
-			To:       expoPushTokens,
+	if len(pushTokens) > 0 {
+		go notifications.SendPushNotification(15*time.Second, []*expo.Message{{
+			To:       pushTokens,
 			Title:    "Utilizador Excluído",
 			Body:     fmt.Sprintf("A conta de %s foi excluída da empresa %s", activeUser.Name, activeCompany.Name),
 			Sound:    "default",
 			Priority: expo.HighPriority,
-		})
+		}})
 	}
 	if activeUser.ExpoPushToken != nil {
-		tokens := []expo.ExponentPushToken{
-			expo.ExponentPushToken(*activeUser.ExpoPushToken),
-		}
-		messages = append(messages, expo.PushMessage{
-			To:       tokens,
+		token := []*expo.Token{expo.MustParseToken(*activeUser.ExpoPushToken)}
+		go notifications.SendPushNotification(15*time.Second, []*expo.Message{{
+			To:       token,
 			Title:    "Utilizador Excluído",
 			Body:     fmt.Sprintf("A tua conta foi excluída da empresa %s", activeCompany.Name),
 			Sound:    "default",
 			Priority: expo.HighPriority,
-		})
-	}
-
-	if len(messages) > 0 {
-		_, _ = inits.ExpoClient.PublishMultiple(messages)
+		}})
 	}
 
 	return nil

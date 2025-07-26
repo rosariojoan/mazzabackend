@@ -34,9 +34,9 @@ type Project struct {
 	// ActualStartDate holds the value of the "actualStartDate" field.
 	ActualStartDate *time.Time `json:"actualStartDate,omitempty" actualStartDate`
 	// PlannedEndDate holds the value of the "plannedEndDate" field.
-	PlannedEndDate time.Time `json:"plannedEndDate,omitempty"`
+	PlannedEndDate time.Time `json:"plannedEndDate,omitempty" plannedEndDate`
 	// ActualEndDate holds the value of the "actualEndDate" field.
-	ActualEndDate *time.Time `json:"actualEndDate,omitempty"`
+	ActualEndDate *time.Time `json:"actualEndDate,omitempty" actualEndDate`
 	// Progress holds the value of the "progress" field.
 	Progress float64 `json:"progress,omitempty"`
 	// Status holds the value of the "status" field.

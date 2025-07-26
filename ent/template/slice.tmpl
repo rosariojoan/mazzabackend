@@ -1,0 +1,22 @@
+{{/* The line below tells Intellij/GoLand to enable the autocompletion based on the *gen.Graph type. */}}
+{{/* gotype: entgo.io/ent/entc/gen.Graph */}}
+
+{{/* Add the base header for the generated file */}}
+{{ $pkg := base $.Config.Package }}
+{{ template "header" $ }}
+
+{{/* Add the slice predicates to the predicates.go file */}}
+{{ define "where/additional" }}
+     {{- range $f := $.Fields }}
+        	{{- if eq $f.Type.Ident "[]string" }}     
+            {{ $arg := "v" }}
+            {{ $func := print $f.StructField "Contains" }}
+                // {{ $func }} checks if {{$f.StructField}} contains given value
+                func {{ $func }}({{ $arg}} string) predicate.{{ $.Name }} {
+                    return predicate.{{ $.Name }}(func(s *sql.Selector) {
+                        s.Where(sqljson.ValueContains(s.C({{ $f.Constant }}), {{ $arg }}))
+                    })
+                }    
+            {{ end }}
+     {{ end }}
+{{ end }}

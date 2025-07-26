@@ -33,10 +33,12 @@ func (ProjectTask) Fields() []ent.Field {
 		field.String("assigneeName").NotEmpty(),
 		field.String("location").Optional().Comment("Where is task will be executed"),
 		field.Time("dueDate").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
-		field.Time("startDate").Annotations(entgql.OrderField("START_DATE")),
-		field.Time("endDate").Nillable().Optional().Annotations(entgql.OrderField("END_DATE")),
+		field.Time("plannedStartDate").StructTag("plannedStartDate").Annotations(entgql.OrderField("PLANNED_START_DATE")),
+		field.Time("actualStartDate").StructTag("actualStartDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_START_DATE")),
+		field.Time("plannedEndDate").StructTag("plannedEndDate").Nillable().Optional().Annotations(entgql.OrderField("PLANNED_END_DATE")),
+		field.Time("actualEndDate").StructTag("actualEndDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_END_DATE")),
 		field.String("description").Optional(),
-		field.Enum("status").Values("notStarted", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
+		field.Enum("status").Values("pending", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
 	}
 }
 
@@ -111,7 +113,7 @@ func (ProjectTask) Hooks() []ent.Hook {
 								inProgress += 1
 							}
 
-							if task.Status != projecttask.StatusNotStarted {
+							if task.Status != projecttask.StatusPending {
 								hasStartedTask = true
 							}
 						}
@@ -130,7 +132,7 @@ func (ProjectTask) Hooks() []ent.Hook {
 							projectUpdate.SetStatus(project.StatusInProgress)
 						} else {
 							// If there is no completed task and not in-progress task, the project has not started
-							projectUpdate.SetStatus(project.StatusNotStarted)
+							projectUpdate.SetStatus(project.StatusPending)
 						}
 						_, err = projectUpdate.Save(ctx)
 						if err != nil {

@@ -28,10 +28,14 @@ const (
 	FieldLocation = "location"
 	// FieldDueDate holds the string denoting the duedate field in the database.
 	FieldDueDate = "due_date"
-	// FieldStartDate holds the string denoting the startdate field in the database.
-	FieldStartDate = "start_date"
-	// FieldEndDate holds the string denoting the enddate field in the database.
-	FieldEndDate = "end_date"
+	// FieldPlannedStartDate holds the string denoting the plannedstartdate field in the database.
+	FieldPlannedStartDate = "planned_start_date"
+	// FieldActualStartDate holds the string denoting the actualstartdate field in the database.
+	FieldActualStartDate = "actual_start_date"
+	// FieldPlannedEndDate holds the string denoting the plannedenddate field in the database.
+	FieldPlannedEndDate = "planned_end_date"
+	// FieldActualEndDate holds the string denoting the actualenddate field in the database.
+	FieldActualEndDate = "actual_end_date"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
 	// FieldStatus holds the string denoting the status field in the database.
@@ -91,8 +95,10 @@ var Columns = []string{
 	FieldAssigneeName,
 	FieldLocation,
 	FieldDueDate,
-	FieldStartDate,
-	FieldEndDate,
+	FieldPlannedStartDate,
+	FieldActualStartDate,
+	FieldPlannedEndDate,
+	FieldActualEndDate,
 	FieldDescription,
 	FieldStatus,
 }
@@ -146,7 +152,7 @@ type Status string
 
 // Status values.
 const (
-	StatusNotStarted Status = "notStarted"
+	StatusPending    Status = "pending"
 	StatusInProgress Status = "inProgress"
 	StatusCompleted  Status = "completed"
 )
@@ -158,7 +164,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusNotStarted, StatusInProgress, StatusCompleted:
+	case StatusPending, StatusInProgress, StatusCompleted:
 		return nil
 	default:
 		return fmt.Errorf("projecttask: invalid enum value for status field: %q", s)
@@ -198,14 +204,24 @@ func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
 }
 
-// ByStartDate orders the results by the startDate field.
-func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStartDate, opts...).ToFunc()
+// ByPlannedStartDate orders the results by the plannedStartDate field.
+func ByPlannedStartDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPlannedStartDate, opts...).ToFunc()
 }
 
-// ByEndDate orders the results by the endDate field.
-func ByEndDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEndDate, opts...).ToFunc()
+// ByActualStartDate orders the results by the actualStartDate field.
+func ByActualStartDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldActualStartDate, opts...).ToFunc()
+}
+
+// ByPlannedEndDate orders the results by the plannedEndDate field.
+func ByPlannedEndDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPlannedEndDate, opts...).ToFunc()
+}
+
+// ByActualEndDate orders the results by the actualEndDate field.
+func ByActualEndDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldActualEndDate, opts...).ToFunc()
 }
 
 // ByDescription orders the results by the description field.

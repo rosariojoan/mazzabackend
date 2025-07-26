@@ -16,7 +16,6 @@ require (
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/johnfercher/maroto/v2 v2.1.3
 	github.com/joho/godotenv v1.5.1
-	github.com/oliveroneill/exponent-server-sdk-golang v0.0.0-20210823140141-d050598be512
 	github.com/vektah/gqlparser/v2 v2.5.16
 	github.com/wneessen/go-mail v0.4.4
 	golang.org/x/crypto v0.31.0

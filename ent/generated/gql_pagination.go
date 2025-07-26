@@ -488,6 +488,20 @@ var (
 			}
 		},
 	}
+	// AccountingEntryOrderFieldMain orders AccountingEntry by main.
+	AccountingEntryOrderFieldMain = &AccountingEntryOrderField{
+		Value: func(ae *AccountingEntry) (ent.Value, error) {
+			return ae.Main, nil
+		},
+		column: accountingentry.FieldMain,
+		toTerm: accountingentry.ByMain,
+		toCursor: func(ae *AccountingEntry) Cursor {
+			return Cursor{
+				ID:    ae.ID,
+				Value: ae.Main,
+			}
+		},
+	}
 	// AccountingEntryOrderFieldIsDebit orders AccountingEntry by isDebit.
 	AccountingEntryOrderFieldIsDebit = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
@@ -526,6 +540,8 @@ func (f AccountingEntryOrderField) String() string {
 		str = "ACCOUNTTYPE"
 	case AccountingEntryOrderFieldCategory.column:
 		str = "CATEGORY"
+	case AccountingEntryOrderFieldMain.column:
+		str = "MAIN"
 	case AccountingEntryOrderFieldIsDebit.column:
 		str = "ISDEBIT"
 	}
@@ -562,6 +578,8 @@ func (f *AccountingEntryOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *AccountingEntryOrderFieldAccountType
 	case "CATEGORY":
 		*f = *AccountingEntryOrderFieldCategory
+	case "MAIN":
+		*f = *AccountingEntryOrderFieldMain
 	case "ISDEBIT":
 		*f = *AccountingEntryOrderFieldIsDebit
 	default:
@@ -6200,31 +6218,59 @@ var (
 			}
 		},
 	}
-	// ProjectTaskOrderFieldStartDate orders ProjectTask by startDate.
-	ProjectTaskOrderFieldStartDate = &ProjectTaskOrderField{
+	// ProjectTaskOrderFieldPlannedStartDate orders ProjectTask by plannedStartDate.
+	ProjectTaskOrderFieldPlannedStartDate = &ProjectTaskOrderField{
 		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.StartDate, nil
+			return pt.PlannedStartDate, nil
 		},
-		column: projecttask.FieldStartDate,
-		toTerm: projecttask.ByStartDate,
+		column: projecttask.FieldPlannedStartDate,
+		toTerm: projecttask.ByPlannedStartDate,
 		toCursor: func(pt *ProjectTask) Cursor {
 			return Cursor{
 				ID:    pt.ID,
-				Value: pt.StartDate,
+				Value: pt.PlannedStartDate,
 			}
 		},
 	}
-	// ProjectTaskOrderFieldEndDate orders ProjectTask by endDate.
-	ProjectTaskOrderFieldEndDate = &ProjectTaskOrderField{
+	// ProjectTaskOrderFieldActualStartDate orders ProjectTask by actualStartDate.
+	ProjectTaskOrderFieldActualStartDate = &ProjectTaskOrderField{
 		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.EndDate, nil
+			return pt.ActualStartDate, nil
 		},
-		column: projecttask.FieldEndDate,
-		toTerm: projecttask.ByEndDate,
+		column: projecttask.FieldActualStartDate,
+		toTerm: projecttask.ByActualStartDate,
 		toCursor: func(pt *ProjectTask) Cursor {
 			return Cursor{
 				ID:    pt.ID,
-				Value: pt.EndDate,
+				Value: pt.ActualStartDate,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldPlannedEndDate orders ProjectTask by plannedEndDate.
+	ProjectTaskOrderFieldPlannedEndDate = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.PlannedEndDate, nil
+		},
+		column: projecttask.FieldPlannedEndDate,
+		toTerm: projecttask.ByPlannedEndDate,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.PlannedEndDate,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldActualEndDate orders ProjectTask by actualEndDate.
+	ProjectTaskOrderFieldActualEndDate = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.ActualEndDate, nil
+		},
+		column: projecttask.FieldActualEndDate,
+		toTerm: projecttask.ByActualEndDate,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.ActualEndDate,
 			}
 		},
 	}
@@ -6250,10 +6296,14 @@ func (f ProjectTaskOrderField) String() string {
 	switch f.column {
 	case ProjectTaskOrderFieldDueDate.column:
 		str = "DUE_DATE"
-	case ProjectTaskOrderFieldStartDate.column:
-		str = "START_DATE"
-	case ProjectTaskOrderFieldEndDate.column:
-		str = "END_DATE"
+	case ProjectTaskOrderFieldPlannedStartDate.column:
+		str = "PLANNED_START_DATE"
+	case ProjectTaskOrderFieldActualStartDate.column:
+		str = "ACTUAL_START_DATE"
+	case ProjectTaskOrderFieldPlannedEndDate.column:
+		str = "PLANNED_END_DATE"
+	case ProjectTaskOrderFieldActualEndDate.column:
+		str = "ACTUAL_END_DATE"
 	case ProjectTaskOrderFieldStatus.column:
 		str = "STATUS"
 	}
@@ -6274,10 +6324,14 @@ func (f *ProjectTaskOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "DUE_DATE":
 		*f = *ProjectTaskOrderFieldDueDate
-	case "START_DATE":
-		*f = *ProjectTaskOrderFieldStartDate
-	case "END_DATE":
-		*f = *ProjectTaskOrderFieldEndDate
+	case "PLANNED_START_DATE":
+		*f = *ProjectTaskOrderFieldPlannedStartDate
+	case "ACTUAL_START_DATE":
+		*f = *ProjectTaskOrderFieldActualStartDate
+	case "PLANNED_END_DATE":
+		*f = *ProjectTaskOrderFieldPlannedEndDate
+	case "ACTUAL_END_DATE":
+		*f = *ProjectTaskOrderFieldActualEndDate
 	case "STATUS":
 		*f = *ProjectTaskOrderFieldStatus
 	default:

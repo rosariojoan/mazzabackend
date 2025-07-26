@@ -44,6 +44,8 @@ type AccountingEntry struct {
 	AccountType accountingentry.AccountType `json:"accountType,omitempty"`
 	// Category holds the value of the "category" field.
 	Category string `json:"category,omitempty"`
+	// Main holds the value of the "main" field.
+	Main string `json:"main,omitempty"`
 	// IsDebit holds the value of the "isDebit" field.
 	IsDebit bool `json:"isDebit,omitempty"`
 	// IsReversal holds the value of the "isReversal" field.
@@ -118,7 +120,7 @@ func (*AccountingEntry) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullFloat64)
 		case accountingentry.FieldID, accountingentry.FieldNumber, accountingentry.FieldGroup:
 			values[i] = new(sql.NullInt64)
-		case accountingentry.FieldAccount, accountingentry.FieldLabel, accountingentry.FieldDescription, accountingentry.FieldAccountType, accountingentry.FieldCategory:
+		case accountingentry.FieldAccount, accountingentry.FieldLabel, accountingentry.FieldDescription, accountingentry.FieldAccountType, accountingentry.FieldCategory, accountingentry.FieldMain:
 			values[i] = new(sql.NullString)
 		case accountingentry.FieldCreatedAt, accountingentry.FieldUpdatedAt, accountingentry.FieldDeletedAt, accountingentry.FieldDate:
 			values[i] = new(sql.NullTime)
@@ -221,6 +223,12 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field category", values[i])
 			} else if value.Valid {
 				ae.Category = value.String
+			}
+		case accountingentry.FieldMain:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field main", values[i])
+			} else if value.Valid {
+				ae.Main = value.String
 			}
 		case accountingentry.FieldIsDebit:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -349,6 +357,9 @@ func (ae *AccountingEntry) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("category=")
 	builder.WriteString(ae.Category)
+	builder.WriteString(", ")
+	builder.WriteString("main=")
+	builder.WriteString(ae.Main)
 	builder.WriteString(", ")
 	builder.WriteString("isDebit=")
 	builder.WriteString(fmt.Sprintf("%v", ae.IsDebit))

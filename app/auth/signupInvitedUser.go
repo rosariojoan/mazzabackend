@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
-	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 
 	// generated "mazza/ent/generated"
 
+	"mazza/app/notifications"
+	"mazza/app/notifications/expo"
 	"mazza/app/utils"
 	"mazza/ent/generated"
 	ent "mazza/ent/generated"
@@ -142,12 +144,12 @@ func SignupInvitedUser(ctx *gin.Context) {
 		).All(ctx)
 
 		if err == nil && len(adminUsers) > 0 {
-			var tokens []expo.ExponentPushToken
+			var pushTokens []*expo.Token
 			for _, admin := range adminUsers {
-				tokens = append(tokens, expo.ExponentPushToken(*admin.ExpoPushToken))
+				pushTokens = append(pushTokens, expo.MustParseToken(*admin.ExpoPushToken))
 			}
-			_, err := inits.ExpoClient.Publish(&expo.PushMessage{
-				To:    tokens,
+			notifications.SendPushNotification(15*time.Second, []*expo.Message{{
+				To:    pushTokens,
 				Title: "Novo utilizador",
 				Body:  fmt.Sprintf("%s registou-se na sua empresa. Podes activar a conta do novo utilizador.", newUser.Unwrap().Name),
 				Data: map[string]string{
@@ -157,11 +159,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 				},
 				Sound:    "default",
 				Priority: expo.HighPriority,
-			})
-			if err != nil {
-				fmt.Println("send notif err:", err)
-			}
-			// response.
+			}})
 		}
 	})()
 

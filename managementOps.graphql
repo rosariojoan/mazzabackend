@@ -1,22 +1,21 @@
-
 type ClientList {
-    name: String!
-    outstandingBalance: Float!
-    invoiceCount: Int!
+  name: String!
+  outstandingBalance: Float!
+  invoiceCount: Int!
 }
 
 type SupplierList {
-    name: String!
-    outstandingBalance: Float!
-    invoiceCount: Int!
+  name: String!
+  outstandingBalance: Float!
+  invoiceCount: Int!
 }
 
 type LoanProviderList {
-    name: String!
-    outstandingBalance: Float!
-    totalBorrowed: Float!
-    loansCount: Int!
-    averageInterestRate: Float!
+  name: String!
+  outstandingBalance: Float!
+  totalBorrowed: Float!
+  loansCount: Int!
+  averageInterestRate: Float!
 }
 
 type ReceivableAggregationOutput {
@@ -35,6 +34,12 @@ type LoanAggregationOutput {
   company: ID
   count: Int
   sum: Float
+}
+
+type CashAggregationOutput {
+  inflow: Float
+  outflow: Float
+  balance: Float
 }
 
 type AgingBucket {
@@ -64,45 +69,52 @@ enum LoansGroupBy {
 }
 
 input CreateLoanInputData {
-   loanInput: CreateLoanInput!
-   accountingEntry: BaseEntryRegistrationInput
+  loanInput: CreateLoanInput!
+  accountingEntry: BaseEntryRegistrationInput
 }
 
 input UpdateLoanInputData {
-   id: ID!
-   loanInput: UpdateLoanInput!
-   accountingEntry: BaseEntryRegistrationInput
+  id: ID!
+  loanInput: UpdateLoanInput!
+  accountingEntry: BaseEntryRegistrationInput
+}
+
+input AggregateCashInput {
+  startDate: Time
+  endDate: Time!
 }
 
 #-----------------------------------------------
 extend type Mutation {
-   createLoan(input: CreateLoanInputData!): Loan!
-   updateLoan(input: UpdateLoanInputData!): Loan!
+  createLoan(input: CreateLoanInputData!): Loan!
+  updateLoan(input: UpdateLoanInputData!): Loan!
 }
 
 extend type Query {
-   clientList(top: Int): [ClientList!]!
-   supplierList(top: Int): [SupplierList!]!
-   loanProviderList(top: Int): [LoanProviderList!]!
+  clientList(top: Int): [ClientList!]!
+  supplierList(top: Int): [SupplierList!]!
+  loanProviderList(top: Int): [LoanProviderList!]!
 
-   getLoan(id: ID!): Loan!
+  getLoan(id: ID!): Loan!
 
-   aggregateReceivables(
-      where: ReceivableWhereInput
-      groupBy: [ReceivablesGroupBy!]
-   ): [ReceivableAggregationOutput!]!
+  aggregateReceivables(
+    where: ReceivableWhereInput
+    groupBy: [ReceivablesGroupBy!]
+  ): [ReceivableAggregationOutput!]!
 
-   aggregatePayables(
-      where: PayableWhereInput
-      groupBy: [PayablesGroupBy!]
-   ): [PayableAggregationOutput!]!
-   
-   aggregateLoans(
-      where: LoanWhereInput
-      groupBy: [LoansGroupBy!]
-   ): [LoanAggregationOutput!]!
+  aggregatePayables(
+    where: PayableWhereInput
+    groupBy: [PayablesGroupBy!]
+  ): [PayableAggregationOutput!]!
 
-   accountsReceivableAging(name: String): [AgingBucket!]!
-   accountsPayableAging(name: String): [AgingBucket!]!
-   loansAging(name: String): [AgingBucket!]!
+  aggregateLoans(
+    where: LoanWhereInput
+    groupBy: [LoansGroupBy!]
+  ): [LoanAggregationOutput!]!
+
+  aggregateCash(input: AggregateCashInput!): CashAggregationOutput!
+
+  accountsReceivableAging(name: String): [AgingBucket!]!
+  accountsPayableAging(name: String): [AgingBucket!]!
+  loansAging(name: String): [AgingBucket!]!
 }

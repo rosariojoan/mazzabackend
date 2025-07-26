@@ -20,8 +20,7 @@ func InitDB(ctx context.Context) {
 	// db, err := ent.Open(dialect.Postgres, "host=localhost port=5432 user=arafate dbname=mazza2 sslmode=disable")
 	// os.Getenv("DATABASE_URL")
 	// Open new connection
-	databaseUrl := os.Getenv("DB_URL")
-	db, err := sql.Open("pgx", databaseUrl)
+	db, err := sql.Open("pgx", os.Getenv("DB_URL"))
 	if err != nil {
 		log.Fatalf("failed opening connection to the db: %v", err)
 	}

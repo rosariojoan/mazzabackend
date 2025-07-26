@@ -205,6 +205,20 @@ func (aeu *AccountingEntryUpdate) SetNillableCategory(s *string) *AccountingEntr
 	return aeu
 }
 
+// SetMain sets the "main" field.
+func (aeu *AccountingEntryUpdate) SetMain(s string) *AccountingEntryUpdate {
+	aeu.mutation.SetMain(s)
+	return aeu
+}
+
+// SetNillableMain sets the "main" field if the given value is not nil.
+func (aeu *AccountingEntryUpdate) SetNillableMain(s *string) *AccountingEntryUpdate {
+	if s != nil {
+		aeu.SetMain(*s)
+	}
+	return aeu
+}
+
 // SetIsDebit sets the "isDebit" field.
 func (aeu *AccountingEntryUpdate) SetIsDebit(b bool) *AccountingEntryUpdate {
 	aeu.mutation.SetIsDebit(b)
@@ -450,6 +464,9 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 	}
 	if value, ok := aeu.mutation.Category(); ok {
 		_spec.SetField(accountingentry.FieldCategory, field.TypeString, value)
+	}
+	if value, ok := aeu.mutation.Main(); ok {
+		_spec.SetField(accountingentry.FieldMain, field.TypeString, value)
 	}
 	if value, ok := aeu.mutation.IsDebit(); ok {
 		_spec.SetField(accountingentry.FieldIsDebit, field.TypeBool, value)
@@ -742,6 +759,20 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableCategory(s *string) *Accounting
 	return aeuo
 }
 
+// SetMain sets the "main" field.
+func (aeuo *AccountingEntryUpdateOne) SetMain(s string) *AccountingEntryUpdateOne {
+	aeuo.mutation.SetMain(s)
+	return aeuo
+}
+
+// SetNillableMain sets the "main" field if the given value is not nil.
+func (aeuo *AccountingEntryUpdateOne) SetNillableMain(s *string) *AccountingEntryUpdateOne {
+	if s != nil {
+		aeuo.SetMain(*s)
+	}
+	return aeuo
+}
+
 // SetIsDebit sets the "isDebit" field.
 func (aeuo *AccountingEntryUpdateOne) SetIsDebit(b bool) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetIsDebit(b)
@@ -1017,6 +1048,9 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 	}
 	if value, ok := aeuo.mutation.Category(); ok {
 		_spec.SetField(accountingentry.FieldCategory, field.TypeString, value)
+	}
+	if value, ok := aeuo.mutation.Main(); ok {
+		_spec.SetField(accountingentry.FieldMain, field.TypeString, value)
 	}
 	if value, ok := aeuo.mutation.IsDebit(); ok {
 		_spec.SetField(accountingentry.FieldIsDebit, field.TypeBool, value)

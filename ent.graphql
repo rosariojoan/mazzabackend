@@ -14,6 +14,7 @@ type AccountingEntry implements Node {
   description: String!
   accounttype: AccountingEntryAccountType! @goField(name: "AccountType", forceResolver: false)
   category: String!
+  main: String!
   isdebit: Boolean! @goField(name: "IsDebit", forceResolver: false)
   isreversal: Boolean! @goField(name: "IsReversal", forceResolver: false)
   reversed: Boolean!
@@ -94,6 +95,7 @@ enum AccountingEntryOrderField {
   DESCRIPTION
   ACCOUNTTYPE
   CATEGORY
+  MAIN
   ISDEBIT
 }
 """
@@ -265,6 +267,22 @@ input AccountingEntryWhereInput {
   categoryHasSuffix: String
   categoryEqualFold: String
   categoryContainsFold: String
+  """
+  main field predicates
+  """
+  main: String
+  mainNEQ: String
+  mainIn: [String!]
+  mainNotIn: [String!]
+  mainGT: String
+  mainGTE: String
+  mainLT: String
+  mainLTE: String
+  mainContains: String
+  mainHasPrefix: String
+  mainHasSuffix: String
+  mainEqualFold: String
+  mainContainsFold: String
   """
   isDebit field predicates
   """
@@ -1135,6 +1153,7 @@ input CreateAccountingEntryInput {
   description: String!
   accounttype: AccountingEntryAccountType!
   category: String
+  main: String
   isdebit: Boolean!
   isreversal: Boolean
   reversed: Boolean
@@ -1445,8 +1464,10 @@ input CreateProjectTaskInput {
   """
   location: String
   duedate: Time!
-  startdate: Time!
-  enddate: Time
+  plannedstartdate: Time!
+  actualstartdate: Time
+  plannedenddate: Time
+  actualenddate: Time
   description: String
   status: ProjectTaskStatus!
   projectID: ID!
@@ -4635,7 +4656,7 @@ enum ProjectOrderField {
 ProjectStatus is enum for the field status
 """
 enum ProjectStatus @goModel(model: "mazza/ent/generated/project.Status") {
-  notStarted
+  pending
   inProgress
   completed
   delayed
@@ -4650,8 +4671,10 @@ type ProjectTask implements Node {
   """
   location: String
   duedate: Time! @goField(name: "DueDate", forceResolver: false)
-  startdate: Time! @goField(name: "StartDate", forceResolver: false)
-  enddate: Time @goField(name: "EndDate", forceResolver: false)
+  plannedstartdate: Time! @goField(name: "PlannedStartDate", forceResolver: false)
+  actualstartdate: Time @goField(name: "ActualStartDate", forceResolver: false)
+  plannedenddate: Time @goField(name: "PlannedEndDate", forceResolver: false)
+  actualenddate: Time @goField(name: "ActualEndDate", forceResolver: false)
   description: String
   status: ProjectTaskStatus!
   project: Project!
@@ -4708,15 +4731,17 @@ Properties by which ProjectTask connections can be ordered.
 """
 enum ProjectTaskOrderField {
   DUE_DATE
-  START_DATE
-  END_DATE
+  PLANNED_START_DATE
+  ACTUAL_START_DATE
+  PLANNED_END_DATE
+  ACTUAL_END_DATE
   STATUS
 }
 """
 ProjectTaskStatus is enum for the field status
 """
 enum ProjectTaskStatus @goModel(model: "mazza/ent/generated/projecttask.Status") {
-  notStarted
+  pending
   inProgress
   completed
 }
@@ -4814,29 +4839,55 @@ input ProjectTaskWhereInput {
   duedateLT: Time
   duedateLTE: Time
   """
-  startDate field predicates
+  plannedStartDate field predicates
   """
-  startdate: Time
-  startdateNEQ: Time
-  startdateIn: [Time!]
-  startdateNotIn: [Time!]
-  startdateGT: Time
-  startdateGTE: Time
-  startdateLT: Time
-  startdateLTE: Time
+  plannedstartdate: Time
+  plannedstartdateNEQ: Time
+  plannedstartdateIn: [Time!]
+  plannedstartdateNotIn: [Time!]
+  plannedstartdateGT: Time
+  plannedstartdateGTE: Time
+  plannedstartdateLT: Time
+  plannedstartdateLTE: Time
   """
-  endDate field predicates
+  actualStartDate field predicates
   """
-  enddate: Time
-  enddateNEQ: Time
-  enddateIn: [Time!]
-  enddateNotIn: [Time!]
-  enddateGT: Time
-  enddateGTE: Time
-  enddateLT: Time
-  enddateLTE: Time
-  enddateIsNil: Boolean
-  enddateNotNil: Boolean
+  actualstartdate: Time
+  actualstartdateNEQ: Time
+  actualstartdateIn: [Time!]
+  actualstartdateNotIn: [Time!]
+  actualstartdateGT: Time
+  actualstartdateGTE: Time
+  actualstartdateLT: Time
+  actualstartdateLTE: Time
+  actualstartdateIsNil: Boolean
+  actualstartdateNotNil: Boolean
+  """
+  plannedEndDate field predicates
+  """
+  plannedenddate: Time
+  plannedenddateNEQ: Time
+  plannedenddateIn: [Time!]
+  plannedenddateNotIn: [Time!]
+  plannedenddateGT: Time
+  plannedenddateGTE: Time
+  plannedenddateLT: Time
+  plannedenddateLTE: Time
+  plannedenddateIsNil: Boolean
+  plannedenddateNotNil: Boolean
+  """
+  actualEndDate field predicates
+  """
+  actualenddate: Time
+  actualenddateNEQ: Time
+  actualenddateIn: [Time!]
+  actualenddateNotIn: [Time!]
+  actualenddateGT: Time
+  actualenddateGTE: Time
+  actualenddateLT: Time
+  actualenddateLTE: Time
+  actualenddateIsNil: Boolean
+  actualenddateNotNil: Boolean
   """
   description field predicates
   """
@@ -6127,6 +6178,7 @@ input UpdateAccountingEntryInput {
   description: String
   accounttype: AccountingEntryAccountType
   category: String
+  main: String
   isdebit: Boolean
   isreversal: Boolean
   reversed: Boolean
@@ -6557,9 +6609,13 @@ input UpdateProjectTaskInput {
   location: String
   clearLocation: Boolean
   duedate: Time
-  startdate: Time
-  enddate: Time
-  clearEndDate: Boolean
+  plannedstartdate: Time
+  actualstartdate: Time
+  clearActualStartDate: Boolean
+  plannedenddate: Time
+  clearPlannedEndDate: Boolean
+  actualenddate: Time
+  clearActualEndDate: Boolean
   description: String
   clearDescription: Boolean
   status: ProjectTaskStatus
