@@ -13,6 +13,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -384,36 +385,67 @@ func init() {
 	loanDescAmount := loanFields[0].Descriptor()
 	// loan.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
 	loan.AmountValidator = loanDescAmount.Validators[0].(func(float64) error)
-	// loanDescInterestRate is the schema descriptor for interestRate field.
+	// loanDescInterestRate is the schema descriptor for interest_rate field.
 	loanDescInterestRate := loanFields[4].Descriptor()
-	// loan.InterestRateValidator is a validator for the "interestRate" field. It is called by the builders before save.
+	// loan.InterestRateValidator is a validator for the "interest_rate" field. It is called by the builders before save.
 	loan.InterestRateValidator = loanDescInterestRate.Validators[0].(func(float64) error)
 	// loanDescInstallments is the schema descriptor for installments field.
 	loanDescInstallments := loanFields[5].Descriptor()
 	// loan.InstallmentsValidator is a validator for the "installments" field. It is called by the builders before save.
 	loan.InstallmentsValidator = loanDescInstallments.Validators[0].(func(int) error)
-	// loanDescNextPaymentAmount is the schema descriptor for nextPaymentAmount field.
+	// loanDescNextPaymentAmount is the schema descriptor for next_payment_amount field.
 	loanDescNextPaymentAmount := loanFields[8].Descriptor()
-	// loan.DefaultNextPaymentAmount holds the default value on creation for the nextPaymentAmount field.
+	// loan.DefaultNextPaymentAmount holds the default value on creation for the next_payment_amount field.
 	loan.DefaultNextPaymentAmount = loanDescNextPaymentAmount.Default.(float64)
-	// loan.NextPaymentAmountValidator is a validator for the "nextPaymentAmount" field. It is called by the builders before save.
+	// loan.NextPaymentAmountValidator is a validator for the "next_payment_amount" field. It is called by the builders before save.
 	loan.NextPaymentAmountValidator = loanDescNextPaymentAmount.Validators[0].(func(float64) error)
-	// loanDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	// loanDescOutstandingBalance is the schema descriptor for outstanding_balance field.
 	loanDescOutstandingBalance := loanFields[9].Descriptor()
-	// loan.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	// loan.OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	loan.OutstandingBalanceValidator = loanDescOutstandingBalance.Validators[0].(func(float64) error)
-	// loanDescPaidInstallments is the schema descriptor for paidInstallments field.
+	// loanDescPaidInstallments is the schema descriptor for paid_installments field.
 	loanDescPaidInstallments := loanFields[11].Descriptor()
-	// loan.DefaultPaidInstallments holds the default value on creation for the paidInstallments field.
+	// loan.DefaultPaidInstallments holds the default value on creation for the paid_installments field.
 	loan.DefaultPaidInstallments = loanDescPaidInstallments.Default.(int)
-	// loanDescProvider is the schema descriptor for provider field.
-	loanDescProvider := loanFields[12].Descriptor()
-	// loan.ProviderValidator is a validator for the "provider" field. It is called by the builders before save.
-	loan.ProviderValidator = loanDescProvider.Validators[0].(func(string) error)
-	// loanDescStartDate is the schema descriptor for startDate field.
-	loanDescStartDate := loanFields[13].Descriptor()
-	// loan.DefaultStartDate holds the default value on creation for the startDate field.
+	// loanDescCounterpartyName is the schema descriptor for counterparty_name field.
+	loanDescCounterpartyName := loanFields[13].Descriptor()
+	// loan.CounterpartyNameValidator is a validator for the "counterparty_name" field. It is called by the builders before save.
+	loan.CounterpartyNameValidator = loanDescCounterpartyName.Validators[0].(func(string) error)
+	// loanDescStartDate is the schema descriptor for start_date field.
+	loanDescStartDate := loanFields[14].Descriptor()
+	// loan.DefaultStartDate holds the default value on creation for the start_date field.
 	loan.DefaultStartDate = loanDescStartDate.Default.(func() time.Time)
+	// loanDescIsLending is the schema descriptor for is_lending field.
+	loanDescIsLending := loanFields[16].Descriptor()
+	// loan.DefaultIsLending holds the default value on creation for the is_lending field.
+	loan.DefaultIsLending = loanDescIsLending.Default.(bool)
+	loanscheduleMixin := schema.LoanSchedule{}.Mixin()
+	loanscheduleMixinFields0 := loanscheduleMixin[0].Fields()
+	_ = loanscheduleMixinFields0
+	loanscheduleFields := schema.LoanSchedule{}.Fields()
+	_ = loanscheduleFields
+	// loanscheduleDescCreatedAt is the schema descriptor for createdAt field.
+	loanscheduleDescCreatedAt := loanscheduleMixinFields0[0].Descriptor()
+	// loanschedule.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	loanschedule.DefaultCreatedAt = loanscheduleDescCreatedAt.Default.(func() time.Time)
+	// loanscheduleDescUpdatedAt is the schema descriptor for updatedAt field.
+	loanscheduleDescUpdatedAt := loanscheduleMixinFields0[1].Descriptor()
+	// loanschedule.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	loanschedule.DefaultUpdatedAt = loanscheduleDescUpdatedAt.Default.(func() time.Time)
+	// loanschedule.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	loanschedule.UpdateDefaultUpdatedAt = loanscheduleDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// loanscheduleDescAmount is the schema descriptor for amount field.
+	loanscheduleDescAmount := loanscheduleFields[0].Descriptor()
+	// loanschedule.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
+	loanschedule.AmountValidator = loanscheduleDescAmount.Validators[0].(func(float64) error)
+	// loanscheduleDescAmountPaid is the schema descriptor for amount_paid field.
+	loanscheduleDescAmountPaid := loanscheduleFields[1].Descriptor()
+	// loanschedule.DefaultAmountPaid holds the default value on creation for the amount_paid field.
+	loanschedule.DefaultAmountPaid = loanscheduleDescAmountPaid.Default.(float64)
+	// loanscheduleDescInstallmentNumber is the schema descriptor for installment_number field.
+	loanscheduleDescInstallmentNumber := loanscheduleFields[5].Descriptor()
+	// loanschedule.InstallmentNumberValidator is a validator for the "installment_number" field. It is called by the builders before save.
+	loanschedule.InstallmentNumberValidator = loanscheduleDescInstallmentNumber.Validators[0].(func(int) error)
 	membersignuptokenMixin := schema.MemberSignupToken{}.Mixin()
 	membersignuptokenMixinFields0 := membersignuptokenMixin[0].Fields()
 	_ = membersignuptokenMixinFields0
@@ -671,15 +703,15 @@ func init() {
 	// user.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// userDescIsDemoUser is the schema descriptor for isDemoUser field.
-	userDescIsDemoUser := userFields[0].Descriptor()
+	userDescIsDemoUser := userFields[1].Descriptor()
 	// user.DefaultIsDemoUser holds the default value on creation for the isDemoUser field.
 	user.DefaultIsDemoUser = userDescIsDemoUser.Default.(bool)
 	// userDescFirebaseUID is the schema descriptor for firebaseUID field.
-	userDescFirebaseUID := userFields[1].Descriptor()
+	userDescFirebaseUID := userFields[2].Descriptor()
 	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
 	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[4].Descriptor()
+	userDescEmail := userFields[5].Descriptor()
 	// user.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	user.EmailValidator = func() func(string) error {
 		validators := userDescEmail.Validators
@@ -697,7 +729,7 @@ func init() {
 		}
 	}()
 	// userDescActive is the schema descriptor for active field.
-	userDescActive := userFields[14].Descriptor()
+	userDescActive := userFields[15].Descriptor()
 	// user.DefaultActive holds the default value on creation for the active field.
 	user.DefaultActive = userDescActive.Default.(bool)
 	userroleFields := schema.UserRole{}.Fields()

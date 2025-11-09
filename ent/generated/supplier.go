@@ -53,15 +53,18 @@ type Supplier struct {
 type SupplierEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
+	// LoanSchedule holds the value of the loan_schedule edge.
+	LoanSchedule []*Loan `json:"loan_schedule,omitempty"`
 	// Payables holds the value of the payables edge.
 	Payables []*Payable `json:"payables,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [3]map[string]int
 
-	namedPayables map[string][]*Payable
+	namedLoanSchedule map[string][]*Loan
+	namedPayables     map[string][]*Payable
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -75,10 +78,19 @@ func (e SupplierEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
+// LoanScheduleOrErr returns the LoanSchedule value or an error if the edge
+// was not loaded in eager-loading.
+func (e SupplierEdges) LoanScheduleOrErr() ([]*Loan, error) {
+	if e.loadedTypes[1] {
+		return e.LoanSchedule, nil
+	}
+	return nil, &NotLoadedError{edge: "loan_schedule"}
+}
+
 // PayablesOrErr returns the Payables value or an error if the edge
 // was not loaded in eager-loading.
 func (e SupplierEdges) PayablesOrErr() ([]*Payable, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[2] {
 		return e.Payables, nil
 	}
 	return nil, &NotLoadedError{edge: "payables"}
@@ -218,6 +230,11 @@ func (s *Supplier) QueryCompany() *CompanyQuery {
 	return NewSupplierClient(s.config).QueryCompany(s)
 }
 
+// QueryLoanSchedule queries the "loan_schedule" edge of the Supplier entity.
+func (s *Supplier) QueryLoanSchedule() *LoanQuery {
+	return NewSupplierClient(s.config).QueryLoanSchedule(s)
+}
+
 // QueryPayables queries the "payables" edge of the Supplier entity.
 func (s *Supplier) QueryPayables() *PayableQuery {
 	return NewSupplierClient(s.config).QueryPayables(s)
@@ -285,6 +302,30 @@ func (s *Supplier) String() string {
 	builder.WriteString(s.TaxId)
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedLoanSchedule returns the LoanSchedule named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (s *Supplier) NamedLoanSchedule(name string) ([]*Loan, error) {
+	if s.Edges.namedLoanSchedule == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := s.Edges.namedLoanSchedule[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (s *Supplier) appendNamedLoanSchedule(name string, edges ...*Loan) {
+	if s.Edges.namedLoanSchedule == nil {
+		s.Edges.namedLoanSchedule = make(map[string][]*Loan)
+	}
+	if len(edges) == 0 {
+		s.Edges.namedLoanSchedule[name] = []*Loan{}
+	} else {
+		s.Edges.namedLoanSchedule[name] = append(s.Edges.namedLoanSchedule[name], edges...)
+	}
 }
 
 // NamedPayables returns the Payables named value or an error if the edge was not

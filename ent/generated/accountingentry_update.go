@@ -9,6 +9,7 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/user"
 	"time"
@@ -318,6 +319,21 @@ func (aeu *AccountingEntryUpdate) SetLoan(l *Loan) *AccountingEntryUpdate {
 	return aeu.SetLoanID(l.ID)
 }
 
+// AddLoanScheduleIDs adds the "loanSchedules" edge to the LoanSchedule entity by IDs.
+func (aeu *AccountingEntryUpdate) AddLoanScheduleIDs(ids ...int) *AccountingEntryUpdate {
+	aeu.mutation.AddLoanScheduleIDs(ids...)
+	return aeu
+}
+
+// AddLoanSchedules adds the "loanSchedules" edges to the LoanSchedule entity.
+func (aeu *AccountingEntryUpdate) AddLoanSchedules(l ...*LoanSchedule) *AccountingEntryUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return aeu.AddLoanScheduleIDs(ids...)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeu *AccountingEntryUpdate) Mutation() *AccountingEntryMutation {
 	return aeu.mutation
@@ -339,6 +355,27 @@ func (aeu *AccountingEntryUpdate) ClearUser() *AccountingEntryUpdate {
 func (aeu *AccountingEntryUpdate) ClearLoan() *AccountingEntryUpdate {
 	aeu.mutation.ClearLoan()
 	return aeu
+}
+
+// ClearLoanSchedules clears all "loanSchedules" edges to the LoanSchedule entity.
+func (aeu *AccountingEntryUpdate) ClearLoanSchedules() *AccountingEntryUpdate {
+	aeu.mutation.ClearLoanSchedules()
+	return aeu
+}
+
+// RemoveLoanScheduleIDs removes the "loanSchedules" edge to LoanSchedule entities by IDs.
+func (aeu *AccountingEntryUpdate) RemoveLoanScheduleIDs(ids ...int) *AccountingEntryUpdate {
+	aeu.mutation.RemoveLoanScheduleIDs(ids...)
+	return aeu
+}
+
+// RemoveLoanSchedules removes "loanSchedules" edges to LoanSchedule entities.
+func (aeu *AccountingEntryUpdate) RemoveLoanSchedules(l ...*LoanSchedule) *AccountingEntryUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return aeu.RemoveLoanScheduleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -557,6 +594,51 @@ func (aeu *AccountingEntryUpdate) sqlSave(ctx context.Context) (n int, err error
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeu.mutation.LoanSchedulesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeu.mutation.RemovedLoanSchedulesIDs(); len(nodes) > 0 && !aeu.mutation.LoanSchedulesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeu.mutation.LoanSchedulesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -872,6 +954,21 @@ func (aeuo *AccountingEntryUpdateOne) SetLoan(l *Loan) *AccountingEntryUpdateOne
 	return aeuo.SetLoanID(l.ID)
 }
 
+// AddLoanScheduleIDs adds the "loanSchedules" edge to the LoanSchedule entity by IDs.
+func (aeuo *AccountingEntryUpdateOne) AddLoanScheduleIDs(ids ...int) *AccountingEntryUpdateOne {
+	aeuo.mutation.AddLoanScheduleIDs(ids...)
+	return aeuo
+}
+
+// AddLoanSchedules adds the "loanSchedules" edges to the LoanSchedule entity.
+func (aeuo *AccountingEntryUpdateOne) AddLoanSchedules(l ...*LoanSchedule) *AccountingEntryUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return aeuo.AddLoanScheduleIDs(ids...)
+}
+
 // Mutation returns the AccountingEntryMutation object of the builder.
 func (aeuo *AccountingEntryUpdateOne) Mutation() *AccountingEntryMutation {
 	return aeuo.mutation
@@ -893,6 +990,27 @@ func (aeuo *AccountingEntryUpdateOne) ClearUser() *AccountingEntryUpdateOne {
 func (aeuo *AccountingEntryUpdateOne) ClearLoan() *AccountingEntryUpdateOne {
 	aeuo.mutation.ClearLoan()
 	return aeuo
+}
+
+// ClearLoanSchedules clears all "loanSchedules" edges to the LoanSchedule entity.
+func (aeuo *AccountingEntryUpdateOne) ClearLoanSchedules() *AccountingEntryUpdateOne {
+	aeuo.mutation.ClearLoanSchedules()
+	return aeuo
+}
+
+// RemoveLoanScheduleIDs removes the "loanSchedules" edge to LoanSchedule entities by IDs.
+func (aeuo *AccountingEntryUpdateOne) RemoveLoanScheduleIDs(ids ...int) *AccountingEntryUpdateOne {
+	aeuo.mutation.RemoveLoanScheduleIDs(ids...)
+	return aeuo
+}
+
+// RemoveLoanSchedules removes "loanSchedules" edges to LoanSchedule entities.
+func (aeuo *AccountingEntryUpdateOne) RemoveLoanSchedules(l ...*LoanSchedule) *AccountingEntryUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return aeuo.RemoveLoanScheduleIDs(ids...)
 }
 
 // Where appends a list predicates to the AccountingEntryUpdate builder.
@@ -1141,6 +1259,51 @@ func (aeuo *AccountingEntryUpdateOne) sqlSave(ctx context.Context) (_node *Accou
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if aeuo.mutation.LoanSchedulesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeuo.mutation.RemovedLoanSchedulesIDs(); len(nodes) > 0 && !aeuo.mutation.LoanSchedulesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := aeuo.mutation.LoanSchedulesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

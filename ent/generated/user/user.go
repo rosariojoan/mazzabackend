@@ -23,6 +23,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
+	// FieldDevice holds the string denoting the device field in the database.
+	FieldDevice = "device"
 	// FieldIsDemoUser holds the string denoting the isdemouser field in the database.
 	FieldIsDemoUser = "is_demo_user"
 	// FieldFirebaseUID holds the string denoting the firebaseuid field in the database.
@@ -215,6 +217,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldDevice,
 	FieldIsDemoUser,
 	FieldFirebaseUID,
 	FieldFcmToken,
@@ -323,6 +326,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByDeletedAt orders the results by the deletedAt field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
+}
+
+// ByDevice orders the results by the device field.
+func ByDevice(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDevice, opts...).ToFunc()
 }
 
 // ByIsDemoUser orders the results by the isDemoUser field.

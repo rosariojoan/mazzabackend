@@ -8,8 +8,11 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/customer"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/predicate"
+	"mazza/ent/generated/supplier"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -132,14 +135,14 @@ func (lu *LoanUpdate) ClearDescription() *LoanUpdate {
 	return lu
 }
 
-// SetInterestRate sets the "interestRate" field.
+// SetInterestRate sets the "interest_rate" field.
 func (lu *LoanUpdate) SetInterestRate(f float64) *LoanUpdate {
 	lu.mutation.ResetInterestRate()
 	lu.mutation.SetInterestRate(f)
 	return lu
 }
 
-// SetNillableInterestRate sets the "interestRate" field if the given value is not nil.
+// SetNillableInterestRate sets the "interest_rate" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableInterestRate(f *float64) *LoanUpdate {
 	if f != nil {
 		lu.SetInterestRate(*f)
@@ -147,7 +150,7 @@ func (lu *LoanUpdate) SetNillableInterestRate(f *float64) *LoanUpdate {
 	return lu
 }
 
-// AddInterestRate adds f to the "interestRate" field.
+// AddInterestRate adds f to the "interest_rate" field.
 func (lu *LoanUpdate) AddInterestRate(f float64) *LoanUpdate {
 	lu.mutation.AddInterestRate(f)
 	return lu
@@ -174,13 +177,13 @@ func (lu *LoanUpdate) AddInstallments(i int) *LoanUpdate {
 	return lu
 }
 
-// SetMaturityDate sets the "maturityDate" field.
+// SetMaturityDate sets the "maturity_date" field.
 func (lu *LoanUpdate) SetMaturityDate(t time.Time) *LoanUpdate {
 	lu.mutation.SetMaturityDate(t)
 	return lu
 }
 
-// SetNillableMaturityDate sets the "maturityDate" field if the given value is not nil.
+// SetNillableMaturityDate sets the "maturity_date" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableMaturityDate(t *time.Time) *LoanUpdate {
 	if t != nil {
 		lu.SetMaturityDate(*t)
@@ -188,13 +191,13 @@ func (lu *LoanUpdate) SetNillableMaturityDate(t *time.Time) *LoanUpdate {
 	return lu
 }
 
-// SetNextPayment sets the "nextPayment" field.
+// SetNextPayment sets the "next_payment" field.
 func (lu *LoanUpdate) SetNextPayment(t time.Time) *LoanUpdate {
 	lu.mutation.SetNextPayment(t)
 	return lu
 }
 
-// SetNillableNextPayment sets the "nextPayment" field if the given value is not nil.
+// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableNextPayment(t *time.Time) *LoanUpdate {
 	if t != nil {
 		lu.SetNextPayment(*t)
@@ -202,20 +205,20 @@ func (lu *LoanUpdate) SetNillableNextPayment(t *time.Time) *LoanUpdate {
 	return lu
 }
 
-// ClearNextPayment clears the value of the "nextPayment" field.
+// ClearNextPayment clears the value of the "next_payment" field.
 func (lu *LoanUpdate) ClearNextPayment() *LoanUpdate {
 	lu.mutation.ClearNextPayment()
 	return lu
 }
 
-// SetNextPaymentAmount sets the "nextPaymentAmount" field.
+// SetNextPaymentAmount sets the "next_payment_amount" field.
 func (lu *LoanUpdate) SetNextPaymentAmount(f float64) *LoanUpdate {
 	lu.mutation.ResetNextPaymentAmount()
 	lu.mutation.SetNextPaymentAmount(f)
 	return lu
 }
 
-// SetNillableNextPaymentAmount sets the "nextPaymentAmount" field if the given value is not nil.
+// SetNillableNextPaymentAmount sets the "next_payment_amount" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableNextPaymentAmount(f *float64) *LoanUpdate {
 	if f != nil {
 		lu.SetNextPaymentAmount(*f)
@@ -223,26 +226,26 @@ func (lu *LoanUpdate) SetNillableNextPaymentAmount(f *float64) *LoanUpdate {
 	return lu
 }
 
-// AddNextPaymentAmount adds f to the "nextPaymentAmount" field.
+// AddNextPaymentAmount adds f to the "next_payment_amount" field.
 func (lu *LoanUpdate) AddNextPaymentAmount(f float64) *LoanUpdate {
 	lu.mutation.AddNextPaymentAmount(f)
 	return lu
 }
 
-// ClearNextPaymentAmount clears the value of the "nextPaymentAmount" field.
+// ClearNextPaymentAmount clears the value of the "next_payment_amount" field.
 func (lu *LoanUpdate) ClearNextPaymentAmount() *LoanUpdate {
 	lu.mutation.ClearNextPaymentAmount()
 	return lu
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (lu *LoanUpdate) SetOutstandingBalance(f float64) *LoanUpdate {
 	lu.mutation.ResetOutstandingBalance()
 	lu.mutation.SetOutstandingBalance(f)
 	return lu
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableOutstandingBalance(f *float64) *LoanUpdate {
 	if f != nil {
 		lu.SetOutstandingBalance(*f)
@@ -250,19 +253,19 @@ func (lu *LoanUpdate) SetNillableOutstandingBalance(f *float64) *LoanUpdate {
 	return lu
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (lu *LoanUpdate) AddOutstandingBalance(f float64) *LoanUpdate {
 	lu.mutation.AddOutstandingBalance(f)
 	return lu
 }
 
-// SetPaymentFrequency sets the "paymentFrequency" field.
+// SetPaymentFrequency sets the "payment_frequency" field.
 func (lu *LoanUpdate) SetPaymentFrequency(lf loan.PaymentFrequency) *LoanUpdate {
 	lu.mutation.SetPaymentFrequency(lf)
 	return lu
 }
 
-// SetNillablePaymentFrequency sets the "paymentFrequency" field if the given value is not nil.
+// SetNillablePaymentFrequency sets the "payment_frequency" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillablePaymentFrequency(lf *loan.PaymentFrequency) *LoanUpdate {
 	if lf != nil {
 		lu.SetPaymentFrequency(*lf)
@@ -270,14 +273,14 @@ func (lu *LoanUpdate) SetNillablePaymentFrequency(lf *loan.PaymentFrequency) *Lo
 	return lu
 }
 
-// SetPaidInstallments sets the "paidInstallments" field.
+// SetPaidInstallments sets the "paid_installments" field.
 func (lu *LoanUpdate) SetPaidInstallments(i int) *LoanUpdate {
 	lu.mutation.ResetPaidInstallments()
 	lu.mutation.SetPaidInstallments(i)
 	return lu
 }
 
-// SetNillablePaidInstallments sets the "paidInstallments" field if the given value is not nil.
+// SetNillablePaidInstallments sets the "paid_installments" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillablePaidInstallments(i *int) *LoanUpdate {
 	if i != nil {
 		lu.SetPaidInstallments(*i)
@@ -285,33 +288,47 @@ func (lu *LoanUpdate) SetNillablePaidInstallments(i *int) *LoanUpdate {
 	return lu
 }
 
-// AddPaidInstallments adds i to the "paidInstallments" field.
+// AddPaidInstallments adds i to the "paid_installments" field.
 func (lu *LoanUpdate) AddPaidInstallments(i int) *LoanUpdate {
 	lu.mutation.AddPaidInstallments(i)
 	return lu
 }
 
-// SetProvider sets the "provider" field.
-func (lu *LoanUpdate) SetProvider(s string) *LoanUpdate {
-	lu.mutation.SetProvider(s)
+// SetPaymentType sets the "paymentType" field.
+func (lu *LoanUpdate) SetPaymentType(lt loan.PaymentType) *LoanUpdate {
+	lu.mutation.SetPaymentType(lt)
 	return lu
 }
 
-// SetNillableProvider sets the "provider" field if the given value is not nil.
-func (lu *LoanUpdate) SetNillableProvider(s *string) *LoanUpdate {
-	if s != nil {
-		lu.SetProvider(*s)
+// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillablePaymentType(lt *loan.PaymentType) *LoanUpdate {
+	if lt != nil {
+		lu.SetPaymentType(*lt)
 	}
 	return lu
 }
 
-// SetStartDate sets the "startDate" field.
+// SetCounterpartyName sets the "counterparty_name" field.
+func (lu *LoanUpdate) SetCounterpartyName(s string) *LoanUpdate {
+	lu.mutation.SetCounterpartyName(s)
+	return lu
+}
+
+// SetNillableCounterpartyName sets the "counterparty_name" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillableCounterpartyName(s *string) *LoanUpdate {
+	if s != nil {
+		lu.SetCounterpartyName(*s)
+	}
+	return lu
+}
+
+// SetStartDate sets the "start_date" field.
 func (lu *LoanUpdate) SetStartDate(t time.Time) *LoanUpdate {
 	lu.mutation.SetStartDate(t)
 	return lu
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableStartDate(t *time.Time) *LoanUpdate {
 	if t != nil {
 		lu.SetStartDate(*t)
@@ -333,6 +350,58 @@ func (lu *LoanUpdate) SetNillableStatus(l *loan.Status) *LoanUpdate {
 	return lu
 }
 
+// SetIsLending sets the "is_lending" field.
+func (lu *LoanUpdate) SetIsLending(b bool) *LoanUpdate {
+	lu.mutation.SetIsLending(b)
+	return lu
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillableIsLending(b *bool) *LoanUpdate {
+	if b != nil {
+		lu.SetIsLending(*b)
+	}
+	return lu
+}
+
+// SetClientID sets the "client" edge to the Customer entity by ID.
+func (lu *LoanUpdate) SetClientID(id int) *LoanUpdate {
+	lu.mutation.SetClientID(id)
+	return lu
+}
+
+// SetNillableClientID sets the "client" edge to the Customer entity by ID if the given value is not nil.
+func (lu *LoanUpdate) SetNillableClientID(id *int) *LoanUpdate {
+	if id != nil {
+		lu = lu.SetClientID(*id)
+	}
+	return lu
+}
+
+// SetClient sets the "client" edge to the Customer entity.
+func (lu *LoanUpdate) SetClient(c *Customer) *LoanUpdate {
+	return lu.SetClientID(c.ID)
+}
+
+// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
+func (lu *LoanUpdate) SetSupplierID(id int) *LoanUpdate {
+	lu.mutation.SetSupplierID(id)
+	return lu
+}
+
+// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
+func (lu *LoanUpdate) SetNillableSupplierID(id *int) *LoanUpdate {
+	if id != nil {
+		lu = lu.SetSupplierID(*id)
+	}
+	return lu
+}
+
+// SetSupplier sets the "supplier" edge to the Supplier entity.
+func (lu *LoanUpdate) SetSupplier(s *Supplier) *LoanUpdate {
+	return lu.SetSupplierID(s.ID)
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (lu *LoanUpdate) SetCompanyID(id int) *LoanUpdate {
 	lu.mutation.SetCompanyID(id)
@@ -352,13 +421,28 @@ func (lu *LoanUpdate) SetCompany(c *Company) *LoanUpdate {
 	return lu.SetCompanyID(c.ID)
 }
 
-// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (lu *LoanUpdate) AddLoanScheduleIDs(ids ...int) *LoanUpdate {
+	lu.mutation.AddLoanScheduleIDs(ids...)
+	return lu
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (lu *LoanUpdate) AddLoanSchedule(l ...*LoanSchedule) *LoanUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return lu.AddLoanScheduleIDs(ids...)
+}
+
+// AddTransactionHistoryIDs adds the "transaction_history" edge to the AccountingEntry entity by IDs.
 func (lu *LoanUpdate) AddTransactionHistoryIDs(ids ...int) *LoanUpdate {
 	lu.mutation.AddTransactionHistoryIDs(ids...)
 	return lu
 }
 
-// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+// AddTransactionHistory adds the "transaction_history" edges to the AccountingEntry entity.
 func (lu *LoanUpdate) AddTransactionHistory(a ...*AccountingEntry) *LoanUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -372,25 +456,58 @@ func (lu *LoanUpdate) Mutation() *LoanMutation {
 	return lu.mutation
 }
 
+// ClearClient clears the "client" edge to the Customer entity.
+func (lu *LoanUpdate) ClearClient() *LoanUpdate {
+	lu.mutation.ClearClient()
+	return lu
+}
+
+// ClearSupplier clears the "supplier" edge to the Supplier entity.
+func (lu *LoanUpdate) ClearSupplier() *LoanUpdate {
+	lu.mutation.ClearSupplier()
+	return lu
+}
+
 // ClearCompany clears the "company" edge to the Company entity.
 func (lu *LoanUpdate) ClearCompany() *LoanUpdate {
 	lu.mutation.ClearCompany()
 	return lu
 }
 
-// ClearTransactionHistory clears all "transactionHistory" edges to the AccountingEntry entity.
+// ClearLoanSchedule clears all "loan_schedule" edges to the LoanSchedule entity.
+func (lu *LoanUpdate) ClearLoanSchedule() *LoanUpdate {
+	lu.mutation.ClearLoanSchedule()
+	return lu
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to LoanSchedule entities by IDs.
+func (lu *LoanUpdate) RemoveLoanScheduleIDs(ids ...int) *LoanUpdate {
+	lu.mutation.RemoveLoanScheduleIDs(ids...)
+	return lu
+}
+
+// RemoveLoanSchedule removes "loan_schedule" edges to LoanSchedule entities.
+func (lu *LoanUpdate) RemoveLoanSchedule(l ...*LoanSchedule) *LoanUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return lu.RemoveLoanScheduleIDs(ids...)
+}
+
+// ClearTransactionHistory clears all "transaction_history" edges to the AccountingEntry entity.
 func (lu *LoanUpdate) ClearTransactionHistory() *LoanUpdate {
 	lu.mutation.ClearTransactionHistory()
 	return lu
 }
 
-// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to AccountingEntry entities by IDs.
+// RemoveTransactionHistoryIDs removes the "transaction_history" edge to AccountingEntry entities by IDs.
 func (lu *LoanUpdate) RemoveTransactionHistoryIDs(ids ...int) *LoanUpdate {
 	lu.mutation.RemoveTransactionHistoryIDs(ids...)
 	return lu
 }
 
-// RemoveTransactionHistory removes "transactionHistory" edges to AccountingEntry entities.
+// RemoveTransactionHistory removes "transaction_history" edges to AccountingEntry entities.
 func (lu *LoanUpdate) RemoveTransactionHistory(a ...*AccountingEntry) *LoanUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -449,7 +566,7 @@ func (lu *LoanUpdate) check() error {
 	}
 	if v, ok := lu.mutation.InterestRate(); ok {
 		if err := loan.InterestRateValidator(v); err != nil {
-			return &ValidationError{Name: "interestRate", err: fmt.Errorf(`generated: validator failed for field "Loan.interestRate": %w`, err)}
+			return &ValidationError{Name: "interest_rate", err: fmt.Errorf(`generated: validator failed for field "Loan.interest_rate": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.Installments(); ok {
@@ -459,22 +576,27 @@ func (lu *LoanUpdate) check() error {
 	}
 	if v, ok := lu.mutation.NextPaymentAmount(); ok {
 		if err := loan.NextPaymentAmountValidator(v); err != nil {
-			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
+			return &ValidationError{Name: "next_payment_amount", err: fmt.Errorf(`generated: validator failed for field "Loan.next_payment_amount": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.OutstandingBalance(); ok {
 		if err := loan.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.PaymentFrequency(); ok {
 		if err := loan.PaymentFrequencyValidator(v); err != nil {
-			return &ValidationError{Name: "paymentFrequency", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentFrequency": %w`, err)}
+			return &ValidationError{Name: "payment_frequency", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_frequency": %w`, err)}
 		}
 	}
-	if v, ok := lu.mutation.Provider(); ok {
-		if err := loan.ProviderValidator(v); err != nil {
-			return &ValidationError{Name: "provider", err: fmt.Errorf(`generated: validator failed for field "Loan.provider": %w`, err)}
+	if v, ok := lu.mutation.PaymentType(); ok {
+		if err := loan.PaymentTypeValidator(v); err != nil {
+			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+		}
+	}
+	if v, ok := lu.mutation.CounterpartyName(); ok {
+		if err := loan.CounterpartyNameValidator(v); err != nil {
+			return &ValidationError{Name: "counterparty_name", err: fmt.Errorf(`generated: validator failed for field "Loan.counterparty_name": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.Status(); ok {
@@ -578,14 +700,78 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := lu.mutation.AddedPaidInstallments(); ok {
 		_spec.AddField(loan.FieldPaidInstallments, field.TypeInt, value)
 	}
-	if value, ok := lu.mutation.Provider(); ok {
-		_spec.SetField(loan.FieldProvider, field.TypeString, value)
+	if value, ok := lu.mutation.PaymentType(); ok {
+		_spec.SetField(loan.FieldPaymentType, field.TypeEnum, value)
+	}
+	if value, ok := lu.mutation.CounterpartyName(); ok {
+		_spec.SetField(loan.FieldCounterpartyName, field.TypeString, value)
 	}
 	if value, ok := lu.mutation.StartDate(); ok {
 		_spec.SetField(loan.FieldStartDate, field.TypeTime, value)
 	}
 	if value, ok := lu.mutation.Status(); ok {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
+	}
+	if value, ok := lu.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+	}
+	if lu.mutation.ClientCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.ClientTable,
+			Columns: []string{loan.ClientColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.ClientIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.ClientTable,
+			Columns: []string{loan.ClientColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if lu.mutation.SupplierCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.SupplierTable,
+			Columns: []string{loan.SupplierColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.SupplierIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.SupplierTable,
+			Columns: []string{loan.SupplierColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if lu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -609,6 +795,51 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if lu.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !lu.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := lu.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -784,14 +1015,14 @@ func (luo *LoanUpdateOne) ClearDescription() *LoanUpdateOne {
 	return luo
 }
 
-// SetInterestRate sets the "interestRate" field.
+// SetInterestRate sets the "interest_rate" field.
 func (luo *LoanUpdateOne) SetInterestRate(f float64) *LoanUpdateOne {
 	luo.mutation.ResetInterestRate()
 	luo.mutation.SetInterestRate(f)
 	return luo
 }
 
-// SetNillableInterestRate sets the "interestRate" field if the given value is not nil.
+// SetNillableInterestRate sets the "interest_rate" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableInterestRate(f *float64) *LoanUpdateOne {
 	if f != nil {
 		luo.SetInterestRate(*f)
@@ -799,7 +1030,7 @@ func (luo *LoanUpdateOne) SetNillableInterestRate(f *float64) *LoanUpdateOne {
 	return luo
 }
 
-// AddInterestRate adds f to the "interestRate" field.
+// AddInterestRate adds f to the "interest_rate" field.
 func (luo *LoanUpdateOne) AddInterestRate(f float64) *LoanUpdateOne {
 	luo.mutation.AddInterestRate(f)
 	return luo
@@ -826,13 +1057,13 @@ func (luo *LoanUpdateOne) AddInstallments(i int) *LoanUpdateOne {
 	return luo
 }
 
-// SetMaturityDate sets the "maturityDate" field.
+// SetMaturityDate sets the "maturity_date" field.
 func (luo *LoanUpdateOne) SetMaturityDate(t time.Time) *LoanUpdateOne {
 	luo.mutation.SetMaturityDate(t)
 	return luo
 }
 
-// SetNillableMaturityDate sets the "maturityDate" field if the given value is not nil.
+// SetNillableMaturityDate sets the "maturity_date" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableMaturityDate(t *time.Time) *LoanUpdateOne {
 	if t != nil {
 		luo.SetMaturityDate(*t)
@@ -840,13 +1071,13 @@ func (luo *LoanUpdateOne) SetNillableMaturityDate(t *time.Time) *LoanUpdateOne {
 	return luo
 }
 
-// SetNextPayment sets the "nextPayment" field.
+// SetNextPayment sets the "next_payment" field.
 func (luo *LoanUpdateOne) SetNextPayment(t time.Time) *LoanUpdateOne {
 	luo.mutation.SetNextPayment(t)
 	return luo
 }
 
-// SetNillableNextPayment sets the "nextPayment" field if the given value is not nil.
+// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableNextPayment(t *time.Time) *LoanUpdateOne {
 	if t != nil {
 		luo.SetNextPayment(*t)
@@ -854,20 +1085,20 @@ func (luo *LoanUpdateOne) SetNillableNextPayment(t *time.Time) *LoanUpdateOne {
 	return luo
 }
 
-// ClearNextPayment clears the value of the "nextPayment" field.
+// ClearNextPayment clears the value of the "next_payment" field.
 func (luo *LoanUpdateOne) ClearNextPayment() *LoanUpdateOne {
 	luo.mutation.ClearNextPayment()
 	return luo
 }
 
-// SetNextPaymentAmount sets the "nextPaymentAmount" field.
+// SetNextPaymentAmount sets the "next_payment_amount" field.
 func (luo *LoanUpdateOne) SetNextPaymentAmount(f float64) *LoanUpdateOne {
 	luo.mutation.ResetNextPaymentAmount()
 	luo.mutation.SetNextPaymentAmount(f)
 	return luo
 }
 
-// SetNillableNextPaymentAmount sets the "nextPaymentAmount" field if the given value is not nil.
+// SetNillableNextPaymentAmount sets the "next_payment_amount" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableNextPaymentAmount(f *float64) *LoanUpdateOne {
 	if f != nil {
 		luo.SetNextPaymentAmount(*f)
@@ -875,26 +1106,26 @@ func (luo *LoanUpdateOne) SetNillableNextPaymentAmount(f *float64) *LoanUpdateOn
 	return luo
 }
 
-// AddNextPaymentAmount adds f to the "nextPaymentAmount" field.
+// AddNextPaymentAmount adds f to the "next_payment_amount" field.
 func (luo *LoanUpdateOne) AddNextPaymentAmount(f float64) *LoanUpdateOne {
 	luo.mutation.AddNextPaymentAmount(f)
 	return luo
 }
 
-// ClearNextPaymentAmount clears the value of the "nextPaymentAmount" field.
+// ClearNextPaymentAmount clears the value of the "next_payment_amount" field.
 func (luo *LoanUpdateOne) ClearNextPaymentAmount() *LoanUpdateOne {
 	luo.mutation.ClearNextPaymentAmount()
 	return luo
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (luo *LoanUpdateOne) SetOutstandingBalance(f float64) *LoanUpdateOne {
 	luo.mutation.ResetOutstandingBalance()
 	luo.mutation.SetOutstandingBalance(f)
 	return luo
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableOutstandingBalance(f *float64) *LoanUpdateOne {
 	if f != nil {
 		luo.SetOutstandingBalance(*f)
@@ -902,19 +1133,19 @@ func (luo *LoanUpdateOne) SetNillableOutstandingBalance(f *float64) *LoanUpdateO
 	return luo
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (luo *LoanUpdateOne) AddOutstandingBalance(f float64) *LoanUpdateOne {
 	luo.mutation.AddOutstandingBalance(f)
 	return luo
 }
 
-// SetPaymentFrequency sets the "paymentFrequency" field.
+// SetPaymentFrequency sets the "payment_frequency" field.
 func (luo *LoanUpdateOne) SetPaymentFrequency(lf loan.PaymentFrequency) *LoanUpdateOne {
 	luo.mutation.SetPaymentFrequency(lf)
 	return luo
 }
 
-// SetNillablePaymentFrequency sets the "paymentFrequency" field if the given value is not nil.
+// SetNillablePaymentFrequency sets the "payment_frequency" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillablePaymentFrequency(lf *loan.PaymentFrequency) *LoanUpdateOne {
 	if lf != nil {
 		luo.SetPaymentFrequency(*lf)
@@ -922,14 +1153,14 @@ func (luo *LoanUpdateOne) SetNillablePaymentFrequency(lf *loan.PaymentFrequency)
 	return luo
 }
 
-// SetPaidInstallments sets the "paidInstallments" field.
+// SetPaidInstallments sets the "paid_installments" field.
 func (luo *LoanUpdateOne) SetPaidInstallments(i int) *LoanUpdateOne {
 	luo.mutation.ResetPaidInstallments()
 	luo.mutation.SetPaidInstallments(i)
 	return luo
 }
 
-// SetNillablePaidInstallments sets the "paidInstallments" field if the given value is not nil.
+// SetNillablePaidInstallments sets the "paid_installments" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillablePaidInstallments(i *int) *LoanUpdateOne {
 	if i != nil {
 		luo.SetPaidInstallments(*i)
@@ -937,33 +1168,47 @@ func (luo *LoanUpdateOne) SetNillablePaidInstallments(i *int) *LoanUpdateOne {
 	return luo
 }
 
-// AddPaidInstallments adds i to the "paidInstallments" field.
+// AddPaidInstallments adds i to the "paid_installments" field.
 func (luo *LoanUpdateOne) AddPaidInstallments(i int) *LoanUpdateOne {
 	luo.mutation.AddPaidInstallments(i)
 	return luo
 }
 
-// SetProvider sets the "provider" field.
-func (luo *LoanUpdateOne) SetProvider(s string) *LoanUpdateOne {
-	luo.mutation.SetProvider(s)
+// SetPaymentType sets the "paymentType" field.
+func (luo *LoanUpdateOne) SetPaymentType(lt loan.PaymentType) *LoanUpdateOne {
+	luo.mutation.SetPaymentType(lt)
 	return luo
 }
 
-// SetNillableProvider sets the "provider" field if the given value is not nil.
-func (luo *LoanUpdateOne) SetNillableProvider(s *string) *LoanUpdateOne {
-	if s != nil {
-		luo.SetProvider(*s)
+// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillablePaymentType(lt *loan.PaymentType) *LoanUpdateOne {
+	if lt != nil {
+		luo.SetPaymentType(*lt)
 	}
 	return luo
 }
 
-// SetStartDate sets the "startDate" field.
+// SetCounterpartyName sets the "counterparty_name" field.
+func (luo *LoanUpdateOne) SetCounterpartyName(s string) *LoanUpdateOne {
+	luo.mutation.SetCounterpartyName(s)
+	return luo
+}
+
+// SetNillableCounterpartyName sets the "counterparty_name" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableCounterpartyName(s *string) *LoanUpdateOne {
+	if s != nil {
+		luo.SetCounterpartyName(*s)
+	}
+	return luo
+}
+
+// SetStartDate sets the "start_date" field.
 func (luo *LoanUpdateOne) SetStartDate(t time.Time) *LoanUpdateOne {
 	luo.mutation.SetStartDate(t)
 	return luo
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableStartDate(t *time.Time) *LoanUpdateOne {
 	if t != nil {
 		luo.SetStartDate(*t)
@@ -985,6 +1230,58 @@ func (luo *LoanUpdateOne) SetNillableStatus(l *loan.Status) *LoanUpdateOne {
 	return luo
 }
 
+// SetIsLending sets the "is_lending" field.
+func (luo *LoanUpdateOne) SetIsLending(b bool) *LoanUpdateOne {
+	luo.mutation.SetIsLending(b)
+	return luo
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableIsLending(b *bool) *LoanUpdateOne {
+	if b != nil {
+		luo.SetIsLending(*b)
+	}
+	return luo
+}
+
+// SetClientID sets the "client" edge to the Customer entity by ID.
+func (luo *LoanUpdateOne) SetClientID(id int) *LoanUpdateOne {
+	luo.mutation.SetClientID(id)
+	return luo
+}
+
+// SetNillableClientID sets the "client" edge to the Customer entity by ID if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableClientID(id *int) *LoanUpdateOne {
+	if id != nil {
+		luo = luo.SetClientID(*id)
+	}
+	return luo
+}
+
+// SetClient sets the "client" edge to the Customer entity.
+func (luo *LoanUpdateOne) SetClient(c *Customer) *LoanUpdateOne {
+	return luo.SetClientID(c.ID)
+}
+
+// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
+func (luo *LoanUpdateOne) SetSupplierID(id int) *LoanUpdateOne {
+	luo.mutation.SetSupplierID(id)
+	return luo
+}
+
+// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableSupplierID(id *int) *LoanUpdateOne {
+	if id != nil {
+		luo = luo.SetSupplierID(*id)
+	}
+	return luo
+}
+
+// SetSupplier sets the "supplier" edge to the Supplier entity.
+func (luo *LoanUpdateOne) SetSupplier(s *Supplier) *LoanUpdateOne {
+	return luo.SetSupplierID(s.ID)
+}
+
 // SetCompanyID sets the "company" edge to the Company entity by ID.
 func (luo *LoanUpdateOne) SetCompanyID(id int) *LoanUpdateOne {
 	luo.mutation.SetCompanyID(id)
@@ -1004,13 +1301,28 @@ func (luo *LoanUpdateOne) SetCompany(c *Company) *LoanUpdateOne {
 	return luo.SetCompanyID(c.ID)
 }
 
-// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (luo *LoanUpdateOne) AddLoanScheduleIDs(ids ...int) *LoanUpdateOne {
+	luo.mutation.AddLoanScheduleIDs(ids...)
+	return luo
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (luo *LoanUpdateOne) AddLoanSchedule(l ...*LoanSchedule) *LoanUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return luo.AddLoanScheduleIDs(ids...)
+}
+
+// AddTransactionHistoryIDs adds the "transaction_history" edge to the AccountingEntry entity by IDs.
 func (luo *LoanUpdateOne) AddTransactionHistoryIDs(ids ...int) *LoanUpdateOne {
 	luo.mutation.AddTransactionHistoryIDs(ids...)
 	return luo
 }
 
-// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+// AddTransactionHistory adds the "transaction_history" edges to the AccountingEntry entity.
 func (luo *LoanUpdateOne) AddTransactionHistory(a ...*AccountingEntry) *LoanUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -1024,25 +1336,58 @@ func (luo *LoanUpdateOne) Mutation() *LoanMutation {
 	return luo.mutation
 }
 
+// ClearClient clears the "client" edge to the Customer entity.
+func (luo *LoanUpdateOne) ClearClient() *LoanUpdateOne {
+	luo.mutation.ClearClient()
+	return luo
+}
+
+// ClearSupplier clears the "supplier" edge to the Supplier entity.
+func (luo *LoanUpdateOne) ClearSupplier() *LoanUpdateOne {
+	luo.mutation.ClearSupplier()
+	return luo
+}
+
 // ClearCompany clears the "company" edge to the Company entity.
 func (luo *LoanUpdateOne) ClearCompany() *LoanUpdateOne {
 	luo.mutation.ClearCompany()
 	return luo
 }
 
-// ClearTransactionHistory clears all "transactionHistory" edges to the AccountingEntry entity.
+// ClearLoanSchedule clears all "loan_schedule" edges to the LoanSchedule entity.
+func (luo *LoanUpdateOne) ClearLoanSchedule() *LoanUpdateOne {
+	luo.mutation.ClearLoanSchedule()
+	return luo
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to LoanSchedule entities by IDs.
+func (luo *LoanUpdateOne) RemoveLoanScheduleIDs(ids ...int) *LoanUpdateOne {
+	luo.mutation.RemoveLoanScheduleIDs(ids...)
+	return luo
+}
+
+// RemoveLoanSchedule removes "loan_schedule" edges to LoanSchedule entities.
+func (luo *LoanUpdateOne) RemoveLoanSchedule(l ...*LoanSchedule) *LoanUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return luo.RemoveLoanScheduleIDs(ids...)
+}
+
+// ClearTransactionHistory clears all "transaction_history" edges to the AccountingEntry entity.
 func (luo *LoanUpdateOne) ClearTransactionHistory() *LoanUpdateOne {
 	luo.mutation.ClearTransactionHistory()
 	return luo
 }
 
-// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to AccountingEntry entities by IDs.
+// RemoveTransactionHistoryIDs removes the "transaction_history" edge to AccountingEntry entities by IDs.
 func (luo *LoanUpdateOne) RemoveTransactionHistoryIDs(ids ...int) *LoanUpdateOne {
 	luo.mutation.RemoveTransactionHistoryIDs(ids...)
 	return luo
 }
 
-// RemoveTransactionHistory removes "transactionHistory" edges to AccountingEntry entities.
+// RemoveTransactionHistory removes "transaction_history" edges to AccountingEntry entities.
 func (luo *LoanUpdateOne) RemoveTransactionHistory(a ...*AccountingEntry) *LoanUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -1114,7 +1459,7 @@ func (luo *LoanUpdateOne) check() error {
 	}
 	if v, ok := luo.mutation.InterestRate(); ok {
 		if err := loan.InterestRateValidator(v); err != nil {
-			return &ValidationError{Name: "interestRate", err: fmt.Errorf(`generated: validator failed for field "Loan.interestRate": %w`, err)}
+			return &ValidationError{Name: "interest_rate", err: fmt.Errorf(`generated: validator failed for field "Loan.interest_rate": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.Installments(); ok {
@@ -1124,22 +1469,27 @@ func (luo *LoanUpdateOne) check() error {
 	}
 	if v, ok := luo.mutation.NextPaymentAmount(); ok {
 		if err := loan.NextPaymentAmountValidator(v); err != nil {
-			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
+			return &ValidationError{Name: "next_payment_amount", err: fmt.Errorf(`generated: validator failed for field "Loan.next_payment_amount": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.OutstandingBalance(); ok {
 		if err := loan.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.PaymentFrequency(); ok {
 		if err := loan.PaymentFrequencyValidator(v); err != nil {
-			return &ValidationError{Name: "paymentFrequency", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentFrequency": %w`, err)}
+			return &ValidationError{Name: "payment_frequency", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_frequency": %w`, err)}
 		}
 	}
-	if v, ok := luo.mutation.Provider(); ok {
-		if err := loan.ProviderValidator(v); err != nil {
-			return &ValidationError{Name: "provider", err: fmt.Errorf(`generated: validator failed for field "Loan.provider": %w`, err)}
+	if v, ok := luo.mutation.PaymentType(); ok {
+		if err := loan.PaymentTypeValidator(v); err != nil {
+			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+		}
+	}
+	if v, ok := luo.mutation.CounterpartyName(); ok {
+		if err := loan.CounterpartyNameValidator(v); err != nil {
+			return &ValidationError{Name: "counterparty_name", err: fmt.Errorf(`generated: validator failed for field "Loan.counterparty_name": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.Status(); ok {
@@ -1260,14 +1610,78 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 	if value, ok := luo.mutation.AddedPaidInstallments(); ok {
 		_spec.AddField(loan.FieldPaidInstallments, field.TypeInt, value)
 	}
-	if value, ok := luo.mutation.Provider(); ok {
-		_spec.SetField(loan.FieldProvider, field.TypeString, value)
+	if value, ok := luo.mutation.PaymentType(); ok {
+		_spec.SetField(loan.FieldPaymentType, field.TypeEnum, value)
+	}
+	if value, ok := luo.mutation.CounterpartyName(); ok {
+		_spec.SetField(loan.FieldCounterpartyName, field.TypeString, value)
 	}
 	if value, ok := luo.mutation.StartDate(); ok {
 		_spec.SetField(loan.FieldStartDate, field.TypeTime, value)
 	}
 	if value, ok := luo.mutation.Status(); ok {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
+	}
+	if value, ok := luo.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+	}
+	if luo.mutation.ClientCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.ClientTable,
+			Columns: []string{loan.ClientColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.ClientIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.ClientTable,
+			Columns: []string{loan.ClientColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if luo.mutation.SupplierCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.SupplierTable,
+			Columns: []string{loan.SupplierColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.SupplierIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.SupplierTable,
+			Columns: []string{loan.SupplierColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if luo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1291,6 +1705,51 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if luo.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !luo.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := luo.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

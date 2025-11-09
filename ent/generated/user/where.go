@@ -70,6 +70,11 @@ func DeletedAt(v time.Time) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDeletedAt, v))
 }
 
+// Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
+func Device(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldDevice, v))
+}
+
 // IsDemoUser applies equality check predicate on the "isDemoUser" field. It's identical to IsDemoUserEQ.
 func IsDemoUser(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldIsDemoUser, v))
@@ -268,6 +273,81 @@ func DeletedAtIsNil() predicate.User {
 // DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
 func DeletedAtNotNil() predicate.User {
 	return predicate.User(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// DeviceEQ applies the EQ predicate on the "device" field.
+func DeviceEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldDevice, v))
+}
+
+// DeviceNEQ applies the NEQ predicate on the "device" field.
+func DeviceNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldDevice, v))
+}
+
+// DeviceIn applies the In predicate on the "device" field.
+func DeviceIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldDevice, vs...))
+}
+
+// DeviceNotIn applies the NotIn predicate on the "device" field.
+func DeviceNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldDevice, vs...))
+}
+
+// DeviceGT applies the GT predicate on the "device" field.
+func DeviceGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldDevice, v))
+}
+
+// DeviceGTE applies the GTE predicate on the "device" field.
+func DeviceGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldDevice, v))
+}
+
+// DeviceLT applies the LT predicate on the "device" field.
+func DeviceLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldDevice, v))
+}
+
+// DeviceLTE applies the LTE predicate on the "device" field.
+func DeviceLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldDevice, v))
+}
+
+// DeviceContains applies the Contains predicate on the "device" field.
+func DeviceContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldDevice, v))
+}
+
+// DeviceHasPrefix applies the HasPrefix predicate on the "device" field.
+func DeviceHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldDevice, v))
+}
+
+// DeviceHasSuffix applies the HasSuffix predicate on the "device" field.
+func DeviceHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldDevice, v))
+}
+
+// DeviceIsNil applies the IsNil predicate on the "device" field.
+func DeviceIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldDevice))
+}
+
+// DeviceNotNil applies the NotNil predicate on the "device" field.
+func DeviceNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldDevice))
+}
+
+// DeviceEqualFold applies the EqualFold predicate on the "device" field.
+func DeviceEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldDevice, v))
+}
+
+// DeviceContainsFold applies the ContainsFold predicate on the "device" field.
+func DeviceContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldDevice, v))
 }
 
 // IsDemoUserEQ applies the EQ predicate on the "isDemoUser" field.

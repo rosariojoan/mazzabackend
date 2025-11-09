@@ -66,6 +66,26 @@ func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	return uu
 }
 
+// SetDevice sets the "device" field.
+func (uu *UserUpdate) SetDevice(s string) *UserUpdate {
+	uu.mutation.SetDevice(s)
+	return uu
+}
+
+// SetNillableDevice sets the "device" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDevice(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetDevice(*s)
+	}
+	return uu
+}
+
+// ClearDevice clears the value of the "device" field.
+func (uu *UserUpdate) ClearDevice() *UserUpdate {
+	uu.mutation.ClearDevice()
+	return uu
+}
+
 // SetIsDemoUser sets the "isDemoUser" field.
 func (uu *UserUpdate) SetIsDemoUser(b bool) *UserUpdate {
 	uu.mutation.SetIsDemoUser(b)
@@ -995,6 +1015,12 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if uu.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := uu.mutation.Device(); ok {
+		_spec.SetField(user.FieldDevice, field.TypeString, value)
+	}
+	if uu.mutation.DeviceCleared() {
+		_spec.ClearField(user.FieldDevice, field.TypeString)
+	}
 	if value, ok := uu.mutation.IsDemoUser(); ok {
 		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)
 	}
@@ -1845,6 +1871,26 @@ func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
 // ClearDeletedAt clears the value of the "deletedAt" field.
 func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	uuo.mutation.ClearDeletedAt()
+	return uuo
+}
+
+// SetDevice sets the "device" field.
+func (uuo *UserUpdateOne) SetDevice(s string) *UserUpdateOne {
+	uuo.mutation.SetDevice(s)
+	return uuo
+}
+
+// SetNillableDevice sets the "device" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDevice(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetDevice(*s)
+	}
+	return uuo
+}
+
+// ClearDevice clears the value of the "device" field.
+func (uuo *UserUpdateOne) ClearDevice() *UserUpdateOne {
+	uuo.mutation.ClearDevice()
 	return uuo
 }
 
@@ -2806,6 +2852,12 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(user.FieldDeletedAt, field.TypeTime)
+	}
+	if value, ok := uuo.mutation.Device(); ok {
+		_spec.SetField(user.FieldDevice, field.TypeString, value)
+	}
+	if uuo.mutation.DeviceCleared() {
+		_spec.ClearField(user.FieldDevice, field.TypeString)
 	}
 	if value, ok := uuo.mutation.IsDemoUser(); ok {
 		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)

@@ -14,6 +14,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -84,6 +85,18 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			ae.withLoan = query
+		case "loanschedules":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanScheduleClient{config: ae.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ae.WithNamedLoanSchedules(alias, func(wq *LoanScheduleQuery) {
+				*wq = *query
+			})
 		case "createdat":
 			if _, ok := fieldSeen[accountingentry.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldCreatedAt)
@@ -234,6 +247,52 @@ func newAccountingEntryPaginateArgs(rv map[string]any) *accountingentryPaginateA
 }
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (c *CalendarQuery) CollectFields(ctx context.Context, satisfies ...string) (*CalendarQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return c, nil
+	}
+	if err := c.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func (c *CalendarQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	return nil
+}
+
+type calendarPaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []CalendarPaginateOption
+}
+
+func newCalendarPaginateArgs(rv map[string]any) *calendarPaginateArgs {
+	args := &calendarPaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[whereField].(*CalendarWhereInput); ok {
+		args.opts = append(args.opts, WithCalendarFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
 func (c *CompanyQuery) CollectFields(ctx context.Context, satisfies ...string) (*CompanyQuery, error) {
 	fc := graphql.GetFieldContext(ctx)
 	if fc == nil {
@@ -372,6 +431,18 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.WithNamedLoans(alias, func(wq *LoanQuery) {
+				*wq = *query
+			})
+		case "loanSchedule":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanScheduleClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedLoanSchedule(alias, func(wq *LoanScheduleQuery) {
 				*wq = *query
 			})
 		case "membersignuptokens":
@@ -905,6 +976,18 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			c.withCompany = query
+		case "loanSchedule":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanClient{config: c.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			c.WithNamedLoanSchedule(alias, func(wq *LoanQuery) {
+				*wq = *query
+			})
 		case "receivables":
 			var (
 				alias = field.Alias
@@ -2041,6 +2124,26 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
+		case "client":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&CustomerClient{config: l.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			l.withClient = query
+		case "supplier":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&SupplierClient{config: l.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			l.withSupplier = query
 		case "company":
 			var (
 				alias = field.Alias
@@ -2051,7 +2154,19 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			l.withCompany = query
-		case "transactionhistory":
+		case "loanSchedule":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanScheduleClient{config: l.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			l.WithNamedLoanSchedule(alias, func(wq *LoanScheduleQuery) {
+				*wq = *query
+			})
+		case "transactionHistory":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -2098,7 +2213,7 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldDescription)
 				fieldSeen[loan.FieldDescription] = struct{}{}
 			}
-		case "interestrate":
+		case "interestRate":
 			if _, ok := fieldSeen[loan.FieldInterestRate]; !ok {
 				selectedFields = append(selectedFields, loan.FieldInterestRate)
 				fieldSeen[loan.FieldInterestRate] = struct{}{}
@@ -2108,42 +2223,47 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldInstallments)
 				fieldSeen[loan.FieldInstallments] = struct{}{}
 			}
-		case "maturitydate":
+		case "maturityDate":
 			if _, ok := fieldSeen[loan.FieldMaturityDate]; !ok {
 				selectedFields = append(selectedFields, loan.FieldMaturityDate)
 				fieldSeen[loan.FieldMaturityDate] = struct{}{}
 			}
-		case "nextpayment":
+		case "nextPayment":
 			if _, ok := fieldSeen[loan.FieldNextPayment]; !ok {
 				selectedFields = append(selectedFields, loan.FieldNextPayment)
 				fieldSeen[loan.FieldNextPayment] = struct{}{}
 			}
-		case "nextpaymentamount":
+		case "nextPaymentAmount":
 			if _, ok := fieldSeen[loan.FieldNextPaymentAmount]; !ok {
 				selectedFields = append(selectedFields, loan.FieldNextPaymentAmount)
 				fieldSeen[loan.FieldNextPaymentAmount] = struct{}{}
 			}
-		case "outstandingbalance":
+		case "outstandingBalance":
 			if _, ok := fieldSeen[loan.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, loan.FieldOutstandingBalance)
 				fieldSeen[loan.FieldOutstandingBalance] = struct{}{}
 			}
-		case "paymentfrequency":
+		case "paymentFrequency":
 			if _, ok := fieldSeen[loan.FieldPaymentFrequency]; !ok {
 				selectedFields = append(selectedFields, loan.FieldPaymentFrequency)
 				fieldSeen[loan.FieldPaymentFrequency] = struct{}{}
 			}
-		case "paidinstallments":
+		case "paidInstallments":
 			if _, ok := fieldSeen[loan.FieldPaidInstallments]; !ok {
 				selectedFields = append(selectedFields, loan.FieldPaidInstallments)
 				fieldSeen[loan.FieldPaidInstallments] = struct{}{}
 			}
-		case "provider":
-			if _, ok := fieldSeen[loan.FieldProvider]; !ok {
-				selectedFields = append(selectedFields, loan.FieldProvider)
-				fieldSeen[loan.FieldProvider] = struct{}{}
+		case "paymenttype":
+			if _, ok := fieldSeen[loan.FieldPaymentType]; !ok {
+				selectedFields = append(selectedFields, loan.FieldPaymentType)
+				fieldSeen[loan.FieldPaymentType] = struct{}{}
 			}
-		case "startdate":
+		case "counterpartyName":
+			if _, ok := fieldSeen[loan.FieldCounterpartyName]; !ok {
+				selectedFields = append(selectedFields, loan.FieldCounterpartyName)
+				fieldSeen[loan.FieldCounterpartyName] = struct{}{}
+			}
+		case "startDate":
 			if _, ok := fieldSeen[loan.FieldStartDate]; !ok {
 				selectedFields = append(selectedFields, loan.FieldStartDate)
 				fieldSeen[loan.FieldStartDate] = struct{}{}
@@ -2152,6 +2272,11 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			if _, ok := fieldSeen[loan.FieldStatus]; !ok {
 				selectedFields = append(selectedFields, loan.FieldStatus)
 				fieldSeen[loan.FieldStatus] = struct{}{}
+			}
+		case "isLending":
+			if _, ok := fieldSeen[loan.FieldIsLending]; !ok {
+				selectedFields = append(selectedFields, loan.FieldIsLending)
+				fieldSeen[loan.FieldIsLending] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -2218,6 +2343,178 @@ func newLoanPaginateArgs(rv map[string]any) *loanPaginateArgs {
 	}
 	if v, ok := rv[whereField].(*LoanWhereInput); ok {
 		args.opts = append(args.opts, WithLoanFilter(v.Filter))
+	}
+	return args
+}
+
+// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
+func (ls *LoanScheduleQuery) CollectFields(ctx context.Context, satisfies ...string) (*LoanScheduleQuery, error) {
+	fc := graphql.GetFieldContext(ctx)
+	if fc == nil {
+		return ls, nil
+	}
+	if err := ls.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
+		return nil, err
+	}
+	return ls, nil
+}
+
+func (ls *LoanScheduleQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
+	path = append([]string(nil), path...)
+	var (
+		unknownSeen    bool
+		fieldSeen      = make(map[string]struct{}, len(loanschedule.Columns))
+		selectedFields = []string{loanschedule.FieldID}
+	)
+	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
+		switch field.Name {
+		case "loan":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanClient{config: ls.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ls.withLoan = query
+		case "transactionHistory":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&AccountingEntryClient{config: ls.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			ls.WithNamedTransactionHistory(alias, func(wq *AccountingEntryQuery) {
+				*wq = *query
+			})
+		case "createdat":
+			if _, ok := fieldSeen[loanschedule.FieldCreatedAt]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldCreatedAt)
+				fieldSeen[loanschedule.FieldCreatedAt] = struct{}{}
+			}
+		case "updatedat":
+			if _, ok := fieldSeen[loanschedule.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldUpdatedAt)
+				fieldSeen[loanschedule.FieldUpdatedAt] = struct{}{}
+			}
+		case "deletedat":
+			if _, ok := fieldSeen[loanschedule.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldDeletedAt)
+				fieldSeen[loanschedule.FieldDeletedAt] = struct{}{}
+			}
+		case "amount":
+			if _, ok := fieldSeen[loanschedule.FieldAmount]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldAmount)
+				fieldSeen[loanschedule.FieldAmount] = struct{}{}
+			}
+		case "amountPaid":
+			if _, ok := fieldSeen[loanschedule.FieldAmountPaid]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldAmountPaid)
+				fieldSeen[loanschedule.FieldAmountPaid] = struct{}{}
+			}
+		case "dueDate":
+			if _, ok := fieldSeen[loanschedule.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldDueDate)
+				fieldSeen[loanschedule.FieldDueDate] = struct{}{}
+			}
+		case "datePaid":
+			if _, ok := fieldSeen[loanschedule.FieldDatePaid]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldDatePaid)
+				fieldSeen[loanschedule.FieldDatePaid] = struct{}{}
+			}
+		case "interest":
+			if _, ok := fieldSeen[loanschedule.FieldInterest]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldInterest)
+				fieldSeen[loanschedule.FieldInterest] = struct{}{}
+			}
+		case "installmentNumber":
+			if _, ok := fieldSeen[loanschedule.FieldInstallmentNumber]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldInstallmentNumber)
+				fieldSeen[loanschedule.FieldInstallmentNumber] = struct{}{}
+			}
+		case "principal":
+			if _, ok := fieldSeen[loanschedule.FieldPrincipal]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldPrincipal)
+				fieldSeen[loanschedule.FieldPrincipal] = struct{}{}
+			}
+		case "remainingBalance":
+			if _, ok := fieldSeen[loanschedule.FieldRemainingBalance]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldRemainingBalance)
+				fieldSeen[loanschedule.FieldRemainingBalance] = struct{}{}
+			}
+		case "status":
+			if _, ok := fieldSeen[loanschedule.FieldStatus]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldStatus)
+				fieldSeen[loanschedule.FieldStatus] = struct{}{}
+			}
+		case "id":
+		case "__typename":
+		default:
+			unknownSeen = true
+		}
+	}
+	if !unknownSeen {
+		ls.Select(selectedFields...)
+	}
+	return nil
+}
+
+type loanschedulePaginateArgs struct {
+	first, last   *int
+	after, before *Cursor
+	opts          []LoanSchedulePaginateOption
+}
+
+func newLoanSchedulePaginateArgs(rv map[string]any) *loanschedulePaginateArgs {
+	args := &loanschedulePaginateArgs{}
+	if rv == nil {
+		return args
+	}
+	if v := rv[firstField]; v != nil {
+		args.first = v.(*int)
+	}
+	if v := rv[lastField]; v != nil {
+		args.last = v.(*int)
+	}
+	if v := rv[afterField]; v != nil {
+		args.after = v.(*Cursor)
+	}
+	if v := rv[beforeField]; v != nil {
+		args.before = v.(*Cursor)
+	}
+	if v, ok := rv[orderByField]; ok {
+		switch v := v.(type) {
+		case []*LoanScheduleOrder:
+			args.opts = append(args.opts, WithLoanScheduleOrder(v))
+		case []any:
+			var orders []*LoanScheduleOrder
+			for i := range v {
+				mv, ok := v[i].(map[string]any)
+				if !ok {
+					continue
+				}
+				var (
+					err1, err2 error
+					order      = &LoanScheduleOrder{Field: &LoanScheduleOrderField{}, Direction: entgql.OrderDirectionAsc}
+				)
+				if d, ok := mv[directionField]; ok {
+					err1 = order.Direction.UnmarshalGQL(d)
+				}
+				if f, ok := mv[fieldField]; ok {
+					err2 = order.Field.UnmarshalGQL(f)
+				}
+				if err1 == nil && err2 == nil {
+					orders = append(orders, order)
+				}
+			}
+			args.opts = append(args.opts, WithLoanScheduleOrder(orders))
+		}
+	}
+	if v, ok := rv[whereField].(*LoanScheduleWhereInput); ok {
+		args.opts = append(args.opts, WithLoanScheduleFilter(v.Filter))
 	}
 	return args
 }
@@ -3337,6 +3634,18 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			s.withCompany = query
+		case "loanSchedule":
+			var (
+				alias = field.Alias
+				path  = append(path, alias)
+				query = (&LoanClient{config: s.config}).Query()
+			)
+			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
+				return err
+			}
+			s.WithNamedLoanSchedule(alias, func(wq *LoanQuery) {
+				*wq = *query
+			})
 		case "payables":
 			var (
 				alias = field.Alias
@@ -3930,6 +4239,11 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			if _, ok := fieldSeen[user.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldDeletedAt)
 				fieldSeen[user.FieldDeletedAt] = struct{}{}
+			}
+		case "device":
+			if _, ok := fieldSeen[user.FieldDevice]; !ok {
+				selectedFields = append(selectedFields, user.FieldDevice)
+				fieldSeen[user.FieldDevice] = struct{}{}
 			}
 		case "isdemouser":
 			if _, ok := fieldSeen[user.FieldIsDemoUser]; !ok {

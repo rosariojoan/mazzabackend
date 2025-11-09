@@ -58,16 +58,29 @@ func AggregateCash(ctx context.Context, client *generated.Client, input *model.A
 			return nil, err
 		}
 
+		var itemInflow float64 = 0
+		var itemOutflow float64 = 0
+		var itemBalance float64 = 0
+
+		if item.Inflow != nil {
+			itemInflow = *item.Inflow
+		}
+		if item.Outflow != nil {
+			itemOutflow = *item.Outflow
+		}
+		if item.Balance != nil {
+			itemBalance = *item.Balance
+		}
 		if true {
-			value := *result.Inflow + *item.Inflow
+			value := *result.Inflow + itemInflow
 			result.Inflow = &value
 		}
 		if true {
-			value := *result.Outflow + *item.Outflow
+			value := *result.Outflow + itemOutflow
 			result.Outflow = &value
 		}
 		if true {
-			value := *result.Balance + *item.Balance
+			value := *result.Balance + itemBalance
 			result.Balance = &value
 		}
 	}

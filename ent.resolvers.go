@@ -124,6 +124,11 @@ func (r *queryResolver) Loans(ctx context.Context, after *entgql.Cursor[int], fi
 		)
 }
 
+// LoanSchedules is the resolver for the loanSchedules field.
+func (r *queryResolver) LoanSchedules(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanScheduleOrder, where *generated.LoanScheduleWhereInput) (*generated.LoanScheduleConnection, error) {
+	panic(fmt.Errorf("not implemented: LoanSchedules - loanSchedules"))
+}
+
 // MemberSignupTokens is the resolver for the memberSignupTokens field.
 func (r *queryResolver) MemberSignupTokens(ctx context.Context, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.MemberSignupTokenOrder, where *generated.MemberSignupTokenWhereInput) (*generated.MemberSignupTokenConnection, error) {
 	_, currentCompany := utils.GetSession(&ctx)

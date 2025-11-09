@@ -40,6 +40,8 @@ const (
 	FieldTaxId = "tax_id"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
+	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
+	EdgeLoanSchedule = "loan_schedule"
 	// EdgeReceivables holds the string denoting the receivables edge name in mutations.
 	EdgeReceivables = "receivables"
 	// EdgeInvoices holds the string denoting the invoices edge name in mutations.
@@ -53,6 +55,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_customers"
+	// LoanScheduleTable is the table that holds the loan_schedule relation/edge.
+	LoanScheduleTable = "loans"
+	// LoanScheduleInverseTable is the table name for the Loan entity.
+	// It exists in this package in order to avoid circular dependency with the "loan" package.
+	LoanScheduleInverseTable = "loans"
+	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
+	LoanScheduleColumn = "customer_loan_schedule"
 	// ReceivablesTable is the table that holds the receivables relation/edge.
 	ReceivablesTable = "receivables"
 	// ReceivablesInverseTable is the table name for the Receivable entity.
@@ -197,6 +206,20 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
+// ByLoanScheduleCount orders the results by loan_schedule count.
+func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
+	}
+}
+
+// ByLoanSchedule orders the results by loan_schedule terms.
+func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByReceivablesCount orders the results by receivables count.
 func ByReceivablesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -229,6 +252,13 @@ func newCompanyStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+	)
+}
+func newLoanScheduleStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanScheduleInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
 	)
 }
 func newReceivablesStep() *sqlgraph.Step {

@@ -9,6 +9,7 @@ import (
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/user"
 	"time"
 
@@ -238,6 +239,21 @@ func (aec *AccountingEntryCreate) SetNillableLoanID(id *int) *AccountingEntryCre
 // SetLoan sets the "loan" edge to the Loan entity.
 func (aec *AccountingEntryCreate) SetLoan(l *Loan) *AccountingEntryCreate {
 	return aec.SetLoanID(l.ID)
+}
+
+// AddLoanScheduleIDs adds the "loanSchedules" edge to the LoanSchedule entity by IDs.
+func (aec *AccountingEntryCreate) AddLoanScheduleIDs(ids ...int) *AccountingEntryCreate {
+	aec.mutation.AddLoanScheduleIDs(ids...)
+	return aec
+}
+
+// AddLoanSchedules adds the "loanSchedules" edges to the LoanSchedule entity.
+func (aec *AccountingEntryCreate) AddLoanSchedules(l ...*LoanSchedule) *AccountingEntryCreate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return aec.AddLoanScheduleIDs(ids...)
 }
 
 // Mutation returns the AccountingEntryMutation object of the builder.
@@ -511,6 +527,22 @@ func (aec *AccountingEntryCreate) createSpec() (*AccountingEntry, *sqlgraph.Crea
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.loan_transaction_history = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := aec.mutation.LoanSchedulesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   accountingentry.LoanSchedulesTable,
+			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

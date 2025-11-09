@@ -16,16 +16,6 @@ import (
 	"mazza/mazza/generated/model"
 )
 
-// CreateLoan is the resolver for the createLoan field.
-func (r *mutationResolver) CreateLoan(ctx context.Context, input model.CreateLoanInputData) (*generated.Loan, error) {
-	return finance.CreateLoan(ctx, r.client, input)
-}
-
-// UpdateLoan is the resolver for the updateLoan field.
-func (r *mutationResolver) UpdateLoan(ctx context.Context, input model.UpdateLoanInputData) (*generated.Loan, error) {
-	return finance.UpdateLoan(ctx, r.client, input)
-}
-
 // ClientList is the resolver for the clientList field.
 func (r *queryResolver) ClientList(ctx context.Context, top *int) ([]*model.ClientList, error) {
 	return clients.GetClientList(ctx, r.client, top)

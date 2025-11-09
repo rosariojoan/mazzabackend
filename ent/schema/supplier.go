@@ -40,15 +40,18 @@ func (Supplier) Fields() []ent.Field {
 // Company-wise, supplier must have unique names and unique tax IDs
 func (Supplier) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("name").Edges("company").Unique(),
-		index.Fields("taxId").Edges("company").Unique(),
+		index.Fields("name", "taxId").Edges("company").Unique(),
 	}
 }
 
 // Edges of the Supplier.
 func (Supplier) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("suppliers").Unique(),                   // a supplier can belong to only one company
+		edge.From("company", Company.Type).Ref("suppliers").Unique(), // a supplier can belong to only one company
+		edge.To("loan_schedule", Loan.Type).Annotations(
+			entsql.OnDelete(entsql.SetNull),
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
 		edge.To("payables", Payable.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a supplier can have multiple accounts payable
 	}
 }

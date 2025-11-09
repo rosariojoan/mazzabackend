@@ -24,6 +24,8 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// Current user device info
+	Device *string `json:"device,omitempty"`
 	// IsDemoUser holds the value of the "isDemoUser" field.
 	IsDemoUser *bool `json:"isDemoUser,omitempty"`
 	// FirebaseUID holds the value of the "firebaseUID" field.
@@ -298,7 +300,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldFirebaseUID, user.FieldFcmToken, user.FieldExpoPushToken, user.FieldEmail, user.FieldName, user.FieldAddress, user.FieldAvatar, user.FieldPhotoURL, user.FieldDepartment, user.FieldPhone, user.FieldGender:
+		case user.FieldDevice, user.FieldFirebaseUID, user.FieldFcmToken, user.FieldExpoPushToken, user.FieldEmail, user.FieldName, user.FieldAddress, user.FieldAvatar, user.FieldPhotoURL, user.FieldDepartment, user.FieldPhone, user.FieldGender:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldBirthdate, user.FieldLastLogin:
 			values[i] = new(sql.NullTime)
@@ -343,6 +345,13 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.DeletedAt = new(time.Time)
 				*u.DeletedAt = value.Time
+			}
+		case user.FieldDevice:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field device", values[i])
+			} else if value.Valid {
+				u.Device = new(string)
+				*u.Device = value.String
 			}
 		case user.FieldIsDemoUser:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -586,6 +595,11 @@ func (u *User) String() string {
 	if v := u.DeletedAt; v != nil {
 		builder.WriteString("deletedAt=")
 		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := u.Device; v != nil {
+		builder.WriteString("device=")
+		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := u.IsDemoUser; v != nil {

@@ -55,6 +55,8 @@ const (
 	EdgeUser = "user"
 	// EdgeLoan holds the string denoting the loan edge name in mutations.
 	EdgeLoan = "loan"
+	// EdgeLoanSchedules holds the string denoting the loanschedules edge name in mutations.
+	EdgeLoanSchedules = "loanSchedules"
 	// Table holds the table name of the accountingentry in the database.
 	Table = "accounting_entries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -78,6 +80,11 @@ const (
 	LoanInverseTable = "loans"
 	// LoanColumn is the table column denoting the loan relation/edge.
 	LoanColumn = "loan_transaction_history"
+	// LoanSchedulesTable is the table that holds the loanSchedules relation/edge. The primary key declared below.
+	LoanSchedulesTable = "loan_schedule_transaction_history"
+	// LoanSchedulesInverseTable is the table name for the LoanSchedule entity.
+	// It exists in this package in order to avoid circular dependency with the "loanschedule" package.
+	LoanSchedulesInverseTable = "loan_schedules"
 )
 
 // Columns holds all SQL columns for accountingentry fields.
@@ -108,6 +115,12 @@ var ForeignKeys = []string{
 	"loan_transaction_history",
 	"user_accounting_entries",
 }
+
+var (
+	// LoanSchedulesPrimaryKey and LoanSchedulesColumn2 are the table columns denoting the
+	// primary key for the loanSchedules relation (M2M).
+	LoanSchedulesPrimaryKey = []string{"loan_schedule_id", "accounting_entry_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -290,6 +303,20 @@ func ByLoanField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newLoanStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByLoanSchedulesCount orders the results by loanSchedules count.
+func ByLoanSchedulesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoanSchedulesStep(), opts...)
+	}
+}
+
+// ByLoanSchedules orders the results by loanSchedules terms.
+func ByLoanSchedules(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanSchedulesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -309,6 +336,13 @@ func newLoanStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(LoanInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, LoanTable, LoanColumn),
+	)
+}
+func newLoanSchedulesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanSchedulesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, LoanSchedulesTable, LoanSchedulesPrimaryKey...),
 	)
 }
 

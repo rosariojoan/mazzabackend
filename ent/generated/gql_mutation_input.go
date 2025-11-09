@@ -11,6 +11,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/project"
@@ -25,22 +26,23 @@ import (
 
 // CreateAccountingEntryInput represents a mutation input for creating accountingentries.
 type CreateAccountingEntryInput struct {
-	Number      int
-	Group       int
-	Date        *time.Time
-	Account     string
-	Label       string
-	Amount      float64
-	Description string
-	AccountType accountingentry.AccountType
-	Category    *string
-	Main        *string
-	IsDebit     bool
-	IsReversal  *bool
-	Reversed    *bool
-	CompanyID   *int
-	UserID      *int
-	LoanID      *int
+	Number          int
+	Group           int
+	Date            *time.Time
+	Account         string
+	Label           string
+	Amount          float64
+	Description     string
+	AccountType     accountingentry.AccountType
+	Category        *string
+	Main            *string
+	IsDebit         bool
+	IsReversal      *bool
+	Reversed        *bool
+	CompanyID       *int
+	UserID          *int
+	LoanID          *int
+	LoanScheduleIDs []int
 }
 
 // Mutate applies the CreateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -77,6 +79,9 @@ func (i *CreateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.LoanID; v != nil {
 		m.SetLoanID(*v)
 	}
+	if v := i.LoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the CreateAccountingEntryInput on the AccountingEntryCreate builder.
@@ -87,25 +92,28 @@ func (c *AccountingEntryCreate) SetInput(i CreateAccountingEntryInput) *Accounti
 
 // UpdateAccountingEntryInput represents a mutation input for updating accountingentries.
 type UpdateAccountingEntryInput struct {
-	Number       *int
-	Group        *int
-	Date         *time.Time
-	Account      *string
-	Label        *string
-	Amount       *float64
-	Description  *string
-	AccountType  *accountingentry.AccountType
-	Category     *string
-	Main         *string
-	IsDebit      *bool
-	IsReversal   *bool
-	Reversed     *bool
-	ClearCompany bool
-	CompanyID    *int
-	ClearUser    bool
-	UserID       *int
-	ClearLoan    bool
-	LoanID       *int
+	Number                *int
+	Group                 *int
+	Date                  *time.Time
+	Account               *string
+	Label                 *string
+	Amount                *float64
+	Description           *string
+	AccountType           *accountingentry.AccountType
+	Category              *string
+	Main                  *string
+	IsDebit               *bool
+	IsReversal            *bool
+	Reversed              *bool
+	ClearCompany          bool
+	CompanyID             *int
+	ClearUser             bool
+	UserID                *int
+	ClearLoan             bool
+	LoanID                *int
+	ClearLoanSchedules    bool
+	AddLoanScheduleIDs    []int
+	RemoveLoanScheduleIDs []int
 }
 
 // Mutate applies the UpdateAccountingEntryInput on the AccountingEntryMutation builder.
@@ -167,6 +175,15 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.LoanID; v != nil {
 		m.SetLoanID(*v)
 	}
+	if i.ClearLoanSchedules {
+		m.ClearLoanSchedules()
+	}
+	if v := i.AddLoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
+	}
+	if v := i.RemoveLoanScheduleIDs; len(v) > 0 {
+		m.RemoveLoanScheduleIDs(v...)
+	}
 }
 
 // SetInput applies the change-set in the UpdateAccountingEntryInput on the AccountingEntryUpdate builder.
@@ -211,6 +228,7 @@ type CreateCompanyInput struct {
 	InventoryMovementIDs []int
 	InvoiceIDs           []int
 	LoanIDs              []int
+	LoanScheduleIDs      []int
 	MemberSignupTokenIDs []int
 	ProductIDs           []int
 	ProjectIDs           []int
@@ -298,6 +316,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.LoanIDs; len(v) > 0 {
 		m.AddLoanIDs(v...)
+	}
+	if v := i.LoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
 	}
 	if v := i.MemberSignupTokenIDs; len(v) > 0 {
 		m.AddMemberSignupTokenIDs(v...)
@@ -402,6 +423,9 @@ type UpdateCompanyInput struct {
 	ClearLoans                 bool
 	AddLoanIDs                 []int
 	RemoveLoanIDs              []int
+	ClearLoanSchedule          bool
+	AddLoanScheduleIDs         []int
+	RemoveLoanScheduleIDs      []int
 	ClearMemberSignupTokens    bool
 	AddMemberSignupTokenIDs    []int
 	RemoveMemberSignupTokenIDs []int
@@ -611,6 +635,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveLoanIDs; len(v) > 0 {
 		m.RemoveLoanIDs(v...)
+	}
+	if i.ClearLoanSchedule {
+		m.ClearLoanSchedule()
+	}
+	if v := i.AddLoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
+	}
+	if v := i.RemoveLoanScheduleIDs; len(v) > 0 {
+		m.RemoveLoanScheduleIDs(v...)
 	}
 	if i.ClearMemberSignupTokens {
 		m.ClearMemberSignupTokens()
@@ -1795,9 +1828,14 @@ type CreateLoanInput struct {
 	OutstandingBalance    float64
 	PaymentFrequency      *loan.PaymentFrequency
 	PaidInstallments      *int
-	Provider              string
+	PaymentType           *loan.PaymentType
+	CounterpartyName      string
 	StartDate             *time.Time
 	Status                loan.Status
+	IsLending             *bool
+	ClientID              *int
+	SupplierID            *int
+	LoanScheduleIDs       []int
 	TransactionHistoryIDs []int
 }
 
@@ -1827,11 +1865,26 @@ func (i *CreateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.PaidInstallments; v != nil {
 		m.SetPaidInstallments(*v)
 	}
-	m.SetProvider(i.Provider)
+	if v := i.PaymentType; v != nil {
+		m.SetPaymentType(*v)
+	}
+	m.SetCounterpartyName(i.CounterpartyName)
 	if v := i.StartDate; v != nil {
 		m.SetStartDate(*v)
 	}
 	m.SetStatus(i.Status)
+	if v := i.IsLending; v != nil {
+		m.SetIsLending(*v)
+	}
+	if v := i.ClientID; v != nil {
+		m.SetClientID(*v)
+	}
+	if v := i.SupplierID; v != nil {
+		m.SetSupplierID(*v)
+	}
+	if v := i.LoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
+	}
 	if v := i.TransactionHistoryIDs; len(v) > 0 {
 		m.AddTransactionHistoryIDs(v...)
 	}
@@ -1861,9 +1914,14 @@ type UpdateLoanInput struct {
 	OutstandingBalance          *float64
 	PaymentFrequency            *loan.PaymentFrequency
 	PaidInstallments            *int
-	Provider                    *string
+	PaymentType                 *loan.PaymentType
+	CounterpartyName            *string
 	StartDate                   *time.Time
 	Status                      *loan.Status
+	IsLending                   *bool
+	ClearLoanSchedule           bool
+	AddLoanScheduleIDs          []int
+	RemoveLoanScheduleIDs       []int
 	ClearTransactionHistory     bool
 	AddTransactionHistoryIDs    []int
 	RemoveTransactionHistoryIDs []int
@@ -1919,14 +1977,29 @@ func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.PaidInstallments; v != nil {
 		m.SetPaidInstallments(*v)
 	}
-	if v := i.Provider; v != nil {
-		m.SetProvider(*v)
+	if v := i.PaymentType; v != nil {
+		m.SetPaymentType(*v)
+	}
+	if v := i.CounterpartyName; v != nil {
+		m.SetCounterpartyName(*v)
 	}
 	if v := i.StartDate; v != nil {
 		m.SetStartDate(*v)
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
+	}
+	if v := i.IsLending; v != nil {
+		m.SetIsLending(*v)
+	}
+	if i.ClearLoanSchedule {
+		m.ClearLoanSchedule()
+	}
+	if v := i.AddLoanScheduleIDs; len(v) > 0 {
+		m.AddLoanScheduleIDs(v...)
+	}
+	if v := i.RemoveLoanScheduleIDs; len(v) > 0 {
+		m.RemoveLoanScheduleIDs(v...)
 	}
 	if i.ClearTransactionHistory {
 		m.ClearTransactionHistory()
@@ -1947,6 +2020,126 @@ func (c *LoanUpdate) SetInput(i UpdateLoanInput) *LoanUpdate {
 
 // SetInput applies the change-set in the UpdateLoanInput on the LoanUpdateOne builder.
 func (c *LoanUpdateOne) SetInput(i UpdateLoanInput) *LoanUpdateOne {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// CreateLoanScheduleInput represents a mutation input for creating loanschedules.
+type CreateLoanScheduleInput struct {
+	Amount                float64
+	AmountPaid            *float64
+	DueDate               time.Time
+	DatePaid              *time.Time
+	Interest              float64
+	InstallmentNumber     int
+	Principal             float64
+	RemainingBalance      *float64
+	Status                *loanschedule.Status
+	TransactionHistoryIDs []int
+}
+
+// Mutate applies the CreateLoanScheduleInput on the LoanScheduleMutation builder.
+func (i *CreateLoanScheduleInput) Mutate(m *LoanScheduleMutation) {
+	m.SetAmount(i.Amount)
+	if v := i.AmountPaid; v != nil {
+		m.SetAmountPaid(*v)
+	}
+	m.SetDueDate(i.DueDate)
+	if v := i.DatePaid; v != nil {
+		m.SetDatePaid(*v)
+	}
+	m.SetInterest(i.Interest)
+	m.SetInstallmentNumber(i.InstallmentNumber)
+	m.SetPrincipal(i.Principal)
+	if v := i.RemainingBalance; v != nil {
+		m.SetRemainingBalance(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if v := i.TransactionHistoryIDs; len(v) > 0 {
+		m.AddTransactionHistoryIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the CreateLoanScheduleInput on the LoanScheduleCreate builder.
+func (c *LoanScheduleCreate) SetInput(i CreateLoanScheduleInput) *LoanScheduleCreate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// UpdateLoanScheduleInput represents a mutation input for updating loanschedules.
+type UpdateLoanScheduleInput struct {
+	Amount                      *float64
+	AmountPaid                  *float64
+	DueDate                     *time.Time
+	ClearDatePaid               bool
+	DatePaid                    *time.Time
+	Interest                    *float64
+	InstallmentNumber           *int
+	Principal                   *float64
+	ClearRemainingBalance       bool
+	RemainingBalance            *float64
+	Status                      *loanschedule.Status
+	ClearTransactionHistory     bool
+	AddTransactionHistoryIDs    []int
+	RemoveTransactionHistoryIDs []int
+}
+
+// Mutate applies the UpdateLoanScheduleInput on the LoanScheduleMutation builder.
+func (i *UpdateLoanScheduleInput) Mutate(m *LoanScheduleMutation) {
+	if v := i.Amount; v != nil {
+		m.SetAmount(*v)
+	}
+	if v := i.AmountPaid; v != nil {
+		m.SetAmountPaid(*v)
+	}
+	if v := i.DueDate; v != nil {
+		m.SetDueDate(*v)
+	}
+	if i.ClearDatePaid {
+		m.ClearDatePaid()
+	}
+	if v := i.DatePaid; v != nil {
+		m.SetDatePaid(*v)
+	}
+	if v := i.Interest; v != nil {
+		m.SetInterest(*v)
+	}
+	if v := i.InstallmentNumber; v != nil {
+		m.SetInstallmentNumber(*v)
+	}
+	if v := i.Principal; v != nil {
+		m.SetPrincipal(*v)
+	}
+	if i.ClearRemainingBalance {
+		m.ClearRemainingBalance()
+	}
+	if v := i.RemainingBalance; v != nil {
+		m.SetRemainingBalance(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+	if i.ClearTransactionHistory {
+		m.ClearTransactionHistory()
+	}
+	if v := i.AddTransactionHistoryIDs; len(v) > 0 {
+		m.AddTransactionHistoryIDs(v...)
+	}
+	if v := i.RemoveTransactionHistoryIDs; len(v) > 0 {
+		m.RemoveTransactionHistoryIDs(v...)
+	}
+}
+
+// SetInput applies the change-set in the UpdateLoanScheduleInput on the LoanScheduleUpdate builder.
+func (c *LoanScheduleUpdate) SetInput(i UpdateLoanScheduleInput) *LoanScheduleUpdate {
+	i.Mutate(c.Mutation())
+	return c
+}
+
+// SetInput applies the change-set in the UpdateLoanScheduleInput on the LoanScheduleUpdateOne builder.
+func (c *LoanScheduleUpdateOne) SetInput(i UpdateLoanScheduleInput) *LoanScheduleUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -2939,6 +3132,7 @@ func (c *TreasuryUpdateOne) SetInput(i UpdateTreasuryInput) *TreasuryUpdateOne {
 
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
+	Device                      *string
 	FirebaseUID                 string
 	FcmToken                    *string
 	ExpoPushToken               *string
@@ -2972,6 +3166,9 @@ type CreateUserInput struct {
 
 // Mutate applies the CreateUserInput on the UserMutation builder.
 func (i *CreateUserInput) Mutate(m *UserMutation) {
+	if v := i.Device; v != nil {
+		m.SetDevice(*v)
+	}
 	m.SetFirebaseUID(i.FirebaseUID)
 	if v := i.FcmToken; v != nil {
 		m.SetFcmToken(*v)
@@ -3061,6 +3258,8 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
+	ClearDevice                       bool
+	Device                            *string
 	FirebaseUID                       *string
 	ClearFcmToken                     bool
 	FcmToken                          *string
@@ -3133,6 +3332,12 @@ type UpdateUserInput struct {
 
 // Mutate applies the UpdateUserInput on the UserMutation builder.
 func (i *UpdateUserInput) Mutate(m *UserMutation) {
+	if i.ClearDevice {
+		m.ClearDevice()
+	}
+	if v := i.Device; v != nil {
+		m.SetDevice(*v)
+	}
 	if v := i.FirebaseUID; v != nil {
 		m.SetFirebaseUID(*v)
 	}

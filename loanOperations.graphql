@@ -1,0 +1,18 @@
+input CreateLoanInputData {
+  loanInput: CreateLoanInput!
+  accountingEntry: BaseEntryRegistrationInput
+}
+
+input UpdateLoanInputData {
+  id: ID!
+  loanInput: UpdateLoanInput!
+  accountingEntry: BaseEntryRegistrationInput
+}
+
+extend type Mutation {
+    createLoan(input: CreateLoanInputData!, schedule: [CreateLoanScheduleInput!]): Loan!
+    createLoanSchedule(input: [CreateLoanScheduleInput!]!, loanID: ID!): [LoanSchedule!]!
+
+    updateLoan(input: UpdateLoanInputData!): Loan!
+    updateLoanSchedule(loanID: ID!, input: [UpdateLoanScheduleInput!]!): [LoanSchedule!]!
+}

@@ -16,6 +16,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
@@ -47,6 +48,7 @@ const (
 
 	// Node types.
 	TypeAccountingEntry   = "AccountingEntry"
+	TypeCalendar          = "Calendar"
 	TypeCompany           = "Company"
 	TypeCompanyDocument   = "CompanyDocument"
 	TypeCustomer          = "Customer"
@@ -56,6 +58,7 @@ const (
 	TypeInventoryMovement = "InventoryMovement"
 	TypeInvoice           = "Invoice"
 	TypeLoan              = "Loan"
+	TypeLoanSchedule      = "LoanSchedule"
 	TypeMemberSignupToken = "MemberSignupToken"
 	TypePayable           = "Payable"
 	TypeProduct           = "Product"
@@ -74,38 +77,41 @@ const (
 // AccountingEntryMutation represents an operation that mutates the AccountingEntry nodes in the graph.
 type AccountingEntryMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int
-	createdAt      *time.Time
-	updatedAt      *time.Time
-	deletedAt      *time.Time
-	number         *int
-	addnumber      *int
-	group          *int
-	addgroup       *int
-	date           *time.Time
-	account        *string
-	label          *string
-	amount         *float64
-	addamount      *float64
-	description    *string
-	accountType    *accountingentry.AccountType
-	category       *string
-	main           *string
-	isDebit        *bool
-	isReversal     *bool
-	reversed       *bool
-	clearedFields  map[string]struct{}
-	company        *int
-	clearedcompany bool
-	user           *int
-	cleareduser    bool
-	loan           *int
-	clearedloan    bool
-	done           bool
-	oldValue       func(context.Context) (*AccountingEntry, error)
-	predicates     []predicate.AccountingEntry
+	op                   Op
+	typ                  string
+	id                   *int
+	createdAt            *time.Time
+	updatedAt            *time.Time
+	deletedAt            *time.Time
+	number               *int
+	addnumber            *int
+	group                *int
+	addgroup             *int
+	date                 *time.Time
+	account              *string
+	label                *string
+	amount               *float64
+	addamount            *float64
+	description          *string
+	accountType          *accountingentry.AccountType
+	category             *string
+	main                 *string
+	isDebit              *bool
+	isReversal           *bool
+	reversed             *bool
+	clearedFields        map[string]struct{}
+	company              *int
+	clearedcompany       bool
+	user                 *int
+	cleareduser          bool
+	loan                 *int
+	clearedloan          bool
+	loanSchedules        map[int]struct{}
+	removedloanSchedules map[int]struct{}
+	clearedloanSchedules bool
+	done                 bool
+	oldValue             func(context.Context) (*AccountingEntry, error)
+	predicates           []predicate.AccountingEntry
 }
 
 var _ ent.Mutation = (*AccountingEntryMutation)(nil)
@@ -972,6 +978,60 @@ func (m *AccountingEntryMutation) ResetLoan() {
 	m.clearedloan = false
 }
 
+// AddLoanScheduleIDs adds the "loanSchedules" edge to the LoanSchedule entity by ids.
+func (m *AccountingEntryMutation) AddLoanScheduleIDs(ids ...int) {
+	if m.loanSchedules == nil {
+		m.loanSchedules = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.loanSchedules[ids[i]] = struct{}{}
+	}
+}
+
+// ClearLoanSchedules clears the "loanSchedules" edge to the LoanSchedule entity.
+func (m *AccountingEntryMutation) ClearLoanSchedules() {
+	m.clearedloanSchedules = true
+}
+
+// LoanSchedulesCleared reports if the "loanSchedules" edge to the LoanSchedule entity was cleared.
+func (m *AccountingEntryMutation) LoanSchedulesCleared() bool {
+	return m.clearedloanSchedules
+}
+
+// RemoveLoanScheduleIDs removes the "loanSchedules" edge to the LoanSchedule entity by IDs.
+func (m *AccountingEntryMutation) RemoveLoanScheduleIDs(ids ...int) {
+	if m.removedloanSchedules == nil {
+		m.removedloanSchedules = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.loanSchedules, ids[i])
+		m.removedloanSchedules[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedLoanSchedules returns the removed IDs of the "loanSchedules" edge to the LoanSchedule entity.
+func (m *AccountingEntryMutation) RemovedLoanSchedulesIDs() (ids []int) {
+	for id := range m.removedloanSchedules {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// LoanSchedulesIDs returns the "loanSchedules" edge IDs in the mutation.
+func (m *AccountingEntryMutation) LoanSchedulesIDs() (ids []int) {
+	for id := range m.loanSchedules {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetLoanSchedules resets all changes to the "loanSchedules" edge.
+func (m *AccountingEntryMutation) ResetLoanSchedules() {
+	m.loanSchedules = nil
+	m.clearedloanSchedules = false
+	m.removedloanSchedules = nil
+}
+
 // Where appends a list predicates to the AccountingEntryMutation builder.
 func (m *AccountingEntryMutation) Where(ps ...predicate.AccountingEntry) {
 	m.predicates = append(m.predicates, ps...)
@@ -1408,7 +1468,7 @@ func (m *AccountingEntryMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *AccountingEntryMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.company != nil {
 		edges = append(edges, accountingentry.EdgeCompany)
 	}
@@ -1417,6 +1477,9 @@ func (m *AccountingEntryMutation) AddedEdges() []string {
 	}
 	if m.loan != nil {
 		edges = append(edges, accountingentry.EdgeLoan)
+	}
+	if m.loanSchedules != nil {
+		edges = append(edges, accountingentry.EdgeLoanSchedules)
 	}
 	return edges
 }
@@ -1437,25 +1500,42 @@ func (m *AccountingEntryMutation) AddedIDs(name string) []ent.Value {
 		if id := m.loan; id != nil {
 			return []ent.Value{*id}
 		}
+	case accountingentry.EdgeLoanSchedules:
+		ids := make([]ent.Value, 0, len(m.loanSchedules))
+		for id := range m.loanSchedules {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *AccountingEntryMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
+	if m.removedloanSchedules != nil {
+		edges = append(edges, accountingentry.EdgeLoanSchedules)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *AccountingEntryMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case accountingentry.EdgeLoanSchedules:
+		ids := make([]ent.Value, 0, len(m.removedloanSchedules))
+		for id := range m.removedloanSchedules {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *AccountingEntryMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedcompany {
 		edges = append(edges, accountingentry.EdgeCompany)
 	}
@@ -1464,6 +1544,9 @@ func (m *AccountingEntryMutation) ClearedEdges() []string {
 	}
 	if m.clearedloan {
 		edges = append(edges, accountingentry.EdgeLoan)
+	}
+	if m.clearedloanSchedules {
+		edges = append(edges, accountingentry.EdgeLoanSchedules)
 	}
 	return edges
 }
@@ -1478,6 +1561,8 @@ func (m *AccountingEntryMutation) EdgeCleared(name string) bool {
 		return m.cleareduser
 	case accountingentry.EdgeLoan:
 		return m.clearedloan
+	case accountingentry.EdgeLoanSchedules:
+		return m.clearedloanSchedules
 	}
 	return false
 }
@@ -1512,8 +1597,275 @@ func (m *AccountingEntryMutation) ResetEdge(name string) error {
 	case accountingentry.EdgeLoan:
 		m.ResetLoan()
 		return nil
+	case accountingentry.EdgeLoanSchedules:
+		m.ResetLoanSchedules()
+		return nil
 	}
 	return fmt.Errorf("unknown AccountingEntry edge %s", name)
+}
+
+// CalendarMutation represents an operation that mutates the Calendar nodes in the graph.
+type CalendarMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Calendar, error)
+	predicates    []predicate.Calendar
+}
+
+var _ ent.Mutation = (*CalendarMutation)(nil)
+
+// calendarOption allows management of the mutation configuration using functional options.
+type calendarOption func(*CalendarMutation)
+
+// newCalendarMutation creates new mutation for the Calendar entity.
+func newCalendarMutation(c config, op Op, opts ...calendarOption) *CalendarMutation {
+	m := &CalendarMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeCalendar,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withCalendarID sets the ID field of the mutation.
+func withCalendarID(id int) calendarOption {
+	return func(m *CalendarMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Calendar
+		)
+		m.oldValue = func(ctx context.Context) (*Calendar, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Calendar.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withCalendar sets the old Calendar of the mutation.
+func withCalendar(node *Calendar) calendarOption {
+	return func(m *CalendarMutation) {
+		m.oldValue = func(context.Context) (*Calendar, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m CalendarMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m CalendarMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("generated: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *CalendarMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *CalendarMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Calendar.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// Where appends a list predicates to the CalendarMutation builder.
+func (m *CalendarMutation) Where(ps ...predicate.Calendar) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the CalendarMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *CalendarMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Calendar, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *CalendarMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *CalendarMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Calendar).
+func (m *CalendarMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *CalendarMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *CalendarMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *CalendarMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown Calendar field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CalendarMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Calendar field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *CalendarMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *CalendarMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CalendarMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown Calendar numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *CalendarMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *CalendarMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *CalendarMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Calendar nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *CalendarMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown Calendar field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *CalendarMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *CalendarMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *CalendarMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *CalendarMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *CalendarMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *CalendarMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *CalendarMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Calendar unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *CalendarMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Calendar edge %s", name)
 }
 
 // CompanyMutation represents an operation that mutates the Company nodes in the graph.
@@ -1579,6 +1931,9 @@ type CompanyMutation struct {
 	loans                     map[int]struct{}
 	removedloans              map[int]struct{}
 	clearedloans              bool
+	loan_schedule             map[int]struct{}
+	removedloan_schedule      map[int]struct{}
+	clearedloan_schedule      bool
 	memberSignupTokens        map[int]struct{}
 	removedmemberSignupTokens map[int]struct{}
 	clearedmemberSignupTokens bool
@@ -3302,6 +3657,60 @@ func (m *CompanyMutation) ResetLoans() {
 	m.removedloans = nil
 }
 
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by ids.
+func (m *CompanyMutation) AddLoanScheduleIDs(ids ...int) {
+	if m.loan_schedule == nil {
+		m.loan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.loan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// ClearLoanSchedule clears the "loan_schedule" edge to the LoanSchedule entity.
+func (m *CompanyMutation) ClearLoanSchedule() {
+	m.clearedloan_schedule = true
+}
+
+// LoanScheduleCleared reports if the "loan_schedule" edge to the LoanSchedule entity was cleared.
+func (m *CompanyMutation) LoanScheduleCleared() bool {
+	return m.clearedloan_schedule
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (m *CompanyMutation) RemoveLoanScheduleIDs(ids ...int) {
+	if m.removedloan_schedule == nil {
+		m.removedloan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.loan_schedule, ids[i])
+		m.removedloan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the LoanSchedule entity.
+func (m *CompanyMutation) RemovedLoanScheduleIDs() (ids []int) {
+	for id := range m.removedloan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
+func (m *CompanyMutation) LoanScheduleIDs() (ids []int) {
+	for id := range m.loan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
+func (m *CompanyMutation) ResetLoanSchedule() {
+	m.loan_schedule = nil
+	m.clearedloan_schedule = false
+	m.removedloan_schedule = nil
+}
+
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by ids.
 func (m *CompanyMutation) AddMemberSignupTokenIDs(ids ...int) {
 	if m.memberSignupTokens == nil {
@@ -4556,7 +4965,7 @@ func (m *CompanyMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CompanyMutation) AddedEdges() []string {
-	edges := make([]string, 0, 22)
+	edges := make([]string, 0, 23)
 	if m.availableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4586,6 +4995,9 @@ func (m *CompanyMutation) AddedEdges() []string {
 	}
 	if m.loans != nil {
 		edges = append(edges, company.EdgeLoans)
+	}
+	if m.loan_schedule != nil {
+		edges = append(edges, company.EdgeLoanSchedule)
 	}
 	if m.memberSignupTokens != nil {
 		edges = append(edges, company.EdgeMemberSignupTokens)
@@ -4690,6 +5102,12 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case company.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.loan_schedule))
+		for id := range m.loan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case company.EdgeMemberSignupTokens:
 		ids := make([]ent.Value, 0, len(m.memberSignupTokens))
 		for id := range m.memberSignupTokens {
@@ -4766,7 +5184,7 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CompanyMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 22)
+	edges := make([]string, 0, 23)
 	if m.removedavailableRoles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4796,6 +5214,9 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	}
 	if m.removedloans != nil {
 		edges = append(edges, company.EdgeLoans)
+	}
+	if m.removedloan_schedule != nil {
+		edges = append(edges, company.EdgeLoanSchedule)
 	}
 	if m.removedmemberSignupTokens != nil {
 		edges = append(edges, company.EdgeMemberSignupTokens)
@@ -4897,6 +5318,12 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case company.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
+		for id := range m.removedloan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case company.EdgeMemberSignupTokens:
 		ids := make([]ent.Value, 0, len(m.removedmemberSignupTokens))
 		for id := range m.removedmemberSignupTokens {
@@ -4969,7 +5396,7 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CompanyMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 22)
+	edges := make([]string, 0, 23)
 	if m.clearedavailableRoles {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
@@ -4999,6 +5426,9 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	}
 	if m.clearedloans {
 		edges = append(edges, company.EdgeLoans)
+	}
+	if m.clearedloan_schedule {
+		edges = append(edges, company.EdgeLoanSchedule)
 	}
 	if m.clearedmemberSignupTokens {
 		edges = append(edges, company.EdgeMemberSignupTokens)
@@ -5063,6 +5493,8 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 		return m.clearedinvoices
 	case company.EdgeLoans:
 		return m.clearedloans
+	case company.EdgeLoanSchedule:
+		return m.clearedloan_schedule
 	case company.EdgeMemberSignupTokens:
 		return m.clearedmemberSignupTokens
 	case company.EdgeProducts:
@@ -5135,6 +5567,9 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 		return nil
 	case company.EdgeLoans:
 		m.ResetLoans()
+		return nil
+	case company.EdgeLoanSchedule:
+		m.ResetLoanSchedule()
 		return nil
 	case company.EdgeMemberSignupTokens:
 		m.ResetMemberSignupTokens()
@@ -6469,33 +6904,36 @@ func (m *CompanyDocumentMutation) ResetEdge(name string) error {
 // CustomerMutation represents an operation that mutates the Customer nodes in the graph.
 type CustomerMutation struct {
 	config
-	op                 Op
-	typ                string
-	id                 *int
-	createdAt          *time.Time
-	updatedAt          *time.Time
-	deletedAt          *time.Time
-	address            *string
-	city               *string
-	country            *string
-	description        *string
-	email              *string
-	isDefault          *bool
-	name               *string
-	phone              *string
-	taxId              *string
-	clearedFields      map[string]struct{}
-	company            *int
-	clearedcompany     bool
-	receivables        map[int]struct{}
-	removedreceivables map[int]struct{}
-	clearedreceivables bool
-	invoices           map[int]struct{}
-	removedinvoices    map[int]struct{}
-	clearedinvoices    bool
-	done               bool
-	oldValue           func(context.Context) (*Customer, error)
-	predicates         []predicate.Customer
+	op                   Op
+	typ                  string
+	id                   *int
+	createdAt            *time.Time
+	updatedAt            *time.Time
+	deletedAt            *time.Time
+	address              *string
+	city                 *string
+	country              *string
+	description          *string
+	email                *string
+	isDefault            *bool
+	name                 *string
+	phone                *string
+	taxId                *string
+	clearedFields        map[string]struct{}
+	company              *int
+	clearedcompany       bool
+	loan_schedule        map[int]struct{}
+	removedloan_schedule map[int]struct{}
+	clearedloan_schedule bool
+	receivables          map[int]struct{}
+	removedreceivables   map[int]struct{}
+	clearedreceivables   bool
+	invoices             map[int]struct{}
+	removedinvoices      map[int]struct{}
+	clearedinvoices      bool
+	done                 bool
+	oldValue             func(context.Context) (*Customer, error)
+	predicates           []predicate.Customer
 }
 
 var _ ent.Mutation = (*CustomerMutation)(nil)
@@ -7132,6 +7570,60 @@ func (m *CustomerMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by ids.
+func (m *CustomerMutation) AddLoanScheduleIDs(ids ...int) {
+	if m.loan_schedule == nil {
+		m.loan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.loan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// ClearLoanSchedule clears the "loan_schedule" edge to the Loan entity.
+func (m *CustomerMutation) ClearLoanSchedule() {
+	m.clearedloan_schedule = true
+}
+
+// LoanScheduleCleared reports if the "loan_schedule" edge to the Loan entity was cleared.
+func (m *CustomerMutation) LoanScheduleCleared() bool {
+	return m.clearedloan_schedule
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the Loan entity by IDs.
+func (m *CustomerMutation) RemoveLoanScheduleIDs(ids ...int) {
+	if m.removedloan_schedule == nil {
+		m.removedloan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.loan_schedule, ids[i])
+		m.removedloan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the Loan entity.
+func (m *CustomerMutation) RemovedLoanScheduleIDs() (ids []int) {
+	for id := range m.removedloan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
+func (m *CustomerMutation) LoanScheduleIDs() (ids []int) {
+	for id := range m.loan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
+func (m *CustomerMutation) ResetLoanSchedule() {
+	m.loan_schedule = nil
+	m.clearedloan_schedule = false
+	m.removedloan_schedule = nil
+}
+
 // AddReceivableIDs adds the "receivables" edge to the Receivable entity by ids.
 func (m *CustomerMutation) AddReceivableIDs(ids ...int) {
 	if m.receivables == nil {
@@ -7593,9 +8085,12 @@ func (m *CustomerMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CustomerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.company != nil {
 		edges = append(edges, customer.EdgeCompany)
+	}
+	if m.loan_schedule != nil {
+		edges = append(edges, customer.EdgeLoanSchedule)
 	}
 	if m.receivables != nil {
 		edges = append(edges, customer.EdgeReceivables)
@@ -7614,6 +8109,12 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
+	case customer.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.loan_schedule))
+		for id := range m.loan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case customer.EdgeReceivables:
 		ids := make([]ent.Value, 0, len(m.receivables))
 		for id := range m.receivables {
@@ -7632,7 +8133,10 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
+	if m.removedloan_schedule != nil {
+		edges = append(edges, customer.EdgeLoanSchedule)
+	}
 	if m.removedreceivables != nil {
 		edges = append(edges, customer.EdgeReceivables)
 	}
@@ -7646,6 +8150,12 @@ func (m *CustomerMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case customer.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
+		for id := range m.removedloan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case customer.EdgeReceivables:
 		ids := make([]ent.Value, 0, len(m.removedreceivables))
 		for id := range m.removedreceivables {
@@ -7664,9 +8174,12 @@ func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CustomerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.clearedcompany {
 		edges = append(edges, customer.EdgeCompany)
+	}
+	if m.clearedloan_schedule {
+		edges = append(edges, customer.EdgeLoanSchedule)
 	}
 	if m.clearedreceivables {
 		edges = append(edges, customer.EdgeReceivables)
@@ -7683,6 +8196,8 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 	switch name {
 	case customer.EdgeCompany:
 		return m.clearedcompany
+	case customer.EdgeLoanSchedule:
+		return m.clearedloan_schedule
 	case customer.EdgeReceivables:
 		return m.clearedreceivables
 	case customer.EdgeInvoices:
@@ -7708,6 +8223,9 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 	switch name {
 	case customer.EdgeCompany:
 		m.ResetCompany()
+		return nil
+	case customer.EdgeLoanSchedule:
+		m.ResetLoanSchedule()
 		return nil
 	case customer.EdgeReceivables:
 		m.ResetReceivables()
@@ -15337,42 +15855,51 @@ func (m *InvoiceMutation) ResetEdge(name string) error {
 // LoanMutation represents an operation that mutates the Loan nodes in the graph.
 type LoanMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	createdAt                 *time.Time
-	updatedAt                 *time.Time
-	deletedAt                 *time.Time
-	amount                    *float64
-	addamount                 *float64
-	category                  *loan.Category
-	collateral                *string
-	description               *string
-	interestRate              *float64
-	addinterestRate           *float64
-	installments              *int
-	addinstallments           *int
-	maturityDate              *time.Time
-	nextPayment               *time.Time
-	nextPaymentAmount         *float64
-	addnextPaymentAmount      *float64
-	outstandingBalance        *float64
-	addoutstandingBalance     *float64
-	paymentFrequency          *loan.PaymentFrequency
-	paidInstallments          *int
-	addpaidInstallments       *int
-	provider                  *string
-	startDate                 *time.Time
-	status                    *loan.Status
-	clearedFields             map[string]struct{}
-	company                   *int
-	clearedcompany            bool
-	transactionHistory        map[int]struct{}
-	removedtransactionHistory map[int]struct{}
-	clearedtransactionHistory bool
-	done                      bool
-	oldValue                  func(context.Context) (*Loan, error)
-	predicates                []predicate.Loan
+	op                         Op
+	typ                        string
+	id                         *int
+	createdAt                  *time.Time
+	updatedAt                  *time.Time
+	deletedAt                  *time.Time
+	amount                     *float64
+	addamount                  *float64
+	category                   *loan.Category
+	collateral                 *string
+	description                *string
+	interest_rate              *float64
+	addinterest_rate           *float64
+	installments               *int
+	addinstallments            *int
+	maturity_date              *time.Time
+	next_payment               *time.Time
+	next_payment_amount        *float64
+	addnext_payment_amount     *float64
+	outstanding_balance        *float64
+	addoutstanding_balance     *float64
+	payment_frequency          *loan.PaymentFrequency
+	paid_installments          *int
+	addpaid_installments       *int
+	paymentType                *loan.PaymentType
+	counterparty_name          *string
+	start_date                 *time.Time
+	status                     *loan.Status
+	is_lending                 *bool
+	clearedFields              map[string]struct{}
+	client                     *int
+	clearedclient              bool
+	supplier                   *int
+	clearedsupplier            bool
+	company                    *int
+	clearedcompany             bool
+	loan_schedule              map[int]struct{}
+	removedloan_schedule       map[int]struct{}
+	clearedloan_schedule       bool
+	transaction_history        map[int]struct{}
+	removedtransaction_history map[int]struct{}
+	clearedtransaction_history bool
+	done                       bool
+	oldValue                   func(context.Context) (*Loan, error)
+	predicates                 []predicate.Loan
 }
 
 var _ ent.Mutation = (*LoanMutation)(nil)
@@ -15784,22 +16311,22 @@ func (m *LoanMutation) ResetDescription() {
 	delete(m.clearedFields, loan.FieldDescription)
 }
 
-// SetInterestRate sets the "interestRate" field.
+// SetInterestRate sets the "interest_rate" field.
 func (m *LoanMutation) SetInterestRate(f float64) {
-	m.interestRate = &f
-	m.addinterestRate = nil
+	m.interest_rate = &f
+	m.addinterest_rate = nil
 }
 
-// InterestRate returns the value of the "interestRate" field in the mutation.
+// InterestRate returns the value of the "interest_rate" field in the mutation.
 func (m *LoanMutation) InterestRate() (r float64, exists bool) {
-	v := m.interestRate
+	v := m.interest_rate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldInterestRate returns the old "interestRate" field's value of the Loan entity.
+// OldInterestRate returns the old "interest_rate" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldInterestRate(ctx context.Context) (v float64, err error) {
@@ -15816,28 +16343,28 @@ func (m *LoanMutation) OldInterestRate(ctx context.Context) (v float64, err erro
 	return oldValue.InterestRate, nil
 }
 
-// AddInterestRate adds f to the "interestRate" field.
+// AddInterestRate adds f to the "interest_rate" field.
 func (m *LoanMutation) AddInterestRate(f float64) {
-	if m.addinterestRate != nil {
-		*m.addinterestRate += f
+	if m.addinterest_rate != nil {
+		*m.addinterest_rate += f
 	} else {
-		m.addinterestRate = &f
+		m.addinterest_rate = &f
 	}
 }
 
-// AddedInterestRate returns the value that was added to the "interestRate" field in this mutation.
+// AddedInterestRate returns the value that was added to the "interest_rate" field in this mutation.
 func (m *LoanMutation) AddedInterestRate() (r float64, exists bool) {
-	v := m.addinterestRate
+	v := m.addinterest_rate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetInterestRate resets all changes to the "interestRate" field.
+// ResetInterestRate resets all changes to the "interest_rate" field.
 func (m *LoanMutation) ResetInterestRate() {
-	m.interestRate = nil
-	m.addinterestRate = nil
+	m.interest_rate = nil
+	m.addinterest_rate = nil
 }
 
 // SetInstallments sets the "installments" field.
@@ -15896,21 +16423,21 @@ func (m *LoanMutation) ResetInstallments() {
 	m.addinstallments = nil
 }
 
-// SetMaturityDate sets the "maturityDate" field.
+// SetMaturityDate sets the "maturity_date" field.
 func (m *LoanMutation) SetMaturityDate(t time.Time) {
-	m.maturityDate = &t
+	m.maturity_date = &t
 }
 
-// MaturityDate returns the value of the "maturityDate" field in the mutation.
+// MaturityDate returns the value of the "maturity_date" field in the mutation.
 func (m *LoanMutation) MaturityDate() (r time.Time, exists bool) {
-	v := m.maturityDate
+	v := m.maturity_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMaturityDate returns the old "maturityDate" field's value of the Loan entity.
+// OldMaturityDate returns the old "maturity_date" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldMaturityDate(ctx context.Context) (v time.Time, err error) {
@@ -15927,26 +16454,26 @@ func (m *LoanMutation) OldMaturityDate(ctx context.Context) (v time.Time, err er
 	return oldValue.MaturityDate, nil
 }
 
-// ResetMaturityDate resets all changes to the "maturityDate" field.
+// ResetMaturityDate resets all changes to the "maturity_date" field.
 func (m *LoanMutation) ResetMaturityDate() {
-	m.maturityDate = nil
+	m.maturity_date = nil
 }
 
-// SetNextPayment sets the "nextPayment" field.
+// SetNextPayment sets the "next_payment" field.
 func (m *LoanMutation) SetNextPayment(t time.Time) {
-	m.nextPayment = &t
+	m.next_payment = &t
 }
 
-// NextPayment returns the value of the "nextPayment" field in the mutation.
+// NextPayment returns the value of the "next_payment" field in the mutation.
 func (m *LoanMutation) NextPayment() (r time.Time, exists bool) {
-	v := m.nextPayment
+	v := m.next_payment
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNextPayment returns the old "nextPayment" field's value of the Loan entity.
+// OldNextPayment returns the old "next_payment" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldNextPayment(ctx context.Context) (v time.Time, err error) {
@@ -15963,40 +16490,40 @@ func (m *LoanMutation) OldNextPayment(ctx context.Context) (v time.Time, err err
 	return oldValue.NextPayment, nil
 }
 
-// ClearNextPayment clears the value of the "nextPayment" field.
+// ClearNextPayment clears the value of the "next_payment" field.
 func (m *LoanMutation) ClearNextPayment() {
-	m.nextPayment = nil
+	m.next_payment = nil
 	m.clearedFields[loan.FieldNextPayment] = struct{}{}
 }
 
-// NextPaymentCleared returns if the "nextPayment" field was cleared in this mutation.
+// NextPaymentCleared returns if the "next_payment" field was cleared in this mutation.
 func (m *LoanMutation) NextPaymentCleared() bool {
 	_, ok := m.clearedFields[loan.FieldNextPayment]
 	return ok
 }
 
-// ResetNextPayment resets all changes to the "nextPayment" field.
+// ResetNextPayment resets all changes to the "next_payment" field.
 func (m *LoanMutation) ResetNextPayment() {
-	m.nextPayment = nil
+	m.next_payment = nil
 	delete(m.clearedFields, loan.FieldNextPayment)
 }
 
-// SetNextPaymentAmount sets the "nextPaymentAmount" field.
+// SetNextPaymentAmount sets the "next_payment_amount" field.
 func (m *LoanMutation) SetNextPaymentAmount(f float64) {
-	m.nextPaymentAmount = &f
-	m.addnextPaymentAmount = nil
+	m.next_payment_amount = &f
+	m.addnext_payment_amount = nil
 }
 
-// NextPaymentAmount returns the value of the "nextPaymentAmount" field in the mutation.
+// NextPaymentAmount returns the value of the "next_payment_amount" field in the mutation.
 func (m *LoanMutation) NextPaymentAmount() (r float64, exists bool) {
-	v := m.nextPaymentAmount
+	v := m.next_payment_amount
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNextPaymentAmount returns the old "nextPaymentAmount" field's value of the Loan entity.
+// OldNextPaymentAmount returns the old "next_payment_amount" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldNextPaymentAmount(ctx context.Context) (v float64, err error) {
@@ -16013,60 +16540,60 @@ func (m *LoanMutation) OldNextPaymentAmount(ctx context.Context) (v float64, err
 	return oldValue.NextPaymentAmount, nil
 }
 
-// AddNextPaymentAmount adds f to the "nextPaymentAmount" field.
+// AddNextPaymentAmount adds f to the "next_payment_amount" field.
 func (m *LoanMutation) AddNextPaymentAmount(f float64) {
-	if m.addnextPaymentAmount != nil {
-		*m.addnextPaymentAmount += f
+	if m.addnext_payment_amount != nil {
+		*m.addnext_payment_amount += f
 	} else {
-		m.addnextPaymentAmount = &f
+		m.addnext_payment_amount = &f
 	}
 }
 
-// AddedNextPaymentAmount returns the value that was added to the "nextPaymentAmount" field in this mutation.
+// AddedNextPaymentAmount returns the value that was added to the "next_payment_amount" field in this mutation.
 func (m *LoanMutation) AddedNextPaymentAmount() (r float64, exists bool) {
-	v := m.addnextPaymentAmount
+	v := m.addnext_payment_amount
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearNextPaymentAmount clears the value of the "nextPaymentAmount" field.
+// ClearNextPaymentAmount clears the value of the "next_payment_amount" field.
 func (m *LoanMutation) ClearNextPaymentAmount() {
-	m.nextPaymentAmount = nil
-	m.addnextPaymentAmount = nil
+	m.next_payment_amount = nil
+	m.addnext_payment_amount = nil
 	m.clearedFields[loan.FieldNextPaymentAmount] = struct{}{}
 }
 
-// NextPaymentAmountCleared returns if the "nextPaymentAmount" field was cleared in this mutation.
+// NextPaymentAmountCleared returns if the "next_payment_amount" field was cleared in this mutation.
 func (m *LoanMutation) NextPaymentAmountCleared() bool {
 	_, ok := m.clearedFields[loan.FieldNextPaymentAmount]
 	return ok
 }
 
-// ResetNextPaymentAmount resets all changes to the "nextPaymentAmount" field.
+// ResetNextPaymentAmount resets all changes to the "next_payment_amount" field.
 func (m *LoanMutation) ResetNextPaymentAmount() {
-	m.nextPaymentAmount = nil
-	m.addnextPaymentAmount = nil
+	m.next_payment_amount = nil
+	m.addnext_payment_amount = nil
 	delete(m.clearedFields, loan.FieldNextPaymentAmount)
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (m *LoanMutation) SetOutstandingBalance(f float64) {
-	m.outstandingBalance = &f
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = &f
+	m.addoutstanding_balance = nil
 }
 
-// OutstandingBalance returns the value of the "outstandingBalance" field in the mutation.
+// OutstandingBalance returns the value of the "outstanding_balance" field in the mutation.
 func (m *LoanMutation) OutstandingBalance() (r float64, exists bool) {
-	v := m.outstandingBalance
+	v := m.outstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOutstandingBalance returns the old "outstandingBalance" field's value of the Loan entity.
+// OldOutstandingBalance returns the old "outstanding_balance" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldOutstandingBalance(ctx context.Context) (v float64, err error) {
@@ -16083,45 +16610,45 @@ func (m *LoanMutation) OldOutstandingBalance(ctx context.Context) (v float64, er
 	return oldValue.OutstandingBalance, nil
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (m *LoanMutation) AddOutstandingBalance(f float64) {
-	if m.addoutstandingBalance != nil {
-		*m.addoutstandingBalance += f
+	if m.addoutstanding_balance != nil {
+		*m.addoutstanding_balance += f
 	} else {
-		m.addoutstandingBalance = &f
+		m.addoutstanding_balance = &f
 	}
 }
 
-// AddedOutstandingBalance returns the value that was added to the "outstandingBalance" field in this mutation.
+// AddedOutstandingBalance returns the value that was added to the "outstanding_balance" field in this mutation.
 func (m *LoanMutation) AddedOutstandingBalance() (r float64, exists bool) {
-	v := m.addoutstandingBalance
+	v := m.addoutstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetOutstandingBalance resets all changes to the "outstandingBalance" field.
+// ResetOutstandingBalance resets all changes to the "outstanding_balance" field.
 func (m *LoanMutation) ResetOutstandingBalance() {
-	m.outstandingBalance = nil
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = nil
+	m.addoutstanding_balance = nil
 }
 
-// SetPaymentFrequency sets the "paymentFrequency" field.
+// SetPaymentFrequency sets the "payment_frequency" field.
 func (m *LoanMutation) SetPaymentFrequency(lf loan.PaymentFrequency) {
-	m.paymentFrequency = &lf
+	m.payment_frequency = &lf
 }
 
-// PaymentFrequency returns the value of the "paymentFrequency" field in the mutation.
+// PaymentFrequency returns the value of the "payment_frequency" field in the mutation.
 func (m *LoanMutation) PaymentFrequency() (r loan.PaymentFrequency, exists bool) {
-	v := m.paymentFrequency
+	v := m.payment_frequency
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaymentFrequency returns the old "paymentFrequency" field's value of the Loan entity.
+// OldPaymentFrequency returns the old "payment_frequency" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldPaymentFrequency(ctx context.Context) (v loan.PaymentFrequency, err error) {
@@ -16138,27 +16665,27 @@ func (m *LoanMutation) OldPaymentFrequency(ctx context.Context) (v loan.PaymentF
 	return oldValue.PaymentFrequency, nil
 }
 
-// ResetPaymentFrequency resets all changes to the "paymentFrequency" field.
+// ResetPaymentFrequency resets all changes to the "payment_frequency" field.
 func (m *LoanMutation) ResetPaymentFrequency() {
-	m.paymentFrequency = nil
+	m.payment_frequency = nil
 }
 
-// SetPaidInstallments sets the "paidInstallments" field.
+// SetPaidInstallments sets the "paid_installments" field.
 func (m *LoanMutation) SetPaidInstallments(i int) {
-	m.paidInstallments = &i
-	m.addpaidInstallments = nil
+	m.paid_installments = &i
+	m.addpaid_installments = nil
 }
 
-// PaidInstallments returns the value of the "paidInstallments" field in the mutation.
+// PaidInstallments returns the value of the "paid_installments" field in the mutation.
 func (m *LoanMutation) PaidInstallments() (r int, exists bool) {
-	v := m.paidInstallments
+	v := m.paid_installments
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaidInstallments returns the old "paidInstallments" field's value of the Loan entity.
+// OldPaidInstallments returns the old "paid_installments" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldPaidInstallments(ctx context.Context) (v int, err error) {
@@ -16175,81 +16702,117 @@ func (m *LoanMutation) OldPaidInstallments(ctx context.Context) (v int, err erro
 	return oldValue.PaidInstallments, nil
 }
 
-// AddPaidInstallments adds i to the "paidInstallments" field.
+// AddPaidInstallments adds i to the "paid_installments" field.
 func (m *LoanMutation) AddPaidInstallments(i int) {
-	if m.addpaidInstallments != nil {
-		*m.addpaidInstallments += i
+	if m.addpaid_installments != nil {
+		*m.addpaid_installments += i
 	} else {
-		m.addpaidInstallments = &i
+		m.addpaid_installments = &i
 	}
 }
 
-// AddedPaidInstallments returns the value that was added to the "paidInstallments" field in this mutation.
+// AddedPaidInstallments returns the value that was added to the "paid_installments" field in this mutation.
 func (m *LoanMutation) AddedPaidInstallments() (r int, exists bool) {
-	v := m.addpaidInstallments
+	v := m.addpaid_installments
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetPaidInstallments resets all changes to the "paidInstallments" field.
+// ResetPaidInstallments resets all changes to the "paid_installments" field.
 func (m *LoanMutation) ResetPaidInstallments() {
-	m.paidInstallments = nil
-	m.addpaidInstallments = nil
+	m.paid_installments = nil
+	m.addpaid_installments = nil
 }
 
-// SetProvider sets the "provider" field.
-func (m *LoanMutation) SetProvider(s string) {
-	m.provider = &s
+// SetPaymentType sets the "paymentType" field.
+func (m *LoanMutation) SetPaymentType(lt loan.PaymentType) {
+	m.paymentType = &lt
 }
 
-// Provider returns the value of the "provider" field in the mutation.
-func (m *LoanMutation) Provider() (r string, exists bool) {
-	v := m.provider
+// PaymentType returns the value of the "paymentType" field in the mutation.
+func (m *LoanMutation) PaymentType() (r loan.PaymentType, exists bool) {
+	v := m.paymentType
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldProvider returns the old "provider" field's value of the Loan entity.
+// OldPaymentType returns the old "paymentType" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoanMutation) OldProvider(ctx context.Context) (v string, err error) {
+func (m *LoanMutation) OldPaymentType(ctx context.Context) (v loan.PaymentType, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldProvider is only allowed on UpdateOne operations")
+		return v, errors.New("OldPaymentType is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldProvider requires an ID field in the mutation")
+		return v, errors.New("OldPaymentType requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldProvider: %w", err)
+		return v, fmt.Errorf("querying old value for OldPaymentType: %w", err)
 	}
-	return oldValue.Provider, nil
+	return oldValue.PaymentType, nil
 }
 
-// ResetProvider resets all changes to the "provider" field.
-func (m *LoanMutation) ResetProvider() {
-	m.provider = nil
+// ResetPaymentType resets all changes to the "paymentType" field.
+func (m *LoanMutation) ResetPaymentType() {
+	m.paymentType = nil
 }
 
-// SetStartDate sets the "startDate" field.
-func (m *LoanMutation) SetStartDate(t time.Time) {
-	m.startDate = &t
+// SetCounterpartyName sets the "counterparty_name" field.
+func (m *LoanMutation) SetCounterpartyName(s string) {
+	m.counterparty_name = &s
 }
 
-// StartDate returns the value of the "startDate" field in the mutation.
-func (m *LoanMutation) StartDate() (r time.Time, exists bool) {
-	v := m.startDate
+// CounterpartyName returns the value of the "counterparty_name" field in the mutation.
+func (m *LoanMutation) CounterpartyName() (r string, exists bool) {
+	v := m.counterparty_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStartDate returns the old "startDate" field's value of the Loan entity.
+// OldCounterpartyName returns the old "counterparty_name" field's value of the Loan entity.
+// If the Loan object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanMutation) OldCounterpartyName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCounterpartyName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCounterpartyName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCounterpartyName: %w", err)
+	}
+	return oldValue.CounterpartyName, nil
+}
+
+// ResetCounterpartyName resets all changes to the "counterparty_name" field.
+func (m *LoanMutation) ResetCounterpartyName() {
+	m.counterparty_name = nil
+}
+
+// SetStartDate sets the "start_date" field.
+func (m *LoanMutation) SetStartDate(t time.Time) {
+	m.start_date = &t
+}
+
+// StartDate returns the value of the "start_date" field in the mutation.
+func (m *LoanMutation) StartDate() (r time.Time, exists bool) {
+	v := m.start_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartDate returns the old "start_date" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldStartDate(ctx context.Context) (v time.Time, err error) {
@@ -16266,9 +16829,9 @@ func (m *LoanMutation) OldStartDate(ctx context.Context) (v time.Time, err error
 	return oldValue.StartDate, nil
 }
 
-// ResetStartDate resets all changes to the "startDate" field.
+// ResetStartDate resets all changes to the "start_date" field.
 func (m *LoanMutation) ResetStartDate() {
-	m.startDate = nil
+	m.start_date = nil
 }
 
 // SetStatus sets the "status" field.
@@ -16305,6 +16868,120 @@ func (m *LoanMutation) OldStatus(ctx context.Context) (v loan.Status, err error)
 // ResetStatus resets all changes to the "status" field.
 func (m *LoanMutation) ResetStatus() {
 	m.status = nil
+}
+
+// SetIsLending sets the "is_lending" field.
+func (m *LoanMutation) SetIsLending(b bool) {
+	m.is_lending = &b
+}
+
+// IsLending returns the value of the "is_lending" field in the mutation.
+func (m *LoanMutation) IsLending() (r bool, exists bool) {
+	v := m.is_lending
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsLending returns the old "is_lending" field's value of the Loan entity.
+// If the Loan object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanMutation) OldIsLending(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsLending is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsLending requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsLending: %w", err)
+	}
+	return oldValue.IsLending, nil
+}
+
+// ResetIsLending resets all changes to the "is_lending" field.
+func (m *LoanMutation) ResetIsLending() {
+	m.is_lending = nil
+}
+
+// SetClientID sets the "client" edge to the Customer entity by id.
+func (m *LoanMutation) SetClientID(id int) {
+	m.client = &id
+}
+
+// ClearClient clears the "client" edge to the Customer entity.
+func (m *LoanMutation) ClearClient() {
+	m.clearedclient = true
+}
+
+// ClientCleared reports if the "client" edge to the Customer entity was cleared.
+func (m *LoanMutation) ClientCleared() bool {
+	return m.clearedclient
+}
+
+// ClientID returns the "client" edge ID in the mutation.
+func (m *LoanMutation) ClientID() (id int, exists bool) {
+	if m.client != nil {
+		return *m.client, true
+	}
+	return
+}
+
+// ClientIDs returns the "client" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ClientID instead. It exists only for internal usage by the builders.
+func (m *LoanMutation) ClientIDs() (ids []int) {
+	if id := m.client; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetClient resets all changes to the "client" edge.
+func (m *LoanMutation) ResetClient() {
+	m.client = nil
+	m.clearedclient = false
+}
+
+// SetSupplierID sets the "supplier" edge to the Supplier entity by id.
+func (m *LoanMutation) SetSupplierID(id int) {
+	m.supplier = &id
+}
+
+// ClearSupplier clears the "supplier" edge to the Supplier entity.
+func (m *LoanMutation) ClearSupplier() {
+	m.clearedsupplier = true
+}
+
+// SupplierCleared reports if the "supplier" edge to the Supplier entity was cleared.
+func (m *LoanMutation) SupplierCleared() bool {
+	return m.clearedsupplier
+}
+
+// SupplierID returns the "supplier" edge ID in the mutation.
+func (m *LoanMutation) SupplierID() (id int, exists bool) {
+	if m.supplier != nil {
+		return *m.supplier, true
+	}
+	return
+}
+
+// SupplierIDs returns the "supplier" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SupplierID instead. It exists only for internal usage by the builders.
+func (m *LoanMutation) SupplierIDs() (ids []int) {
+	if id := m.supplier; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSupplier resets all changes to the "supplier" edge.
+func (m *LoanMutation) ResetSupplier() {
+	m.supplier = nil
+	m.clearedsupplier = false
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -16346,58 +17023,112 @@ func (m *LoanMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by ids.
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by ids.
+func (m *LoanMutation) AddLoanScheduleIDs(ids ...int) {
+	if m.loan_schedule == nil {
+		m.loan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.loan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// ClearLoanSchedule clears the "loan_schedule" edge to the LoanSchedule entity.
+func (m *LoanMutation) ClearLoanSchedule() {
+	m.clearedloan_schedule = true
+}
+
+// LoanScheduleCleared reports if the "loan_schedule" edge to the LoanSchedule entity was cleared.
+func (m *LoanMutation) LoanScheduleCleared() bool {
+	return m.clearedloan_schedule
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (m *LoanMutation) RemoveLoanScheduleIDs(ids ...int) {
+	if m.removedloan_schedule == nil {
+		m.removedloan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.loan_schedule, ids[i])
+		m.removedloan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the LoanSchedule entity.
+func (m *LoanMutation) RemovedLoanScheduleIDs() (ids []int) {
+	for id := range m.removedloan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
+func (m *LoanMutation) LoanScheduleIDs() (ids []int) {
+	for id := range m.loan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
+func (m *LoanMutation) ResetLoanSchedule() {
+	m.loan_schedule = nil
+	m.clearedloan_schedule = false
+	m.removedloan_schedule = nil
+}
+
+// AddTransactionHistoryIDs adds the "transaction_history" edge to the AccountingEntry entity by ids.
 func (m *LoanMutation) AddTransactionHistoryIDs(ids ...int) {
-	if m.transactionHistory == nil {
-		m.transactionHistory = make(map[int]struct{})
+	if m.transaction_history == nil {
+		m.transaction_history = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.transactionHistory[ids[i]] = struct{}{}
+		m.transaction_history[ids[i]] = struct{}{}
 	}
 }
 
-// ClearTransactionHistory clears the "transactionHistory" edge to the AccountingEntry entity.
+// ClearTransactionHistory clears the "transaction_history" edge to the AccountingEntry entity.
 func (m *LoanMutation) ClearTransactionHistory() {
-	m.clearedtransactionHistory = true
+	m.clearedtransaction_history = true
 }
 
-// TransactionHistoryCleared reports if the "transactionHistory" edge to the AccountingEntry entity was cleared.
+// TransactionHistoryCleared reports if the "transaction_history" edge to the AccountingEntry entity was cleared.
 func (m *LoanMutation) TransactionHistoryCleared() bool {
-	return m.clearedtransactionHistory
+	return m.clearedtransaction_history
 }
 
-// RemoveTransactionHistoryIDs removes the "transactionHistory" edge to the AccountingEntry entity by IDs.
+// RemoveTransactionHistoryIDs removes the "transaction_history" edge to the AccountingEntry entity by IDs.
 func (m *LoanMutation) RemoveTransactionHistoryIDs(ids ...int) {
-	if m.removedtransactionHistory == nil {
-		m.removedtransactionHistory = make(map[int]struct{})
+	if m.removedtransaction_history == nil {
+		m.removedtransaction_history = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.transactionHistory, ids[i])
-		m.removedtransactionHistory[ids[i]] = struct{}{}
+		delete(m.transaction_history, ids[i])
+		m.removedtransaction_history[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedTransactionHistory returns the removed IDs of the "transactionHistory" edge to the AccountingEntry entity.
+// RemovedTransactionHistory returns the removed IDs of the "transaction_history" edge to the AccountingEntry entity.
 func (m *LoanMutation) RemovedTransactionHistoryIDs() (ids []int) {
-	for id := range m.removedtransactionHistory {
+	for id := range m.removedtransaction_history {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// TransactionHistoryIDs returns the "transactionHistory" edge IDs in the mutation.
+// TransactionHistoryIDs returns the "transaction_history" edge IDs in the mutation.
 func (m *LoanMutation) TransactionHistoryIDs() (ids []int) {
-	for id := range m.transactionHistory {
+	for id := range m.transaction_history {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetTransactionHistory resets all changes to the "transactionHistory" edge.
+// ResetTransactionHistory resets all changes to the "transaction_history" edge.
 func (m *LoanMutation) ResetTransactionHistory() {
-	m.transactionHistory = nil
-	m.clearedtransactionHistory = false
-	m.removedtransactionHistory = nil
+	m.transaction_history = nil
+	m.clearedtransaction_history = false
+	m.removedtransaction_history = nil
 }
 
 // Where appends a list predicates to the LoanMutation builder.
@@ -16434,7 +17165,7 @@ func (m *LoanMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LoanMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 20)
 	if m.createdAt != nil {
 		fields = append(fields, loan.FieldCreatedAt)
 	}
@@ -16456,38 +17187,44 @@ func (m *LoanMutation) Fields() []string {
 	if m.description != nil {
 		fields = append(fields, loan.FieldDescription)
 	}
-	if m.interestRate != nil {
+	if m.interest_rate != nil {
 		fields = append(fields, loan.FieldInterestRate)
 	}
 	if m.installments != nil {
 		fields = append(fields, loan.FieldInstallments)
 	}
-	if m.maturityDate != nil {
+	if m.maturity_date != nil {
 		fields = append(fields, loan.FieldMaturityDate)
 	}
-	if m.nextPayment != nil {
+	if m.next_payment != nil {
 		fields = append(fields, loan.FieldNextPayment)
 	}
-	if m.nextPaymentAmount != nil {
+	if m.next_payment_amount != nil {
 		fields = append(fields, loan.FieldNextPaymentAmount)
 	}
-	if m.outstandingBalance != nil {
+	if m.outstanding_balance != nil {
 		fields = append(fields, loan.FieldOutstandingBalance)
 	}
-	if m.paymentFrequency != nil {
+	if m.payment_frequency != nil {
 		fields = append(fields, loan.FieldPaymentFrequency)
 	}
-	if m.paidInstallments != nil {
+	if m.paid_installments != nil {
 		fields = append(fields, loan.FieldPaidInstallments)
 	}
-	if m.provider != nil {
-		fields = append(fields, loan.FieldProvider)
+	if m.paymentType != nil {
+		fields = append(fields, loan.FieldPaymentType)
 	}
-	if m.startDate != nil {
+	if m.counterparty_name != nil {
+		fields = append(fields, loan.FieldCounterpartyName)
+	}
+	if m.start_date != nil {
 		fields = append(fields, loan.FieldStartDate)
 	}
 	if m.status != nil {
 		fields = append(fields, loan.FieldStatus)
+	}
+	if m.is_lending != nil {
+		fields = append(fields, loan.FieldIsLending)
 	}
 	return fields
 }
@@ -16527,12 +17264,16 @@ func (m *LoanMutation) Field(name string) (ent.Value, bool) {
 		return m.PaymentFrequency()
 	case loan.FieldPaidInstallments:
 		return m.PaidInstallments()
-	case loan.FieldProvider:
-		return m.Provider()
+	case loan.FieldPaymentType:
+		return m.PaymentType()
+	case loan.FieldCounterpartyName:
+		return m.CounterpartyName()
 	case loan.FieldStartDate:
 		return m.StartDate()
 	case loan.FieldStatus:
 		return m.Status()
+	case loan.FieldIsLending:
+		return m.IsLending()
 	}
 	return nil, false
 }
@@ -16572,12 +17313,16 @@ func (m *LoanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldPaymentFrequency(ctx)
 	case loan.FieldPaidInstallments:
 		return m.OldPaidInstallments(ctx)
-	case loan.FieldProvider:
-		return m.OldProvider(ctx)
+	case loan.FieldPaymentType:
+		return m.OldPaymentType(ctx)
+	case loan.FieldCounterpartyName:
+		return m.OldCounterpartyName(ctx)
 	case loan.FieldStartDate:
 		return m.OldStartDate(ctx)
 	case loan.FieldStatus:
 		return m.OldStatus(ctx)
+	case loan.FieldIsLending:
+		return m.OldIsLending(ctx)
 	}
 	return nil, fmt.Errorf("unknown Loan field %s", name)
 }
@@ -16692,12 +17437,19 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPaidInstallments(v)
 		return nil
-	case loan.FieldProvider:
+	case loan.FieldPaymentType:
+		v, ok := value.(loan.PaymentType)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaymentType(v)
+		return nil
+	case loan.FieldCounterpartyName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetProvider(v)
+		m.SetCounterpartyName(v)
 		return nil
 	case loan.FieldStartDate:
 		v, ok := value.(time.Time)
@@ -16713,6 +17465,13 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetStatus(v)
 		return nil
+	case loan.FieldIsLending:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsLending(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Loan field %s", name)
 }
@@ -16724,19 +17483,19 @@ func (m *LoanMutation) AddedFields() []string {
 	if m.addamount != nil {
 		fields = append(fields, loan.FieldAmount)
 	}
-	if m.addinterestRate != nil {
+	if m.addinterest_rate != nil {
 		fields = append(fields, loan.FieldInterestRate)
 	}
 	if m.addinstallments != nil {
 		fields = append(fields, loan.FieldInstallments)
 	}
-	if m.addnextPaymentAmount != nil {
+	if m.addnext_payment_amount != nil {
 		fields = append(fields, loan.FieldNextPaymentAmount)
 	}
-	if m.addoutstandingBalance != nil {
+	if m.addoutstanding_balance != nil {
 		fields = append(fields, loan.FieldOutstandingBalance)
 	}
-	if m.addpaidInstallments != nil {
+	if m.addpaid_installments != nil {
 		fields = append(fields, loan.FieldPaidInstallments)
 	}
 	return fields
@@ -16915,8 +17674,11 @@ func (m *LoanMutation) ResetField(name string) error {
 	case loan.FieldPaidInstallments:
 		m.ResetPaidInstallments()
 		return nil
-	case loan.FieldProvider:
-		m.ResetProvider()
+	case loan.FieldPaymentType:
+		m.ResetPaymentType()
+		return nil
+	case loan.FieldCounterpartyName:
+		m.ResetCounterpartyName()
 		return nil
 	case loan.FieldStartDate:
 		m.ResetStartDate()
@@ -16924,17 +17686,29 @@ func (m *LoanMutation) ResetField(name string) error {
 	case loan.FieldStatus:
 		m.ResetStatus()
 		return nil
+	case loan.FieldIsLending:
+		m.ResetIsLending()
+		return nil
 	}
 	return fmt.Errorf("unknown Loan field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *LoanMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 5)
+	if m.client != nil {
+		edges = append(edges, loan.EdgeClient)
+	}
+	if m.supplier != nil {
+		edges = append(edges, loan.EdgeSupplier)
+	}
 	if m.company != nil {
 		edges = append(edges, loan.EdgeCompany)
 	}
-	if m.transactionHistory != nil {
+	if m.loan_schedule != nil {
+		edges = append(edges, loan.EdgeLoanSchedule)
+	}
+	if m.transaction_history != nil {
 		edges = append(edges, loan.EdgeTransactionHistory)
 	}
 	return edges
@@ -16944,13 +17718,27 @@ func (m *LoanMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *LoanMutation) AddedIDs(name string) []ent.Value {
 	switch name {
+	case loan.EdgeClient:
+		if id := m.client; id != nil {
+			return []ent.Value{*id}
+		}
+	case loan.EdgeSupplier:
+		if id := m.supplier; id != nil {
+			return []ent.Value{*id}
+		}
 	case loan.EdgeCompany:
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
+	case loan.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.loan_schedule))
+		for id := range m.loan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case loan.EdgeTransactionHistory:
-		ids := make([]ent.Value, 0, len(m.transactionHistory))
-		for id := range m.transactionHistory {
+		ids := make([]ent.Value, 0, len(m.transaction_history))
+		for id := range m.transaction_history {
 			ids = append(ids, id)
 		}
 		return ids
@@ -16960,8 +17748,11 @@ func (m *LoanMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *LoanMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.removedtransactionHistory != nil {
+	edges := make([]string, 0, 5)
+	if m.removedloan_schedule != nil {
+		edges = append(edges, loan.EdgeLoanSchedule)
+	}
+	if m.removedtransaction_history != nil {
 		edges = append(edges, loan.EdgeTransactionHistory)
 	}
 	return edges
@@ -16971,9 +17762,15 @@ func (m *LoanMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *LoanMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case loan.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
+		for id := range m.removedloan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case loan.EdgeTransactionHistory:
-		ids := make([]ent.Value, 0, len(m.removedtransactionHistory))
-		for id := range m.removedtransactionHistory {
+		ids := make([]ent.Value, 0, len(m.removedtransaction_history))
+		for id := range m.removedtransaction_history {
 			ids = append(ids, id)
 		}
 		return ids
@@ -16983,11 +17780,20 @@ func (m *LoanMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *LoanMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 5)
+	if m.clearedclient {
+		edges = append(edges, loan.EdgeClient)
+	}
+	if m.clearedsupplier {
+		edges = append(edges, loan.EdgeSupplier)
+	}
 	if m.clearedcompany {
 		edges = append(edges, loan.EdgeCompany)
 	}
-	if m.clearedtransactionHistory {
+	if m.clearedloan_schedule {
+		edges = append(edges, loan.EdgeLoanSchedule)
+	}
+	if m.clearedtransaction_history {
 		edges = append(edges, loan.EdgeTransactionHistory)
 	}
 	return edges
@@ -16997,10 +17803,16 @@ func (m *LoanMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *LoanMutation) EdgeCleared(name string) bool {
 	switch name {
+	case loan.EdgeClient:
+		return m.clearedclient
+	case loan.EdgeSupplier:
+		return m.clearedsupplier
 	case loan.EdgeCompany:
 		return m.clearedcompany
+	case loan.EdgeLoanSchedule:
+		return m.clearedloan_schedule
 	case loan.EdgeTransactionHistory:
-		return m.clearedtransactionHistory
+		return m.clearedtransaction_history
 	}
 	return false
 }
@@ -17009,6 +17821,12 @@ func (m *LoanMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *LoanMutation) ClearEdge(name string) error {
 	switch name {
+	case loan.EdgeClient:
+		m.ClearClient()
+		return nil
+	case loan.EdgeSupplier:
+		m.ClearSupplier()
+		return nil
 	case loan.EdgeCompany:
 		m.ClearCompany()
 		return nil
@@ -17020,14 +17838,1357 @@ func (m *LoanMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *LoanMutation) ResetEdge(name string) error {
 	switch name {
+	case loan.EdgeClient:
+		m.ResetClient()
+		return nil
+	case loan.EdgeSupplier:
+		m.ResetSupplier()
+		return nil
 	case loan.EdgeCompany:
 		m.ResetCompany()
+		return nil
+	case loan.EdgeLoanSchedule:
+		m.ResetLoanSchedule()
 		return nil
 	case loan.EdgeTransactionHistory:
 		m.ResetTransactionHistory()
 		return nil
 	}
 	return fmt.Errorf("unknown Loan edge %s", name)
+}
+
+// LoanScheduleMutation represents an operation that mutates the LoanSchedule nodes in the graph.
+type LoanScheduleMutation struct {
+	config
+	op                         Op
+	typ                        string
+	id                         *int
+	createdAt                  *time.Time
+	updatedAt                  *time.Time
+	deletedAt                  *time.Time
+	amount                     *float64
+	addamount                  *float64
+	amount_paid                *float64
+	addamount_paid             *float64
+	due_date                   *time.Time
+	date_paid                  *time.Time
+	interest                   *float64
+	addinterest                *float64
+	installment_number         *int
+	addinstallment_number      *int
+	principal                  *float64
+	addprincipal               *float64
+	remaining_balance          *float64
+	addremaining_balance       *float64
+	status                     *loanschedule.Status
+	clearedFields              map[string]struct{}
+	loan                       *int
+	clearedloan                bool
+	transaction_history        map[int]struct{}
+	removedtransaction_history map[int]struct{}
+	clearedtransaction_history bool
+	done                       bool
+	oldValue                   func(context.Context) (*LoanSchedule, error)
+	predicates                 []predicate.LoanSchedule
+}
+
+var _ ent.Mutation = (*LoanScheduleMutation)(nil)
+
+// loanscheduleOption allows management of the mutation configuration using functional options.
+type loanscheduleOption func(*LoanScheduleMutation)
+
+// newLoanScheduleMutation creates new mutation for the LoanSchedule entity.
+func newLoanScheduleMutation(c config, op Op, opts ...loanscheduleOption) *LoanScheduleMutation {
+	m := &LoanScheduleMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeLoanSchedule,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withLoanScheduleID sets the ID field of the mutation.
+func withLoanScheduleID(id int) loanscheduleOption {
+	return func(m *LoanScheduleMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *LoanSchedule
+		)
+		m.oldValue = func(ctx context.Context) (*LoanSchedule, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().LoanSchedule.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withLoanSchedule sets the old LoanSchedule of the mutation.
+func withLoanSchedule(node *LoanSchedule) loanscheduleOption {
+	return func(m *LoanScheduleMutation) {
+		m.oldValue = func(context.Context) (*LoanSchedule, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m LoanScheduleMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m LoanScheduleMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("generated: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *LoanScheduleMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *LoanScheduleMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().LoanSchedule.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "createdAt" field.
+func (m *LoanScheduleMutation) SetCreatedAt(t time.Time) {
+	m.createdAt = &t
+}
+
+// CreatedAt returns the value of the "createdAt" field in the mutation.
+func (m *LoanScheduleMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.createdAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "createdAt" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "createdAt" field.
+func (m *LoanScheduleMutation) ResetCreatedAt() {
+	m.createdAt = nil
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (m *LoanScheduleMutation) SetUpdatedAt(t time.Time) {
+	m.updatedAt = &t
+}
+
+// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+func (m *LoanScheduleMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updatedAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updatedAt" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updatedAt" field.
+func (m *LoanScheduleMutation) ResetUpdatedAt() {
+	m.updatedAt = nil
+}
+
+// SetDeletedAt sets the "deletedAt" field.
+func (m *LoanScheduleMutation) SetDeletedAt(t time.Time) {
+	m.deletedAt = &t
+}
+
+// DeletedAt returns the value of the "deletedAt" field in the mutation.
+func (m *LoanScheduleMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deletedAt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deletedAt" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deletedAt" field.
+func (m *LoanScheduleMutation) ClearDeletedAt() {
+	m.deletedAt = nil
+	m.clearedFields[loanschedule.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+func (m *LoanScheduleMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[loanschedule.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deletedAt" field.
+func (m *LoanScheduleMutation) ResetDeletedAt() {
+	m.deletedAt = nil
+	delete(m.clearedFields, loanschedule.FieldDeletedAt)
+}
+
+// SetAmount sets the "amount" field.
+func (m *LoanScheduleMutation) SetAmount(f float64) {
+	m.amount = &f
+	m.addamount = nil
+}
+
+// Amount returns the value of the "amount" field in the mutation.
+func (m *LoanScheduleMutation) Amount() (r float64, exists bool) {
+	v := m.amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmount returns the old "amount" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmount: %w", err)
+	}
+	return oldValue.Amount, nil
+}
+
+// AddAmount adds f to the "amount" field.
+func (m *LoanScheduleMutation) AddAmount(f float64) {
+	if m.addamount != nil {
+		*m.addamount += f
+	} else {
+		m.addamount = &f
+	}
+}
+
+// AddedAmount returns the value that was added to the "amount" field in this mutation.
+func (m *LoanScheduleMutation) AddedAmount() (r float64, exists bool) {
+	v := m.addamount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAmount resets all changes to the "amount" field.
+func (m *LoanScheduleMutation) ResetAmount() {
+	m.amount = nil
+	m.addamount = nil
+}
+
+// SetAmountPaid sets the "amount_paid" field.
+func (m *LoanScheduleMutation) SetAmountPaid(f float64) {
+	m.amount_paid = &f
+	m.addamount_paid = nil
+}
+
+// AmountPaid returns the value of the "amount_paid" field in the mutation.
+func (m *LoanScheduleMutation) AmountPaid() (r float64, exists bool) {
+	v := m.amount_paid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmountPaid returns the old "amount_paid" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldAmountPaid(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmountPaid is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmountPaid requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmountPaid: %w", err)
+	}
+	return oldValue.AmountPaid, nil
+}
+
+// AddAmountPaid adds f to the "amount_paid" field.
+func (m *LoanScheduleMutation) AddAmountPaid(f float64) {
+	if m.addamount_paid != nil {
+		*m.addamount_paid += f
+	} else {
+		m.addamount_paid = &f
+	}
+}
+
+// AddedAmountPaid returns the value that was added to the "amount_paid" field in this mutation.
+func (m *LoanScheduleMutation) AddedAmountPaid() (r float64, exists bool) {
+	v := m.addamount_paid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAmountPaid resets all changes to the "amount_paid" field.
+func (m *LoanScheduleMutation) ResetAmountPaid() {
+	m.amount_paid = nil
+	m.addamount_paid = nil
+}
+
+// SetDueDate sets the "due_date" field.
+func (m *LoanScheduleMutation) SetDueDate(t time.Time) {
+	m.due_date = &t
+}
+
+// DueDate returns the value of the "due_date" field in the mutation.
+func (m *LoanScheduleMutation) DueDate() (r time.Time, exists bool) {
+	v := m.due_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDueDate returns the old "due_date" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDueDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDueDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDueDate: %w", err)
+	}
+	return oldValue.DueDate, nil
+}
+
+// ResetDueDate resets all changes to the "due_date" field.
+func (m *LoanScheduleMutation) ResetDueDate() {
+	m.due_date = nil
+}
+
+// SetDatePaid sets the "date_paid" field.
+func (m *LoanScheduleMutation) SetDatePaid(t time.Time) {
+	m.date_paid = &t
+}
+
+// DatePaid returns the value of the "date_paid" field in the mutation.
+func (m *LoanScheduleMutation) DatePaid() (r time.Time, exists bool) {
+	v := m.date_paid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDatePaid returns the old "date_paid" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldDatePaid(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDatePaid is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDatePaid requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDatePaid: %w", err)
+	}
+	return oldValue.DatePaid, nil
+}
+
+// ClearDatePaid clears the value of the "date_paid" field.
+func (m *LoanScheduleMutation) ClearDatePaid() {
+	m.date_paid = nil
+	m.clearedFields[loanschedule.FieldDatePaid] = struct{}{}
+}
+
+// DatePaidCleared returns if the "date_paid" field was cleared in this mutation.
+func (m *LoanScheduleMutation) DatePaidCleared() bool {
+	_, ok := m.clearedFields[loanschedule.FieldDatePaid]
+	return ok
+}
+
+// ResetDatePaid resets all changes to the "date_paid" field.
+func (m *LoanScheduleMutation) ResetDatePaid() {
+	m.date_paid = nil
+	delete(m.clearedFields, loanschedule.FieldDatePaid)
+}
+
+// SetInterest sets the "interest" field.
+func (m *LoanScheduleMutation) SetInterest(f float64) {
+	m.interest = &f
+	m.addinterest = nil
+}
+
+// Interest returns the value of the "interest" field in the mutation.
+func (m *LoanScheduleMutation) Interest() (r float64, exists bool) {
+	v := m.interest
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInterest returns the old "interest" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldInterest(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInterest is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInterest requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInterest: %w", err)
+	}
+	return oldValue.Interest, nil
+}
+
+// AddInterest adds f to the "interest" field.
+func (m *LoanScheduleMutation) AddInterest(f float64) {
+	if m.addinterest != nil {
+		*m.addinterest += f
+	} else {
+		m.addinterest = &f
+	}
+}
+
+// AddedInterest returns the value that was added to the "interest" field in this mutation.
+func (m *LoanScheduleMutation) AddedInterest() (r float64, exists bool) {
+	v := m.addinterest
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetInterest resets all changes to the "interest" field.
+func (m *LoanScheduleMutation) ResetInterest() {
+	m.interest = nil
+	m.addinterest = nil
+}
+
+// SetInstallmentNumber sets the "installment_number" field.
+func (m *LoanScheduleMutation) SetInstallmentNumber(i int) {
+	m.installment_number = &i
+	m.addinstallment_number = nil
+}
+
+// InstallmentNumber returns the value of the "installment_number" field in the mutation.
+func (m *LoanScheduleMutation) InstallmentNumber() (r int, exists bool) {
+	v := m.installment_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInstallmentNumber returns the old "installment_number" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldInstallmentNumber(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInstallmentNumber is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInstallmentNumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInstallmentNumber: %w", err)
+	}
+	return oldValue.InstallmentNumber, nil
+}
+
+// AddInstallmentNumber adds i to the "installment_number" field.
+func (m *LoanScheduleMutation) AddInstallmentNumber(i int) {
+	if m.addinstallment_number != nil {
+		*m.addinstallment_number += i
+	} else {
+		m.addinstallment_number = &i
+	}
+}
+
+// AddedInstallmentNumber returns the value that was added to the "installment_number" field in this mutation.
+func (m *LoanScheduleMutation) AddedInstallmentNumber() (r int, exists bool) {
+	v := m.addinstallment_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetInstallmentNumber resets all changes to the "installment_number" field.
+func (m *LoanScheduleMutation) ResetInstallmentNumber() {
+	m.installment_number = nil
+	m.addinstallment_number = nil
+}
+
+// SetPrincipal sets the "principal" field.
+func (m *LoanScheduleMutation) SetPrincipal(f float64) {
+	m.principal = &f
+	m.addprincipal = nil
+}
+
+// Principal returns the value of the "principal" field in the mutation.
+func (m *LoanScheduleMutation) Principal() (r float64, exists bool) {
+	v := m.principal
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrincipal returns the old "principal" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldPrincipal(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPrincipal is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPrincipal requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrincipal: %w", err)
+	}
+	return oldValue.Principal, nil
+}
+
+// AddPrincipal adds f to the "principal" field.
+func (m *LoanScheduleMutation) AddPrincipal(f float64) {
+	if m.addprincipal != nil {
+		*m.addprincipal += f
+	} else {
+		m.addprincipal = &f
+	}
+}
+
+// AddedPrincipal returns the value that was added to the "principal" field in this mutation.
+func (m *LoanScheduleMutation) AddedPrincipal() (r float64, exists bool) {
+	v := m.addprincipal
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPrincipal resets all changes to the "principal" field.
+func (m *LoanScheduleMutation) ResetPrincipal() {
+	m.principal = nil
+	m.addprincipal = nil
+}
+
+// SetRemainingBalance sets the "remaining_balance" field.
+func (m *LoanScheduleMutation) SetRemainingBalance(f float64) {
+	m.remaining_balance = &f
+	m.addremaining_balance = nil
+}
+
+// RemainingBalance returns the value of the "remaining_balance" field in the mutation.
+func (m *LoanScheduleMutation) RemainingBalance() (r float64, exists bool) {
+	v := m.remaining_balance
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemainingBalance returns the old "remaining_balance" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldRemainingBalance(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemainingBalance is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemainingBalance requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemainingBalance: %w", err)
+	}
+	return oldValue.RemainingBalance, nil
+}
+
+// AddRemainingBalance adds f to the "remaining_balance" field.
+func (m *LoanScheduleMutation) AddRemainingBalance(f float64) {
+	if m.addremaining_balance != nil {
+		*m.addremaining_balance += f
+	} else {
+		m.addremaining_balance = &f
+	}
+}
+
+// AddedRemainingBalance returns the value that was added to the "remaining_balance" field in this mutation.
+func (m *LoanScheduleMutation) AddedRemainingBalance() (r float64, exists bool) {
+	v := m.addremaining_balance
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearRemainingBalance clears the value of the "remaining_balance" field.
+func (m *LoanScheduleMutation) ClearRemainingBalance() {
+	m.remaining_balance = nil
+	m.addremaining_balance = nil
+	m.clearedFields[loanschedule.FieldRemainingBalance] = struct{}{}
+}
+
+// RemainingBalanceCleared returns if the "remaining_balance" field was cleared in this mutation.
+func (m *LoanScheduleMutation) RemainingBalanceCleared() bool {
+	_, ok := m.clearedFields[loanschedule.FieldRemainingBalance]
+	return ok
+}
+
+// ResetRemainingBalance resets all changes to the "remaining_balance" field.
+func (m *LoanScheduleMutation) ResetRemainingBalance() {
+	m.remaining_balance = nil
+	m.addremaining_balance = nil
+	delete(m.clearedFields, loanschedule.FieldRemainingBalance)
+}
+
+// SetStatus sets the "status" field.
+func (m *LoanScheduleMutation) SetStatus(l loanschedule.Status) {
+	m.status = &l
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *LoanScheduleMutation) Status() (r loanschedule.Status, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the LoanSchedule entity.
+// If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanScheduleMutation) OldStatus(ctx context.Context) (v loanschedule.Status, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *LoanScheduleMutation) ResetStatus() {
+	m.status = nil
+}
+
+// SetLoanID sets the "loan" edge to the Loan entity by id.
+func (m *LoanScheduleMutation) SetLoanID(id int) {
+	m.loan = &id
+}
+
+// ClearLoan clears the "loan" edge to the Loan entity.
+func (m *LoanScheduleMutation) ClearLoan() {
+	m.clearedloan = true
+}
+
+// LoanCleared reports if the "loan" edge to the Loan entity was cleared.
+func (m *LoanScheduleMutation) LoanCleared() bool {
+	return m.clearedloan
+}
+
+// LoanID returns the "loan" edge ID in the mutation.
+func (m *LoanScheduleMutation) LoanID() (id int, exists bool) {
+	if m.loan != nil {
+		return *m.loan, true
+	}
+	return
+}
+
+// LoanIDs returns the "loan" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// LoanID instead. It exists only for internal usage by the builders.
+func (m *LoanScheduleMutation) LoanIDs() (ids []int) {
+	if id := m.loan; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetLoan resets all changes to the "loan" edge.
+func (m *LoanScheduleMutation) ResetLoan() {
+	m.loan = nil
+	m.clearedloan = false
+}
+
+// AddTransactionHistoryIDs adds the "transaction_history" edge to the AccountingEntry entity by ids.
+func (m *LoanScheduleMutation) AddTransactionHistoryIDs(ids ...int) {
+	if m.transaction_history == nil {
+		m.transaction_history = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.transaction_history[ids[i]] = struct{}{}
+	}
+}
+
+// ClearTransactionHistory clears the "transaction_history" edge to the AccountingEntry entity.
+func (m *LoanScheduleMutation) ClearTransactionHistory() {
+	m.clearedtransaction_history = true
+}
+
+// TransactionHistoryCleared reports if the "transaction_history" edge to the AccountingEntry entity was cleared.
+func (m *LoanScheduleMutation) TransactionHistoryCleared() bool {
+	return m.clearedtransaction_history
+}
+
+// RemoveTransactionHistoryIDs removes the "transaction_history" edge to the AccountingEntry entity by IDs.
+func (m *LoanScheduleMutation) RemoveTransactionHistoryIDs(ids ...int) {
+	if m.removedtransaction_history == nil {
+		m.removedtransaction_history = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.transaction_history, ids[i])
+		m.removedtransaction_history[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedTransactionHistory returns the removed IDs of the "transaction_history" edge to the AccountingEntry entity.
+func (m *LoanScheduleMutation) RemovedTransactionHistoryIDs() (ids []int) {
+	for id := range m.removedtransaction_history {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// TransactionHistoryIDs returns the "transaction_history" edge IDs in the mutation.
+func (m *LoanScheduleMutation) TransactionHistoryIDs() (ids []int) {
+	for id := range m.transaction_history {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetTransactionHistory resets all changes to the "transaction_history" edge.
+func (m *LoanScheduleMutation) ResetTransactionHistory() {
+	m.transaction_history = nil
+	m.clearedtransaction_history = false
+	m.removedtransaction_history = nil
+}
+
+// Where appends a list predicates to the LoanScheduleMutation builder.
+func (m *LoanScheduleMutation) Where(ps ...predicate.LoanSchedule) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the LoanScheduleMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *LoanScheduleMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.LoanSchedule, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *LoanScheduleMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *LoanScheduleMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (LoanSchedule).
+func (m *LoanScheduleMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *LoanScheduleMutation) Fields() []string {
+	fields := make([]string, 0, 12)
+	if m.createdAt != nil {
+		fields = append(fields, loanschedule.FieldCreatedAt)
+	}
+	if m.updatedAt != nil {
+		fields = append(fields, loanschedule.FieldUpdatedAt)
+	}
+	if m.deletedAt != nil {
+		fields = append(fields, loanschedule.FieldDeletedAt)
+	}
+	if m.amount != nil {
+		fields = append(fields, loanschedule.FieldAmount)
+	}
+	if m.amount_paid != nil {
+		fields = append(fields, loanschedule.FieldAmountPaid)
+	}
+	if m.due_date != nil {
+		fields = append(fields, loanschedule.FieldDueDate)
+	}
+	if m.date_paid != nil {
+		fields = append(fields, loanschedule.FieldDatePaid)
+	}
+	if m.interest != nil {
+		fields = append(fields, loanschedule.FieldInterest)
+	}
+	if m.installment_number != nil {
+		fields = append(fields, loanschedule.FieldInstallmentNumber)
+	}
+	if m.principal != nil {
+		fields = append(fields, loanschedule.FieldPrincipal)
+	}
+	if m.remaining_balance != nil {
+		fields = append(fields, loanschedule.FieldRemainingBalance)
+	}
+	if m.status != nil {
+		fields = append(fields, loanschedule.FieldStatus)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *LoanScheduleMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case loanschedule.FieldCreatedAt:
+		return m.CreatedAt()
+	case loanschedule.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case loanschedule.FieldDeletedAt:
+		return m.DeletedAt()
+	case loanschedule.FieldAmount:
+		return m.Amount()
+	case loanschedule.FieldAmountPaid:
+		return m.AmountPaid()
+	case loanschedule.FieldDueDate:
+		return m.DueDate()
+	case loanschedule.FieldDatePaid:
+		return m.DatePaid()
+	case loanschedule.FieldInterest:
+		return m.Interest()
+	case loanschedule.FieldInstallmentNumber:
+		return m.InstallmentNumber()
+	case loanschedule.FieldPrincipal:
+		return m.Principal()
+	case loanschedule.FieldRemainingBalance:
+		return m.RemainingBalance()
+	case loanschedule.FieldStatus:
+		return m.Status()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *LoanScheduleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case loanschedule.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case loanschedule.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case loanschedule.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case loanschedule.FieldAmount:
+		return m.OldAmount(ctx)
+	case loanschedule.FieldAmountPaid:
+		return m.OldAmountPaid(ctx)
+	case loanschedule.FieldDueDate:
+		return m.OldDueDate(ctx)
+	case loanschedule.FieldDatePaid:
+		return m.OldDatePaid(ctx)
+	case loanschedule.FieldInterest:
+		return m.OldInterest(ctx)
+	case loanschedule.FieldInstallmentNumber:
+		return m.OldInstallmentNumber(ctx)
+	case loanschedule.FieldPrincipal:
+		return m.OldPrincipal(ctx)
+	case loanschedule.FieldRemainingBalance:
+		return m.OldRemainingBalance(ctx)
+	case loanschedule.FieldStatus:
+		return m.OldStatus(ctx)
+	}
+	return nil, fmt.Errorf("unknown LoanSchedule field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *LoanScheduleMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case loanschedule.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case loanschedule.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case loanschedule.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case loanschedule.FieldAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmount(v)
+		return nil
+	case loanschedule.FieldAmountPaid:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmountPaid(v)
+		return nil
+	case loanschedule.FieldDueDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDueDate(v)
+		return nil
+	case loanschedule.FieldDatePaid:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDatePaid(v)
+		return nil
+	case loanschedule.FieldInterest:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInterest(v)
+		return nil
+	case loanschedule.FieldInstallmentNumber:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInstallmentNumber(v)
+		return nil
+	case loanschedule.FieldPrincipal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrincipal(v)
+		return nil
+	case loanschedule.FieldRemainingBalance:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemainingBalance(v)
+		return nil
+	case loanschedule.FieldStatus:
+		v, ok := value.(loanschedule.Status)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *LoanScheduleMutation) AddedFields() []string {
+	var fields []string
+	if m.addamount != nil {
+		fields = append(fields, loanschedule.FieldAmount)
+	}
+	if m.addamount_paid != nil {
+		fields = append(fields, loanschedule.FieldAmountPaid)
+	}
+	if m.addinterest != nil {
+		fields = append(fields, loanschedule.FieldInterest)
+	}
+	if m.addinstallment_number != nil {
+		fields = append(fields, loanschedule.FieldInstallmentNumber)
+	}
+	if m.addprincipal != nil {
+		fields = append(fields, loanschedule.FieldPrincipal)
+	}
+	if m.addremaining_balance != nil {
+		fields = append(fields, loanschedule.FieldRemainingBalance)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *LoanScheduleMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case loanschedule.FieldAmount:
+		return m.AddedAmount()
+	case loanschedule.FieldAmountPaid:
+		return m.AddedAmountPaid()
+	case loanschedule.FieldInterest:
+		return m.AddedInterest()
+	case loanschedule.FieldInstallmentNumber:
+		return m.AddedInstallmentNumber()
+	case loanschedule.FieldPrincipal:
+		return m.AddedPrincipal()
+	case loanschedule.FieldRemainingBalance:
+		return m.AddedRemainingBalance()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *LoanScheduleMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case loanschedule.FieldAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAmount(v)
+		return nil
+	case loanschedule.FieldAmountPaid:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAmountPaid(v)
+		return nil
+	case loanschedule.FieldInterest:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddInterest(v)
+		return nil
+	case loanschedule.FieldInstallmentNumber:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddInstallmentNumber(v)
+		return nil
+	case loanschedule.FieldPrincipal:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPrincipal(v)
+		return nil
+	case loanschedule.FieldRemainingBalance:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRemainingBalance(v)
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *LoanScheduleMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(loanschedule.FieldDeletedAt) {
+		fields = append(fields, loanschedule.FieldDeletedAt)
+	}
+	if m.FieldCleared(loanschedule.FieldDatePaid) {
+		fields = append(fields, loanschedule.FieldDatePaid)
+	}
+	if m.FieldCleared(loanschedule.FieldRemainingBalance) {
+		fields = append(fields, loanschedule.FieldRemainingBalance)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *LoanScheduleMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *LoanScheduleMutation) ClearField(name string) error {
+	switch name {
+	case loanschedule.FieldDeletedAt:
+		m.ClearDeletedAt()
+		return nil
+	case loanschedule.FieldDatePaid:
+		m.ClearDatePaid()
+		return nil
+	case loanschedule.FieldRemainingBalance:
+		m.ClearRemainingBalance()
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *LoanScheduleMutation) ResetField(name string) error {
+	switch name {
+	case loanschedule.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case loanschedule.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case loanschedule.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case loanschedule.FieldAmount:
+		m.ResetAmount()
+		return nil
+	case loanschedule.FieldAmountPaid:
+		m.ResetAmountPaid()
+		return nil
+	case loanschedule.FieldDueDate:
+		m.ResetDueDate()
+		return nil
+	case loanschedule.FieldDatePaid:
+		m.ResetDatePaid()
+		return nil
+	case loanschedule.FieldInterest:
+		m.ResetInterest()
+		return nil
+	case loanschedule.FieldInstallmentNumber:
+		m.ResetInstallmentNumber()
+		return nil
+	case loanschedule.FieldPrincipal:
+		m.ResetPrincipal()
+		return nil
+	case loanschedule.FieldRemainingBalance:
+		m.ResetRemainingBalance()
+		return nil
+	case loanschedule.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *LoanScheduleMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.loan != nil {
+		edges = append(edges, loanschedule.EdgeLoan)
+	}
+	if m.transaction_history != nil {
+		edges = append(edges, loanschedule.EdgeTransactionHistory)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *LoanScheduleMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case loanschedule.EdgeLoan:
+		if id := m.loan; id != nil {
+			return []ent.Value{*id}
+		}
+	case loanschedule.EdgeTransactionHistory:
+		ids := make([]ent.Value, 0, len(m.transaction_history))
+		for id := range m.transaction_history {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *LoanScheduleMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.removedtransaction_history != nil {
+		edges = append(edges, loanschedule.EdgeTransactionHistory)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *LoanScheduleMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case loanschedule.EdgeTransactionHistory:
+		ids := make([]ent.Value, 0, len(m.removedtransaction_history))
+		for id := range m.removedtransaction_history {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *LoanScheduleMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.clearedloan {
+		edges = append(edges, loanschedule.EdgeLoan)
+	}
+	if m.clearedtransaction_history {
+		edges = append(edges, loanschedule.EdgeTransactionHistory)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *LoanScheduleMutation) EdgeCleared(name string) bool {
+	switch name {
+	case loanschedule.EdgeLoan:
+		return m.clearedloan
+	case loanschedule.EdgeTransactionHistory:
+		return m.clearedtransaction_history
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *LoanScheduleMutation) ClearEdge(name string) error {
+	switch name {
+	case loanschedule.EdgeLoan:
+		m.ClearLoan()
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *LoanScheduleMutation) ResetEdge(name string) error {
+	switch name {
+	case loanschedule.EdgeLoan:
+		m.ResetLoan()
+		return nil
+	case loanschedule.EdgeTransactionHistory:
+		m.ResetTransactionHistory()
+		return nil
+	}
+	return fmt.Errorf("unknown LoanSchedule edge %s", name)
 }
 
 // MemberSignupTokenMutation represents an operation that mutates the MemberSignupToken nodes in the graph.
@@ -24106,30 +26267,33 @@ func (m *ReceivableMutation) ResetEdge(name string) error {
 // SupplierMutation represents an operation that mutates the Supplier nodes in the graph.
 type SupplierMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *int
-	createdAt       *time.Time
-	updatedAt       *time.Time
-	deletedAt       *time.Time
-	address         *string
-	city            *string
-	country         *string
-	description     *string
-	email           *string
-	isDefault       *bool
-	name            *string
-	phone           *string
-	taxId           *string
-	clearedFields   map[string]struct{}
-	company         *int
-	clearedcompany  bool
-	payables        map[int]struct{}
-	removedpayables map[int]struct{}
-	clearedpayables bool
-	done            bool
-	oldValue        func(context.Context) (*Supplier, error)
-	predicates      []predicate.Supplier
+	op                   Op
+	typ                  string
+	id                   *int
+	createdAt            *time.Time
+	updatedAt            *time.Time
+	deletedAt            *time.Time
+	address              *string
+	city                 *string
+	country              *string
+	description          *string
+	email                *string
+	isDefault            *bool
+	name                 *string
+	phone                *string
+	taxId                *string
+	clearedFields        map[string]struct{}
+	company              *int
+	clearedcompany       bool
+	loan_schedule        map[int]struct{}
+	removedloan_schedule map[int]struct{}
+	clearedloan_schedule bool
+	payables             map[int]struct{}
+	removedpayables      map[int]struct{}
+	clearedpayables      bool
+	done                 bool
+	oldValue             func(context.Context) (*Supplier, error)
+	predicates           []predicate.Supplier
 }
 
 var _ ent.Mutation = (*SupplierMutation)(nil)
@@ -24727,6 +26891,60 @@ func (m *SupplierMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by ids.
+func (m *SupplierMutation) AddLoanScheduleIDs(ids ...int) {
+	if m.loan_schedule == nil {
+		m.loan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.loan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// ClearLoanSchedule clears the "loan_schedule" edge to the Loan entity.
+func (m *SupplierMutation) ClearLoanSchedule() {
+	m.clearedloan_schedule = true
+}
+
+// LoanScheduleCleared reports if the "loan_schedule" edge to the Loan entity was cleared.
+func (m *SupplierMutation) LoanScheduleCleared() bool {
+	return m.clearedloan_schedule
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the Loan entity by IDs.
+func (m *SupplierMutation) RemoveLoanScheduleIDs(ids ...int) {
+	if m.removedloan_schedule == nil {
+		m.removedloan_schedule = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.loan_schedule, ids[i])
+		m.removedloan_schedule[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the Loan entity.
+func (m *SupplierMutation) RemovedLoanScheduleIDs() (ids []int) {
+	for id := range m.removedloan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
+func (m *SupplierMutation) LoanScheduleIDs() (ids []int) {
+	for id := range m.loan_schedule {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
+func (m *SupplierMutation) ResetLoanSchedule() {
+	m.loan_schedule = nil
+	m.clearedloan_schedule = false
+	m.removedloan_schedule = nil
+}
+
 // AddPayableIDs adds the "payables" edge to the Payable entity by ids.
 func (m *SupplierMutation) AddPayableIDs(ids ...int) {
 	if m.payables == nil {
@@ -25116,9 +27334,12 @@ func (m *SupplierMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SupplierMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.company != nil {
 		edges = append(edges, supplier.EdgeCompany)
+	}
+	if m.loan_schedule != nil {
+		edges = append(edges, supplier.EdgeLoanSchedule)
 	}
 	if m.payables != nil {
 		edges = append(edges, supplier.EdgePayables)
@@ -25134,6 +27355,12 @@ func (m *SupplierMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
+	case supplier.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.loan_schedule))
+		for id := range m.loan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case supplier.EdgePayables:
 		ids := make([]ent.Value, 0, len(m.payables))
 		for id := range m.payables {
@@ -25146,7 +27373,10 @@ func (m *SupplierMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SupplierMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
+	if m.removedloan_schedule != nil {
+		edges = append(edges, supplier.EdgeLoanSchedule)
+	}
 	if m.removedpayables != nil {
 		edges = append(edges, supplier.EdgePayables)
 	}
@@ -25157,6 +27387,12 @@ func (m *SupplierMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *SupplierMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
+	case supplier.EdgeLoanSchedule:
+		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
+		for id := range m.removedloan_schedule {
+			ids = append(ids, id)
+		}
+		return ids
 	case supplier.EdgePayables:
 		ids := make([]ent.Value, 0, len(m.removedpayables))
 		for id := range m.removedpayables {
@@ -25169,9 +27405,12 @@ func (m *SupplierMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SupplierMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedcompany {
 		edges = append(edges, supplier.EdgeCompany)
+	}
+	if m.clearedloan_schedule {
+		edges = append(edges, supplier.EdgeLoanSchedule)
 	}
 	if m.clearedpayables {
 		edges = append(edges, supplier.EdgePayables)
@@ -25185,6 +27424,8 @@ func (m *SupplierMutation) EdgeCleared(name string) bool {
 	switch name {
 	case supplier.EdgeCompany:
 		return m.clearedcompany
+	case supplier.EdgeLoanSchedule:
+		return m.clearedloan_schedule
 	case supplier.EdgePayables:
 		return m.clearedpayables
 	}
@@ -25208,6 +27449,9 @@ func (m *SupplierMutation) ResetEdge(name string) error {
 	switch name {
 	case supplier.EdgeCompany:
 		m.ResetCompany()
+		return nil
+	case supplier.EdgeLoanSchedule:
+		m.ResetLoanSchedule()
 		return nil
 	case supplier.EdgePayables:
 		m.ResetPayables()
@@ -26398,6 +28642,7 @@ type UserMutation struct {
 	createdAt                        *time.Time
 	updatedAt                        *time.Time
 	deletedAt                        *time.Time
+	device                           *string
 	isDemoUser                       *bool
 	firebaseUID                      *string
 	fcmToken                         *string
@@ -26688,6 +28933,55 @@ func (m *UserMutation) DeletedAtCleared() bool {
 func (m *UserMutation) ResetDeletedAt() {
 	m.deletedAt = nil
 	delete(m.clearedFields, user.FieldDeletedAt)
+}
+
+// SetDevice sets the "device" field.
+func (m *UserMutation) SetDevice(s string) {
+	m.device = &s
+}
+
+// Device returns the value of the "device" field in the mutation.
+func (m *UserMutation) Device() (r string, exists bool) {
+	v := m.device
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDevice returns the old "device" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldDevice(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDevice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDevice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDevice: %w", err)
+	}
+	return oldValue.Device, nil
+}
+
+// ClearDevice clears the value of the "device" field.
+func (m *UserMutation) ClearDevice() {
+	m.device = nil
+	m.clearedFields[user.FieldDevice] = struct{}{}
+}
+
+// DeviceCleared returns if the "device" field was cleared in this mutation.
+func (m *UserMutation) DeviceCleared() bool {
+	_, ok := m.clearedFields[user.FieldDevice]
+	return ok
+}
+
+// ResetDevice resets all changes to the "device" field.
+func (m *UserMutation) ResetDevice() {
+	m.device = nil
+	delete(m.clearedFields, user.FieldDevice)
 }
 
 // SetIsDemoUser sets the "isDemoUser" field.
@@ -28336,7 +30630,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 19)
 	if m.createdAt != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -28345,6 +30639,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.deletedAt != nil {
 		fields = append(fields, user.FieldDeletedAt)
+	}
+	if m.device != nil {
+		fields = append(fields, user.FieldDevice)
 	}
 	if m.isDemoUser != nil {
 		fields = append(fields, user.FieldIsDemoUser)
@@ -28405,6 +30702,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case user.FieldDeletedAt:
 		return m.DeletedAt()
+	case user.FieldDevice:
+		return m.Device()
 	case user.FieldIsDemoUser:
 		return m.IsDemoUser()
 	case user.FieldFirebaseUID:
@@ -28450,6 +30749,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdatedAt(ctx)
 	case user.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
+	case user.FieldDevice:
+		return m.OldDevice(ctx)
 	case user.FieldIsDemoUser:
 		return m.OldIsDemoUser(ctx)
 	case user.FieldFirebaseUID:
@@ -28509,6 +30810,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeletedAt(v)
+		return nil
+	case user.FieldDevice:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDevice(v)
 		return nil
 	case user.FieldIsDemoUser:
 		v, ok := value.(bool)
@@ -28648,6 +30956,9 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldDeletedAt) {
 		fields = append(fields, user.FieldDeletedAt)
 	}
+	if m.FieldCleared(user.FieldDevice) {
+		fields = append(fields, user.FieldDevice)
+	}
 	if m.FieldCleared(user.FieldIsDemoUser) {
 		fields = append(fields, user.FieldIsDemoUser)
 	}
@@ -28695,6 +31006,9 @@ func (m *UserMutation) ClearField(name string) error {
 	case user.FieldDeletedAt:
 		m.ClearDeletedAt()
 		return nil
+	case user.FieldDevice:
+		m.ClearDevice()
+		return nil
 	case user.FieldIsDemoUser:
 		m.ClearIsDemoUser()
 		return nil
@@ -28741,6 +31055,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldDeletedAt:
 		m.ResetDeletedAt()
+		return nil
+	case user.FieldDevice:
+		m.ResetDevice()
 		return nil
 	case user.FieldIsDemoUser:
 		m.ResetIsDemoUser()

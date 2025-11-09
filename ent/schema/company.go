@@ -62,6 +62,7 @@ func (Company) Edges() []ent.Edge {
 		edge.To("inventoryMovements", InventoryMovement.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("invoices", Invoice.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("loans", Loan.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
+		edge.To("loan_schedule", LoanSchedule.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("memberSignupTokens", MemberSignupToken.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("products", Product.Type).Annotations(entsql.OnDelete(entsql.Cascade)),
 		edge.To("projects", Project.Type).Annotations(entsql.OnDelete(entsql.Cascade)),

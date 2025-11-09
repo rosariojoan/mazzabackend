@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/calendar"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
@@ -17,6 +18,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -626,6 +628,252 @@ func (ae *AccountingEntry) ToEdge(order *AccountingEntryOrder) *AccountingEntryE
 	return &AccountingEntryEdge{
 		Node:   ae,
 		Cursor: order.Field.toCursor(ae),
+	}
+}
+
+// CalendarEdge is the edge representation of Calendar.
+type CalendarEdge struct {
+	Node   *Calendar `json:"node"`
+	Cursor Cursor    `json:"cursor"`
+}
+
+// CalendarConnection is the connection containing edges to Calendar.
+type CalendarConnection struct {
+	Edges      []*CalendarEdge `json:"edges"`
+	PageInfo   PageInfo        `json:"pageInfo"`
+	TotalCount int             `json:"totalCount"`
+}
+
+func (c *CalendarConnection) build(nodes []*Calendar, pager *calendarPager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *Calendar
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *Calendar {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *Calendar {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*CalendarEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &CalendarEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// CalendarPaginateOption enables pagination customization.
+type CalendarPaginateOption func(*calendarPager) error
+
+// WithCalendarOrder configures pagination ordering.
+func WithCalendarOrder(order *CalendarOrder) CalendarPaginateOption {
+	if order == nil {
+		order = DefaultCalendarOrder
+	}
+	o := *order
+	return func(pager *calendarPager) error {
+		if err := o.Direction.Validate(); err != nil {
+			return err
+		}
+		if o.Field == nil {
+			o.Field = DefaultCalendarOrder.Field
+		}
+		pager.order = &o
+		return nil
+	}
+}
+
+// WithCalendarFilter configures pagination filter.
+func WithCalendarFilter(filter func(*CalendarQuery) (*CalendarQuery, error)) CalendarPaginateOption {
+	return func(pager *calendarPager) error {
+		if filter == nil {
+			return errors.New("CalendarQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type calendarPager struct {
+	reverse bool
+	order   *CalendarOrder
+	filter  func(*CalendarQuery) (*CalendarQuery, error)
+}
+
+func newCalendarPager(opts []CalendarPaginateOption, reverse bool) (*calendarPager, error) {
+	pager := &calendarPager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultCalendarOrder
+	}
+	return pager, nil
+}
+
+func (p *calendarPager) applyFilter(query *CalendarQuery) (*CalendarQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *calendarPager) toCursor(c *Calendar) Cursor {
+	return p.order.Field.toCursor(c)
+}
+
+func (p *calendarPager) applyCursors(query *CalendarQuery, after, before *Cursor) (*CalendarQuery, error) {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultCalendarOrder.Field.column, p.order.Field.column, direction) {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *calendarPager) applyOrder(query *CalendarQuery) *CalendarQuery {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
+	if p.order.Field != DefaultCalendarOrder.Field {
+		query = query.Order(DefaultCalendarOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return query
+}
+
+func (p *calendarPager) orderExpr(query *CalendarQuery) sql.Querier {
+	direction := p.order.Direction
+	if p.reverse {
+		direction = direction.Reverse()
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(p.order.Field.column)
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
+		if p.order.Field != DefaultCalendarOrder.Field {
+			b.Comma().Ident(DefaultCalendarOrder.Field.column).Pad().WriteString(string(direction))
+		}
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to Calendar.
+func (c *CalendarQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...CalendarPaginateOption,
+) (*CalendarConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newCalendarPager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if c, err = pager.applyFilter(c); err != nil {
+		return nil, err
+	}
+	conn := &CalendarConnection{Edges: []*CalendarEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = c.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if c, err = pager.applyCursors(c, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		c.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := c.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	c = pager.applyOrder(c)
+	nodes, err := c.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+// CalendarOrderField defines the ordering field of Calendar.
+type CalendarOrderField struct {
+	// Value extracts the ordering value from the given Calendar.
+	Value    func(*Calendar) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) calendar.OrderOption
+	toCursor func(*Calendar) Cursor
+}
+
+// CalendarOrder defines the ordering of Calendar.
+type CalendarOrder struct {
+	Direction OrderDirection      `json:"direction"`
+	Field     *CalendarOrderField `json:"field"`
+}
+
+// DefaultCalendarOrder is the default ordering of Calendar.
+var DefaultCalendarOrder = &CalendarOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &CalendarOrderField{
+		Value: func(c *Calendar) (ent.Value, error) {
+			return c.ID, nil
+		},
+		column: calendar.FieldID,
+		toTerm: calendar.ByID,
+		toCursor: func(c *Calendar) Cursor {
+			return Cursor{ID: c.ID}
+		},
+	},
+}
+
+// ToEdge converts Calendar into CalendarEdge.
+func (c *Calendar) ToEdge(order *CalendarOrder) *CalendarEdge {
+	if order == nil {
+		order = DefaultCalendarOrder
+	}
+	return &CalendarEdge{
+		Node:   c,
+		Cursor: order.Field.toCursor(c),
 	}
 }
 
@@ -3937,7 +4185,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldInterestRate orders Loan by interestRate.
+	// LoanOrderFieldInterestRate orders Loan by interest_rate.
 	LoanOrderFieldInterestRate = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.InterestRate, nil
@@ -3951,7 +4199,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldMaturityDate orders Loan by maturityDate.
+	// LoanOrderFieldMaturityDate orders Loan by maturity_date.
 	LoanOrderFieldMaturityDate = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.MaturityDate, nil
@@ -3965,7 +4213,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldNextPayment orders Loan by nextPayment.
+	// LoanOrderFieldNextPayment orders Loan by next_payment.
 	LoanOrderFieldNextPayment = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.NextPayment, nil
@@ -3979,7 +4227,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldNextPaymentAmount orders Loan by nextPaymentAmount.
+	// LoanOrderFieldNextPaymentAmount orders Loan by next_payment_amount.
 	LoanOrderFieldNextPaymentAmount = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.NextPaymentAmount, nil
@@ -3993,7 +4241,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldOutstandingBalance orders Loan by outstandingBalance.
+	// LoanOrderFieldOutstandingBalance orders Loan by outstanding_balance.
 	LoanOrderFieldOutstandingBalance = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.OutstandingBalance, nil
@@ -4007,7 +4255,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldPaymentFrequency orders Loan by paymentFrequency.
+	// LoanOrderFieldPaymentFrequency orders Loan by payment_frequency.
 	LoanOrderFieldPaymentFrequency = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.PaymentFrequency, nil
@@ -4021,7 +4269,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldStartDate orders Loan by startDate.
+	// LoanOrderFieldStartDate orders Loan by start_date.
 	LoanOrderFieldStartDate = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.StartDate, nil
@@ -4145,6 +4393,353 @@ func (l *Loan) ToEdge(order *LoanOrder) *LoanEdge {
 	return &LoanEdge{
 		Node:   l,
 		Cursor: order.Field.toCursor(l),
+	}
+}
+
+// LoanScheduleEdge is the edge representation of LoanSchedule.
+type LoanScheduleEdge struct {
+	Node   *LoanSchedule `json:"node"`
+	Cursor Cursor        `json:"cursor"`
+}
+
+// LoanScheduleConnection is the connection containing edges to LoanSchedule.
+type LoanScheduleConnection struct {
+	Edges      []*LoanScheduleEdge `json:"edges"`
+	PageInfo   PageInfo            `json:"pageInfo"`
+	TotalCount int                 `json:"totalCount"`
+}
+
+func (c *LoanScheduleConnection) build(nodes []*LoanSchedule, pager *loanschedulePager, after *Cursor, first *int, before *Cursor, last *int) {
+	c.PageInfo.HasNextPage = before != nil
+	c.PageInfo.HasPreviousPage = after != nil
+	if first != nil && *first+1 == len(nodes) {
+		c.PageInfo.HasNextPage = true
+		nodes = nodes[:len(nodes)-1]
+	} else if last != nil && *last+1 == len(nodes) {
+		c.PageInfo.HasPreviousPage = true
+		nodes = nodes[:len(nodes)-1]
+	}
+	var nodeAt func(int) *LoanSchedule
+	if last != nil {
+		n := len(nodes) - 1
+		nodeAt = func(i int) *LoanSchedule {
+			return nodes[n-i]
+		}
+	} else {
+		nodeAt = func(i int) *LoanSchedule {
+			return nodes[i]
+		}
+	}
+	c.Edges = make([]*LoanScheduleEdge, len(nodes))
+	for i := range nodes {
+		node := nodeAt(i)
+		c.Edges[i] = &LoanScheduleEdge{
+			Node:   node,
+			Cursor: pager.toCursor(node),
+		}
+	}
+	if l := len(c.Edges); l > 0 {
+		c.PageInfo.StartCursor = &c.Edges[0].Cursor
+		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
+	}
+	if c.TotalCount == 0 {
+		c.TotalCount = len(nodes)
+	}
+}
+
+// LoanSchedulePaginateOption enables pagination customization.
+type LoanSchedulePaginateOption func(*loanschedulePager) error
+
+// WithLoanScheduleOrder configures pagination ordering.
+func WithLoanScheduleOrder(order []*LoanScheduleOrder) LoanSchedulePaginateOption {
+	return func(pager *loanschedulePager) error {
+		for _, o := range order {
+			if err := o.Direction.Validate(); err != nil {
+				return err
+			}
+		}
+		pager.order = append(pager.order, order...)
+		return nil
+	}
+}
+
+// WithLoanScheduleFilter configures pagination filter.
+func WithLoanScheduleFilter(filter func(*LoanScheduleQuery) (*LoanScheduleQuery, error)) LoanSchedulePaginateOption {
+	return func(pager *loanschedulePager) error {
+		if filter == nil {
+			return errors.New("LoanScheduleQuery filter cannot be nil")
+		}
+		pager.filter = filter
+		return nil
+	}
+}
+
+type loanschedulePager struct {
+	reverse bool
+	order   []*LoanScheduleOrder
+	filter  func(*LoanScheduleQuery) (*LoanScheduleQuery, error)
+}
+
+func newLoanSchedulePager(opts []LoanSchedulePaginateOption, reverse bool) (*loanschedulePager, error) {
+	pager := &loanschedulePager{reverse: reverse}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	for i, o := range pager.order {
+		if i > 0 && o.Field == pager.order[i-1].Field {
+			return nil, fmt.Errorf("duplicate order direction %q", o.Direction)
+		}
+	}
+	return pager, nil
+}
+
+func (p *loanschedulePager) applyFilter(query *LoanScheduleQuery) (*LoanScheduleQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+func (p *loanschedulePager) toCursor(ls *LoanSchedule) Cursor {
+	cs := make([]any, 0, len(p.order))
+	for _, o := range p.order {
+		cs = append(cs, o.Field.toCursor(ls).Value)
+	}
+	return Cursor{ID: ls.ID, Value: cs}
+}
+
+func (p *loanschedulePager) applyCursors(query *LoanScheduleQuery, after, before *Cursor) (*LoanScheduleQuery, error) {
+	idDirection := entgql.OrderDirectionAsc
+	if p.reverse {
+		idDirection = entgql.OrderDirectionDesc
+	}
+	fields, directions := make([]string, 0, len(p.order)), make([]OrderDirection, 0, len(p.order))
+	for _, o := range p.order {
+		fields = append(fields, o.Field.column)
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		directions = append(directions, direction)
+	}
+	predicates, err := entgql.MultiCursorsPredicate(after, before, &entgql.MultiCursorsOptions{
+		FieldID:     DefaultLoanScheduleOrder.Field.column,
+		DirectionID: idDirection,
+		Fields:      fields,
+		Directions:  directions,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, predicate := range predicates {
+		query = query.Where(predicate)
+	}
+	return query, nil
+}
+
+func (p *loanschedulePager) applyOrder(query *LoanScheduleQuery) *LoanScheduleQuery {
+	var defaultOrdered bool
+	for _, o := range p.order {
+		direction := o.Direction
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(o.Field.toTerm(direction.OrderTermOption()))
+		if o.Field.column == DefaultLoanScheduleOrder.Field.column {
+			defaultOrdered = true
+		}
+		if len(query.ctx.Fields) > 0 {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	if !defaultOrdered {
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		query = query.Order(DefaultLoanScheduleOrder.Field.toTerm(direction.OrderTermOption()))
+	}
+	return query
+}
+
+func (p *loanschedulePager) orderExpr(query *LoanScheduleQuery) sql.Querier {
+	if len(query.ctx.Fields) > 0 {
+		for _, o := range p.order {
+			query.ctx.AppendFieldOnce(o.Field.column)
+		}
+	}
+	return sql.ExprFunc(func(b *sql.Builder) {
+		for _, o := range p.order {
+			direction := o.Direction
+			if p.reverse {
+				direction = direction.Reverse()
+			}
+			b.Ident(o.Field.column).Pad().WriteString(string(direction))
+			b.Comma()
+		}
+		direction := entgql.OrderDirectionAsc
+		if p.reverse {
+			direction = direction.Reverse()
+		}
+		b.Ident(DefaultLoanScheduleOrder.Field.column).Pad().WriteString(string(direction))
+	})
+}
+
+// Paginate executes the query and returns a relay based cursor connection to LoanSchedule.
+func (ls *LoanScheduleQuery) Paginate(
+	ctx context.Context, after *Cursor, first *int,
+	before *Cursor, last *int, opts ...LoanSchedulePaginateOption,
+) (*LoanScheduleConnection, error) {
+	if err := validateFirstLast(first, last); err != nil {
+		return nil, err
+	}
+	pager, err := newLoanSchedulePager(opts, last != nil)
+	if err != nil {
+		return nil, err
+	}
+	if ls, err = pager.applyFilter(ls); err != nil {
+		return nil, err
+	}
+	conn := &LoanScheduleConnection{Edges: []*LoanScheduleEdge{}}
+	ignoredEdges := !hasCollectedField(ctx, edgesField)
+	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
+		hasPagination := after != nil || first != nil || before != nil || last != nil
+		if hasPagination || ignoredEdges {
+			if conn.TotalCount, err = ls.Clone().Count(ctx); err != nil {
+				return nil, err
+			}
+			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
+			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
+		}
+	}
+	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
+		return conn, nil
+	}
+	if ls, err = pager.applyCursors(ls, after, before); err != nil {
+		return nil, err
+	}
+	if limit := paginateLimit(first, last); limit != 0 {
+		ls.Limit(limit)
+	}
+	if field := collectedField(ctx, edgesField, nodeField); field != nil {
+		if err := ls.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
+			return nil, err
+		}
+	}
+	ls = pager.applyOrder(ls)
+	nodes, err := ls.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	conn.build(nodes, pager, after, first, before, last)
+	return conn, nil
+}
+
+var (
+	// LoanScheduleOrderFieldCreatedAt orders LoanSchedule by createdAt.
+	LoanScheduleOrderFieldCreatedAt = &LoanScheduleOrderField{
+		Value: func(ls *LoanSchedule) (ent.Value, error) {
+			return ls.CreatedAt, nil
+		},
+		column: loanschedule.FieldCreatedAt,
+		toTerm: loanschedule.ByCreatedAt,
+		toCursor: func(ls *LoanSchedule) Cursor {
+			return Cursor{
+				ID:    ls.ID,
+				Value: ls.CreatedAt,
+			}
+		},
+	}
+	// LoanScheduleOrderFieldUpdatedAt orders LoanSchedule by updatedAt.
+	LoanScheduleOrderFieldUpdatedAt = &LoanScheduleOrderField{
+		Value: func(ls *LoanSchedule) (ent.Value, error) {
+			return ls.UpdatedAt, nil
+		},
+		column: loanschedule.FieldUpdatedAt,
+		toTerm: loanschedule.ByUpdatedAt,
+		toCursor: func(ls *LoanSchedule) Cursor {
+			return Cursor{
+				ID:    ls.ID,
+				Value: ls.UpdatedAt,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f LoanScheduleOrderField) String() string {
+	var str string
+	switch f.column {
+	case LoanScheduleOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case LoanScheduleOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f LoanScheduleOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *LoanScheduleOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("LoanScheduleOrderField %T must be a string", v)
+	}
+	switch str {
+	case "CREATED_AT":
+		*f = *LoanScheduleOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *LoanScheduleOrderFieldUpdatedAt
+	default:
+		return fmt.Errorf("%s is not a valid LoanScheduleOrderField", str)
+	}
+	return nil
+}
+
+// LoanScheduleOrderField defines the ordering field of LoanSchedule.
+type LoanScheduleOrderField struct {
+	// Value extracts the ordering value from the given LoanSchedule.
+	Value    func(*LoanSchedule) (ent.Value, error)
+	column   string // field or computed.
+	toTerm   func(...sql.OrderTermOption) loanschedule.OrderOption
+	toCursor func(*LoanSchedule) Cursor
+}
+
+// LoanScheduleOrder defines the ordering of LoanSchedule.
+type LoanScheduleOrder struct {
+	Direction OrderDirection          `json:"direction"`
+	Field     *LoanScheduleOrderField `json:"field"`
+}
+
+// DefaultLoanScheduleOrder is the default ordering of LoanSchedule.
+var DefaultLoanScheduleOrder = &LoanScheduleOrder{
+	Direction: entgql.OrderDirectionAsc,
+	Field: &LoanScheduleOrderField{
+		Value: func(ls *LoanSchedule) (ent.Value, error) {
+			return ls.ID, nil
+		},
+		column: loanschedule.FieldID,
+		toTerm: loanschedule.ByID,
+		toCursor: func(ls *LoanSchedule) Cursor {
+			return Cursor{ID: ls.ID}
+		},
+	},
+}
+
+// ToEdge converts LoanSchedule into LoanScheduleEdge.
+func (ls *LoanSchedule) ToEdge(order *LoanScheduleOrder) *LoanScheduleEdge {
+	if order == nil {
+		order = DefaultLoanScheduleOrder
+	}
+	return &LoanScheduleEdge{
+		Node:   ls,
+		Cursor: order.Field.toCursor(ls),
 	}
 }
 

@@ -32,6 +32,18 @@ func (ae *AccountingEntry) Loan(ctx context.Context) (*Loan, error) {
 	return result, MaskNotFound(err)
 }
 
+func (ae *AccountingEntry) LoanSchedules(ctx context.Context) (result []*LoanSchedule, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = ae.NamedLoanSchedules(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = ae.Edges.LoanSchedulesOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = ae.QueryLoanSchedules().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Company) AvailableRoles(ctx context.Context) (result []*UserRole, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedAvailableRoles(graphql.GetFieldContext(ctx).Field.Alias)
@@ -148,6 +160,18 @@ func (c *Company) Loans(ctx context.Context) (result []*Loan, err error) {
 	}
 	if IsNotLoaded(err) {
 		result, err = c.QueryLoans().All(ctx)
+	}
+	return result, err
+}
+
+func (c *Company) LoanSchedule(ctx context.Context) (result []*LoanSchedule, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedLoanSchedule(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.LoanScheduleOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryLoanSchedule().All(ctx)
 	}
 	return result, err
 }
@@ -324,6 +348,18 @@ func (c *Customer) Company(ctx context.Context) (*Company, error) {
 	return result, MaskNotFound(err)
 }
 
+func (c *Customer) LoanSchedule(ctx context.Context) (result []*Loan, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = c.NamedLoanSchedule(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = c.Edges.LoanScheduleOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = c.QueryLoanSchedule().All(ctx)
+	}
+	return result, err
+}
+
 func (c *Customer) Receivables(ctx context.Context) (result []*Receivable, err error) {
 	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
 		result, err = c.NamedReceivables(graphql.GetFieldContext(ctx).Field.Alias)
@@ -460,12 +496,40 @@ func (i *Invoice) Receivable(ctx context.Context) (*Receivable, error) {
 	return result, MaskNotFound(err)
 }
 
+func (l *Loan) Client(ctx context.Context) (*Customer, error) {
+	result, err := l.Edges.ClientOrErr()
+	if IsNotLoaded(err) {
+		result, err = l.QueryClient().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
+func (l *Loan) Supplier(ctx context.Context) (*Supplier, error) {
+	result, err := l.Edges.SupplierOrErr()
+	if IsNotLoaded(err) {
+		result, err = l.QuerySupplier().Only(ctx)
+	}
+	return result, MaskNotFound(err)
+}
+
 func (l *Loan) Company(ctx context.Context) (*Company, error) {
 	result, err := l.Edges.CompanyOrErr()
 	if IsNotLoaded(err) {
 		result, err = l.QueryCompany().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (l *Loan) LoanSchedule(ctx context.Context) (result []*LoanSchedule, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = l.NamedLoanSchedule(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = l.Edges.LoanScheduleOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = l.QueryLoanSchedule().All(ctx)
+	}
+	return result, err
 }
 
 func (l *Loan) TransactionHistory(ctx context.Context) (result []*AccountingEntry, err error) {
@@ -476,6 +540,26 @@ func (l *Loan) TransactionHistory(ctx context.Context) (result []*AccountingEntr
 	}
 	if IsNotLoaded(err) {
 		result, err = l.QueryTransactionHistory().All(ctx)
+	}
+	return result, err
+}
+
+func (ls *LoanSchedule) Loan(ctx context.Context) (*Loan, error) {
+	result, err := ls.Edges.LoanOrErr()
+	if IsNotLoaded(err) {
+		result, err = ls.QueryLoan().Only(ctx)
+	}
+	return result, err
+}
+
+func (ls *LoanSchedule) TransactionHistory(ctx context.Context) (result []*AccountingEntry, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = ls.NamedTransactionHistory(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = ls.Edges.TransactionHistoryOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = ls.QueryTransactionHistory().All(ctx)
 	}
 	return result, err
 }
@@ -638,6 +722,18 @@ func (s *Supplier) Company(ctx context.Context) (*Company, error) {
 		result, err = s.QueryCompany().Only(ctx)
 	}
 	return result, MaskNotFound(err)
+}
+
+func (s *Supplier) LoanSchedule(ctx context.Context) (result []*Loan, err error) {
+	if fc := graphql.GetFieldContext(ctx); fc != nil && fc.Field.Alias != "" {
+		result, err = s.NamedLoanSchedule(graphql.GetFieldContext(ctx).Field.Alias)
+	} else {
+		result, err = s.Edges.LoanScheduleOrErr()
+	}
+	if IsNotLoaded(err) {
+		result, err = s.QueryLoanSchedule().All(ctx)
+	}
+	return result, err
 }
 
 func (s *Supplier) Payables(ctx context.Context) (result []*Payable, err error) {

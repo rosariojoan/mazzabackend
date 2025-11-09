@@ -73,6 +73,20 @@ func (uc *UserCreate) SetNillableDeletedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetDevice sets the "device" field.
+func (uc *UserCreate) SetDevice(s string) *UserCreate {
+	uc.mutation.SetDevice(s)
+	return uc
+}
+
+// SetNillableDevice sets the "device" field if the given value is not nil.
+func (uc *UserCreate) SetNillableDevice(s *string) *UserCreate {
+	if s != nil {
+		uc.SetDevice(*s)
+	}
+	return uc
+}
+
 // SetIsDemoUser sets the "isDemoUser" field.
 func (uc *UserCreate) SetIsDemoUser(b bool) *UserCreate {
 	uc.mutation.SetIsDemoUser(b)
@@ -660,6 +674,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.DeletedAt(); ok {
 		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := uc.mutation.Device(); ok {
+		_spec.SetField(user.FieldDevice, field.TypeString, value)
+		_node.Device = &value
 	}
 	if value, ok := uc.mutation.IsDemoUser(); ok {
 		_spec.SetField(user.FieldIsDemoUser, field.TypeBool, value)

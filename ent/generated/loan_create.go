@@ -8,7 +8,10 @@ import (
 	"fmt"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/customer"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
+	"mazza/ent/generated/supplier"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -104,7 +107,7 @@ func (lc *LoanCreate) SetNillableDescription(s *string) *LoanCreate {
 	return lc
 }
 
-// SetInterestRate sets the "interestRate" field.
+// SetInterestRate sets the "interest_rate" field.
 func (lc *LoanCreate) SetInterestRate(f float64) *LoanCreate {
 	lc.mutation.SetInterestRate(f)
 	return lc
@@ -116,19 +119,19 @@ func (lc *LoanCreate) SetInstallments(i int) *LoanCreate {
 	return lc
 }
 
-// SetMaturityDate sets the "maturityDate" field.
+// SetMaturityDate sets the "maturity_date" field.
 func (lc *LoanCreate) SetMaturityDate(t time.Time) *LoanCreate {
 	lc.mutation.SetMaturityDate(t)
 	return lc
 }
 
-// SetNextPayment sets the "nextPayment" field.
+// SetNextPayment sets the "next_payment" field.
 func (lc *LoanCreate) SetNextPayment(t time.Time) *LoanCreate {
 	lc.mutation.SetNextPayment(t)
 	return lc
 }
 
-// SetNillableNextPayment sets the "nextPayment" field if the given value is not nil.
+// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
 func (lc *LoanCreate) SetNillableNextPayment(t *time.Time) *LoanCreate {
 	if t != nil {
 		lc.SetNextPayment(*t)
@@ -136,13 +139,13 @@ func (lc *LoanCreate) SetNillableNextPayment(t *time.Time) *LoanCreate {
 	return lc
 }
 
-// SetNextPaymentAmount sets the "nextPaymentAmount" field.
+// SetNextPaymentAmount sets the "next_payment_amount" field.
 func (lc *LoanCreate) SetNextPaymentAmount(f float64) *LoanCreate {
 	lc.mutation.SetNextPaymentAmount(f)
 	return lc
 }
 
-// SetNillableNextPaymentAmount sets the "nextPaymentAmount" field if the given value is not nil.
+// SetNillableNextPaymentAmount sets the "next_payment_amount" field if the given value is not nil.
 func (lc *LoanCreate) SetNillableNextPaymentAmount(f *float64) *LoanCreate {
 	if f != nil {
 		lc.SetNextPaymentAmount(*f)
@@ -150,19 +153,19 @@ func (lc *LoanCreate) SetNillableNextPaymentAmount(f *float64) *LoanCreate {
 	return lc
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (lc *LoanCreate) SetOutstandingBalance(f float64) *LoanCreate {
 	lc.mutation.SetOutstandingBalance(f)
 	return lc
 }
 
-// SetPaymentFrequency sets the "paymentFrequency" field.
+// SetPaymentFrequency sets the "payment_frequency" field.
 func (lc *LoanCreate) SetPaymentFrequency(lf loan.PaymentFrequency) *LoanCreate {
 	lc.mutation.SetPaymentFrequency(lf)
 	return lc
 }
 
-// SetNillablePaymentFrequency sets the "paymentFrequency" field if the given value is not nil.
+// SetNillablePaymentFrequency sets the "payment_frequency" field if the given value is not nil.
 func (lc *LoanCreate) SetNillablePaymentFrequency(lf *loan.PaymentFrequency) *LoanCreate {
 	if lf != nil {
 		lc.SetPaymentFrequency(*lf)
@@ -170,13 +173,13 @@ func (lc *LoanCreate) SetNillablePaymentFrequency(lf *loan.PaymentFrequency) *Lo
 	return lc
 }
 
-// SetPaidInstallments sets the "paidInstallments" field.
+// SetPaidInstallments sets the "paid_installments" field.
 func (lc *LoanCreate) SetPaidInstallments(i int) *LoanCreate {
 	lc.mutation.SetPaidInstallments(i)
 	return lc
 }
 
-// SetNillablePaidInstallments sets the "paidInstallments" field if the given value is not nil.
+// SetNillablePaidInstallments sets the "paid_installments" field if the given value is not nil.
 func (lc *LoanCreate) SetNillablePaidInstallments(i *int) *LoanCreate {
 	if i != nil {
 		lc.SetPaidInstallments(*i)
@@ -184,19 +187,33 @@ func (lc *LoanCreate) SetNillablePaidInstallments(i *int) *LoanCreate {
 	return lc
 }
 
-// SetProvider sets the "provider" field.
-func (lc *LoanCreate) SetProvider(s string) *LoanCreate {
-	lc.mutation.SetProvider(s)
+// SetPaymentType sets the "paymentType" field.
+func (lc *LoanCreate) SetPaymentType(lt loan.PaymentType) *LoanCreate {
+	lc.mutation.SetPaymentType(lt)
 	return lc
 }
 
-// SetStartDate sets the "startDate" field.
+// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+func (lc *LoanCreate) SetNillablePaymentType(lt *loan.PaymentType) *LoanCreate {
+	if lt != nil {
+		lc.SetPaymentType(*lt)
+	}
+	return lc
+}
+
+// SetCounterpartyName sets the "counterparty_name" field.
+func (lc *LoanCreate) SetCounterpartyName(s string) *LoanCreate {
+	lc.mutation.SetCounterpartyName(s)
+	return lc
+}
+
+// SetStartDate sets the "start_date" field.
 func (lc *LoanCreate) SetStartDate(t time.Time) *LoanCreate {
 	lc.mutation.SetStartDate(t)
 	return lc
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
 func (lc *LoanCreate) SetNillableStartDate(t *time.Time) *LoanCreate {
 	if t != nil {
 		lc.SetStartDate(*t)
@@ -208,6 +225,58 @@ func (lc *LoanCreate) SetNillableStartDate(t *time.Time) *LoanCreate {
 func (lc *LoanCreate) SetStatus(l loan.Status) *LoanCreate {
 	lc.mutation.SetStatus(l)
 	return lc
+}
+
+// SetIsLending sets the "is_lending" field.
+func (lc *LoanCreate) SetIsLending(b bool) *LoanCreate {
+	lc.mutation.SetIsLending(b)
+	return lc
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (lc *LoanCreate) SetNillableIsLending(b *bool) *LoanCreate {
+	if b != nil {
+		lc.SetIsLending(*b)
+	}
+	return lc
+}
+
+// SetClientID sets the "client" edge to the Customer entity by ID.
+func (lc *LoanCreate) SetClientID(id int) *LoanCreate {
+	lc.mutation.SetClientID(id)
+	return lc
+}
+
+// SetNillableClientID sets the "client" edge to the Customer entity by ID if the given value is not nil.
+func (lc *LoanCreate) SetNillableClientID(id *int) *LoanCreate {
+	if id != nil {
+		lc = lc.SetClientID(*id)
+	}
+	return lc
+}
+
+// SetClient sets the "client" edge to the Customer entity.
+func (lc *LoanCreate) SetClient(c *Customer) *LoanCreate {
+	return lc.SetClientID(c.ID)
+}
+
+// SetSupplierID sets the "supplier" edge to the Supplier entity by ID.
+func (lc *LoanCreate) SetSupplierID(id int) *LoanCreate {
+	lc.mutation.SetSupplierID(id)
+	return lc
+}
+
+// SetNillableSupplierID sets the "supplier" edge to the Supplier entity by ID if the given value is not nil.
+func (lc *LoanCreate) SetNillableSupplierID(id *int) *LoanCreate {
+	if id != nil {
+		lc = lc.SetSupplierID(*id)
+	}
+	return lc
+}
+
+// SetSupplier sets the "supplier" edge to the Supplier entity.
+func (lc *LoanCreate) SetSupplier(s *Supplier) *LoanCreate {
+	return lc.SetSupplierID(s.ID)
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by ID.
@@ -229,13 +298,28 @@ func (lc *LoanCreate) SetCompany(c *Company) *LoanCreate {
 	return lc.SetCompanyID(c.ID)
 }
 
-// AddTransactionHistoryIDs adds the "transactionHistory" edge to the AccountingEntry entity by IDs.
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (lc *LoanCreate) AddLoanScheduleIDs(ids ...int) *LoanCreate {
+	lc.mutation.AddLoanScheduleIDs(ids...)
+	return lc
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (lc *LoanCreate) AddLoanSchedule(l ...*LoanSchedule) *LoanCreate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return lc.AddLoanScheduleIDs(ids...)
+}
+
+// AddTransactionHistoryIDs adds the "transaction_history" edge to the AccountingEntry entity by IDs.
 func (lc *LoanCreate) AddTransactionHistoryIDs(ids ...int) *LoanCreate {
 	lc.mutation.AddTransactionHistoryIDs(ids...)
 	return lc
 }
 
-// AddTransactionHistory adds the "transactionHistory" edges to the AccountingEntry entity.
+// AddTransactionHistory adds the "transaction_history" edges to the AccountingEntry entity.
 func (lc *LoanCreate) AddTransactionHistory(a ...*AccountingEntry) *LoanCreate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -299,9 +383,17 @@ func (lc *LoanCreate) defaults() {
 		v := loan.DefaultPaidInstallments
 		lc.mutation.SetPaidInstallments(v)
 	}
+	if _, ok := lc.mutation.PaymentType(); !ok {
+		v := loan.DefaultPaymentType
+		lc.mutation.SetPaymentType(v)
+	}
 	if _, ok := lc.mutation.StartDate(); !ok {
 		v := loan.DefaultStartDate()
 		lc.mutation.SetStartDate(v)
+	}
+	if _, ok := lc.mutation.IsLending(); !ok {
+		v := loan.DefaultIsLending
+		lc.mutation.SetIsLending(v)
 	}
 }
 
@@ -330,11 +422,11 @@ func (lc *LoanCreate) check() error {
 		}
 	}
 	if _, ok := lc.mutation.InterestRate(); !ok {
-		return &ValidationError{Name: "interestRate", err: errors.New(`generated: missing required field "Loan.interestRate"`)}
+		return &ValidationError{Name: "interest_rate", err: errors.New(`generated: missing required field "Loan.interest_rate"`)}
 	}
 	if v, ok := lc.mutation.InterestRate(); ok {
 		if err := loan.InterestRateValidator(v); err != nil {
-			return &ValidationError{Name: "interestRate", err: fmt.Errorf(`generated: validator failed for field "Loan.interestRate": %w`, err)}
+			return &ValidationError{Name: "interest_rate", err: fmt.Errorf(`generated: validator failed for field "Loan.interest_rate": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.Installments(); !ok {
@@ -346,42 +438,50 @@ func (lc *LoanCreate) check() error {
 		}
 	}
 	if _, ok := lc.mutation.MaturityDate(); !ok {
-		return &ValidationError{Name: "maturityDate", err: errors.New(`generated: missing required field "Loan.maturityDate"`)}
+		return &ValidationError{Name: "maturity_date", err: errors.New(`generated: missing required field "Loan.maturity_date"`)}
 	}
 	if v, ok := lc.mutation.NextPaymentAmount(); ok {
 		if err := loan.NextPaymentAmountValidator(v); err != nil {
-			return &ValidationError{Name: "nextPaymentAmount", err: fmt.Errorf(`generated: validator failed for field "Loan.nextPaymentAmount": %w`, err)}
+			return &ValidationError{Name: "next_payment_amount", err: fmt.Errorf(`generated: validator failed for field "Loan.next_payment_amount": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.OutstandingBalance(); !ok {
-		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Loan.outstandingBalance"`)}
+		return &ValidationError{Name: "outstanding_balance", err: errors.New(`generated: missing required field "Loan.outstanding_balance"`)}
 	}
 	if v, ok := lc.mutation.OutstandingBalance(); ok {
 		if err := loan.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Loan.outstanding_balance": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.PaymentFrequency(); !ok {
-		return &ValidationError{Name: "paymentFrequency", err: errors.New(`generated: missing required field "Loan.paymentFrequency"`)}
+		return &ValidationError{Name: "payment_frequency", err: errors.New(`generated: missing required field "Loan.payment_frequency"`)}
 	}
 	if v, ok := lc.mutation.PaymentFrequency(); ok {
 		if err := loan.PaymentFrequencyValidator(v); err != nil {
-			return &ValidationError{Name: "paymentFrequency", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentFrequency": %w`, err)}
+			return &ValidationError{Name: "payment_frequency", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_frequency": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.PaidInstallments(); !ok {
-		return &ValidationError{Name: "paidInstallments", err: errors.New(`generated: missing required field "Loan.paidInstallments"`)}
+		return &ValidationError{Name: "paid_installments", err: errors.New(`generated: missing required field "Loan.paid_installments"`)}
 	}
-	if _, ok := lc.mutation.Provider(); !ok {
-		return &ValidationError{Name: "provider", err: errors.New(`generated: missing required field "Loan.provider"`)}
+	if _, ok := lc.mutation.PaymentType(); !ok {
+		return &ValidationError{Name: "paymentType", err: errors.New(`generated: missing required field "Loan.paymentType"`)}
 	}
-	if v, ok := lc.mutation.Provider(); ok {
-		if err := loan.ProviderValidator(v); err != nil {
-			return &ValidationError{Name: "provider", err: fmt.Errorf(`generated: validator failed for field "Loan.provider": %w`, err)}
+	if v, ok := lc.mutation.PaymentType(); ok {
+		if err := loan.PaymentTypeValidator(v); err != nil {
+			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+		}
+	}
+	if _, ok := lc.mutation.CounterpartyName(); !ok {
+		return &ValidationError{Name: "counterparty_name", err: errors.New(`generated: missing required field "Loan.counterparty_name"`)}
+	}
+	if v, ok := lc.mutation.CounterpartyName(); ok {
+		if err := loan.CounterpartyNameValidator(v); err != nil {
+			return &ValidationError{Name: "counterparty_name", err: fmt.Errorf(`generated: validator failed for field "Loan.counterparty_name": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.StartDate(); !ok {
-		return &ValidationError{Name: "startDate", err: errors.New(`generated: missing required field "Loan.startDate"`)}
+		return &ValidationError{Name: "start_date", err: errors.New(`generated: missing required field "Loan.start_date"`)}
 	}
 	if _, ok := lc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Loan.status"`)}
@@ -390,6 +490,9 @@ func (lc *LoanCreate) check() error {
 		if err := loan.StatusValidator(v); err != nil {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Loan.status": %w`, err)}
 		}
+	}
+	if _, ok := lc.mutation.IsLending(); !ok {
+		return &ValidationError{Name: "is_lending", err: errors.New(`generated: missing required field "Loan.is_lending"`)}
 	}
 	return nil
 }
@@ -477,9 +580,13 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		_spec.SetField(loan.FieldPaidInstallments, field.TypeInt, value)
 		_node.PaidInstallments = value
 	}
-	if value, ok := lc.mutation.Provider(); ok {
-		_spec.SetField(loan.FieldProvider, field.TypeString, value)
-		_node.Provider = value
+	if value, ok := lc.mutation.PaymentType(); ok {
+		_spec.SetField(loan.FieldPaymentType, field.TypeEnum, value)
+		_node.PaymentType = value
+	}
+	if value, ok := lc.mutation.CounterpartyName(); ok {
+		_spec.SetField(loan.FieldCounterpartyName, field.TypeString, value)
+		_node.CounterpartyName = value
 	}
 	if value, ok := lc.mutation.StartDate(); ok {
 		_spec.SetField(loan.FieldStartDate, field.TypeTime, value)
@@ -488,6 +595,44 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 	if value, ok := lc.mutation.Status(); ok {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
 		_node.Status = value
+	}
+	if value, ok := lc.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+		_node.IsLending = value
+	}
+	if nodes := lc.mutation.ClientIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.ClientTable,
+			Columns: []string{loan.ClientColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(customer.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.customer_loan_schedule = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := lc.mutation.SupplierIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   loan.SupplierTable,
+			Columns: []string{loan.SupplierColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(supplier.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.supplier_loan_schedule = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := lc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -504,6 +649,22 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.company_loans = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := lc.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   loan.LoanScheduleTable,
+			Columns: []string{loan.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := lc.mutation.TransactionHistoryIDs(); len(nodes) > 0 {

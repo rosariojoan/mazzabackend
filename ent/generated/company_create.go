@@ -16,6 +16,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -462,6 +463,21 @@ func (cc *CompanyCreate) AddLoans(l ...*Loan) *CompanyCreate {
 		ids[i] = l[i].ID
 	}
 	return cc.AddLoanIDs(ids...)
+}
+
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (cc *CompanyCreate) AddLoanScheduleIDs(ids ...int) *CompanyCreate {
+	cc.mutation.AddLoanScheduleIDs(ids...)
+	return cc
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (cc *CompanyCreate) AddLoanSchedule(l ...*LoanSchedule) *CompanyCreate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return cc.AddLoanScheduleIDs(ids...)
 }
 
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
@@ -1029,6 +1045,22 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cc.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

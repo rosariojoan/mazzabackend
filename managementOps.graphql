@@ -68,27 +68,12 @@ enum LoansGroupBy {
   status
 }
 
-input CreateLoanInputData {
-  loanInput: CreateLoanInput!
-  accountingEntry: BaseEntryRegistrationInput
-}
-
-input UpdateLoanInputData {
-  id: ID!
-  loanInput: UpdateLoanInput!
-  accountingEntry: BaseEntryRegistrationInput
-}
-
 input AggregateCashInput {
   startDate: Time
   endDate: Time!
 }
 
 #-----------------------------------------------
-extend type Mutation {
-  createLoan(input: CreateLoanInputData!): Loan!
-  updateLoan(input: UpdateLoanInputData!): Loan!
-}
 
 extend type Query {
   clientList(top: Int): [ClientList!]!

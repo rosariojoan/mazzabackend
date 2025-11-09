@@ -9,6 +9,9 @@ import (
 // AccountingEntry is the predicate function for accountingentry builders.
 type AccountingEntry func(*sql.Selector)
 
+// Calendar is the predicate function for calendar builders.
+type Calendar func(*sql.Selector)
+
 // Company is the predicate function for company builders.
 type Company func(*sql.Selector)
 
@@ -35,6 +38,9 @@ type Invoice func(*sql.Selector)
 
 // Loan is the predicate function for loan builders.
 type Loan func(*sql.Selector)
+
+// LoanSchedule is the predicate function for loanschedule builders.
+type LoanSchedule func(*sql.Selector)
 
 // MemberSignupToken is the predicate function for membersignuptoken builders.
 type MemberSignupToken func(*sql.Selector)

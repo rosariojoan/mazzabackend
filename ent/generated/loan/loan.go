@@ -31,34 +31,58 @@ const (
 	FieldCollateral = "collateral"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
-	// FieldInterestRate holds the string denoting the interestrate field in the database.
+	// FieldInterestRate holds the string denoting the interest_rate field in the database.
 	FieldInterestRate = "interest_rate"
 	// FieldInstallments holds the string denoting the installments field in the database.
 	FieldInstallments = "installments"
-	// FieldMaturityDate holds the string denoting the maturitydate field in the database.
+	// FieldMaturityDate holds the string denoting the maturity_date field in the database.
 	FieldMaturityDate = "maturity_date"
-	// FieldNextPayment holds the string denoting the nextpayment field in the database.
+	// FieldNextPayment holds the string denoting the next_payment field in the database.
 	FieldNextPayment = "next_payment"
-	// FieldNextPaymentAmount holds the string denoting the nextpaymentamount field in the database.
+	// FieldNextPaymentAmount holds the string denoting the next_payment_amount field in the database.
 	FieldNextPaymentAmount = "next_payment_amount"
-	// FieldOutstandingBalance holds the string denoting the outstandingbalance field in the database.
+	// FieldOutstandingBalance holds the string denoting the outstanding_balance field in the database.
 	FieldOutstandingBalance = "outstanding_balance"
-	// FieldPaymentFrequency holds the string denoting the paymentfrequency field in the database.
+	// FieldPaymentFrequency holds the string denoting the payment_frequency field in the database.
 	FieldPaymentFrequency = "payment_frequency"
-	// FieldPaidInstallments holds the string denoting the paidinstallments field in the database.
+	// FieldPaidInstallments holds the string denoting the paid_installments field in the database.
 	FieldPaidInstallments = "paid_installments"
-	// FieldProvider holds the string denoting the provider field in the database.
-	FieldProvider = "provider"
-	// FieldStartDate holds the string denoting the startdate field in the database.
+	// FieldPaymentType holds the string denoting the paymenttype field in the database.
+	FieldPaymentType = "payment_type"
+	// FieldCounterpartyName holds the string denoting the counterparty_name field in the database.
+	FieldCounterpartyName = "counterparty_name"
+	// FieldStartDate holds the string denoting the start_date field in the database.
 	FieldStartDate = "start_date"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldIsLending holds the string denoting the is_lending field in the database.
+	FieldIsLending = "is_lending"
+	// EdgeClient holds the string denoting the client edge name in mutations.
+	EdgeClient = "client"
+	// EdgeSupplier holds the string denoting the supplier edge name in mutations.
+	EdgeSupplier = "supplier"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeTransactionHistory holds the string denoting the transactionhistory edge name in mutations.
-	EdgeTransactionHistory = "transactionHistory"
+	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
+	EdgeLoanSchedule = "loan_schedule"
+	// EdgeTransactionHistory holds the string denoting the transaction_history edge name in mutations.
+	EdgeTransactionHistory = "transaction_history"
 	// Table holds the table name of the loan in the database.
 	Table = "loans"
+	// ClientTable is the table that holds the client relation/edge.
+	ClientTable = "loans"
+	// ClientInverseTable is the table name for the Customer entity.
+	// It exists in this package in order to avoid circular dependency with the "customer" package.
+	ClientInverseTable = "customers"
+	// ClientColumn is the table column denoting the client relation/edge.
+	ClientColumn = "customer_loan_schedule"
+	// SupplierTable is the table that holds the supplier relation/edge.
+	SupplierTable = "loans"
+	// SupplierInverseTable is the table name for the Supplier entity.
+	// It exists in this package in order to avoid circular dependency with the "supplier" package.
+	SupplierInverseTable = "suppliers"
+	// SupplierColumn is the table column denoting the supplier relation/edge.
+	SupplierColumn = "supplier_loan_schedule"
 	// CompanyTable is the table that holds the company relation/edge.
 	CompanyTable = "loans"
 	// CompanyInverseTable is the table name for the Company entity.
@@ -66,12 +90,19 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_loans"
-	// TransactionHistoryTable is the table that holds the transactionHistory relation/edge.
+	// LoanScheduleTable is the table that holds the loan_schedule relation/edge.
+	LoanScheduleTable = "loan_schedules"
+	// LoanScheduleInverseTable is the table name for the LoanSchedule entity.
+	// It exists in this package in order to avoid circular dependency with the "loanschedule" package.
+	LoanScheduleInverseTable = "loan_schedules"
+	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
+	LoanScheduleColumn = "loan_loan_schedule"
+	// TransactionHistoryTable is the table that holds the transaction_history relation/edge.
 	TransactionHistoryTable = "accounting_entries"
 	// TransactionHistoryInverseTable is the table name for the AccountingEntry entity.
 	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
 	TransactionHistoryInverseTable = "accounting_entries"
-	// TransactionHistoryColumn is the table column denoting the transactionHistory relation/edge.
+	// TransactionHistoryColumn is the table column denoting the transaction_history relation/edge.
 	TransactionHistoryColumn = "loan_transaction_history"
 )
 
@@ -93,15 +124,19 @@ var Columns = []string{
 	FieldOutstandingBalance,
 	FieldPaymentFrequency,
 	FieldPaidInstallments,
-	FieldProvider,
+	FieldPaymentType,
+	FieldCounterpartyName,
 	FieldStartDate,
 	FieldStatus,
+	FieldIsLending,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "loans"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_loans",
+	"customer_loan_schedule",
+	"supplier_loan_schedule",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -128,22 +163,24 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// AmountValidator is a validator for the "amount" field. It is called by the builders before save.
 	AmountValidator func(float64) error
-	// InterestRateValidator is a validator for the "interestRate" field. It is called by the builders before save.
+	// InterestRateValidator is a validator for the "interest_rate" field. It is called by the builders before save.
 	InterestRateValidator func(float64) error
 	// InstallmentsValidator is a validator for the "installments" field. It is called by the builders before save.
 	InstallmentsValidator func(int) error
-	// DefaultNextPaymentAmount holds the default value on creation for the "nextPaymentAmount" field.
+	// DefaultNextPaymentAmount holds the default value on creation for the "next_payment_amount" field.
 	DefaultNextPaymentAmount float64
-	// NextPaymentAmountValidator is a validator for the "nextPaymentAmount" field. It is called by the builders before save.
+	// NextPaymentAmountValidator is a validator for the "next_payment_amount" field. It is called by the builders before save.
 	NextPaymentAmountValidator func(float64) error
-	// OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	// OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	OutstandingBalanceValidator func(float64) error
-	// DefaultPaidInstallments holds the default value on creation for the "paidInstallments" field.
+	// DefaultPaidInstallments holds the default value on creation for the "paid_installments" field.
 	DefaultPaidInstallments int
-	// ProviderValidator is a validator for the "provider" field. It is called by the builders before save.
-	ProviderValidator func(string) error
-	// DefaultStartDate holds the default value on creation for the "startDate" field.
+	// CounterpartyNameValidator is a validator for the "counterparty_name" field. It is called by the builders before save.
+	CounterpartyNameValidator func(string) error
+	// DefaultStartDate holds the default value on creation for the "start_date" field.
 	DefaultStartDate func() time.Time
+	// DefaultIsLending holds the default value on creation for the "is_lending" field.
+	DefaultIsLending bool
 )
 
 // Category defines the type for the "category" enum field.
@@ -174,7 +211,7 @@ func CategoryValidator(c Category) error {
 	}
 }
 
-// PaymentFrequency defines the type for the "paymentFrequency" enum field.
+// PaymentFrequency defines the type for the "payment_frequency" enum field.
 type PaymentFrequency string
 
 // PaymentFrequencyMonthly is the default value of the PaymentFrequency enum.
@@ -182,10 +219,11 @@ const DefaultPaymentFrequency = PaymentFrequencyMonthly
 
 // PaymentFrequency values.
 const (
+	PaymentFrequencyDaily      PaymentFrequency = "daily"
 	PaymentFrequencyWeekly     PaymentFrequency = "weekly"
 	PaymentFrequencyBiweekly   PaymentFrequency = "biweekly"
 	PaymentFrequencyMonthly    PaymentFrequency = "monthly"
-	PaymentFrequencyQuartely   PaymentFrequency = "quartely"
+	PaymentFrequencyQuarterly  PaymentFrequency = "quarterly"
 	PaymentFrequencySemiannual PaymentFrequency = "semiannual"
 	PaymentFrequencyAnnual     PaymentFrequency = "annual"
 )
@@ -194,13 +232,41 @@ func (pf PaymentFrequency) String() string {
 	return string(pf)
 }
 
-// PaymentFrequencyValidator is a validator for the "paymentFrequency" field enum values. It is called by the builders before save.
+// PaymentFrequencyValidator is a validator for the "payment_frequency" field enum values. It is called by the builders before save.
 func PaymentFrequencyValidator(pf PaymentFrequency) error {
 	switch pf {
-	case PaymentFrequencyWeekly, PaymentFrequencyBiweekly, PaymentFrequencyMonthly, PaymentFrequencyQuartely, PaymentFrequencySemiannual, PaymentFrequencyAnnual:
+	case PaymentFrequencyDaily, PaymentFrequencyWeekly, PaymentFrequencyBiweekly, PaymentFrequencyMonthly, PaymentFrequencyQuarterly, PaymentFrequencySemiannual, PaymentFrequencyAnnual:
 		return nil
 	default:
-		return fmt.Errorf("loan: invalid enum value for paymentFrequency field: %q", pf)
+		return fmt.Errorf("loan: invalid enum value for payment_frequency field: %q", pf)
+	}
+}
+
+// PaymentType defines the type for the "paymentType" enum field.
+type PaymentType string
+
+// PaymentTypeFixedPayment is the default value of the PaymentType enum.
+const DefaultPaymentType = PaymentTypeFixedPayment
+
+// PaymentType values.
+const (
+	PaymentTypeBullet         PaymentType = "bullet"
+	PaymentTypeFixedPayment   PaymentType = "fixedPayment"
+	PaymentTypeFixedPrincipal PaymentType = "fixedPrincipal"
+	PaymentTypeInterestOnly   PaymentType = "interestOnly"
+)
+
+func (pt PaymentType) String() string {
+	return string(pt)
+}
+
+// PaymentTypeValidator is a validator for the "paymentType" field enum values. It is called by the builders before save.
+func PaymentTypeValidator(pt PaymentType) error {
+	switch pt {
+	case PaymentTypeBullet, PaymentTypeFixedPayment, PaymentTypeFixedPrincipal, PaymentTypeInterestOnly:
+		return nil
+	default:
+		return fmt.Errorf("loan: invalid enum value for paymentType field: %q", pt)
 	}
 }
 
@@ -270,7 +336,7 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDescription, opts...).ToFunc()
 }
 
-// ByInterestRate orders the results by the interestRate field.
+// ByInterestRate orders the results by the interest_rate field.
 func ByInterestRate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldInterestRate, opts...).ToFunc()
 }
@@ -280,42 +346,47 @@ func ByInstallments(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldInstallments, opts...).ToFunc()
 }
 
-// ByMaturityDate orders the results by the maturityDate field.
+// ByMaturityDate orders the results by the maturity_date field.
 func ByMaturityDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMaturityDate, opts...).ToFunc()
 }
 
-// ByNextPayment orders the results by the nextPayment field.
+// ByNextPayment orders the results by the next_payment field.
 func ByNextPayment(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNextPayment, opts...).ToFunc()
 }
 
-// ByNextPaymentAmount orders the results by the nextPaymentAmount field.
+// ByNextPaymentAmount orders the results by the next_payment_amount field.
 func ByNextPaymentAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNextPaymentAmount, opts...).ToFunc()
 }
 
-// ByOutstandingBalance orders the results by the outstandingBalance field.
+// ByOutstandingBalance orders the results by the outstanding_balance field.
 func ByOutstandingBalance(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOutstandingBalance, opts...).ToFunc()
 }
 
-// ByPaymentFrequency orders the results by the paymentFrequency field.
+// ByPaymentFrequency orders the results by the payment_frequency field.
 func ByPaymentFrequency(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaymentFrequency, opts...).ToFunc()
 }
 
-// ByPaidInstallments orders the results by the paidInstallments field.
+// ByPaidInstallments orders the results by the paid_installments field.
 func ByPaidInstallments(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaidInstallments, opts...).ToFunc()
 }
 
-// ByProvider orders the results by the provider field.
-func ByProvider(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldProvider, opts...).ToFunc()
+// ByPaymentType orders the results by the paymentType field.
+func ByPaymentType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPaymentType, opts...).ToFunc()
 }
 
-// ByStartDate orders the results by the startDate field.
+// ByCounterpartyName orders the results by the counterparty_name field.
+func ByCounterpartyName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCounterpartyName, opts...).ToFunc()
+}
+
+// ByStartDate orders the results by the start_date field.
 func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStartDate, opts...).ToFunc()
 }
@@ -325,6 +396,25 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
+// ByIsLending orders the results by the is_lending field.
+func ByIsLending(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsLending, opts...).ToFunc()
+}
+
+// ByClientField orders the results by client field.
+func ByClientField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newClientStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// BySupplierField orders the results by supplier field.
+func BySupplierField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSupplierStep(), sql.OrderByField(field, opts...))
+	}
+}
+
 // ByCompanyField orders the results by company field.
 func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -332,24 +422,59 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByTransactionHistoryCount orders the results by transactionHistory count.
+// ByLoanScheduleCount orders the results by loan_schedule count.
+func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
+	}
+}
+
+// ByLoanSchedule orders the results by loan_schedule terms.
+func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByTransactionHistoryCount orders the results by transaction_history count.
 func ByTransactionHistoryCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newTransactionHistoryStep(), opts...)
 	}
 }
 
-// ByTransactionHistory orders the results by transactionHistory terms.
+// ByTransactionHistory orders the results by transaction_history terms.
 func ByTransactionHistory(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newTransactionHistoryStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
+}
+func newClientStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ClientInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ClientTable, ClientColumn),
+	)
+}
+func newSupplierStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SupplierInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SupplierTable, SupplierColumn),
+	)
 }
 func newCompanyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+	)
+}
+func newLoanScheduleStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanScheduleInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
 	)
 }
 func newTransactionHistoryStep() *sqlgraph.Step {
@@ -392,6 +517,24 @@ func (e *PaymentFrequency) UnmarshalGQL(val interface{}) error {
 	*e = PaymentFrequency(str)
 	if err := PaymentFrequencyValidator(*e); err != nil {
 		return fmt.Errorf("%s is not a valid PaymentFrequency", str)
+	}
+	return nil
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (e PaymentType) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(e.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (e *PaymentType) UnmarshalGQL(val interface{}) error {
+	str, ok := val.(string)
+	if !ok {
+		return fmt.Errorf("enum %T must be a string", val)
+	}
+	*e = PaymentType(str)
+	if err := PaymentTypeValidator(*e); err != nil {
+		return fmt.Errorf("%s is not a valid PaymentType", str)
 	}
 	return nil
 }

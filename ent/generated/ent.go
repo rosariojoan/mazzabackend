@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/calendar"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
@@ -16,6 +17,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -96,6 +98,7 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			accountingentry.Table:   accountingentry.ValidColumn,
+			calendar.Table:          calendar.ValidColumn,
 			company.Table:           company.ValidColumn,
 			companydocument.Table:   companydocument.ValidColumn,
 			customer.Table:          customer.ValidColumn,
@@ -105,6 +108,7 @@ func checkColumn(table, column string) error {
 			inventorymovement.Table: inventorymovement.ValidColumn,
 			invoice.Table:           invoice.ValidColumn,
 			loan.Table:              loan.ValidColumn,
+			loanschedule.Table:      loanschedule.ValidColumn,
 			membersignuptoken.Table: membersignuptoken.ValidColumn,
 			payable.Table:           payable.ValidColumn,
 			product.Table:           product.ValidColumn,

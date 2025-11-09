@@ -20,6 +20,18 @@ func (f AccountingEntryFunc) Mutate(ctx context.Context, m generated.Mutation) (
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.AccountingEntryMutation", m)
 }
 
+// The CalendarFunc type is an adapter to allow the use of ordinary
+// function as Calendar mutator.
+type CalendarFunc func(context.Context, *generated.CalendarMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CalendarFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.CalendarMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.CalendarMutation", m)
+}
+
 // The CompanyFunc type is an adapter to allow the use of ordinary
 // function as Company mutator.
 type CompanyFunc func(context.Context, *generated.CompanyMutation) (generated.Value, error)
@@ -126,6 +138,18 @@ func (f LoanFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.LoanMutation", m)
+}
+
+// The LoanScheduleFunc type is an adapter to allow the use of ordinary
+// function as LoanSchedule mutator.
+type LoanScheduleFunc func(context.Context, *generated.LoanScheduleMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f LoanScheduleFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.LoanScheduleMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.LoanScheduleMutation", m)
 }
 
 // The MemberSignupTokenFunc type is an adapter to allow the use of ordinary

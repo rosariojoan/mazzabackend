@@ -12,6 +12,7 @@ import (
 	"mazza/ent/generated/migrate"
 
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/calendar"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
@@ -21,6 +22,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -50,6 +52,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// AccountingEntry is the client for interacting with the AccountingEntry builders.
 	AccountingEntry *AccountingEntryClient
+	// Calendar is the client for interacting with the Calendar builders.
+	Calendar *CalendarClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
 	// CompanyDocument is the client for interacting with the CompanyDocument builders.
@@ -68,6 +72,8 @@ type Client struct {
 	Invoice *InvoiceClient
 	// Loan is the client for interacting with the Loan builders.
 	Loan *LoanClient
+	// LoanSchedule is the client for interacting with the LoanSchedule builders.
+	LoanSchedule *LoanScheduleClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -108,6 +114,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.AccountingEntry = NewAccountingEntryClient(c.config)
+	c.Calendar = NewCalendarClient(c.config)
 	c.Company = NewCompanyClient(c.config)
 	c.CompanyDocument = NewCompanyDocumentClient(c.config)
 	c.Customer = NewCustomerClient(c.config)
@@ -117,6 +124,7 @@ func (c *Client) init() {
 	c.InventoryMovement = NewInventoryMovementClient(c.config)
 	c.Invoice = NewInvoiceClient(c.config)
 	c.Loan = NewLoanClient(c.config)
+	c.LoanSchedule = NewLoanScheduleClient(c.config)
 	c.MemberSignupToken = NewMemberSignupTokenClient(c.config)
 	c.Payable = NewPayableClient(c.config)
 	c.Product = NewProductClient(c.config)
@@ -223,6 +231,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:               ctx,
 		config:            cfg,
 		AccountingEntry:   NewAccountingEntryClient(cfg),
+		Calendar:          NewCalendarClient(cfg),
 		Company:           NewCompanyClient(cfg),
 		CompanyDocument:   NewCompanyDocumentClient(cfg),
 		Customer:          NewCustomerClient(cfg),
@@ -232,6 +241,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		InventoryMovement: NewInventoryMovementClient(cfg),
 		Invoice:           NewInvoiceClient(cfg),
 		Loan:              NewLoanClient(cfg),
+		LoanSchedule:      NewLoanScheduleClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -265,6 +275,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:               ctx,
 		config:            cfg,
 		AccountingEntry:   NewAccountingEntryClient(cfg),
+		Calendar:          NewCalendarClient(cfg),
 		Company:           NewCompanyClient(cfg),
 		CompanyDocument:   NewCompanyDocumentClient(cfg),
 		Customer:          NewCustomerClient(cfg),
@@ -274,6 +285,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		InventoryMovement: NewInventoryMovementClient(cfg),
 		Invoice:           NewInvoiceClient(cfg),
 		Loan:              NewLoanClient(cfg),
+		LoanSchedule:      NewLoanScheduleClient(cfg),
 		MemberSignupToken: NewMemberSignupTokenClient(cfg),
 		Payable:           NewPayableClient(cfg),
 		Product:           NewProductClient(cfg),
@@ -316,10 +328,11 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Inventory, c.InventoryMovement, c.Invoice, c.Loan, c.MemberSignupToken,
-		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
-		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.AccountingEntry, c.Calendar, c.Company, c.CompanyDocument, c.Customer,
+		c.Employee, c.File, c.Inventory, c.InventoryMovement, c.Invoice, c.Loan,
+		c.LoanSchedule, c.MemberSignupToken, c.Payable, c.Product, c.Project,
+		c.ProjectMilestone, c.ProjectTask, c.Receivable, c.Supplier, c.Token,
+		c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Use(hooks...)
 	}
@@ -329,10 +342,11 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.AccountingEntry, c.Company, c.CompanyDocument, c.Customer, c.Employee, c.File,
-		c.Inventory, c.InventoryMovement, c.Invoice, c.Loan, c.MemberSignupToken,
-		c.Payable, c.Product, c.Project, c.ProjectMilestone, c.ProjectTask,
-		c.Receivable, c.Supplier, c.Token, c.Treasury, c.User, c.UserRole, c.Workshift,
+		c.AccountingEntry, c.Calendar, c.Company, c.CompanyDocument, c.Customer,
+		c.Employee, c.File, c.Inventory, c.InventoryMovement, c.Invoice, c.Loan,
+		c.LoanSchedule, c.MemberSignupToken, c.Payable, c.Product, c.Project,
+		c.ProjectMilestone, c.ProjectTask, c.Receivable, c.Supplier, c.Token,
+		c.Treasury, c.User, c.UserRole, c.Workshift,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -343,6 +357,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AccountingEntryMutation:
 		return c.AccountingEntry.mutate(ctx, m)
+	case *CalendarMutation:
+		return c.Calendar.mutate(ctx, m)
 	case *CompanyMutation:
 		return c.Company.mutate(ctx, m)
 	case *CompanyDocumentMutation:
@@ -361,6 +377,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Invoice.mutate(ctx, m)
 	case *LoanMutation:
 		return c.Loan.mutate(ctx, m)
+	case *LoanScheduleMutation:
+		return c.LoanSchedule.mutate(ctx, m)
 	case *MemberSignupTokenMutation:
 		return c.MemberSignupToken.mutate(ctx, m)
 	case *PayableMutation:
@@ -548,6 +566,22 @@ func (c *AccountingEntryClient) QueryLoan(ae *AccountingEntry) *LoanQuery {
 	return query
 }
 
+// QueryLoanSchedules queries the loanSchedules edge of a AccountingEntry.
+func (c *AccountingEntryClient) QueryLoanSchedules(ae *AccountingEntry) *LoanScheduleQuery {
+	query := (&LoanScheduleClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ae.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, id),
+			sqlgraph.To(loanschedule.Table, loanschedule.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, accountingentry.LoanSchedulesTable, accountingentry.LoanSchedulesPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(ae.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *AccountingEntryClient) Hooks() []Hook {
 	return c.hooks.AccountingEntry
@@ -570,6 +604,139 @@ func (c *AccountingEntryClient) mutate(ctx context.Context, m *AccountingEntryMu
 		return (&AccountingEntryDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown AccountingEntry mutation op: %q", m.Op())
+	}
+}
+
+// CalendarClient is a client for the Calendar schema.
+type CalendarClient struct {
+	config
+}
+
+// NewCalendarClient returns a client for the Calendar from the given config.
+func NewCalendarClient(c config) *CalendarClient {
+	return &CalendarClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `calendar.Hooks(f(g(h())))`.
+func (c *CalendarClient) Use(hooks ...Hook) {
+	c.hooks.Calendar = append(c.hooks.Calendar, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `calendar.Intercept(f(g(h())))`.
+func (c *CalendarClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Calendar = append(c.inters.Calendar, interceptors...)
+}
+
+// Create returns a builder for creating a Calendar entity.
+func (c *CalendarClient) Create() *CalendarCreate {
+	mutation := newCalendarMutation(c.config, OpCreate)
+	return &CalendarCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Calendar entities.
+func (c *CalendarClient) CreateBulk(builders ...*CalendarCreate) *CalendarCreateBulk {
+	return &CalendarCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CalendarClient) MapCreateBulk(slice any, setFunc func(*CalendarCreate, int)) *CalendarCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CalendarCreateBulk{err: fmt.Errorf("calling to CalendarClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CalendarCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CalendarCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Calendar.
+func (c *CalendarClient) Update() *CalendarUpdate {
+	mutation := newCalendarMutation(c.config, OpUpdate)
+	return &CalendarUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CalendarClient) UpdateOne(ca *Calendar) *CalendarUpdateOne {
+	mutation := newCalendarMutation(c.config, OpUpdateOne, withCalendar(ca))
+	return &CalendarUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CalendarClient) UpdateOneID(id int) *CalendarUpdateOne {
+	mutation := newCalendarMutation(c.config, OpUpdateOne, withCalendarID(id))
+	return &CalendarUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Calendar.
+func (c *CalendarClient) Delete() *CalendarDelete {
+	mutation := newCalendarMutation(c.config, OpDelete)
+	return &CalendarDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CalendarClient) DeleteOne(ca *Calendar) *CalendarDeleteOne {
+	return c.DeleteOneID(ca.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CalendarClient) DeleteOneID(id int) *CalendarDeleteOne {
+	builder := c.Delete().Where(calendar.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CalendarDeleteOne{builder}
+}
+
+// Query returns a query builder for Calendar.
+func (c *CalendarClient) Query() *CalendarQuery {
+	return &CalendarQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCalendar},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Calendar entity by its id.
+func (c *CalendarClient) Get(ctx context.Context, id int) (*Calendar, error) {
+	return c.Query().Where(calendar.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CalendarClient) GetX(ctx context.Context, id int) *Calendar {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *CalendarClient) Hooks() []Hook {
+	return c.hooks.Calendar
+}
+
+// Interceptors returns the client interceptors.
+func (c *CalendarClient) Interceptors() []Interceptor {
+	return c.inters.Calendar
+}
+
+func (c *CalendarClient) mutate(ctx context.Context, m *CalendarMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CalendarCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CalendarUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CalendarUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CalendarDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown Calendar mutation op: %q", m.Op())
 	}
 }
 
@@ -834,6 +1001,22 @@ func (c *CompanyClient) QueryLoans(co *Company) *LoanQuery {
 			sqlgraph.From(company.Table, company.FieldID, id),
 			sqlgraph.To(loan.Table, loan.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.LoansTable, company.LoansColumn),
+		)
+		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryLoanSchedule queries the loan_schedule edge of a Company.
+func (c *CompanyClient) QueryLoanSchedule(co *Company) *LoanScheduleQuery {
+	query := (&LoanScheduleClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := co.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, id),
+			sqlgraph.To(loanschedule.Table, loanschedule.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, company.LoanScheduleTable, company.LoanScheduleColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -1356,6 +1539,22 @@ func (c *CustomerClient) QueryCompany(cu *Customer) *CompanyQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, id),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, customer.CompanyTable, customer.CompanyColumn),
+		)
+		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryLoanSchedule queries the loan_schedule edge of a Customer.
+func (c *CustomerClient) QueryLoanSchedule(cu *Customer) *LoanQuery {
+	query := (&LoanClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := cu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, id),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.LoanScheduleTable, customer.LoanScheduleColumn),
 		)
 		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
 		return fromV, nil
@@ -2401,6 +2600,38 @@ func (c *LoanClient) GetX(ctx context.Context, id int) *Loan {
 	return obj
 }
 
+// QueryClient queries the client edge of a Loan.
+func (c *LoanClient) QueryClient(l *Loan) *CustomerQuery {
+	query := (&CustomerClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, id),
+			sqlgraph.To(customer.Table, customer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, loan.ClientTable, loan.ClientColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QuerySupplier queries the supplier edge of a Loan.
+func (c *LoanClient) QuerySupplier(l *Loan) *SupplierQuery {
+	query := (&SupplierClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, id),
+			sqlgraph.To(supplier.Table, supplier.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, loan.SupplierTable, loan.SupplierColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryCompany queries the company edge of a Loan.
 func (c *LoanClient) QueryCompany(l *Loan) *CompanyQuery {
 	query := (&CompanyClient{config: c.config}).Query()
@@ -2417,7 +2648,23 @@ func (c *LoanClient) QueryCompany(l *Loan) *CompanyQuery {
 	return query
 }
 
-// QueryTransactionHistory queries the transactionHistory edge of a Loan.
+// QueryLoanSchedule queries the loan_schedule edge of a Loan.
+func (c *LoanClient) QueryLoanSchedule(l *Loan) *LoanScheduleQuery {
+	query := (&LoanScheduleClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := l.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loan.Table, loan.FieldID, id),
+			sqlgraph.To(loanschedule.Table, loanschedule.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, loan.LoanScheduleTable, loan.LoanScheduleColumn),
+		)
+		fromV = sqlgraph.Neighbors(l.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTransactionHistory queries the transaction_history edge of a Loan.
 func (c *LoanClient) QueryTransactionHistory(l *Loan) *AccountingEntryQuery {
 	query := (&AccountingEntryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -2455,6 +2702,171 @@ func (c *LoanClient) mutate(ctx context.Context, m *LoanMutation) (Value, error)
 		return (&LoanDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("generated: unknown Loan mutation op: %q", m.Op())
+	}
+}
+
+// LoanScheduleClient is a client for the LoanSchedule schema.
+type LoanScheduleClient struct {
+	config
+}
+
+// NewLoanScheduleClient returns a client for the LoanSchedule from the given config.
+func NewLoanScheduleClient(c config) *LoanScheduleClient {
+	return &LoanScheduleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `loanschedule.Hooks(f(g(h())))`.
+func (c *LoanScheduleClient) Use(hooks ...Hook) {
+	c.hooks.LoanSchedule = append(c.hooks.LoanSchedule, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `loanschedule.Intercept(f(g(h())))`.
+func (c *LoanScheduleClient) Intercept(interceptors ...Interceptor) {
+	c.inters.LoanSchedule = append(c.inters.LoanSchedule, interceptors...)
+}
+
+// Create returns a builder for creating a LoanSchedule entity.
+func (c *LoanScheduleClient) Create() *LoanScheduleCreate {
+	mutation := newLoanScheduleMutation(c.config, OpCreate)
+	return &LoanScheduleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of LoanSchedule entities.
+func (c *LoanScheduleClient) CreateBulk(builders ...*LoanScheduleCreate) *LoanScheduleCreateBulk {
+	return &LoanScheduleCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *LoanScheduleClient) MapCreateBulk(slice any, setFunc func(*LoanScheduleCreate, int)) *LoanScheduleCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &LoanScheduleCreateBulk{err: fmt.Errorf("calling to LoanScheduleClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*LoanScheduleCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &LoanScheduleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for LoanSchedule.
+func (c *LoanScheduleClient) Update() *LoanScheduleUpdate {
+	mutation := newLoanScheduleMutation(c.config, OpUpdate)
+	return &LoanScheduleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LoanScheduleClient) UpdateOne(ls *LoanSchedule) *LoanScheduleUpdateOne {
+	mutation := newLoanScheduleMutation(c.config, OpUpdateOne, withLoanSchedule(ls))
+	return &LoanScheduleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LoanScheduleClient) UpdateOneID(id int) *LoanScheduleUpdateOne {
+	mutation := newLoanScheduleMutation(c.config, OpUpdateOne, withLoanScheduleID(id))
+	return &LoanScheduleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for LoanSchedule.
+func (c *LoanScheduleClient) Delete() *LoanScheduleDelete {
+	mutation := newLoanScheduleMutation(c.config, OpDelete)
+	return &LoanScheduleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *LoanScheduleClient) DeleteOne(ls *LoanSchedule) *LoanScheduleDeleteOne {
+	return c.DeleteOneID(ls.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *LoanScheduleClient) DeleteOneID(id int) *LoanScheduleDeleteOne {
+	builder := c.Delete().Where(loanschedule.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LoanScheduleDeleteOne{builder}
+}
+
+// Query returns a query builder for LoanSchedule.
+func (c *LoanScheduleClient) Query() *LoanScheduleQuery {
+	return &LoanScheduleQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeLoanSchedule},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a LoanSchedule entity by its id.
+func (c *LoanScheduleClient) Get(ctx context.Context, id int) (*LoanSchedule, error) {
+	return c.Query().Where(loanschedule.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LoanScheduleClient) GetX(ctx context.Context, id int) *LoanSchedule {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryLoan queries the loan edge of a LoanSchedule.
+func (c *LoanScheduleClient) QueryLoan(ls *LoanSchedule) *LoanQuery {
+	query := (&LoanClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ls.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loanschedule.Table, loanschedule.FieldID, id),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, loanschedule.LoanTable, loanschedule.LoanColumn),
+		)
+		fromV = sqlgraph.Neighbors(ls.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTransactionHistory queries the transaction_history edge of a LoanSchedule.
+func (c *LoanScheduleClient) QueryTransactionHistory(ls *LoanSchedule) *AccountingEntryQuery {
+	query := (&AccountingEntryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := ls.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(loanschedule.Table, loanschedule.FieldID, id),
+			sqlgraph.To(accountingentry.Table, accountingentry.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, loanschedule.TransactionHistoryTable, loanschedule.TransactionHistoryPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(ls.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *LoanScheduleClient) Hooks() []Hook {
+	return c.hooks.LoanSchedule
+}
+
+// Interceptors returns the client interceptors.
+func (c *LoanScheduleClient) Interceptors() []Interceptor {
+	return c.inters.LoanSchedule
+}
+
+func (c *LoanScheduleClient) mutate(ctx context.Context, m *LoanScheduleMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&LoanScheduleCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&LoanScheduleUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&LoanScheduleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&LoanScheduleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("generated: unknown LoanSchedule mutation op: %q", m.Op())
 	}
 }
 
@@ -3786,6 +4198,22 @@ func (c *SupplierClient) QueryCompany(s *Supplier) *CompanyQuery {
 	return query
 }
 
+// QueryLoanSchedule queries the loan_schedule edge of a Supplier.
+func (c *SupplierClient) QueryLoanSchedule(s *Supplier) *LoanQuery {
+	query := (&LoanClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(supplier.Table, supplier.FieldID, id),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, supplier.LoanScheduleTable, supplier.LoanScheduleColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryPayables queries the payables edge of a Supplier.
 func (c *SupplierClient) QueryPayables(s *Supplier) *PayableQuery {
 	query := (&PayableClient{config: c.config}).Query()
@@ -4960,16 +5388,16 @@ func (c *WorkshiftClient) mutate(ctx context.Context, m *WorkshiftMutation) (Val
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
-		InventoryMovement, Invoice, Loan, MemberSignupToken, Payable, Product, Project,
-		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift []ent.Hook
+		AccountingEntry, Calendar, Company, CompanyDocument, Customer, Employee, File,
+		Inventory, InventoryMovement, Invoice, Loan, LoanSchedule, MemberSignupToken,
+		Payable, Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier,
+		Token, Treasury, User, UserRole, Workshift []ent.Hook
 	}
 	inters struct {
-		AccountingEntry, Company, CompanyDocument, Customer, Employee, File, Inventory,
-		InventoryMovement, Invoice, Loan, MemberSignupToken, Payable, Product, Project,
-		ProjectMilestone, ProjectTask, Receivable, Supplier, Token, Treasury, User,
-		UserRole, Workshift []ent.Interceptor
+		AccountingEntry, Calendar, Company, CompanyDocument, Customer, Employee, File,
+		Inventory, InventoryMovement, Invoice, Loan, LoanSchedule, MemberSignupToken,
+		Payable, Product, Project, ProjectMilestone, ProjectTask, Receivable, Supplier,
+		Token, Treasury, User, UserRole, Workshift []ent.Interceptor
 	}
 )
 

@@ -16,6 +16,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
@@ -592,6 +593,21 @@ func (cu *CompanyUpdate) AddLoans(l ...*Loan) *CompanyUpdate {
 	return cu.AddLoanIDs(ids...)
 }
 
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (cu *CompanyUpdate) AddLoanScheduleIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.AddLoanScheduleIDs(ids...)
+	return cu
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (cu *CompanyUpdate) AddLoanSchedule(l ...*LoanSchedule) *CompanyUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return cu.AddLoanScheduleIDs(ids...)
+}
+
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
 func (cu *CompanyUpdate) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddMemberSignupTokenIDs(ids...)
@@ -989,6 +1005,27 @@ func (cu *CompanyUpdate) RemoveLoans(l ...*Loan) *CompanyUpdate {
 		ids[i] = l[i].ID
 	}
 	return cu.RemoveLoanIDs(ids...)
+}
+
+// ClearLoanSchedule clears all "loan_schedule" edges to the LoanSchedule entity.
+func (cu *CompanyUpdate) ClearLoanSchedule() *CompanyUpdate {
+	cu.mutation.ClearLoanSchedule()
+	return cu
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to LoanSchedule entities by IDs.
+func (cu *CompanyUpdate) RemoveLoanScheduleIDs(ids ...int) *CompanyUpdate {
+	cu.mutation.RemoveLoanScheduleIDs(ids...)
+	return cu
+}
+
+// RemoveLoanSchedule removes "loan_schedule" edges to LoanSchedule entities.
+func (cu *CompanyUpdate) RemoveLoanSchedule(l ...*LoanSchedule) *CompanyUpdate {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return cu.RemoveLoanScheduleIDs(ids...)
 }
 
 // ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
@@ -1851,6 +1888,51 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cu.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !cu.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cu.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2947,6 +3029,21 @@ func (cuo *CompanyUpdateOne) AddLoans(l ...*Loan) *CompanyUpdateOne {
 	return cuo.AddLoanIDs(ids...)
 }
 
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
+func (cuo *CompanyUpdateOne) AddLoanScheduleIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.AddLoanScheduleIDs(ids...)
+	return cuo
+}
+
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (cuo *CompanyUpdateOne) AddLoanSchedule(l ...*LoanSchedule) *CompanyUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return cuo.AddLoanScheduleIDs(ids...)
+}
+
 // AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
 func (cuo *CompanyUpdateOne) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddMemberSignupTokenIDs(ids...)
@@ -3344,6 +3441,27 @@ func (cuo *CompanyUpdateOne) RemoveLoans(l ...*Loan) *CompanyUpdateOne {
 		ids[i] = l[i].ID
 	}
 	return cuo.RemoveLoanIDs(ids...)
+}
+
+// ClearLoanSchedule clears all "loan_schedule" edges to the LoanSchedule entity.
+func (cuo *CompanyUpdateOne) ClearLoanSchedule() *CompanyUpdateOne {
+	cuo.mutation.ClearLoanSchedule()
+	return cuo
+}
+
+// RemoveLoanScheduleIDs removes the "loan_schedule" edge to LoanSchedule entities by IDs.
+func (cuo *CompanyUpdateOne) RemoveLoanScheduleIDs(ids ...int) *CompanyUpdateOne {
+	cuo.mutation.RemoveLoanScheduleIDs(ids...)
+	return cuo
+}
+
+// RemoveLoanSchedule removes "loan_schedule" edges to LoanSchedule entities.
+func (cuo *CompanyUpdateOne) RemoveLoanSchedule(l ...*LoanSchedule) *CompanyUpdateOne {
+	ids := make([]int, len(l))
+	for i := range l {
+		ids[i] = l[i].ID
+	}
+	return cuo.RemoveLoanScheduleIDs(ids...)
 }
 
 // ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
@@ -4236,6 +4354,51 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cuo.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !cuo.mutation.LoanScheduleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cuo.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   company.LoanScheduleTable,
+			Columns: []string{company.LoanScheduleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

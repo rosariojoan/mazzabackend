@@ -53,18 +53,21 @@ type Customer struct {
 type CustomerEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
+	// LoanSchedule holds the value of the loan_schedule edge.
+	LoanSchedule []*Loan `json:"loan_schedule,omitempty"`
 	// Receivables holds the value of the receivables edge.
 	Receivables []*Receivable `json:"receivables,omitempty"`
 	// Invoices holds the value of the invoices edge.
 	Invoices []*Invoice `json:"invoices,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
-	totalCount [3]map[string]int
+	totalCount [4]map[string]int
 
-	namedReceivables map[string][]*Receivable
-	namedInvoices    map[string][]*Invoice
+	namedLoanSchedule map[string][]*Loan
+	namedReceivables  map[string][]*Receivable
+	namedInvoices     map[string][]*Invoice
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -78,10 +81,19 @@ func (e CustomerEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
+// LoanScheduleOrErr returns the LoanSchedule value or an error if the edge
+// was not loaded in eager-loading.
+func (e CustomerEdges) LoanScheduleOrErr() ([]*Loan, error) {
+	if e.loadedTypes[1] {
+		return e.LoanSchedule, nil
+	}
+	return nil, &NotLoadedError{edge: "loan_schedule"}
+}
+
 // ReceivablesOrErr returns the Receivables value or an error if the edge
 // was not loaded in eager-loading.
 func (e CustomerEdges) ReceivablesOrErr() ([]*Receivable, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[2] {
 		return e.Receivables, nil
 	}
 	return nil, &NotLoadedError{edge: "receivables"}
@@ -90,7 +102,7 @@ func (e CustomerEdges) ReceivablesOrErr() ([]*Receivable, error) {
 // InvoicesOrErr returns the Invoices value or an error if the edge
 // was not loaded in eager-loading.
 func (e CustomerEdges) InvoicesOrErr() ([]*Invoice, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[3] {
 		return e.Invoices, nil
 	}
 	return nil, &NotLoadedError{edge: "invoices"}
@@ -233,6 +245,11 @@ func (c *Customer) QueryCompany() *CompanyQuery {
 	return NewCustomerClient(c.config).QueryCompany(c)
 }
 
+// QueryLoanSchedule queries the "loan_schedule" edge of the Customer entity.
+func (c *Customer) QueryLoanSchedule() *LoanQuery {
+	return NewCustomerClient(c.config).QueryLoanSchedule(c)
+}
+
 // QueryReceivables queries the "receivables" edge of the Customer entity.
 func (c *Customer) QueryReceivables() *ReceivableQuery {
 	return NewCustomerClient(c.config).QueryReceivables(c)
@@ -311,6 +328,30 @@ func (c *Customer) String() string {
 	builder.WriteString(c.TaxId)
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedLoanSchedule returns the LoanSchedule named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (c *Customer) NamedLoanSchedule(name string) ([]*Loan, error) {
+	if c.Edges.namedLoanSchedule == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := c.Edges.namedLoanSchedule[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (c *Customer) appendNamedLoanSchedule(name string, edges ...*Loan) {
+	if c.Edges.namedLoanSchedule == nil {
+		c.Edges.namedLoanSchedule = make(map[string][]*Loan)
+	}
+	if len(edges) == 0 {
+		c.Edges.namedLoanSchedule[name] = []*Loan{}
+	} else {
+		c.Edges.namedLoanSchedule[name] = append(c.Edges.namedLoanSchedule[name], edges...)
+	}
 }
 
 // NamedReceivables returns the Receivables named value or an error if the edge was not

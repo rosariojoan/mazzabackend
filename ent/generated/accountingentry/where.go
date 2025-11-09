@@ -859,6 +859,29 @@ func HasLoanWith(preds ...predicate.Loan) predicate.AccountingEntry {
 	})
 }
 
+// HasLoanSchedules applies the HasEdge predicate on the "loanSchedules" edge.
+func HasLoanSchedules() predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, LoanSchedulesTable, LoanSchedulesPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasLoanSchedulesWith applies the HasEdge predicate on the "loanSchedules" edge with a given conditions (other predicates).
+func HasLoanSchedulesWith(preds ...predicate.LoanSchedule) predicate.AccountingEntry {
+	return predicate.AccountingEntry(func(s *sql.Selector) {
+		step := newLoanSchedulesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.AccountingEntry) predicate.AccountingEntry {
 	return predicate.AccountingEntry(sql.AndPredicates(predicates...))

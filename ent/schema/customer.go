@@ -41,8 +41,7 @@ func (Customer) Fields() []ent.Field {
 // Company-wise, clients must have unique names and unique tax IDs
 func (Customer) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("name").Edges("company").Unique(),
-		index.Fields("taxId").Edges("company").Unique(),
+		index.Fields("name", "taxId").Edges("company").Unique(),
 	}
 }
 
@@ -51,6 +50,10 @@ func (Customer) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("customers").Unique().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)), // a client can belong to only one company
+		edge.To("loan_schedule", Loan.Type).Annotations(
+			entsql.OnDelete(entsql.SetNull),
+			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		),
 		edge.To("receivables", Receivable.Type).Annotations(entsql.OnDelete(entsql.Cascade)).
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)), // a client can have many receivables
 		edge.To("invoices", Invoice.Type).Annotations(entsql.OnDelete(entsql.SetNull)).

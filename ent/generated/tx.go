@@ -16,6 +16,8 @@ type Tx struct {
 	config
 	// AccountingEntry is the client for interacting with the AccountingEntry builders.
 	AccountingEntry *AccountingEntryClient
+	// Calendar is the client for interacting with the Calendar builders.
+	Calendar *CalendarClient
 	// Company is the client for interacting with the Company builders.
 	Company *CompanyClient
 	// CompanyDocument is the client for interacting with the CompanyDocument builders.
@@ -34,6 +36,8 @@ type Tx struct {
 	Invoice *InvoiceClient
 	// Loan is the client for interacting with the Loan builders.
 	Loan *LoanClient
+	// LoanSchedule is the client for interacting with the LoanSchedule builders.
+	LoanSchedule *LoanScheduleClient
 	// MemberSignupToken is the client for interacting with the MemberSignupToken builders.
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
@@ -192,6 +196,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.AccountingEntry = NewAccountingEntryClient(tx.config)
+	tx.Calendar = NewCalendarClient(tx.config)
 	tx.Company = NewCompanyClient(tx.config)
 	tx.CompanyDocument = NewCompanyDocumentClient(tx.config)
 	tx.Customer = NewCustomerClient(tx.config)
@@ -201,6 +206,7 @@ func (tx *Tx) init() {
 	tx.InventoryMovement = NewInventoryMovementClient(tx.config)
 	tx.Invoice = NewInvoiceClient(tx.config)
 	tx.Loan = NewLoanClient(tx.config)
+	tx.LoanSchedule = NewLoanScheduleClient(tx.config)
 	tx.MemberSignupToken = NewMemberSignupTokenClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
 	tx.Product = NewProductClient(tx.config)

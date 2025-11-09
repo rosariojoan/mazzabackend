@@ -45,7 +45,7 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "accounting_entries_loans_transactionHistory",
+				Symbol:     "accounting_entries_loans_transaction_history",
 				Columns:    []*schema.Column{AccountingEntriesColumns[18]},
 				RefColumns: []*schema.Column{LoansColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -64,6 +64,16 @@ var (
 				Columns: []*schema.Column{AccountingEntriesColumns[4], AccountingEntriesColumns[17]},
 			},
 		},
+	}
+	// CalendarsColumns holds the columns for the "calendars" table.
+	CalendarsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// CalendarsTable holds the schema information for the "calendars" table.
+	CalendarsTable = &schema.Table{
+		Name:       "calendars",
+		Columns:    CalendarsColumns,
+		PrimaryKey: []*schema.Column{CalendarsColumns[0]},
 	}
 	// CompaniesColumns holds the columns for the "companies" table.
 	CompaniesColumns = []*schema.Column{
@@ -193,14 +203,9 @@ var (
 		},
 		Indexes: []*schema.Index{
 			{
-				Name:    "customer_name_company_customers",
+				Name:    "customer_name_tax_id_company_customers",
 				Unique:  true,
-				Columns: []*schema.Column{CustomersColumns[10], CustomersColumns[13]},
-			},
-			{
-				Name:    "customer_tax_id_company_customers",
-				Unique:  true,
-				Columns: []*schema.Column{CustomersColumns[12], CustomersColumns[13]},
+				Columns: []*schema.Column{CustomersColumns[10], CustomersColumns[12], CustomersColumns[13]},
 			},
 		},
 	}
@@ -447,12 +452,16 @@ var (
 		{Name: "next_payment", Type: field.TypeTime, Nullable: true},
 		{Name: "next_payment_amount", Type: field.TypeFloat64, Nullable: true, Default: 0},
 		{Name: "outstanding_balance", Type: field.TypeFloat64},
-		{Name: "payment_frequency", Type: field.TypeEnum, Enums: []string{"weekly", "biweekly", "monthly", "quartely", "semiannual", "annual"}, Default: "monthly"},
+		{Name: "payment_frequency", Type: field.TypeEnum, Enums: []string{"daily", "weekly", "biweekly", "monthly", "quarterly", "semiannual", "annual"}, Default: "monthly"},
 		{Name: "paid_installments", Type: field.TypeInt, Default: 0},
-		{Name: "provider", Type: field.TypeString},
+		{Name: "payment_type", Type: field.TypeEnum, Enums: []string{"bullet", "fixedPayment", "fixedPrincipal", "interestOnly"}, Default: "fixedPayment"},
+		{Name: "counterparty_name", Type: field.TypeString},
 		{Name: "start_date", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"active", "paid"}},
+		{Name: "is_lending", Type: field.TypeBool, Default: false},
 		{Name: "company_loans", Type: field.TypeInt, Nullable: true},
+		{Name: "customer_loan_schedule", Type: field.TypeInt, Nullable: true},
+		{Name: "supplier_loan_schedule", Type: field.TypeInt, Nullable: true},
 	}
 	// LoansTable holds the schema information for the "loans" table.
 	LoansTable = &schema.Table{
@@ -462,8 +471,58 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "loans_companies_loans",
-				Columns:    []*schema.Column{LoansColumns[19]},
+				Columns:    []*schema.Column{LoansColumns[21]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "loans_customers_loan_schedule",
+				Columns:    []*schema.Column{LoansColumns[22]},
+				RefColumns: []*schema.Column{CustomersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "loans_suppliers_loan_schedule",
+				Columns:    []*schema.Column{LoansColumns[23]},
+				RefColumns: []*schema.Column{SuppliersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// LoanSchedulesColumns holds the columns for the "loan_schedules" table.
+	LoanSchedulesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "amount", Type: field.TypeFloat64},
+		{Name: "amount_paid", Type: field.TypeFloat64, Default: 0},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "date_paid", Type: field.TypeTime, Nullable: true},
+		{Name: "interest", Type: field.TypeFloat64},
+		{Name: "installment_number", Type: field.TypeInt},
+		{Name: "principal", Type: field.TypeFloat64},
+		{Name: "remaining_balance", Type: field.TypeFloat64, Nullable: true},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"pending", "paid", "partial", "overdue"}, Default: "pending"},
+		{Name: "company_loan_schedule", Type: field.TypeInt, Nullable: true},
+		{Name: "loan_loan_schedule", Type: field.TypeInt},
+	}
+	// LoanSchedulesTable holds the schema information for the "loan_schedules" table.
+	LoanSchedulesTable = &schema.Table{
+		Name:       "loan_schedules",
+		Columns:    LoanSchedulesColumns,
+		PrimaryKey: []*schema.Column{LoanSchedulesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "loan_schedules_companies_loan_schedule",
+				Columns:    []*schema.Column{LoanSchedulesColumns[13]},
+				RefColumns: []*schema.Column{CompaniesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "loan_schedules_loans_loan_schedule",
+				Columns:    []*schema.Column{LoanSchedulesColumns[14]},
+				RefColumns: []*schema.Column{LoansColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 		},
@@ -772,14 +831,9 @@ var (
 		},
 		Indexes: []*schema.Index{
 			{
-				Name:    "supplier_name_company_suppliers",
+				Name:    "supplier_name_tax_id_company_suppliers",
 				Unique:  true,
-				Columns: []*schema.Column{SuppliersColumns[10], SuppliersColumns[13]},
-			},
-			{
-				Name:    "supplier_tax_id_company_suppliers",
-				Unique:  true,
-				Columns: []*schema.Column{SuppliersColumns[12], SuppliersColumns[13]},
+				Columns: []*schema.Column{SuppliersColumns[10], SuppliersColumns[12], SuppliersColumns[13]},
 			},
 		},
 	}
@@ -841,6 +895,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
+		{Name: "device", Type: field.TypeString, Nullable: true},
 		{Name: "is_demo_user", Type: field.TypeBool, Nullable: true, Default: false},
 		{Name: "firebase_uid", Type: field.TypeString, Unique: true},
 		{Name: "fcm_token", Type: field.TypeString, Nullable: true},
@@ -866,7 +921,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_users_subordinates",
-				Columns:    []*schema.Column{UsersColumns[19]},
+				Columns:    []*schema.Column{UsersColumns[20]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -983,6 +1038,31 @@ var (
 			},
 		},
 	}
+	// LoanScheduleTransactionHistoryColumns holds the columns for the "loan_schedule_transaction_history" table.
+	LoanScheduleTransactionHistoryColumns = []*schema.Column{
+		{Name: "loan_schedule_id", Type: field.TypeInt},
+		{Name: "accounting_entry_id", Type: field.TypeInt},
+	}
+	// LoanScheduleTransactionHistoryTable holds the schema information for the "loan_schedule_transaction_history" table.
+	LoanScheduleTransactionHistoryTable = &schema.Table{
+		Name:       "loan_schedule_transaction_history",
+		Columns:    LoanScheduleTransactionHistoryColumns,
+		PrimaryKey: []*schema.Column{LoanScheduleTransactionHistoryColumns[0], LoanScheduleTransactionHistoryColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "loan_schedule_transaction_history_loan_schedule_id",
+				Columns:    []*schema.Column{LoanScheduleTransactionHistoryColumns[0]},
+				RefColumns: []*schema.Column{LoanSchedulesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "loan_schedule_transaction_history_accounting_entry_id",
+				Columns:    []*schema.Column{LoanScheduleTransactionHistoryColumns[1]},
+				RefColumns: []*schema.Column{AccountingEntriesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// UserParticipatedProjectTasksColumns holds the columns for the "user_participatedProjectTasks" table.
 	UserParticipatedProjectTasksColumns = []*schema.Column{
 		{Name: "user_id", Type: field.TypeInt},
@@ -1011,6 +1091,7 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AccountingEntriesTable,
+		CalendarsTable,
 		CompaniesTable,
 		CompanyDocumentsTable,
 		CustomersTable,
@@ -1020,6 +1101,7 @@ var (
 		InventoryMovementsTable,
 		InvoicesTable,
 		LoansTable,
+		LoanSchedulesTable,
 		MemberSignupTokensTable,
 		PayablesTable,
 		ProductsTable,
@@ -1034,6 +1116,7 @@ var (
 		UserRolesTable,
 		WorkshiftsTable,
 		CompanyUsersTable,
+		LoanScheduleTransactionHistoryTable,
 		UserParticipatedProjectTasksTable,
 	}
 )
@@ -1058,6 +1141,10 @@ func init() {
 	InvoicesTable.ForeignKeys[1].RefTable = CustomersTable
 	InvoicesTable.ForeignKeys[2].RefTable = UsersTable
 	LoansTable.ForeignKeys[0].RefTable = CompaniesTable
+	LoansTable.ForeignKeys[1].RefTable = CustomersTable
+	LoansTable.ForeignKeys[2].RefTable = SuppliersTable
+	LoanSchedulesTable.ForeignKeys[0].RefTable = CompaniesTable
+	LoanSchedulesTable.ForeignKeys[1].RefTable = LoansTable
 	MemberSignupTokensTable.ForeignKeys[0].RefTable = CompaniesTable
 	MemberSignupTokensTable.ForeignKeys[1].RefTable = UsersTable
 	PayablesTable.ForeignKeys[0].RefTable = CompaniesTable
@@ -1087,6 +1174,9 @@ func init() {
 	WorkshiftsTable.ForeignKeys[4].RefTable = WorkshiftsTable
 	CompanyUsersTable.ForeignKeys[0].RefTable = CompaniesTable
 	CompanyUsersTable.ForeignKeys[1].RefTable = UsersTable
+	LoanScheduleTransactionHistoryTable.ForeignKeys[0].RefTable = LoanSchedulesTable
+	LoanScheduleTransactionHistoryTable.ForeignKeys[1].RefTable = AccountingEntriesTable
+	LoanScheduleTransactionHistoryTable.Annotation = &entsql.Annotation{}
 	UserParticipatedProjectTasksTable.ForeignKeys[0].RefTable = UsersTable
 	UserParticipatedProjectTasksTable.ForeignKeys[1].RefTable = ProjectTasksTable
 	UserParticipatedProjectTasksTable.Annotation = &entsql.Annotation{}

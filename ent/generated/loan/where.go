@@ -85,7 +85,7 @@ func Description(v string) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldDescription, v))
 }
 
-// InterestRate applies equality check predicate on the "interestRate" field. It's identical to InterestRateEQ.
+// InterestRate applies equality check predicate on the "interest_rate" field. It's identical to InterestRateEQ.
 func InterestRate(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldInterestRate, v))
 }
@@ -95,39 +95,44 @@ func Installments(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldInstallments, v))
 }
 
-// MaturityDate applies equality check predicate on the "maturityDate" field. It's identical to MaturityDateEQ.
+// MaturityDate applies equality check predicate on the "maturity_date" field. It's identical to MaturityDateEQ.
 func MaturityDate(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldMaturityDate, v))
 }
 
-// NextPayment applies equality check predicate on the "nextPayment" field. It's identical to NextPaymentEQ.
+// NextPayment applies equality check predicate on the "next_payment" field. It's identical to NextPaymentEQ.
 func NextPayment(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldNextPayment, v))
 }
 
-// NextPaymentAmount applies equality check predicate on the "nextPaymentAmount" field. It's identical to NextPaymentAmountEQ.
+// NextPaymentAmount applies equality check predicate on the "next_payment_amount" field. It's identical to NextPaymentAmountEQ.
 func NextPaymentAmount(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldNextPaymentAmount, v))
 }
 
-// OutstandingBalance applies equality check predicate on the "outstandingBalance" field. It's identical to OutstandingBalanceEQ.
+// OutstandingBalance applies equality check predicate on the "outstanding_balance" field. It's identical to OutstandingBalanceEQ.
 func OutstandingBalance(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// PaidInstallments applies equality check predicate on the "paidInstallments" field. It's identical to PaidInstallmentsEQ.
+// PaidInstallments applies equality check predicate on the "paid_installments" field. It's identical to PaidInstallmentsEQ.
 func PaidInstallments(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldPaidInstallments, v))
 }
 
-// Provider applies equality check predicate on the "provider" field. It's identical to ProviderEQ.
-func Provider(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldProvider, v))
+// CounterpartyName applies equality check predicate on the "counterparty_name" field. It's identical to CounterpartyNameEQ.
+func CounterpartyName(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldCounterpartyName, v))
 }
 
-// StartDate applies equality check predicate on the "startDate" field. It's identical to StartDateEQ.
+// StartDate applies equality check predicate on the "start_date" field. It's identical to StartDateEQ.
 func StartDate(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldStartDate, v))
+}
+
+// IsLending applies equality check predicate on the "is_lending" field. It's identical to IsLendingEQ.
+func IsLending(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
@@ -470,42 +475,42 @@ func DescriptionContainsFold(v string) predicate.Loan {
 	return predicate.Loan(sql.FieldContainsFold(FieldDescription, v))
 }
 
-// InterestRateEQ applies the EQ predicate on the "interestRate" field.
+// InterestRateEQ applies the EQ predicate on the "interest_rate" field.
 func InterestRateEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldInterestRate, v))
 }
 
-// InterestRateNEQ applies the NEQ predicate on the "interestRate" field.
+// InterestRateNEQ applies the NEQ predicate on the "interest_rate" field.
 func InterestRateNEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldInterestRate, v))
 }
 
-// InterestRateIn applies the In predicate on the "interestRate" field.
+// InterestRateIn applies the In predicate on the "interest_rate" field.
 func InterestRateIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldInterestRate, vs...))
 }
 
-// InterestRateNotIn applies the NotIn predicate on the "interestRate" field.
+// InterestRateNotIn applies the NotIn predicate on the "interest_rate" field.
 func InterestRateNotIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldInterestRate, vs...))
 }
 
-// InterestRateGT applies the GT predicate on the "interestRate" field.
+// InterestRateGT applies the GT predicate on the "interest_rate" field.
 func InterestRateGT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldInterestRate, v))
 }
 
-// InterestRateGTE applies the GTE predicate on the "interestRate" field.
+// InterestRateGTE applies the GTE predicate on the "interest_rate" field.
 func InterestRateGTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldInterestRate, v))
 }
 
-// InterestRateLT applies the LT predicate on the "interestRate" field.
+// InterestRateLT applies the LT predicate on the "interest_rate" field.
 func InterestRateLT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldInterestRate, v))
 }
 
-// InterestRateLTE applies the LTE predicate on the "interestRate" field.
+// InterestRateLTE applies the LTE predicate on the "interest_rate" field.
 func InterestRateLTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldInterestRate, v))
 }
@@ -550,347 +555,367 @@ func InstallmentsLTE(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldInstallments, v))
 }
 
-// MaturityDateEQ applies the EQ predicate on the "maturityDate" field.
+// MaturityDateEQ applies the EQ predicate on the "maturity_date" field.
 func MaturityDateEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldMaturityDate, v))
 }
 
-// MaturityDateNEQ applies the NEQ predicate on the "maturityDate" field.
+// MaturityDateNEQ applies the NEQ predicate on the "maturity_date" field.
 func MaturityDateNEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldMaturityDate, v))
 }
 
-// MaturityDateIn applies the In predicate on the "maturityDate" field.
+// MaturityDateIn applies the In predicate on the "maturity_date" field.
 func MaturityDateIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldMaturityDate, vs...))
 }
 
-// MaturityDateNotIn applies the NotIn predicate on the "maturityDate" field.
+// MaturityDateNotIn applies the NotIn predicate on the "maturity_date" field.
 func MaturityDateNotIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldMaturityDate, vs...))
 }
 
-// MaturityDateGT applies the GT predicate on the "maturityDate" field.
+// MaturityDateGT applies the GT predicate on the "maturity_date" field.
 func MaturityDateGT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldMaturityDate, v))
 }
 
-// MaturityDateGTE applies the GTE predicate on the "maturityDate" field.
+// MaturityDateGTE applies the GTE predicate on the "maturity_date" field.
 func MaturityDateGTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldMaturityDate, v))
 }
 
-// MaturityDateLT applies the LT predicate on the "maturityDate" field.
+// MaturityDateLT applies the LT predicate on the "maturity_date" field.
 func MaturityDateLT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldMaturityDate, v))
 }
 
-// MaturityDateLTE applies the LTE predicate on the "maturityDate" field.
+// MaturityDateLTE applies the LTE predicate on the "maturity_date" field.
 func MaturityDateLTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldMaturityDate, v))
 }
 
-// NextPaymentEQ applies the EQ predicate on the "nextPayment" field.
+// NextPaymentEQ applies the EQ predicate on the "next_payment" field.
 func NextPaymentEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldNextPayment, v))
 }
 
-// NextPaymentNEQ applies the NEQ predicate on the "nextPayment" field.
+// NextPaymentNEQ applies the NEQ predicate on the "next_payment" field.
 func NextPaymentNEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldNextPayment, v))
 }
 
-// NextPaymentIn applies the In predicate on the "nextPayment" field.
+// NextPaymentIn applies the In predicate on the "next_payment" field.
 func NextPaymentIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldNextPayment, vs...))
 }
 
-// NextPaymentNotIn applies the NotIn predicate on the "nextPayment" field.
+// NextPaymentNotIn applies the NotIn predicate on the "next_payment" field.
 func NextPaymentNotIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldNextPayment, vs...))
 }
 
-// NextPaymentGT applies the GT predicate on the "nextPayment" field.
+// NextPaymentGT applies the GT predicate on the "next_payment" field.
 func NextPaymentGT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldNextPayment, v))
 }
 
-// NextPaymentGTE applies the GTE predicate on the "nextPayment" field.
+// NextPaymentGTE applies the GTE predicate on the "next_payment" field.
 func NextPaymentGTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldNextPayment, v))
 }
 
-// NextPaymentLT applies the LT predicate on the "nextPayment" field.
+// NextPaymentLT applies the LT predicate on the "next_payment" field.
 func NextPaymentLT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldNextPayment, v))
 }
 
-// NextPaymentLTE applies the LTE predicate on the "nextPayment" field.
+// NextPaymentLTE applies the LTE predicate on the "next_payment" field.
 func NextPaymentLTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldNextPayment, v))
 }
 
-// NextPaymentIsNil applies the IsNil predicate on the "nextPayment" field.
+// NextPaymentIsNil applies the IsNil predicate on the "next_payment" field.
 func NextPaymentIsNil() predicate.Loan {
 	return predicate.Loan(sql.FieldIsNull(FieldNextPayment))
 }
 
-// NextPaymentNotNil applies the NotNil predicate on the "nextPayment" field.
+// NextPaymentNotNil applies the NotNil predicate on the "next_payment" field.
 func NextPaymentNotNil() predicate.Loan {
 	return predicate.Loan(sql.FieldNotNull(FieldNextPayment))
 }
 
-// NextPaymentAmountEQ applies the EQ predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountEQ applies the EQ predicate on the "next_payment_amount" field.
 func NextPaymentAmountEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountNEQ applies the NEQ predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountNEQ applies the NEQ predicate on the "next_payment_amount" field.
 func NextPaymentAmountNEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountIn applies the In predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountIn applies the In predicate on the "next_payment_amount" field.
 func NextPaymentAmountIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldNextPaymentAmount, vs...))
 }
 
-// NextPaymentAmountNotIn applies the NotIn predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountNotIn applies the NotIn predicate on the "next_payment_amount" field.
 func NextPaymentAmountNotIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldNextPaymentAmount, vs...))
 }
 
-// NextPaymentAmountGT applies the GT predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountGT applies the GT predicate on the "next_payment_amount" field.
 func NextPaymentAmountGT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountGTE applies the GTE predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountGTE applies the GTE predicate on the "next_payment_amount" field.
 func NextPaymentAmountGTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountLT applies the LT predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountLT applies the LT predicate on the "next_payment_amount" field.
 func NextPaymentAmountLT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountLTE applies the LTE predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountLTE applies the LTE predicate on the "next_payment_amount" field.
 func NextPaymentAmountLTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldNextPaymentAmount, v))
 }
 
-// NextPaymentAmountIsNil applies the IsNil predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountIsNil applies the IsNil predicate on the "next_payment_amount" field.
 func NextPaymentAmountIsNil() predicate.Loan {
 	return predicate.Loan(sql.FieldIsNull(FieldNextPaymentAmount))
 }
 
-// NextPaymentAmountNotNil applies the NotNil predicate on the "nextPaymentAmount" field.
+// NextPaymentAmountNotNil applies the NotNil predicate on the "next_payment_amount" field.
 func NextPaymentAmountNotNil() predicate.Loan {
 	return predicate.Loan(sql.FieldNotNull(FieldNextPaymentAmount))
 }
 
-// OutstandingBalanceEQ applies the EQ predicate on the "outstandingBalance" field.
+// OutstandingBalanceEQ applies the EQ predicate on the "outstanding_balance" field.
 func OutstandingBalanceEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceNEQ applies the NEQ predicate on the "outstandingBalance" field.
+// OutstandingBalanceNEQ applies the NEQ predicate on the "outstanding_balance" field.
 func OutstandingBalanceNEQ(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceIn applies the In predicate on the "outstandingBalance" field.
+// OutstandingBalanceIn applies the In predicate on the "outstanding_balance" field.
 func OutstandingBalanceIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingBalanceNotIn applies the NotIn predicate on the "outstandingBalance" field.
+// OutstandingBalanceNotIn applies the NotIn predicate on the "outstanding_balance" field.
 func OutstandingBalanceNotIn(vs ...float64) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingBalanceGT applies the GT predicate on the "outstandingBalance" field.
+// OutstandingBalanceGT applies the GT predicate on the "outstanding_balance" field.
 func OutstandingBalanceGT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceGTE applies the GTE predicate on the "outstandingBalance" field.
+// OutstandingBalanceGTE applies the GTE predicate on the "outstanding_balance" field.
 func OutstandingBalanceGTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceLT applies the LT predicate on the "outstandingBalance" field.
+// OutstandingBalanceLT applies the LT predicate on the "outstanding_balance" field.
 func OutstandingBalanceLT(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceLTE applies the LTE predicate on the "outstandingBalance" field.
+// OutstandingBalanceLTE applies the LTE predicate on the "outstanding_balance" field.
 func OutstandingBalanceLTE(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldOutstandingBalance, v))
 }
 
-// PaymentFrequencyEQ applies the EQ predicate on the "paymentFrequency" field.
+// PaymentFrequencyEQ applies the EQ predicate on the "payment_frequency" field.
 func PaymentFrequencyEQ(v PaymentFrequency) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldPaymentFrequency, v))
 }
 
-// PaymentFrequencyNEQ applies the NEQ predicate on the "paymentFrequency" field.
+// PaymentFrequencyNEQ applies the NEQ predicate on the "payment_frequency" field.
 func PaymentFrequencyNEQ(v PaymentFrequency) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldPaymentFrequency, v))
 }
 
-// PaymentFrequencyIn applies the In predicate on the "paymentFrequency" field.
+// PaymentFrequencyIn applies the In predicate on the "payment_frequency" field.
 func PaymentFrequencyIn(vs ...PaymentFrequency) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldPaymentFrequency, vs...))
 }
 
-// PaymentFrequencyNotIn applies the NotIn predicate on the "paymentFrequency" field.
+// PaymentFrequencyNotIn applies the NotIn predicate on the "payment_frequency" field.
 func PaymentFrequencyNotIn(vs ...PaymentFrequency) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldPaymentFrequency, vs...))
 }
 
-// PaidInstallmentsEQ applies the EQ predicate on the "paidInstallments" field.
+// PaidInstallmentsEQ applies the EQ predicate on the "paid_installments" field.
 func PaidInstallmentsEQ(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldPaidInstallments, v))
 }
 
-// PaidInstallmentsNEQ applies the NEQ predicate on the "paidInstallments" field.
+// PaidInstallmentsNEQ applies the NEQ predicate on the "paid_installments" field.
 func PaidInstallmentsNEQ(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldPaidInstallments, v))
 }
 
-// PaidInstallmentsIn applies the In predicate on the "paidInstallments" field.
+// PaidInstallmentsIn applies the In predicate on the "paid_installments" field.
 func PaidInstallmentsIn(vs ...int) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldPaidInstallments, vs...))
 }
 
-// PaidInstallmentsNotIn applies the NotIn predicate on the "paidInstallments" field.
+// PaidInstallmentsNotIn applies the NotIn predicate on the "paid_installments" field.
 func PaidInstallmentsNotIn(vs ...int) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldPaidInstallments, vs...))
 }
 
-// PaidInstallmentsGT applies the GT predicate on the "paidInstallments" field.
+// PaidInstallmentsGT applies the GT predicate on the "paid_installments" field.
 func PaidInstallmentsGT(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldPaidInstallments, v))
 }
 
-// PaidInstallmentsGTE applies the GTE predicate on the "paidInstallments" field.
+// PaidInstallmentsGTE applies the GTE predicate on the "paid_installments" field.
 func PaidInstallmentsGTE(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldPaidInstallments, v))
 }
 
-// PaidInstallmentsLT applies the LT predicate on the "paidInstallments" field.
+// PaidInstallmentsLT applies the LT predicate on the "paid_installments" field.
 func PaidInstallmentsLT(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldPaidInstallments, v))
 }
 
-// PaidInstallmentsLTE applies the LTE predicate on the "paidInstallments" field.
+// PaidInstallmentsLTE applies the LTE predicate on the "paid_installments" field.
 func PaidInstallmentsLTE(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldPaidInstallments, v))
 }
 
-// ProviderEQ applies the EQ predicate on the "provider" field.
-func ProviderEQ(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldProvider, v))
+// PaymentTypeEQ applies the EQ predicate on the "paymentType" field.
+func PaymentTypeEQ(v PaymentType) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldPaymentType, v))
 }
 
-// ProviderNEQ applies the NEQ predicate on the "provider" field.
-func ProviderNEQ(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldNEQ(FieldProvider, v))
+// PaymentTypeNEQ applies the NEQ predicate on the "paymentType" field.
+func PaymentTypeNEQ(v PaymentType) predicate.Loan {
+	return predicate.Loan(sql.FieldNEQ(FieldPaymentType, v))
 }
 
-// ProviderIn applies the In predicate on the "provider" field.
-func ProviderIn(vs ...string) predicate.Loan {
-	return predicate.Loan(sql.FieldIn(FieldProvider, vs...))
+// PaymentTypeIn applies the In predicate on the "paymentType" field.
+func PaymentTypeIn(vs ...PaymentType) predicate.Loan {
+	return predicate.Loan(sql.FieldIn(FieldPaymentType, vs...))
 }
 
-// ProviderNotIn applies the NotIn predicate on the "provider" field.
-func ProviderNotIn(vs ...string) predicate.Loan {
-	return predicate.Loan(sql.FieldNotIn(FieldProvider, vs...))
+// PaymentTypeNotIn applies the NotIn predicate on the "paymentType" field.
+func PaymentTypeNotIn(vs ...PaymentType) predicate.Loan {
+	return predicate.Loan(sql.FieldNotIn(FieldPaymentType, vs...))
 }
 
-// ProviderGT applies the GT predicate on the "provider" field.
-func ProviderGT(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldGT(FieldProvider, v))
+// CounterpartyNameEQ applies the EQ predicate on the "counterparty_name" field.
+func CounterpartyNameEQ(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldCounterpartyName, v))
 }
 
-// ProviderGTE applies the GTE predicate on the "provider" field.
-func ProviderGTE(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldGTE(FieldProvider, v))
+// CounterpartyNameNEQ applies the NEQ predicate on the "counterparty_name" field.
+func CounterpartyNameNEQ(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldNEQ(FieldCounterpartyName, v))
 }
 
-// ProviderLT applies the LT predicate on the "provider" field.
-func ProviderLT(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldLT(FieldProvider, v))
+// CounterpartyNameIn applies the In predicate on the "counterparty_name" field.
+func CounterpartyNameIn(vs ...string) predicate.Loan {
+	return predicate.Loan(sql.FieldIn(FieldCounterpartyName, vs...))
 }
 
-// ProviderLTE applies the LTE predicate on the "provider" field.
-func ProviderLTE(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldLTE(FieldProvider, v))
+// CounterpartyNameNotIn applies the NotIn predicate on the "counterparty_name" field.
+func CounterpartyNameNotIn(vs ...string) predicate.Loan {
+	return predicate.Loan(sql.FieldNotIn(FieldCounterpartyName, vs...))
 }
 
-// ProviderContains applies the Contains predicate on the "provider" field.
-func ProviderContains(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldContains(FieldProvider, v))
+// CounterpartyNameGT applies the GT predicate on the "counterparty_name" field.
+func CounterpartyNameGT(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldGT(FieldCounterpartyName, v))
 }
 
-// ProviderHasPrefix applies the HasPrefix predicate on the "provider" field.
-func ProviderHasPrefix(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldHasPrefix(FieldProvider, v))
+// CounterpartyNameGTE applies the GTE predicate on the "counterparty_name" field.
+func CounterpartyNameGTE(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldGTE(FieldCounterpartyName, v))
 }
 
-// ProviderHasSuffix applies the HasSuffix predicate on the "provider" field.
-func ProviderHasSuffix(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldHasSuffix(FieldProvider, v))
+// CounterpartyNameLT applies the LT predicate on the "counterparty_name" field.
+func CounterpartyNameLT(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldLT(FieldCounterpartyName, v))
 }
 
-// ProviderEqualFold applies the EqualFold predicate on the "provider" field.
-func ProviderEqualFold(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldEqualFold(FieldProvider, v))
+// CounterpartyNameLTE applies the LTE predicate on the "counterparty_name" field.
+func CounterpartyNameLTE(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldLTE(FieldCounterpartyName, v))
 }
 
-// ProviderContainsFold applies the ContainsFold predicate on the "provider" field.
-func ProviderContainsFold(v string) predicate.Loan {
-	return predicate.Loan(sql.FieldContainsFold(FieldProvider, v))
+// CounterpartyNameContains applies the Contains predicate on the "counterparty_name" field.
+func CounterpartyNameContains(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldContains(FieldCounterpartyName, v))
 }
 
-// StartDateEQ applies the EQ predicate on the "startDate" field.
+// CounterpartyNameHasPrefix applies the HasPrefix predicate on the "counterparty_name" field.
+func CounterpartyNameHasPrefix(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldHasPrefix(FieldCounterpartyName, v))
+}
+
+// CounterpartyNameHasSuffix applies the HasSuffix predicate on the "counterparty_name" field.
+func CounterpartyNameHasSuffix(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldHasSuffix(FieldCounterpartyName, v))
+}
+
+// CounterpartyNameEqualFold applies the EqualFold predicate on the "counterparty_name" field.
+func CounterpartyNameEqualFold(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldEqualFold(FieldCounterpartyName, v))
+}
+
+// CounterpartyNameContainsFold applies the ContainsFold predicate on the "counterparty_name" field.
+func CounterpartyNameContainsFold(v string) predicate.Loan {
+	return predicate.Loan(sql.FieldContainsFold(FieldCounterpartyName, v))
+}
+
+// StartDateEQ applies the EQ predicate on the "start_date" field.
 func StartDateEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldStartDate, v))
 }
 
-// StartDateNEQ applies the NEQ predicate on the "startDate" field.
+// StartDateNEQ applies the NEQ predicate on the "start_date" field.
 func StartDateNEQ(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldStartDate, v))
 }
 
-// StartDateIn applies the In predicate on the "startDate" field.
+// StartDateIn applies the In predicate on the "start_date" field.
 func StartDateIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldStartDate, vs...))
 }
 
-// StartDateNotIn applies the NotIn predicate on the "startDate" field.
+// StartDateNotIn applies the NotIn predicate on the "start_date" field.
 func StartDateNotIn(vs ...time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldStartDate, vs...))
 }
 
-// StartDateGT applies the GT predicate on the "startDate" field.
+// StartDateGT applies the GT predicate on the "start_date" field.
 func StartDateGT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGT(FieldStartDate, v))
 }
 
-// StartDateGTE applies the GTE predicate on the "startDate" field.
+// StartDateGTE applies the GTE predicate on the "start_date" field.
 func StartDateGTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldGTE(FieldStartDate, v))
 }
 
-// StartDateLT applies the LT predicate on the "startDate" field.
+// StartDateLT applies the LT predicate on the "start_date" field.
 func StartDateLT(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLT(FieldStartDate, v))
 }
 
-// StartDateLTE applies the LTE predicate on the "startDate" field.
+// StartDateLTE applies the LTE predicate on the "start_date" field.
 func StartDateLTE(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldStartDate, v))
 }
@@ -913,6 +938,62 @@ func StatusIn(vs ...Status) predicate.Loan {
 // StatusNotIn applies the NotIn predicate on the "status" field.
 func StatusNotIn(vs ...Status) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// IsLendingEQ applies the EQ predicate on the "is_lending" field.
+func IsLendingEQ(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
+}
+
+// IsLendingNEQ applies the NEQ predicate on the "is_lending" field.
+func IsLendingNEQ(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldNEQ(FieldIsLending, v))
+}
+
+// HasClient applies the HasEdge predicate on the "client" edge.
+func HasClient() predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ClientTable, ClientColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasClientWith applies the HasEdge predicate on the "client" edge with a given conditions (other predicates).
+func HasClientWith(preds ...predicate.Customer) predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := newClientStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasSupplier applies the HasEdge predicate on the "supplier" edge.
+func HasSupplier() predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, SupplierTable, SupplierColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSupplierWith applies the HasEdge predicate on the "supplier" edge with a given conditions (other predicates).
+func HasSupplierWith(preds ...predicate.Supplier) predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := newSupplierStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // HasCompany applies the HasEdge predicate on the "company" edge.
@@ -938,7 +1019,30 @@ func HasCompanyWith(preds ...predicate.Company) predicate.Loan {
 	})
 }
 
-// HasTransactionHistory applies the HasEdge predicate on the "transactionHistory" edge.
+// HasLoanSchedule applies the HasEdge predicate on the "loan_schedule" edge.
+func HasLoanSchedule() predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasLoanScheduleWith applies the HasEdge predicate on the "loan_schedule" edge with a given conditions (other predicates).
+func HasLoanScheduleWith(preds ...predicate.LoanSchedule) predicate.Loan {
+	return predicate.Loan(func(s *sql.Selector) {
+		step := newLoanScheduleStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasTransactionHistory applies the HasEdge predicate on the "transaction_history" edge.
 func HasTransactionHistory() predicate.Loan {
 	return predicate.Loan(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -949,7 +1053,7 @@ func HasTransactionHistory() predicate.Loan {
 	})
 }
 
-// HasTransactionHistoryWith applies the HasEdge predicate on the "transactionHistory" edge with a given conditions (other predicates).
+// HasTransactionHistoryWith applies the HasEdge predicate on the "transaction_history" edge with a given conditions (other predicates).
 func HasTransactionHistoryWith(preds ...predicate.AccountingEntry) predicate.Loan {
 	return predicate.Loan(func(s *sql.Selector) {
 		step := newTransactionHistoryStep()

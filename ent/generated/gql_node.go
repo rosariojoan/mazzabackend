@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/calendar"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/customer"
@@ -15,6 +16,7 @@ import (
 	"mazza/ent/generated/inventorymovement"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/product"
@@ -49,6 +51,9 @@ type Noder interface {
 func (n *AccountingEntry) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
+func (n *Calendar) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
 func (n *Company) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
@@ -74,6 +79,9 @@ func (n *Invoice) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Loan) IsNode() {}
+
+// IsNode implements the Node interface check for GQLGen.
+func (n *LoanSchedule) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *MemberSignupToken) IsNode() {}
@@ -184,6 +192,18 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 			return nil, err
 		}
 		return n, nil
+	case calendar.Table:
+		query := c.Calendar.Query().
+			Where(calendar.ID(id))
+		query, err := query.CollectFields(ctx, "Calendar")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
 	case company.Table:
 		query := c.Company.Query().
 			Where(company.ID(id))
@@ -284,6 +304,18 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Loan.Query().
 			Where(loan.ID(id))
 		query, err := query.CollectFields(ctx, "Loan")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return n, nil
+	case loanschedule.Table:
+		query := c.LoanSchedule.Query().
+			Where(loanschedule.ID(id))
+		query, err := query.CollectFields(ctx, "LoanSchedule")
 		if err != nil {
 			return nil, err
 		}
@@ -537,6 +569,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 				*noder = node
 			}
 		}
+	case calendar.Table:
+		query := c.Calendar.Query().
+			Where(calendar.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "Calendar")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
 	case company.Table:
 		query := c.Company.Query().
 			Where(company.IDIn(ids...))
@@ -669,6 +717,22 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Loan.Query().
 			Where(loan.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Loan")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, node := range nodes {
+			for _, noder := range idmap[node.ID] {
+				*noder = node
+			}
+		}
+	case loanschedule.Table:
+		query := c.LoanSchedule.Query().
+			Where(loanschedule.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "LoanSchedule")
 		if err != nil {
 			return nil, err
 		}

@@ -4,11 +4,13 @@ package generated
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 	"mazza/ent/generated/accountingentry"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/user"
 
@@ -21,16 +23,18 @@ import (
 // AccountingEntryQuery is the builder for querying AccountingEntry entities.
 type AccountingEntryQuery struct {
 	config
-	ctx         *QueryContext
-	order       []accountingentry.OrderOption
-	inters      []Interceptor
-	predicates  []predicate.AccountingEntry
-	withCompany *CompanyQuery
-	withUser    *UserQuery
-	withLoan    *LoanQuery
-	withFKs     bool
-	loadTotal   []func(context.Context, []*AccountingEntry) error
-	modifiers   []func(*sql.Selector)
+	ctx                    *QueryContext
+	order                  []accountingentry.OrderOption
+	inters                 []Interceptor
+	predicates             []predicate.AccountingEntry
+	withCompany            *CompanyQuery
+	withUser               *UserQuery
+	withLoan               *LoanQuery
+	withLoanSchedules      *LoanScheduleQuery
+	withFKs                bool
+	loadTotal              []func(context.Context, []*AccountingEntry) error
+	modifiers              []func(*sql.Selector)
+	withNamedLoanSchedules map[string]*LoanScheduleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -126,6 +130,28 @@ func (aeq *AccountingEntryQuery) QueryLoan() *LoanQuery {
 			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
 			sqlgraph.To(loan.Table, loan.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, accountingentry.LoanTable, accountingentry.LoanColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLoanSchedules chains the current query on the "loanSchedules" edge.
+func (aeq *AccountingEntryQuery) QueryLoanSchedules() *LoanScheduleQuery {
+	query := (&LoanScheduleClient{config: aeq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := aeq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := aeq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(accountingentry.Table, accountingentry.FieldID, selector),
+			sqlgraph.To(loanschedule.Table, loanschedule.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, accountingentry.LoanSchedulesTable, accountingentry.LoanSchedulesPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(aeq.driver.Dialect(), step)
 		return fromU, nil
@@ -320,14 +346,15 @@ func (aeq *AccountingEntryQuery) Clone() *AccountingEntryQuery {
 		return nil
 	}
 	return &AccountingEntryQuery{
-		config:      aeq.config,
-		ctx:         aeq.ctx.Clone(),
-		order:       append([]accountingentry.OrderOption{}, aeq.order...),
-		inters:      append([]Interceptor{}, aeq.inters...),
-		predicates:  append([]predicate.AccountingEntry{}, aeq.predicates...),
-		withCompany: aeq.withCompany.Clone(),
-		withUser:    aeq.withUser.Clone(),
-		withLoan:    aeq.withLoan.Clone(),
+		config:            aeq.config,
+		ctx:               aeq.ctx.Clone(),
+		order:             append([]accountingentry.OrderOption{}, aeq.order...),
+		inters:            append([]Interceptor{}, aeq.inters...),
+		predicates:        append([]predicate.AccountingEntry{}, aeq.predicates...),
+		withCompany:       aeq.withCompany.Clone(),
+		withUser:          aeq.withUser.Clone(),
+		withLoan:          aeq.withLoan.Clone(),
+		withLoanSchedules: aeq.withLoanSchedules.Clone(),
 		// clone intermediate query.
 		sql:       aeq.sql.Clone(),
 		path:      aeq.path,
@@ -365,6 +392,17 @@ func (aeq *AccountingEntryQuery) WithLoan(opts ...func(*LoanQuery)) *AccountingE
 		opt(query)
 	}
 	aeq.withLoan = query
+	return aeq
+}
+
+// WithLoanSchedules tells the query-builder to eager-load the nodes that are connected to
+// the "loanSchedules" edge. The optional arguments are used to configure the query builder of the edge.
+func (aeq *AccountingEntryQuery) WithLoanSchedules(opts ...func(*LoanScheduleQuery)) *AccountingEntryQuery {
+	query := (&LoanScheduleClient{config: aeq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	aeq.withLoanSchedules = query
 	return aeq
 }
 
@@ -447,10 +485,11 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 		nodes       = []*AccountingEntry{}
 		withFKs     = aeq.withFKs
 		_spec       = aeq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			aeq.withCompany != nil,
 			aeq.withUser != nil,
 			aeq.withLoan != nil,
+			aeq.withLoanSchedules != nil,
 		}
 	)
 	if aeq.withCompany != nil || aeq.withUser != nil || aeq.withLoan != nil {
@@ -495,6 +534,20 @@ func (aeq *AccountingEntryQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 	if query := aeq.withLoan; query != nil {
 		if err := aeq.loadLoan(ctx, query, nodes, nil,
 			func(n *AccountingEntry, e *Loan) { n.Edges.Loan = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := aeq.withLoanSchedules; query != nil {
+		if err := aeq.loadLoanSchedules(ctx, query, nodes,
+			func(n *AccountingEntry) { n.Edges.LoanSchedules = []*LoanSchedule{} },
+			func(n *AccountingEntry, e *LoanSchedule) { n.Edges.LoanSchedules = append(n.Edges.LoanSchedules, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range aeq.withNamedLoanSchedules {
+		if err := aeq.loadLoanSchedules(ctx, query, nodes,
+			func(n *AccountingEntry) { n.appendNamedLoanSchedules(name) },
+			func(n *AccountingEntry, e *LoanSchedule) { n.appendNamedLoanSchedules(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -602,6 +655,67 @@ func (aeq *AccountingEntryQuery) loadLoan(ctx context.Context, query *LoanQuery,
 	}
 	return nil
 }
+func (aeq *AccountingEntryQuery) loadLoanSchedules(ctx context.Context, query *LoanScheduleQuery, nodes []*AccountingEntry, init func(*AccountingEntry), assign func(*AccountingEntry, *LoanSchedule)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int]*AccountingEntry)
+	nids := make(map[int]map[*AccountingEntry]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(accountingentry.LoanSchedulesTable)
+		s.Join(joinT).On(s.C(loanschedule.FieldID), joinT.C(accountingentry.LoanSchedulesPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(accountingentry.LoanSchedulesPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(accountingentry.LoanSchedulesPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := int(values[0].(*sql.NullInt64).Int64)
+				inValue := int(values[1].(*sql.NullInt64).Int64)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*AccountingEntry]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*LoanSchedule](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "loanSchedules" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
 
 func (aeq *AccountingEntryQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := aeq.querySpec()
@@ -694,6 +808,20 @@ func (aeq *AccountingEntryQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (aeq *AccountingEntryQuery) Modify(modifiers ...func(s *sql.Selector)) *AccountingEntrySelect {
 	aeq.modifiers = append(aeq.modifiers, modifiers...)
 	return aeq.Select()
+}
+
+// WithNamedLoanSchedules tells the query-builder to eager-load the nodes that are connected to the "loanSchedules"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (aeq *AccountingEntryQuery) WithNamedLoanSchedules(name string, opts ...func(*LoanScheduleQuery)) *AccountingEntryQuery {
+	query := (&LoanScheduleClient{config: aeq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if aeq.withNamedLoanSchedules == nil {
+		aeq.withNamedLoanSchedules = make(map[string]*LoanScheduleQuery)
+	}
+	aeq.withNamedLoanSchedules[name] = query
+	return aeq
 }
 
 // AccountingEntryGroupBy is the group-by builder for AccountingEntry entities.

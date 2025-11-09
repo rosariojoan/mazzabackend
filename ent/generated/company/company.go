@@ -80,6 +80,8 @@ const (
 	EdgeInvoices = "invoices"
 	// EdgeLoans holds the string denoting the loans edge name in mutations.
 	EdgeLoans = "loans"
+	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
+	EdgeLoanSchedule = "loan_schedule"
 	// EdgeMemberSignupTokens holds the string denoting the membersignuptokens edge name in mutations.
 	EdgeMemberSignupTokens = "memberSignupTokens"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
@@ -176,6 +178,13 @@ const (
 	LoansInverseTable = "loans"
 	// LoansColumn is the table column denoting the loans relation/edge.
 	LoansColumn = "company_loans"
+	// LoanScheduleTable is the table that holds the loan_schedule relation/edge.
+	LoanScheduleTable = "loan_schedules"
+	// LoanScheduleInverseTable is the table name for the LoanSchedule entity.
+	// It exists in this package in order to avoid circular dependency with the "loanschedule" package.
+	LoanScheduleInverseTable = "loan_schedules"
+	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
+	LoanScheduleColumn = "company_loan_schedule"
 	// MemberSignupTokensTable is the table that holds the memberSignupTokens relation/edge.
 	MemberSignupTokensTable = "member_signup_tokens"
 	// MemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
@@ -595,6 +604,20 @@ func ByLoans(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
+// ByLoanScheduleCount orders the results by loan_schedule count.
+func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
+	}
+}
+
+// ByLoanSchedule orders the results by loan_schedule terms.
+func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByMemberSignupTokensCount orders the results by memberSignupTokens count.
 func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -823,6 +846,13 @@ func newLoansStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(LoansInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, LoansTable, LoansColumn),
+	)
+}
+func newLoanScheduleStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanScheduleInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
 	)
 }
 func newMemberSignupTokensStep() *sqlgraph.Step {

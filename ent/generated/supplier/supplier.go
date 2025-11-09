@@ -40,6 +40,8 @@ const (
 	FieldTaxId = "tax_id"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
+	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
+	EdgeLoanSchedule = "loan_schedule"
 	// EdgePayables holds the string denoting the payables edge name in mutations.
 	EdgePayables = "payables"
 	// Table holds the table name of the supplier in the database.
@@ -51,6 +53,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_suppliers"
+	// LoanScheduleTable is the table that holds the loan_schedule relation/edge.
+	LoanScheduleTable = "loans"
+	// LoanScheduleInverseTable is the table name for the Loan entity.
+	// It exists in this package in order to avoid circular dependency with the "loan" package.
+	LoanScheduleInverseTable = "loans"
+	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
+	LoanScheduleColumn = "supplier_loan_schedule"
 	// PayablesTable is the table that holds the payables relation/edge.
 	PayablesTable = "payables"
 	// PayablesInverseTable is the table name for the Payable entity.
@@ -188,6 +197,20 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
+// ByLoanScheduleCount orders the results by loan_schedule count.
+func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
+	}
+}
+
+// ByLoanSchedule orders the results by loan_schedule terms.
+func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
 // ByPayablesCount orders the results by payables count.
 func ByPayablesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -206,6 +229,13 @@ func newCompanyStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CompanyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
+	)
+}
+func newLoanScheduleStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(LoanScheduleInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
 	)
 }
 func newPayablesStep() *sqlgraph.Step {

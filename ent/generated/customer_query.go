@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loan"
 	"mazza/ent/generated/predicate"
 	"mazza/ent/generated/receivable"
 
@@ -22,18 +23,20 @@ import (
 // CustomerQuery is the builder for querying Customer entities.
 type CustomerQuery struct {
 	config
-	ctx                  *QueryContext
-	order                []customer.OrderOption
-	inters               []Interceptor
-	predicates           []predicate.Customer
-	withCompany          *CompanyQuery
-	withReceivables      *ReceivableQuery
-	withInvoices         *InvoiceQuery
-	withFKs              bool
-	loadTotal            []func(context.Context, []*Customer) error
-	modifiers            []func(*sql.Selector)
-	withNamedReceivables map[string]*ReceivableQuery
-	withNamedInvoices    map[string]*InvoiceQuery
+	ctx                   *QueryContext
+	order                 []customer.OrderOption
+	inters                []Interceptor
+	predicates            []predicate.Customer
+	withCompany           *CompanyQuery
+	withLoanSchedule      *LoanQuery
+	withReceivables       *ReceivableQuery
+	withInvoices          *InvoiceQuery
+	withFKs               bool
+	loadTotal             []func(context.Context, []*Customer) error
+	modifiers             []func(*sql.Selector)
+	withNamedLoanSchedule map[string]*LoanQuery
+	withNamedReceivables  map[string]*ReceivableQuery
+	withNamedInvoices     map[string]*InvoiceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -85,6 +88,28 @@ func (cq *CustomerQuery) QueryCompany() *CompanyQuery {
 			sqlgraph.From(customer.Table, customer.FieldID, selector),
 			sqlgraph.To(company.Table, company.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, customer.CompanyTable, customer.CompanyColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryLoanSchedule chains the current query on the "loan_schedule" edge.
+func (cq *CustomerQuery) QueryLoanSchedule() *LoanQuery {
+	query := (&LoanClient{config: cq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := cq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(customer.Table, customer.FieldID, selector),
+			sqlgraph.To(loan.Table, loan.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.LoanScheduleTable, customer.LoanScheduleColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -323,14 +348,15 @@ func (cq *CustomerQuery) Clone() *CustomerQuery {
 		return nil
 	}
 	return &CustomerQuery{
-		config:          cq.config,
-		ctx:             cq.ctx.Clone(),
-		order:           append([]customer.OrderOption{}, cq.order...),
-		inters:          append([]Interceptor{}, cq.inters...),
-		predicates:      append([]predicate.Customer{}, cq.predicates...),
-		withCompany:     cq.withCompany.Clone(),
-		withReceivables: cq.withReceivables.Clone(),
-		withInvoices:    cq.withInvoices.Clone(),
+		config:           cq.config,
+		ctx:              cq.ctx.Clone(),
+		order:            append([]customer.OrderOption{}, cq.order...),
+		inters:           append([]Interceptor{}, cq.inters...),
+		predicates:       append([]predicate.Customer{}, cq.predicates...),
+		withCompany:      cq.withCompany.Clone(),
+		withLoanSchedule: cq.withLoanSchedule.Clone(),
+		withReceivables:  cq.withReceivables.Clone(),
+		withInvoices:     cq.withInvoices.Clone(),
 		// clone intermediate query.
 		sql:       cq.sql.Clone(),
 		path:      cq.path,
@@ -346,6 +372,17 @@ func (cq *CustomerQuery) WithCompany(opts ...func(*CompanyQuery)) *CustomerQuery
 		opt(query)
 	}
 	cq.withCompany = query
+	return cq
+}
+
+// WithLoanSchedule tells the query-builder to eager-load the nodes that are connected to
+// the "loan_schedule" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithLoanSchedule(opts ...func(*LoanQuery)) *CustomerQuery {
+	query := (&LoanClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	cq.withLoanSchedule = query
 	return cq
 }
 
@@ -450,8 +487,9 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 		nodes       = []*Customer{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			cq.withCompany != nil,
+			cq.withLoanSchedule != nil,
 			cq.withReceivables != nil,
 			cq.withInvoices != nil,
 		}
@@ -489,6 +527,13 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 			return nil, err
 		}
 	}
+	if query := cq.withLoanSchedule; query != nil {
+		if err := cq.loadLoanSchedule(ctx, query, nodes,
+			func(n *Customer) { n.Edges.LoanSchedule = []*Loan{} },
+			func(n *Customer, e *Loan) { n.Edges.LoanSchedule = append(n.Edges.LoanSchedule, e) }); err != nil {
+			return nil, err
+		}
+	}
 	if query := cq.withReceivables; query != nil {
 		if err := cq.loadReceivables(ctx, query, nodes,
 			func(n *Customer) { n.Edges.Receivables = []*Receivable{} },
@@ -500,6 +545,13 @@ func (cq *CustomerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cus
 		if err := cq.loadInvoices(ctx, query, nodes,
 			func(n *Customer) { n.Edges.Invoices = []*Invoice{} },
 			func(n *Customer, e *Invoice) { n.Edges.Invoices = append(n.Edges.Invoices, e) }); err != nil {
+			return nil, err
+		}
+	}
+	for name, query := range cq.withNamedLoanSchedule {
+		if err := cq.loadLoanSchedule(ctx, query, nodes,
+			func(n *Customer) { n.appendNamedLoanSchedule(name) },
+			func(n *Customer, e *Loan) { n.appendNamedLoanSchedule(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -554,6 +606,37 @@ func (cq *CustomerQuery) loadCompany(ctx context.Context, query *CompanyQuery, n
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
+	}
+	return nil
+}
+func (cq *CustomerQuery) loadLoanSchedule(ctx context.Context, query *LoanQuery, nodes []*Customer, init func(*Customer), assign func(*Customer, *Loan)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*Customer)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.Loan(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(customer.LoanScheduleColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.customer_loan_schedule
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "customer_loan_schedule" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "customer_loan_schedule" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -711,6 +794,20 @@ func (cq *CustomerQuery) sqlQuery(ctx context.Context) *sql.Selector {
 func (cq *CustomerQuery) Modify(modifiers ...func(s *sql.Selector)) *CustomerSelect {
 	cq.modifiers = append(cq.modifiers, modifiers...)
 	return cq.Select()
+}
+
+// WithNamedLoanSchedule tells the query-builder to eager-load the nodes that are connected to the "loan_schedule"
+// edge with the given name. The optional arguments are used to configure the query builder of the edge.
+func (cq *CustomerQuery) WithNamedLoanSchedule(name string, opts ...func(*LoanQuery)) *CustomerQuery {
+	query := (&LoanClient{config: cq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	if cq.withNamedLoanSchedule == nil {
+		cq.withNamedLoanSchedule = make(map[string]*LoanQuery)
+	}
+	cq.withNamedLoanSchedule[name] = query
+	return cq
 }
 
 // WithNamedReceivables tells the query-builder to eager-load the nodes that are connected to the "receivables"

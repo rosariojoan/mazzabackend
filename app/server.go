@@ -77,6 +77,7 @@ func main() {
 		authRouter.POST("/forgot-password")
 		authRouter.POST("/verify-password")
 
+		authRouter.Use(middlewares.LoginRequired).GET("/session", auth.GetSession)
 	}
 
 	router.GET("/gql", playgroundHandler())

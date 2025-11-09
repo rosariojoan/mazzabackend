@@ -5,7 +5,9 @@ package generated
 import (
 	"fmt"
 	"mazza/ent/generated/company"
+	"mazza/ent/generated/customer"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/supplier"
 	"strings"
 	"time"
 
@@ -32,48 +34,86 @@ type Loan struct {
 	Collateral string `json:"collateral,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
-	// InterestRate holds the value of the "interestRate" field.
-	InterestRate float64 `json:"interestRate,omitempty"`
+	// InterestRate holds the value of the "interest_rate" field.
+	InterestRate float64 `json:"interest_rate,omitempty"`
 	// Installments holds the value of the "installments" field.
 	Installments int `json:"installments,omitempty"`
-	// MaturityDate holds the value of the "maturityDate" field.
-	MaturityDate time.Time `json:"maturityDate,omitempty"`
-	// NextPayment holds the value of the "nextPayment" field.
-	NextPayment time.Time `json:"nextPayment,omitempty"`
-	// NextPaymentAmount holds the value of the "nextPaymentAmount" field.
-	NextPaymentAmount float64 `json:"nextPaymentAmount,omitempty"`
-	// OutstandingBalance holds the value of the "outstandingBalance" field.
-	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
-	// PaymentFrequency holds the value of the "paymentFrequency" field.
-	PaymentFrequency loan.PaymentFrequency `json:"paymentFrequency,omitempty"`
-	// PaidInstallments holds the value of the "paidInstallments" field.
-	PaidInstallments int `json:"paidInstallments,omitempty"`
-	// Provider holds the value of the "provider" field.
-	Provider string `json:"provider,omitempty"`
-	// StartDate holds the value of the "startDate" field.
-	StartDate time.Time `json:"startDate,omitempty"`
+	// MaturityDate holds the value of the "maturity_date" field.
+	MaturityDate time.Time `json:"maturity_date,omitempty"`
+	// NextPayment holds the value of the "next_payment" field.
+	NextPayment time.Time `json:"next_payment,omitempty"`
+	// NextPaymentAmount holds the value of the "next_payment_amount" field.
+	NextPaymentAmount float64 `json:"next_payment_amount,omitempty"`
+	// OutstandingBalance holds the value of the "outstanding_balance" field.
+	OutstandingBalance float64 `json:"outstanding_balance,omitempty"`
+	// PaymentFrequency holds the value of the "payment_frequency" field.
+	PaymentFrequency loan.PaymentFrequency `json:"payment_frequency,omitempty"`
+	// PaidInstallments holds the value of the "paid_installments" field.
+	PaidInstallments int `json:"paid_installments,omitempty"`
+	// Bullet loan: the payment is made in a single shot at the maturity date.
+	// Interest only: interest only paid at the given periods. Principal is paid at the maturity.
+	// FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.
+	// FixedPrincipal: a fixed amount of the principal + variable interest is paid at each period until the maturity.
+	PaymentType loan.PaymentType `json:"paymentType,omitempty"`
+	// CounterpartyName holds the value of the "counterparty_name" field.
+	CounterpartyName string `json:"counterparty_name,omitempty"`
+	// StartDate holds the value of the "start_date" field.
+	StartDate time.Time `json:"start_date,omitempty"`
 	// Status holds the value of the "status" field.
 	Status loan.Status `json:"status,omitempty"`
+	// True if the company is the lender
+	IsLending bool `json:"is_lending,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the LoanQuery when eager-loading is set.
-	Edges         LoanEdges `json:"edges"`
-	company_loans *int
-	selectValues  sql.SelectValues
+	Edges                  LoanEdges `json:"edges"`
+	company_loans          *int
+	customer_loan_schedule *int
+	supplier_loan_schedule *int
+	selectValues           sql.SelectValues
 }
 
 // LoanEdges holds the relations/edges for other nodes in the graph.
 type LoanEdges struct {
+	// Client holds the value of the client edge.
+	Client *Customer `json:"client,omitempty"`
+	// Supplier holds the value of the supplier edge.
+	Supplier *Supplier `json:"supplier,omitempty"`
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// TransactionHistory holds the value of the transactionHistory edge.
-	TransactionHistory []*AccountingEntry `json:"transactionHistory,omitempty"`
+	// LoanSchedule holds the value of the loan_schedule edge.
+	LoanSchedule []*LoanSchedule `json:"loan_schedule,omitempty"`
+	// TransactionHistory holds the value of the transaction_history edge.
+	TransactionHistory []*AccountingEntry `json:"transaction_history,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [5]bool
 	// totalCount holds the count of the edges above.
-	totalCount [2]map[string]int
+	totalCount [5]map[string]int
 
+	namedLoanSchedule       map[string][]*LoanSchedule
 	namedTransactionHistory map[string][]*AccountingEntry
+}
+
+// ClientOrErr returns the Client value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e LoanEdges) ClientOrErr() (*Customer, error) {
+	if e.Client != nil {
+		return e.Client, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: customer.Label}
+	}
+	return nil, &NotLoadedError{edge: "client"}
+}
+
+// SupplierOrErr returns the Supplier value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e LoanEdges) SupplierOrErr() (*Supplier, error) {
+	if e.Supplier != nil {
+		return e.Supplier, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: supplier.Label}
+	}
+	return nil, &NotLoadedError{edge: "supplier"}
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -81,19 +121,28 @@ type LoanEdges struct {
 func (e LoanEdges) CompanyOrErr() (*Company, error) {
 	if e.Company != nil {
 		return e.Company, nil
-	} else if e.loadedTypes[0] {
+	} else if e.loadedTypes[2] {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "company"}
 }
 
+// LoanScheduleOrErr returns the LoanSchedule value or an error if the edge
+// was not loaded in eager-loading.
+func (e LoanEdges) LoanScheduleOrErr() ([]*LoanSchedule, error) {
+	if e.loadedTypes[3] {
+		return e.LoanSchedule, nil
+	}
+	return nil, &NotLoadedError{edge: "loan_schedule"}
+}
+
 // TransactionHistoryOrErr returns the TransactionHistory value or an error if the edge
 // was not loaded in eager-loading.
 func (e LoanEdges) TransactionHistoryOrErr() ([]*AccountingEntry, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[4] {
 		return e.TransactionHistory, nil
 	}
-	return nil, &NotLoadedError{edge: "transactionHistory"}
+	return nil, &NotLoadedError{edge: "transaction_history"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -101,15 +150,21 @@ func (*Loan) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case loan.FieldIsLending:
+			values[i] = new(sql.NullBool)
 		case loan.FieldAmount, loan.FieldInterestRate, loan.FieldNextPaymentAmount, loan.FieldOutstandingBalance:
 			values[i] = new(sql.NullFloat64)
 		case loan.FieldID, loan.FieldInstallments, loan.FieldPaidInstallments:
 			values[i] = new(sql.NullInt64)
-		case loan.FieldCategory, loan.FieldCollateral, loan.FieldDescription, loan.FieldPaymentFrequency, loan.FieldProvider, loan.FieldStatus:
+		case loan.FieldCategory, loan.FieldCollateral, loan.FieldDescription, loan.FieldPaymentFrequency, loan.FieldPaymentType, loan.FieldCounterpartyName, loan.FieldStatus:
 			values[i] = new(sql.NullString)
 		case loan.FieldCreatedAt, loan.FieldUpdatedAt, loan.FieldDeletedAt, loan.FieldMaturityDate, loan.FieldNextPayment, loan.FieldStartDate:
 			values[i] = new(sql.NullTime)
 		case loan.ForeignKeys[0]: // company_loans
+			values[i] = new(sql.NullInt64)
+		case loan.ForeignKeys[1]: // customer_loan_schedule
+			values[i] = new(sql.NullInt64)
+		case loan.ForeignKeys[2]: // supplier_loan_schedule
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -177,7 +232,7 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			}
 		case loan.FieldInterestRate:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field interestRate", values[i])
+				return fmt.Errorf("unexpected type %T for field interest_rate", values[i])
 			} else if value.Valid {
 				l.InterestRate = value.Float64
 			}
@@ -189,49 +244,55 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			}
 		case loan.FieldMaturityDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field maturityDate", values[i])
+				return fmt.Errorf("unexpected type %T for field maturity_date", values[i])
 			} else if value.Valid {
 				l.MaturityDate = value.Time
 			}
 		case loan.FieldNextPayment:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field nextPayment", values[i])
+				return fmt.Errorf("unexpected type %T for field next_payment", values[i])
 			} else if value.Valid {
 				l.NextPayment = value.Time
 			}
 		case loan.FieldNextPaymentAmount:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field nextPaymentAmount", values[i])
+				return fmt.Errorf("unexpected type %T for field next_payment_amount", values[i])
 			} else if value.Valid {
 				l.NextPaymentAmount = value.Float64
 			}
 		case loan.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field outstandingBalance", values[i])
+				return fmt.Errorf("unexpected type %T for field outstanding_balance", values[i])
 			} else if value.Valid {
 				l.OutstandingBalance = value.Float64
 			}
 		case loan.FieldPaymentFrequency:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field paymentFrequency", values[i])
+				return fmt.Errorf("unexpected type %T for field payment_frequency", values[i])
 			} else if value.Valid {
 				l.PaymentFrequency = loan.PaymentFrequency(value.String)
 			}
 		case loan.FieldPaidInstallments:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field paidInstallments", values[i])
+				return fmt.Errorf("unexpected type %T for field paid_installments", values[i])
 			} else if value.Valid {
 				l.PaidInstallments = int(value.Int64)
 			}
-		case loan.FieldProvider:
+		case loan.FieldPaymentType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field provider", values[i])
+				return fmt.Errorf("unexpected type %T for field paymentType", values[i])
 			} else if value.Valid {
-				l.Provider = value.String
+				l.PaymentType = loan.PaymentType(value.String)
+			}
+		case loan.FieldCounterpartyName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field counterparty_name", values[i])
+			} else if value.Valid {
+				l.CounterpartyName = value.String
 			}
 		case loan.FieldStartDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field startDate", values[i])
+				return fmt.Errorf("unexpected type %T for field start_date", values[i])
 			} else if value.Valid {
 				l.StartDate = value.Time
 			}
@@ -241,12 +302,32 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				l.Status = loan.Status(value.String)
 			}
+		case loan.FieldIsLending:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_lending", values[i])
+			} else if value.Valid {
+				l.IsLending = value.Bool
+			}
 		case loan.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field company_loans", value)
 			} else if value.Valid {
 				l.company_loans = new(int)
 				*l.company_loans = int(value.Int64)
+			}
+		case loan.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field customer_loan_schedule", value)
+			} else if value.Valid {
+				l.customer_loan_schedule = new(int)
+				*l.customer_loan_schedule = int(value.Int64)
+			}
+		case loan.ForeignKeys[2]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field supplier_loan_schedule", value)
+			} else if value.Valid {
+				l.supplier_loan_schedule = new(int)
+				*l.supplier_loan_schedule = int(value.Int64)
 			}
 		default:
 			l.selectValues.Set(columns[i], values[i])
@@ -261,12 +342,27 @@ func (l *Loan) Value(name string) (ent.Value, error) {
 	return l.selectValues.Get(name)
 }
 
+// QueryClient queries the "client" edge of the Loan entity.
+func (l *Loan) QueryClient() *CustomerQuery {
+	return NewLoanClient(l.config).QueryClient(l)
+}
+
+// QuerySupplier queries the "supplier" edge of the Loan entity.
+func (l *Loan) QuerySupplier() *SupplierQuery {
+	return NewLoanClient(l.config).QuerySupplier(l)
+}
+
 // QueryCompany queries the "company" edge of the Loan entity.
 func (l *Loan) QueryCompany() *CompanyQuery {
 	return NewLoanClient(l.config).QueryCompany(l)
 }
 
-// QueryTransactionHistory queries the "transactionHistory" edge of the Loan entity.
+// QueryLoanSchedule queries the "loan_schedule" edge of the Loan entity.
+func (l *Loan) QueryLoanSchedule() *LoanScheduleQuery {
+	return NewLoanClient(l.config).QueryLoanSchedule(l)
+}
+
+// QueryTransactionHistory queries the "transaction_history" edge of the Loan entity.
 func (l *Loan) QueryTransactionHistory() *AccountingEntryQuery {
 	return NewLoanClient(l.config).QueryTransactionHistory(l)
 }
@@ -317,40 +413,70 @@ func (l *Loan) String() string {
 	builder.WriteString("description=")
 	builder.WriteString(l.Description)
 	builder.WriteString(", ")
-	builder.WriteString("interestRate=")
+	builder.WriteString("interest_rate=")
 	builder.WriteString(fmt.Sprintf("%v", l.InterestRate))
 	builder.WriteString(", ")
 	builder.WriteString("installments=")
 	builder.WriteString(fmt.Sprintf("%v", l.Installments))
 	builder.WriteString(", ")
-	builder.WriteString("maturityDate=")
+	builder.WriteString("maturity_date=")
 	builder.WriteString(l.MaturityDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("nextPayment=")
+	builder.WriteString("next_payment=")
 	builder.WriteString(l.NextPayment.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("nextPaymentAmount=")
+	builder.WriteString("next_payment_amount=")
 	builder.WriteString(fmt.Sprintf("%v", l.NextPaymentAmount))
 	builder.WriteString(", ")
-	builder.WriteString("outstandingBalance=")
+	builder.WriteString("outstanding_balance=")
 	builder.WriteString(fmt.Sprintf("%v", l.OutstandingBalance))
 	builder.WriteString(", ")
-	builder.WriteString("paymentFrequency=")
+	builder.WriteString("payment_frequency=")
 	builder.WriteString(fmt.Sprintf("%v", l.PaymentFrequency))
 	builder.WriteString(", ")
-	builder.WriteString("paidInstallments=")
+	builder.WriteString("paid_installments=")
 	builder.WriteString(fmt.Sprintf("%v", l.PaidInstallments))
 	builder.WriteString(", ")
-	builder.WriteString("provider=")
-	builder.WriteString(l.Provider)
+	builder.WriteString("paymentType=")
+	builder.WriteString(fmt.Sprintf("%v", l.PaymentType))
 	builder.WriteString(", ")
-	builder.WriteString("startDate=")
+	builder.WriteString("counterparty_name=")
+	builder.WriteString(l.CounterpartyName)
+	builder.WriteString(", ")
+	builder.WriteString("start_date=")
 	builder.WriteString(l.StartDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", l.Status))
+	builder.WriteString(", ")
+	builder.WriteString("is_lending=")
+	builder.WriteString(fmt.Sprintf("%v", l.IsLending))
 	builder.WriteByte(')')
 	return builder.String()
+}
+
+// NamedLoanSchedule returns the LoanSchedule named value or an error if the edge was not
+// loaded in eager-loading with this name.
+func (l *Loan) NamedLoanSchedule(name string) ([]*LoanSchedule, error) {
+	if l.Edges.namedLoanSchedule == nil {
+		return nil, &NotLoadedError{edge: name}
+	}
+	nodes, ok := l.Edges.namedLoanSchedule[name]
+	if !ok {
+		return nil, &NotLoadedError{edge: name}
+	}
+	return nodes, nil
+}
+
+func (l *Loan) appendNamedLoanSchedule(name string, edges ...*LoanSchedule) {
+	if l.Edges.namedLoanSchedule == nil {
+		l.Edges.namedLoanSchedule = make(map[string][]*LoanSchedule)
+	}
+	if len(edges) == 0 {
+		l.Edges.namedLoanSchedule[name] = []*LoanSchedule{}
+	} else {
+		l.Edges.namedLoanSchedule[name] = append(l.Edges.namedLoanSchedule[name], edges...)
+	}
 }
 
 // NamedTransactionHistory returns the TransactionHistory named value or an error if the edge was not
