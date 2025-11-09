@@ -795,22 +795,22 @@ func PaidInstallmentsLTE(v int) predicate.Loan {
 	return predicate.Loan(sql.FieldLTE(FieldPaidInstallments, v))
 }
 
-// PaymentTypeEQ applies the EQ predicate on the "paymentType" field.
+// PaymentTypeEQ applies the EQ predicate on the "payment_type" field.
 func PaymentTypeEQ(v PaymentType) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldPaymentType, v))
 }
 
-// PaymentTypeNEQ applies the NEQ predicate on the "paymentType" field.
+// PaymentTypeNEQ applies the NEQ predicate on the "payment_type" field.
 func PaymentTypeNEQ(v PaymentType) predicate.Loan {
 	return predicate.Loan(sql.FieldNEQ(FieldPaymentType, v))
 }
 
-// PaymentTypeIn applies the In predicate on the "paymentType" field.
+// PaymentTypeIn applies the In predicate on the "payment_type" field.
 func PaymentTypeIn(vs ...PaymentType) predicate.Loan {
 	return predicate.Loan(sql.FieldIn(FieldPaymentType, vs...))
 }
 
-// PaymentTypeNotIn applies the NotIn predicate on the "paymentType" field.
+// PaymentTypeNotIn applies the NotIn predicate on the "payment_type" field.
 func PaymentTypeNotIn(vs ...PaymentType) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldPaymentType, vs...))
 }

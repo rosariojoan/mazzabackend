@@ -187,13 +187,13 @@ func (lc *LoanCreate) SetNillablePaidInstallments(i *int) *LoanCreate {
 	return lc
 }
 
-// SetPaymentType sets the "paymentType" field.
+// SetPaymentType sets the "payment_type" field.
 func (lc *LoanCreate) SetPaymentType(lt loan.PaymentType) *LoanCreate {
 	lc.mutation.SetPaymentType(lt)
 	return lc
 }
 
-// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+// SetNillablePaymentType sets the "payment_type" field if the given value is not nil.
 func (lc *LoanCreate) SetNillablePaymentType(lt *loan.PaymentType) *LoanCreate {
 	if lt != nil {
 		lc.SetPaymentType(*lt)
@@ -465,11 +465,11 @@ func (lc *LoanCreate) check() error {
 		return &ValidationError{Name: "paid_installments", err: errors.New(`generated: missing required field "Loan.paid_installments"`)}
 	}
 	if _, ok := lc.mutation.PaymentType(); !ok {
-		return &ValidationError{Name: "paymentType", err: errors.New(`generated: missing required field "Loan.paymentType"`)}
+		return &ValidationError{Name: "payment_type", err: errors.New(`generated: missing required field "Loan.payment_type"`)}
 	}
 	if v, ok := lc.mutation.PaymentType(); ok {
 		if err := loan.PaymentTypeValidator(v); err != nil {
-			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+			return &ValidationError{Name: "payment_type", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_type": %w`, err)}
 		}
 	}
 	if _, ok := lc.mutation.CounterpartyName(); !ok {

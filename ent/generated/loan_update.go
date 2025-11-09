@@ -294,13 +294,13 @@ func (lu *LoanUpdate) AddPaidInstallments(i int) *LoanUpdate {
 	return lu
 }
 
-// SetPaymentType sets the "paymentType" field.
+// SetPaymentType sets the "payment_type" field.
 func (lu *LoanUpdate) SetPaymentType(lt loan.PaymentType) *LoanUpdate {
 	lu.mutation.SetPaymentType(lt)
 	return lu
 }
 
-// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+// SetNillablePaymentType sets the "payment_type" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillablePaymentType(lt *loan.PaymentType) *LoanUpdate {
 	if lt != nil {
 		lu.SetPaymentType(*lt)
@@ -591,7 +591,7 @@ func (lu *LoanUpdate) check() error {
 	}
 	if v, ok := lu.mutation.PaymentType(); ok {
 		if err := loan.PaymentTypeValidator(v); err != nil {
-			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+			return &ValidationError{Name: "payment_type", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_type": %w`, err)}
 		}
 	}
 	if v, ok := lu.mutation.CounterpartyName(); ok {
@@ -1174,13 +1174,13 @@ func (luo *LoanUpdateOne) AddPaidInstallments(i int) *LoanUpdateOne {
 	return luo
 }
 
-// SetPaymentType sets the "paymentType" field.
+// SetPaymentType sets the "payment_type" field.
 func (luo *LoanUpdateOne) SetPaymentType(lt loan.PaymentType) *LoanUpdateOne {
 	luo.mutation.SetPaymentType(lt)
 	return luo
 }
 
-// SetNillablePaymentType sets the "paymentType" field if the given value is not nil.
+// SetNillablePaymentType sets the "payment_type" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillablePaymentType(lt *loan.PaymentType) *LoanUpdateOne {
 	if lt != nil {
 		luo.SetPaymentType(*lt)
@@ -1484,7 +1484,7 @@ func (luo *LoanUpdateOne) check() error {
 	}
 	if v, ok := luo.mutation.PaymentType(); ok {
 		if err := loan.PaymentTypeValidator(v); err != nil {
-			return &ValidationError{Name: "paymentType", err: fmt.Errorf(`generated: validator failed for field "Loan.paymentType": %w`, err)}
+			return &ValidationError{Name: "payment_type", err: fmt.Errorf(`generated: validator failed for field "Loan.payment_type": %w`, err)}
 		}
 	}
 	if v, ok := luo.mutation.CounterpartyName(); ok {

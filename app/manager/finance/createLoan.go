@@ -9,7 +9,7 @@ import (
 	"mazza/mazza/generated/model"
 )
 
-func CreateLoan(ctx context.Context, client *generated.Client, input model.CreateLoanInputData, schedule []*generated.CreateLoanScheduleInput) (*generated.Loan, error) {
+func CreateLoan(ctx context.Context, client *generated.Client, input model.CreateLoanInputData) (*generated.Loan, error) {
 	_, activeCompany := utils.GetSession(&ctx)
 	tx, err := client.Tx(ctx)
 	if err != nil {
@@ -45,7 +45,7 @@ func CreateLoan(ctx context.Context, client *generated.Client, input model.Creat
 	}
 
 	// Create schedule
-	go CreateLoanSchedule(ctx, client, schedule, newLoan.ID)
+	_, _ = CreateLoanSchedule(ctx, client, input.Schedule, newLoan.ID)
 
 	return newLoan, nil
 }

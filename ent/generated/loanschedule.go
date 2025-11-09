@@ -38,8 +38,8 @@ type LoanSchedule struct {
 	InstallmentNumber int `json:"installment_number,omitempty"`
 	// Principal holds the value of the "principal" field.
 	Principal float64 `json:"principal,omitempty"`
-	// RemainingBalance holds the value of the "remaining_balance" field.
-	RemainingBalance float64 `json:"remaining_balance,omitempty"`
+	// OutstandingBalance holds the value of the "outstanding_balance" field.
+	OutstandingBalance float64 `json:"outstanding_balance,omitempty"`
 	// Status holds the value of the "status" field.
 	Status loanschedule.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -90,7 +90,7 @@ func (*LoanSchedule) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case loanschedule.FieldAmount, loanschedule.FieldAmountPaid, loanschedule.FieldInterest, loanschedule.FieldPrincipal, loanschedule.FieldRemainingBalance:
+		case loanschedule.FieldAmount, loanschedule.FieldAmountPaid, loanschedule.FieldInterest, loanschedule.FieldPrincipal, loanschedule.FieldOutstandingBalance:
 			values[i] = new(sql.NullFloat64)
 		case loanschedule.FieldID, loanschedule.FieldInstallmentNumber:
 			values[i] = new(sql.NullInt64)
@@ -185,11 +185,11 @@ func (ls *LoanSchedule) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ls.Principal = value.Float64
 			}
-		case loanschedule.FieldRemainingBalance:
+		case loanschedule.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field remaining_balance", values[i])
+				return fmt.Errorf("unexpected type %T for field outstanding_balance", values[i])
 			} else if value.Valid {
-				ls.RemainingBalance = value.Float64
+				ls.OutstandingBalance = value.Float64
 			}
 		case loanschedule.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -291,8 +291,8 @@ func (ls *LoanSchedule) String() string {
 	builder.WriteString("principal=")
 	builder.WriteString(fmt.Sprintf("%v", ls.Principal))
 	builder.WriteString(", ")
-	builder.WriteString("remaining_balance=")
-	builder.WriteString(fmt.Sprintf("%v", ls.RemainingBalance))
+	builder.WriteString("outstanding_balance=")
+	builder.WriteString(fmt.Sprintf("%v", ls.OutstandingBalance))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", ls.Status))

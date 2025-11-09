@@ -37,8 +37,8 @@ const (
 	FieldInstallmentNumber = "installment_number"
 	// FieldPrincipal holds the string denoting the principal field in the database.
 	FieldPrincipal = "principal"
-	// FieldRemainingBalance holds the string denoting the remaining_balance field in the database.
-	FieldRemainingBalance = "remaining_balance"
+	// FieldOutstandingBalance holds the string denoting the outstanding_balance field in the database.
+	FieldOutstandingBalance = "outstanding_balance"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// EdgeLoan holds the string denoting the loan edge name in mutations.
@@ -74,7 +74,7 @@ var Columns = []string{
 	FieldInterest,
 	FieldInstallmentNumber,
 	FieldPrincipal,
-	FieldRemainingBalance,
+	FieldOutstandingBalance,
 	FieldStatus,
 }
 
@@ -207,9 +207,9 @@ func ByPrincipal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPrincipal, opts...).ToFunc()
 }
 
-// ByRemainingBalance orders the results by the remaining_balance field.
-func ByRemainingBalance(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRemainingBalance, opts...).ToFunc()
+// ByOutstandingBalance orders the results by the outstanding_balance field.
+func ByOutstandingBalance(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOutstandingBalance, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.

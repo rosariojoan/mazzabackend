@@ -15879,7 +15879,7 @@ type LoanMutation struct {
 	payment_frequency          *loan.PaymentFrequency
 	paid_installments          *int
 	addpaid_installments       *int
-	paymentType                *loan.PaymentType
+	payment_type               *loan.PaymentType
 	counterparty_name          *string
 	start_date                 *time.Time
 	status                     *loan.Status
@@ -16726,21 +16726,21 @@ func (m *LoanMutation) ResetPaidInstallments() {
 	m.addpaid_installments = nil
 }
 
-// SetPaymentType sets the "paymentType" field.
+// SetPaymentType sets the "payment_type" field.
 func (m *LoanMutation) SetPaymentType(lt loan.PaymentType) {
-	m.paymentType = &lt
+	m.payment_type = &lt
 }
 
-// PaymentType returns the value of the "paymentType" field in the mutation.
+// PaymentType returns the value of the "payment_type" field in the mutation.
 func (m *LoanMutation) PaymentType() (r loan.PaymentType, exists bool) {
-	v := m.paymentType
+	v := m.payment_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaymentType returns the old "paymentType" field's value of the Loan entity.
+// OldPaymentType returns the old "payment_type" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldPaymentType(ctx context.Context) (v loan.PaymentType, err error) {
@@ -16757,9 +16757,9 @@ func (m *LoanMutation) OldPaymentType(ctx context.Context) (v loan.PaymentType, 
 	return oldValue.PaymentType, nil
 }
 
-// ResetPaymentType resets all changes to the "paymentType" field.
+// ResetPaymentType resets all changes to the "payment_type" field.
 func (m *LoanMutation) ResetPaymentType() {
-	m.paymentType = nil
+	m.payment_type = nil
 }
 
 // SetCounterpartyName sets the "counterparty_name" field.
@@ -17211,7 +17211,7 @@ func (m *LoanMutation) Fields() []string {
 	if m.paid_installments != nil {
 		fields = append(fields, loan.FieldPaidInstallments)
 	}
-	if m.paymentType != nil {
+	if m.payment_type != nil {
 		fields = append(fields, loan.FieldPaymentType)
 	}
 	if m.counterparty_name != nil {
@@ -17878,8 +17878,8 @@ type LoanScheduleMutation struct {
 	addinstallment_number      *int
 	principal                  *float64
 	addprincipal               *float64
-	remaining_balance          *float64
-	addremaining_balance       *float64
+	outstanding_balance        *float64
+	addoutstanding_balance     *float64
 	status                     *loanschedule.Status
 	clearedFields              map[string]struct{}
 	loan                       *int
@@ -18476,74 +18476,74 @@ func (m *LoanScheduleMutation) ResetPrincipal() {
 	m.addprincipal = nil
 }
 
-// SetRemainingBalance sets the "remaining_balance" field.
-func (m *LoanScheduleMutation) SetRemainingBalance(f float64) {
-	m.remaining_balance = &f
-	m.addremaining_balance = nil
+// SetOutstandingBalance sets the "outstanding_balance" field.
+func (m *LoanScheduleMutation) SetOutstandingBalance(f float64) {
+	m.outstanding_balance = &f
+	m.addoutstanding_balance = nil
 }
 
-// RemainingBalance returns the value of the "remaining_balance" field in the mutation.
-func (m *LoanScheduleMutation) RemainingBalance() (r float64, exists bool) {
-	v := m.remaining_balance
+// OutstandingBalance returns the value of the "outstanding_balance" field in the mutation.
+func (m *LoanScheduleMutation) OutstandingBalance() (r float64, exists bool) {
+	v := m.outstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldRemainingBalance returns the old "remaining_balance" field's value of the LoanSchedule entity.
+// OldOutstandingBalance returns the old "outstanding_balance" field's value of the LoanSchedule entity.
 // If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoanScheduleMutation) OldRemainingBalance(ctx context.Context) (v float64, err error) {
+func (m *LoanScheduleMutation) OldOutstandingBalance(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRemainingBalance is only allowed on UpdateOne operations")
+		return v, errors.New("OldOutstandingBalance is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRemainingBalance requires an ID field in the mutation")
+		return v, errors.New("OldOutstandingBalance requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemainingBalance: %w", err)
+		return v, fmt.Errorf("querying old value for OldOutstandingBalance: %w", err)
 	}
-	return oldValue.RemainingBalance, nil
+	return oldValue.OutstandingBalance, nil
 }
 
-// AddRemainingBalance adds f to the "remaining_balance" field.
-func (m *LoanScheduleMutation) AddRemainingBalance(f float64) {
-	if m.addremaining_balance != nil {
-		*m.addremaining_balance += f
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
+func (m *LoanScheduleMutation) AddOutstandingBalance(f float64) {
+	if m.addoutstanding_balance != nil {
+		*m.addoutstanding_balance += f
 	} else {
-		m.addremaining_balance = &f
+		m.addoutstanding_balance = &f
 	}
 }
 
-// AddedRemainingBalance returns the value that was added to the "remaining_balance" field in this mutation.
-func (m *LoanScheduleMutation) AddedRemainingBalance() (r float64, exists bool) {
-	v := m.addremaining_balance
+// AddedOutstandingBalance returns the value that was added to the "outstanding_balance" field in this mutation.
+func (m *LoanScheduleMutation) AddedOutstandingBalance() (r float64, exists bool) {
+	v := m.addoutstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearRemainingBalance clears the value of the "remaining_balance" field.
-func (m *LoanScheduleMutation) ClearRemainingBalance() {
-	m.remaining_balance = nil
-	m.addremaining_balance = nil
-	m.clearedFields[loanschedule.FieldRemainingBalance] = struct{}{}
+// ClearOutstandingBalance clears the value of the "outstanding_balance" field.
+func (m *LoanScheduleMutation) ClearOutstandingBalance() {
+	m.outstanding_balance = nil
+	m.addoutstanding_balance = nil
+	m.clearedFields[loanschedule.FieldOutstandingBalance] = struct{}{}
 }
 
-// RemainingBalanceCleared returns if the "remaining_balance" field was cleared in this mutation.
-func (m *LoanScheduleMutation) RemainingBalanceCleared() bool {
-	_, ok := m.clearedFields[loanschedule.FieldRemainingBalance]
+// OutstandingBalanceCleared returns if the "outstanding_balance" field was cleared in this mutation.
+func (m *LoanScheduleMutation) OutstandingBalanceCleared() bool {
+	_, ok := m.clearedFields[loanschedule.FieldOutstandingBalance]
 	return ok
 }
 
-// ResetRemainingBalance resets all changes to the "remaining_balance" field.
-func (m *LoanScheduleMutation) ResetRemainingBalance() {
-	m.remaining_balance = nil
-	m.addremaining_balance = nil
-	delete(m.clearedFields, loanschedule.FieldRemainingBalance)
+// ResetOutstandingBalance resets all changes to the "outstanding_balance" field.
+func (m *LoanScheduleMutation) ResetOutstandingBalance() {
+	m.outstanding_balance = nil
+	m.addoutstanding_balance = nil
+	delete(m.clearedFields, loanschedule.FieldOutstandingBalance)
 }
 
 // SetStatus sets the "status" field.
@@ -18740,8 +18740,8 @@ func (m *LoanScheduleMutation) Fields() []string {
 	if m.principal != nil {
 		fields = append(fields, loanschedule.FieldPrincipal)
 	}
-	if m.remaining_balance != nil {
-		fields = append(fields, loanschedule.FieldRemainingBalance)
+	if m.outstanding_balance != nil {
+		fields = append(fields, loanschedule.FieldOutstandingBalance)
 	}
 	if m.status != nil {
 		fields = append(fields, loanschedule.FieldStatus)
@@ -18774,8 +18774,8 @@ func (m *LoanScheduleMutation) Field(name string) (ent.Value, bool) {
 		return m.InstallmentNumber()
 	case loanschedule.FieldPrincipal:
 		return m.Principal()
-	case loanschedule.FieldRemainingBalance:
-		return m.RemainingBalance()
+	case loanschedule.FieldOutstandingBalance:
+		return m.OutstandingBalance()
 	case loanschedule.FieldStatus:
 		return m.Status()
 	}
@@ -18807,8 +18807,8 @@ func (m *LoanScheduleMutation) OldField(ctx context.Context, name string) (ent.V
 		return m.OldInstallmentNumber(ctx)
 	case loanschedule.FieldPrincipal:
 		return m.OldPrincipal(ctx)
-	case loanschedule.FieldRemainingBalance:
-		return m.OldRemainingBalance(ctx)
+	case loanschedule.FieldOutstandingBalance:
+		return m.OldOutstandingBalance(ctx)
 	case loanschedule.FieldStatus:
 		return m.OldStatus(ctx)
 	}
@@ -18890,12 +18890,12 @@ func (m *LoanScheduleMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPrincipal(v)
 		return nil
-	case loanschedule.FieldRemainingBalance:
+	case loanschedule.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetRemainingBalance(v)
+		m.SetOutstandingBalance(v)
 		return nil
 	case loanschedule.FieldStatus:
 		v, ok := value.(loanschedule.Status)
@@ -18927,8 +18927,8 @@ func (m *LoanScheduleMutation) AddedFields() []string {
 	if m.addprincipal != nil {
 		fields = append(fields, loanschedule.FieldPrincipal)
 	}
-	if m.addremaining_balance != nil {
-		fields = append(fields, loanschedule.FieldRemainingBalance)
+	if m.addoutstanding_balance != nil {
+		fields = append(fields, loanschedule.FieldOutstandingBalance)
 	}
 	return fields
 }
@@ -18948,8 +18948,8 @@ func (m *LoanScheduleMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedInstallmentNumber()
 	case loanschedule.FieldPrincipal:
 		return m.AddedPrincipal()
-	case loanschedule.FieldRemainingBalance:
-		return m.AddedRemainingBalance()
+	case loanschedule.FieldOutstandingBalance:
+		return m.AddedOutstandingBalance()
 	}
 	return nil, false
 }
@@ -18994,12 +18994,12 @@ func (m *LoanScheduleMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddPrincipal(v)
 		return nil
-	case loanschedule.FieldRemainingBalance:
+	case loanschedule.FieldOutstandingBalance:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddRemainingBalance(v)
+		m.AddOutstandingBalance(v)
 		return nil
 	}
 	return fmt.Errorf("unknown LoanSchedule numeric field %s", name)
@@ -19015,8 +19015,8 @@ func (m *LoanScheduleMutation) ClearedFields() []string {
 	if m.FieldCleared(loanschedule.FieldDatePaid) {
 		fields = append(fields, loanschedule.FieldDatePaid)
 	}
-	if m.FieldCleared(loanschedule.FieldRemainingBalance) {
-		fields = append(fields, loanschedule.FieldRemainingBalance)
+	if m.FieldCleared(loanschedule.FieldOutstandingBalance) {
+		fields = append(fields, loanschedule.FieldOutstandingBalance)
 	}
 	return fields
 }
@@ -19038,8 +19038,8 @@ func (m *LoanScheduleMutation) ClearField(name string) error {
 	case loanschedule.FieldDatePaid:
 		m.ClearDatePaid()
 		return nil
-	case loanschedule.FieldRemainingBalance:
-		m.ClearRemainingBalance()
+	case loanschedule.FieldOutstandingBalance:
+		m.ClearOutstandingBalance()
 		return nil
 	}
 	return fmt.Errorf("unknown LoanSchedule nullable field %s", name)
@@ -19079,8 +19079,8 @@ func (m *LoanScheduleMutation) ResetField(name string) error {
 	case loanschedule.FieldPrincipal:
 		m.ResetPrincipal()
 		return nil
-	case loanschedule.FieldRemainingBalance:
-		m.ResetRemainingBalance()
+	case loanschedule.FieldOutstandingBalance:
+		m.ResetOutstandingBalance()
 		return nil
 	case loanschedule.FieldStatus:
 		m.ResetStatus()

@@ -54,7 +54,7 @@ type Loan struct {
 	// Interest only: interest only paid at the given periods. Principal is paid at the maturity.
 	// FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.
 	// FixedPrincipal: a fixed amount of the principal + variable interest is paid at each period until the maturity.
-	PaymentType loan.PaymentType `json:"paymentType,omitempty"`
+	PaymentType loan.PaymentType `json:"payment_type,omitempty"`
 	// CounterpartyName holds the value of the "counterparty_name" field.
 	CounterpartyName string `json:"counterparty_name,omitempty"`
 	// StartDate holds the value of the "start_date" field.
@@ -280,7 +280,7 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			}
 		case loan.FieldPaymentType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field paymentType", values[i])
+				return fmt.Errorf("unexpected type %T for field payment_type", values[i])
 			} else if value.Valid {
 				l.PaymentType = loan.PaymentType(value.String)
 			}
@@ -437,7 +437,7 @@ func (l *Loan) String() string {
 	builder.WriteString("paid_installments=")
 	builder.WriteString(fmt.Sprintf("%v", l.PaidInstallments))
 	builder.WriteString(", ")
-	builder.WriteString("paymentType=")
+	builder.WriteString("payment_type=")
 	builder.WriteString(fmt.Sprintf("%v", l.PaymentType))
 	builder.WriteString(", ")
 	builder.WriteString("counterparty_name=")

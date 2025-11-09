@@ -37,7 +37,7 @@ func (LoanSchedule) Fields() []ent.Field {
 		field.Float("interest"),
 		field.Int("installment_number").NonNegative(),
 		field.Float("principal"),
-		field.Float("remaining_balance").Optional(),
+		field.Float("outstanding_balance").Optional(),
 		field.Enum("status").
 			Values("pending", "paid", "partial", "overdue").
 			Default("pending"),

@@ -13,11 +13,11 @@ func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]
 	_, currentCompany := utils.GetSession(&ctx)
 	// Current date for age calculation
 	now := time.Now().Format(time.RFC3339) // Convert time to RFC3339 format which PostgreSQL accepts
-
+	isLending := true
 	sqlStr := fmt.Sprintf(`
 	SELECT 
 		age_interval,
-		SUM(outstanding_balance) AS total_amount,
+		SUM(interest + principal) AS total_amount,
 		COUNT(*) AS count
 	FROM (
 		SELECT 
@@ -28,9 +28,13 @@ func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]
 				WHEN DATE_PART('day', due_date - '%s'::TIMESTAMP) <= 30 THEN 'due in 8-30 days'
 				ELSE 'due in 30+ days'
 			END AS age_interval,
-			outstanding_balance
-		FROM payables
-		WHERE company_payables = '%d' AND outstanding_balance > 0  -- Only include unpaid invoices
+			interest,
+			principal
+		FROM loan_schedules
+		JOIN loans ON loans.id = loan_schedules.loan_loan_schedule
+		WHERE company_loan_schedule = %d 
+			AND loans.is_lending = %t 
+			AND loan_schedules.status <> 'paid'  -- Only include unpaid loans
 	) AS subquery
 	GROUP BY age_interval
 	ORDER BY 
@@ -41,7 +45,7 @@ func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]
 			WHEN 'due in 8-30 days' THEN 4
 			WHEN 'due in 30+ days' THEN 5
 		END;
-	`, now, now, now, now, currentCompany.ID)
+	`, now, now, now, now, currentCompany.ID, isLending)
 
 	rows, err := client.QueryContext(ctx, sqlStr)
 	if err != nil {

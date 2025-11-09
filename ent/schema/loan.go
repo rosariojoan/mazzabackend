@@ -42,7 +42,7 @@ func (Loan) Fields() []ent.Field {
 			Default("monthly").
 			Annotations(entgql.OrderField("paymentFrequency")),
 		field.Int("paid_installments").Default(0),
-		field.Enum("paymentType").Values("bullet", "fixedPayment", "fixedPrincipal", "interestOnly").Default("fixedPayment").Comment(
+		field.Enum("payment_type").Values("bullet", "fixedPayment", "fixedPrincipal", "interestOnly").Default("fixedPayment").Comment(
 			"Bullet loan: the payment is made in a single shot at the maturity date.\n" +
 				"Interest only: interest only paid at the given periods. Principal is paid at the maturity.\n" +
 				"FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.\n" +

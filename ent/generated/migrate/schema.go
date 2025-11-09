@@ -502,7 +502,7 @@ var (
 		{Name: "interest", Type: field.TypeFloat64},
 		{Name: "installment_number", Type: field.TypeInt},
 		{Name: "principal", Type: field.TypeFloat64},
-		{Name: "remaining_balance", Type: field.TypeFloat64, Nullable: true},
+		{Name: "outstanding_balance", Type: field.TypeFloat64, Nullable: true},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"pending", "paid", "partial", "overdue"}, Default: "pending"},
 		{Name: "company_loan_schedule", Type: field.TypeInt, Nullable: true},
 		{Name: "loan_loan_schedule", Type: field.TypeInt},

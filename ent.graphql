@@ -1421,7 +1421,7 @@ input CreateLoanInput {
   FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.
   FixedPrincipal: a fixed amount of the principal + variable interest is paid at each period until the maturity.
   """
-  paymenttype: LoanPaymentType
+  paymentType: LoanPaymentType
   counterpartyName: String!
   startDate: Time
   status: LoanStatus!
@@ -1449,7 +1449,7 @@ input CreateLoanScheduleInput {
   interest: Float!
   installmentNumber: Int!
   principal: Float!
-  remainingBalance: Float
+  outstandingBalance: Float
   status: LoanScheduleStatus
   transactionHistoryIDs: [ID!]
 }
@@ -3632,7 +3632,7 @@ type Loan implements Node {
   FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.
   FixedPrincipal: a fixed amount of the principal + variable interest is paid at each period until the maturity.
   """
-  paymenttype: LoanPaymentType! @goField(name: "PaymentType", forceResolver: false)
+  paymentType: LoanPaymentType!
   counterpartyName: String!
   startDate: Time!
   status: LoanStatus!
@@ -3730,7 +3730,7 @@ enum LoanPaymentFrequency @goModel(model: "mazza/ent/generated/loan.PaymentFrequ
   annual
 }
 """
-LoanPaymentType is enum for the field paymentType
+LoanPaymentType is enum for the field payment_type
 """
 enum LoanPaymentType @goModel(model: "mazza/ent/generated/loan.PaymentType") {
   bullet
@@ -3753,7 +3753,7 @@ type LoanSchedule implements Node {
   interest: Float!
   installmentNumber: Int!
   principal: Float!
-  remainingBalance: Float
+  outstandingBalance: Float
   status: LoanScheduleStatus!
   loan: Loan!
   transactionHistory: [AccountingEntry!]
@@ -3951,18 +3951,18 @@ input LoanScheduleWhereInput {
   principalLT: Float
   principalLTE: Float
   """
-  remaining_balance field predicates
+  outstanding_balance field predicates
   """
-  remainingBalance: Float
-  remainingBalanceNEQ: Float
-  remainingBalanceIn: [Float!]
-  remainingBalanceNotIn: [Float!]
-  remainingBalanceGT: Float
-  remainingBalanceGTE: Float
-  remainingBalanceLT: Float
-  remainingBalanceLTE: Float
-  remainingBalanceIsNil: Boolean
-  remainingBalanceNotNil: Boolean
+  outstandingBalance: Float
+  outstandingBalanceNEQ: Float
+  outstandingBalanceIn: [Float!]
+  outstandingBalanceNotIn: [Float!]
+  outstandingBalanceGT: Float
+  outstandingBalanceGTE: Float
+  outstandingBalanceLT: Float
+  outstandingBalanceLTE: Float
+  outstandingBalanceIsNil: Boolean
+  outstandingBalanceNotNil: Boolean
   """
   status field predicates
   """
@@ -4185,12 +4185,12 @@ input LoanWhereInput {
   paidInstallmentsLT: Int
   paidInstallmentsLTE: Int
   """
-  paymentType field predicates
+  payment_type field predicates
   """
-  paymenttype: LoanPaymentType
-  paymenttypeNEQ: LoanPaymentType
-  paymenttypeIn: [LoanPaymentType!]
-  paymenttypeNotIn: [LoanPaymentType!]
+  paymentType: LoanPaymentType
+  paymentTypeNEQ: LoanPaymentType
+  paymentTypeIn: [LoanPaymentType!]
+  paymentTypeNotIn: [LoanPaymentType!]
   """
   counterparty_name field predicates
   """
@@ -6929,7 +6929,7 @@ input UpdateLoanInput {
   FixedPayment: equal payments of interest + principal are made at the given periods until the maturity.
   FixedPrincipal: a fixed amount of the principal + variable interest is paid at each period until the maturity.
   """
-  paymenttype: LoanPaymentType
+  paymentType: LoanPaymentType
   counterpartyName: String
   startDate: Time
   status: LoanStatus
@@ -6960,8 +6960,8 @@ input UpdateLoanScheduleInput {
   interest: Float
   installmentNumber: Int
   principal: Float
-  remainingBalance: Float
-  clearRemainingBalance: Boolean
+  outstandingBalance: Float
+  clearOutstandingBalance: Boolean
   status: LoanScheduleStatus
   addTransactionHistoryIDs: [ID!]
   removeTransactionHistoryIDs: [ID!]

@@ -13,8 +13,8 @@ import (
 )
 
 // CreateLoan is the resolver for the createLoan field.
-func (r *mutationResolver) CreateLoan(ctx context.Context, input model.CreateLoanInputData, schedule []*generated.CreateLoanScheduleInput) (*generated.Loan, error) {
-	return finance.CreateLoan(ctx, r.client, input, schedule)
+func (r *mutationResolver) CreateLoan(ctx context.Context, input model.CreateLoanInputData) (*generated.Loan, error) {
+	return finance.CreateLoan(ctx, r.client, input)
 }
 
 // CreateLoanSchedule is the resolver for the createLoanSchedule field.

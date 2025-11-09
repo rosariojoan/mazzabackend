@@ -2253,7 +2253,7 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldPaidInstallments)
 				fieldSeen[loan.FieldPaidInstallments] = struct{}{}
 			}
-		case "paymenttype":
+		case "paymentType":
 			if _, ok := fieldSeen[loan.FieldPaymentType]; !ok {
 				selectedFields = append(selectedFields, loan.FieldPaymentType)
 				fieldSeen[loan.FieldPaymentType] = struct{}{}
@@ -2440,10 +2440,10 @@ func (ls *LoanScheduleQuery) collectField(ctx context.Context, opCtx *graphql.Op
 				selectedFields = append(selectedFields, loanschedule.FieldPrincipal)
 				fieldSeen[loanschedule.FieldPrincipal] = struct{}{}
 			}
-		case "remainingBalance":
-			if _, ok := fieldSeen[loanschedule.FieldRemainingBalance]; !ok {
-				selectedFields = append(selectedFields, loanschedule.FieldRemainingBalance)
-				fieldSeen[loanschedule.FieldRemainingBalance] = struct{}{}
+		case "outstandingBalance":
+			if _, ok := fieldSeen[loanschedule.FieldOutstandingBalance]; !ok {
+				selectedFields = append(selectedFields, loanschedule.FieldOutstandingBalance)
+				fieldSeen[loanschedule.FieldOutstandingBalance] = struct{}{}
 			}
 		case "status":
 			if _, ok := fieldSeen[loanschedule.FieldStatus]; !ok {

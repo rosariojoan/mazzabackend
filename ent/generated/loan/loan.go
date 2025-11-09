@@ -47,7 +47,7 @@ const (
 	FieldPaymentFrequency = "payment_frequency"
 	// FieldPaidInstallments holds the string denoting the paid_installments field in the database.
 	FieldPaidInstallments = "paid_installments"
-	// FieldPaymentType holds the string denoting the paymenttype field in the database.
+	// FieldPaymentType holds the string denoting the payment_type field in the database.
 	FieldPaymentType = "payment_type"
 	// FieldCounterpartyName holds the string denoting the counterparty_name field in the database.
 	FieldCounterpartyName = "counterparty_name"
@@ -242,7 +242,7 @@ func PaymentFrequencyValidator(pf PaymentFrequency) error {
 	}
 }
 
-// PaymentType defines the type for the "paymentType" enum field.
+// PaymentType defines the type for the "payment_type" enum field.
 type PaymentType string
 
 // PaymentTypeFixedPayment is the default value of the PaymentType enum.
@@ -260,13 +260,13 @@ func (pt PaymentType) String() string {
 	return string(pt)
 }
 
-// PaymentTypeValidator is a validator for the "paymentType" field enum values. It is called by the builders before save.
+// PaymentTypeValidator is a validator for the "payment_type" field enum values. It is called by the builders before save.
 func PaymentTypeValidator(pt PaymentType) error {
 	switch pt {
 	case PaymentTypeBullet, PaymentTypeFixedPayment, PaymentTypeFixedPrincipal, PaymentTypeInterestOnly:
 		return nil
 	default:
-		return fmt.Errorf("loan: invalid enum value for paymentType field: %q", pt)
+		return fmt.Errorf("loan: invalid enum value for payment_type field: %q", pt)
 	}
 }
 
@@ -376,7 +376,7 @@ func ByPaidInstallments(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaidInstallments, opts...).ToFunc()
 }
 
-// ByPaymentType orders the results by the paymentType field.
+// ByPaymentType orders the results by the payment_type field.
 func ByPaymentType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaymentType, opts...).ToFunc()
 }

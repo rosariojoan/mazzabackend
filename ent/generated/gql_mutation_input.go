@@ -2033,7 +2033,7 @@ type CreateLoanScheduleInput struct {
 	Interest              float64
 	InstallmentNumber     int
 	Principal             float64
-	RemainingBalance      *float64
+	OutstandingBalance    *float64
 	Status                *loanschedule.Status
 	TransactionHistoryIDs []int
 }
@@ -2051,8 +2051,8 @@ func (i *CreateLoanScheduleInput) Mutate(m *LoanScheduleMutation) {
 	m.SetInterest(i.Interest)
 	m.SetInstallmentNumber(i.InstallmentNumber)
 	m.SetPrincipal(i.Principal)
-	if v := i.RemainingBalance; v != nil {
-		m.SetRemainingBalance(*v)
+	if v := i.OutstandingBalance; v != nil {
+		m.SetOutstandingBalance(*v)
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
@@ -2078,8 +2078,8 @@ type UpdateLoanScheduleInput struct {
 	Interest                    *float64
 	InstallmentNumber           *int
 	Principal                   *float64
-	ClearRemainingBalance       bool
-	RemainingBalance            *float64
+	ClearOutstandingBalance     bool
+	OutstandingBalance          *float64
 	Status                      *loanschedule.Status
 	ClearTransactionHistory     bool
 	AddTransactionHistoryIDs    []int
@@ -2112,11 +2112,11 @@ func (i *UpdateLoanScheduleInput) Mutate(m *LoanScheduleMutation) {
 	if v := i.Principal; v != nil {
 		m.SetPrincipal(*v)
 	}
-	if i.ClearRemainingBalance {
-		m.ClearRemainingBalance()
+	if i.ClearOutstandingBalance {
+		m.ClearOutstandingBalance()
 	}
-	if v := i.RemainingBalance; v != nil {
-		m.SetRemainingBalance(*v)
+	if v := i.OutstandingBalance; v != nil {
+		m.SetOutstandingBalance(*v)
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)

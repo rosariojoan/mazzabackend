@@ -9121,11 +9121,11 @@ type LoanWhereInput struct {
 	PaidInstallmentsLT    *int  `json:"paidInstallmentsLT,omitempty"`
 	PaidInstallmentsLTE   *int  `json:"paidInstallmentsLTE,omitempty"`
 
-	// "paymentType" field predicates.
-	PaymentType      *loan.PaymentType  `json:"paymenttype,omitempty"`
-	PaymentTypeNEQ   *loan.PaymentType  `json:"paymenttypeNEQ,omitempty"`
-	PaymentTypeIn    []loan.PaymentType `json:"paymenttypeIn,omitempty"`
-	PaymentTypeNotIn []loan.PaymentType `json:"paymenttypeNotIn,omitempty"`
+	// "payment_type" field predicates.
+	PaymentType      *loan.PaymentType  `json:"paymentType,omitempty"`
+	PaymentTypeNEQ   *loan.PaymentType  `json:"paymentTypeNEQ,omitempty"`
+	PaymentTypeIn    []loan.PaymentType `json:"paymentTypeIn,omitempty"`
+	PaymentTypeNotIn []loan.PaymentType `json:"paymentTypeNotIn,omitempty"`
 
 	// "counterparty_name" field predicates.
 	CounterpartyName             *string  `json:"counterpartyName,omitempty"`
@@ -9989,17 +9989,17 @@ type LoanScheduleWhereInput struct {
 	PrincipalLT    *float64  `json:"principalLT,omitempty"`
 	PrincipalLTE   *float64  `json:"principalLTE,omitempty"`
 
-	// "remaining_balance" field predicates.
-	RemainingBalance       *float64  `json:"remainingBalance,omitempty"`
-	RemainingBalanceNEQ    *float64  `json:"remainingBalanceNEQ,omitempty"`
-	RemainingBalanceIn     []float64 `json:"remainingBalanceIn,omitempty"`
-	RemainingBalanceNotIn  []float64 `json:"remainingBalanceNotIn,omitempty"`
-	RemainingBalanceGT     *float64  `json:"remainingBalanceGT,omitempty"`
-	RemainingBalanceGTE    *float64  `json:"remainingBalanceGTE,omitempty"`
-	RemainingBalanceLT     *float64  `json:"remainingBalanceLT,omitempty"`
-	RemainingBalanceLTE    *float64  `json:"remainingBalanceLTE,omitempty"`
-	RemainingBalanceIsNil  bool      `json:"remainingBalanceIsNil,omitempty"`
-	RemainingBalanceNotNil bool      `json:"remainingBalanceNotNil,omitempty"`
+	// "outstanding_balance" field predicates.
+	OutstandingBalance       *float64  `json:"outstandingBalance,omitempty"`
+	OutstandingBalanceNEQ    *float64  `json:"outstandingBalanceNEQ,omitempty"`
+	OutstandingBalanceIn     []float64 `json:"outstandingBalanceIn,omitempty"`
+	OutstandingBalanceNotIn  []float64 `json:"outstandingBalanceNotIn,omitempty"`
+	OutstandingBalanceGT     *float64  `json:"outstandingBalanceGT,omitempty"`
+	OutstandingBalanceGTE    *float64  `json:"outstandingBalanceGTE,omitempty"`
+	OutstandingBalanceLT     *float64  `json:"outstandingBalanceLT,omitempty"`
+	OutstandingBalanceLTE    *float64  `json:"outstandingBalanceLTE,omitempty"`
+	OutstandingBalanceIsNil  bool      `json:"outstandingBalanceIsNil,omitempty"`
+	OutstandingBalanceNotNil bool      `json:"outstandingBalanceNotNil,omitempty"`
 
 	// "status" field predicates.
 	Status      *loanschedule.Status  `json:"status,omitempty"`
@@ -10363,35 +10363,35 @@ func (i *LoanScheduleWhereInput) P() (predicate.LoanSchedule, error) {
 	if i.PrincipalLTE != nil {
 		predicates = append(predicates, loanschedule.PrincipalLTE(*i.PrincipalLTE))
 	}
-	if i.RemainingBalance != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceEQ(*i.RemainingBalance))
+	if i.OutstandingBalance != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceEQ(*i.OutstandingBalance))
 	}
-	if i.RemainingBalanceNEQ != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceNEQ(*i.RemainingBalanceNEQ))
+	if i.OutstandingBalanceNEQ != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceNEQ(*i.OutstandingBalanceNEQ))
 	}
-	if len(i.RemainingBalanceIn) > 0 {
-		predicates = append(predicates, loanschedule.RemainingBalanceIn(i.RemainingBalanceIn...))
+	if len(i.OutstandingBalanceIn) > 0 {
+		predicates = append(predicates, loanschedule.OutstandingBalanceIn(i.OutstandingBalanceIn...))
 	}
-	if len(i.RemainingBalanceNotIn) > 0 {
-		predicates = append(predicates, loanschedule.RemainingBalanceNotIn(i.RemainingBalanceNotIn...))
+	if len(i.OutstandingBalanceNotIn) > 0 {
+		predicates = append(predicates, loanschedule.OutstandingBalanceNotIn(i.OutstandingBalanceNotIn...))
 	}
-	if i.RemainingBalanceGT != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceGT(*i.RemainingBalanceGT))
+	if i.OutstandingBalanceGT != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceGT(*i.OutstandingBalanceGT))
 	}
-	if i.RemainingBalanceGTE != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceGTE(*i.RemainingBalanceGTE))
+	if i.OutstandingBalanceGTE != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceGTE(*i.OutstandingBalanceGTE))
 	}
-	if i.RemainingBalanceLT != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceLT(*i.RemainingBalanceLT))
+	if i.OutstandingBalanceLT != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceLT(*i.OutstandingBalanceLT))
 	}
-	if i.RemainingBalanceLTE != nil {
-		predicates = append(predicates, loanschedule.RemainingBalanceLTE(*i.RemainingBalanceLTE))
+	if i.OutstandingBalanceLTE != nil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceLTE(*i.OutstandingBalanceLTE))
 	}
-	if i.RemainingBalanceIsNil {
-		predicates = append(predicates, loanschedule.RemainingBalanceIsNil())
+	if i.OutstandingBalanceIsNil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceIsNil())
 	}
-	if i.RemainingBalanceNotNil {
-		predicates = append(predicates, loanschedule.RemainingBalanceNotNil())
+	if i.OutstandingBalanceNotNil {
+		predicates = append(predicates, loanschedule.OutstandingBalanceNotNil())
 	}
 	if i.Status != nil {
 		predicates = append(predicates, loanschedule.StatusEQ(*i.Status))

@@ -105,9 +105,9 @@ func Principal(v float64) predicate.LoanSchedule {
 	return predicate.LoanSchedule(sql.FieldEQ(FieldPrincipal, v))
 }
 
-// RemainingBalance applies equality check predicate on the "remaining_balance" field. It's identical to RemainingBalanceEQ.
-func RemainingBalance(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldEQ(FieldRemainingBalance, v))
+// OutstandingBalance applies equality check predicate on the "outstanding_balance" field. It's identical to OutstandingBalanceEQ.
+func OutstandingBalance(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
@@ -530,54 +530,54 @@ func PrincipalLTE(v float64) predicate.LoanSchedule {
 	return predicate.LoanSchedule(sql.FieldLTE(FieldPrincipal, v))
 }
 
-// RemainingBalanceEQ applies the EQ predicate on the "remaining_balance" field.
-func RemainingBalanceEQ(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldEQ(FieldRemainingBalance, v))
+// OutstandingBalanceEQ applies the EQ predicate on the "outstanding_balance" field.
+func OutstandingBalanceEQ(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceNEQ applies the NEQ predicate on the "remaining_balance" field.
-func RemainingBalanceNEQ(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldNEQ(FieldRemainingBalance, v))
+// OutstandingBalanceNEQ applies the NEQ predicate on the "outstanding_balance" field.
+func OutstandingBalanceNEQ(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldNEQ(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceIn applies the In predicate on the "remaining_balance" field.
-func RemainingBalanceIn(vs ...float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldIn(FieldRemainingBalance, vs...))
+// OutstandingBalanceIn applies the In predicate on the "outstanding_balance" field.
+func OutstandingBalanceIn(vs ...float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldIn(FieldOutstandingBalance, vs...))
 }
 
-// RemainingBalanceNotIn applies the NotIn predicate on the "remaining_balance" field.
-func RemainingBalanceNotIn(vs ...float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldNotIn(FieldRemainingBalance, vs...))
+// OutstandingBalanceNotIn applies the NotIn predicate on the "outstanding_balance" field.
+func OutstandingBalanceNotIn(vs ...float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldNotIn(FieldOutstandingBalance, vs...))
 }
 
-// RemainingBalanceGT applies the GT predicate on the "remaining_balance" field.
-func RemainingBalanceGT(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldGT(FieldRemainingBalance, v))
+// OutstandingBalanceGT applies the GT predicate on the "outstanding_balance" field.
+func OutstandingBalanceGT(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldGT(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceGTE applies the GTE predicate on the "remaining_balance" field.
-func RemainingBalanceGTE(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldGTE(FieldRemainingBalance, v))
+// OutstandingBalanceGTE applies the GTE predicate on the "outstanding_balance" field.
+func OutstandingBalanceGTE(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldGTE(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceLT applies the LT predicate on the "remaining_balance" field.
-func RemainingBalanceLT(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldLT(FieldRemainingBalance, v))
+// OutstandingBalanceLT applies the LT predicate on the "outstanding_balance" field.
+func OutstandingBalanceLT(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldLT(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceLTE applies the LTE predicate on the "remaining_balance" field.
-func RemainingBalanceLTE(v float64) predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldLTE(FieldRemainingBalance, v))
+// OutstandingBalanceLTE applies the LTE predicate on the "outstanding_balance" field.
+func OutstandingBalanceLTE(v float64) predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldLTE(FieldOutstandingBalance, v))
 }
 
-// RemainingBalanceIsNil applies the IsNil predicate on the "remaining_balance" field.
-func RemainingBalanceIsNil() predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldIsNull(FieldRemainingBalance))
+// OutstandingBalanceIsNil applies the IsNil predicate on the "outstanding_balance" field.
+func OutstandingBalanceIsNil() predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldIsNull(FieldOutstandingBalance))
 }
 
-// RemainingBalanceNotNil applies the NotNil predicate on the "remaining_balance" field.
-func RemainingBalanceNotNil() predicate.LoanSchedule {
-	return predicate.LoanSchedule(sql.FieldNotNull(FieldRemainingBalance))
+// OutstandingBalanceNotNil applies the NotNil predicate on the "outstanding_balance" field.
+func OutstandingBalanceNotNil() predicate.LoanSchedule {
+	return predicate.LoanSchedule(sql.FieldNotNull(FieldOutstandingBalance))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.

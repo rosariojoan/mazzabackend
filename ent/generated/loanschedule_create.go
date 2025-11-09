@@ -122,16 +122,16 @@ func (lsc *LoanScheduleCreate) SetPrincipal(f float64) *LoanScheduleCreate {
 	return lsc
 }
 
-// SetRemainingBalance sets the "remaining_balance" field.
-func (lsc *LoanScheduleCreate) SetRemainingBalance(f float64) *LoanScheduleCreate {
-	lsc.mutation.SetRemainingBalance(f)
+// SetOutstandingBalance sets the "outstanding_balance" field.
+func (lsc *LoanScheduleCreate) SetOutstandingBalance(f float64) *LoanScheduleCreate {
+	lsc.mutation.SetOutstandingBalance(f)
 	return lsc
 }
 
-// SetNillableRemainingBalance sets the "remaining_balance" field if the given value is not nil.
-func (lsc *LoanScheduleCreate) SetNillableRemainingBalance(f *float64) *LoanScheduleCreate {
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
+func (lsc *LoanScheduleCreate) SetNillableOutstandingBalance(f *float64) *LoanScheduleCreate {
 	if f != nil {
-		lsc.SetRemainingBalance(*f)
+		lsc.SetOutstandingBalance(*f)
 	}
 	return lsc
 }
@@ -342,9 +342,9 @@ func (lsc *LoanScheduleCreate) createSpec() (*LoanSchedule, *sqlgraph.CreateSpec
 		_spec.SetField(loanschedule.FieldPrincipal, field.TypeFloat64, value)
 		_node.Principal = value
 	}
-	if value, ok := lsc.mutation.RemainingBalance(); ok {
-		_spec.SetField(loanschedule.FieldRemainingBalance, field.TypeFloat64, value)
-		_node.RemainingBalance = value
+	if value, ok := lsc.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loanschedule.FieldOutstandingBalance, field.TypeFloat64, value)
+		_node.OutstandingBalance = value
 	}
 	if value, ok := lsc.mutation.Status(); ok {
 		_spec.SetField(loanschedule.FieldStatus, field.TypeEnum, value)

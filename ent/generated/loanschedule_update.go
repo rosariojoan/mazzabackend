@@ -196,30 +196,30 @@ func (lsu *LoanScheduleUpdate) AddPrincipal(f float64) *LoanScheduleUpdate {
 	return lsu
 }
 
-// SetRemainingBalance sets the "remaining_balance" field.
-func (lsu *LoanScheduleUpdate) SetRemainingBalance(f float64) *LoanScheduleUpdate {
-	lsu.mutation.ResetRemainingBalance()
-	lsu.mutation.SetRemainingBalance(f)
+// SetOutstandingBalance sets the "outstanding_balance" field.
+func (lsu *LoanScheduleUpdate) SetOutstandingBalance(f float64) *LoanScheduleUpdate {
+	lsu.mutation.ResetOutstandingBalance()
+	lsu.mutation.SetOutstandingBalance(f)
 	return lsu
 }
 
-// SetNillableRemainingBalance sets the "remaining_balance" field if the given value is not nil.
-func (lsu *LoanScheduleUpdate) SetNillableRemainingBalance(f *float64) *LoanScheduleUpdate {
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
+func (lsu *LoanScheduleUpdate) SetNillableOutstandingBalance(f *float64) *LoanScheduleUpdate {
 	if f != nil {
-		lsu.SetRemainingBalance(*f)
+		lsu.SetOutstandingBalance(*f)
 	}
 	return lsu
 }
 
-// AddRemainingBalance adds f to the "remaining_balance" field.
-func (lsu *LoanScheduleUpdate) AddRemainingBalance(f float64) *LoanScheduleUpdate {
-	lsu.mutation.AddRemainingBalance(f)
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
+func (lsu *LoanScheduleUpdate) AddOutstandingBalance(f float64) *LoanScheduleUpdate {
+	lsu.mutation.AddOutstandingBalance(f)
 	return lsu
 }
 
-// ClearRemainingBalance clears the value of the "remaining_balance" field.
-func (lsu *LoanScheduleUpdate) ClearRemainingBalance() *LoanScheduleUpdate {
-	lsu.mutation.ClearRemainingBalance()
+// ClearOutstandingBalance clears the value of the "outstanding_balance" field.
+func (lsu *LoanScheduleUpdate) ClearOutstandingBalance() *LoanScheduleUpdate {
+	lsu.mutation.ClearOutstandingBalance()
 	return lsu
 }
 
@@ -420,14 +420,14 @@ func (lsu *LoanScheduleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := lsu.mutation.AddedPrincipal(); ok {
 		_spec.AddField(loanschedule.FieldPrincipal, field.TypeFloat64, value)
 	}
-	if value, ok := lsu.mutation.RemainingBalance(); ok {
-		_spec.SetField(loanschedule.FieldRemainingBalance, field.TypeFloat64, value)
+	if value, ok := lsu.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loanschedule.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if value, ok := lsu.mutation.AddedRemainingBalance(); ok {
-		_spec.AddField(loanschedule.FieldRemainingBalance, field.TypeFloat64, value)
+	if value, ok := lsu.mutation.AddedOutstandingBalance(); ok {
+		_spec.AddField(loanschedule.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if lsu.mutation.RemainingBalanceCleared() {
-		_spec.ClearField(loanschedule.FieldRemainingBalance, field.TypeFloat64)
+	if lsu.mutation.OutstandingBalanceCleared() {
+		_spec.ClearField(loanschedule.FieldOutstandingBalance, field.TypeFloat64)
 	}
 	if value, ok := lsu.mutation.Status(); ok {
 		_spec.SetField(loanschedule.FieldStatus, field.TypeEnum, value)
@@ -693,30 +693,30 @@ func (lsuo *LoanScheduleUpdateOne) AddPrincipal(f float64) *LoanScheduleUpdateOn
 	return lsuo
 }
 
-// SetRemainingBalance sets the "remaining_balance" field.
-func (lsuo *LoanScheduleUpdateOne) SetRemainingBalance(f float64) *LoanScheduleUpdateOne {
-	lsuo.mutation.ResetRemainingBalance()
-	lsuo.mutation.SetRemainingBalance(f)
+// SetOutstandingBalance sets the "outstanding_balance" field.
+func (lsuo *LoanScheduleUpdateOne) SetOutstandingBalance(f float64) *LoanScheduleUpdateOne {
+	lsuo.mutation.ResetOutstandingBalance()
+	lsuo.mutation.SetOutstandingBalance(f)
 	return lsuo
 }
 
-// SetNillableRemainingBalance sets the "remaining_balance" field if the given value is not nil.
-func (lsuo *LoanScheduleUpdateOne) SetNillableRemainingBalance(f *float64) *LoanScheduleUpdateOne {
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
+func (lsuo *LoanScheduleUpdateOne) SetNillableOutstandingBalance(f *float64) *LoanScheduleUpdateOne {
 	if f != nil {
-		lsuo.SetRemainingBalance(*f)
+		lsuo.SetOutstandingBalance(*f)
 	}
 	return lsuo
 }
 
-// AddRemainingBalance adds f to the "remaining_balance" field.
-func (lsuo *LoanScheduleUpdateOne) AddRemainingBalance(f float64) *LoanScheduleUpdateOne {
-	lsuo.mutation.AddRemainingBalance(f)
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
+func (lsuo *LoanScheduleUpdateOne) AddOutstandingBalance(f float64) *LoanScheduleUpdateOne {
+	lsuo.mutation.AddOutstandingBalance(f)
 	return lsuo
 }
 
-// ClearRemainingBalance clears the value of the "remaining_balance" field.
-func (lsuo *LoanScheduleUpdateOne) ClearRemainingBalance() *LoanScheduleUpdateOne {
-	lsuo.mutation.ClearRemainingBalance()
+// ClearOutstandingBalance clears the value of the "outstanding_balance" field.
+func (lsuo *LoanScheduleUpdateOne) ClearOutstandingBalance() *LoanScheduleUpdateOne {
+	lsuo.mutation.ClearOutstandingBalance()
 	return lsuo
 }
 
@@ -947,14 +947,14 @@ func (lsuo *LoanScheduleUpdateOne) sqlSave(ctx context.Context) (_node *LoanSche
 	if value, ok := lsuo.mutation.AddedPrincipal(); ok {
 		_spec.AddField(loanschedule.FieldPrincipal, field.TypeFloat64, value)
 	}
-	if value, ok := lsuo.mutation.RemainingBalance(); ok {
-		_spec.SetField(loanschedule.FieldRemainingBalance, field.TypeFloat64, value)
+	if value, ok := lsuo.mutation.OutstandingBalance(); ok {
+		_spec.SetField(loanschedule.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if value, ok := lsuo.mutation.AddedRemainingBalance(); ok {
-		_spec.AddField(loanschedule.FieldRemainingBalance, field.TypeFloat64, value)
+	if value, ok := lsuo.mutation.AddedOutstandingBalance(); ok {
+		_spec.AddField(loanschedule.FieldOutstandingBalance, field.TypeFloat64, value)
 	}
-	if lsuo.mutation.RemainingBalanceCleared() {
-		_spec.ClearField(loanschedule.FieldRemainingBalance, field.TypeFloat64)
+	if lsuo.mutation.OutstandingBalanceCleared() {
+		_spec.ClearField(loanschedule.FieldOutstandingBalance, field.TypeFloat64)
 	}
 	if value, ok := lsuo.mutation.Status(); ok {
 		_spec.SetField(loanschedule.FieldStatus, field.TypeEnum, value)

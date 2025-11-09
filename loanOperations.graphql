@@ -1,6 +1,7 @@
 input CreateLoanInputData {
   loanInput: CreateLoanInput!
   accountingEntry: BaseEntryRegistrationInput
+  schedule: [CreateLoanScheduleInput!]
 }
 
 input UpdateLoanInputData {
@@ -10,7 +11,7 @@ input UpdateLoanInputData {
 }
 
 extend type Mutation {
-    createLoan(input: CreateLoanInputData!, schedule: [CreateLoanScheduleInput!]): Loan!
+    createLoan(input: CreateLoanInputData!): Loan!
     createLoanSchedule(input: [CreateLoanScheduleInput!]!, loanID: ID!): [LoanSchedule!]!
 
     updateLoan(input: UpdateLoanInputData!): Loan!
