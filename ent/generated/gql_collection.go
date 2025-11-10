@@ -2228,10 +2228,10 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldMaturityDate)
 				fieldSeen[loan.FieldMaturityDate] = struct{}{}
 			}
-		case "nextPayment":
-			if _, ok := fieldSeen[loan.FieldNextPayment]; !ok {
-				selectedFields = append(selectedFields, loan.FieldNextPayment)
-				fieldSeen[loan.FieldNextPayment] = struct{}{}
+		case "nextPaymentDate":
+			if _, ok := fieldSeen[loan.FieldNextPaymentDate]; !ok {
+				selectedFields = append(selectedFields, loan.FieldNextPaymentDate)
+				fieldSeen[loan.FieldNextPaymentDate] = struct{}{}
 			}
 		case "nextPaymentAmount":
 			if _, ok := fieldSeen[loan.FieldNextPaymentAmount]; !ok {

@@ -37,8 +37,8 @@ const (
 	FieldInstallments = "installments"
 	// FieldMaturityDate holds the string denoting the maturity_date field in the database.
 	FieldMaturityDate = "maturity_date"
-	// FieldNextPayment holds the string denoting the next_payment field in the database.
-	FieldNextPayment = "next_payment"
+	// FieldNextPaymentDate holds the string denoting the next_payment_date field in the database.
+	FieldNextPaymentDate = "next_payment_date"
 	// FieldNextPaymentAmount holds the string denoting the next_payment_amount field in the database.
 	FieldNextPaymentAmount = "next_payment_amount"
 	// FieldOutstandingBalance holds the string denoting the outstanding_balance field in the database.
@@ -119,7 +119,7 @@ var Columns = []string{
 	FieldInterestRate,
 	FieldInstallments,
 	FieldMaturityDate,
-	FieldNextPayment,
+	FieldNextPaymentDate,
 	FieldNextPaymentAmount,
 	FieldOutstandingBalance,
 	FieldPaymentFrequency,
@@ -351,9 +351,9 @@ func ByMaturityDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMaturityDate, opts...).ToFunc()
 }
 
-// ByNextPayment orders the results by the next_payment field.
-func ByNextPayment(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNextPayment, opts...).ToFunc()
+// ByNextPaymentDate orders the results by the next_payment_date field.
+func ByNextPaymentDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNextPaymentDate, opts...).ToFunc()
 }
 
 // ByNextPaymentAmount orders the results by the next_payment_amount field.

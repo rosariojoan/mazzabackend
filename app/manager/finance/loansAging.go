@@ -9,11 +9,10 @@ import (
 	"time"
 )
 
-func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]*model.AgingBucket, error) {
+func LoansAging(ctx context.Context, client *generated.Client, isLending bool) ([]*model.AgingBucket, error) {
 	_, currentCompany := utils.GetSession(&ctx)
 	// Current date for age calculation
 	now := time.Now().Format(time.RFC3339) // Convert time to RFC3339 format which PostgreSQL accepts
-	isLending := true
 	sqlStr := fmt.Sprintf(`
 	SELECT 
 		age_interval,
@@ -30,11 +29,11 @@ func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]
 			END AS age_interval,
 			interest,
 			principal
-		FROM loan_schedules
-		JOIN loans ON loans.id = loan_schedules.loan_loan_schedule
-		WHERE company_loan_schedule = %d 
+		FROM loan_schedules as ls
+		JOIN loans ON loans.id = ls.loan_loan_schedule
+		WHERE company_loans = %d 
 			AND loans.is_lending = %t 
-			AND loan_schedules.status <> 'paid'  -- Only include unpaid loans
+			AND ls.status <> 'paid'  -- Only include unpaid loans
 	) AS subquery
 	GROUP BY age_interval
 	ORDER BY 
@@ -46,7 +45,7 @@ func LoansAging(ctx context.Context, client *generated.Client, name *string) ([]
 			WHEN 'due in 30+ days' THEN 5
 		END;
 	`, now, now, now, now, currentCompany.ID, isLending)
-
+	fmt.Println(now, currentCompany.ID, isLending)
 	rows, err := client.QueryContext(ctx, sqlStr)
 	if err != nil {
 		fmt.Println("err:", err)

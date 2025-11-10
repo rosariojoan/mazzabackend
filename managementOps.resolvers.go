@@ -70,6 +70,6 @@ func (r *queryResolver) AccountsPayableAging(ctx context.Context, name *string) 
 }
 
 // LoansAging is the resolver for the loansAging field.
-func (r *queryResolver) LoansAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
-	return finance.LoansAging(ctx, r.client, name)
+func (r *queryResolver) LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error) {
+	return finance.LoansAging(ctx, r.client, true)
 }

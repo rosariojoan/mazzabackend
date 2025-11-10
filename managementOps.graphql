@@ -101,5 +101,5 @@ extend type Query {
 
   accountsReceivableAging(name: String): [AgingBucket!]!
   accountsPayableAging(name: String): [AgingBucket!]!
-  loansAging(name: String): [AgingBucket!]!
+  loansAging(isLending: Boolean!): [AgingBucket!]!
 }

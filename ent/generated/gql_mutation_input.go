@@ -1823,7 +1823,7 @@ type CreateLoanInput struct {
 	InterestRate          float64
 	Installments          int
 	MaturityDate          time.Time
-	NextPayment           *time.Time
+	NextPaymentDate       *time.Time
 	NextPaymentAmount     *float64
 	OutstandingBalance    float64
 	PaymentFrequency      *loan.PaymentFrequency
@@ -1852,8 +1852,8 @@ func (i *CreateLoanInput) Mutate(m *LoanMutation) {
 	m.SetInterestRate(i.InterestRate)
 	m.SetInstallments(i.Installments)
 	m.SetMaturityDate(i.MaturityDate)
-	if v := i.NextPayment; v != nil {
-		m.SetNextPayment(*v)
+	if v := i.NextPaymentDate; v != nil {
+		m.SetNextPaymentDate(*v)
 	}
 	if v := i.NextPaymentAmount; v != nil {
 		m.SetNextPaymentAmount(*v)
@@ -1907,8 +1907,8 @@ type UpdateLoanInput struct {
 	InterestRate                *float64
 	Installments                *int
 	MaturityDate                *time.Time
-	ClearNextPayment            bool
-	NextPayment                 *time.Time
+	ClearNextPaymentDate        bool
+	NextPaymentDate             *time.Time
 	ClearNextPaymentAmount      bool
 	NextPaymentAmount           *float64
 	OutstandingBalance          *float64
@@ -1956,11 +1956,11 @@ func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
 	if v := i.MaturityDate; v != nil {
 		m.SetMaturityDate(*v)
 	}
-	if i.ClearNextPayment {
-		m.ClearNextPayment()
+	if i.ClearNextPaymentDate {
+		m.ClearNextPaymentDate()
 	}
-	if v := i.NextPayment; v != nil {
-		m.SetNextPayment(*v)
+	if v := i.NextPaymentDate; v != nil {
+		m.SetNextPaymentDate(*v)
 	}
 	if i.ClearNextPaymentAmount {
 		m.ClearNextPaymentAmount()

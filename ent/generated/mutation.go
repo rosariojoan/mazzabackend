@@ -15871,7 +15871,7 @@ type LoanMutation struct {
 	installments               *int
 	addinstallments            *int
 	maturity_date              *time.Time
-	next_payment               *time.Time
+	next_payment_date          *time.Time
 	next_payment_amount        *float64
 	addnext_payment_amount     *float64
 	outstanding_balance        *float64
@@ -16459,53 +16459,53 @@ func (m *LoanMutation) ResetMaturityDate() {
 	m.maturity_date = nil
 }
 
-// SetNextPayment sets the "next_payment" field.
-func (m *LoanMutation) SetNextPayment(t time.Time) {
-	m.next_payment = &t
+// SetNextPaymentDate sets the "next_payment_date" field.
+func (m *LoanMutation) SetNextPaymentDate(t time.Time) {
+	m.next_payment_date = &t
 }
 
-// NextPayment returns the value of the "next_payment" field in the mutation.
-func (m *LoanMutation) NextPayment() (r time.Time, exists bool) {
-	v := m.next_payment
+// NextPaymentDate returns the value of the "next_payment_date" field in the mutation.
+func (m *LoanMutation) NextPaymentDate() (r time.Time, exists bool) {
+	v := m.next_payment_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNextPayment returns the old "next_payment" field's value of the Loan entity.
+// OldNextPaymentDate returns the old "next_payment_date" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoanMutation) OldNextPayment(ctx context.Context) (v time.Time, err error) {
+func (m *LoanMutation) OldNextPaymentDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldNextPayment is only allowed on UpdateOne operations")
+		return v, errors.New("OldNextPaymentDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldNextPayment requires an ID field in the mutation")
+		return v, errors.New("OldNextPaymentDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldNextPayment: %w", err)
+		return v, fmt.Errorf("querying old value for OldNextPaymentDate: %w", err)
 	}
-	return oldValue.NextPayment, nil
+	return oldValue.NextPaymentDate, nil
 }
 
-// ClearNextPayment clears the value of the "next_payment" field.
-func (m *LoanMutation) ClearNextPayment() {
-	m.next_payment = nil
-	m.clearedFields[loan.FieldNextPayment] = struct{}{}
+// ClearNextPaymentDate clears the value of the "next_payment_date" field.
+func (m *LoanMutation) ClearNextPaymentDate() {
+	m.next_payment_date = nil
+	m.clearedFields[loan.FieldNextPaymentDate] = struct{}{}
 }
 
-// NextPaymentCleared returns if the "next_payment" field was cleared in this mutation.
-func (m *LoanMutation) NextPaymentCleared() bool {
-	_, ok := m.clearedFields[loan.FieldNextPayment]
+// NextPaymentDateCleared returns if the "next_payment_date" field was cleared in this mutation.
+func (m *LoanMutation) NextPaymentDateCleared() bool {
+	_, ok := m.clearedFields[loan.FieldNextPaymentDate]
 	return ok
 }
 
-// ResetNextPayment resets all changes to the "next_payment" field.
-func (m *LoanMutation) ResetNextPayment() {
-	m.next_payment = nil
-	delete(m.clearedFields, loan.FieldNextPayment)
+// ResetNextPaymentDate resets all changes to the "next_payment_date" field.
+func (m *LoanMutation) ResetNextPaymentDate() {
+	m.next_payment_date = nil
+	delete(m.clearedFields, loan.FieldNextPaymentDate)
 }
 
 // SetNextPaymentAmount sets the "next_payment_amount" field.
@@ -17196,8 +17196,8 @@ func (m *LoanMutation) Fields() []string {
 	if m.maturity_date != nil {
 		fields = append(fields, loan.FieldMaturityDate)
 	}
-	if m.next_payment != nil {
-		fields = append(fields, loan.FieldNextPayment)
+	if m.next_payment_date != nil {
+		fields = append(fields, loan.FieldNextPaymentDate)
 	}
 	if m.next_payment_amount != nil {
 		fields = append(fields, loan.FieldNextPaymentAmount)
@@ -17254,8 +17254,8 @@ func (m *LoanMutation) Field(name string) (ent.Value, bool) {
 		return m.Installments()
 	case loan.FieldMaturityDate:
 		return m.MaturityDate()
-	case loan.FieldNextPayment:
-		return m.NextPayment()
+	case loan.FieldNextPaymentDate:
+		return m.NextPaymentDate()
 	case loan.FieldNextPaymentAmount:
 		return m.NextPaymentAmount()
 	case loan.FieldOutstandingBalance:
@@ -17303,8 +17303,8 @@ func (m *LoanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldInstallments(ctx)
 	case loan.FieldMaturityDate:
 		return m.OldMaturityDate(ctx)
-	case loan.FieldNextPayment:
-		return m.OldNextPayment(ctx)
+	case loan.FieldNextPaymentDate:
+		return m.OldNextPaymentDate(ctx)
 	case loan.FieldNextPaymentAmount:
 		return m.OldNextPaymentAmount(ctx)
 	case loan.FieldOutstandingBalance:
@@ -17402,12 +17402,12 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMaturityDate(v)
 		return nil
-	case loan.FieldNextPayment:
+	case loan.FieldNextPaymentDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetNextPayment(v)
+		m.SetNextPaymentDate(v)
 		return nil
 	case loan.FieldNextPaymentAmount:
 		v, ok := value.(float64)
@@ -17586,8 +17586,8 @@ func (m *LoanMutation) ClearedFields() []string {
 	if m.FieldCleared(loan.FieldDescription) {
 		fields = append(fields, loan.FieldDescription)
 	}
-	if m.FieldCleared(loan.FieldNextPayment) {
-		fields = append(fields, loan.FieldNextPayment)
+	if m.FieldCleared(loan.FieldNextPaymentDate) {
+		fields = append(fields, loan.FieldNextPaymentDate)
 	}
 	if m.FieldCleared(loan.FieldNextPaymentAmount) {
 		fields = append(fields, loan.FieldNextPaymentAmount)
@@ -17615,8 +17615,8 @@ func (m *LoanMutation) ClearField(name string) error {
 	case loan.FieldDescription:
 		m.ClearDescription()
 		return nil
-	case loan.FieldNextPayment:
-		m.ClearNextPayment()
+	case loan.FieldNextPaymentDate:
+		m.ClearNextPaymentDate()
 		return nil
 	case loan.FieldNextPaymentAmount:
 		m.ClearNextPaymentAmount()
@@ -17659,8 +17659,8 @@ func (m *LoanMutation) ResetField(name string) error {
 	case loan.FieldMaturityDate:
 		m.ResetMaturityDate()
 		return nil
-	case loan.FieldNextPayment:
-		m.ResetNextPayment()
+	case loan.FieldNextPaymentDate:
+		m.ResetNextPaymentDate()
 		return nil
 	case loan.FieldNextPaymentAmount:
 		m.ResetNextPaymentAmount()

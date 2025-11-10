@@ -125,16 +125,16 @@ func (lc *LoanCreate) SetMaturityDate(t time.Time) *LoanCreate {
 	return lc
 }
 
-// SetNextPayment sets the "next_payment" field.
-func (lc *LoanCreate) SetNextPayment(t time.Time) *LoanCreate {
-	lc.mutation.SetNextPayment(t)
+// SetNextPaymentDate sets the "next_payment_date" field.
+func (lc *LoanCreate) SetNextPaymentDate(t time.Time) *LoanCreate {
+	lc.mutation.SetNextPaymentDate(t)
 	return lc
 }
 
-// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
-func (lc *LoanCreate) SetNillableNextPayment(t *time.Time) *LoanCreate {
+// SetNillableNextPaymentDate sets the "next_payment_date" field if the given value is not nil.
+func (lc *LoanCreate) SetNillableNextPaymentDate(t *time.Time) *LoanCreate {
 	if t != nil {
-		lc.SetNextPayment(*t)
+		lc.SetNextPaymentDate(*t)
 	}
 	return lc
 }
@@ -560,9 +560,9 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		_spec.SetField(loan.FieldMaturityDate, field.TypeTime, value)
 		_node.MaturityDate = value
 	}
-	if value, ok := lc.mutation.NextPayment(); ok {
-		_spec.SetField(loan.FieldNextPayment, field.TypeTime, value)
-		_node.NextPayment = value
+	if value, ok := lc.mutation.NextPaymentDate(); ok {
+		_spec.SetField(loan.FieldNextPaymentDate, field.TypeTime, value)
+		_node.NextPaymentDate = value
 	}
 	if value, ok := lc.mutation.NextPaymentAmount(); ok {
 		_spec.SetField(loan.FieldNextPaymentAmount, field.TypeFloat64, value)

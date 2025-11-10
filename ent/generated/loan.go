@@ -40,8 +40,8 @@ type Loan struct {
 	Installments int `json:"installments,omitempty"`
 	// MaturityDate holds the value of the "maturity_date" field.
 	MaturityDate time.Time `json:"maturity_date,omitempty"`
-	// NextPayment holds the value of the "next_payment" field.
-	NextPayment time.Time `json:"next_payment,omitempty"`
+	// NextPaymentDate holds the value of the "next_payment_date" field.
+	NextPaymentDate time.Time `json:"next_payment_date,omitempty"`
 	// NextPaymentAmount holds the value of the "next_payment_amount" field.
 	NextPaymentAmount float64 `json:"next_payment_amount,omitempty"`
 	// OutstandingBalance holds the value of the "outstanding_balance" field.
@@ -158,7 +158,7 @@ func (*Loan) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case loan.FieldCategory, loan.FieldCollateral, loan.FieldDescription, loan.FieldPaymentFrequency, loan.FieldPaymentType, loan.FieldCounterpartyName, loan.FieldStatus:
 			values[i] = new(sql.NullString)
-		case loan.FieldCreatedAt, loan.FieldUpdatedAt, loan.FieldDeletedAt, loan.FieldMaturityDate, loan.FieldNextPayment, loan.FieldStartDate:
+		case loan.FieldCreatedAt, loan.FieldUpdatedAt, loan.FieldDeletedAt, loan.FieldMaturityDate, loan.FieldNextPaymentDate, loan.FieldStartDate:
 			values[i] = new(sql.NullTime)
 		case loan.ForeignKeys[0]: // company_loans
 			values[i] = new(sql.NullInt64)
@@ -248,11 +248,11 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				l.MaturityDate = value.Time
 			}
-		case loan.FieldNextPayment:
+		case loan.FieldNextPaymentDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field next_payment", values[i])
+				return fmt.Errorf("unexpected type %T for field next_payment_date", values[i])
 			} else if value.Valid {
-				l.NextPayment = value.Time
+				l.NextPaymentDate = value.Time
 			}
 		case loan.FieldNextPaymentAmount:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -422,8 +422,8 @@ func (l *Loan) String() string {
 	builder.WriteString("maturity_date=")
 	builder.WriteString(l.MaturityDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("next_payment=")
-	builder.WriteString(l.NextPayment.Format(time.ANSIC))
+	builder.WriteString("next_payment_date=")
+	builder.WriteString(l.NextPaymentDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("next_payment_amount=")
 	builder.WriteString(fmt.Sprintf("%v", l.NextPaymentAmount))

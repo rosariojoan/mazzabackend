@@ -4213,17 +4213,17 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldNextPayment orders Loan by next_payment.
-	LoanOrderFieldNextPayment = &LoanOrderField{
+	// LoanOrderFieldNextPaymentDate orders Loan by next_payment_date.
+	LoanOrderFieldNextPaymentDate = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
-			return l.NextPayment, nil
+			return l.NextPaymentDate, nil
 		},
-		column: loan.FieldNextPayment,
-		toTerm: loan.ByNextPayment,
+		column: loan.FieldNextPaymentDate,
+		toTerm: loan.ByNextPaymentDate,
 		toCursor: func(l *Loan) Cursor {
 			return Cursor{
 				ID:    l.ID,
-				Value: l.NextPayment,
+				Value: l.NextPaymentDate,
 			}
 		},
 	}
@@ -4301,8 +4301,8 @@ func (f LoanOrderField) String() string {
 		str = "interestRate"
 	case LoanOrderFieldMaturityDate.column:
 		str = "maturityDate"
-	case LoanOrderFieldNextPayment.column:
-		str = "nextPayment"
+	case LoanOrderFieldNextPaymentDate.column:
+		str = "nextPaymentDate"
 	case LoanOrderFieldNextPaymentAmount.column:
 		str = "nextPaymentAmount"
 	case LoanOrderFieldOutstandingBalance.column:
@@ -4339,8 +4339,8 @@ func (f *LoanOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *LoanOrderFieldInterestRate
 	case "maturityDate":
 		*f = *LoanOrderFieldMaturityDate
-	case "nextPayment":
-		*f = *LoanOrderFieldNextPayment
+	case "nextPaymentDate":
+		*f = *LoanOrderFieldNextPaymentDate
 	case "nextPaymentAmount":
 		*f = *LoanOrderFieldNextPaymentAmount
 	case "outstandingBalance":

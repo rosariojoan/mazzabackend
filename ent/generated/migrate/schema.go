@@ -449,7 +449,7 @@ var (
 		{Name: "interest_rate", Type: field.TypeFloat64},
 		{Name: "installments", Type: field.TypeInt},
 		{Name: "maturity_date", Type: field.TypeTime},
-		{Name: "next_payment", Type: field.TypeTime, Nullable: true},
+		{Name: "next_payment_date", Type: field.TypeTime, Nullable: true},
 		{Name: "next_payment_amount", Type: field.TypeFloat64, Nullable: true, Default: 0},
 		{Name: "outstanding_balance", Type: field.TypeFloat64},
 		{Name: "payment_frequency", Type: field.TypeEnum, Enums: []string{"daily", "weekly", "biweekly", "monthly", "quarterly", "semiannual", "annual"}, Default: "monthly"},

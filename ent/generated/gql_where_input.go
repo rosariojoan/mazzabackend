@@ -9071,17 +9071,17 @@ type LoanWhereInput struct {
 	MaturityDateLT    *time.Time  `json:"maturityDateLT,omitempty"`
 	MaturityDateLTE   *time.Time  `json:"maturityDateLTE,omitempty"`
 
-	// "next_payment" field predicates.
-	NextPayment       *time.Time  `json:"nextPayment,omitempty"`
-	NextPaymentNEQ    *time.Time  `json:"nextPaymentNEQ,omitempty"`
-	NextPaymentIn     []time.Time `json:"nextPaymentIn,omitempty"`
-	NextPaymentNotIn  []time.Time `json:"nextPaymentNotIn,omitempty"`
-	NextPaymentGT     *time.Time  `json:"nextPaymentGT,omitempty"`
-	NextPaymentGTE    *time.Time  `json:"nextPaymentGTE,omitempty"`
-	NextPaymentLT     *time.Time  `json:"nextPaymentLT,omitempty"`
-	NextPaymentLTE    *time.Time  `json:"nextPaymentLTE,omitempty"`
-	NextPaymentIsNil  bool        `json:"nextPaymentIsNil,omitempty"`
-	NextPaymentNotNil bool        `json:"nextPaymentNotNil,omitempty"`
+	// "next_payment_date" field predicates.
+	NextPaymentDate       *time.Time  `json:"nextPaymentDate,omitempty"`
+	NextPaymentDateNEQ    *time.Time  `json:"nextPaymentDateNEQ,omitempty"`
+	NextPaymentDateIn     []time.Time `json:"nextPaymentDateIn,omitempty"`
+	NextPaymentDateNotIn  []time.Time `json:"nextPaymentDateNotIn,omitempty"`
+	NextPaymentDateGT     *time.Time  `json:"nextPaymentDateGT,omitempty"`
+	NextPaymentDateGTE    *time.Time  `json:"nextPaymentDateGTE,omitempty"`
+	NextPaymentDateLT     *time.Time  `json:"nextPaymentDateLT,omitempty"`
+	NextPaymentDateLTE    *time.Time  `json:"nextPaymentDateLTE,omitempty"`
+	NextPaymentDateIsNil  bool        `json:"nextPaymentDateIsNil,omitempty"`
+	NextPaymentDateNotNil bool        `json:"nextPaymentDateNotNil,omitempty"`
 
 	// "next_payment_amount" field predicates.
 	NextPaymentAmount       *float64  `json:"nextPaymentAmount,omitempty"`
@@ -9554,35 +9554,35 @@ func (i *LoanWhereInput) P() (predicate.Loan, error) {
 	if i.MaturityDateLTE != nil {
 		predicates = append(predicates, loan.MaturityDateLTE(*i.MaturityDateLTE))
 	}
-	if i.NextPayment != nil {
-		predicates = append(predicates, loan.NextPaymentEQ(*i.NextPayment))
+	if i.NextPaymentDate != nil {
+		predicates = append(predicates, loan.NextPaymentDateEQ(*i.NextPaymentDate))
 	}
-	if i.NextPaymentNEQ != nil {
-		predicates = append(predicates, loan.NextPaymentNEQ(*i.NextPaymentNEQ))
+	if i.NextPaymentDateNEQ != nil {
+		predicates = append(predicates, loan.NextPaymentDateNEQ(*i.NextPaymentDateNEQ))
 	}
-	if len(i.NextPaymentIn) > 0 {
-		predicates = append(predicates, loan.NextPaymentIn(i.NextPaymentIn...))
+	if len(i.NextPaymentDateIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentDateIn(i.NextPaymentDateIn...))
 	}
-	if len(i.NextPaymentNotIn) > 0 {
-		predicates = append(predicates, loan.NextPaymentNotIn(i.NextPaymentNotIn...))
+	if len(i.NextPaymentDateNotIn) > 0 {
+		predicates = append(predicates, loan.NextPaymentDateNotIn(i.NextPaymentDateNotIn...))
 	}
-	if i.NextPaymentGT != nil {
-		predicates = append(predicates, loan.NextPaymentGT(*i.NextPaymentGT))
+	if i.NextPaymentDateGT != nil {
+		predicates = append(predicates, loan.NextPaymentDateGT(*i.NextPaymentDateGT))
 	}
-	if i.NextPaymentGTE != nil {
-		predicates = append(predicates, loan.NextPaymentGTE(*i.NextPaymentGTE))
+	if i.NextPaymentDateGTE != nil {
+		predicates = append(predicates, loan.NextPaymentDateGTE(*i.NextPaymentDateGTE))
 	}
-	if i.NextPaymentLT != nil {
-		predicates = append(predicates, loan.NextPaymentLT(*i.NextPaymentLT))
+	if i.NextPaymentDateLT != nil {
+		predicates = append(predicates, loan.NextPaymentDateLT(*i.NextPaymentDateLT))
 	}
-	if i.NextPaymentLTE != nil {
-		predicates = append(predicates, loan.NextPaymentLTE(*i.NextPaymentLTE))
+	if i.NextPaymentDateLTE != nil {
+		predicates = append(predicates, loan.NextPaymentDateLTE(*i.NextPaymentDateLTE))
 	}
-	if i.NextPaymentIsNil {
-		predicates = append(predicates, loan.NextPaymentIsNil())
+	if i.NextPaymentDateIsNil {
+		predicates = append(predicates, loan.NextPaymentDateIsNil())
 	}
-	if i.NextPaymentNotNil {
-		predicates = append(predicates, loan.NextPaymentNotNil())
+	if i.NextPaymentDateNotNil {
+		predicates = append(predicates, loan.NextPaymentDateNotNil())
 	}
 	if i.NextPaymentAmount != nil {
 		predicates = append(predicates, loan.NextPaymentAmountEQ(*i.NextPaymentAmount))

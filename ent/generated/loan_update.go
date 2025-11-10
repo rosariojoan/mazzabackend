@@ -191,23 +191,23 @@ func (lu *LoanUpdate) SetNillableMaturityDate(t *time.Time) *LoanUpdate {
 	return lu
 }
 
-// SetNextPayment sets the "next_payment" field.
-func (lu *LoanUpdate) SetNextPayment(t time.Time) *LoanUpdate {
-	lu.mutation.SetNextPayment(t)
+// SetNextPaymentDate sets the "next_payment_date" field.
+func (lu *LoanUpdate) SetNextPaymentDate(t time.Time) *LoanUpdate {
+	lu.mutation.SetNextPaymentDate(t)
 	return lu
 }
 
-// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
-func (lu *LoanUpdate) SetNillableNextPayment(t *time.Time) *LoanUpdate {
+// SetNillableNextPaymentDate sets the "next_payment_date" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillableNextPaymentDate(t *time.Time) *LoanUpdate {
 	if t != nil {
-		lu.SetNextPayment(*t)
+		lu.SetNextPaymentDate(*t)
 	}
 	return lu
 }
 
-// ClearNextPayment clears the value of the "next_payment" field.
-func (lu *LoanUpdate) ClearNextPayment() *LoanUpdate {
-	lu.mutation.ClearNextPayment()
+// ClearNextPaymentDate clears the value of the "next_payment_date" field.
+func (lu *LoanUpdate) ClearNextPaymentDate() *LoanUpdate {
+	lu.mutation.ClearNextPaymentDate()
 	return lu
 }
 
@@ -670,11 +670,11 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := lu.mutation.MaturityDate(); ok {
 		_spec.SetField(loan.FieldMaturityDate, field.TypeTime, value)
 	}
-	if value, ok := lu.mutation.NextPayment(); ok {
-		_spec.SetField(loan.FieldNextPayment, field.TypeTime, value)
+	if value, ok := lu.mutation.NextPaymentDate(); ok {
+		_spec.SetField(loan.FieldNextPaymentDate, field.TypeTime, value)
 	}
-	if lu.mutation.NextPaymentCleared() {
-		_spec.ClearField(loan.FieldNextPayment, field.TypeTime)
+	if lu.mutation.NextPaymentDateCleared() {
+		_spec.ClearField(loan.FieldNextPaymentDate, field.TypeTime)
 	}
 	if value, ok := lu.mutation.NextPaymentAmount(); ok {
 		_spec.SetField(loan.FieldNextPaymentAmount, field.TypeFloat64, value)
@@ -1071,23 +1071,23 @@ func (luo *LoanUpdateOne) SetNillableMaturityDate(t *time.Time) *LoanUpdateOne {
 	return luo
 }
 
-// SetNextPayment sets the "next_payment" field.
-func (luo *LoanUpdateOne) SetNextPayment(t time.Time) *LoanUpdateOne {
-	luo.mutation.SetNextPayment(t)
+// SetNextPaymentDate sets the "next_payment_date" field.
+func (luo *LoanUpdateOne) SetNextPaymentDate(t time.Time) *LoanUpdateOne {
+	luo.mutation.SetNextPaymentDate(t)
 	return luo
 }
 
-// SetNillableNextPayment sets the "next_payment" field if the given value is not nil.
-func (luo *LoanUpdateOne) SetNillableNextPayment(t *time.Time) *LoanUpdateOne {
+// SetNillableNextPaymentDate sets the "next_payment_date" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableNextPaymentDate(t *time.Time) *LoanUpdateOne {
 	if t != nil {
-		luo.SetNextPayment(*t)
+		luo.SetNextPaymentDate(*t)
 	}
 	return luo
 }
 
-// ClearNextPayment clears the value of the "next_payment" field.
-func (luo *LoanUpdateOne) ClearNextPayment() *LoanUpdateOne {
-	luo.mutation.ClearNextPayment()
+// ClearNextPaymentDate clears the value of the "next_payment_date" field.
+func (luo *LoanUpdateOne) ClearNextPaymentDate() *LoanUpdateOne {
+	luo.mutation.ClearNextPaymentDate()
 	return luo
 }
 
@@ -1580,11 +1580,11 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 	if value, ok := luo.mutation.MaturityDate(); ok {
 		_spec.SetField(loan.FieldMaturityDate, field.TypeTime, value)
 	}
-	if value, ok := luo.mutation.NextPayment(); ok {
-		_spec.SetField(loan.FieldNextPayment, field.TypeTime, value)
+	if value, ok := luo.mutation.NextPaymentDate(); ok {
+		_spec.SetField(loan.FieldNextPaymentDate, field.TypeTime, value)
 	}
-	if luo.mutation.NextPaymentCleared() {
-		_spec.ClearField(loan.FieldNextPayment, field.TypeTime)
+	if luo.mutation.NextPaymentDateCleared() {
+		_spec.ClearField(loan.FieldNextPaymentDate, field.TypeTime)
 	}
 	if value, ok := luo.mutation.NextPaymentAmount(); ok {
 		_spec.SetField(loan.FieldNextPaymentAmount, field.TypeFloat64, value)

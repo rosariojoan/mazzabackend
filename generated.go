@@ -497,8 +497,8 @@ type ComplexityRoot struct {
 		IsLending          func(childComplexity int) int
 		LoanSchedule       func(childComplexity int) int
 		MaturityDate       func(childComplexity int) int
-		NextPayment        func(childComplexity int) int
 		NextPaymentAmount  func(childComplexity int) int
+		NextPaymentDate    func(childComplexity int) int
 		OutstandingBalance func(childComplexity int) int
 		PaidInstallments   func(childComplexity int) int
 		PaymentFrequency   func(childComplexity int) int
@@ -820,7 +820,7 @@ type ComplexityRoot struct {
 		LoanProviderList         func(childComplexity int, top *int) int
 		LoanSchedules            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanScheduleOrder, where *generated.LoanScheduleWhereInput) int
 		Loans                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanOrder, where *generated.LoanWhereInput) int
-		LoansAging               func(childComplexity int, name *string) int
+		LoansAging               func(childComplexity int, isLending bool) int
 		LowStock                 func(childComplexity int, where *generated.ProductWhereInput) int
 		MemberSignupTokens       func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.MemberSignupTokenOrder, where *generated.MemberSignupTokenWhereInput) int
 		Node                     func(childComplexity int, id int) int
@@ -1147,7 +1147,7 @@ type QueryResolver interface {
 	AggregateCash(ctx context.Context, input model.AggregateCashInput) (*model.CashAggregationOutput, error)
 	AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
 	AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
-	LoansAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
+	LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error)
 }
 
 type executableSchema struct {
@@ -3325,19 +3325,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Loan.MaturityDate(childComplexity), true
 
-	case "Loan.nextPayment":
-		if e.complexity.Loan.NextPayment == nil {
-			break
-		}
-
-		return e.complexity.Loan.NextPayment(childComplexity), true
-
 	case "Loan.nextPaymentAmount":
 		if e.complexity.Loan.NextPaymentAmount == nil {
 			break
 		}
 
 		return e.complexity.Loan.NextPaymentAmount(childComplexity), true
+
+	case "Loan.nextPaymentDate":
+		if e.complexity.Loan.NextPaymentDate == nil {
+			break
+		}
+
+		return e.complexity.Loan.NextPaymentDate(childComplexity), true
 
 	case "Loan.outstandingBalance":
 		if e.complexity.Loan.OutstandingBalance == nil {
@@ -5464,7 +5464,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.LoansAging(childComplexity, args["name"].(*string)), true
+		return e.complexity.Query.LoansAging(childComplexity, args["isLending"].(bool)), true
 
 	case "Query.lowStock":
 		if e.complexity.Query.LowStock == nil {
@@ -11280,32 +11280,32 @@ func (ec *executionContext) field_Query_loanSchedules_argsWhere(
 func (ec *executionContext) field_Query_loansAging_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_loansAging_argsName(ctx, rawArgs)
+	arg0, err := ec.field_Query_loansAging_argsIsLending(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["name"] = arg0
+	args["isLending"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Query_loansAging_argsName(
+func (ec *executionContext) field_Query_loansAging_argsIsLending(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*string, error) {
+) (bool, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
-	_, ok := rawArgs["name"]
+	_, ok := rawArgs["isLending"]
 	if !ok {
-		var zeroVal *string
+		var zeroVal bool
 		return zeroVal, nil
 	}
 
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-	if tmp, ok := rawArgs["name"]; ok {
-		return ec.unmarshalOString2ᚖstring(ctx, tmp)
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("isLending"))
+	if tmp, ok := rawArgs["isLending"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
 	}
 
-	var zeroVal *string
+	var zeroVal bool
 	return zeroVal, nil
 }
 
@@ -14042,8 +14042,8 @@ func (ec *executionContext) fieldContext_AccountingEntry_loan(_ context.Context,
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -17126,8 +17126,8 @@ func (ec *executionContext) fieldContext_Company_loans(_ context.Context, field 
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -20306,8 +20306,8 @@ func (ec *executionContext) fieldContext_Customer_loanSchedule(_ context.Context
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -29007,8 +29007,8 @@ func (ec *executionContext) fieldContext_Loan_maturityDate(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Loan_nextPayment(ctx context.Context, field graphql.CollectedField, obj *generated.Loan) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Loan_nextPayment(ctx, field)
+func (ec *executionContext) _Loan_nextPaymentDate(ctx context.Context, field graphql.CollectedField, obj *generated.Loan) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -29021,7 +29021,7 @@ func (ec *executionContext) _Loan_nextPayment(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.NextPayment, nil
+		return obj.NextPaymentDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -29035,7 +29035,7 @@ func (ec *executionContext) _Loan_nextPayment(ctx context.Context, field graphql
 	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Loan_nextPayment(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Loan_nextPaymentDate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Loan",
 		Field:      field,
@@ -30212,8 +30212,8 @@ func (ec *executionContext) fieldContext_LoanEdge_node(_ context.Context, field 
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -31137,8 +31137,8 @@ func (ec *executionContext) fieldContext_LoanSchedule_loan(_ context.Context, fi
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -37204,8 +37204,8 @@ func (ec *executionContext) fieldContext_Mutation_createLoan(ctx context.Context
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -37400,8 +37400,8 @@ func (ec *executionContext) fieldContext_Mutation_updateLoan(ctx context.Context
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -45590,8 +45590,8 @@ func (ec *executionContext) fieldContext_Query_getLoan(ctx context.Context, fiel
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -46030,7 +46030,7 @@ func (ec *executionContext) _Query_loansAging(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LoansAging(rctx, fc.Args["name"].(*string))
+		return ec.resolvers.Query().LoansAging(rctx, fc.Args["isLending"].(bool))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -48353,8 +48353,8 @@ func (ec *executionContext) fieldContext_Supplier_loanSchedule(_ context.Context
 				return ec.fieldContext_Loan_installments(ctx, field)
 			case "maturityDate":
 				return ec.fieldContext_Loan_maturityDate(ctx, field)
-			case "nextPayment":
-				return ec.fieldContext_Loan_nextPayment(ctx, field)
+			case "nextPaymentDate":
+				return ec.fieldContext_Loan_nextPaymentDate(ctx, field)
 			case "nextPaymentAmount":
 				return ec.fieldContext_Loan_nextPaymentAmount(ctx, field)
 			case "outstandingBalance":
@@ -61455,7 +61455,7 @@ func (ec *executionContext) unmarshalInputCreateLoanInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"amount", "category", "collateral", "description", "interestRate", "installments", "maturityDate", "nextPayment", "nextPaymentAmount", "outstandingBalance", "paymentFrequency", "paidInstallments", "paymentType", "counterpartyName", "startDate", "status", "isLending", "clientID", "supplierID", "loanScheduleIDs", "transactionHistoryIDs"}
+	fieldsInOrder := [...]string{"amount", "category", "collateral", "description", "interestRate", "installments", "maturityDate", "nextPaymentDate", "nextPaymentAmount", "outstandingBalance", "paymentFrequency", "paidInstallments", "paymentType", "counterpartyName", "startDate", "status", "isLending", "clientID", "supplierID", "loanScheduleIDs", "transactionHistoryIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -61511,13 +61511,13 @@ func (ec *executionContext) unmarshalInputCreateLoanInput(ctx context.Context, o
 				return it, err
 			}
 			it.MaturityDate = data
-		case "nextPayment":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPayment"))
+		case "nextPaymentDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPayment = data
+			it.NextPaymentDate = data
 		case "nextPaymentAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -72325,7 +72325,7 @@ func (ec *executionContext) unmarshalInputLoanWhereInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "collateral", "collateralNEQ", "collateralIn", "collateralNotIn", "collateralGT", "collateralGTE", "collateralLT", "collateralLTE", "collateralContains", "collateralHasPrefix", "collateralHasSuffix", "collateralIsNil", "collateralNotNil", "collateralEqualFold", "collateralContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "interestRate", "interestRateNEQ", "interestRateIn", "interestRateNotIn", "interestRateGT", "interestRateGTE", "interestRateLT", "interestRateLTE", "installments", "installmentsNEQ", "installmentsIn", "installmentsNotIn", "installmentsGT", "installmentsGTE", "installmentsLT", "installmentsLTE", "maturityDate", "maturityDateNEQ", "maturityDateIn", "maturityDateNotIn", "maturityDateGT", "maturityDateGTE", "maturityDateLT", "maturityDateLTE", "nextPayment", "nextPaymentNEQ", "nextPaymentIn", "nextPaymentNotIn", "nextPaymentGT", "nextPaymentGTE", "nextPaymentLT", "nextPaymentLTE", "nextPaymentIsNil", "nextPaymentNotNil", "nextPaymentAmount", "nextPaymentAmountNEQ", "nextPaymentAmountIn", "nextPaymentAmountNotIn", "nextPaymentAmountGT", "nextPaymentAmountGTE", "nextPaymentAmountLT", "nextPaymentAmountLTE", "nextPaymentAmountIsNil", "nextPaymentAmountNotNil", "outstandingBalance", "outstandingBalanceNEQ", "outstandingBalanceIn", "outstandingBalanceNotIn", "outstandingBalanceGT", "outstandingBalanceGTE", "outstandingBalanceLT", "outstandingBalanceLTE", "paymentFrequency", "paymentFrequencyNEQ", "paymentFrequencyIn", "paymentFrequencyNotIn", "paidInstallments", "paidInstallmentsNEQ", "paidInstallmentsIn", "paidInstallmentsNotIn", "paidInstallmentsGT", "paidInstallmentsGTE", "paidInstallmentsLT", "paidInstallmentsLTE", "paymentType", "paymentTypeNEQ", "paymentTypeIn", "paymentTypeNotIn", "counterpartyName", "counterpartyNameNEQ", "counterpartyNameIn", "counterpartyNameNotIn", "counterpartyNameGT", "counterpartyNameGTE", "counterpartyNameLT", "counterpartyNameLTE", "counterpartyNameContains", "counterpartyNameHasPrefix", "counterpartyNameHasSuffix", "counterpartyNameEqualFold", "counterpartyNameContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "status", "statusNEQ", "statusIn", "statusNotIn", "isLending", "isLendingNEQ", "hasClient", "hasClientWith", "hasSupplier", "hasSupplierWith", "hasCompany", "hasCompanyWith", "hasLoanSchedule", "hasLoanScheduleWith", "hasTransactionHistory", "hasTransactionHistoryWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "amount", "amountNEQ", "amountIn", "amountNotIn", "amountGT", "amountGTE", "amountLT", "amountLTE", "category", "categoryNEQ", "categoryIn", "categoryNotIn", "collateral", "collateralNEQ", "collateralIn", "collateralNotIn", "collateralGT", "collateralGTE", "collateralLT", "collateralLTE", "collateralContains", "collateralHasPrefix", "collateralHasSuffix", "collateralIsNil", "collateralNotNil", "collateralEqualFold", "collateralContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "interestRate", "interestRateNEQ", "interestRateIn", "interestRateNotIn", "interestRateGT", "interestRateGTE", "interestRateLT", "interestRateLTE", "installments", "installmentsNEQ", "installmentsIn", "installmentsNotIn", "installmentsGT", "installmentsGTE", "installmentsLT", "installmentsLTE", "maturityDate", "maturityDateNEQ", "maturityDateIn", "maturityDateNotIn", "maturityDateGT", "maturityDateGTE", "maturityDateLT", "maturityDateLTE", "nextPaymentDate", "nextPaymentDateNEQ", "nextPaymentDateIn", "nextPaymentDateNotIn", "nextPaymentDateGT", "nextPaymentDateGTE", "nextPaymentDateLT", "nextPaymentDateLTE", "nextPaymentDateIsNil", "nextPaymentDateNotNil", "nextPaymentAmount", "nextPaymentAmountNEQ", "nextPaymentAmountIn", "nextPaymentAmountNotIn", "nextPaymentAmountGT", "nextPaymentAmountGTE", "nextPaymentAmountLT", "nextPaymentAmountLTE", "nextPaymentAmountIsNil", "nextPaymentAmountNotNil", "outstandingBalance", "outstandingBalanceNEQ", "outstandingBalanceIn", "outstandingBalanceNotIn", "outstandingBalanceGT", "outstandingBalanceGTE", "outstandingBalanceLT", "outstandingBalanceLTE", "paymentFrequency", "paymentFrequencyNEQ", "paymentFrequencyIn", "paymentFrequencyNotIn", "paidInstallments", "paidInstallmentsNEQ", "paidInstallmentsIn", "paidInstallmentsNotIn", "paidInstallmentsGT", "paidInstallmentsGTE", "paidInstallmentsLT", "paidInstallmentsLTE", "paymentType", "paymentTypeNEQ", "paymentTypeIn", "paymentTypeNotIn", "counterpartyName", "counterpartyNameNEQ", "counterpartyNameIn", "counterpartyNameNotIn", "counterpartyNameGT", "counterpartyNameGTE", "counterpartyNameLT", "counterpartyNameLTE", "counterpartyNameContains", "counterpartyNameHasPrefix", "counterpartyNameHasSuffix", "counterpartyNameEqualFold", "counterpartyNameContainsFold", "startDate", "startDateNEQ", "startDateIn", "startDateNotIn", "startDateGT", "startDateGTE", "startDateLT", "startDateLTE", "status", "statusNEQ", "statusIn", "statusNotIn", "isLending", "isLendingNEQ", "hasClient", "hasClientWith", "hasSupplier", "hasSupplierWith", "hasCompany", "hasCompanyWith", "hasLoanSchedule", "hasLoanScheduleWith", "hasTransactionHistory", "hasTransactionHistoryWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -73053,76 +73053,76 @@ func (ec *executionContext) unmarshalInputLoanWhereInput(ctx context.Context, ob
 				return it, err
 			}
 			it.MaturityDateLTE = data
-		case "nextPayment":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPayment"))
+		case "nextPaymentDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPayment = data
-		case "nextPaymentNEQ":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentNEQ"))
+			it.NextPaymentDate = data
+		case "nextPaymentDateNEQ":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateNEQ"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentNEQ = data
-		case "nextPaymentIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentIn"))
+			it.NextPaymentDateNEQ = data
+		case "nextPaymentDateIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentIn = data
-		case "nextPaymentNotIn":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentNotIn"))
+			it.NextPaymentDateIn = data
+		case "nextPaymentDateNotIn":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateNotIn"))
 			data, err := ec.unmarshalOTime2ᚕtimeᚐTimeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentNotIn = data
-		case "nextPaymentGT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentGT"))
+			it.NextPaymentDateNotIn = data
+		case "nextPaymentDateGT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateGT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentGT = data
-		case "nextPaymentGTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentGTE"))
+			it.NextPaymentDateGT = data
+		case "nextPaymentDateGTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateGTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentGTE = data
-		case "nextPaymentLT":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentLT"))
+			it.NextPaymentDateGTE = data
+		case "nextPaymentDateLT":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateLT"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentLT = data
-		case "nextPaymentLTE":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentLTE"))
+			it.NextPaymentDateLT = data
+		case "nextPaymentDateLTE":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateLTE"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentLTE = data
-		case "nextPaymentIsNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentIsNil"))
+			it.NextPaymentDateLTE = data
+		case "nextPaymentDateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateIsNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentIsNil = data
-		case "nextPaymentNotNil":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentNotNil"))
+			it.NextPaymentDateIsNil = data
+		case "nextPaymentDateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDateNotNil"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPaymentNotNil = data
+			it.NextPaymentDateNotNil = data
 		case "nextPaymentAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -83033,7 +83033,7 @@ func (ec *executionContext) unmarshalInputUpdateLoanInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"amount", "category", "collateral", "clearCollateral", "description", "clearDescription", "interestRate", "installments", "maturityDate", "nextPayment", "clearNextPayment", "nextPaymentAmount", "clearNextPaymentAmount", "outstandingBalance", "paymentFrequency", "paidInstallments", "paymentType", "counterpartyName", "startDate", "status", "isLending", "addLoanScheduleIDs", "removeLoanScheduleIDs", "clearLoanSchedule", "addTransactionHistoryIDs", "removeTransactionHistoryIDs", "clearTransactionHistory"}
+	fieldsInOrder := [...]string{"amount", "category", "collateral", "clearCollateral", "description", "clearDescription", "interestRate", "installments", "maturityDate", "nextPaymentDate", "clearNextPaymentDate", "nextPaymentAmount", "clearNextPaymentAmount", "outstandingBalance", "paymentFrequency", "paidInstallments", "paymentType", "counterpartyName", "startDate", "status", "isLending", "addLoanScheduleIDs", "removeLoanScheduleIDs", "clearLoanSchedule", "addTransactionHistoryIDs", "removeTransactionHistoryIDs", "clearTransactionHistory"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -83103,20 +83103,20 @@ func (ec *executionContext) unmarshalInputUpdateLoanInput(ctx context.Context, o
 				return it, err
 			}
 			it.MaturityDate = data
-		case "nextPayment":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPayment"))
+		case "nextPaymentDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentDate"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.NextPayment = data
-		case "clearNextPayment":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearNextPayment"))
+			it.NextPaymentDate = data
+		case "clearNextPaymentDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearNextPaymentDate"))
 			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.ClearNextPayment = data
+			it.ClearNextPaymentDate = data
 		case "nextPaymentAmount":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nextPaymentAmount"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -92299,8 +92299,8 @@ func (ec *executionContext) _Loan(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "nextPayment":
-			out.Values[i] = ec._Loan_nextPayment(ctx, field, obj)
+		case "nextPaymentDate":
+			out.Values[i] = ec._Loan_nextPaymentDate(ctx, field, obj)
 		case "nextPaymentAmount":
 			out.Values[i] = ec._Loan_nextPaymentAmount(ctx, field, obj)
 		case "outstandingBalance":

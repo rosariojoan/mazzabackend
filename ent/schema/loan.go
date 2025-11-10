@@ -34,7 +34,7 @@ func (Loan) Fields() []ent.Field {
 		field.Float("interest_rate").Min(0).Annotations(entgql.OrderField("interestRate")),
 		field.Int("installments").Min(0),
 		field.Time("maturity_date").Annotations(entgql.OrderField("maturityDate")),
-		field.Time("next_payment").Optional().Annotations(entgql.OrderField("nextPayment")),
+		field.Time("next_payment_date").Optional().Annotations(entgql.OrderField("nextPaymentDate")),
 		field.Float("next_payment_amount").Min(0).Default(0).Optional().Annotations(entgql.OrderField("nextPaymentAmount")),
 		field.Float("outstanding_balance").Min(0).Annotations(entgql.OrderField("outstandingBalance")),
 		field.Enum("payment_frequency").

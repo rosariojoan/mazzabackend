@@ -1410,7 +1410,7 @@ input CreateLoanInput {
   interestRate: Float!
   installments: Int!
   maturityDate: Time!
-  nextPayment: Time
+  nextPaymentDate: Time
   nextPaymentAmount: Float
   outstandingBalance: Float!
   paymentFrequency: LoanPaymentFrequency
@@ -3621,7 +3621,7 @@ type Loan implements Node {
   interestRate: Float!
   installments: Int!
   maturityDate: Time!
-  nextPayment: Time
+  nextPaymentDate: Time
   nextPaymentAmount: Float
   outstandingBalance: Float!
   paymentFrequency: LoanPaymentFrequency!
@@ -3711,7 +3711,7 @@ enum LoanOrderField {
   category
   interestRate
   maturityDate
-  nextPayment
+  nextPaymentDate
   nextPaymentAmount
   outstandingBalance
   paymentFrequency
@@ -4130,18 +4130,18 @@ input LoanWhereInput {
   maturityDateLT: Time
   maturityDateLTE: Time
   """
-  next_payment field predicates
+  next_payment_date field predicates
   """
-  nextPayment: Time
-  nextPaymentNEQ: Time
-  nextPaymentIn: [Time!]
-  nextPaymentNotIn: [Time!]
-  nextPaymentGT: Time
-  nextPaymentGTE: Time
-  nextPaymentLT: Time
-  nextPaymentLTE: Time
-  nextPaymentIsNil: Boolean
-  nextPaymentNotNil: Boolean
+  nextPaymentDate: Time
+  nextPaymentDateNEQ: Time
+  nextPaymentDateIn: [Time!]
+  nextPaymentDateNotIn: [Time!]
+  nextPaymentDateGT: Time
+  nextPaymentDateGTE: Time
+  nextPaymentDateLT: Time
+  nextPaymentDateLTE: Time
+  nextPaymentDateIsNil: Boolean
+  nextPaymentDateNotNil: Boolean
   """
   next_payment_amount field predicates
   """
@@ -6916,8 +6916,8 @@ input UpdateLoanInput {
   interestRate: Float
   installments: Int
   maturityDate: Time
-  nextPayment: Time
-  clearNextPayment: Boolean
+  nextPaymentDate: Time
+  clearNextPaymentDate: Boolean
   nextPaymentAmount: Float
   clearNextPaymentAmount: Boolean
   outstandingBalance: Float
