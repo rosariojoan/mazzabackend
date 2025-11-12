@@ -357,13 +357,13 @@ type Company implements Node {
   description: String
   email: String
   industry: String
-  lastentrydate: Time! @goField(name: "LastEntryDate", forceResolver: false)
+  lastentrydate: Time @goField(name: "LastEntryDate", forceResolver: false)
   lastinvoicenumber: Int @goField(name: "LastInvoiceNumber", forceResolver: false)
   logourl: String @goField(name: "LogoURL", forceResolver: false)
   name: String!
   numberofemployees: Int! @goField(name: "NumberOfEmployees", forceResolver: false)
   phone: String
-  taxid: String! @goField(name: "TaxId", forceResolver: false)
+  taxid: String @goField(name: "TaxId", forceResolver: false)
   vatrate: Float! @goField(name: "VatRate", forceResolver: false)
   website: String
   incompletesetup: Boolean @goField(name: "IncompleteSetup", forceResolver: false)
@@ -930,6 +930,8 @@ input CompanyWhereInput {
   lastentrydateGTE: Time
   lastentrydateLT: Time
   lastentrydateLTE: Time
+  lastentrydateIsNil: Boolean
+  lastentrydateNotNil: Boolean
   """
   lastInvoiceNumber field predicates
   """
@@ -1020,6 +1022,8 @@ input CompanyWhereInput {
   taxidContains: String
   taxidHasPrefix: String
   taxidHasSuffix: String
+  taxidIsNil: Boolean
+  taxidNotNil: Boolean
   taxidEqualFold: String
   taxidContainsFold: String
   """
@@ -1236,12 +1240,12 @@ input CreateCompanyInput {
   description: String
   email: String
   industry: String
-  lastentrydate: Time!
+  lastentrydate: Time
   lastinvoicenumber: Int
   name: String!
   numberofemployees: Int
   phone: String
-  taxid: String!
+  taxid: String
   vatrate: Float
   website: String
   incompletesetup: Boolean
@@ -3651,6 +3655,7 @@ LoanCategory is enum for the field category
 """
 enum LoanCategory @goModel(model: "mazza/ent/generated/loan.Category") {
   auto
+  business
   equipment
   expansion
   line_of_credit
@@ -6655,6 +6660,7 @@ input UpdateCompanyInput {
   industry: String
   clearIndustry: Boolean
   lastentrydate: Time
+  clearLastEntryDate: Boolean
   lastinvoicenumber: Int
   clearLastInvoiceNumber: Boolean
   name: String
@@ -6662,6 +6668,7 @@ input UpdateCompanyInput {
   phone: String
   clearPhone: Boolean
   taxid: String
+  clearTaxId: Boolean
   vatrate: Float
   website: String
   clearWebsite: Boolean

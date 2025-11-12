@@ -209,12 +209,12 @@ type CreateCompanyInput struct {
 	Description          *string
 	Email                *string
 	Industry             *string
-	LastEntryDate        time.Time
+	LastEntryDate        *time.Time
 	LastInvoiceNumber    *int32
 	Name                 string
 	NumberOfEmployees    *int32
 	Phone                *string
-	TaxId                string
+	TaxId                *string
 	VatRate              *float64
 	Website              *string
 	IncompleteSetup      *bool
@@ -266,7 +266,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Industry; v != nil {
 		m.SetIndustry(*v)
 	}
-	m.SetLastEntryDate(i.LastEntryDate)
+	if v := i.LastEntryDate; v != nil {
+		m.SetLastEntryDate(*v)
+	}
 	if v := i.LastInvoiceNumber; v != nil {
 		m.SetLastInvoiceNumber(*v)
 	}
@@ -277,7 +279,9 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	m.SetTaxId(i.TaxId)
+	if v := i.TaxId; v != nil {
+		m.SetTaxId(*v)
+	}
 	if v := i.VatRate; v != nil {
 		m.SetVatRate(*v)
 	}
@@ -380,6 +384,7 @@ type UpdateCompanyInput struct {
 	Email                      *string
 	ClearIndustry              bool
 	Industry                   *string
+	ClearLastEntryDate         bool
 	LastEntryDate              *time.Time
 	ClearLastInvoiceNumber     bool
 	LastInvoiceNumber          *int32
@@ -387,6 +392,7 @@ type UpdateCompanyInput struct {
 	NumberOfEmployees          *int32
 	ClearPhone                 bool
 	Phone                      *string
+	ClearTaxId                 bool
 	TaxId                      *string
 	VatRate                    *float64
 	ClearWebsite               bool
@@ -507,6 +513,9 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Industry; v != nil {
 		m.SetIndustry(*v)
 	}
+	if i.ClearLastEntryDate {
+		m.ClearLastEntryDate()
+	}
 	if v := i.LastEntryDate; v != nil {
 		m.SetLastEntryDate(*v)
 	}
@@ -527,6 +536,9 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if i.ClearTaxId {
+		m.ClearTaxId()
 	}
 	if v := i.TaxId; v != nil {
 		m.SetTaxId(*v)

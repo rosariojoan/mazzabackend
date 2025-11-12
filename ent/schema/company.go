@@ -25,7 +25,7 @@ func (Company) Mixin() []ent.Mixin {
 func (Company) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("address").Nillable().Optional(),
-		field.String("baseCurrency").Default("mzn"),
+		field.String("baseCurrency").Default("MZN"),
 		field.String("ceoName").Nillable().Optional(),
 		field.String("city").Annotations(entgql.OrderField("CITY")),
 		field.String("country").Annotations(entgql.OrderField("COUNTRY")),
@@ -33,7 +33,7 @@ func (Company) Fields() []ent.Field {
 		field.String("description").Nillable().Optional(),
 		field.String("email").Nillable().Optional(),
 		field.String("industry").Nillable().Optional(),
-		field.Time("lastEntryDate").Nillable(),
+		field.Time("lastEntryDate").Nillable().Optional(),
 		field.Int32("lastInvoiceNumber").Optional().Default(0).NonNegative(),
 		field.String("logoURL").Nillable().Optional().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
@@ -42,7 +42,7 @@ func (Company) Fields() []ent.Field {
 		field.String("name").Annotations(entgql.OrderField("NAME")),
 		field.Int32("numberOfEmployees").NonNegative().Default(0),
 		field.String("phone").Nillable().Optional(),
-		field.String("taxId").Unique().Nillable(),
+		field.String("taxId").Nillable().Optional(),
 		field.Float("vatRate").Default(0.16),
 		field.String("website").Nillable().Optional(),
 		field.Bool("incompleteSetup").Optional().Default(true),

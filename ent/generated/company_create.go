@@ -191,6 +191,14 @@ func (cc *CompanyCreate) SetLastEntryDate(t time.Time) *CompanyCreate {
 	return cc
 }
 
+// SetNillableLastEntryDate sets the "lastEntryDate" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableLastEntryDate(t *time.Time) *CompanyCreate {
+	if t != nil {
+		cc.SetLastEntryDate(*t)
+	}
+	return cc
+}
+
 // SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
 func (cc *CompanyCreate) SetLastInvoiceNumber(i int32) *CompanyCreate {
 	cc.mutation.SetLastInvoiceNumber(i)
@@ -270,6 +278,14 @@ func (cc *CompanyCreate) SetNillablePhone(s *string) *CompanyCreate {
 // SetTaxId sets the "taxId" field.
 func (cc *CompanyCreate) SetTaxId(s string) *CompanyCreate {
 	cc.mutation.SetTaxId(s)
+	return cc
+}
+
+// SetNillableTaxId sets the "taxId" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableTaxId(s *string) *CompanyCreate {
+	if s != nil {
+		cc.SetTaxId(*s)
+	}
 	return cc
 }
 
@@ -749,9 +765,6 @@ func (cc *CompanyCreate) check() error {
 	if _, ok := cc.mutation.EstablishedAt(); !ok {
 		return &ValidationError{Name: "establishedAt", err: errors.New(`generated: missing required field "Company.establishedAt"`)}
 	}
-	if _, ok := cc.mutation.LastEntryDate(); !ok {
-		return &ValidationError{Name: "lastEntryDate", err: errors.New(`generated: missing required field "Company.lastEntryDate"`)}
-	}
 	if v, ok := cc.mutation.LastInvoiceNumber(); ok {
 		if err := company.LastInvoiceNumberValidator(v); err != nil {
 			return &ValidationError{Name: "lastInvoiceNumber", err: fmt.Errorf(`generated: validator failed for field "Company.lastInvoiceNumber": %w`, err)}
@@ -767,9 +780,6 @@ func (cc *CompanyCreate) check() error {
 		if err := company.NumberOfEmployeesValidator(v); err != nil {
 			return &ValidationError{Name: "numberOfEmployees", err: fmt.Errorf(`generated: validator failed for field "Company.numberOfEmployees": %w`, err)}
 		}
-	}
-	if _, ok := cc.mutation.TaxId(); !ok {
-		return &ValidationError{Name: "taxId", err: errors.New(`generated: missing required field "Company.taxId"`)}
 	}
 	if _, ok := cc.mutation.VatRate(); !ok {
 		return &ValidationError{Name: "vatRate", err: errors.New(`generated: missing required field "Company.vatRate"`)}

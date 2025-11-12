@@ -27,7 +27,7 @@ func (Loan) Fields() []ent.Field {
 	return []ent.Field{
 		field.Float("amount").Min(0).Annotations(entgql.OrderField("amount")),
 		field.Enum("category").
-			Values("auto", "equipment", "expansion", "line_of_credit", "mortgage", "personal", "working_capital").
+			Values("auto", "business", "equipment", "expansion", "line_of_credit", "mortgage", "personal", "working_capital").
 			Annotations(entgql.OrderField("category")),
 		field.String("collateral").Optional(),
 		field.String("description").Optional(),

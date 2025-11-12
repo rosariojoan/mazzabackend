@@ -246,6 +246,12 @@ func (cu *CompanyUpdate) SetNillableLastEntryDate(t *time.Time) *CompanyUpdate {
 	return cu
 }
 
+// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+func (cu *CompanyUpdate) ClearLastEntryDate() *CompanyUpdate {
+	cu.mutation.ClearLastEntryDate()
+	return cu
+}
+
 // SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
 func (cu *CompanyUpdate) SetLastInvoiceNumber(i int32) *CompanyUpdate {
 	cu.mutation.ResetLastInvoiceNumber()
@@ -379,6 +385,12 @@ func (cu *CompanyUpdate) SetNillableTaxId(s *string) *CompanyUpdate {
 	if s != nil {
 		cu.SetTaxId(*s)
 	}
+	return cu
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (cu *CompanyUpdate) ClearTaxId() *CompanyUpdate {
+	cu.mutation.ClearTaxId()
 	return cu
 }
 
@@ -1388,6 +1400,9 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.LastEntryDate(); ok {
 		_spec.SetField(company.FieldLastEntryDate, field.TypeTime, value)
 	}
+	if cu.mutation.LastEntryDateCleared() {
+		_spec.ClearField(company.FieldLastEntryDate, field.TypeTime)
+	}
 	if value, ok := cu.mutation.LastInvoiceNumber(); ok {
 		_spec.SetField(company.FieldLastInvoiceNumber, field.TypeInt32, value)
 	}
@@ -1426,6 +1441,9 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.TaxId(); ok {
 		_spec.SetField(company.FieldTaxId, field.TypeString, value)
+	}
+	if cu.mutation.TaxIdCleared() {
+		_spec.ClearField(company.FieldTaxId, field.TypeString)
 	}
 	if value, ok := cu.mutation.VatRate(); ok {
 		_spec.SetField(company.FieldVatRate, field.TypeFloat64, value)
@@ -2682,6 +2700,12 @@ func (cuo *CompanyUpdateOne) SetNillableLastEntryDate(t *time.Time) *CompanyUpda
 	return cuo
 }
 
+// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+func (cuo *CompanyUpdateOne) ClearLastEntryDate() *CompanyUpdateOne {
+	cuo.mutation.ClearLastEntryDate()
+	return cuo
+}
+
 // SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
 func (cuo *CompanyUpdateOne) SetLastInvoiceNumber(i int32) *CompanyUpdateOne {
 	cuo.mutation.ResetLastInvoiceNumber()
@@ -2815,6 +2839,12 @@ func (cuo *CompanyUpdateOne) SetNillableTaxId(s *string) *CompanyUpdateOne {
 	if s != nil {
 		cuo.SetTaxId(*s)
 	}
+	return cuo
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (cuo *CompanyUpdateOne) ClearTaxId() *CompanyUpdateOne {
+	cuo.mutation.ClearTaxId()
 	return cuo
 }
 
@@ -3854,6 +3884,9 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if value, ok := cuo.mutation.LastEntryDate(); ok {
 		_spec.SetField(company.FieldLastEntryDate, field.TypeTime, value)
 	}
+	if cuo.mutation.LastEntryDateCleared() {
+		_spec.ClearField(company.FieldLastEntryDate, field.TypeTime)
+	}
 	if value, ok := cuo.mutation.LastInvoiceNumber(); ok {
 		_spec.SetField(company.FieldLastInvoiceNumber, field.TypeInt32, value)
 	}
@@ -3892,6 +3925,9 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	}
 	if value, ok := cuo.mutation.TaxId(); ok {
 		_spec.SetField(company.FieldTaxId, field.TypeString, value)
+	}
+	if cuo.mutation.TaxIdCleared() {
+		_spec.ClearField(company.FieldTaxId, field.TypeString)
 	}
 	if value, ok := cuo.mutation.VatRate(); ok {
 		_spec.SetField(company.FieldVatRate, field.TypeFloat64, value)

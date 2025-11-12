@@ -1124,14 +1124,16 @@ type CompanyWhereInput struct {
 	IndustryContainsFold *string  `json:"industryContainsFold,omitempty"`
 
 	// "lastEntryDate" field predicates.
-	LastEntryDate      *time.Time  `json:"lastentrydate,omitempty"`
-	LastEntryDateNEQ   *time.Time  `json:"lastentrydateNEQ,omitempty"`
-	LastEntryDateIn    []time.Time `json:"lastentrydateIn,omitempty"`
-	LastEntryDateNotIn []time.Time `json:"lastentrydateNotIn,omitempty"`
-	LastEntryDateGT    *time.Time  `json:"lastentrydateGT,omitempty"`
-	LastEntryDateGTE   *time.Time  `json:"lastentrydateGTE,omitempty"`
-	LastEntryDateLT    *time.Time  `json:"lastentrydateLT,omitempty"`
-	LastEntryDateLTE   *time.Time  `json:"lastentrydateLTE,omitempty"`
+	LastEntryDate       *time.Time  `json:"lastentrydate,omitempty"`
+	LastEntryDateNEQ    *time.Time  `json:"lastentrydateNEQ,omitempty"`
+	LastEntryDateIn     []time.Time `json:"lastentrydateIn,omitempty"`
+	LastEntryDateNotIn  []time.Time `json:"lastentrydateNotIn,omitempty"`
+	LastEntryDateGT     *time.Time  `json:"lastentrydateGT,omitempty"`
+	LastEntryDateGTE    *time.Time  `json:"lastentrydateGTE,omitempty"`
+	LastEntryDateLT     *time.Time  `json:"lastentrydateLT,omitempty"`
+	LastEntryDateLTE    *time.Time  `json:"lastentrydateLTE,omitempty"`
+	LastEntryDateIsNil  bool        `json:"lastentrydateIsNil,omitempty"`
+	LastEntryDateNotNil bool        `json:"lastentrydateNotNil,omitempty"`
 
 	// "lastInvoiceNumber" field predicates.
 	LastInvoiceNumber       *int32  `json:"lastinvoicenumber,omitempty"`
@@ -1233,6 +1235,8 @@ type CompanyWhereInput struct {
 	TaxIdContains     *string  `json:"taxidContains,omitempty"`
 	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
 	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
+	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
+	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
 	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
 	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
 
@@ -1925,6 +1929,12 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 	if i.LastEntryDateLTE != nil {
 		predicates = append(predicates, company.LastEntryDateLTE(*i.LastEntryDateLTE))
 	}
+	if i.LastEntryDateIsNil {
+		predicates = append(predicates, company.LastEntryDateIsNil())
+	}
+	if i.LastEntryDateNotNil {
+		predicates = append(predicates, company.LastEntryDateNotNil())
+	}
 	if i.LastInvoiceNumber != nil {
 		predicates = append(predicates, company.LastInvoiceNumberEQ(*i.LastInvoiceNumber))
 	}
@@ -2185,6 +2195,12 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 	}
 	if i.TaxIdHasSuffix != nil {
 		predicates = append(predicates, company.TaxIdHasSuffix(*i.TaxIdHasSuffix))
+	}
+	if i.TaxIdIsNil {
+		predicates = append(predicates, company.TaxIdIsNil())
+	}
+	if i.TaxIdNotNil {
+		predicates = append(predicates, company.TaxIdNotNil())
 	}
 	if i.TaxIdEqualFold != nil {
 		predicates = append(predicates, company.TaxIdEqualFold(*i.TaxIdEqualFold))

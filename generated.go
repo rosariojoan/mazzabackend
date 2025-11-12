@@ -15965,14 +15965,11 @@ func (ec *executionContext) _Company_lastentrydate(ctx context.Context, field gr
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_lastentrydate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -16220,14 +16217,11 @@ func (ec *executionContext) _Company_taxid(ctx context.Context, field graphql.Co
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Company_taxid(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -57980,7 +57974,7 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryContains", "industryHasPrefix", "industryHasSuffix", "industryIsNil", "industryNotNil", "industryEqualFold", "industryContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logourl", "logourlNEQ", "logourlIn", "logourlNotIn", "logourlGT", "logourlGTE", "logourlLT", "logourlLTE", "logourlContains", "logourlHasPrefix", "logourlHasSuffix", "logourlIsNil", "logourlNotNil", "logourlEqualFold", "logourlContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasDocuments", "hasDocumentsWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasInventory", "hasInventoryWith", "hasInventoryMovements", "hasInventoryMovementsWith", "hasInvoices", "hasInvoicesWith", "hasLoans", "hasLoansWith", "hasLoanSchedule", "hasLoanScheduleWith", "hasMemberSignupTokens", "hasMemberSignupTokensWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasPayables", "hasPayablesWith", "hasReceivables", "hasReceivablesWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "createdat", "createdatNEQ", "createdatIn", "createdatNotIn", "createdatGT", "createdatGTE", "createdatLT", "createdatLTE", "updatedat", "updatedatNEQ", "updatedatIn", "updatedatNotIn", "updatedatGT", "updatedatGTE", "updatedatLT", "updatedatLTE", "deletedat", "deletedatNEQ", "deletedatIn", "deletedatNotIn", "deletedatGT", "deletedatGTE", "deletedatLT", "deletedatLTE", "deletedatIsNil", "deletedatNotNil", "address", "addressNEQ", "addressIn", "addressNotIn", "addressGT", "addressGTE", "addressLT", "addressLTE", "addressContains", "addressHasPrefix", "addressHasSuffix", "addressIsNil", "addressNotNil", "addressEqualFold", "addressContainsFold", "basecurrency", "basecurrencyNEQ", "basecurrencyIn", "basecurrencyNotIn", "basecurrencyGT", "basecurrencyGTE", "basecurrencyLT", "basecurrencyLTE", "basecurrencyContains", "basecurrencyHasPrefix", "basecurrencyHasSuffix", "basecurrencyEqualFold", "basecurrencyContainsFold", "ceoname", "ceonameNEQ", "ceonameIn", "ceonameNotIn", "ceonameGT", "ceonameGTE", "ceonameLT", "ceonameLTE", "ceonameContains", "ceonameHasPrefix", "ceonameHasSuffix", "ceonameIsNil", "ceonameNotNil", "ceonameEqualFold", "ceonameContainsFold", "city", "cityNEQ", "cityIn", "cityNotIn", "cityGT", "cityGTE", "cityLT", "cityLTE", "cityContains", "cityHasPrefix", "cityHasSuffix", "cityEqualFold", "cityContainsFold", "country", "countryNEQ", "countryIn", "countryNotIn", "countryGT", "countryGTE", "countryLT", "countryLTE", "countryContains", "countryHasPrefix", "countryHasSuffix", "countryEqualFold", "countryContainsFold", "establishedat", "establishedatNEQ", "establishedatIn", "establishedatNotIn", "establishedatGT", "establishedatGTE", "establishedatLT", "establishedatLTE", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionIsNil", "descriptionNotNil", "descriptionEqualFold", "descriptionContainsFold", "email", "emailNEQ", "emailIn", "emailNotIn", "emailGT", "emailGTE", "emailLT", "emailLTE", "emailContains", "emailHasPrefix", "emailHasSuffix", "emailIsNil", "emailNotNil", "emailEqualFold", "emailContainsFold", "industry", "industryNEQ", "industryIn", "industryNotIn", "industryGT", "industryGTE", "industryLT", "industryLTE", "industryContains", "industryHasPrefix", "industryHasSuffix", "industryIsNil", "industryNotNil", "industryEqualFold", "industryContainsFold", "lastentrydate", "lastentrydateNEQ", "lastentrydateIn", "lastentrydateNotIn", "lastentrydateGT", "lastentrydateGTE", "lastentrydateLT", "lastentrydateLTE", "lastentrydateIsNil", "lastentrydateNotNil", "lastinvoicenumber", "lastinvoicenumberNEQ", "lastinvoicenumberIn", "lastinvoicenumberNotIn", "lastinvoicenumberGT", "lastinvoicenumberGTE", "lastinvoicenumberLT", "lastinvoicenumberLTE", "lastinvoicenumberIsNil", "lastinvoicenumberNotNil", "logourl", "logourlNEQ", "logourlIn", "logourlNotIn", "logourlGT", "logourlGTE", "logourlLT", "logourlLTE", "logourlContains", "logourlHasPrefix", "logourlHasSuffix", "logourlIsNil", "logourlNotNil", "logourlEqualFold", "logourlContainsFold", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "numberofemployees", "numberofemployeesNEQ", "numberofemployeesIn", "numberofemployeesNotIn", "numberofemployeesGT", "numberofemployeesGTE", "numberofemployeesLT", "numberofemployeesLTE", "phone", "phoneNEQ", "phoneIn", "phoneNotIn", "phoneGT", "phoneGTE", "phoneLT", "phoneLTE", "phoneContains", "phoneHasPrefix", "phoneHasSuffix", "phoneIsNil", "phoneNotNil", "phoneEqualFold", "phoneContainsFold", "taxid", "taxidNEQ", "taxidIn", "taxidNotIn", "taxidGT", "taxidGTE", "taxidLT", "taxidLTE", "taxidContains", "taxidHasPrefix", "taxidHasSuffix", "taxidIsNil", "taxidNotNil", "taxidEqualFold", "taxidContainsFold", "vatrate", "vatrateNEQ", "vatrateIn", "vatrateNotIn", "vatrateGT", "vatrateGTE", "vatrateLT", "vatrateLTE", "website", "websiteNEQ", "websiteIn", "websiteNotIn", "websiteGT", "websiteGTE", "websiteLT", "websiteLTE", "websiteContains", "websiteHasPrefix", "websiteHasSuffix", "websiteIsNil", "websiteNotNil", "websiteEqualFold", "websiteContainsFold", "incompletesetup", "incompletesetupNEQ", "incompletesetupIsNil", "incompletesetupNotNil", "hasAvailableRoles", "hasAvailableRolesWith", "hasAccountingEntries", "hasAccountingEntriesWith", "hasCustomers", "hasCustomersWith", "hasDocuments", "hasDocumentsWith", "hasEmployees", "hasEmployeesWith", "hasFiles", "hasFilesWith", "hasInventory", "hasInventoryWith", "hasInventoryMovements", "hasInventoryMovementsWith", "hasInvoices", "hasInvoicesWith", "hasLoans", "hasLoansWith", "hasLoanSchedule", "hasLoanScheduleWith", "hasMemberSignupTokens", "hasMemberSignupTokensWith", "hasProducts", "hasProductsWith", "hasProjects", "hasProjectsWith", "hasPayables", "hasPayablesWith", "hasReceivables", "hasReceivablesWith", "hasSuppliers", "hasSuppliersWith", "hasTokens", "hasTokensWith", "hasTreasuries", "hasTreasuriesWith", "hasWorkShifts", "hasWorkShiftsWith", "hasUsers", "hasUsersWith", "hasDaughterCompanies", "hasDaughterCompaniesWith", "hasParentCompany", "hasParentCompanyWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -59156,6 +59150,20 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.LastEntryDateLTE = data
+		case "lastentrydateIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastentrydateIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastEntryDateIsNil = data
+		case "lastentrydateNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastentrydateNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.LastEntryDateNotNil = data
 		case "lastinvoicenumber":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastinvoicenumber"))
 			data, err := ec.unmarshalOInt2ᚖint32(ctx, v)
@@ -59660,6 +59668,20 @@ func (ec *executionContext) unmarshalInputCompanyWhereInput(ctx context.Context,
 				return it, err
 			}
 			it.TaxIdHasSuffix = data
+		case "taxidIsNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxidIsNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TaxIdIsNil = data
+		case "taxidNotNil":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxidNotNil"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TaxIdNotNil = data
 		case "taxidEqualFold":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxidEqualFold"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -60499,7 +60521,7 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 			it.Industry = data
 		case "lastentrydate":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastentrydate"))
-			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -60534,7 +60556,7 @@ func (ec *executionContext) unmarshalInputCreateCompanyInput(ctx context.Context
 			it.Phone = data
 		case "taxid":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("taxid"))
-			data, err := ec.unmarshalNString2string(ctx, v)
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -81402,7 +81424,7 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "industry", "clearIndustry", "lastentrydate", "lastinvoicenumber", "clearLastInvoiceNumber", "name", "numberofemployees", "phone", "clearPhone", "taxid", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addDocumentIDs", "removeDocumentIDs", "clearDocuments", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addInventoryIDs", "removeInventoryIDs", "clearInventory", "addInventoryMovementIDs", "removeInventoryMovementIDs", "clearInventoryMovements", "addInvoiceIDs", "removeInvoiceIDs", "clearInvoices", "addLoanIDs", "removeLoanIDs", "clearLoans", "addLoanScheduleIDs", "removeLoanScheduleIDs", "clearLoanSchedule", "addMemberSignupTokenIDs", "removeMemberSignupTokenIDs", "clearMemberSignupTokens", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addPayableIDs", "removePayableIDs", "clearPayables", "addReceivableIDs", "removeReceivableIDs", "clearReceivables", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
+	fieldsInOrder := [...]string{"address", "clearAddress", "basecurrency", "ceoname", "clearCeoName", "city", "country", "establishedat", "description", "clearDescription", "email", "clearEmail", "industry", "clearIndustry", "lastentrydate", "clearLastEntryDate", "lastinvoicenumber", "clearLastInvoiceNumber", "name", "numberofemployees", "phone", "clearPhone", "taxid", "clearTaxId", "vatrate", "website", "clearWebsite", "incompletesetup", "clearIncompleteSetup", "addAvailableRoleIDs", "removeAvailableRoleIDs", "clearAvailableRoles", "addAccountingEntryIDs", "removeAccountingEntryIDs", "clearAccountingEntries", "addCustomerIDs", "removeCustomerIDs", "clearCustomers", "addDocumentIDs", "removeDocumentIDs", "clearDocuments", "addEmployeeIDs", "removeEmployeeIDs", "clearEmployees", "addFileIDs", "removeFileIDs", "clearFiles", "addInventoryIDs", "removeInventoryIDs", "clearInventory", "addInventoryMovementIDs", "removeInventoryMovementIDs", "clearInventoryMovements", "addInvoiceIDs", "removeInvoiceIDs", "clearInvoices", "addLoanIDs", "removeLoanIDs", "clearLoans", "addLoanScheduleIDs", "removeLoanScheduleIDs", "clearLoanSchedule", "addMemberSignupTokenIDs", "removeMemberSignupTokenIDs", "clearMemberSignupTokens", "addProductIDs", "removeProductIDs", "clearProducts", "addProjectIDs", "removeProjectIDs", "clearProjects", "addPayableIDs", "removePayableIDs", "clearPayables", "addReceivableIDs", "removeReceivableIDs", "clearReceivables", "addSupplierIDs", "removeSupplierIDs", "clearSuppliers", "addTokenIDs", "removeTokenIDs", "clearTokens", "addTreasuryIDs", "removeTreasuryIDs", "clearTreasuries", "addWorkShiftIDs", "removeWorkShiftIDs", "clearWorkShifts", "addUserIDs", "removeUserIDs", "clearUsers", "addDaughterCompanyIDs", "removeDaughterCompanyIDs", "clearDaughterCompanies", "parentcompanyID", "clearParentCompany"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -81514,6 +81536,13 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.LastEntryDate = data
+		case "clearLastEntryDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearLastEntryDate"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearLastEntryDate = data
 		case "lastinvoicenumber":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastinvoicenumber"))
 			data, err := ec.unmarshalOInt2ᚖint32(ctx, v)
@@ -81563,6 +81592,13 @@ func (ec *executionContext) unmarshalInputUpdateCompanyInput(ctx context.Context
 				return it, err
 			}
 			it.TaxId = data
+		case "clearTaxId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("clearTaxId"))
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ClearTaxId = data
 		case "vatrate":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vatrate"))
 			data, err := ec.unmarshalOFloat2ᚖfloat64(ctx, v)
@@ -88991,9 +89027,6 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Company_industry(ctx, field, obj)
 		case "lastentrydate":
 			out.Values[i] = ec._Company_lastentrydate(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
 		case "lastinvoicenumber":
 			out.Values[i] = ec._Company_lastinvoicenumber(ctx, field, obj)
 		case "logourl":
@@ -89012,9 +89045,6 @@ func (ec *executionContext) _Company(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Company_phone(ctx, field, obj)
 		case "taxid":
 			out.Values[i] = ec._Company_taxid(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&out.Invalids, 1)
-			}
 		case "vatrate":
 			out.Values[i] = ec._Company_vatrate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

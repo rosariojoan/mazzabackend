@@ -950,6 +950,16 @@ func LastEntryDateLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldLastEntryDate, v))
 }
 
+// LastEntryDateIsNil applies the IsNil predicate on the "lastEntryDate" field.
+func LastEntryDateIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldLastEntryDate))
+}
+
+// LastEntryDateNotNil applies the NotNil predicate on the "lastEntryDate" field.
+func LastEntryDateNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldLastEntryDate))
+}
+
 // LastInvoiceNumberEQ applies the EQ predicate on the "lastInvoiceNumber" field.
 func LastInvoiceNumberEQ(v int32) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastInvoiceNumber, v))
@@ -1383,6 +1393,16 @@ func TaxIdHasPrefix(v string) predicate.Company {
 // TaxIdHasSuffix applies the HasSuffix predicate on the "taxId" field.
 func TaxIdHasSuffix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasSuffix(FieldTaxId, v))
+}
+
+// TaxIdIsNil applies the IsNil predicate on the "taxId" field.
+func TaxIdIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldTaxId))
+}
+
+// TaxIdNotNil applies the NotNil predicate on the "taxId" field.
+func TaxIdNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldTaxId))
 }
 
 // TaxIdEqualFold applies the EqualFold predicate on the "taxId" field.

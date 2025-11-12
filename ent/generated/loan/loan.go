@@ -189,6 +189,7 @@ type Category string
 // Category values.
 const (
 	CategoryAuto           Category = "auto"
+	CategoryBusiness       Category = "business"
 	CategoryEquipment      Category = "equipment"
 	CategoryExpansion      Category = "expansion"
 	CategoryLineOfCredit   Category = "line_of_credit"
@@ -204,7 +205,7 @@ func (c Category) String() string {
 // CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
 func CategoryValidator(c Category) error {
 	switch c {
-	case CategoryAuto, CategoryEquipment, CategoryExpansion, CategoryLineOfCredit, CategoryMortgage, CategoryPersonal, CategoryWorkingCapital:
+	case CategoryAuto, CategoryBusiness, CategoryEquipment, CategoryExpansion, CategoryLineOfCredit, CategoryMortgage, CategoryPersonal, CategoryWorkingCapital:
 		return nil
 	default:
 		return fmt.Errorf("loan: invalid enum value for category field: %q", c)

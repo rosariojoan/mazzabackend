@@ -22,6 +22,8 @@ func LoadAccountNames(country string, lang string) (accountNames map[string]stri
 		return
 	}
 
-	accountNames = _accountNames[strings.ToUpper(country)][lang]
+	countryCode := strings.ToLower(country)
+	language := strings.ToUpper(lang)
+	accountNames = _accountNames[countryCode][language]
 	return accountNames, nil
 }

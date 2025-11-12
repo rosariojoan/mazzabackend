@@ -2613,9 +2613,22 @@ func (m *CompanyMutation) OldLastEntryDate(ctx context.Context) (v *time.Time, e
 	return oldValue.LastEntryDate, nil
 }
 
+// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+func (m *CompanyMutation) ClearLastEntryDate() {
+	m.lastEntryDate = nil
+	m.clearedFields[company.FieldLastEntryDate] = struct{}{}
+}
+
+// LastEntryDateCleared returns if the "lastEntryDate" field was cleared in this mutation.
+func (m *CompanyMutation) LastEntryDateCleared() bool {
+	_, ok := m.clearedFields[company.FieldLastEntryDate]
+	return ok
+}
+
 // ResetLastEntryDate resets all changes to the "lastEntryDate" field.
 func (m *CompanyMutation) ResetLastEntryDate() {
 	m.lastEntryDate = nil
+	delete(m.clearedFields, company.FieldLastEntryDate)
 }
 
 // SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
@@ -2958,9 +2971,22 @@ func (m *CompanyMutation) OldTaxId(ctx context.Context) (v *string, err error) {
 	return oldValue.TaxId, nil
 }
 
+// ClearTaxId clears the value of the "taxId" field.
+func (m *CompanyMutation) ClearTaxId() {
+	m.taxId = nil
+	m.clearedFields[company.FieldTaxId] = struct{}{}
+}
+
+// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
+func (m *CompanyMutation) TaxIdCleared() bool {
+	_, ok := m.clearedFields[company.FieldTaxId]
+	return ok
+}
+
 // ResetTaxId resets all changes to the "taxId" field.
 func (m *CompanyMutation) ResetTaxId() {
 	m.taxId = nil
+	delete(m.clearedFields, company.FieldTaxId)
 }
 
 // SetVatRate sets the "vatRate" field.
@@ -4814,6 +4840,9 @@ func (m *CompanyMutation) ClearedFields() []string {
 	if m.FieldCleared(company.FieldIndustry) {
 		fields = append(fields, company.FieldIndustry)
 	}
+	if m.FieldCleared(company.FieldLastEntryDate) {
+		fields = append(fields, company.FieldLastEntryDate)
+	}
 	if m.FieldCleared(company.FieldLastInvoiceNumber) {
 		fields = append(fields, company.FieldLastInvoiceNumber)
 	}
@@ -4825,6 +4854,9 @@ func (m *CompanyMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(company.FieldPhone) {
 		fields = append(fields, company.FieldPhone)
+	}
+	if m.FieldCleared(company.FieldTaxId) {
+		fields = append(fields, company.FieldTaxId)
 	}
 	if m.FieldCleared(company.FieldWebsite) {
 		fields = append(fields, company.FieldWebsite)
@@ -4864,6 +4896,9 @@ func (m *CompanyMutation) ClearField(name string) error {
 	case company.FieldIndustry:
 		m.ClearIndustry()
 		return nil
+	case company.FieldLastEntryDate:
+		m.ClearLastEntryDate()
+		return nil
 	case company.FieldLastInvoiceNumber:
 		m.ClearLastInvoiceNumber()
 		return nil
@@ -4875,6 +4910,9 @@ func (m *CompanyMutation) ClearField(name string) error {
 		return nil
 	case company.FieldPhone:
 		m.ClearPhone()
+		return nil
+	case company.FieldTaxId:
+		m.ClearTaxId()
 		return nil
 	case company.FieldWebsite:
 		m.ClearWebsite()

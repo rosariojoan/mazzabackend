@@ -44,7 +44,8 @@ func Signup(ctx *gin.Context) {
 	// }
 
 	// body.User.Password = pwdHash
-	body.CompanyInput.LastEntryDate = utils.StartOfYear(time.Now())
+	lastEntryDate := utils.StartOfYear(time.Now())
+	body.CompanyInput.LastEntryDate = &lastEntryDate
 	trueValue := true
 	customerDescription := "Este cliente foi gerado automaticamente"
 	supplierDescription := "Este fornecedor foi gerado automaticamente"
