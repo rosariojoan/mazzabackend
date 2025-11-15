@@ -42,7 +42,7 @@ func BuildReport(client *ent.Client, ctx context.Context, user ent.User, current
 }
 
 func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, currentCompany ent.Company, startDate time.Time, endDate time.Time) (result *model.IncomeStatementOuput, err error) {
-	country, lang := "MZ", "pt"
+	country, lang := "MZ", "PT"
 
 	result = &model.IncomeStatementOuput{
 		IsProvisional: true,

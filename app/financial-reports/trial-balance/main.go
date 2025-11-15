@@ -46,7 +46,7 @@ func GetTrialBalance(
 ) (output []*model.TrialBalanceRowItem, err error) {
 
 	excluded := `'` + strings.Join(excludeAccountTypes, `','`) + `'` // e.g. excluded = ('a','b')
-	country, lang := "MZ", "pt"
+	country, lang := "MZ", "PT"
 
 	total := struct {
 		Debit  float64 `json:"debit"`
@@ -130,9 +130,11 @@ func GetTrialBalance(
 			return nil, err
 		}
 		item.Label = accountNames[item.Account]
-		output = append(output, &item)
-		total.Debit += item.Debit
-		total.Credit += item.Credit
+		if item.Balance != 0 {
+			output = append(output, &item)
+			total.Debit += item.Debit
+			total.Credit += item.Credit
+		}
 	}
 
 	// If the database is being written to ensure to check for Close

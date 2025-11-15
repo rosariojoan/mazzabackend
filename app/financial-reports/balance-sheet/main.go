@@ -39,7 +39,7 @@ func BuildReport(client *ent.Client, ctx context.Context, user ent.User, current
 }
 
 func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, currentCompany ent.Company, endDate time.Time) (result *model.BalanceSheetOuput, err error) {
-	country, _ := "MZ", "pt"
+	country, _ := "MZ", "PT"
 
 	excludedTypes := []string{
 		string(accountingentry.AccountTypeREVENUE),

@@ -16,7 +16,7 @@ import (
 func RegisterAccountingOperations(ctx context.Context, tx *ent.Tx, input model.BaseEntryRegistrationInput, invoiceID *int) (*string, error) {
 	currentUser, activeCompany := u.GetSession(&ctx)
 	companyQ := company.ID(activeCompany.ID)
-	// country, lang := "mz", "pt"
+	// country, lang := "mz", "PT"
 	// accountNames, err := utils.LoadAccountNames(country, lang)
 	// if err != nil {
 	// 	return nil, err
