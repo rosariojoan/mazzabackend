@@ -1,19 +1,27 @@
 input CreateLoanInputData {
-  loanInput: CreateLoanInput!
-  accountingEntry: BaseEntryRegistrationInput
-  schedule: [CreateLoanScheduleInput!]
+   loanInput: CreateLoanInput!
+   accountingEntry: BaseEntryRegistrationInput
+   schedule: [CreateLoanScheduleInput!]
+   borrower: CreateCustomerInput
+   lender: CreateSupplierInput
+   loanCounterpartyID: ID
 }
 
 input UpdateLoanInputData {
-  id: ID!
-  loanInput: UpdateLoanInput!
-  accountingEntry: BaseEntryRegistrationInput
+   id: ID!
+   loanInput: UpdateLoanInput!
+   accountingEntry: BaseEntryRegistrationInput
 }
 
 extend type Mutation {
-    createLoan(input: CreateLoanInputData!): Loan!
-    createLoanSchedule(input: [CreateLoanScheduleInput!]!, loanID: ID!): [LoanSchedule!]!
+   createLoan(input: CreateLoanInputData!): Loan!
+   createLoanSchedule(input: [CreateLoanScheduleInput!]!, loanID: ID!): [LoanSchedule!]!
 
-    updateLoan(input: UpdateLoanInputData!): Loan!
-    updateLoanSchedule(loanID: ID!, input: [UpdateLoanScheduleInput!]!): [LoanSchedule!]!
+   updateLoan(input: UpdateLoanInputData!): Loan!
+   updateLoanSchedule(loanID: ID!, input: [UpdateLoanScheduleInput!]!): [LoanSchedule!]!
+}
+
+extend type Query {
+   getDebtorsList(companyID: ID!): [Customer!]!
+   getLendersList(companyID: ID!): [Supplier!]!
 }

@@ -902,20 +902,24 @@ func (c *CompanyDocumentUpdateOne) SetInput(i UpdateCompanyDocumentInput) *Compa
 
 // CreateCustomerInput represents a mutation input for creating customers.
 type CreateCustomerInput struct {
-	Address     string
-	City        string
+	Address     *string
+	City        *string
 	Country     *string
 	Description *string
 	Email       *string
 	Name        string
-	Phone       string
-	TaxId       string
+	Phone       *string
+	TaxId       *string
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
 func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
-	m.SetAddress(i.Address)
-	m.SetCity(i.City)
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.City; v != nil {
+		m.SetCity(*v)
+	}
 	if v := i.Country; v != nil {
 		m.SetCountry(*v)
 	}
@@ -926,8 +930,12 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 		m.SetEmail(*v)
 	}
 	m.SetName(i.Name)
-	m.SetPhone(i.Phone)
-	m.SetTaxId(i.TaxId)
+	if v := i.Phone; v != nil {
+		m.SetPhone(*v)
+	}
+	if v := i.TaxId; v != nil {
+		m.SetTaxId(*v)
+	}
 }
 
 // SetInput applies the change-set in the CreateCustomerInput on the CustomerCreate builder.
@@ -938,7 +946,9 @@ func (c *CustomerCreate) SetInput(i CreateCustomerInput) *CustomerCreate {
 
 // UpdateCustomerInput represents a mutation input for updating customers.
 type UpdateCustomerInput struct {
+	ClearAddress     bool
 	Address          *string
+	ClearCity        bool
 	City             *string
 	ClearCountry     bool
 	Country          *string
@@ -947,14 +957,22 @@ type UpdateCustomerInput struct {
 	ClearEmail       bool
 	Email            *string
 	Name             *string
+	ClearPhone       bool
 	Phone            *string
+	ClearTaxId       bool
 	TaxId            *string
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
 func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
+	if i.ClearAddress {
+		m.ClearAddress()
+	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
+	}
+	if i.ClearCity {
+		m.ClearCity()
 	}
 	if v := i.City; v != nil {
 		m.SetCity(*v)
@@ -980,8 +998,14 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
+	if i.ClearPhone {
+		m.ClearPhone()
+	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if i.ClearTaxId {
+		m.ClearTaxId()
 	}
 	if v := i.TaxId; v != nil {
 		m.SetTaxId(*v)
@@ -1828,6 +1852,7 @@ func (c *InvoiceUpdateOne) SetInput(i UpdateInvoiceInput) *InvoiceUpdateOne {
 
 // CreateLoanInput represents a mutation input for creating loans.
 type CreateLoanInput struct {
+	IsLending             *bool
 	Amount                float64
 	Category              loan.Category
 	Collateral            *string
@@ -1844,7 +1869,6 @@ type CreateLoanInput struct {
 	CounterpartyName      string
 	StartDate             *time.Time
 	Status                loan.Status
-	IsLending             *bool
 	ClientID              *int
 	SupplierID            *int
 	LoanScheduleIDs       []int
@@ -1853,6 +1877,9 @@ type CreateLoanInput struct {
 
 // Mutate applies the CreateLoanInput on the LoanMutation builder.
 func (i *CreateLoanInput) Mutate(m *LoanMutation) {
+	if v := i.IsLending; v != nil {
+		m.SetIsLending(*v)
+	}
 	m.SetAmount(i.Amount)
 	m.SetCategory(i.Category)
 	if v := i.Collateral; v != nil {
@@ -1885,9 +1912,6 @@ func (i *CreateLoanInput) Mutate(m *LoanMutation) {
 		m.SetStartDate(*v)
 	}
 	m.SetStatus(i.Status)
-	if v := i.IsLending; v != nil {
-		m.SetIsLending(*v)
-	}
 	if v := i.ClientID; v != nil {
 		m.SetClientID(*v)
 	}
@@ -1910,6 +1934,7 @@ func (c *LoanCreate) SetInput(i CreateLoanInput) *LoanCreate {
 
 // UpdateLoanInput represents a mutation input for updating loans.
 type UpdateLoanInput struct {
+	IsLending                   *bool
 	Amount                      *float64
 	Category                    *loan.Category
 	ClearCollateral             bool
@@ -1930,7 +1955,6 @@ type UpdateLoanInput struct {
 	CounterpartyName            *string
 	StartDate                   *time.Time
 	Status                      *loan.Status
-	IsLending                   *bool
 	ClearLoanSchedule           bool
 	AddLoanScheduleIDs          []int
 	RemoveLoanScheduleIDs       []int
@@ -1941,6 +1965,9 @@ type UpdateLoanInput struct {
 
 // Mutate applies the UpdateLoanInput on the LoanMutation builder.
 func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
+	if v := i.IsLending; v != nil {
+		m.SetIsLending(*v)
+	}
 	if v := i.Amount; v != nil {
 		m.SetAmount(*v)
 	}
@@ -2000,9 +2027,6 @@ func (i *UpdateLoanInput) Mutate(m *LoanMutation) {
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
-	}
-	if v := i.IsLending; v != nil {
-		m.SetIsLending(*v)
 	}
 	if i.ClearLoanSchedule {
 		m.ClearLoanSchedule()
@@ -2894,32 +2918,42 @@ func (c *ReceivableUpdateOne) SetInput(i UpdateReceivableInput) *ReceivableUpdat
 
 // CreateSupplierInput represents a mutation input for creating suppliers.
 type CreateSupplierInput struct {
-	Address     string
-	City        string
-	Country     string
-	Description string
-	Email       string
-	IsDefault   *bool
+	Address     *string
+	City        *string
+	Country     *string
+	Description *string
+	Email       *string
 	Name        string
-	Phone       string
-	TaxId       string
+	Phone       *string
+	TaxId       *string
 	CompanyID   *int
 	PayableIDs  []int
 }
 
 // Mutate applies the CreateSupplierInput on the SupplierMutation builder.
 func (i *CreateSupplierInput) Mutate(m *SupplierMutation) {
-	m.SetAddress(i.Address)
-	m.SetCity(i.City)
-	m.SetCountry(i.Country)
-	m.SetDescription(i.Description)
-	m.SetEmail(i.Email)
-	if v := i.IsDefault; v != nil {
-		m.SetIsDefault(*v)
+	if v := i.Address; v != nil {
+		m.SetAddress(*v)
+	}
+	if v := i.City; v != nil {
+		m.SetCity(*v)
+	}
+	if v := i.Country; v != nil {
+		m.SetCountry(*v)
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.Email; v != nil {
+		m.SetEmail(*v)
 	}
 	m.SetName(i.Name)
-	m.SetPhone(i.Phone)
-	m.SetTaxId(i.TaxId)
+	if v := i.Phone; v != nil {
+		m.SetPhone(*v)
+	}
+	if v := i.TaxId; v != nil {
+		m.SetTaxId(*v)
+	}
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
 	}
@@ -2936,15 +2970,20 @@ func (c *SupplierCreate) SetInput(i CreateSupplierInput) *SupplierCreate {
 
 // UpdateSupplierInput represents a mutation input for updating suppliers.
 type UpdateSupplierInput struct {
+	ClearAddress     bool
 	Address          *string
+	ClearCity        bool
 	City             *string
+	ClearCountry     bool
 	Country          *string
+	ClearDescription bool
 	Description      *string
+	ClearEmail       bool
 	Email            *string
-	ClearIsDefault   bool
-	IsDefault        *bool
 	Name             *string
+	ClearPhone       bool
 	Phone            *string
+	ClearTaxId       bool
 	TaxId            *string
 	ClearCompany     bool
 	CompanyID        *int
@@ -2955,32 +2994,47 @@ type UpdateSupplierInput struct {
 
 // Mutate applies the UpdateSupplierInput on the SupplierMutation builder.
 func (i *UpdateSupplierInput) Mutate(m *SupplierMutation) {
+	if i.ClearAddress {
+		m.ClearAddress()
+	}
 	if v := i.Address; v != nil {
 		m.SetAddress(*v)
+	}
+	if i.ClearCity {
+		m.ClearCity()
 	}
 	if v := i.City; v != nil {
 		m.SetCity(*v)
 	}
+	if i.ClearCountry {
+		m.ClearCountry()
+	}
 	if v := i.Country; v != nil {
 		m.SetCountry(*v)
+	}
+	if i.ClearDescription {
+		m.ClearDescription()
 	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
+	if i.ClearEmail {
+		m.ClearEmail()
+	}
 	if v := i.Email; v != nil {
 		m.SetEmail(*v)
-	}
-	if i.ClearIsDefault {
-		m.ClearIsDefault()
-	}
-	if v := i.IsDefault; v != nil {
-		m.SetIsDefault(*v)
 	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
+	if i.ClearPhone {
+		m.ClearPhone()
+	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if i.ClearTaxId {
+		m.ClearTaxId()
 	}
 	if v := i.TaxId; v != nil {
 		m.SetTaxId(*v)

@@ -25,6 +25,8 @@ func (Loan) Mixin() []ent.Mixin {
 // Fields of the Loan.
 func (Loan) Fields() []ent.Field {
 	return []ent.Field{
+		field.Bool("is_lending").Default(false).Comment("True if the company is the lender"),
+
 		field.Float("amount").Min(0).Annotations(entgql.OrderField("amount")),
 		field.Enum("category").
 			Values("auto", "business", "equipment", "expansion", "line_of_credit", "mortgage", "personal", "working_capital").
@@ -51,17 +53,16 @@ func (Loan) Fields() []ent.Field {
 		field.String("counterparty_name").NotEmpty(),
 		field.Time("start_date").Default(time.Now).Annotations(entgql.OrderField("startDate")),
 		field.Enum("status").Values("active", "paid"),
-		field.Bool("is_lending").Default(false).Comment("True if the company is the lender"),
 	}
 }
 
 // Edges of the Loan.
 func (Loan) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("client", Customer.Type).Ref("loan_schedule").Unique().Annotations(
+		edge.From("client", Customer.Type).Ref("loans").Unique().Annotations(
 			entgql.Skip(entgql.SkipMutationUpdateInput),
 		),
-		edge.From("supplier", Supplier.Type).Ref("loan_schedule").Unique().Annotations(
+		edge.From("supplier", Supplier.Type).Ref("loans").Unique().Annotations(
 			entgql.Skip(entgql.SkipMutationUpdateInput),
 		),
 		edge.From("company", Company.Type).Ref("loans").Unique().Annotations(

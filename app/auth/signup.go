@@ -46,7 +46,6 @@ func Signup(ctx *gin.Context) {
 	// body.User.Password = pwdHash
 	lastEntryDate := utils.StartOfYear(time.Now())
 	body.CompanyInput.LastEntryDate = &lastEntryDate
-	trueValue := true
 	customerDescription := "Este cliente foi gerado automaticamente"
 	supplierDescription := "Este fornecedor foi gerado automaticamente"
 
@@ -63,6 +62,7 @@ func Signup(ctx *gin.Context) {
 	userRole := userrole.RoleADMIN
 	userIsActive := true
 	phone := utils.GetValue(body.UserInput.Phone, "")
+	stringValue := "--"
 
 	_, err = newCompany.Update().AddUsers(
 		tx.User.Create().SetInput(body.UserInput).SetActive(userIsActive).AddCompanyIDs(newCompany.ID).AddAssignedRoles(
@@ -87,24 +87,23 @@ func Signup(ctx *gin.Context) {
 		}).SaveX(ctx),
 	).AddCustomers(
 		tx.Customer.Create().SetInput(ent.CreateCustomerInput{
-			Address:     "--",
-			City:        "--",
+			Address:     &stringValue,
+			City:        &stringValue,
 			Description: &customerDescription,
 			Name:        "clientes diversos",
-			Phone:       "--",
-			TaxId:       "--",
+			Phone:       &stringValue,
+			TaxId:       &stringValue,
 		}).SetIsDefault(true).SaveX(ctx),
 	).AddSuppliers(
 		tx.Supplier.Create().SetInput(ent.CreateSupplierInput{
-			Address:     "--",
-			City:        "--",
-			Country:     "--",
-			Description: supplierDescription,
-			IsDefault:   &trueValue,
+			Address:     &stringValue,
+			City:        &stringValue,
+			Country:     &stringValue,
+			Description: &supplierDescription,
 			Name:        "fornecedores diversos",
-			Phone:       "--",
-			TaxId:       "--",
-		}).SaveX(ctx),
+			Phone:       &stringValue,
+			TaxId:       &stringValue,
+		}).SetIsDefault(true).SaveX(ctx),
 	).AddTreasuries(
 		tx.Treasury.Create().SetInput(ent.CreateTreasuryInput{
 			Balance: 0,

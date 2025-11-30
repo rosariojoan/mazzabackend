@@ -175,6 +175,26 @@ func init() {
 	customer.DefaultUpdatedAt = customerDescUpdatedAt.Default.(func() time.Time)
 	// customer.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	customer.UpdateDefaultUpdatedAt = customerDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// customerDescAddress is the schema descriptor for address field.
+	customerDescAddress := customerFields[0].Descriptor()
+	// customer.DefaultAddress holds the default value on creation for the address field.
+	customer.DefaultAddress = customerDescAddress.Default.(string)
+	// customerDescCity is the schema descriptor for city field.
+	customerDescCity := customerFields[1].Descriptor()
+	// customer.DefaultCity holds the default value on creation for the city field.
+	customer.DefaultCity = customerDescCity.Default.(string)
+	// customerDescCountry is the schema descriptor for country field.
+	customerDescCountry := customerFields[2].Descriptor()
+	// customer.DefaultCountry holds the default value on creation for the country field.
+	customer.DefaultCountry = customerDescCountry.Default.(string)
+	// customerDescDescription is the schema descriptor for description field.
+	customerDescDescription := customerFields[3].Descriptor()
+	// customer.DefaultDescription holds the default value on creation for the description field.
+	customer.DefaultDescription = customerDescDescription.Default.(string)
+	// customerDescEmail is the schema descriptor for email field.
+	customerDescEmail := customerFields[4].Descriptor()
+	// customer.DefaultEmail holds the default value on creation for the email field.
+	customer.DefaultEmail = customerDescEmail.Default.(string)
 	// customerDescIsDefault is the schema descriptor for isDefault field.
 	customerDescIsDefault := customerFields[5].Descriptor()
 	// customer.DefaultIsDefault holds the default value on creation for the isDefault field.
@@ -183,10 +203,14 @@ func init() {
 	customerDescName := customerFields[6].Descriptor()
 	// customer.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	customer.NameValidator = customerDescName.Validators[0].(func(string) error)
+	// customerDescPhone is the schema descriptor for phone field.
+	customerDescPhone := customerFields[7].Descriptor()
+	// customer.DefaultPhone holds the default value on creation for the phone field.
+	customer.DefaultPhone = customerDescPhone.Default.(string)
 	// customerDescTaxId is the schema descriptor for taxId field.
 	customerDescTaxId := customerFields[8].Descriptor()
-	// customer.TaxIdValidator is a validator for the "taxId" field. It is called by the builders before save.
-	customer.TaxIdValidator = customerDescTaxId.Validators[0].(func(string) error)
+	// customer.DefaultTaxId holds the default value on creation for the taxId field.
+	customer.DefaultTaxId = customerDescTaxId.Default.(string)
 	employeeMixin := schema.Employee{}.Mixin()
 	employeeMixinFields0 := employeeMixin[0].Fields()
 	_ = employeeMixinFields0
@@ -381,44 +405,44 @@ func init() {
 	loan.DefaultUpdatedAt = loanDescUpdatedAt.Default.(func() time.Time)
 	// loan.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	loan.UpdateDefaultUpdatedAt = loanDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// loanDescIsLending is the schema descriptor for is_lending field.
+	loanDescIsLending := loanFields[0].Descriptor()
+	// loan.DefaultIsLending holds the default value on creation for the is_lending field.
+	loan.DefaultIsLending = loanDescIsLending.Default.(bool)
 	// loanDescAmount is the schema descriptor for amount field.
-	loanDescAmount := loanFields[0].Descriptor()
+	loanDescAmount := loanFields[1].Descriptor()
 	// loan.AmountValidator is a validator for the "amount" field. It is called by the builders before save.
 	loan.AmountValidator = loanDescAmount.Validators[0].(func(float64) error)
 	// loanDescInterestRate is the schema descriptor for interest_rate field.
-	loanDescInterestRate := loanFields[4].Descriptor()
+	loanDescInterestRate := loanFields[5].Descriptor()
 	// loan.InterestRateValidator is a validator for the "interest_rate" field. It is called by the builders before save.
 	loan.InterestRateValidator = loanDescInterestRate.Validators[0].(func(float64) error)
 	// loanDescInstallments is the schema descriptor for installments field.
-	loanDescInstallments := loanFields[5].Descriptor()
+	loanDescInstallments := loanFields[6].Descriptor()
 	// loan.InstallmentsValidator is a validator for the "installments" field. It is called by the builders before save.
 	loan.InstallmentsValidator = loanDescInstallments.Validators[0].(func(int) error)
 	// loanDescNextPaymentAmount is the schema descriptor for next_payment_amount field.
-	loanDescNextPaymentAmount := loanFields[8].Descriptor()
+	loanDescNextPaymentAmount := loanFields[9].Descriptor()
 	// loan.DefaultNextPaymentAmount holds the default value on creation for the next_payment_amount field.
 	loan.DefaultNextPaymentAmount = loanDescNextPaymentAmount.Default.(float64)
 	// loan.NextPaymentAmountValidator is a validator for the "next_payment_amount" field. It is called by the builders before save.
 	loan.NextPaymentAmountValidator = loanDescNextPaymentAmount.Validators[0].(func(float64) error)
 	// loanDescOutstandingBalance is the schema descriptor for outstanding_balance field.
-	loanDescOutstandingBalance := loanFields[9].Descriptor()
+	loanDescOutstandingBalance := loanFields[10].Descriptor()
 	// loan.OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	loan.OutstandingBalanceValidator = loanDescOutstandingBalance.Validators[0].(func(float64) error)
 	// loanDescPaidInstallments is the schema descriptor for paid_installments field.
-	loanDescPaidInstallments := loanFields[11].Descriptor()
+	loanDescPaidInstallments := loanFields[12].Descriptor()
 	// loan.DefaultPaidInstallments holds the default value on creation for the paid_installments field.
 	loan.DefaultPaidInstallments = loanDescPaidInstallments.Default.(int)
 	// loanDescCounterpartyName is the schema descriptor for counterparty_name field.
-	loanDescCounterpartyName := loanFields[13].Descriptor()
+	loanDescCounterpartyName := loanFields[14].Descriptor()
 	// loan.CounterpartyNameValidator is a validator for the "counterparty_name" field. It is called by the builders before save.
 	loan.CounterpartyNameValidator = loanDescCounterpartyName.Validators[0].(func(string) error)
 	// loanDescStartDate is the schema descriptor for start_date field.
-	loanDescStartDate := loanFields[14].Descriptor()
+	loanDescStartDate := loanFields[15].Descriptor()
 	// loan.DefaultStartDate holds the default value on creation for the start_date field.
 	loan.DefaultStartDate = loanDescStartDate.Default.(func() time.Time)
-	// loanDescIsLending is the schema descriptor for is_lending field.
-	loanDescIsLending := loanFields[16].Descriptor()
-	// loan.DefaultIsLending holds the default value on creation for the is_lending field.
-	loan.DefaultIsLending = loanDescIsLending.Default.(bool)
 	loanscheduleMixin := schema.LoanSchedule{}.Mixin()
 	loanscheduleMixinFields0 := loanscheduleMixin[0].Fields()
 	_ = loanscheduleMixinFields0
@@ -654,6 +678,26 @@ func init() {
 	supplier.DefaultUpdatedAt = supplierDescUpdatedAt.Default.(func() time.Time)
 	// supplier.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	supplier.UpdateDefaultUpdatedAt = supplierDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// supplierDescAddress is the schema descriptor for address field.
+	supplierDescAddress := supplierFields[0].Descriptor()
+	// supplier.DefaultAddress holds the default value on creation for the address field.
+	supplier.DefaultAddress = supplierDescAddress.Default.(string)
+	// supplierDescCity is the schema descriptor for city field.
+	supplierDescCity := supplierFields[1].Descriptor()
+	// supplier.DefaultCity holds the default value on creation for the city field.
+	supplier.DefaultCity = supplierDescCity.Default.(string)
+	// supplierDescCountry is the schema descriptor for country field.
+	supplierDescCountry := supplierFields[2].Descriptor()
+	// supplier.DefaultCountry holds the default value on creation for the country field.
+	supplier.DefaultCountry = supplierDescCountry.Default.(string)
+	// supplierDescDescription is the schema descriptor for description field.
+	supplierDescDescription := supplierFields[3].Descriptor()
+	// supplier.DefaultDescription holds the default value on creation for the description field.
+	supplier.DefaultDescription = supplierDescDescription.Default.(string)
+	// supplierDescEmail is the schema descriptor for email field.
+	supplierDescEmail := supplierFields[4].Descriptor()
+	// supplier.DefaultEmail holds the default value on creation for the email field.
+	supplier.DefaultEmail = supplierDescEmail.Default.(string)
 	// supplierDescIsDefault is the schema descriptor for isDefault field.
 	supplierDescIsDefault := supplierFields[5].Descriptor()
 	// supplier.DefaultIsDefault holds the default value on creation for the isDefault field.
@@ -662,10 +706,14 @@ func init() {
 	supplierDescName := supplierFields[6].Descriptor()
 	// supplier.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	supplier.NameValidator = supplierDescName.Validators[0].(func(string) error)
+	// supplierDescPhone is the schema descriptor for phone field.
+	supplierDescPhone := supplierFields[7].Descriptor()
+	// supplier.DefaultPhone holds the default value on creation for the phone field.
+	supplier.DefaultPhone = supplierDescPhone.Default.(string)
 	// supplierDescTaxId is the schema descriptor for taxId field.
 	supplierDescTaxId := supplierFields[8].Descriptor()
-	// supplier.TaxIdValidator is a validator for the "taxId" field. It is called by the builders before save.
-	supplier.TaxIdValidator = supplierDescTaxId.Validators[0].(func(string) error)
+	// supplier.DefaultTaxId holds the default value on creation for the taxId field.
+	supplier.DefaultTaxId = supplierDescTaxId.Default.(string)
 	tokenFields := schema.Token{}.Fields()
 	_ = tokenFields
 	// tokenDescToken is the schema descriptor for token field.

@@ -71,9 +71,25 @@ func (sc *SupplierCreate) SetAddress(s string) *SupplierCreate {
 	return sc
 }
 
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableAddress(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetAddress(*s)
+	}
+	return sc
+}
+
 // SetCity sets the "city" field.
 func (sc *SupplierCreate) SetCity(s string) *SupplierCreate {
 	sc.mutation.SetCity(s)
+	return sc
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableCity(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetCity(*s)
+	}
 	return sc
 }
 
@@ -83,15 +99,39 @@ func (sc *SupplierCreate) SetCountry(s string) *SupplierCreate {
 	return sc
 }
 
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableCountry(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetCountry(*s)
+	}
+	return sc
+}
+
 // SetDescription sets the "description" field.
 func (sc *SupplierCreate) SetDescription(s string) *SupplierCreate {
 	sc.mutation.SetDescription(s)
 	return sc
 }
 
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableDescription(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetDescription(*s)
+	}
+	return sc
+}
+
 // SetEmail sets the "email" field.
 func (sc *SupplierCreate) SetEmail(s string) *SupplierCreate {
 	sc.mutation.SetEmail(s)
+	return sc
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableEmail(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetEmail(*s)
+	}
 	return sc
 }
 
@@ -121,9 +161,25 @@ func (sc *SupplierCreate) SetPhone(s string) *SupplierCreate {
 	return sc
 }
 
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillablePhone(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetPhone(*s)
+	}
+	return sc
+}
+
 // SetTaxId sets the "taxId" field.
 func (sc *SupplierCreate) SetTaxId(s string) *SupplierCreate {
 	sc.mutation.SetTaxId(s)
+	return sc
+}
+
+// SetNillableTaxId sets the "taxId" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableTaxId(s *string) *SupplierCreate {
+	if s != nil {
+		sc.SetTaxId(*s)
+	}
 	return sc
 }
 
@@ -146,19 +202,19 @@ func (sc *SupplierCreate) SetCompany(c *Company) *SupplierCreate {
 	return sc.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (sc *SupplierCreate) AddLoanScheduleIDs(ids ...int) *SupplierCreate {
-	sc.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (sc *SupplierCreate) AddLoanIDs(ids ...int) *SupplierCreate {
+	sc.mutation.AddLoanIDs(ids...)
 	return sc
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (sc *SupplierCreate) AddLoanSchedule(l ...*Loan) *SupplierCreate {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (sc *SupplierCreate) AddLoans(l ...*Loan) *SupplierCreate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return sc.AddLoanScheduleIDs(ids...)
+	return sc.AddLoanIDs(ids...)
 }
 
 // AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
@@ -219,9 +275,37 @@ func (sc *SupplierCreate) defaults() {
 		v := supplier.DefaultUpdatedAt()
 		sc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := sc.mutation.Address(); !ok {
+		v := supplier.DefaultAddress
+		sc.mutation.SetAddress(v)
+	}
+	if _, ok := sc.mutation.City(); !ok {
+		v := supplier.DefaultCity
+		sc.mutation.SetCity(v)
+	}
+	if _, ok := sc.mutation.Country(); !ok {
+		v := supplier.DefaultCountry
+		sc.mutation.SetCountry(v)
+	}
+	if _, ok := sc.mutation.Description(); !ok {
+		v := supplier.DefaultDescription
+		sc.mutation.SetDescription(v)
+	}
+	if _, ok := sc.mutation.Email(); !ok {
+		v := supplier.DefaultEmail
+		sc.mutation.SetEmail(v)
+	}
 	if _, ok := sc.mutation.IsDefault(); !ok {
 		v := supplier.DefaultIsDefault
 		sc.mutation.SetIsDefault(v)
+	}
+	if _, ok := sc.mutation.Phone(); !ok {
+		v := supplier.DefaultPhone
+		sc.mutation.SetPhone(v)
+	}
+	if _, ok := sc.mutation.TaxId(); !ok {
+		v := supplier.DefaultTaxId
+		sc.mutation.SetTaxId(v)
 	}
 }
 
@@ -233,38 +317,12 @@ func (sc *SupplierCreate) check() error {
 	if _, ok := sc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Supplier.updatedAt"`)}
 	}
-	if _, ok := sc.mutation.Address(); !ok {
-		return &ValidationError{Name: "address", err: errors.New(`generated: missing required field "Supplier.address"`)}
-	}
-	if _, ok := sc.mutation.City(); !ok {
-		return &ValidationError{Name: "city", err: errors.New(`generated: missing required field "Supplier.city"`)}
-	}
-	if _, ok := sc.mutation.Country(); !ok {
-		return &ValidationError{Name: "country", err: errors.New(`generated: missing required field "Supplier.country"`)}
-	}
-	if _, ok := sc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`generated: missing required field "Supplier.description"`)}
-	}
-	if _, ok := sc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`generated: missing required field "Supplier.email"`)}
-	}
 	if _, ok := sc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Supplier.name"`)}
 	}
 	if v, ok := sc.mutation.Name(); ok {
 		if err := supplier.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Supplier.name": %w`, err)}
-		}
-	}
-	if _, ok := sc.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`generated: missing required field "Supplier.phone"`)}
-	}
-	if _, ok := sc.mutation.TaxId(); !ok {
-		return &ValidationError{Name: "taxId", err: errors.New(`generated: missing required field "Supplier.taxId"`)}
-	}
-	if v, ok := sc.mutation.TaxId(); ok {
-		if err := supplier.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Supplier.taxId": %w`, err)}
 		}
 	}
 	return nil
@@ -358,12 +416,12 @@ func (sc *SupplierCreate) createSpec() (*Supplier, *sqlgraph.CreateSpec) {
 		_node.company_suppliers = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := sc.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := sc.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),

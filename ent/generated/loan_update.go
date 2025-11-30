@@ -60,6 +60,20 @@ func (lu *LoanUpdate) ClearDeletedAt() *LoanUpdate {
 	return lu
 }
 
+// SetIsLending sets the "is_lending" field.
+func (lu *LoanUpdate) SetIsLending(b bool) *LoanUpdate {
+	lu.mutation.SetIsLending(b)
+	return lu
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (lu *LoanUpdate) SetNillableIsLending(b *bool) *LoanUpdate {
+	if b != nil {
+		lu.SetIsLending(*b)
+	}
+	return lu
+}
+
 // SetAmount sets the "amount" field.
 func (lu *LoanUpdate) SetAmount(f float64) *LoanUpdate {
 	lu.mutation.ResetAmount()
@@ -350,20 +364,6 @@ func (lu *LoanUpdate) SetNillableStatus(l *loan.Status) *LoanUpdate {
 	return lu
 }
 
-// SetIsLending sets the "is_lending" field.
-func (lu *LoanUpdate) SetIsLending(b bool) *LoanUpdate {
-	lu.mutation.SetIsLending(b)
-	return lu
-}
-
-// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
-func (lu *LoanUpdate) SetNillableIsLending(b *bool) *LoanUpdate {
-	if b != nil {
-		lu.SetIsLending(*b)
-	}
-	return lu
-}
-
 // SetClientID sets the "client" edge to the Customer entity by ID.
 func (lu *LoanUpdate) SetClientID(id int) *LoanUpdate {
 	lu.mutation.SetClientID(id)
@@ -634,6 +634,9 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if lu.mutation.DeletedAtCleared() {
 		_spec.ClearField(loan.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := lu.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+	}
 	if value, ok := lu.mutation.Amount(); ok {
 		_spec.SetField(loan.FieldAmount, field.TypeFloat64, value)
 	}
@@ -711,9 +714,6 @@ func (lu *LoanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := lu.mutation.Status(); ok {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
-	}
-	if value, ok := lu.mutation.IsLending(); ok {
-		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
 	}
 	if lu.mutation.ClientCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -937,6 +937,20 @@ func (luo *LoanUpdateOne) SetNillableDeletedAt(t *time.Time) *LoanUpdateOne {
 // ClearDeletedAt clears the value of the "deletedAt" field.
 func (luo *LoanUpdateOne) ClearDeletedAt() *LoanUpdateOne {
 	luo.mutation.ClearDeletedAt()
+	return luo
+}
+
+// SetIsLending sets the "is_lending" field.
+func (luo *LoanUpdateOne) SetIsLending(b bool) *LoanUpdateOne {
+	luo.mutation.SetIsLending(b)
+	return luo
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (luo *LoanUpdateOne) SetNillableIsLending(b *bool) *LoanUpdateOne {
+	if b != nil {
+		luo.SetIsLending(*b)
+	}
 	return luo
 }
 
@@ -1226,20 +1240,6 @@ func (luo *LoanUpdateOne) SetStatus(l loan.Status) *LoanUpdateOne {
 func (luo *LoanUpdateOne) SetNillableStatus(l *loan.Status) *LoanUpdateOne {
 	if l != nil {
 		luo.SetStatus(*l)
-	}
-	return luo
-}
-
-// SetIsLending sets the "is_lending" field.
-func (luo *LoanUpdateOne) SetIsLending(b bool) *LoanUpdateOne {
-	luo.mutation.SetIsLending(b)
-	return luo
-}
-
-// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
-func (luo *LoanUpdateOne) SetNillableIsLending(b *bool) *LoanUpdateOne {
-	if b != nil {
-		luo.SetIsLending(*b)
 	}
 	return luo
 }
@@ -1544,6 +1544,9 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 	if luo.mutation.DeletedAtCleared() {
 		_spec.ClearField(loan.FieldDeletedAt, field.TypeTime)
 	}
+	if value, ok := luo.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+	}
 	if value, ok := luo.mutation.Amount(); ok {
 		_spec.SetField(loan.FieldAmount, field.TypeFloat64, value)
 	}
@@ -1621,9 +1624,6 @@ func (luo *LoanUpdateOne) sqlSave(ctx context.Context) (_node *Loan, err error) 
 	}
 	if value, ok := luo.mutation.Status(); ok {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
-	}
-	if value, ok := luo.mutation.IsLending(); ok {
-		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
 	}
 	if luo.mutation.ClientCleared() {
 		edge := &sqlgraph.EdgeSpec{

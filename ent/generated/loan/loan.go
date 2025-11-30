@@ -23,6 +23,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deletedat field in the database.
 	FieldDeletedAt = "deleted_at"
+	// FieldIsLending holds the string denoting the is_lending field in the database.
+	FieldIsLending = "is_lending"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
 	// FieldCategory holds the string denoting the category field in the database.
@@ -55,8 +57,6 @@ const (
 	FieldStartDate = "start_date"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldIsLending holds the string denoting the is_lending field in the database.
-	FieldIsLending = "is_lending"
 	// EdgeClient holds the string denoting the client edge name in mutations.
 	EdgeClient = "client"
 	// EdgeSupplier holds the string denoting the supplier edge name in mutations.
@@ -75,14 +75,14 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "customer" package.
 	ClientInverseTable = "customers"
 	// ClientColumn is the table column denoting the client relation/edge.
-	ClientColumn = "customer_loan_schedule"
+	ClientColumn = "customer_loans"
 	// SupplierTable is the table that holds the supplier relation/edge.
 	SupplierTable = "loans"
 	// SupplierInverseTable is the table name for the Supplier entity.
 	// It exists in this package in order to avoid circular dependency with the "supplier" package.
 	SupplierInverseTable = "suppliers"
 	// SupplierColumn is the table column denoting the supplier relation/edge.
-	SupplierColumn = "supplier_loan_schedule"
+	SupplierColumn = "supplier_loans"
 	// CompanyTable is the table that holds the company relation/edge.
 	CompanyTable = "loans"
 	// CompanyInverseTable is the table name for the Company entity.
@@ -112,6 +112,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldIsLending,
 	FieldAmount,
 	FieldCategory,
 	FieldCollateral,
@@ -128,15 +129,14 @@ var Columns = []string{
 	FieldCounterpartyName,
 	FieldStartDate,
 	FieldStatus,
-	FieldIsLending,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "loans"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
 	"company_loans",
-	"customer_loan_schedule",
-	"supplier_loan_schedule",
+	"customer_loans",
+	"supplier_loans",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -161,6 +161,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultIsLending holds the default value on creation for the "is_lending" field.
+	DefaultIsLending bool
 	// AmountValidator is a validator for the "amount" field. It is called by the builders before save.
 	AmountValidator func(float64) error
 	// InterestRateValidator is a validator for the "interest_rate" field. It is called by the builders before save.
@@ -179,8 +181,6 @@ var (
 	CounterpartyNameValidator func(string) error
 	// DefaultStartDate holds the default value on creation for the "start_date" field.
 	DefaultStartDate func() time.Time
-	// DefaultIsLending holds the default value on creation for the "is_lending" field.
-	DefaultIsLending bool
 )
 
 // Category defines the type for the "category" enum field.
@@ -317,6 +317,11 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
+// ByIsLending orders the results by the is_lending field.
+func ByIsLending(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsLending, opts...).ToFunc()
+}
+
 // ByAmount orders the results by the amount field.
 func ByAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAmount, opts...).ToFunc()
@@ -395,11 +400,6 @@ func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
-// ByIsLending orders the results by the is_lending field.
-func ByIsLending(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsLending, opts...).ToFunc()
 }
 
 // ByClientField orders the results by client field.

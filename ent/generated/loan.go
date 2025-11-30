@@ -26,6 +26,8 @@ type Loan struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// DeletedAt holds the value of the "deletedAt" field.
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// True if the company is the lender
+	IsLending bool `json:"is_lending,omitempty"`
 	// Amount holds the value of the "amount" field.
 	Amount float64 `json:"amount,omitempty"`
 	// Category holds the value of the "category" field.
@@ -61,15 +63,13 @@ type Loan struct {
 	StartDate time.Time `json:"start_date,omitempty"`
 	// Status holds the value of the "status" field.
 	Status loan.Status `json:"status,omitempty"`
-	// True if the company is the lender
-	IsLending bool `json:"is_lending,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the LoanQuery when eager-loading is set.
-	Edges                  LoanEdges `json:"edges"`
-	company_loans          *int
-	customer_loan_schedule *int
-	supplier_loan_schedule *int
-	selectValues           sql.SelectValues
+	Edges          LoanEdges `json:"edges"`
+	company_loans  *int
+	customer_loans *int
+	supplier_loans *int
+	selectValues   sql.SelectValues
 }
 
 // LoanEdges holds the relations/edges for other nodes in the graph.
@@ -162,9 +162,9 @@ func (*Loan) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case loan.ForeignKeys[0]: // company_loans
 			values[i] = new(sql.NullInt64)
-		case loan.ForeignKeys[1]: // customer_loan_schedule
+		case loan.ForeignKeys[1]: // customer_loans
 			values[i] = new(sql.NullInt64)
-		case loan.ForeignKeys[2]: // supplier_loan_schedule
+		case loan.ForeignKeys[2]: // supplier_loans
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -205,6 +205,12 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				l.DeletedAt = new(time.Time)
 				*l.DeletedAt = value.Time
+			}
+		case loan.FieldIsLending:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_lending", values[i])
+			} else if value.Valid {
+				l.IsLending = value.Bool
 			}
 		case loan.FieldAmount:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -302,12 +308,6 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				l.Status = loan.Status(value.String)
 			}
-		case loan.FieldIsLending:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_lending", values[i])
-			} else if value.Valid {
-				l.IsLending = value.Bool
-			}
 		case loan.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field company_loans", value)
@@ -317,17 +317,17 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			}
 		case loan.ForeignKeys[1]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field customer_loan_schedule", value)
+				return fmt.Errorf("unexpected type %T for edge-field customer_loans", value)
 			} else if value.Valid {
-				l.customer_loan_schedule = new(int)
-				*l.customer_loan_schedule = int(value.Int64)
+				l.customer_loans = new(int)
+				*l.customer_loans = int(value.Int64)
 			}
 		case loan.ForeignKeys[2]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field supplier_loan_schedule", value)
+				return fmt.Errorf("unexpected type %T for edge-field supplier_loans", value)
 			} else if value.Valid {
-				l.supplier_loan_schedule = new(int)
-				*l.supplier_loan_schedule = int(value.Int64)
+				l.supplier_loans = new(int)
+				*l.supplier_loans = int(value.Int64)
 			}
 		default:
 			l.selectValues.Set(columns[i], values[i])
@@ -401,6 +401,9 @@ func (l *Loan) String() string {
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
+	builder.WriteString("is_lending=")
+	builder.WriteString(fmt.Sprintf("%v", l.IsLending))
+	builder.WriteString(", ")
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", l.Amount))
 	builder.WriteString(", ")
@@ -448,9 +451,6 @@ func (l *Loan) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", l.Status))
-	builder.WriteString(", ")
-	builder.WriteString("is_lending=")
-	builder.WriteString(fmt.Sprintf("%v", l.IsLending))
 	builder.WriteByte(')')
 	return builder.String()
 }

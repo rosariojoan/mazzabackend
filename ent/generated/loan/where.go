@@ -70,6 +70,11 @@ func DeletedAt(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldDeletedAt, v))
 }
 
+// IsLending applies equality check predicate on the "is_lending" field. It's identical to IsLendingEQ.
+func IsLending(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
+}
+
 // Amount applies equality check predicate on the "amount" field. It's identical to AmountEQ.
 func Amount(v float64) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldAmount, v))
@@ -128,11 +133,6 @@ func CounterpartyName(v string) predicate.Loan {
 // StartDate applies equality check predicate on the "start_date" field. It's identical to StartDateEQ.
 func StartDate(v time.Time) predicate.Loan {
 	return predicate.Loan(sql.FieldEQ(FieldStartDate, v))
-}
-
-// IsLending applies equality check predicate on the "is_lending" field. It's identical to IsLendingEQ.
-func IsLending(v bool) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
@@ -263,6 +263,16 @@ func DeletedAtIsNil() predicate.Loan {
 // DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
 func DeletedAtNotNil() predicate.Loan {
 	return predicate.Loan(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// IsLendingEQ applies the EQ predicate on the "is_lending" field.
+func IsLendingEQ(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
+}
+
+// IsLendingNEQ applies the NEQ predicate on the "is_lending" field.
+func IsLendingNEQ(v bool) predicate.Loan {
+	return predicate.Loan(sql.FieldNEQ(FieldIsLending, v))
 }
 
 // AmountEQ applies the EQ predicate on the "amount" field.
@@ -938,16 +948,6 @@ func StatusIn(vs ...Status) predicate.Loan {
 // StatusNotIn applies the NotIn predicate on the "status" field.
 func StatusNotIn(vs ...Status) predicate.Loan {
 	return predicate.Loan(sql.FieldNotIn(FieldStatus, vs...))
-}
-
-// IsLendingEQ applies the EQ predicate on the "is_lending" field.
-func IsLendingEQ(v bool) predicate.Loan {
-	return predicate.Loan(sql.FieldEQ(FieldIsLending, v))
-}
-
-// IsLendingNEQ applies the NEQ predicate on the "is_lending" field.
-func IsLendingNEQ(v bool) predicate.Loan {
-	return predicate.Loan(sql.FieldNEQ(FieldIsLending, v))
 }
 
 // HasClient applies the HasEdge predicate on the "client" edge.

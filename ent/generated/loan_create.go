@@ -67,6 +67,20 @@ func (lc *LoanCreate) SetNillableDeletedAt(t *time.Time) *LoanCreate {
 	return lc
 }
 
+// SetIsLending sets the "is_lending" field.
+func (lc *LoanCreate) SetIsLending(b bool) *LoanCreate {
+	lc.mutation.SetIsLending(b)
+	return lc
+}
+
+// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
+func (lc *LoanCreate) SetNillableIsLending(b *bool) *LoanCreate {
+	if b != nil {
+		lc.SetIsLending(*b)
+	}
+	return lc
+}
+
 // SetAmount sets the "amount" field.
 func (lc *LoanCreate) SetAmount(f float64) *LoanCreate {
 	lc.mutation.SetAmount(f)
@@ -227,20 +241,6 @@ func (lc *LoanCreate) SetStatus(l loan.Status) *LoanCreate {
 	return lc
 }
 
-// SetIsLending sets the "is_lending" field.
-func (lc *LoanCreate) SetIsLending(b bool) *LoanCreate {
-	lc.mutation.SetIsLending(b)
-	return lc
-}
-
-// SetNillableIsLending sets the "is_lending" field if the given value is not nil.
-func (lc *LoanCreate) SetNillableIsLending(b *bool) *LoanCreate {
-	if b != nil {
-		lc.SetIsLending(*b)
-	}
-	return lc
-}
-
 // SetClientID sets the "client" edge to the Customer entity by ID.
 func (lc *LoanCreate) SetClientID(id int) *LoanCreate {
 	lc.mutation.SetClientID(id)
@@ -371,6 +371,10 @@ func (lc *LoanCreate) defaults() {
 		v := loan.DefaultUpdatedAt()
 		lc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := lc.mutation.IsLending(); !ok {
+		v := loan.DefaultIsLending
+		lc.mutation.SetIsLending(v)
+	}
 	if _, ok := lc.mutation.NextPaymentAmount(); !ok {
 		v := loan.DefaultNextPaymentAmount
 		lc.mutation.SetNextPaymentAmount(v)
@@ -391,10 +395,6 @@ func (lc *LoanCreate) defaults() {
 		v := loan.DefaultStartDate()
 		lc.mutation.SetStartDate(v)
 	}
-	if _, ok := lc.mutation.IsLending(); !ok {
-		v := loan.DefaultIsLending
-		lc.mutation.SetIsLending(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -404,6 +404,9 @@ func (lc *LoanCreate) check() error {
 	}
 	if _, ok := lc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Loan.updatedAt"`)}
+	}
+	if _, ok := lc.mutation.IsLending(); !ok {
+		return &ValidationError{Name: "is_lending", err: errors.New(`generated: missing required field "Loan.is_lending"`)}
 	}
 	if _, ok := lc.mutation.Amount(); !ok {
 		return &ValidationError{Name: "amount", err: errors.New(`generated: missing required field "Loan.amount"`)}
@@ -491,9 +494,6 @@ func (lc *LoanCreate) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`generated: validator failed for field "Loan.status": %w`, err)}
 		}
 	}
-	if _, ok := lc.mutation.IsLending(); !ok {
-		return &ValidationError{Name: "is_lending", err: errors.New(`generated: missing required field "Loan.is_lending"`)}
-	}
 	return nil
 }
 
@@ -531,6 +531,10 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 	if value, ok := lc.mutation.DeletedAt(); ok {
 		_spec.SetField(loan.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
+	}
+	if value, ok := lc.mutation.IsLending(); ok {
+		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
+		_node.IsLending = value
 	}
 	if value, ok := lc.mutation.Amount(); ok {
 		_spec.SetField(loan.FieldAmount, field.TypeFloat64, value)
@@ -596,10 +600,6 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		_spec.SetField(loan.FieldStatus, field.TypeEnum, value)
 		_node.Status = value
 	}
-	if value, ok := lc.mutation.IsLending(); ok {
-		_spec.SetField(loan.FieldIsLending, field.TypeBool, value)
-		_node.IsLending = value
-	}
 	if nodes := lc.mutation.ClientIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -614,7 +614,7 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.customer_loan_schedule = &nodes[0]
+		_node.customer_loans = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := lc.mutation.SupplierIDs(); len(nodes) > 0 {
@@ -631,7 +631,7 @@ func (lc *LoanCreate) createSpec() (*Loan, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.supplier_loan_schedule = &nodes[0]
+		_node.supplier_loans = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := lc.mutation.CompanyIDs(); len(nodes) > 0 {

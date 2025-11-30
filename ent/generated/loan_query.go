@@ -615,10 +615,10 @@ func (lq *LoanQuery) loadClient(ctx context.Context, query *CustomerQuery, nodes
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Loan)
 	for i := range nodes {
-		if nodes[i].customer_loan_schedule == nil {
+		if nodes[i].customer_loans == nil {
 			continue
 		}
-		fk := *nodes[i].customer_loan_schedule
+		fk := *nodes[i].customer_loans
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -635,7 +635,7 @@ func (lq *LoanQuery) loadClient(ctx context.Context, query *CustomerQuery, nodes
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "customer_loan_schedule" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "customer_loans" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -647,10 +647,10 @@ func (lq *LoanQuery) loadSupplier(ctx context.Context, query *SupplierQuery, nod
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Loan)
 	for i := range nodes {
-		if nodes[i].supplier_loan_schedule == nil {
+		if nodes[i].supplier_loans == nil {
 			continue
 		}
-		fk := *nodes[i].supplier_loan_schedule
+		fk := *nodes[i].supplier_loans
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -667,7 +667,7 @@ func (lq *LoanQuery) loadSupplier(ctx context.Context, query *SupplierQuery, nod
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "supplier_loan_schedule" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "supplier_loans" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

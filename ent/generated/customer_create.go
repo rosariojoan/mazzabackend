@@ -72,9 +72,25 @@ func (cc *CustomerCreate) SetAddress(s string) *CustomerCreate {
 	return cc
 }
 
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableAddress(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetAddress(*s)
+	}
+	return cc
+}
+
 // SetCity sets the "city" field.
 func (cc *CustomerCreate) SetCity(s string) *CustomerCreate {
 	cc.mutation.SetCity(s)
+	return cc
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableCity(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetCity(*s)
+	}
 	return cc
 }
 
@@ -146,9 +162,25 @@ func (cc *CustomerCreate) SetPhone(s string) *CustomerCreate {
 	return cc
 }
 
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillablePhone(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetPhone(*s)
+	}
+	return cc
+}
+
 // SetTaxId sets the "taxId" field.
 func (cc *CustomerCreate) SetTaxId(s string) *CustomerCreate {
 	cc.mutation.SetTaxId(s)
+	return cc
+}
+
+// SetNillableTaxId sets the "taxId" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableTaxId(s *string) *CustomerCreate {
+	if s != nil {
+		cc.SetTaxId(*s)
+	}
 	return cc
 }
 
@@ -171,19 +203,19 @@ func (cc *CustomerCreate) SetCompany(c *Company) *CustomerCreate {
 	return cc.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (cc *CustomerCreate) AddLoanScheduleIDs(ids ...int) *CustomerCreate {
-	cc.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (cc *CustomerCreate) AddLoanIDs(ids ...int) *CustomerCreate {
+	cc.mutation.AddLoanIDs(ids...)
 	return cc
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (cc *CustomerCreate) AddLoanSchedule(l ...*Loan) *CustomerCreate {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (cc *CustomerCreate) AddLoans(l ...*Loan) *CustomerCreate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return cc.AddLoanScheduleIDs(ids...)
+	return cc.AddLoanIDs(ids...)
 }
 
 // AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
@@ -259,9 +291,37 @@ func (cc *CustomerCreate) defaults() {
 		v := customer.DefaultUpdatedAt()
 		cc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := cc.mutation.Address(); !ok {
+		v := customer.DefaultAddress
+		cc.mutation.SetAddress(v)
+	}
+	if _, ok := cc.mutation.City(); !ok {
+		v := customer.DefaultCity
+		cc.mutation.SetCity(v)
+	}
+	if _, ok := cc.mutation.Country(); !ok {
+		v := customer.DefaultCountry
+		cc.mutation.SetCountry(v)
+	}
+	if _, ok := cc.mutation.Description(); !ok {
+		v := customer.DefaultDescription
+		cc.mutation.SetDescription(v)
+	}
+	if _, ok := cc.mutation.Email(); !ok {
+		v := customer.DefaultEmail
+		cc.mutation.SetEmail(v)
+	}
 	if _, ok := cc.mutation.IsDefault(); !ok {
 		v := customer.DefaultIsDefault
 		cc.mutation.SetIsDefault(v)
+	}
+	if _, ok := cc.mutation.Phone(); !ok {
+		v := customer.DefaultPhone
+		cc.mutation.SetPhone(v)
+	}
+	if _, ok := cc.mutation.TaxId(); !ok {
+		v := customer.DefaultTaxId
+		cc.mutation.SetTaxId(v)
 	}
 }
 
@@ -273,29 +333,12 @@ func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Customer.updatedAt"`)}
 	}
-	if _, ok := cc.mutation.Address(); !ok {
-		return &ValidationError{Name: "address", err: errors.New(`generated: missing required field "Customer.address"`)}
-	}
-	if _, ok := cc.mutation.City(); !ok {
-		return &ValidationError{Name: "city", err: errors.New(`generated: missing required field "Customer.city"`)}
-	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Customer.name"`)}
 	}
 	if v, ok := cc.mutation.Name(); ok {
 		if err := customer.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Customer.name": %w`, err)}
-		}
-	}
-	if _, ok := cc.mutation.Phone(); !ok {
-		return &ValidationError{Name: "phone", err: errors.New(`generated: missing required field "Customer.phone"`)}
-	}
-	if _, ok := cc.mutation.TaxId(); !ok {
-		return &ValidationError{Name: "taxId", err: errors.New(`generated: missing required field "Customer.taxId"`)}
-	}
-	if v, ok := cc.mutation.TaxId(); ok {
-		if err := customer.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Customer.taxId": %w`, err)}
 		}
 	}
 	return nil
@@ -346,15 +389,15 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := cc.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
-		_node.Country = &value
+		_node.Country = value
 	}
 	if value, ok := cc.mutation.Description(); ok {
 		_spec.SetField(customer.FieldDescription, field.TypeString, value)
-		_node.Description = &value
+		_node.Description = value
 	}
 	if value, ok := cc.mutation.Email(); ok {
 		_spec.SetField(customer.FieldEmail, field.TypeString, value)
-		_node.Email = &value
+		_node.Email = value
 	}
 	if value, ok := cc.mutation.IsDefault(); ok {
 		_spec.SetField(customer.FieldIsDefault, field.TypeBool, value)
@@ -389,12 +432,12 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_node.company_customers = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := cc.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := cc.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),

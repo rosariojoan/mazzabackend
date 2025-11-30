@@ -72,6 +72,12 @@ func (su *SupplierUpdate) SetNillableAddress(s *string) *SupplierUpdate {
 	return su
 }
 
+// ClearAddress clears the value of the "address" field.
+func (su *SupplierUpdate) ClearAddress() *SupplierUpdate {
+	su.mutation.ClearAddress()
+	return su
+}
+
 // SetCity sets the "city" field.
 func (su *SupplierUpdate) SetCity(s string) *SupplierUpdate {
 	su.mutation.SetCity(s)
@@ -83,6 +89,12 @@ func (su *SupplierUpdate) SetNillableCity(s *string) *SupplierUpdate {
 	if s != nil {
 		su.SetCity(*s)
 	}
+	return su
+}
+
+// ClearCity clears the value of the "city" field.
+func (su *SupplierUpdate) ClearCity() *SupplierUpdate {
+	su.mutation.ClearCity()
 	return su
 }
 
@@ -100,6 +112,12 @@ func (su *SupplierUpdate) SetNillableCountry(s *string) *SupplierUpdate {
 	return su
 }
 
+// ClearCountry clears the value of the "country" field.
+func (su *SupplierUpdate) ClearCountry() *SupplierUpdate {
+	su.mutation.ClearCountry()
+	return su
+}
+
 // SetDescription sets the "description" field.
 func (su *SupplierUpdate) SetDescription(s string) *SupplierUpdate {
 	su.mutation.SetDescription(s)
@@ -114,6 +132,12 @@ func (su *SupplierUpdate) SetNillableDescription(s *string) *SupplierUpdate {
 	return su
 }
 
+// ClearDescription clears the value of the "description" field.
+func (su *SupplierUpdate) ClearDescription() *SupplierUpdate {
+	su.mutation.ClearDescription()
+	return su
+}
+
 // SetEmail sets the "email" field.
 func (su *SupplierUpdate) SetEmail(s string) *SupplierUpdate {
 	su.mutation.SetEmail(s)
@@ -125,6 +149,12 @@ func (su *SupplierUpdate) SetNillableEmail(s *string) *SupplierUpdate {
 	if s != nil {
 		su.SetEmail(*s)
 	}
+	return su
+}
+
+// ClearEmail clears the value of the "email" field.
+func (su *SupplierUpdate) ClearEmail() *SupplierUpdate {
+	su.mutation.ClearEmail()
 	return su
 }
 
@@ -176,6 +206,12 @@ func (su *SupplierUpdate) SetNillablePhone(s *string) *SupplierUpdate {
 	return su
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (su *SupplierUpdate) ClearPhone() *SupplierUpdate {
+	su.mutation.ClearPhone()
+	return su
+}
+
 // SetTaxId sets the "taxId" field.
 func (su *SupplierUpdate) SetTaxId(s string) *SupplierUpdate {
 	su.mutation.SetTaxId(s)
@@ -187,6 +223,12 @@ func (su *SupplierUpdate) SetNillableTaxId(s *string) *SupplierUpdate {
 	if s != nil {
 		su.SetTaxId(*s)
 	}
+	return su
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (su *SupplierUpdate) ClearTaxId() *SupplierUpdate {
+	su.mutation.ClearTaxId()
 	return su
 }
 
@@ -209,19 +251,19 @@ func (su *SupplierUpdate) SetCompany(c *Company) *SupplierUpdate {
 	return su.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (su *SupplierUpdate) AddLoanScheduleIDs(ids ...int) *SupplierUpdate {
-	su.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (su *SupplierUpdate) AddLoanIDs(ids ...int) *SupplierUpdate {
+	su.mutation.AddLoanIDs(ids...)
 	return su
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (su *SupplierUpdate) AddLoanSchedule(l ...*Loan) *SupplierUpdate {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (su *SupplierUpdate) AddLoans(l ...*Loan) *SupplierUpdate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return su.AddLoanScheduleIDs(ids...)
+	return su.AddLoanIDs(ids...)
 }
 
 // AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
@@ -250,25 +292,25 @@ func (su *SupplierUpdate) ClearCompany() *SupplierUpdate {
 	return su
 }
 
-// ClearLoanSchedule clears all "loan_schedule" edges to the Loan entity.
-func (su *SupplierUpdate) ClearLoanSchedule() *SupplierUpdate {
-	su.mutation.ClearLoanSchedule()
+// ClearLoans clears all "loans" edges to the Loan entity.
+func (su *SupplierUpdate) ClearLoans() *SupplierUpdate {
+	su.mutation.ClearLoans()
 	return su
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to Loan entities by IDs.
-func (su *SupplierUpdate) RemoveLoanScheduleIDs(ids ...int) *SupplierUpdate {
-	su.mutation.RemoveLoanScheduleIDs(ids...)
+// RemoveLoanIDs removes the "loans" edge to Loan entities by IDs.
+func (su *SupplierUpdate) RemoveLoanIDs(ids ...int) *SupplierUpdate {
+	su.mutation.RemoveLoanIDs(ids...)
 	return su
 }
 
-// RemoveLoanSchedule removes "loan_schedule" edges to Loan entities.
-func (su *SupplierUpdate) RemoveLoanSchedule(l ...*Loan) *SupplierUpdate {
+// RemoveLoans removes "loans" edges to Loan entities.
+func (su *SupplierUpdate) RemoveLoans(l ...*Loan) *SupplierUpdate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return su.RemoveLoanScheduleIDs(ids...)
+	return su.RemoveLoanIDs(ids...)
 }
 
 // ClearPayables clears all "payables" edges to the Payable entity.
@@ -335,11 +377,6 @@ func (su *SupplierUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Supplier.name": %w`, err)}
 		}
 	}
-	if v, ok := su.mutation.TaxId(); ok {
-		if err := supplier.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Supplier.taxId": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -373,17 +410,32 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.Address(); ok {
 		_spec.SetField(supplier.FieldAddress, field.TypeString, value)
 	}
+	if su.mutation.AddressCleared() {
+		_spec.ClearField(supplier.FieldAddress, field.TypeString)
+	}
 	if value, ok := su.mutation.City(); ok {
 		_spec.SetField(supplier.FieldCity, field.TypeString, value)
+	}
+	if su.mutation.CityCleared() {
+		_spec.ClearField(supplier.FieldCity, field.TypeString)
 	}
 	if value, ok := su.mutation.Country(); ok {
 		_spec.SetField(supplier.FieldCountry, field.TypeString, value)
 	}
+	if su.mutation.CountryCleared() {
+		_spec.ClearField(supplier.FieldCountry, field.TypeString)
+	}
 	if value, ok := su.mutation.Description(); ok {
 		_spec.SetField(supplier.FieldDescription, field.TypeString, value)
 	}
+	if su.mutation.DescriptionCleared() {
+		_spec.ClearField(supplier.FieldDescription, field.TypeString)
+	}
 	if value, ok := su.mutation.Email(); ok {
 		_spec.SetField(supplier.FieldEmail, field.TypeString, value)
+	}
+	if su.mutation.EmailCleared() {
+		_spec.ClearField(supplier.FieldEmail, field.TypeString)
 	}
 	if value, ok := su.mutation.IsDefault(); ok {
 		_spec.SetField(supplier.FieldIsDefault, field.TypeBool, value)
@@ -397,8 +449,14 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.Phone(); ok {
 		_spec.SetField(supplier.FieldPhone, field.TypeString, value)
 	}
+	if su.mutation.PhoneCleared() {
+		_spec.ClearField(supplier.FieldPhone, field.TypeString)
+	}
 	if value, ok := su.mutation.TaxId(); ok {
 		_spec.SetField(supplier.FieldTaxId, field.TypeString, value)
+	}
+	if su.mutation.TaxIdCleared() {
+		_spec.ClearField(supplier.FieldTaxId, field.TypeString)
 	}
 	if su.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -429,12 +487,12 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if su.mutation.LoanScheduleCleared() {
+	if su.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -442,12 +500,12 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !su.mutation.LoanScheduleCleared() {
+	if nodes := su.mutation.RemovedLoansIDs(); len(nodes) > 0 && !su.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -458,12 +516,12 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := su.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -581,6 +639,12 @@ func (suo *SupplierUpdateOne) SetNillableAddress(s *string) *SupplierUpdateOne {
 	return suo
 }
 
+// ClearAddress clears the value of the "address" field.
+func (suo *SupplierUpdateOne) ClearAddress() *SupplierUpdateOne {
+	suo.mutation.ClearAddress()
+	return suo
+}
+
 // SetCity sets the "city" field.
 func (suo *SupplierUpdateOne) SetCity(s string) *SupplierUpdateOne {
 	suo.mutation.SetCity(s)
@@ -592,6 +656,12 @@ func (suo *SupplierUpdateOne) SetNillableCity(s *string) *SupplierUpdateOne {
 	if s != nil {
 		suo.SetCity(*s)
 	}
+	return suo
+}
+
+// ClearCity clears the value of the "city" field.
+func (suo *SupplierUpdateOne) ClearCity() *SupplierUpdateOne {
+	suo.mutation.ClearCity()
 	return suo
 }
 
@@ -609,6 +679,12 @@ func (suo *SupplierUpdateOne) SetNillableCountry(s *string) *SupplierUpdateOne {
 	return suo
 }
 
+// ClearCountry clears the value of the "country" field.
+func (suo *SupplierUpdateOne) ClearCountry() *SupplierUpdateOne {
+	suo.mutation.ClearCountry()
+	return suo
+}
+
 // SetDescription sets the "description" field.
 func (suo *SupplierUpdateOne) SetDescription(s string) *SupplierUpdateOne {
 	suo.mutation.SetDescription(s)
@@ -623,6 +699,12 @@ func (suo *SupplierUpdateOne) SetNillableDescription(s *string) *SupplierUpdateO
 	return suo
 }
 
+// ClearDescription clears the value of the "description" field.
+func (suo *SupplierUpdateOne) ClearDescription() *SupplierUpdateOne {
+	suo.mutation.ClearDescription()
+	return suo
+}
+
 // SetEmail sets the "email" field.
 func (suo *SupplierUpdateOne) SetEmail(s string) *SupplierUpdateOne {
 	suo.mutation.SetEmail(s)
@@ -634,6 +716,12 @@ func (suo *SupplierUpdateOne) SetNillableEmail(s *string) *SupplierUpdateOne {
 	if s != nil {
 		suo.SetEmail(*s)
 	}
+	return suo
+}
+
+// ClearEmail clears the value of the "email" field.
+func (suo *SupplierUpdateOne) ClearEmail() *SupplierUpdateOne {
+	suo.mutation.ClearEmail()
 	return suo
 }
 
@@ -685,6 +773,12 @@ func (suo *SupplierUpdateOne) SetNillablePhone(s *string) *SupplierUpdateOne {
 	return suo
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (suo *SupplierUpdateOne) ClearPhone() *SupplierUpdateOne {
+	suo.mutation.ClearPhone()
+	return suo
+}
+
 // SetTaxId sets the "taxId" field.
 func (suo *SupplierUpdateOne) SetTaxId(s string) *SupplierUpdateOne {
 	suo.mutation.SetTaxId(s)
@@ -696,6 +790,12 @@ func (suo *SupplierUpdateOne) SetNillableTaxId(s *string) *SupplierUpdateOne {
 	if s != nil {
 		suo.SetTaxId(*s)
 	}
+	return suo
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (suo *SupplierUpdateOne) ClearTaxId() *SupplierUpdateOne {
+	suo.mutation.ClearTaxId()
 	return suo
 }
 
@@ -718,19 +818,19 @@ func (suo *SupplierUpdateOne) SetCompany(c *Company) *SupplierUpdateOne {
 	return suo.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (suo *SupplierUpdateOne) AddLoanScheduleIDs(ids ...int) *SupplierUpdateOne {
-	suo.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (suo *SupplierUpdateOne) AddLoanIDs(ids ...int) *SupplierUpdateOne {
+	suo.mutation.AddLoanIDs(ids...)
 	return suo
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (suo *SupplierUpdateOne) AddLoanSchedule(l ...*Loan) *SupplierUpdateOne {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (suo *SupplierUpdateOne) AddLoans(l ...*Loan) *SupplierUpdateOne {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return suo.AddLoanScheduleIDs(ids...)
+	return suo.AddLoanIDs(ids...)
 }
 
 // AddPayableIDs adds the "payables" edge to the Payable entity by IDs.
@@ -759,25 +859,25 @@ func (suo *SupplierUpdateOne) ClearCompany() *SupplierUpdateOne {
 	return suo
 }
 
-// ClearLoanSchedule clears all "loan_schedule" edges to the Loan entity.
-func (suo *SupplierUpdateOne) ClearLoanSchedule() *SupplierUpdateOne {
-	suo.mutation.ClearLoanSchedule()
+// ClearLoans clears all "loans" edges to the Loan entity.
+func (suo *SupplierUpdateOne) ClearLoans() *SupplierUpdateOne {
+	suo.mutation.ClearLoans()
 	return suo
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to Loan entities by IDs.
-func (suo *SupplierUpdateOne) RemoveLoanScheduleIDs(ids ...int) *SupplierUpdateOne {
-	suo.mutation.RemoveLoanScheduleIDs(ids...)
+// RemoveLoanIDs removes the "loans" edge to Loan entities by IDs.
+func (suo *SupplierUpdateOne) RemoveLoanIDs(ids ...int) *SupplierUpdateOne {
+	suo.mutation.RemoveLoanIDs(ids...)
 	return suo
 }
 
-// RemoveLoanSchedule removes "loan_schedule" edges to Loan entities.
-func (suo *SupplierUpdateOne) RemoveLoanSchedule(l ...*Loan) *SupplierUpdateOne {
+// RemoveLoans removes "loans" edges to Loan entities.
+func (suo *SupplierUpdateOne) RemoveLoans(l ...*Loan) *SupplierUpdateOne {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return suo.RemoveLoanScheduleIDs(ids...)
+	return suo.RemoveLoanIDs(ids...)
 }
 
 // ClearPayables clears all "payables" edges to the Payable entity.
@@ -857,11 +957,6 @@ func (suo *SupplierUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Supplier.name": %w`, err)}
 		}
 	}
-	if v, ok := suo.mutation.TaxId(); ok {
-		if err := supplier.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Supplier.taxId": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -912,17 +1007,32 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 	if value, ok := suo.mutation.Address(); ok {
 		_spec.SetField(supplier.FieldAddress, field.TypeString, value)
 	}
+	if suo.mutation.AddressCleared() {
+		_spec.ClearField(supplier.FieldAddress, field.TypeString)
+	}
 	if value, ok := suo.mutation.City(); ok {
 		_spec.SetField(supplier.FieldCity, field.TypeString, value)
+	}
+	if suo.mutation.CityCleared() {
+		_spec.ClearField(supplier.FieldCity, field.TypeString)
 	}
 	if value, ok := suo.mutation.Country(); ok {
 		_spec.SetField(supplier.FieldCountry, field.TypeString, value)
 	}
+	if suo.mutation.CountryCleared() {
+		_spec.ClearField(supplier.FieldCountry, field.TypeString)
+	}
 	if value, ok := suo.mutation.Description(); ok {
 		_spec.SetField(supplier.FieldDescription, field.TypeString, value)
 	}
+	if suo.mutation.DescriptionCleared() {
+		_spec.ClearField(supplier.FieldDescription, field.TypeString)
+	}
 	if value, ok := suo.mutation.Email(); ok {
 		_spec.SetField(supplier.FieldEmail, field.TypeString, value)
+	}
+	if suo.mutation.EmailCleared() {
+		_spec.ClearField(supplier.FieldEmail, field.TypeString)
 	}
 	if value, ok := suo.mutation.IsDefault(); ok {
 		_spec.SetField(supplier.FieldIsDefault, field.TypeBool, value)
@@ -936,8 +1046,14 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 	if value, ok := suo.mutation.Phone(); ok {
 		_spec.SetField(supplier.FieldPhone, field.TypeString, value)
 	}
+	if suo.mutation.PhoneCleared() {
+		_spec.ClearField(supplier.FieldPhone, field.TypeString)
+	}
 	if value, ok := suo.mutation.TaxId(); ok {
 		_spec.SetField(supplier.FieldTaxId, field.TypeString, value)
+	}
+	if suo.mutation.TaxIdCleared() {
+		_spec.ClearField(supplier.FieldTaxId, field.TypeString)
 	}
 	if suo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -968,12 +1084,12 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if suo.mutation.LoanScheduleCleared() {
+	if suo.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -981,12 +1097,12 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !suo.mutation.LoanScheduleCleared() {
+	if nodes := suo.mutation.RemovedLoansIDs(); len(nodes) > 0 && !suo.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -997,12 +1113,12 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := suo.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   supplier.LoanScheduleTable,
-			Columns: []string{supplier.LoanScheduleColumn},
+			Table:   supplier.LoansTable,
+			Columns: []string{supplier.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),

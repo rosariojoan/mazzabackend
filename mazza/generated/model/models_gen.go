@@ -84,9 +84,12 @@ type CreateInventoryInputData struct {
 }
 
 type CreateLoanInputData struct {
-	LoanInput       *generated.CreateLoanInput           `json:"loanInput"`
-	AccountingEntry *BaseEntryRegistrationInput          `json:"accountingEntry,omitempty"`
-	Schedule        []*generated.CreateLoanScheduleInput `json:"schedule,omitempty"`
+	LoanInput          *generated.CreateLoanInput           `json:"loanInput"`
+	AccountingEntry    *BaseEntryRegistrationInput          `json:"accountingEntry,omitempty"`
+	Schedule           []*generated.CreateLoanScheduleInput `json:"schedule,omitempty"`
+	Borrower           *generated.CreateCustomerInput       `json:"borrower,omitempty"`
+	Lender             *generated.CreateSupplierInput       `json:"lender,omitempty"`
+	LoanCounterpartyID *int                                 `json:"loanCounterpartyID,omitempty"`
 }
 
 type CreateMemberSignupTokenOutput struct {

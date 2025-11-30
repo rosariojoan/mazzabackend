@@ -73,6 +73,12 @@ func (cu *CustomerUpdate) SetNillableAddress(s *string) *CustomerUpdate {
 	return cu
 }
 
+// ClearAddress clears the value of the "address" field.
+func (cu *CustomerUpdate) ClearAddress() *CustomerUpdate {
+	cu.mutation.ClearAddress()
+	return cu
+}
+
 // SetCity sets the "city" field.
 func (cu *CustomerUpdate) SetCity(s string) *CustomerUpdate {
 	cu.mutation.SetCity(s)
@@ -84,6 +90,12 @@ func (cu *CustomerUpdate) SetNillableCity(s *string) *CustomerUpdate {
 	if s != nil {
 		cu.SetCity(*s)
 	}
+	return cu
+}
+
+// ClearCity clears the value of the "city" field.
+func (cu *CustomerUpdate) ClearCity() *CustomerUpdate {
+	cu.mutation.ClearCity()
 	return cu
 }
 
@@ -195,6 +207,12 @@ func (cu *CustomerUpdate) SetNillablePhone(s *string) *CustomerUpdate {
 	return cu
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (cu *CustomerUpdate) ClearPhone() *CustomerUpdate {
+	cu.mutation.ClearPhone()
+	return cu
+}
+
 // SetTaxId sets the "taxId" field.
 func (cu *CustomerUpdate) SetTaxId(s string) *CustomerUpdate {
 	cu.mutation.SetTaxId(s)
@@ -206,6 +224,12 @@ func (cu *CustomerUpdate) SetNillableTaxId(s *string) *CustomerUpdate {
 	if s != nil {
 		cu.SetTaxId(*s)
 	}
+	return cu
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (cu *CustomerUpdate) ClearTaxId() *CustomerUpdate {
+	cu.mutation.ClearTaxId()
 	return cu
 }
 
@@ -228,19 +252,19 @@ func (cu *CustomerUpdate) SetCompany(c *Company) *CustomerUpdate {
 	return cu.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (cu *CustomerUpdate) AddLoanScheduleIDs(ids ...int) *CustomerUpdate {
-	cu.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (cu *CustomerUpdate) AddLoanIDs(ids ...int) *CustomerUpdate {
+	cu.mutation.AddLoanIDs(ids...)
 	return cu
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (cu *CustomerUpdate) AddLoanSchedule(l ...*Loan) *CustomerUpdate {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (cu *CustomerUpdate) AddLoans(l ...*Loan) *CustomerUpdate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return cu.AddLoanScheduleIDs(ids...)
+	return cu.AddLoanIDs(ids...)
 }
 
 // AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
@@ -284,25 +308,25 @@ func (cu *CustomerUpdate) ClearCompany() *CustomerUpdate {
 	return cu
 }
 
-// ClearLoanSchedule clears all "loan_schedule" edges to the Loan entity.
-func (cu *CustomerUpdate) ClearLoanSchedule() *CustomerUpdate {
-	cu.mutation.ClearLoanSchedule()
+// ClearLoans clears all "loans" edges to the Loan entity.
+func (cu *CustomerUpdate) ClearLoans() *CustomerUpdate {
+	cu.mutation.ClearLoans()
 	return cu
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to Loan entities by IDs.
-func (cu *CustomerUpdate) RemoveLoanScheduleIDs(ids ...int) *CustomerUpdate {
-	cu.mutation.RemoveLoanScheduleIDs(ids...)
+// RemoveLoanIDs removes the "loans" edge to Loan entities by IDs.
+func (cu *CustomerUpdate) RemoveLoanIDs(ids ...int) *CustomerUpdate {
+	cu.mutation.RemoveLoanIDs(ids...)
 	return cu
 }
 
-// RemoveLoanSchedule removes "loan_schedule" edges to Loan entities.
-func (cu *CustomerUpdate) RemoveLoanSchedule(l ...*Loan) *CustomerUpdate {
+// RemoveLoans removes "loans" edges to Loan entities.
+func (cu *CustomerUpdate) RemoveLoans(l ...*Loan) *CustomerUpdate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return cu.RemoveLoanScheduleIDs(ids...)
+	return cu.RemoveLoanIDs(ids...)
 }
 
 // ClearReceivables clears all "receivables" edges to the Receivable entity.
@@ -390,11 +414,6 @@ func (cu *CustomerUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Customer.name": %w`, err)}
 		}
 	}
-	if v, ok := cu.mutation.TaxId(); ok {
-		if err := customer.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Customer.taxId": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -428,8 +447,14 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Address(); ok {
 		_spec.SetField(customer.FieldAddress, field.TypeString, value)
 	}
+	if cu.mutation.AddressCleared() {
+		_spec.ClearField(customer.FieldAddress, field.TypeString)
+	}
 	if value, ok := cu.mutation.City(); ok {
 		_spec.SetField(customer.FieldCity, field.TypeString, value)
+	}
+	if cu.mutation.CityCleared() {
+		_spec.ClearField(customer.FieldCity, field.TypeString)
 	}
 	if value, ok := cu.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
@@ -461,8 +486,14 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Phone(); ok {
 		_spec.SetField(customer.FieldPhone, field.TypeString, value)
 	}
+	if cu.mutation.PhoneCleared() {
+		_spec.ClearField(customer.FieldPhone, field.TypeString)
+	}
 	if value, ok := cu.mutation.TaxId(); ok {
 		_spec.SetField(customer.FieldTaxId, field.TypeString, value)
+	}
+	if cu.mutation.TaxIdCleared() {
+		_spec.ClearField(customer.FieldTaxId, field.TypeString)
 	}
 	if cu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -493,12 +524,12 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cu.mutation.LoanScheduleCleared() {
+	if cu.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -506,12 +537,12 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !cu.mutation.LoanScheduleCleared() {
+	if nodes := cu.mutation.RemovedLoansIDs(); len(nodes) > 0 && !cu.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -522,12 +553,12 @@ func (cu *CustomerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := cu.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -690,6 +721,12 @@ func (cuo *CustomerUpdateOne) SetNillableAddress(s *string) *CustomerUpdateOne {
 	return cuo
 }
 
+// ClearAddress clears the value of the "address" field.
+func (cuo *CustomerUpdateOne) ClearAddress() *CustomerUpdateOne {
+	cuo.mutation.ClearAddress()
+	return cuo
+}
+
 // SetCity sets the "city" field.
 func (cuo *CustomerUpdateOne) SetCity(s string) *CustomerUpdateOne {
 	cuo.mutation.SetCity(s)
@@ -701,6 +738,12 @@ func (cuo *CustomerUpdateOne) SetNillableCity(s *string) *CustomerUpdateOne {
 	if s != nil {
 		cuo.SetCity(*s)
 	}
+	return cuo
+}
+
+// ClearCity clears the value of the "city" field.
+func (cuo *CustomerUpdateOne) ClearCity() *CustomerUpdateOne {
+	cuo.mutation.ClearCity()
 	return cuo
 }
 
@@ -812,6 +855,12 @@ func (cuo *CustomerUpdateOne) SetNillablePhone(s *string) *CustomerUpdateOne {
 	return cuo
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (cuo *CustomerUpdateOne) ClearPhone() *CustomerUpdateOne {
+	cuo.mutation.ClearPhone()
+	return cuo
+}
+
 // SetTaxId sets the "taxId" field.
 func (cuo *CustomerUpdateOne) SetTaxId(s string) *CustomerUpdateOne {
 	cuo.mutation.SetTaxId(s)
@@ -823,6 +872,12 @@ func (cuo *CustomerUpdateOne) SetNillableTaxId(s *string) *CustomerUpdateOne {
 	if s != nil {
 		cuo.SetTaxId(*s)
 	}
+	return cuo
+}
+
+// ClearTaxId clears the value of the "taxId" field.
+func (cuo *CustomerUpdateOne) ClearTaxId() *CustomerUpdateOne {
+	cuo.mutation.ClearTaxId()
 	return cuo
 }
 
@@ -845,19 +900,19 @@ func (cuo *CustomerUpdateOne) SetCompany(c *Company) *CustomerUpdateOne {
 	return cuo.SetCompanyID(c.ID)
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by IDs.
-func (cuo *CustomerUpdateOne) AddLoanScheduleIDs(ids ...int) *CustomerUpdateOne {
-	cuo.mutation.AddLoanScheduleIDs(ids...)
+// AddLoanIDs adds the "loans" edge to the Loan entity by IDs.
+func (cuo *CustomerUpdateOne) AddLoanIDs(ids ...int) *CustomerUpdateOne {
+	cuo.mutation.AddLoanIDs(ids...)
 	return cuo
 }
 
-// AddLoanSchedule adds the "loan_schedule" edges to the Loan entity.
-func (cuo *CustomerUpdateOne) AddLoanSchedule(l ...*Loan) *CustomerUpdateOne {
+// AddLoans adds the "loans" edges to the Loan entity.
+func (cuo *CustomerUpdateOne) AddLoans(l ...*Loan) *CustomerUpdateOne {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return cuo.AddLoanScheduleIDs(ids...)
+	return cuo.AddLoanIDs(ids...)
 }
 
 // AddReceivableIDs adds the "receivables" edge to the Receivable entity by IDs.
@@ -901,25 +956,25 @@ func (cuo *CustomerUpdateOne) ClearCompany() *CustomerUpdateOne {
 	return cuo
 }
 
-// ClearLoanSchedule clears all "loan_schedule" edges to the Loan entity.
-func (cuo *CustomerUpdateOne) ClearLoanSchedule() *CustomerUpdateOne {
-	cuo.mutation.ClearLoanSchedule()
+// ClearLoans clears all "loans" edges to the Loan entity.
+func (cuo *CustomerUpdateOne) ClearLoans() *CustomerUpdateOne {
+	cuo.mutation.ClearLoans()
 	return cuo
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to Loan entities by IDs.
-func (cuo *CustomerUpdateOne) RemoveLoanScheduleIDs(ids ...int) *CustomerUpdateOne {
-	cuo.mutation.RemoveLoanScheduleIDs(ids...)
+// RemoveLoanIDs removes the "loans" edge to Loan entities by IDs.
+func (cuo *CustomerUpdateOne) RemoveLoanIDs(ids ...int) *CustomerUpdateOne {
+	cuo.mutation.RemoveLoanIDs(ids...)
 	return cuo
 }
 
-// RemoveLoanSchedule removes "loan_schedule" edges to Loan entities.
-func (cuo *CustomerUpdateOne) RemoveLoanSchedule(l ...*Loan) *CustomerUpdateOne {
+// RemoveLoans removes "loans" edges to Loan entities.
+func (cuo *CustomerUpdateOne) RemoveLoans(l ...*Loan) *CustomerUpdateOne {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
 	}
-	return cuo.RemoveLoanScheduleIDs(ids...)
+	return cuo.RemoveLoanIDs(ids...)
 }
 
 // ClearReceivables clears all "receivables" edges to the Receivable entity.
@@ -1020,11 +1075,6 @@ func (cuo *CustomerUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "Customer.name": %w`, err)}
 		}
 	}
-	if v, ok := cuo.mutation.TaxId(); ok {
-		if err := customer.TaxIdValidator(v); err != nil {
-			return &ValidationError{Name: "taxId", err: fmt.Errorf(`generated: validator failed for field "Customer.taxId": %w`, err)}
-		}
-	}
 	return nil
 }
 
@@ -1075,8 +1125,14 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if value, ok := cuo.mutation.Address(); ok {
 		_spec.SetField(customer.FieldAddress, field.TypeString, value)
 	}
+	if cuo.mutation.AddressCleared() {
+		_spec.ClearField(customer.FieldAddress, field.TypeString)
+	}
 	if value, ok := cuo.mutation.City(); ok {
 		_spec.SetField(customer.FieldCity, field.TypeString, value)
+	}
+	if cuo.mutation.CityCleared() {
+		_spec.ClearField(customer.FieldCity, field.TypeString)
 	}
 	if value, ok := cuo.mutation.Country(); ok {
 		_spec.SetField(customer.FieldCountry, field.TypeString, value)
@@ -1108,8 +1164,14 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 	if value, ok := cuo.mutation.Phone(); ok {
 		_spec.SetField(customer.FieldPhone, field.TypeString, value)
 	}
+	if cuo.mutation.PhoneCleared() {
+		_spec.ClearField(customer.FieldPhone, field.TypeString)
+	}
 	if value, ok := cuo.mutation.TaxId(); ok {
 		_spec.SetField(customer.FieldTaxId, field.TypeString, value)
+	}
+	if cuo.mutation.TaxIdCleared() {
+		_spec.ClearField(customer.FieldTaxId, field.TypeString)
 	}
 	if cuo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -1140,12 +1202,12 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cuo.mutation.LoanScheduleCleared() {
+	if cuo.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -1153,12 +1215,12 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.RemovedLoanScheduleIDs(); len(nodes) > 0 && !cuo.mutation.LoanScheduleCleared() {
+	if nodes := cuo.mutation.RemovedLoansIDs(); len(nodes) > 0 && !cuo.mutation.LoansCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),
@@ -1169,12 +1231,12 @@ func (cuo *CustomerUpdateOne) sqlSave(ctx context.Context) (_node *Customer, err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.LoanScheduleIDs(); len(nodes) > 0 {
+	if nodes := cuo.mutation.LoansIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   customer.LoanScheduleTable,
-			Columns: []string{customer.LoanScheduleColumn},
+			Table:   customer.LoansTable,
+			Columns: []string{customer.LoansColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loan.FieldID, field.TypeInt),

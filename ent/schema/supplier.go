@@ -24,15 +24,16 @@ func (Supplier) Mixin() []ent.Mixin {
 // Fields of the Supplier.
 func (Supplier) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("address"),
-		field.String("city"),
-		field.String("country"),
-		field.String("description"),
-		field.String("email"),
-		field.Bool("isDefault").Default(false).Optional(),
-		field.String("name").NotEmpty(),
-		field.String("phone"),
-		field.String("taxId").NotEmpty(),
+		field.String("address").Default("").Optional(),
+		field.String("city").Default("").Optional().Annotations(entgql.OrderField("CITY")),
+		field.String("country").Default("").Optional(),
+		field.String("description").Default("").Optional(),
+		field.String("email").Default("").Optional(),
+		field.Bool("isDefault").Default(false).Optional().
+			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
+		field.String("name").NotEmpty().Annotations(entgql.OrderField("NAME")),
+		field.String("phone").Default("").Optional(),
+		field.String("taxId").Default("").Optional(),
 	}
 }
 
@@ -48,7 +49,7 @@ func (Supplier) Indexes() []ent.Index {
 func (Supplier) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("suppliers").Unique(), // a supplier can belong to only one company
-		edge.To("loan_schedule", Loan.Type).Annotations(
+		edge.To("loans", Loan.Type).Annotations(
 			entsql.OnDelete(entsql.SetNull),
 			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),

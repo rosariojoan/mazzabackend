@@ -31,3 +31,13 @@ func (r *mutationResolver) UpdateLoan(ctx context.Context, input model.UpdateLoa
 func (r *mutationResolver) UpdateLoanSchedule(ctx context.Context, loanID int, input []*generated.UpdateLoanScheduleInput) ([]*generated.LoanSchedule, error) {
 	panic(fmt.Errorf("not implemented: UpdateLoanSchedule - updateLoanSchedule"))
 }
+
+// GetDebtorsList is the resolver for the getDebtorsList field.
+func (r *queryResolver) GetDebtorsList(ctx context.Context, companyID int) ([]*generated.Customer, error) {
+	return finance.GetDebtorsList(ctx, r.client, companyID)
+}
+
+// GetLendersList is the resolver for the getLendersList field.
+func (r *queryResolver) GetLendersList(ctx context.Context, companyID int) ([]*generated.Supplier, error) {
+	return finance.GetLendersList(ctx, r.client, companyID)
+}

@@ -300,6 +300,16 @@ func AddressHasSuffix(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldAddress, v))
 }
 
+// AddressIsNil applies the IsNil predicate on the "address" field.
+func AddressIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldAddress))
+}
+
+// AddressNotNil applies the NotNil predicate on the "address" field.
+func AddressNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldAddress))
+}
+
 // AddressEqualFold applies the EqualFold predicate on the "address" field.
 func AddressEqualFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEqualFold(FieldAddress, v))
@@ -363,6 +373,16 @@ func CityHasPrefix(v string) predicate.Customer {
 // CityHasSuffix applies the HasSuffix predicate on the "city" field.
 func CityHasSuffix(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldCity, v))
+}
+
+// CityIsNil applies the IsNil predicate on the "city" field.
+func CityIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldCity))
+}
+
+// CityNotNil applies the NotNil predicate on the "city" field.
+func CityNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldCity))
 }
 
 // CityEqualFold applies the EqualFold predicate on the "city" field.
@@ -740,6 +760,16 @@ func PhoneHasSuffix(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldPhone, v))
 }
 
+// PhoneIsNil applies the IsNil predicate on the "phone" field.
+func PhoneIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldPhone))
+}
+
+// PhoneNotNil applies the NotNil predicate on the "phone" field.
+func PhoneNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldPhone))
+}
+
 // PhoneEqualFold applies the EqualFold predicate on the "phone" field.
 func PhoneEqualFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEqualFold(FieldPhone, v))
@@ -805,6 +835,16 @@ func TaxIdHasSuffix(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldHasSuffix(FieldTaxId, v))
 }
 
+// TaxIdIsNil applies the IsNil predicate on the "taxId" field.
+func TaxIdIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldTaxId))
+}
+
+// TaxIdNotNil applies the NotNil predicate on the "taxId" field.
+func TaxIdNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldTaxId))
+}
+
 // TaxIdEqualFold applies the EqualFold predicate on the "taxId" field.
 func TaxIdEqualFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEqualFold(FieldTaxId, v))
@@ -838,21 +878,21 @@ func HasCompanyWith(preds ...predicate.Company) predicate.Customer {
 	})
 }
 
-// HasLoanSchedule applies the HasEdge predicate on the "loan_schedule" edge.
-func HasLoanSchedule() predicate.Customer {
+// HasLoans applies the HasEdge predicate on the "loans" edge.
+func HasLoans() predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, LoansTable, LoansColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasLoanScheduleWith applies the HasEdge predicate on the "loan_schedule" edge with a given conditions (other predicates).
-func HasLoanScheduleWith(preds ...predicate.Loan) predicate.Customer {
+// HasLoansWith applies the HasEdge predicate on the "loans" edge with a given conditions (other predicates).
+func HasLoansWith(preds ...predicate.Loan) predicate.Customer {
 	return predicate.Customer(func(s *sql.Selector) {
-		step := newLoanScheduleStep()
+		step := newLoansStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

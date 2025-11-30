@@ -1945,6 +1945,20 @@ var (
 			}
 		},
 	}
+	// CustomerOrderFieldName orders Customer by name.
+	CustomerOrderFieldName = &CustomerOrderField{
+		Value: func(c *Customer) (ent.Value, error) {
+			return c.Name, nil
+		},
+		column: customer.FieldName,
+		toTerm: customer.ByName,
+		toCursor: func(c *Customer) Cursor {
+			return Cursor{
+				ID:    c.ID,
+				Value: c.Name,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -1957,6 +1971,8 @@ func (f CustomerOrderField) String() string {
 		str = "UPDATED_AT"
 	case CustomerOrderFieldCity.column:
 		str = "CITY"
+	case CustomerOrderFieldName.column:
+		str = "NAME"
 	}
 	return str
 }
@@ -1979,6 +1995,8 @@ func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *CustomerOrderFieldUpdatedAt
 	case "CITY":
 		*f = *CustomerOrderFieldCity
+	case "NAME":
+		*f = *CustomerOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid CustomerOrderField", str)
 	}
@@ -7665,6 +7683,34 @@ var (
 			}
 		},
 	}
+	// SupplierOrderFieldCity orders Supplier by city.
+	SupplierOrderFieldCity = &SupplierOrderField{
+		Value: func(s *Supplier) (ent.Value, error) {
+			return s.City, nil
+		},
+		column: supplier.FieldCity,
+		toTerm: supplier.ByCity,
+		toCursor: func(s *Supplier) Cursor {
+			return Cursor{
+				ID:    s.ID,
+				Value: s.City,
+			}
+		},
+	}
+	// SupplierOrderFieldName orders Supplier by name.
+	SupplierOrderFieldName = &SupplierOrderField{
+		Value: func(s *Supplier) (ent.Value, error) {
+			return s.Name, nil
+		},
+		column: supplier.FieldName,
+		toTerm: supplier.ByName,
+		toCursor: func(s *Supplier) Cursor {
+			return Cursor{
+				ID:    s.ID,
+				Value: s.Name,
+			}
+		},
+	}
 )
 
 // String implement fmt.Stringer interface.
@@ -7675,6 +7721,10 @@ func (f SupplierOrderField) String() string {
 		str = "CREATED_AT"
 	case SupplierOrderFieldUpdatedAt.column:
 		str = "UPDATED_AT"
+	case SupplierOrderFieldCity.column:
+		str = "CITY"
+	case SupplierOrderFieldName.column:
+		str = "NAME"
 	}
 	return str
 }
@@ -7695,6 +7745,10 @@ func (f *SupplierOrderField) UnmarshalGQL(v interface{}) error {
 		*f = *SupplierOrderFieldCreatedAt
 	case "UPDATED_AT":
 		*f = *SupplierOrderFieldUpdatedAt
+	case "CITY":
+		*f = *SupplierOrderFieldCity
+	case "NAME":
+		*f = *SupplierOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid SupplierOrderField", str)
 	}

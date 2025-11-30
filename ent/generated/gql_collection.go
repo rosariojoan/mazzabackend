@@ -976,7 +976,7 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			c.withCompany = query
-		case "loanSchedule":
+		case "loans":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -985,7 +985,7 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			c.WithNamedLoanSchedule(alias, func(wq *LoanQuery) {
+			c.WithNamedLoans(alias, func(wq *LoanQuery) {
 				*wq = *query
 			})
 		case "receivables":
@@ -2193,6 +2193,11 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, loan.FieldDeletedAt)
 				fieldSeen[loan.FieldDeletedAt] = struct{}{}
 			}
+		case "isLending":
+			if _, ok := fieldSeen[loan.FieldIsLending]; !ok {
+				selectedFields = append(selectedFields, loan.FieldIsLending)
+				fieldSeen[loan.FieldIsLending] = struct{}{}
+			}
 		case "amount":
 			if _, ok := fieldSeen[loan.FieldAmount]; !ok {
 				selectedFields = append(selectedFields, loan.FieldAmount)
@@ -2272,11 +2277,6 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			if _, ok := fieldSeen[loan.FieldStatus]; !ok {
 				selectedFields = append(selectedFields, loan.FieldStatus)
 				fieldSeen[loan.FieldStatus] = struct{}{}
-			}
-		case "isLending":
-			if _, ok := fieldSeen[loan.FieldIsLending]; !ok {
-				selectedFields = append(selectedFields, loan.FieldIsLending)
-				fieldSeen[loan.FieldIsLending] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -3634,7 +3634,7 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			s.withCompany = query
-		case "loanSchedule":
+		case "loans":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -3643,7 +3643,7 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			s.WithNamedLoanSchedule(alias, func(wq *LoanQuery) {
+			s.WithNamedLoans(alias, func(wq *LoanQuery) {
 				*wq = *query
 			})
 		case "payables":

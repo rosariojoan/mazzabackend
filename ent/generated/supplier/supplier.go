@@ -40,8 +40,8 @@ const (
 	FieldTaxId = "tax_id"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
-	EdgeLoanSchedule = "loan_schedule"
+	// EdgeLoans holds the string denoting the loans edge name in mutations.
+	EdgeLoans = "loans"
 	// EdgePayables holds the string denoting the payables edge name in mutations.
 	EdgePayables = "payables"
 	// Table holds the table name of the supplier in the database.
@@ -53,13 +53,13 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_suppliers"
-	// LoanScheduleTable is the table that holds the loan_schedule relation/edge.
-	LoanScheduleTable = "loans"
-	// LoanScheduleInverseTable is the table name for the Loan entity.
+	// LoansTable is the table that holds the loans relation/edge.
+	LoansTable = "loans"
+	// LoansInverseTable is the table name for the Loan entity.
 	// It exists in this package in order to avoid circular dependency with the "loan" package.
-	LoanScheduleInverseTable = "loans"
-	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
-	LoanScheduleColumn = "supplier_loan_schedule"
+	LoansInverseTable = "loans"
+	// LoansColumn is the table column denoting the loans relation/edge.
+	LoansColumn = "supplier_loans"
 	// PayablesTable is the table that holds the payables relation/edge.
 	PayablesTable = "payables"
 	// PayablesInverseTable is the table name for the Payable entity.
@@ -114,12 +114,24 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultAddress holds the default value on creation for the "address" field.
+	DefaultAddress string
+	// DefaultCity holds the default value on creation for the "city" field.
+	DefaultCity string
+	// DefaultCountry holds the default value on creation for the "country" field.
+	DefaultCountry string
+	// DefaultDescription holds the default value on creation for the "description" field.
+	DefaultDescription string
+	// DefaultEmail holds the default value on creation for the "email" field.
+	DefaultEmail string
 	// DefaultIsDefault holds the default value on creation for the "isDefault" field.
 	DefaultIsDefault bool
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// TaxIdValidator is a validator for the "taxId" field. It is called by the builders before save.
-	TaxIdValidator func(string) error
+	// DefaultPhone holds the default value on creation for the "phone" field.
+	DefaultPhone string
+	// DefaultTaxId holds the default value on creation for the "taxId" field.
+	DefaultTaxId string
 )
 
 // OrderOption defines the ordering options for the Supplier queries.
@@ -197,17 +209,17 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByLoanScheduleCount orders the results by loan_schedule count.
-func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
+// ByLoansCount orders the results by loans count.
+func ByLoansCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newLoansStep(), opts...)
 	}
 }
 
-// ByLoanSchedule orders the results by loan_schedule terms.
-func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByLoans orders the results by loans terms.
+func ByLoans(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newLoansStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -231,11 +243,11 @@ func newCompanyStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, true, CompanyTable, CompanyColumn),
 	)
 }
-func newLoanScheduleStep() *sqlgraph.Step {
+func newLoansStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(LoanScheduleInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, LoanScheduleTable, LoanScheduleColumn),
+		sqlgraph.To(LoansInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, LoansTable, LoansColumn),
 	)
 }
 func newPayablesStep() *sqlgraph.Step {

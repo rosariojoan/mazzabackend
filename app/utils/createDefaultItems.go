@@ -10,9 +10,8 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	client := ent.FromContext(ctx)
 	companyClient := client.Company.UpdateOneID(companyID)
 	descr := "Gerado automaticamente"
-	isDefault := true
 	stock := 0
-	
+
 	defaultProduct, err := client.Product.Create().SetInput(ent.CreateProductInput{
 		Stock: &stock,
 	}).Save(ctx)
@@ -20,21 +19,21 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 		companyClient.AddProducts(defaultProduct)
 	}
 
+	stringValue := ""
 	defaultCustomer, err := client.Customer.Create().SetInput(ent.CreateCustomerInput{
 		Description: &descr,
 		Name:        "Clientes diversos",
-		TaxId:       "----",
+		TaxId:       &stringValue,
 	}).SetIsDefault(true).Save(ctx)
 	if err == nil {
 		companyClient.AddCustomers(defaultCustomer)
 	}
 
 	defaultSupplier, err := client.Supplier.Create().SetInput(ent.CreateSupplierInput{
-		Description: descr,
-		IsDefault:   &isDefault,
+		Description: &descr,
 		Name:        "Fornecedores diversos",
-		TaxId:       "----",
-	}).Save(ctx)
+		TaxId:       &stringValue,
+	}).SetIsDefault(true).Save(ctx)
 	if err == nil {
 		companyClient.AddSuppliers(defaultSupplier)
 	}

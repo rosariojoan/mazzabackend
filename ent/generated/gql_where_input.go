@@ -3565,6 +3565,8 @@ type CustomerWhereInput struct {
 	AddressContains     *string  `json:"addressContains,omitempty"`
 	AddressHasPrefix    *string  `json:"addressHasPrefix,omitempty"`
 	AddressHasSuffix    *string  `json:"addressHasSuffix,omitempty"`
+	AddressIsNil        bool     `json:"addressIsNil,omitempty"`
+	AddressNotNil       bool     `json:"addressNotNil,omitempty"`
 	AddressEqualFold    *string  `json:"addressEqualFold,omitempty"`
 	AddressContainsFold *string  `json:"addressContainsFold,omitempty"`
 
@@ -3580,6 +3582,8 @@ type CustomerWhereInput struct {
 	CityContains     *string  `json:"cityContains,omitempty"`
 	CityHasPrefix    *string  `json:"cityHasPrefix,omitempty"`
 	CityHasSuffix    *string  `json:"cityHasSuffix,omitempty"`
+	CityIsNil        bool     `json:"cityIsNil,omitempty"`
+	CityNotNil       bool     `json:"cityNotNil,omitempty"`
 	CityEqualFold    *string  `json:"cityEqualFold,omitempty"`
 	CityContainsFold *string  `json:"cityContainsFold,omitempty"`
 
@@ -3667,6 +3671,8 @@ type CustomerWhereInput struct {
 	PhoneContains     *string  `json:"phoneContains,omitempty"`
 	PhoneHasPrefix    *string  `json:"phoneHasPrefix,omitempty"`
 	PhoneHasSuffix    *string  `json:"phoneHasSuffix,omitempty"`
+	PhoneIsNil        bool     `json:"phoneIsNil,omitempty"`
+	PhoneNotNil       bool     `json:"phoneNotNil,omitempty"`
 	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
 	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
@@ -3682,6 +3688,8 @@ type CustomerWhereInput struct {
 	TaxIdContains     *string  `json:"taxidContains,omitempty"`
 	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
 	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
+	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
+	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
 	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
 	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
 
@@ -3689,9 +3697,9 @@ type CustomerWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "loan_schedule" edge predicates.
-	HasLoanSchedule     *bool             `json:"hasLoanSchedule,omitempty"`
-	HasLoanScheduleWith []*LoanWhereInput `json:"hasLoanScheduleWith,omitempty"`
+	// "loans" edge predicates.
+	HasLoans     *bool             `json:"hasLoans,omitempty"`
+	HasLoansWith []*LoanWhereInput `json:"hasLoansWith,omitempty"`
 
 	// "receivables" edge predicates.
 	HasReceivables     *bool                   `json:"hasReceivables,omitempty"`
@@ -3908,6 +3916,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.AddressHasSuffix != nil {
 		predicates = append(predicates, customer.AddressHasSuffix(*i.AddressHasSuffix))
 	}
+	if i.AddressIsNil {
+		predicates = append(predicates, customer.AddressIsNil())
+	}
+	if i.AddressNotNil {
+		predicates = append(predicates, customer.AddressNotNil())
+	}
 	if i.AddressEqualFold != nil {
 		predicates = append(predicates, customer.AddressEqualFold(*i.AddressEqualFold))
 	}
@@ -3946,6 +3960,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	}
 	if i.CityHasSuffix != nil {
 		predicates = append(predicates, customer.CityHasSuffix(*i.CityHasSuffix))
+	}
+	if i.CityIsNil {
+		predicates = append(predicates, customer.CityIsNil())
+	}
+	if i.CityNotNil {
+		predicates = append(predicates, customer.CityNotNil())
 	}
 	if i.CityEqualFold != nil {
 		predicates = append(predicates, customer.CityEqualFold(*i.CityEqualFold))
@@ -4172,6 +4192,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.PhoneHasSuffix != nil {
 		predicates = append(predicates, customer.PhoneHasSuffix(*i.PhoneHasSuffix))
 	}
+	if i.PhoneIsNil {
+		predicates = append(predicates, customer.PhoneIsNil())
+	}
+	if i.PhoneNotNil {
+		predicates = append(predicates, customer.PhoneNotNil())
+	}
 	if i.PhoneEqualFold != nil {
 		predicates = append(predicates, customer.PhoneEqualFold(*i.PhoneEqualFold))
 	}
@@ -4211,6 +4237,12 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.TaxIdHasSuffix != nil {
 		predicates = append(predicates, customer.TaxIdHasSuffix(*i.TaxIdHasSuffix))
 	}
+	if i.TaxIdIsNil {
+		predicates = append(predicates, customer.TaxIdIsNil())
+	}
+	if i.TaxIdNotNil {
+		predicates = append(predicates, customer.TaxIdNotNil())
+	}
 	if i.TaxIdEqualFold != nil {
 		predicates = append(predicates, customer.TaxIdEqualFold(*i.TaxIdEqualFold))
 	}
@@ -4236,23 +4268,23 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 		}
 		predicates = append(predicates, customer.HasCompanyWith(with...))
 	}
-	if i.HasLoanSchedule != nil {
-		p := customer.HasLoanSchedule()
-		if !*i.HasLoanSchedule {
+	if i.HasLoans != nil {
+		p := customer.HasLoans()
+		if !*i.HasLoans {
 			p = customer.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasLoanScheduleWith) > 0 {
-		with := make([]predicate.Loan, 0, len(i.HasLoanScheduleWith))
-		for _, w := range i.HasLoanScheduleWith {
+	if len(i.HasLoansWith) > 0 {
+		with := make([]predicate.Loan, 0, len(i.HasLoansWith))
+		for _, w := range i.HasLoansWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasLoanScheduleWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasLoansWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, customer.HasLoanScheduleWith(with...))
+		predicates = append(predicates, customer.HasLoansWith(with...))
 	}
 	if i.HasReceivables != nil {
 		p := customer.HasReceivables()
@@ -9007,6 +9039,10 @@ type LoanWhereInput struct {
 	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
 	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
 
+	// "is_lending" field predicates.
+	IsLending    *bool `json:"isLending,omitempty"`
+	IsLendingNEQ *bool `json:"isLendingNEQ,omitempty"`
+
 	// "amount" field predicates.
 	Amount      *float64  `json:"amount,omitempty"`
 	AmountNEQ   *float64  `json:"amountNEQ,omitempty"`
@@ -9173,10 +9209,6 @@ type LoanWhereInput struct {
 	StatusNEQ   *loan.Status  `json:"statusNEQ,omitempty"`
 	StatusIn    []loan.Status `json:"statusIn,omitempty"`
 	StatusNotIn []loan.Status `json:"statusNotIn,omitempty"`
-
-	// "is_lending" field predicates.
-	IsLending    *bool `json:"isLending,omitempty"`
-	IsLendingNEQ *bool `json:"isLendingNEQ,omitempty"`
 
 	// "client" edge predicates.
 	HasClient     *bool                 `json:"hasClient,omitempty"`
@@ -9371,6 +9403,12 @@ func (i *LoanWhereInput) P() (predicate.Loan, error) {
 	}
 	if i.DeletedAtNotNil {
 		predicates = append(predicates, loan.DeletedAtNotNil())
+	}
+	if i.IsLending != nil {
+		predicates = append(predicates, loan.IsLendingEQ(*i.IsLending))
+	}
+	if i.IsLendingNEQ != nil {
+		predicates = append(predicates, loan.IsLendingNEQ(*i.IsLendingNEQ))
 	}
 	if i.Amount != nil {
 		predicates = append(predicates, loan.AmountEQ(*i.Amount))
@@ -9776,12 +9814,6 @@ func (i *LoanWhereInput) P() (predicate.Loan, error) {
 	}
 	if len(i.StatusNotIn) > 0 {
 		predicates = append(predicates, loan.StatusNotIn(i.StatusNotIn...))
-	}
-	if i.IsLending != nil {
-		predicates = append(predicates, loan.IsLendingEQ(*i.IsLending))
-	}
-	if i.IsLendingNEQ != nil {
-		predicates = append(predicates, loan.IsLendingNEQ(*i.IsLendingNEQ))
 	}
 
 	if i.HasClient != nil {
@@ -14167,6 +14199,8 @@ type SupplierWhereInput struct {
 	AddressContains     *string  `json:"addressContains,omitempty"`
 	AddressHasPrefix    *string  `json:"addressHasPrefix,omitempty"`
 	AddressHasSuffix    *string  `json:"addressHasSuffix,omitempty"`
+	AddressIsNil        bool     `json:"addressIsNil,omitempty"`
+	AddressNotNil       bool     `json:"addressNotNil,omitempty"`
 	AddressEqualFold    *string  `json:"addressEqualFold,omitempty"`
 	AddressContainsFold *string  `json:"addressContainsFold,omitempty"`
 
@@ -14182,6 +14216,8 @@ type SupplierWhereInput struct {
 	CityContains     *string  `json:"cityContains,omitempty"`
 	CityHasPrefix    *string  `json:"cityHasPrefix,omitempty"`
 	CityHasSuffix    *string  `json:"cityHasSuffix,omitempty"`
+	CityIsNil        bool     `json:"cityIsNil,omitempty"`
+	CityNotNil       bool     `json:"cityNotNil,omitempty"`
 	CityEqualFold    *string  `json:"cityEqualFold,omitempty"`
 	CityContainsFold *string  `json:"cityContainsFold,omitempty"`
 
@@ -14197,6 +14233,8 @@ type SupplierWhereInput struct {
 	CountryContains     *string  `json:"countryContains,omitempty"`
 	CountryHasPrefix    *string  `json:"countryHasPrefix,omitempty"`
 	CountryHasSuffix    *string  `json:"countryHasSuffix,omitempty"`
+	CountryIsNil        bool     `json:"countryIsNil,omitempty"`
+	CountryNotNil       bool     `json:"countryNotNil,omitempty"`
 	CountryEqualFold    *string  `json:"countryEqualFold,omitempty"`
 	CountryContainsFold *string  `json:"countryContainsFold,omitempty"`
 
@@ -14212,6 +14250,8 @@ type SupplierWhereInput struct {
 	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
 	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
 	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
+	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
+	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
 	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
 	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
 
@@ -14227,6 +14267,8 @@ type SupplierWhereInput struct {
 	EmailContains     *string  `json:"emailContains,omitempty"`
 	EmailHasPrefix    *string  `json:"emailHasPrefix,omitempty"`
 	EmailHasSuffix    *string  `json:"emailHasSuffix,omitempty"`
+	EmailIsNil        bool     `json:"emailIsNil,omitempty"`
+	EmailNotNil       bool     `json:"emailNotNil,omitempty"`
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
@@ -14263,6 +14305,8 @@ type SupplierWhereInput struct {
 	PhoneContains     *string  `json:"phoneContains,omitempty"`
 	PhoneHasPrefix    *string  `json:"phoneHasPrefix,omitempty"`
 	PhoneHasSuffix    *string  `json:"phoneHasSuffix,omitempty"`
+	PhoneIsNil        bool     `json:"phoneIsNil,omitempty"`
+	PhoneNotNil       bool     `json:"phoneNotNil,omitempty"`
 	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
 	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
@@ -14278,6 +14322,8 @@ type SupplierWhereInput struct {
 	TaxIdContains     *string  `json:"taxidContains,omitempty"`
 	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
 	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
+	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
+	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
 	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
 	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
 
@@ -14285,9 +14331,9 @@ type SupplierWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "loan_schedule" edge predicates.
-	HasLoanSchedule     *bool             `json:"hasLoanSchedule,omitempty"`
-	HasLoanScheduleWith []*LoanWhereInput `json:"hasLoanScheduleWith,omitempty"`
+	// "loans" edge predicates.
+	HasLoans     *bool             `json:"hasLoans,omitempty"`
+	HasLoansWith []*LoanWhereInput `json:"hasLoansWith,omitempty"`
 
 	// "payables" edge predicates.
 	HasPayables     *bool                `json:"hasPayables,omitempty"`
@@ -14500,6 +14546,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.AddressHasSuffix != nil {
 		predicates = append(predicates, supplier.AddressHasSuffix(*i.AddressHasSuffix))
 	}
+	if i.AddressIsNil {
+		predicates = append(predicates, supplier.AddressIsNil())
+	}
+	if i.AddressNotNil {
+		predicates = append(predicates, supplier.AddressNotNil())
+	}
 	if i.AddressEqualFold != nil {
 		predicates = append(predicates, supplier.AddressEqualFold(*i.AddressEqualFold))
 	}
@@ -14538,6 +14590,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	}
 	if i.CityHasSuffix != nil {
 		predicates = append(predicates, supplier.CityHasSuffix(*i.CityHasSuffix))
+	}
+	if i.CityIsNil {
+		predicates = append(predicates, supplier.CityIsNil())
+	}
+	if i.CityNotNil {
+		predicates = append(predicates, supplier.CityNotNil())
 	}
 	if i.CityEqualFold != nil {
 		predicates = append(predicates, supplier.CityEqualFold(*i.CityEqualFold))
@@ -14578,6 +14636,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.CountryHasSuffix != nil {
 		predicates = append(predicates, supplier.CountryHasSuffix(*i.CountryHasSuffix))
 	}
+	if i.CountryIsNil {
+		predicates = append(predicates, supplier.CountryIsNil())
+	}
+	if i.CountryNotNil {
+		predicates = append(predicates, supplier.CountryNotNil())
+	}
 	if i.CountryEqualFold != nil {
 		predicates = append(predicates, supplier.CountryEqualFold(*i.CountryEqualFold))
 	}
@@ -14617,6 +14681,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.DescriptionHasSuffix != nil {
 		predicates = append(predicates, supplier.DescriptionHasSuffix(*i.DescriptionHasSuffix))
 	}
+	if i.DescriptionIsNil {
+		predicates = append(predicates, supplier.DescriptionIsNil())
+	}
+	if i.DescriptionNotNil {
+		predicates = append(predicates, supplier.DescriptionNotNil())
+	}
 	if i.DescriptionEqualFold != nil {
 		predicates = append(predicates, supplier.DescriptionEqualFold(*i.DescriptionEqualFold))
 	}
@@ -14655,6 +14725,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	}
 	if i.EmailHasSuffix != nil {
 		predicates = append(predicates, supplier.EmailHasSuffix(*i.EmailHasSuffix))
+	}
+	if i.EmailIsNil {
+		predicates = append(predicates, supplier.EmailIsNil())
+	}
+	if i.EmailNotNil {
+		predicates = append(predicates, supplier.EmailNotNil())
 	}
 	if i.EmailEqualFold != nil {
 		predicates = append(predicates, supplier.EmailEqualFold(*i.EmailEqualFold))
@@ -14746,6 +14822,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.PhoneHasSuffix != nil {
 		predicates = append(predicates, supplier.PhoneHasSuffix(*i.PhoneHasSuffix))
 	}
+	if i.PhoneIsNil {
+		predicates = append(predicates, supplier.PhoneIsNil())
+	}
+	if i.PhoneNotNil {
+		predicates = append(predicates, supplier.PhoneNotNil())
+	}
 	if i.PhoneEqualFold != nil {
 		predicates = append(predicates, supplier.PhoneEqualFold(*i.PhoneEqualFold))
 	}
@@ -14785,6 +14867,12 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.TaxIdHasSuffix != nil {
 		predicates = append(predicates, supplier.TaxIdHasSuffix(*i.TaxIdHasSuffix))
 	}
+	if i.TaxIdIsNil {
+		predicates = append(predicates, supplier.TaxIdIsNil())
+	}
+	if i.TaxIdNotNil {
+		predicates = append(predicates, supplier.TaxIdNotNil())
+	}
 	if i.TaxIdEqualFold != nil {
 		predicates = append(predicates, supplier.TaxIdEqualFold(*i.TaxIdEqualFold))
 	}
@@ -14810,23 +14898,23 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 		}
 		predicates = append(predicates, supplier.HasCompanyWith(with...))
 	}
-	if i.HasLoanSchedule != nil {
-		p := supplier.HasLoanSchedule()
-		if !*i.HasLoanSchedule {
+	if i.HasLoans != nil {
+		p := supplier.HasLoans()
+		if !*i.HasLoans {
 			p = supplier.Not(p)
 		}
 		predicates = append(predicates, p)
 	}
-	if len(i.HasLoanScheduleWith) > 0 {
-		with := make([]predicate.Loan, 0, len(i.HasLoanScheduleWith))
-		for _, w := range i.HasLoanScheduleWith {
+	if len(i.HasLoansWith) > 0 {
+		with := make([]predicate.Loan, 0, len(i.HasLoansWith))
+		for _, w := range i.HasLoansWith {
 			p, err := w.P()
 			if err != nil {
-				return nil, fmt.Errorf("%w: field 'HasLoanScheduleWith'", err)
+				return nil, fmt.Errorf("%w: field 'HasLoansWith'", err)
 			}
 			with = append(with, p)
 		}
-		predicates = append(predicates, supplier.HasLoanScheduleWith(with...))
+		predicates = append(predicates, supplier.HasLoansWith(with...))
 	}
 	if i.HasPayables != nil {
 		p := supplier.HasPayables()

@@ -1546,15 +1546,15 @@ func (c *CustomerClient) QueryCompany(cu *Customer) *CompanyQuery {
 	return query
 }
 
-// QueryLoanSchedule queries the loan_schedule edge of a Customer.
-func (c *CustomerClient) QueryLoanSchedule(cu *Customer) *LoanQuery {
+// QueryLoans queries the loans edge of a Customer.
+func (c *CustomerClient) QueryLoans(cu *Customer) *LoanQuery {
 	query := (&LoanClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := cu.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(customer.Table, customer.FieldID, id),
 			sqlgraph.To(loan.Table, loan.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, customer.LoanScheduleTable, customer.LoanScheduleColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, customer.LoansTable, customer.LoansColumn),
 		)
 		fromV = sqlgraph.Neighbors(cu.driver.Dialect(), step)
 		return fromV, nil
@@ -4198,15 +4198,15 @@ func (c *SupplierClient) QueryCompany(s *Supplier) *CompanyQuery {
 	return query
 }
 
-// QueryLoanSchedule queries the loan_schedule edge of a Supplier.
-func (c *SupplierClient) QueryLoanSchedule(s *Supplier) *LoanQuery {
+// QueryLoans queries the loans edge of a Supplier.
+func (c *SupplierClient) QueryLoans(s *Supplier) *LoanQuery {
 	query := (&LoanClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := s.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(supplier.Table, supplier.FieldID, id),
 			sqlgraph.To(loan.Table, loan.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, supplier.LoanScheduleTable, supplier.LoanScheduleColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, supplier.LoansTable, supplier.LoansColumn),
 		)
 		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
 		return fromV, nil

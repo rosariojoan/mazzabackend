@@ -29,11 +29,11 @@ type Customer struct {
 	// City holds the value of the "city" field.
 	City string `json:"city,omitempty"`
 	// Country holds the value of the "country" field.
-	Country *string `json:"country,omitempty"`
+	Country string `json:"country,omitempty"`
 	// Description holds the value of the "description" field.
-	Description *string `json:"description,omitempty"`
+	Description string `json:"description,omitempty"`
 	// Email holds the value of the "email" field.
-	Email *string `json:"email,omitempty"`
+	Email string `json:"email,omitempty"`
 	// IsDefault holds the value of the "isDefault" field.
 	IsDefault bool `json:"isDefault,omitempty"`
 	// Name holds the value of the "name" field.
@@ -53,8 +53,8 @@ type Customer struct {
 type CustomerEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// LoanSchedule holds the value of the loan_schedule edge.
-	LoanSchedule []*Loan `json:"loan_schedule,omitempty"`
+	// Loans holds the value of the loans edge.
+	Loans []*Loan `json:"loans,omitempty"`
 	// Receivables holds the value of the receivables edge.
 	Receivables []*Receivable `json:"receivables,omitempty"`
 	// Invoices holds the value of the invoices edge.
@@ -65,9 +65,9 @@ type CustomerEdges struct {
 	// totalCount holds the count of the edges above.
 	totalCount [4]map[string]int
 
-	namedLoanSchedule map[string][]*Loan
-	namedReceivables  map[string][]*Receivable
-	namedInvoices     map[string][]*Invoice
+	namedLoans       map[string][]*Loan
+	namedReceivables map[string][]*Receivable
+	namedInvoices    map[string][]*Invoice
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -81,13 +81,13 @@ func (e CustomerEdges) CompanyOrErr() (*Company, error) {
 	return nil, &NotLoadedError{edge: "company"}
 }
 
-// LoanScheduleOrErr returns the LoanSchedule value or an error if the edge
+// LoansOrErr returns the Loans value or an error if the edge
 // was not loaded in eager-loading.
-func (e CustomerEdges) LoanScheduleOrErr() ([]*Loan, error) {
+func (e CustomerEdges) LoansOrErr() ([]*Loan, error) {
 	if e.loadedTypes[1] {
-		return e.LoanSchedule, nil
+		return e.Loans, nil
 	}
-	return nil, &NotLoadedError{edge: "loan_schedule"}
+	return nil, &NotLoadedError{edge: "loans"}
 }
 
 // ReceivablesOrErr returns the Receivables value or an error if the edge
@@ -179,22 +179,19 @@ func (c *Customer) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field country", values[i])
 			} else if value.Valid {
-				c.Country = new(string)
-				*c.Country = value.String
+				c.Country = value.String
 			}
 		case customer.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
-				c.Description = new(string)
-				*c.Description = value.String
+				c.Description = value.String
 			}
 		case customer.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				c.Email = new(string)
-				*c.Email = value.String
+				c.Email = value.String
 			}
 		case customer.FieldIsDefault:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -245,9 +242,9 @@ func (c *Customer) QueryCompany() *CompanyQuery {
 	return NewCustomerClient(c.config).QueryCompany(c)
 }
 
-// QueryLoanSchedule queries the "loan_schedule" edge of the Customer entity.
-func (c *Customer) QueryLoanSchedule() *LoanQuery {
-	return NewCustomerClient(c.config).QueryLoanSchedule(c)
+// QueryLoans queries the "loans" edge of the Customer entity.
+func (c *Customer) QueryLoans() *LoanQuery {
+	return NewCustomerClient(c.config).QueryLoans(c)
 }
 
 // QueryReceivables queries the "receivables" edge of the Customer entity.
@@ -300,20 +297,14 @@ func (c *Customer) String() string {
 	builder.WriteString("city=")
 	builder.WriteString(c.City)
 	builder.WriteString(", ")
-	if v := c.Country; v != nil {
-		builder.WriteString("country=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("country=")
+	builder.WriteString(c.Country)
 	builder.WriteString(", ")
-	if v := c.Description; v != nil {
-		builder.WriteString("description=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("description=")
+	builder.WriteString(c.Description)
 	builder.WriteString(", ")
-	if v := c.Email; v != nil {
-		builder.WriteString("email=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("email=")
+	builder.WriteString(c.Email)
 	builder.WriteString(", ")
 	builder.WriteString("isDefault=")
 	builder.WriteString(fmt.Sprintf("%v", c.IsDefault))
@@ -330,27 +321,27 @@ func (c *Customer) String() string {
 	return builder.String()
 }
 
-// NamedLoanSchedule returns the LoanSchedule named value or an error if the edge was not
+// NamedLoans returns the Loans named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (c *Customer) NamedLoanSchedule(name string) ([]*Loan, error) {
-	if c.Edges.namedLoanSchedule == nil {
+func (c *Customer) NamedLoans(name string) ([]*Loan, error) {
+	if c.Edges.namedLoans == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := c.Edges.namedLoanSchedule[name]
+	nodes, ok := c.Edges.namedLoans[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (c *Customer) appendNamedLoanSchedule(name string, edges ...*Loan) {
-	if c.Edges.namedLoanSchedule == nil {
-		c.Edges.namedLoanSchedule = make(map[string][]*Loan)
+func (c *Customer) appendNamedLoans(name string, edges ...*Loan) {
+	if c.Edges.namedLoans == nil {
+		c.Edges.namedLoans = make(map[string][]*Loan)
 	}
 	if len(edges) == 0 {
-		c.Edges.namedLoanSchedule[name] = []*Loan{}
+		c.Edges.namedLoans[name] = []*Loan{}
 	} else {
-		c.Edges.namedLoanSchedule[name] = append(c.Edges.namedLoanSchedule[name], edges...)
+		c.Edges.namedLoans[name] = append(c.Edges.namedLoans[name], edges...)
 	}
 }
 

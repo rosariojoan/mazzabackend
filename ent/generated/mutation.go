@@ -6942,36 +6942,36 @@ func (m *CompanyDocumentMutation) ResetEdge(name string) error {
 // CustomerMutation represents an operation that mutates the Customer nodes in the graph.
 type CustomerMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *int
-	createdAt            *time.Time
-	updatedAt            *time.Time
-	deletedAt            *time.Time
-	address              *string
-	city                 *string
-	country              *string
-	description          *string
-	email                *string
-	isDefault            *bool
-	name                 *string
-	phone                *string
-	taxId                *string
-	clearedFields        map[string]struct{}
-	company              *int
-	clearedcompany       bool
-	loan_schedule        map[int]struct{}
-	removedloan_schedule map[int]struct{}
-	clearedloan_schedule bool
-	receivables          map[int]struct{}
-	removedreceivables   map[int]struct{}
-	clearedreceivables   bool
-	invoices             map[int]struct{}
-	removedinvoices      map[int]struct{}
-	clearedinvoices      bool
-	done                 bool
-	oldValue             func(context.Context) (*Customer, error)
-	predicates           []predicate.Customer
+	op                 Op
+	typ                string
+	id                 *int
+	createdAt          *time.Time
+	updatedAt          *time.Time
+	deletedAt          *time.Time
+	address            *string
+	city               *string
+	country            *string
+	description        *string
+	email              *string
+	isDefault          *bool
+	name               *string
+	phone              *string
+	taxId              *string
+	clearedFields      map[string]struct{}
+	company            *int
+	clearedcompany     bool
+	loans              map[int]struct{}
+	removedloans       map[int]struct{}
+	clearedloans       bool
+	receivables        map[int]struct{}
+	removedreceivables map[int]struct{}
+	clearedreceivables bool
+	invoices           map[int]struct{}
+	removedinvoices    map[int]struct{}
+	clearedinvoices    bool
+	done               bool
+	oldValue           func(context.Context) (*Customer, error)
+	predicates         []predicate.Customer
 }
 
 var _ ent.Mutation = (*CustomerMutation)(nil)
@@ -7224,9 +7224,22 @@ func (m *CustomerMutation) OldAddress(ctx context.Context) (v string, err error)
 	return oldValue.Address, nil
 }
 
+// ClearAddress clears the value of the "address" field.
+func (m *CustomerMutation) ClearAddress() {
+	m.address = nil
+	m.clearedFields[customer.FieldAddress] = struct{}{}
+}
+
+// AddressCleared returns if the "address" field was cleared in this mutation.
+func (m *CustomerMutation) AddressCleared() bool {
+	_, ok := m.clearedFields[customer.FieldAddress]
+	return ok
+}
+
 // ResetAddress resets all changes to the "address" field.
 func (m *CustomerMutation) ResetAddress() {
 	m.address = nil
+	delete(m.clearedFields, customer.FieldAddress)
 }
 
 // SetCity sets the "city" field.
@@ -7260,9 +7273,22 @@ func (m *CustomerMutation) OldCity(ctx context.Context) (v string, err error) {
 	return oldValue.City, nil
 }
 
+// ClearCity clears the value of the "city" field.
+func (m *CustomerMutation) ClearCity() {
+	m.city = nil
+	m.clearedFields[customer.FieldCity] = struct{}{}
+}
+
+// CityCleared returns if the "city" field was cleared in this mutation.
+func (m *CustomerMutation) CityCleared() bool {
+	_, ok := m.clearedFields[customer.FieldCity]
+	return ok
+}
+
 // ResetCity resets all changes to the "city" field.
 func (m *CustomerMutation) ResetCity() {
 	m.city = nil
+	delete(m.clearedFields, customer.FieldCity)
 }
 
 // SetCountry sets the "country" field.
@@ -7282,7 +7308,7 @@ func (m *CustomerMutation) Country() (r string, exists bool) {
 // OldCountry returns the old "country" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldCountry(ctx context.Context) (v *string, err error) {
+func (m *CustomerMutation) OldCountry(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
 	}
@@ -7331,7 +7357,7 @@ func (m *CustomerMutation) Description() (r string, exists bool) {
 // OldDescription returns the old "description" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldDescription(ctx context.Context) (v *string, err error) {
+func (m *CustomerMutation) OldDescription(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
 	}
@@ -7380,7 +7406,7 @@ func (m *CustomerMutation) Email() (r string, exists bool) {
 // OldEmail returns the old "email" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldEmail(ctx context.Context) (v *string, err error) {
+func (m *CustomerMutation) OldEmail(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
 	}
@@ -7528,9 +7554,22 @@ func (m *CustomerMutation) OldPhone(ctx context.Context) (v string, err error) {
 	return oldValue.Phone, nil
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (m *CustomerMutation) ClearPhone() {
+	m.phone = nil
+	m.clearedFields[customer.FieldPhone] = struct{}{}
+}
+
+// PhoneCleared returns if the "phone" field was cleared in this mutation.
+func (m *CustomerMutation) PhoneCleared() bool {
+	_, ok := m.clearedFields[customer.FieldPhone]
+	return ok
+}
+
 // ResetPhone resets all changes to the "phone" field.
 func (m *CustomerMutation) ResetPhone() {
 	m.phone = nil
+	delete(m.clearedFields, customer.FieldPhone)
 }
 
 // SetTaxId sets the "taxId" field.
@@ -7564,9 +7603,22 @@ func (m *CustomerMutation) OldTaxId(ctx context.Context) (v string, err error) {
 	return oldValue.TaxId, nil
 }
 
+// ClearTaxId clears the value of the "taxId" field.
+func (m *CustomerMutation) ClearTaxId() {
+	m.taxId = nil
+	m.clearedFields[customer.FieldTaxId] = struct{}{}
+}
+
+// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
+func (m *CustomerMutation) TaxIdCleared() bool {
+	_, ok := m.clearedFields[customer.FieldTaxId]
+	return ok
+}
+
 // ResetTaxId resets all changes to the "taxId" field.
 func (m *CustomerMutation) ResetTaxId() {
 	m.taxId = nil
+	delete(m.clearedFields, customer.FieldTaxId)
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -7608,58 +7660,58 @@ func (m *CustomerMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by ids.
-func (m *CustomerMutation) AddLoanScheduleIDs(ids ...int) {
-	if m.loan_schedule == nil {
-		m.loan_schedule = make(map[int]struct{})
+// AddLoanIDs adds the "loans" edge to the Loan entity by ids.
+func (m *CustomerMutation) AddLoanIDs(ids ...int) {
+	if m.loans == nil {
+		m.loans = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.loan_schedule[ids[i]] = struct{}{}
+		m.loans[ids[i]] = struct{}{}
 	}
 }
 
-// ClearLoanSchedule clears the "loan_schedule" edge to the Loan entity.
-func (m *CustomerMutation) ClearLoanSchedule() {
-	m.clearedloan_schedule = true
+// ClearLoans clears the "loans" edge to the Loan entity.
+func (m *CustomerMutation) ClearLoans() {
+	m.clearedloans = true
 }
 
-// LoanScheduleCleared reports if the "loan_schedule" edge to the Loan entity was cleared.
-func (m *CustomerMutation) LoanScheduleCleared() bool {
-	return m.clearedloan_schedule
+// LoansCleared reports if the "loans" edge to the Loan entity was cleared.
+func (m *CustomerMutation) LoansCleared() bool {
+	return m.clearedloans
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the Loan entity by IDs.
-func (m *CustomerMutation) RemoveLoanScheduleIDs(ids ...int) {
-	if m.removedloan_schedule == nil {
-		m.removedloan_schedule = make(map[int]struct{})
+// RemoveLoanIDs removes the "loans" edge to the Loan entity by IDs.
+func (m *CustomerMutation) RemoveLoanIDs(ids ...int) {
+	if m.removedloans == nil {
+		m.removedloans = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.loan_schedule, ids[i])
-		m.removedloan_schedule[ids[i]] = struct{}{}
+		delete(m.loans, ids[i])
+		m.removedloans[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the Loan entity.
-func (m *CustomerMutation) RemovedLoanScheduleIDs() (ids []int) {
-	for id := range m.removedloan_schedule {
+// RemovedLoans returns the removed IDs of the "loans" edge to the Loan entity.
+func (m *CustomerMutation) RemovedLoansIDs() (ids []int) {
+	for id := range m.removedloans {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
-func (m *CustomerMutation) LoanScheduleIDs() (ids []int) {
-	for id := range m.loan_schedule {
+// LoansIDs returns the "loans" edge IDs in the mutation.
+func (m *CustomerMutation) LoansIDs() (ids []int) {
+	for id := range m.loans {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
-func (m *CustomerMutation) ResetLoanSchedule() {
-	m.loan_schedule = nil
-	m.clearedloan_schedule = false
-	m.removedloan_schedule = nil
+// ResetLoans resets all changes to the "loans" edge.
+func (m *CustomerMutation) ResetLoans() {
+	m.loans = nil
+	m.clearedloans = false
+	m.removedloans = nil
 }
 
 // AddReceivableIDs adds the "receivables" edge to the Receivable entity by ids.
@@ -8032,6 +8084,12 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldDeletedAt) {
 		fields = append(fields, customer.FieldDeletedAt)
 	}
+	if m.FieldCleared(customer.FieldAddress) {
+		fields = append(fields, customer.FieldAddress)
+	}
+	if m.FieldCleared(customer.FieldCity) {
+		fields = append(fields, customer.FieldCity)
+	}
 	if m.FieldCleared(customer.FieldCountry) {
 		fields = append(fields, customer.FieldCountry)
 	}
@@ -8043,6 +8101,12 @@ func (m *CustomerMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(customer.FieldIsDefault) {
 		fields = append(fields, customer.FieldIsDefault)
+	}
+	if m.FieldCleared(customer.FieldPhone) {
+		fields = append(fields, customer.FieldPhone)
+	}
+	if m.FieldCleared(customer.FieldTaxId) {
+		fields = append(fields, customer.FieldTaxId)
 	}
 	return fields
 }
@@ -8061,6 +8125,12 @@ func (m *CustomerMutation) ClearField(name string) error {
 	case customer.FieldDeletedAt:
 		m.ClearDeletedAt()
 		return nil
+	case customer.FieldAddress:
+		m.ClearAddress()
+		return nil
+	case customer.FieldCity:
+		m.ClearCity()
+		return nil
 	case customer.FieldCountry:
 		m.ClearCountry()
 		return nil
@@ -8072,6 +8142,12 @@ func (m *CustomerMutation) ClearField(name string) error {
 		return nil
 	case customer.FieldIsDefault:
 		m.ClearIsDefault()
+		return nil
+	case customer.FieldPhone:
+		m.ClearPhone()
+		return nil
+	case customer.FieldTaxId:
+		m.ClearTaxId()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer nullable field %s", name)
@@ -8127,8 +8203,8 @@ func (m *CustomerMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, customer.EdgeCompany)
 	}
-	if m.loan_schedule != nil {
-		edges = append(edges, customer.EdgeLoanSchedule)
+	if m.loans != nil {
+		edges = append(edges, customer.EdgeLoans)
 	}
 	if m.receivables != nil {
 		edges = append(edges, customer.EdgeReceivables)
@@ -8147,9 +8223,9 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
-	case customer.EdgeLoanSchedule:
-		ids := make([]ent.Value, 0, len(m.loan_schedule))
-		for id := range m.loan_schedule {
+	case customer.EdgeLoans:
+		ids := make([]ent.Value, 0, len(m.loans))
+		for id := range m.loans {
 			ids = append(ids, id)
 		}
 		return ids
@@ -8172,8 +8248,8 @@ func (m *CustomerMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CustomerMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 4)
-	if m.removedloan_schedule != nil {
-		edges = append(edges, customer.EdgeLoanSchedule)
+	if m.removedloans != nil {
+		edges = append(edges, customer.EdgeLoans)
 	}
 	if m.removedreceivables != nil {
 		edges = append(edges, customer.EdgeReceivables)
@@ -8188,9 +8264,9 @@ func (m *CustomerMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *CustomerMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case customer.EdgeLoanSchedule:
-		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
-		for id := range m.removedloan_schedule {
+	case customer.EdgeLoans:
+		ids := make([]ent.Value, 0, len(m.removedloans))
+		for id := range m.removedloans {
 			ids = append(ids, id)
 		}
 		return ids
@@ -8216,8 +8292,8 @@ func (m *CustomerMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, customer.EdgeCompany)
 	}
-	if m.clearedloan_schedule {
-		edges = append(edges, customer.EdgeLoanSchedule)
+	if m.clearedloans {
+		edges = append(edges, customer.EdgeLoans)
 	}
 	if m.clearedreceivables {
 		edges = append(edges, customer.EdgeReceivables)
@@ -8234,8 +8310,8 @@ func (m *CustomerMutation) EdgeCleared(name string) bool {
 	switch name {
 	case customer.EdgeCompany:
 		return m.clearedcompany
-	case customer.EdgeLoanSchedule:
-		return m.clearedloan_schedule
+	case customer.EdgeLoans:
+		return m.clearedloans
 	case customer.EdgeReceivables:
 		return m.clearedreceivables
 	case customer.EdgeInvoices:
@@ -8262,8 +8338,8 @@ func (m *CustomerMutation) ResetEdge(name string) error {
 	case customer.EdgeCompany:
 		m.ResetCompany()
 		return nil
-	case customer.EdgeLoanSchedule:
-		m.ResetLoanSchedule()
+	case customer.EdgeLoans:
+		m.ResetLoans()
 		return nil
 	case customer.EdgeReceivables:
 		m.ResetReceivables()
@@ -15899,6 +15975,7 @@ type LoanMutation struct {
 	createdAt                  *time.Time
 	updatedAt                  *time.Time
 	deletedAt                  *time.Time
+	is_lending                 *bool
 	amount                     *float64
 	addamount                  *float64
 	category                   *loan.Category
@@ -15921,7 +15998,6 @@ type LoanMutation struct {
 	counterparty_name          *string
 	start_date                 *time.Time
 	status                     *loan.Status
-	is_lending                 *bool
 	clearedFields              map[string]struct{}
 	client                     *int
 	clearedclient              bool
@@ -16157,6 +16233,42 @@ func (m *LoanMutation) DeletedAtCleared() bool {
 func (m *LoanMutation) ResetDeletedAt() {
 	m.deletedAt = nil
 	delete(m.clearedFields, loan.FieldDeletedAt)
+}
+
+// SetIsLending sets the "is_lending" field.
+func (m *LoanMutation) SetIsLending(b bool) {
+	m.is_lending = &b
+}
+
+// IsLending returns the value of the "is_lending" field in the mutation.
+func (m *LoanMutation) IsLending() (r bool, exists bool) {
+	v := m.is_lending
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsLending returns the old "is_lending" field's value of the Loan entity.
+// If the Loan object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LoanMutation) OldIsLending(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsLending is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsLending requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsLending: %w", err)
+	}
+	return oldValue.IsLending, nil
+}
+
+// ResetIsLending resets all changes to the "is_lending" field.
+func (m *LoanMutation) ResetIsLending() {
+	m.is_lending = nil
 }
 
 // SetAmount sets the "amount" field.
@@ -16908,42 +17020,6 @@ func (m *LoanMutation) ResetStatus() {
 	m.status = nil
 }
 
-// SetIsLending sets the "is_lending" field.
-func (m *LoanMutation) SetIsLending(b bool) {
-	m.is_lending = &b
-}
-
-// IsLending returns the value of the "is_lending" field in the mutation.
-func (m *LoanMutation) IsLending() (r bool, exists bool) {
-	v := m.is_lending
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsLending returns the old "is_lending" field's value of the Loan entity.
-// If the Loan object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LoanMutation) OldIsLending(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsLending is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsLending requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsLending: %w", err)
-	}
-	return oldValue.IsLending, nil
-}
-
-// ResetIsLending resets all changes to the "is_lending" field.
-func (m *LoanMutation) ResetIsLending() {
-	m.is_lending = nil
-}
-
 // SetClientID sets the "client" edge to the Customer entity by id.
 func (m *LoanMutation) SetClientID(id int) {
 	m.client = &id
@@ -17213,6 +17289,9 @@ func (m *LoanMutation) Fields() []string {
 	if m.deletedAt != nil {
 		fields = append(fields, loan.FieldDeletedAt)
 	}
+	if m.is_lending != nil {
+		fields = append(fields, loan.FieldIsLending)
+	}
 	if m.amount != nil {
 		fields = append(fields, loan.FieldAmount)
 	}
@@ -17261,9 +17340,6 @@ func (m *LoanMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, loan.FieldStatus)
 	}
-	if m.is_lending != nil {
-		fields = append(fields, loan.FieldIsLending)
-	}
 	return fields
 }
 
@@ -17278,6 +17354,8 @@ func (m *LoanMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case loan.FieldDeletedAt:
 		return m.DeletedAt()
+	case loan.FieldIsLending:
+		return m.IsLending()
 	case loan.FieldAmount:
 		return m.Amount()
 	case loan.FieldCategory:
@@ -17310,8 +17388,6 @@ func (m *LoanMutation) Field(name string) (ent.Value, bool) {
 		return m.StartDate()
 	case loan.FieldStatus:
 		return m.Status()
-	case loan.FieldIsLending:
-		return m.IsLending()
 	}
 	return nil, false
 }
@@ -17327,6 +17403,8 @@ func (m *LoanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUpdatedAt(ctx)
 	case loan.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
+	case loan.FieldIsLending:
+		return m.OldIsLending(ctx)
 	case loan.FieldAmount:
 		return m.OldAmount(ctx)
 	case loan.FieldCategory:
@@ -17359,8 +17437,6 @@ func (m *LoanMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStartDate(ctx)
 	case loan.FieldStatus:
 		return m.OldStatus(ctx)
-	case loan.FieldIsLending:
-		return m.OldIsLending(ctx)
 	}
 	return nil, fmt.Errorf("unknown Loan field %s", name)
 }
@@ -17390,6 +17466,13 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeletedAt(v)
+		return nil
+	case loan.FieldIsLending:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsLending(v)
 		return nil
 	case loan.FieldAmount:
 		v, ok := value.(float64)
@@ -17502,13 +17585,6 @@ func (m *LoanMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
-		return nil
-	case loan.FieldIsLending:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsLending(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Loan field %s", name)
@@ -17676,6 +17752,9 @@ func (m *LoanMutation) ResetField(name string) error {
 	case loan.FieldDeletedAt:
 		m.ResetDeletedAt()
 		return nil
+	case loan.FieldIsLending:
+		m.ResetIsLending()
+		return nil
 	case loan.FieldAmount:
 		m.ResetAmount()
 		return nil
@@ -17723,9 +17802,6 @@ func (m *LoanMutation) ResetField(name string) error {
 		return nil
 	case loan.FieldStatus:
 		m.ResetStatus()
-		return nil
-	case loan.FieldIsLending:
-		m.ResetIsLending()
 		return nil
 	}
 	return fmt.Errorf("unknown Loan field %s", name)
@@ -26305,33 +26381,33 @@ func (m *ReceivableMutation) ResetEdge(name string) error {
 // SupplierMutation represents an operation that mutates the Supplier nodes in the graph.
 type SupplierMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *int
-	createdAt            *time.Time
-	updatedAt            *time.Time
-	deletedAt            *time.Time
-	address              *string
-	city                 *string
-	country              *string
-	description          *string
-	email                *string
-	isDefault            *bool
-	name                 *string
-	phone                *string
-	taxId                *string
-	clearedFields        map[string]struct{}
-	company              *int
-	clearedcompany       bool
-	loan_schedule        map[int]struct{}
-	removedloan_schedule map[int]struct{}
-	clearedloan_schedule bool
-	payables             map[int]struct{}
-	removedpayables      map[int]struct{}
-	clearedpayables      bool
-	done                 bool
-	oldValue             func(context.Context) (*Supplier, error)
-	predicates           []predicate.Supplier
+	op              Op
+	typ             string
+	id              *int
+	createdAt       *time.Time
+	updatedAt       *time.Time
+	deletedAt       *time.Time
+	address         *string
+	city            *string
+	country         *string
+	description     *string
+	email           *string
+	isDefault       *bool
+	name            *string
+	phone           *string
+	taxId           *string
+	clearedFields   map[string]struct{}
+	company         *int
+	clearedcompany  bool
+	loans           map[int]struct{}
+	removedloans    map[int]struct{}
+	clearedloans    bool
+	payables        map[int]struct{}
+	removedpayables map[int]struct{}
+	clearedpayables bool
+	done            bool
+	oldValue        func(context.Context) (*Supplier, error)
+	predicates      []predicate.Supplier
 }
 
 var _ ent.Mutation = (*SupplierMutation)(nil)
@@ -26584,9 +26660,22 @@ func (m *SupplierMutation) OldAddress(ctx context.Context) (v string, err error)
 	return oldValue.Address, nil
 }
 
+// ClearAddress clears the value of the "address" field.
+func (m *SupplierMutation) ClearAddress() {
+	m.address = nil
+	m.clearedFields[supplier.FieldAddress] = struct{}{}
+}
+
+// AddressCleared returns if the "address" field was cleared in this mutation.
+func (m *SupplierMutation) AddressCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldAddress]
+	return ok
+}
+
 // ResetAddress resets all changes to the "address" field.
 func (m *SupplierMutation) ResetAddress() {
 	m.address = nil
+	delete(m.clearedFields, supplier.FieldAddress)
 }
 
 // SetCity sets the "city" field.
@@ -26620,9 +26709,22 @@ func (m *SupplierMutation) OldCity(ctx context.Context) (v string, err error) {
 	return oldValue.City, nil
 }
 
+// ClearCity clears the value of the "city" field.
+func (m *SupplierMutation) ClearCity() {
+	m.city = nil
+	m.clearedFields[supplier.FieldCity] = struct{}{}
+}
+
+// CityCleared returns if the "city" field was cleared in this mutation.
+func (m *SupplierMutation) CityCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldCity]
+	return ok
+}
+
 // ResetCity resets all changes to the "city" field.
 func (m *SupplierMutation) ResetCity() {
 	m.city = nil
+	delete(m.clearedFields, supplier.FieldCity)
 }
 
 // SetCountry sets the "country" field.
@@ -26656,9 +26758,22 @@ func (m *SupplierMutation) OldCountry(ctx context.Context) (v string, err error)
 	return oldValue.Country, nil
 }
 
+// ClearCountry clears the value of the "country" field.
+func (m *SupplierMutation) ClearCountry() {
+	m.country = nil
+	m.clearedFields[supplier.FieldCountry] = struct{}{}
+}
+
+// CountryCleared returns if the "country" field was cleared in this mutation.
+func (m *SupplierMutation) CountryCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldCountry]
+	return ok
+}
+
 // ResetCountry resets all changes to the "country" field.
 func (m *SupplierMutation) ResetCountry() {
 	m.country = nil
+	delete(m.clearedFields, supplier.FieldCountry)
 }
 
 // SetDescription sets the "description" field.
@@ -26692,9 +26807,22 @@ func (m *SupplierMutation) OldDescription(ctx context.Context) (v string, err er
 	return oldValue.Description, nil
 }
 
+// ClearDescription clears the value of the "description" field.
+func (m *SupplierMutation) ClearDescription() {
+	m.description = nil
+	m.clearedFields[supplier.FieldDescription] = struct{}{}
+}
+
+// DescriptionCleared returns if the "description" field was cleared in this mutation.
+func (m *SupplierMutation) DescriptionCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldDescription]
+	return ok
+}
+
 // ResetDescription resets all changes to the "description" field.
 func (m *SupplierMutation) ResetDescription() {
 	m.description = nil
+	delete(m.clearedFields, supplier.FieldDescription)
 }
 
 // SetEmail sets the "email" field.
@@ -26728,9 +26856,22 @@ func (m *SupplierMutation) OldEmail(ctx context.Context) (v string, err error) {
 	return oldValue.Email, nil
 }
 
+// ClearEmail clears the value of the "email" field.
+func (m *SupplierMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[supplier.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *SupplierMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldEmail]
+	return ok
+}
+
 // ResetEmail resets all changes to the "email" field.
 func (m *SupplierMutation) ResetEmail() {
 	m.email = nil
+	delete(m.clearedFields, supplier.FieldEmail)
 }
 
 // SetIsDefault sets the "isDefault" field.
@@ -26849,9 +26990,22 @@ func (m *SupplierMutation) OldPhone(ctx context.Context) (v string, err error) {
 	return oldValue.Phone, nil
 }
 
+// ClearPhone clears the value of the "phone" field.
+func (m *SupplierMutation) ClearPhone() {
+	m.phone = nil
+	m.clearedFields[supplier.FieldPhone] = struct{}{}
+}
+
+// PhoneCleared returns if the "phone" field was cleared in this mutation.
+func (m *SupplierMutation) PhoneCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldPhone]
+	return ok
+}
+
 // ResetPhone resets all changes to the "phone" field.
 func (m *SupplierMutation) ResetPhone() {
 	m.phone = nil
+	delete(m.clearedFields, supplier.FieldPhone)
 }
 
 // SetTaxId sets the "taxId" field.
@@ -26885,9 +27039,22 @@ func (m *SupplierMutation) OldTaxId(ctx context.Context) (v string, err error) {
 	return oldValue.TaxId, nil
 }
 
+// ClearTaxId clears the value of the "taxId" field.
+func (m *SupplierMutation) ClearTaxId() {
+	m.taxId = nil
+	m.clearedFields[supplier.FieldTaxId] = struct{}{}
+}
+
+// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
+func (m *SupplierMutation) TaxIdCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldTaxId]
+	return ok
+}
+
 // ResetTaxId resets all changes to the "taxId" field.
 func (m *SupplierMutation) ResetTaxId() {
 	m.taxId = nil
+	delete(m.clearedFields, supplier.FieldTaxId)
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -26929,58 +27096,58 @@ func (m *SupplierMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// AddLoanScheduleIDs adds the "loan_schedule" edge to the Loan entity by ids.
-func (m *SupplierMutation) AddLoanScheduleIDs(ids ...int) {
-	if m.loan_schedule == nil {
-		m.loan_schedule = make(map[int]struct{})
+// AddLoanIDs adds the "loans" edge to the Loan entity by ids.
+func (m *SupplierMutation) AddLoanIDs(ids ...int) {
+	if m.loans == nil {
+		m.loans = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.loan_schedule[ids[i]] = struct{}{}
+		m.loans[ids[i]] = struct{}{}
 	}
 }
 
-// ClearLoanSchedule clears the "loan_schedule" edge to the Loan entity.
-func (m *SupplierMutation) ClearLoanSchedule() {
-	m.clearedloan_schedule = true
+// ClearLoans clears the "loans" edge to the Loan entity.
+func (m *SupplierMutation) ClearLoans() {
+	m.clearedloans = true
 }
 
-// LoanScheduleCleared reports if the "loan_schedule" edge to the Loan entity was cleared.
-func (m *SupplierMutation) LoanScheduleCleared() bool {
-	return m.clearedloan_schedule
+// LoansCleared reports if the "loans" edge to the Loan entity was cleared.
+func (m *SupplierMutation) LoansCleared() bool {
+	return m.clearedloans
 }
 
-// RemoveLoanScheduleIDs removes the "loan_schedule" edge to the Loan entity by IDs.
-func (m *SupplierMutation) RemoveLoanScheduleIDs(ids ...int) {
-	if m.removedloan_schedule == nil {
-		m.removedloan_schedule = make(map[int]struct{})
+// RemoveLoanIDs removes the "loans" edge to the Loan entity by IDs.
+func (m *SupplierMutation) RemoveLoanIDs(ids ...int) {
+	if m.removedloans == nil {
+		m.removedloans = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.loan_schedule, ids[i])
-		m.removedloan_schedule[ids[i]] = struct{}{}
+		delete(m.loans, ids[i])
+		m.removedloans[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedLoanSchedule returns the removed IDs of the "loan_schedule" edge to the Loan entity.
-func (m *SupplierMutation) RemovedLoanScheduleIDs() (ids []int) {
-	for id := range m.removedloan_schedule {
+// RemovedLoans returns the removed IDs of the "loans" edge to the Loan entity.
+func (m *SupplierMutation) RemovedLoansIDs() (ids []int) {
+	for id := range m.removedloans {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// LoanScheduleIDs returns the "loan_schedule" edge IDs in the mutation.
-func (m *SupplierMutation) LoanScheduleIDs() (ids []int) {
-	for id := range m.loan_schedule {
+// LoansIDs returns the "loans" edge IDs in the mutation.
+func (m *SupplierMutation) LoansIDs() (ids []int) {
+	for id := range m.loans {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetLoanSchedule resets all changes to the "loan_schedule" edge.
-func (m *SupplierMutation) ResetLoanSchedule() {
-	m.loan_schedule = nil
-	m.clearedloan_schedule = false
-	m.removedloan_schedule = nil
+// ResetLoans resets all changes to the "loans" edge.
+func (m *SupplierMutation) ResetLoans() {
+	m.loans = nil
+	m.clearedloans = false
+	m.removedloans = nil
 }
 
 // AddPayableIDs adds the "payables" edge to the Payable entity by ids.
@@ -27299,8 +27466,29 @@ func (m *SupplierMutation) ClearedFields() []string {
 	if m.FieldCleared(supplier.FieldDeletedAt) {
 		fields = append(fields, supplier.FieldDeletedAt)
 	}
+	if m.FieldCleared(supplier.FieldAddress) {
+		fields = append(fields, supplier.FieldAddress)
+	}
+	if m.FieldCleared(supplier.FieldCity) {
+		fields = append(fields, supplier.FieldCity)
+	}
+	if m.FieldCleared(supplier.FieldCountry) {
+		fields = append(fields, supplier.FieldCountry)
+	}
+	if m.FieldCleared(supplier.FieldDescription) {
+		fields = append(fields, supplier.FieldDescription)
+	}
+	if m.FieldCleared(supplier.FieldEmail) {
+		fields = append(fields, supplier.FieldEmail)
+	}
 	if m.FieldCleared(supplier.FieldIsDefault) {
 		fields = append(fields, supplier.FieldIsDefault)
+	}
+	if m.FieldCleared(supplier.FieldPhone) {
+		fields = append(fields, supplier.FieldPhone)
+	}
+	if m.FieldCleared(supplier.FieldTaxId) {
+		fields = append(fields, supplier.FieldTaxId)
 	}
 	return fields
 }
@@ -27319,8 +27507,29 @@ func (m *SupplierMutation) ClearField(name string) error {
 	case supplier.FieldDeletedAt:
 		m.ClearDeletedAt()
 		return nil
+	case supplier.FieldAddress:
+		m.ClearAddress()
+		return nil
+	case supplier.FieldCity:
+		m.ClearCity()
+		return nil
+	case supplier.FieldCountry:
+		m.ClearCountry()
+		return nil
+	case supplier.FieldDescription:
+		m.ClearDescription()
+		return nil
+	case supplier.FieldEmail:
+		m.ClearEmail()
+		return nil
 	case supplier.FieldIsDefault:
 		m.ClearIsDefault()
+		return nil
+	case supplier.FieldPhone:
+		m.ClearPhone()
+		return nil
+	case supplier.FieldTaxId:
+		m.ClearTaxId()
 		return nil
 	}
 	return fmt.Errorf("unknown Supplier nullable field %s", name)
@@ -27376,8 +27585,8 @@ func (m *SupplierMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, supplier.EdgeCompany)
 	}
-	if m.loan_schedule != nil {
-		edges = append(edges, supplier.EdgeLoanSchedule)
+	if m.loans != nil {
+		edges = append(edges, supplier.EdgeLoans)
 	}
 	if m.payables != nil {
 		edges = append(edges, supplier.EdgePayables)
@@ -27393,9 +27602,9 @@ func (m *SupplierMutation) AddedIDs(name string) []ent.Value {
 		if id := m.company; id != nil {
 			return []ent.Value{*id}
 		}
-	case supplier.EdgeLoanSchedule:
-		ids := make([]ent.Value, 0, len(m.loan_schedule))
-		for id := range m.loan_schedule {
+	case supplier.EdgeLoans:
+		ids := make([]ent.Value, 0, len(m.loans))
+		for id := range m.loans {
 			ids = append(ids, id)
 		}
 		return ids
@@ -27412,8 +27621,8 @@ func (m *SupplierMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SupplierMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 3)
-	if m.removedloan_schedule != nil {
-		edges = append(edges, supplier.EdgeLoanSchedule)
+	if m.removedloans != nil {
+		edges = append(edges, supplier.EdgeLoans)
 	}
 	if m.removedpayables != nil {
 		edges = append(edges, supplier.EdgePayables)
@@ -27425,9 +27634,9 @@ func (m *SupplierMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *SupplierMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case supplier.EdgeLoanSchedule:
-		ids := make([]ent.Value, 0, len(m.removedloan_schedule))
-		for id := range m.removedloan_schedule {
+	case supplier.EdgeLoans:
+		ids := make([]ent.Value, 0, len(m.removedloans))
+		for id := range m.removedloans {
 			ids = append(ids, id)
 		}
 		return ids
@@ -27447,8 +27656,8 @@ func (m *SupplierMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, supplier.EdgeCompany)
 	}
-	if m.clearedloan_schedule {
-		edges = append(edges, supplier.EdgeLoanSchedule)
+	if m.clearedloans {
+		edges = append(edges, supplier.EdgeLoans)
 	}
 	if m.clearedpayables {
 		edges = append(edges, supplier.EdgePayables)
@@ -27462,8 +27671,8 @@ func (m *SupplierMutation) EdgeCleared(name string) bool {
 	switch name {
 	case supplier.EdgeCompany:
 		return m.clearedcompany
-	case supplier.EdgeLoanSchedule:
-		return m.clearedloan_schedule
+	case supplier.EdgeLoans:
+		return m.clearedloans
 	case supplier.EdgePayables:
 		return m.clearedpayables
 	}
@@ -27488,8 +27697,8 @@ func (m *SupplierMutation) ResetEdge(name string) error {
 	case supplier.EdgeCompany:
 		m.ResetCompany()
 		return nil
-	case supplier.EdgeLoanSchedule:
-		m.ResetLoanSchedule()
+	case supplier.EdgeLoans:
+		m.ResetLoans()
 		return nil
 	case supplier.EdgePayables:
 		m.ResetPayables()
