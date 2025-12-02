@@ -246,7 +246,7 @@ type LoanAggregationOutput struct {
 	Sum     *float64 `json:"sum,omitempty"`
 }
 
-type LoanProviderList struct {
+type LoanCounterpartySummary struct {
 	Name                string  `json:"name"`
 	OutstandingBalance  float64 `json:"outstandingBalance"`
 	TotalBorrowed       float64 `json:"totalBorrowed"`

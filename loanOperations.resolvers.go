@@ -41,3 +41,13 @@ func (r *queryResolver) GetDebtorsList(ctx context.Context, companyID int) ([]*g
 func (r *queryResolver) GetLendersList(ctx context.Context, companyID int) ([]*generated.Supplier, error) {
 	return finance.GetLendersList(ctx, r.client, companyID)
 }
+
+// LoanCounterpartySummary is the resolver for the loanCounterpartySummary field.
+func (r *queryResolver) LoanCounterpartySummary(ctx context.Context, lending bool, top *int) ([]*model.LoanCounterpartySummary, error) {
+	return finance.LoanCounterpartySummary(ctx, r.client, lending, top)
+}
+
+// LoansAging is the resolver for the loansAging field.
+func (r *queryResolver) LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error) {
+	return finance.LoansAging(ctx, r.client, isLending)
+}

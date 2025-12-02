@@ -522,17 +522,17 @@ type ComplexityRoot struct {
 		TotalCount func(childComplexity int) int
 	}
 
-	LoanEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
-	}
-
-	LoanProviderList struct {
+	LoanCounterpartySummary struct {
 		AverageInterestRate func(childComplexity int) int
 		LoansCount          func(childComplexity int) int
 		Name                func(childComplexity int) int
 		OutstandingBalance  func(childComplexity int) int
 		TotalBorrowed       func(childComplexity int) int
+	}
+
+	LoanEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	LoanSchedule struct {
@@ -819,7 +819,7 @@ type ComplexityRoot struct {
 		Inventories              func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryOrder, where *generated.InventoryWhereInput) int
 		InventoryMovements       func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InventoryMovementOrder, where *generated.InventoryMovementWhereInput) int
 		Invoices                 func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.InvoiceOrder, where *generated.InvoiceWhereInput) int
-		LoanProviderList         func(childComplexity int, top *int) int
+		LoanCounterpartySummary  func(childComplexity int, lending bool, top *int) int
 		LoanSchedules            func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanScheduleOrder, where *generated.LoanScheduleWhereInput) int
 		Loans                    func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, orderBy []*generated.LoanOrder, where *generated.LoanWhereInput) int
 		LoansAging               func(childComplexity int, isLending bool) int
@@ -1141,9 +1141,10 @@ type QueryResolver interface {
 	CountInventoryCategories(ctx context.Context) ([]*model.InventoryCategoryCount, error)
 	GetDebtorsList(ctx context.Context, companyID int) ([]*generated.Customer, error)
 	GetLendersList(ctx context.Context, companyID int) ([]*generated.Supplier, error)
+	LoanCounterpartySummary(ctx context.Context, lending bool, top *int) ([]*model.LoanCounterpartySummary, error)
+	LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error)
 	ClientList(ctx context.Context, top *int) ([]*model.ClientList, error)
 	SupplierList(ctx context.Context, top *int) ([]*model.SupplierList, error)
-	LoanProviderList(ctx context.Context, top *int) ([]*model.LoanProviderList, error)
 	GetLoan(ctx context.Context, id int) (*generated.Loan, error)
 	AggregateReceivables(ctx context.Context, where *generated.ReceivableWhereInput, groupBy []model.ReceivablesGroupBy) ([]*model.ReceivableAggregationOutput, error)
 	AggregatePayables(ctx context.Context, where *generated.PayableWhereInput, groupBy []model.PayablesGroupBy) ([]*model.PayableAggregationOutput, error)
@@ -1151,7 +1152,6 @@ type QueryResolver interface {
 	AggregateCash(ctx context.Context, input model.AggregateCashInput) (*model.CashAggregationOutput, error)
 	AccountsReceivableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
 	AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error)
-	LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error)
 }
 
 type executableSchema struct {
@@ -3448,6 +3448,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.LoanConnection.TotalCount(childComplexity), true
 
+	case "LoanCounterpartySummary.averageInterestRate":
+		if e.complexity.LoanCounterpartySummary.AverageInterestRate == nil {
+			break
+		}
+
+		return e.complexity.LoanCounterpartySummary.AverageInterestRate(childComplexity), true
+
+	case "LoanCounterpartySummary.loansCount":
+		if e.complexity.LoanCounterpartySummary.LoansCount == nil {
+			break
+		}
+
+		return e.complexity.LoanCounterpartySummary.LoansCount(childComplexity), true
+
+	case "LoanCounterpartySummary.name":
+		if e.complexity.LoanCounterpartySummary.Name == nil {
+			break
+		}
+
+		return e.complexity.LoanCounterpartySummary.Name(childComplexity), true
+
+	case "LoanCounterpartySummary.outstandingBalance":
+		if e.complexity.LoanCounterpartySummary.OutstandingBalance == nil {
+			break
+		}
+
+		return e.complexity.LoanCounterpartySummary.OutstandingBalance(childComplexity), true
+
+	case "LoanCounterpartySummary.totalBorrowed":
+		if e.complexity.LoanCounterpartySummary.TotalBorrowed == nil {
+			break
+		}
+
+		return e.complexity.LoanCounterpartySummary.TotalBorrowed(childComplexity), true
+
 	case "LoanEdge.cursor":
 		if e.complexity.LoanEdge.Cursor == nil {
 			break
@@ -3461,41 +3496,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.LoanEdge.Node(childComplexity), true
-
-	case "LoanProviderList.averageInterestRate":
-		if e.complexity.LoanProviderList.AverageInterestRate == nil {
-			break
-		}
-
-		return e.complexity.LoanProviderList.AverageInterestRate(childComplexity), true
-
-	case "LoanProviderList.loansCount":
-		if e.complexity.LoanProviderList.LoansCount == nil {
-			break
-		}
-
-		return e.complexity.LoanProviderList.LoansCount(childComplexity), true
-
-	case "LoanProviderList.name":
-		if e.complexity.LoanProviderList.Name == nil {
-			break
-		}
-
-		return e.complexity.LoanProviderList.Name(childComplexity), true
-
-	case "LoanProviderList.outstandingBalance":
-		if e.complexity.LoanProviderList.OutstandingBalance == nil {
-			break
-		}
-
-		return e.complexity.LoanProviderList.OutstandingBalance(childComplexity), true
-
-	case "LoanProviderList.totalBorrowed":
-		if e.complexity.LoanProviderList.TotalBorrowed == nil {
-			break
-		}
-
-		return e.complexity.LoanProviderList.TotalBorrowed(childComplexity), true
 
 	case "LoanSchedule.amount":
 		if e.complexity.LoanSchedule.Amount == nil {
@@ -5446,17 +5446,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Invoices(childComplexity, args["after"].(*entgql.Cursor[int]), args["first"].(*int), args["before"].(*entgql.Cursor[int]), args["last"].(*int), args["orderBy"].([]*generated.InvoiceOrder), args["where"].(*generated.InvoiceWhereInput)), true
 
-	case "Query.loanProviderList":
-		if e.complexity.Query.LoanProviderList == nil {
+	case "Query.loanCounterpartySummary":
+		if e.complexity.Query.LoanCounterpartySummary == nil {
 			break
 		}
 
-		args, err := ec.field_Query_loanProviderList_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_loanCounterpartySummary_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.LoanProviderList(childComplexity, args["top"].(*int)), true
+		return e.complexity.Query.LoanCounterpartySummary(childComplexity, args["lending"].(bool), args["top"].(*int)), true
 
 	case "Query.loanSchedules":
 		if e.complexity.Query.LoanSchedules == nil {
@@ -11170,17 +11170,44 @@ func (ec *executionContext) field_Query_invoices_argsWhere(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Query_loanProviderList_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Query_loanCounterpartySummary_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Query_loanProviderList_argsTop(ctx, rawArgs)
+	arg0, err := ec.field_Query_loanCounterpartySummary_argsLending(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
-	args["top"] = arg0
+	args["lending"] = arg0
+	arg1, err := ec.field_Query_loanCounterpartySummary_argsTop(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["top"] = arg1
 	return args, nil
 }
-func (ec *executionContext) field_Query_loanProviderList_argsTop(
+func (ec *executionContext) field_Query_loanCounterpartySummary_argsLending(
+	ctx context.Context,
+	rawArgs map[string]interface{},
+) (bool, error) {
+	// We won't call the directive if the argument is null.
+	// Set call_argument_directives_with_null to true to call directives
+	// even if the argument is null.
+	_, ok := rawArgs["lending"]
+	if !ok {
+		var zeroVal bool
+		return zeroVal, nil
+	}
+
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("lending"))
+	if tmp, ok := rawArgs["lending"]; ok {
+		return ec.unmarshalNBoolean2bool(ctx, tmp)
+	}
+
+	var zeroVal bool
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Query_loanCounterpartySummary_argsTop(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (*int, error) {
@@ -30228,6 +30255,226 @@ func (ec *executionContext) fieldContext_LoanConnection_totalCount(_ context.Con
 	return fc, nil
 }
 
+func (ec *executionContext) _LoanCounterpartySummary_name(ctx context.Context, field graphql.CollectedField, obj *model.LoanCounterpartySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoanCounterpartySummary_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoanCounterpartySummary_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoanCounterpartySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoanCounterpartySummary_outstandingBalance(ctx context.Context, field graphql.CollectedField, obj *model.LoanCounterpartySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoanCounterpartySummary_outstandingBalance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.OutstandingBalance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoanCounterpartySummary_outstandingBalance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoanCounterpartySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoanCounterpartySummary_totalBorrowed(ctx context.Context, field graphql.CollectedField, obj *model.LoanCounterpartySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoanCounterpartySummary_totalBorrowed(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalBorrowed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoanCounterpartySummary_totalBorrowed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoanCounterpartySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoanCounterpartySummary_loansCount(ctx context.Context, field graphql.CollectedField, obj *model.LoanCounterpartySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoanCounterpartySummary_loansCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LoansCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoanCounterpartySummary_loansCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoanCounterpartySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LoanCounterpartySummary_averageInterestRate(ctx context.Context, field graphql.CollectedField, obj *model.LoanCounterpartySummary) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LoanCounterpartySummary_averageInterestRate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AverageInterestRate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LoanCounterpartySummary_averageInterestRate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LoanCounterpartySummary",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _LoanEdge_node(ctx context.Context, field graphql.CollectedField, obj *generated.LoanEdge) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LoanEdge_node(ctx, field)
 	if err != nil {
@@ -30362,226 +30609,6 @@ func (ec *executionContext) fieldContext_LoanEdge_cursor(_ context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Cursor does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _LoanProviderList_name(ctx context.Context, field graphql.CollectedField, obj *model.LoanProviderList) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoanProviderList_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_LoanProviderList_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "LoanProviderList",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _LoanProviderList_outstandingBalance(ctx context.Context, field graphql.CollectedField, obj *model.LoanProviderList) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoanProviderList_outstandingBalance(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.OutstandingBalance, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_LoanProviderList_outstandingBalance(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "LoanProviderList",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _LoanProviderList_totalBorrowed(ctx context.Context, field graphql.CollectedField, obj *model.LoanProviderList) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoanProviderList_totalBorrowed(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TotalBorrowed, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_LoanProviderList_totalBorrowed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "LoanProviderList",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _LoanProviderList_loansCount(ctx context.Context, field graphql.CollectedField, obj *model.LoanProviderList) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoanProviderList_loansCount(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.LoansCount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_LoanProviderList_loansCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "LoanProviderList",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _LoanProviderList_averageInterestRate(ctx context.Context, field graphql.CollectedField, obj *model.LoanProviderList) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LoanProviderList_averageInterestRate(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.AverageInterestRate, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(float64)
-	fc.Result = res
-	return ec.marshalNFloat2float64(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_LoanProviderList_averageInterestRate(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "LoanProviderList",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -45590,6 +45617,136 @@ func (ec *executionContext) fieldContext_Query_getLendersList(ctx context.Contex
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_loanCounterpartySummary(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_loanCounterpartySummary(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().LoanCounterpartySummary(rctx, fc.Args["lending"].(bool), fc.Args["top"].(*int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.LoanCounterpartySummary)
+	fc.Result = res
+	return ec.marshalNLoanCounterpartySummary2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanCounterpartySummaryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_loanCounterpartySummary(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "name":
+				return ec.fieldContext_LoanCounterpartySummary_name(ctx, field)
+			case "outstandingBalance":
+				return ec.fieldContext_LoanCounterpartySummary_outstandingBalance(ctx, field)
+			case "totalBorrowed":
+				return ec.fieldContext_LoanCounterpartySummary_totalBorrowed(ctx, field)
+			case "loansCount":
+				return ec.fieldContext_LoanCounterpartySummary_loansCount(ctx, field)
+			case "averageInterestRate":
+				return ec.fieldContext_LoanCounterpartySummary_averageInterestRate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type LoanCounterpartySummary", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_loanCounterpartySummary_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_loansAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_loansAging(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().LoansAging(rctx, fc.Args["isLending"].(bool))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.AgingBucket)
+	fc.Result = res
+	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_loansAging(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "range":
+				return ec.fieldContext_AgingBucket_range(ctx, field)
+			case "totalAmount":
+				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
+			case "count":
+				return ec.fieldContext_AgingBucket_count(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_loansAging_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_clientList(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_clientList(ctx, field)
 	if err != nil {
@@ -45710,73 +45867,6 @@ func (ec *executionContext) fieldContext_Query_supplierList(ctx context.Context,
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_supplierList_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_loanProviderList(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_loanProviderList(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LoanProviderList(rctx, fc.Args["top"].(*int))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.LoanProviderList)
-	fc.Result = res
-	return ec.marshalNLoanProviderList2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanProviderListᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_loanProviderList(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "name":
-				return ec.fieldContext_LoanProviderList_name(ctx, field)
-			case "outstandingBalance":
-				return ec.fieldContext_LoanProviderList_outstandingBalance(ctx, field)
-			case "totalBorrowed":
-				return ec.fieldContext_LoanProviderList_totalBorrowed(ctx, field)
-			case "loansCount":
-				return ec.fieldContext_LoanProviderList_loansCount(ctx, field)
-			case "averageInterestRate":
-				return ec.fieldContext_LoanProviderList_averageInterestRate(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type LoanProviderList", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_loanProviderList_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -46264,69 +46354,6 @@ func (ec *executionContext) fieldContext_Query_accountsPayableAging(ctx context.
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_accountsPayableAging_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_loansAging(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_loansAging(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LoansAging(rctx, fc.Args["isLending"].(bool))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.AgingBucket)
-	fc.Result = res
-	return ec.marshalNAgingBucket2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐAgingBucketᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Query_loansAging(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "range":
-				return ec.fieldContext_AgingBucket_range(ctx, field)
-			case "totalAmount":
-				return ec.fieldContext_AgingBucket_totalAmount(ctx, field)
-			case "count":
-				return ec.fieldContext_AgingBucket_count(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type AgingBucket", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_loansAging_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -93105,21 +93132,39 @@ func (ec *executionContext) _LoanConnection(ctx context.Context, sel ast.Selecti
 	return out
 }
 
-var loanEdgeImplementors = []string{"LoanEdge"}
+var loanCounterpartySummaryImplementors = []string{"LoanCounterpartySummary"}
 
-func (ec *executionContext) _LoanEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.LoanEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, loanEdgeImplementors)
+func (ec *executionContext) _LoanCounterpartySummary(ctx context.Context, sel ast.SelectionSet, obj *model.LoanCounterpartySummary) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, loanCounterpartySummaryImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("LoanEdge")
-		case "node":
-			out.Values[i] = ec._LoanEdge_node(ctx, field, obj)
-		case "cursor":
-			out.Values[i] = ec._LoanEdge_cursor(ctx, field, obj)
+			out.Values[i] = graphql.MarshalString("LoanCounterpartySummary")
+		case "name":
+			out.Values[i] = ec._LoanCounterpartySummary_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "outstandingBalance":
+			out.Values[i] = ec._LoanCounterpartySummary_outstandingBalance(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "totalBorrowed":
+			out.Values[i] = ec._LoanCounterpartySummary_totalBorrowed(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "loansCount":
+			out.Values[i] = ec._LoanCounterpartySummary_loansCount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "averageInterestRate":
+			out.Values[i] = ec._LoanCounterpartySummary_averageInterestRate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -93146,39 +93191,21 @@ func (ec *executionContext) _LoanEdge(ctx context.Context, sel ast.SelectionSet,
 	return out
 }
 
-var loanProviderListImplementors = []string{"LoanProviderList"}
+var loanEdgeImplementors = []string{"LoanEdge"}
 
-func (ec *executionContext) _LoanProviderList(ctx context.Context, sel ast.SelectionSet, obj *model.LoanProviderList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, loanProviderListImplementors)
+func (ec *executionContext) _LoanEdge(ctx context.Context, sel ast.SelectionSet, obj *generated.LoanEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, loanEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("LoanProviderList")
-		case "name":
-			out.Values[i] = ec._LoanProviderList_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "outstandingBalance":
-			out.Values[i] = ec._LoanProviderList_outstandingBalance(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "totalBorrowed":
-			out.Values[i] = ec._LoanProviderList_totalBorrowed(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "loansCount":
-			out.Values[i] = ec._LoanProviderList_loansCount(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "averageInterestRate":
-			out.Values[i] = ec._LoanProviderList_averageInterestRate(ctx, field, obj)
+			out.Values[i] = graphql.MarshalString("LoanEdge")
+		case "node":
+			out.Values[i] = ec._LoanEdge_node(ctx, field, obj)
+		case "cursor":
+			out.Values[i] = ec._LoanEdge_cursor(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -96484,6 +96511,50 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "loanCounterpartySummary":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_loanCounterpartySummary(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "loansAging":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_loansAging(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "clientList":
 			field := field
 
@@ -96516,28 +96587,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_supplierList(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "loanProviderList":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_loanProviderList(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -96692,28 +96741,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_accountsPayableAging(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "loansAging":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_loansAging(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -100741,6 +100768,60 @@ func (ec *executionContext) marshalNLoanConnection2ᚖmazzaᚋentᚋgeneratedᚐ
 	return ec._LoanConnection(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNLoanCounterpartySummary2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanCounterpartySummaryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.LoanCounterpartySummary) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNLoanCounterpartySummary2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanCounterpartySummary(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNLoanCounterpartySummary2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanCounterpartySummary(ctx context.Context, sel ast.SelectionSet, v *model.LoanCounterpartySummary) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._LoanCounterpartySummary(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNLoanOrder2ᚖmazzaᚋentᚋgeneratedᚐLoanOrder(ctx context.Context, v interface{}) (*generated.LoanOrder, error) {
 	res, err := ec.unmarshalInputLoanOrder(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
@@ -100780,60 +100861,6 @@ func (ec *executionContext) unmarshalNLoanPaymentType2mazzaᚋentᚋgeneratedᚋ
 
 func (ec *executionContext) marshalNLoanPaymentType2mazzaᚋentᚋgeneratedᚋloanᚐPaymentType(ctx context.Context, sel ast.SelectionSet, v loan.PaymentType) graphql.Marshaler {
 	return v
-}
-
-func (ec *executionContext) marshalNLoanProviderList2ᚕᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanProviderListᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.LoanProviderList) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNLoanProviderList2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanProviderList(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNLoanProviderList2ᚖmazzaᚋmazzaᚋgeneratedᚋmodelᚐLoanProviderList(ctx context.Context, sel ast.SelectionSet, v *model.LoanProviderList) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._LoanProviderList(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNLoanSchedule2ᚕᚖmazzaᚋentᚋgeneratedᚐLoanScheduleᚄ(ctx context.Context, sel ast.SelectionSet, v []*generated.LoanSchedule) graphql.Marshaler {

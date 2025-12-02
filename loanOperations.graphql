@@ -13,6 +13,14 @@ input UpdateLoanInputData {
    accountingEntry: BaseEntryRegistrationInput
 }
 
+type LoanCounterpartySummary {
+  name: String!
+  outstandingBalance: Float!
+  totalBorrowed: Float!
+  loansCount: Int!
+  averageInterestRate: Float!
+}
+
 extend type Mutation {
    createLoan(input: CreateLoanInputData!): Loan!
    createLoanSchedule(input: [CreateLoanScheduleInput!]!, loanID: ID!): [LoanSchedule!]!
@@ -24,4 +32,6 @@ extend type Mutation {
 extend type Query {
    getDebtorsList(companyID: ID!): [Customer!]!
    getLendersList(companyID: ID!): [Supplier!]!
+   loanCounterpartySummary(lending: Boolean!, top: Int): [LoanCounterpartySummary!]!
+  loansAging(isLending: Boolean!): [AgingBucket!]!
 }

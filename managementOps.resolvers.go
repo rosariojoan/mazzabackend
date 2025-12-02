@@ -26,11 +26,6 @@ func (r *queryResolver) SupplierList(ctx context.Context, top *int) ([]*model.Su
 	return suppliers.GetSupplierList(ctx, r.client, top)
 }
 
-// LoanProviderList is the resolver for the loanProviderList field.
-func (r *queryResolver) LoanProviderList(ctx context.Context, top *int) ([]*model.LoanProviderList, error) {
-	return finance.LoanProviderList(ctx, r.client, top)
-}
-
 // GetLoan is the resolver for the getLoan field.
 func (r *queryResolver) GetLoan(ctx context.Context, id int) (*generated.Loan, error) {
 	_, activeCompany := utils.GetSession(&ctx)
@@ -67,9 +62,4 @@ func (r *queryResolver) AccountsReceivableAging(ctx context.Context, name *strin
 // AccountsPayableAging is the resolver for the accountsPayableAging field.
 func (r *queryResolver) AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
 	return suppliers.AccountsPayableAging(ctx, r.client, name)
-}
-
-// LoansAging is the resolver for the loansAging field.
-func (r *queryResolver) LoansAging(ctx context.Context, isLending bool) ([]*model.AgingBucket, error) {
-	return finance.LoansAging(ctx, r.client, true)
 }

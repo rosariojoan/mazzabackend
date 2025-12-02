@@ -10,14 +10,6 @@ type SupplierList {
   invoiceCount: Int!
 }
 
-type LoanProviderList {
-  name: String!
-  outstandingBalance: Float!
-  totalBorrowed: Float!
-  loansCount: Int!
-  averageInterestRate: Float!
-}
-
 type ReceivableAggregationOutput {
   company: ID
   count: Int
@@ -78,7 +70,6 @@ input AggregateCashInput {
 extend type Query {
   clientList(top: Int): [ClientList!]!
   supplierList(top: Int): [SupplierList!]!
-  loanProviderList(top: Int): [LoanProviderList!]!
 
   getLoan(id: ID!): Loan!
 
@@ -101,5 +92,4 @@ extend type Query {
 
   accountsReceivableAging(name: String): [AgingBucket!]!
   accountsPayableAging(name: String): [AgingBucket!]!
-  loansAging(isLending: Boolean!): [AgingBucket!]!
 }
