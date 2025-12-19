@@ -40,21 +40,21 @@ func (Worktask) Fields() []ent.Field {
 				"description: string, order: number, completed: bool, completedBy: {id: number, name: string}, completedAt: time",
 		),
 		field.String("title"),
-		field.Time("startTime"),
-		field.Time("endTime").Optional(),
+		field.Time("start_time"),
+		field.Time("end_time").Optional(),
 	}
 }
 
 // Edges of the Worktask.
 func (Worktask) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("workTasks").Unique(),
-		edge.From("createdBy", User.Type).Ref("createdTasks").Unique(),
-		edge.From("assignedTo", Employee.Type).Ref("assignedTasks"),
+		edge.From("company", Company.Type).Ref("work_tasks").Unique(),
+		edge.From("created_by", User.Type).Ref("created_tasks").Unique(),
+		edge.From("assigned_to", Employee.Type).Ref("assigned_tasks"),
 		// edge.To("subtasks", Worktask.Type).Annotations(entsql.OnDelete(entsql.Cascade)), // a task can have many subtasks
 		// edge.From("workTask", Worktask.Type).Ref("subtasks").Unique(),                   // a subtask can only belong to one task
 		// edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
-		edge.To("workTags", Worktag.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+		edge.To("work_tags", Worktag.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 	}
 }
 

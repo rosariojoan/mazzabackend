@@ -23,13 +23,13 @@ type ProjectTaskCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (ptc *ProjectTaskCreate) SetCreatedAt(t time.Time) *ProjectTaskCreate {
 	ptc.mutation.SetCreatedAt(t)
 	return ptc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (ptc *ProjectTaskCreate) SetNillableCreatedAt(t *time.Time) *ProjectTaskCreate {
 	if t != nil {
 		ptc.SetCreatedAt(*t)
@@ -37,15 +37,71 @@ func (ptc *ProjectTaskCreate) SetNillableCreatedAt(t *time.Time) *ProjectTaskCre
 	return ptc
 }
 
-// SetName sets the "name" field.
-func (ptc *ProjectTaskCreate) SetName(s string) *ProjectTaskCreate {
-	ptc.mutation.SetName(s)
+// SetUpdatedAt sets the "updated_at" field.
+func (ptc *ProjectTaskCreate) SetUpdatedAt(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetUpdatedAt(t)
 	return ptc
 }
 
-// SetAssigneeName sets the "assigneeName" field.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableUpdatedAt(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetUpdatedAt(*t)
+	}
+	return ptc
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (ptc *ProjectTaskCreate) SetDeletedAt(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetDeletedAt(t)
+	return ptc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableDeletedAt(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetDeletedAt(*t)
+	}
+	return ptc
+}
+
+// SetAssigneeName sets the "assignee_name" field.
 func (ptc *ProjectTaskCreate) SetAssigneeName(s string) *ProjectTaskCreate {
 	ptc.mutation.SetAssigneeName(s)
+	return ptc
+}
+
+// SetDescription sets the "description" field.
+func (ptc *ProjectTaskCreate) SetDescription(s string) *ProjectTaskCreate {
+	ptc.mutation.SetDescription(s)
+	return ptc
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableDescription(s *string) *ProjectTaskCreate {
+	if s != nil {
+		ptc.SetDescription(*s)
+	}
+	return ptc
+}
+
+// SetDueDate sets the "due_date" field.
+func (ptc *ProjectTaskCreate) SetDueDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetDueDate(t)
+	return ptc
+}
+
+// SetEndDate sets the "end_date" field.
+func (ptc *ProjectTaskCreate) SetEndDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetEndDate(t)
+	return ptc
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (ptc *ProjectTaskCreate) SetNillableEndDate(t *time.Time) *ProjectTaskCreate {
+	if t != nil {
+		ptc.SetEndDate(*t)
+	}
 	return ptc
 }
 
@@ -63,71 +119,15 @@ func (ptc *ProjectTaskCreate) SetNillableLocation(s *string) *ProjectTaskCreate 
 	return ptc
 }
 
-// SetDueDate sets the "dueDate" field.
-func (ptc *ProjectTaskCreate) SetDueDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetDueDate(t)
+// SetName sets the "name" field.
+func (ptc *ProjectTaskCreate) SetName(s string) *ProjectTaskCreate {
+	ptc.mutation.SetName(s)
 	return ptc
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
-func (ptc *ProjectTaskCreate) SetPlannedStartDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetPlannedStartDate(t)
-	return ptc
-}
-
-// SetActualStartDate sets the "actualStartDate" field.
-func (ptc *ProjectTaskCreate) SetActualStartDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetActualStartDate(t)
-	return ptc
-}
-
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
-func (ptc *ProjectTaskCreate) SetNillableActualStartDate(t *time.Time) *ProjectTaskCreate {
-	if t != nil {
-		ptc.SetActualStartDate(*t)
-	}
-	return ptc
-}
-
-// SetPlannedEndDate sets the "plannedEndDate" field.
-func (ptc *ProjectTaskCreate) SetPlannedEndDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetPlannedEndDate(t)
-	return ptc
-}
-
-// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
-func (ptc *ProjectTaskCreate) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskCreate {
-	if t != nil {
-		ptc.SetPlannedEndDate(*t)
-	}
-	return ptc
-}
-
-// SetActualEndDate sets the "actualEndDate" field.
-func (ptc *ProjectTaskCreate) SetActualEndDate(t time.Time) *ProjectTaskCreate {
-	ptc.mutation.SetActualEndDate(t)
-	return ptc
-}
-
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
-func (ptc *ProjectTaskCreate) SetNillableActualEndDate(t *time.Time) *ProjectTaskCreate {
-	if t != nil {
-		ptc.SetActualEndDate(*t)
-	}
-	return ptc
-}
-
-// SetDescription sets the "description" field.
-func (ptc *ProjectTaskCreate) SetDescription(s string) *ProjectTaskCreate {
-	ptc.mutation.SetDescription(s)
-	return ptc
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (ptc *ProjectTaskCreate) SetNillableDescription(s *string) *ProjectTaskCreate {
-	if s != nil {
-		ptc.SetDescription(*s)
-	}
+// SetStartDate sets the "start_date" field.
+func (ptc *ProjectTaskCreate) SetStartDate(t time.Time) *ProjectTaskCreate {
+	ptc.mutation.SetStartDate(t)
 	return ptc
 }
 
@@ -182,13 +182,13 @@ func (ptc *ProjectTaskCreate) AddParticipants(u ...*User) *ProjectTaskCreate {
 	return ptc.AddParticipantIDs(ids...)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (ptc *ProjectTaskCreate) SetCreatedByID(id int) *ProjectTaskCreate {
 	ptc.mutation.SetCreatedByID(id)
 	return ptc
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (ptc *ProjectTaskCreate) SetNillableCreatedByID(id *int) *ProjectTaskCreate {
 	if id != nil {
 		ptc = ptc.SetCreatedByID(*id)
@@ -196,18 +196,18 @@ func (ptc *ProjectTaskCreate) SetNillableCreatedByID(id *int) *ProjectTaskCreate
 	return ptc
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (ptc *ProjectTaskCreate) SetCreatedBy(u *User) *ProjectTaskCreate {
 	return ptc.SetCreatedByID(u.ID)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (ptc *ProjectTaskCreate) AddWorkShiftIDs(ids ...int) *ProjectTaskCreate {
 	ptc.mutation.AddWorkShiftIDs(ids...)
 	return ptc
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (ptc *ProjectTaskCreate) AddWorkShifts(w ...*Workshift) *ProjectTaskCreate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -260,11 +260,35 @@ func (ptc *ProjectTaskCreate) defaults() error {
 		v := projecttask.DefaultCreatedAt()
 		ptc.mutation.SetCreatedAt(v)
 	}
+	if _, ok := ptc.mutation.UpdatedAt(); !ok {
+		if projecttask.DefaultUpdatedAt == nil {
+			return fmt.Errorf("generated: uninitialized projecttask.DefaultUpdatedAt (forgotten import generated/runtime?)")
+		}
+		v := projecttask.DefaultUpdatedAt()
+		ptc.mutation.SetUpdatedAt(v)
+	}
 	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (ptc *ProjectTaskCreate) check() error {
+	if _, ok := ptc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "ProjectTask.created_at"`)}
+	}
+	if _, ok := ptc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "ProjectTask.updated_at"`)}
+	}
+	if _, ok := ptc.mutation.AssigneeName(); !ok {
+		return &ValidationError{Name: "assignee_name", err: errors.New(`generated: missing required field "ProjectTask.assignee_name"`)}
+	}
+	if v, ok := ptc.mutation.AssigneeName(); ok {
+		if err := projecttask.AssigneeNameValidator(v); err != nil {
+			return &ValidationError{Name: "assignee_name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assignee_name": %w`, err)}
+		}
+	}
+	if _, ok := ptc.mutation.DueDate(); !ok {
+		return &ValidationError{Name: "due_date", err: errors.New(`generated: missing required field "ProjectTask.due_date"`)}
+	}
 	if _, ok := ptc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "ProjectTask.name"`)}
 	}
@@ -273,19 +297,8 @@ func (ptc *ProjectTaskCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.name": %w`, err)}
 		}
 	}
-	if _, ok := ptc.mutation.AssigneeName(); !ok {
-		return &ValidationError{Name: "assigneeName", err: errors.New(`generated: missing required field "ProjectTask.assigneeName"`)}
-	}
-	if v, ok := ptc.mutation.AssigneeName(); ok {
-		if err := projecttask.AssigneeNameValidator(v); err != nil {
-			return &ValidationError{Name: "assigneeName", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assigneeName": %w`, err)}
-		}
-	}
-	if _, ok := ptc.mutation.DueDate(); !ok {
-		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "ProjectTask.dueDate"`)}
-	}
-	if _, ok := ptc.mutation.PlannedStartDate(); !ok {
-		return &ValidationError{Name: "plannedStartDate", err: errors.New(`generated: missing required field "ProjectTask.plannedStartDate"`)}
+	if _, ok := ptc.mutation.StartDate(); !ok {
+		return &ValidationError{Name: "start_date", err: errors.New(`generated: missing required field "ProjectTask.start_date"`)}
 	}
 	if _, ok := ptc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "ProjectTask.status"`)}
@@ -328,41 +341,41 @@ func (ptc *ProjectTaskCreate) createSpec() (*ProjectTask, *sqlgraph.CreateSpec) 
 		_spec.SetField(projecttask.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ptc.mutation.Name(); ok {
-		_spec.SetField(projecttask.FieldName, field.TypeString, value)
-		_node.Name = value
+	if value, ok := ptc.mutation.UpdatedAt(); ok {
+		_spec.SetField(projecttask.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
+	}
+	if value, ok := ptc.mutation.DeletedAt(); ok {
+		_spec.SetField(projecttask.FieldDeletedAt, field.TypeTime, value)
+		_node.DeletedAt = &value
 	}
 	if value, ok := ptc.mutation.AssigneeName(); ok {
 		_spec.SetField(projecttask.FieldAssigneeName, field.TypeString, value)
 		_node.AssigneeName = value
 	}
-	if value, ok := ptc.mutation.Location(); ok {
-		_spec.SetField(projecttask.FieldLocation, field.TypeString, value)
-		_node.Location = value
+	if value, ok := ptc.mutation.Description(); ok {
+		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
+		_node.Description = value
 	}
 	if value, ok := ptc.mutation.DueDate(); ok {
 		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
 		_node.DueDate = value
 	}
-	if value, ok := ptc.mutation.PlannedStartDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
-		_node.PlannedStartDate = value
+	if value, ok := ptc.mutation.EndDate(); ok {
+		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+		_node.EndDate = &value
 	}
-	if value, ok := ptc.mutation.ActualStartDate(); ok {
-		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
-		_node.ActualStartDate = &value
+	if value, ok := ptc.mutation.Location(); ok {
+		_spec.SetField(projecttask.FieldLocation, field.TypeString, value)
+		_node.Location = value
 	}
-	if value, ok := ptc.mutation.PlannedEndDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
-		_node.PlannedEndDate = &value
+	if value, ok := ptc.mutation.Name(); ok {
+		_spec.SetField(projecttask.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
-	if value, ok := ptc.mutation.ActualEndDate(); ok {
-		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
-		_node.ActualEndDate = &value
-	}
-	if value, ok := ptc.mutation.Description(); ok {
-		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
-		_node.Description = value
+	if value, ok := ptc.mutation.StartDate(); ok {
+		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
+		_node.StartDate = value
 	}
 	if value, ok := ptc.mutation.Status(); ok {
 		_spec.SetField(projecttask.FieldStatus, field.TypeEnum, value)

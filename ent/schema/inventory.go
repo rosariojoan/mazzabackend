@@ -37,8 +37,8 @@ func (Inventory) Fields() []ent.Field {
 		field.Enum("category").Values(inventoryCategories...).Annotations(entgql.OrderField("CATEGORY")),
 		field.Float("quantity").Min(0).Annotations(entsql.Check("quantity >= 0")),
 		field.String("unit").Comment("Unit of measurement. E.g. litre, unit, gram"),
-		field.Float("minimumLevel").Min(0),
-		field.Float("currentValue").Min(0).Annotations(entgql.OrderField("CURRENT_VALUE")),
+		field.Float("minimum_level").Min(0),
+		field.Float("current_value").Min(0).Annotations(entgql.OrderField("CURRENT_VALUE")),
 		field.String("notes").NotEmpty(),
 	}
 }

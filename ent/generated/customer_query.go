@@ -414,7 +414,7 @@ func (cq *CustomerQuery) WithInvoices(opts ...func(*InvoiceQuery)) *CustomerQuer
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -437,7 +437,7 @@ func (cq *CustomerQuery) GroupBy(field string, fields ...string) *CustomerGroupB
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Customer.Query().

@@ -31,10 +31,10 @@ func (Employee) Fields() []ent.Field {
 		field.String("email").Nillable().Optional(),
 		field.String("phone").Nillable().Optional(),
 		field.String("avatar").Nillable().Optional(),
-		field.Time("hireDate"),
-		field.Int("monthlySalary").Min(0).Default(0),
+		field.Time("hire_date"),
+		field.Int("monthly_salary").Min(0).Default(0),
 		field.Enum("status").Values("ACTIVE", "ON_LEAVE").Default("ACTIVE").Optional().Annotations(entgql.OrderField("STATUS")),
-		field.Float("performaceScore").Min(0).Max(5).Default(0).Optional(),
+		field.Float("performace_score").Min(0).Max(5).Default(0).Optional(),
 	}
 }
 

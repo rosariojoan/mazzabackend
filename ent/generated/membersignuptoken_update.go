@@ -31,19 +31,19 @@ func (mstu *MemberSignupTokenUpdate) Where(ps ...predicate.MemberSignupToken) *M
 	return mstu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (mstu *MemberSignupTokenUpdate) SetUpdatedAt(t time.Time) *MemberSignupTokenUpdate {
 	mstu.mutation.SetUpdatedAt(t)
 	return mstu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (mstu *MemberSignupTokenUpdate) SetDeletedAt(t time.Time) *MemberSignupTokenUpdate {
 	mstu.mutation.SetDeletedAt(t)
 	return mstu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (mstu *MemberSignupTokenUpdate) SetNillableDeletedAt(t *time.Time) *MemberSignupTokenUpdate {
 	if t != nil {
 		mstu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (mstu *MemberSignupTokenUpdate) SetNillableDeletedAt(t *time.Time) *MemberS
 	return mstu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (mstu *MemberSignupTokenUpdate) ClearDeletedAt() *MemberSignupTokenUpdate {
 	mstu.mutation.ClearDeletedAt()
 	return mstu
@@ -147,14 +147,14 @@ func (mstu *MemberSignupTokenUpdate) SetNillableNote(s *string) *MemberSignupTok
 	return mstu
 }
 
-// SetNumberAccessed sets the "numberAccessed" field.
+// SetNumberAccessed sets the "number_accessed" field.
 func (mstu *MemberSignupTokenUpdate) SetNumberAccessed(i int) *MemberSignupTokenUpdate {
 	mstu.mutation.ResetNumberAccessed()
 	mstu.mutation.SetNumberAccessed(i)
 	return mstu
 }
 
-// SetNillableNumberAccessed sets the "numberAccessed" field if the given value is not nil.
+// SetNillableNumberAccessed sets the "number_accessed" field if the given value is not nil.
 func (mstu *MemberSignupTokenUpdate) SetNillableNumberAccessed(i *int) *MemberSignupTokenUpdate {
 	if i != nil {
 		mstu.SetNumberAccessed(*i)
@@ -162,19 +162,19 @@ func (mstu *MemberSignupTokenUpdate) SetNillableNumberAccessed(i *int) *MemberSi
 	return mstu
 }
 
-// AddNumberAccessed adds i to the "numberAccessed" field.
+// AddNumberAccessed adds i to the "number_accessed" field.
 func (mstu *MemberSignupTokenUpdate) AddNumberAccessed(i int) *MemberSignupTokenUpdate {
 	mstu.mutation.AddNumberAccessed(i)
 	return mstu
 }
 
-// SetExpiresAt sets the "expiresAt" field.
+// SetExpiresAt sets the "expires_at" field.
 func (mstu *MemberSignupTokenUpdate) SetExpiresAt(t time.Time) *MemberSignupTokenUpdate {
 	mstu.mutation.SetExpiresAt(t)
 	return mstu
 }
 
-// SetNillableExpiresAt sets the "expiresAt" field if the given value is not nil.
+// SetNillableExpiresAt sets the "expires_at" field if the given value is not nil.
 func (mstu *MemberSignupTokenUpdate) SetNillableExpiresAt(t *time.Time) *MemberSignupTokenUpdate {
 	if t != nil {
 		mstu.SetExpiresAt(*t)
@@ -182,13 +182,13 @@ func (mstu *MemberSignupTokenUpdate) SetNillableExpiresAt(t *time.Time) *MemberS
 	return mstu
 }
 
-// SetAlreadyUsed sets the "alreadyUsed" field.
+// SetAlreadyUsed sets the "already_used" field.
 func (mstu *MemberSignupTokenUpdate) SetAlreadyUsed(b bool) *MemberSignupTokenUpdate {
 	mstu.mutation.SetAlreadyUsed(b)
 	return mstu
 }
 
-// SetNillableAlreadyUsed sets the "alreadyUsed" field if the given value is not nil.
+// SetNillableAlreadyUsed sets the "already_used" field if the given value is not nil.
 func (mstu *MemberSignupTokenUpdate) SetNillableAlreadyUsed(b *bool) *MemberSignupTokenUpdate {
 	if b != nil {
 		mstu.SetAlreadyUsed(*b)
@@ -207,13 +207,13 @@ func (mstu *MemberSignupTokenUpdate) SetCompany(c *Company) *MemberSignupTokenUp
 	return mstu.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (mstu *MemberSignupTokenUpdate) SetCreatedByID(id int) *MemberSignupTokenUpdate {
 	mstu.mutation.SetCreatedByID(id)
 	return mstu
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (mstu *MemberSignupTokenUpdate) SetNillableCreatedByID(id *int) *MemberSignupTokenUpdate {
 	if id != nil {
 		mstu = mstu.SetCreatedByID(*id)
@@ -221,7 +221,7 @@ func (mstu *MemberSignupTokenUpdate) SetNillableCreatedByID(id *int) *MemberSign
 	return mstu
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (mstu *MemberSignupTokenUpdate) SetCreatedBy(u *User) *MemberSignupTokenUpdate {
 	return mstu.SetCreatedByID(u.ID)
 }
@@ -237,7 +237,7 @@ func (mstu *MemberSignupTokenUpdate) ClearCompany() *MemberSignupTokenUpdate {
 	return mstu
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (mstu *MemberSignupTokenUpdate) ClearCreatedBy() *MemberSignupTokenUpdate {
 	mstu.mutation.ClearCreatedBy()
 	return mstu
@@ -298,7 +298,7 @@ func (mstu *MemberSignupTokenUpdate) check() error {
 	}
 	if v, ok := mstu.mutation.NumberAccessed(); ok {
 		if err := membersignuptoken.NumberAccessedValidator(v); err != nil {
-			return &ValidationError{Name: "numberAccessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.numberAccessed": %w`, err)}
+			return &ValidationError{Name: "number_accessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.number_accessed": %w`, err)}
 		}
 	}
 	if mstu.mutation.CompanyCleared() && len(mstu.mutation.CompanyIDs()) > 0 {
@@ -447,19 +447,19 @@ type MemberSignupTokenUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (mstuo *MemberSignupTokenUpdateOne) SetUpdatedAt(t time.Time) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.SetUpdatedAt(t)
 	return mstuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (mstuo *MemberSignupTokenUpdateOne) SetDeletedAt(t time.Time) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.SetDeletedAt(t)
 	return mstuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (mstuo *MemberSignupTokenUpdateOne) SetNillableDeletedAt(t *time.Time) *MemberSignupTokenUpdateOne {
 	if t != nil {
 		mstuo.SetDeletedAt(*t)
@@ -467,7 +467,7 @@ func (mstuo *MemberSignupTokenUpdateOne) SetNillableDeletedAt(t *time.Time) *Mem
 	return mstuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (mstuo *MemberSignupTokenUpdateOne) ClearDeletedAt() *MemberSignupTokenUpdateOne {
 	mstuo.mutation.ClearDeletedAt()
 	return mstuo
@@ -563,14 +563,14 @@ func (mstuo *MemberSignupTokenUpdateOne) SetNillableNote(s *string) *MemberSignu
 	return mstuo
 }
 
-// SetNumberAccessed sets the "numberAccessed" field.
+// SetNumberAccessed sets the "number_accessed" field.
 func (mstuo *MemberSignupTokenUpdateOne) SetNumberAccessed(i int) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.ResetNumberAccessed()
 	mstuo.mutation.SetNumberAccessed(i)
 	return mstuo
 }
 
-// SetNillableNumberAccessed sets the "numberAccessed" field if the given value is not nil.
+// SetNillableNumberAccessed sets the "number_accessed" field if the given value is not nil.
 func (mstuo *MemberSignupTokenUpdateOne) SetNillableNumberAccessed(i *int) *MemberSignupTokenUpdateOne {
 	if i != nil {
 		mstuo.SetNumberAccessed(*i)
@@ -578,19 +578,19 @@ func (mstuo *MemberSignupTokenUpdateOne) SetNillableNumberAccessed(i *int) *Memb
 	return mstuo
 }
 
-// AddNumberAccessed adds i to the "numberAccessed" field.
+// AddNumberAccessed adds i to the "number_accessed" field.
 func (mstuo *MemberSignupTokenUpdateOne) AddNumberAccessed(i int) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.AddNumberAccessed(i)
 	return mstuo
 }
 
-// SetExpiresAt sets the "expiresAt" field.
+// SetExpiresAt sets the "expires_at" field.
 func (mstuo *MemberSignupTokenUpdateOne) SetExpiresAt(t time.Time) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.SetExpiresAt(t)
 	return mstuo
 }
 
-// SetNillableExpiresAt sets the "expiresAt" field if the given value is not nil.
+// SetNillableExpiresAt sets the "expires_at" field if the given value is not nil.
 func (mstuo *MemberSignupTokenUpdateOne) SetNillableExpiresAt(t *time.Time) *MemberSignupTokenUpdateOne {
 	if t != nil {
 		mstuo.SetExpiresAt(*t)
@@ -598,13 +598,13 @@ func (mstuo *MemberSignupTokenUpdateOne) SetNillableExpiresAt(t *time.Time) *Mem
 	return mstuo
 }
 
-// SetAlreadyUsed sets the "alreadyUsed" field.
+// SetAlreadyUsed sets the "already_used" field.
 func (mstuo *MemberSignupTokenUpdateOne) SetAlreadyUsed(b bool) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.SetAlreadyUsed(b)
 	return mstuo
 }
 
-// SetNillableAlreadyUsed sets the "alreadyUsed" field if the given value is not nil.
+// SetNillableAlreadyUsed sets the "already_used" field if the given value is not nil.
 func (mstuo *MemberSignupTokenUpdateOne) SetNillableAlreadyUsed(b *bool) *MemberSignupTokenUpdateOne {
 	if b != nil {
 		mstuo.SetAlreadyUsed(*b)
@@ -623,13 +623,13 @@ func (mstuo *MemberSignupTokenUpdateOne) SetCompany(c *Company) *MemberSignupTok
 	return mstuo.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (mstuo *MemberSignupTokenUpdateOne) SetCreatedByID(id int) *MemberSignupTokenUpdateOne {
 	mstuo.mutation.SetCreatedByID(id)
 	return mstuo
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (mstuo *MemberSignupTokenUpdateOne) SetNillableCreatedByID(id *int) *MemberSignupTokenUpdateOne {
 	if id != nil {
 		mstuo = mstuo.SetCreatedByID(*id)
@@ -637,7 +637,7 @@ func (mstuo *MemberSignupTokenUpdateOne) SetNillableCreatedByID(id *int) *Member
 	return mstuo
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (mstuo *MemberSignupTokenUpdateOne) SetCreatedBy(u *User) *MemberSignupTokenUpdateOne {
 	return mstuo.SetCreatedByID(u.ID)
 }
@@ -653,7 +653,7 @@ func (mstuo *MemberSignupTokenUpdateOne) ClearCompany() *MemberSignupTokenUpdate
 	return mstuo
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (mstuo *MemberSignupTokenUpdateOne) ClearCreatedBy() *MemberSignupTokenUpdateOne {
 	mstuo.mutation.ClearCreatedBy()
 	return mstuo
@@ -727,7 +727,7 @@ func (mstuo *MemberSignupTokenUpdateOne) check() error {
 	}
 	if v, ok := mstuo.mutation.NumberAccessed(); ok {
 		if err := membersignuptoken.NumberAccessedValidator(v); err != nil {
-			return &ValidationError{Name: "numberAccessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.numberAccessed": %w`, err)}
+			return &ValidationError{Name: "number_accessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.number_accessed": %w`, err)}
 		}
 	}
 	if mstuo.mutation.CompanyCleared() && len(mstuo.mutation.CompanyIDs()) > 0 {

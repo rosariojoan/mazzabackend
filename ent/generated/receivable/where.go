@@ -55,22 +55,22 @@ func IDLTE(id int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// EntryGroup applies equality check predicate on the "entryGroup" field. It's identical to EntryGroupEQ.
+// EntryGroup applies equality check predicate on the "entry_group" field. It's identical to EntryGroupEQ.
 func EntryGroup(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldEntryGroup, v))
 }
@@ -85,192 +85,192 @@ func Name(v string) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldName, v))
 }
 
-// AmountInDefault applies equality check predicate on the "amountInDefault" field. It's identical to AmountInDefaultEQ.
+// AmountInDefault applies equality check predicate on the "amount_in_default" field. It's identical to AmountInDefaultEQ.
 func AmountInDefault(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldAmountInDefault, v))
 }
 
-// OutstandingBalance applies equality check predicate on the "outstandingBalance" field. It's identical to OutstandingBalanceEQ.
+// OutstandingBalance applies equality check predicate on the "outstanding_balance" field. It's identical to OutstandingBalanceEQ.
 func OutstandingBalance(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// TotalTransaction applies equality check predicate on the "totalTransaction" field. It's identical to TotalTransactionEQ.
+// TotalTransaction applies equality check predicate on the "total_transaction" field. It's identical to TotalTransactionEQ.
 func TotalTransaction(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldTotalTransaction, v))
 }
 
-// DueDate applies equality check predicate on the "dueDate" field. It's identical to DueDateEQ.
+// DueDate applies equality check predicate on the "due_date" field. It's identical to DueDateEQ.
 func DueDate(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldDueDate, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Receivable {
 	return predicate.Receivable(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// EntryGroupEQ applies the EQ predicate on the "entryGroup" field.
+// EntryGroupEQ applies the EQ predicate on the "entry_group" field.
 func EntryGroupEQ(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldEntryGroup, v))
 }
 
-// EntryGroupNEQ applies the NEQ predicate on the "entryGroup" field.
+// EntryGroupNEQ applies the NEQ predicate on the "entry_group" field.
 func EntryGroupNEQ(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldEntryGroup, v))
 }
 
-// EntryGroupIn applies the In predicate on the "entryGroup" field.
+// EntryGroupIn applies the In predicate on the "entry_group" field.
 func EntryGroupIn(vs ...int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldEntryGroup, vs...))
 }
 
-// EntryGroupNotIn applies the NotIn predicate on the "entryGroup" field.
+// EntryGroupNotIn applies the NotIn predicate on the "entry_group" field.
 func EntryGroupNotIn(vs ...int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldEntryGroup, vs...))
 }
 
-// EntryGroupGT applies the GT predicate on the "entryGroup" field.
+// EntryGroupGT applies the GT predicate on the "entry_group" field.
 func EntryGroupGT(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldEntryGroup, v))
 }
 
-// EntryGroupGTE applies the GTE predicate on the "entryGroup" field.
+// EntryGroupGTE applies the GTE predicate on the "entry_group" field.
 func EntryGroupGTE(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldEntryGroup, v))
 }
 
-// EntryGroupLT applies the LT predicate on the "entryGroup" field.
+// EntryGroupLT applies the LT predicate on the "entry_group" field.
 func EntryGroupLT(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldEntryGroup, v))
 }
 
-// EntryGroupLTE applies the LTE predicate on the "entryGroup" field.
+// EntryGroupLTE applies the LTE predicate on the "entry_group" field.
 func EntryGroupLTE(v int) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldEntryGroup, v))
 }
@@ -380,162 +380,162 @@ func NameContainsFold(v string) predicate.Receivable {
 	return predicate.Receivable(sql.FieldContainsFold(FieldName, v))
 }
 
-// AmountInDefaultEQ applies the EQ predicate on the "amountInDefault" field.
+// AmountInDefaultEQ applies the EQ predicate on the "amount_in_default" field.
 func AmountInDefaultEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldAmountInDefault, v))
 }
 
-// AmountInDefaultNEQ applies the NEQ predicate on the "amountInDefault" field.
+// AmountInDefaultNEQ applies the NEQ predicate on the "amount_in_default" field.
 func AmountInDefaultNEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldAmountInDefault, v))
 }
 
-// AmountInDefaultIn applies the In predicate on the "amountInDefault" field.
+// AmountInDefaultIn applies the In predicate on the "amount_in_default" field.
 func AmountInDefaultIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldAmountInDefault, vs...))
 }
 
-// AmountInDefaultNotIn applies the NotIn predicate on the "amountInDefault" field.
+// AmountInDefaultNotIn applies the NotIn predicate on the "amount_in_default" field.
 func AmountInDefaultNotIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldAmountInDefault, vs...))
 }
 
-// AmountInDefaultGT applies the GT predicate on the "amountInDefault" field.
+// AmountInDefaultGT applies the GT predicate on the "amount_in_default" field.
 func AmountInDefaultGT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldAmountInDefault, v))
 }
 
-// AmountInDefaultGTE applies the GTE predicate on the "amountInDefault" field.
+// AmountInDefaultGTE applies the GTE predicate on the "amount_in_default" field.
 func AmountInDefaultGTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldAmountInDefault, v))
 }
 
-// AmountInDefaultLT applies the LT predicate on the "amountInDefault" field.
+// AmountInDefaultLT applies the LT predicate on the "amount_in_default" field.
 func AmountInDefaultLT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldAmountInDefault, v))
 }
 
-// AmountInDefaultLTE applies the LTE predicate on the "amountInDefault" field.
+// AmountInDefaultLTE applies the LTE predicate on the "amount_in_default" field.
 func AmountInDefaultLTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldAmountInDefault, v))
 }
 
-// OutstandingBalanceEQ applies the EQ predicate on the "outstandingBalance" field.
+// OutstandingBalanceEQ applies the EQ predicate on the "outstanding_balance" field.
 func OutstandingBalanceEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceNEQ applies the NEQ predicate on the "outstandingBalance" field.
+// OutstandingBalanceNEQ applies the NEQ predicate on the "outstanding_balance" field.
 func OutstandingBalanceNEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceIn applies the In predicate on the "outstandingBalance" field.
+// OutstandingBalanceIn applies the In predicate on the "outstanding_balance" field.
 func OutstandingBalanceIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingBalanceNotIn applies the NotIn predicate on the "outstandingBalance" field.
+// OutstandingBalanceNotIn applies the NotIn predicate on the "outstanding_balance" field.
 func OutstandingBalanceNotIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldOutstandingBalance, vs...))
 }
 
-// OutstandingBalanceGT applies the GT predicate on the "outstandingBalance" field.
+// OutstandingBalanceGT applies the GT predicate on the "outstanding_balance" field.
 func OutstandingBalanceGT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceGTE applies the GTE predicate on the "outstandingBalance" field.
+// OutstandingBalanceGTE applies the GTE predicate on the "outstanding_balance" field.
 func OutstandingBalanceGTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceLT applies the LT predicate on the "outstandingBalance" field.
+// OutstandingBalanceLT applies the LT predicate on the "outstanding_balance" field.
 func OutstandingBalanceLT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldOutstandingBalance, v))
 }
 
-// OutstandingBalanceLTE applies the LTE predicate on the "outstandingBalance" field.
+// OutstandingBalanceLTE applies the LTE predicate on the "outstanding_balance" field.
 func OutstandingBalanceLTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldOutstandingBalance, v))
 }
 
-// TotalTransactionEQ applies the EQ predicate on the "totalTransaction" field.
+// TotalTransactionEQ applies the EQ predicate on the "total_transaction" field.
 func TotalTransactionEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldTotalTransaction, v))
 }
 
-// TotalTransactionNEQ applies the NEQ predicate on the "totalTransaction" field.
+// TotalTransactionNEQ applies the NEQ predicate on the "total_transaction" field.
 func TotalTransactionNEQ(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldTotalTransaction, v))
 }
 
-// TotalTransactionIn applies the In predicate on the "totalTransaction" field.
+// TotalTransactionIn applies the In predicate on the "total_transaction" field.
 func TotalTransactionIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldTotalTransaction, vs...))
 }
 
-// TotalTransactionNotIn applies the NotIn predicate on the "totalTransaction" field.
+// TotalTransactionNotIn applies the NotIn predicate on the "total_transaction" field.
 func TotalTransactionNotIn(vs ...float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldTotalTransaction, vs...))
 }
 
-// TotalTransactionGT applies the GT predicate on the "totalTransaction" field.
+// TotalTransactionGT applies the GT predicate on the "total_transaction" field.
 func TotalTransactionGT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldTotalTransaction, v))
 }
 
-// TotalTransactionGTE applies the GTE predicate on the "totalTransaction" field.
+// TotalTransactionGTE applies the GTE predicate on the "total_transaction" field.
 func TotalTransactionGTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldTotalTransaction, v))
 }
 
-// TotalTransactionLT applies the LT predicate on the "totalTransaction" field.
+// TotalTransactionLT applies the LT predicate on the "total_transaction" field.
 func TotalTransactionLT(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldTotalTransaction, v))
 }
 
-// TotalTransactionLTE applies the LTE predicate on the "totalTransaction" field.
+// TotalTransactionLTE applies the LTE predicate on the "total_transaction" field.
 func TotalTransactionLTE(v float64) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldTotalTransaction, v))
 }
 
-// DueDateEQ applies the EQ predicate on the "dueDate" field.
+// DueDateEQ applies the EQ predicate on the "due_date" field.
 func DueDateEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldEQ(FieldDueDate, v))
 }
 
-// DueDateNEQ applies the NEQ predicate on the "dueDate" field.
+// DueDateNEQ applies the NEQ predicate on the "due_date" field.
 func DueDateNEQ(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNEQ(FieldDueDate, v))
 }
 
-// DueDateIn applies the In predicate on the "dueDate" field.
+// DueDateIn applies the In predicate on the "due_date" field.
 func DueDateIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldIn(FieldDueDate, vs...))
 }
 
-// DueDateNotIn applies the NotIn predicate on the "dueDate" field.
+// DueDateNotIn applies the NotIn predicate on the "due_date" field.
 func DueDateNotIn(vs ...time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldNotIn(FieldDueDate, vs...))
 }
 
-// DueDateGT applies the GT predicate on the "dueDate" field.
+// DueDateGT applies the GT predicate on the "due_date" field.
 func DueDateGT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGT(FieldDueDate, v))
 }
 
-// DueDateGTE applies the GTE predicate on the "dueDate" field.
+// DueDateGTE applies the GTE predicate on the "due_date" field.
 func DueDateGTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldGTE(FieldDueDate, v))
 }
 
-// DueDateLT applies the LT predicate on the "dueDate" field.
+// DueDateLT applies the LT predicate on the "due_date" field.
 func DueDateLT(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLT(FieldDueDate, v))
 }
 
-// DueDateLTE applies the LTE predicate on the "dueDate" field.
+// DueDateLTE applies the LTE predicate on the "due_date" field.
 func DueDateLTE(v time.Time) predicate.Receivable {
 	return predicate.Receivable(sql.FieldLTE(FieldDueDate, v))
 }

@@ -17,23 +17,23 @@ const (
 	Label = "project"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
-	// FieldPlannedStartDate holds the string denoting the plannedstartdate field in the database.
+	// FieldPlannedStartDate holds the string denoting the planned_start_date field in the database.
 	FieldPlannedStartDate = "planned_start_date"
-	// FieldActualStartDate holds the string denoting the actualstartdate field in the database.
+	// FieldActualStartDate holds the string denoting the actual_start_date field in the database.
 	FieldActualStartDate = "actual_start_date"
-	// FieldPlannedEndDate holds the string denoting the plannedenddate field in the database.
+	// FieldPlannedEndDate holds the string denoting the planned_end_date field in the database.
 	FieldPlannedEndDate = "planned_end_date"
-	// FieldActualEndDate holds the string denoting the actualenddate field in the database.
+	// FieldActualEndDate holds the string denoting the actual_end_date field in the database.
 	FieldActualEndDate = "actual_end_date"
 	// FieldProgress holds the string denoting the progress field in the database.
 	FieldProgress = "progress"
@@ -41,8 +41,8 @@ const (
 	FieldStatus = "status"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeCreatedBy holds the string denoting the createdby edge name in mutations.
-	EdgeCreatedBy = "createdBy"
+	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
+	EdgeCreatedBy = "created_by"
 	// EdgeLeader holds the string denoting the leader edge name in mutations.
 	EdgeLeader = "leader"
 	// EdgeTasks holds the string denoting the tasks edge name in mutations.
@@ -58,12 +58,12 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_projects"
-	// CreatedByTable is the table that holds the createdBy relation/edge.
+	// CreatedByTable is the table that holds the created_by relation/edge.
 	CreatedByTable = "projects"
 	// CreatedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	CreatedByInverseTable = "users"
-	// CreatedByColumn is the table column denoting the createdBy relation/edge.
+	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "user_created_projects"
 	// LeaderTable is the table that holds the leader relation/edge.
 	LeaderTable = "projects"
@@ -128,11 +128,11 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
@@ -180,17 +180,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -205,22 +205,22 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDescription, opts...).ToFunc()
 }
 
-// ByPlannedStartDate orders the results by the plannedStartDate field.
+// ByPlannedStartDate orders the results by the planned_start_date field.
 func ByPlannedStartDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPlannedStartDate, opts...).ToFunc()
 }
 
-// ByActualStartDate orders the results by the actualStartDate field.
+// ByActualStartDate orders the results by the actual_start_date field.
 func ByActualStartDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldActualStartDate, opts...).ToFunc()
 }
 
-// ByPlannedEndDate orders the results by the plannedEndDate field.
+// ByPlannedEndDate orders the results by the planned_end_date field.
 func ByPlannedEndDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPlannedEndDate, opts...).ToFunc()
 }
 
-// ByActualEndDate orders the results by the actualEndDate field.
+// ByActualEndDate orders the results by the actual_end_date field.
 func ByActualEndDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldActualEndDate, opts...).ToFunc()
 }
@@ -242,7 +242,7 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByCreatedByField orders the results by createdBy field.
+// ByCreatedByField orders the results by created_by field.
 func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))

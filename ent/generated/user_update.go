@@ -40,19 +40,19 @@ func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 	return uu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (uu *UserUpdate) SetUpdatedAt(t time.Time) *UserUpdate {
 	uu.mutation.SetUpdatedAt(t)
 	return uu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (uu *UserUpdate) SetDeletedAt(t time.Time) *UserUpdate {
 	uu.mutation.SetDeletedAt(t)
 	return uu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableDeletedAt(t *time.Time) *UserUpdate {
 	if t != nil {
 		uu.SetDeletedAt(*t)
@@ -60,7 +60,7 @@ func (uu *UserUpdate) SetNillableDeletedAt(t *time.Time) *UserUpdate {
 	return uu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (uu *UserUpdate) ClearDeletedAt() *UserUpdate {
 	uu.mutation.ClearDeletedAt()
 	return uu
@@ -86,13 +86,13 @@ func (uu *UserUpdate) ClearDevice() *UserUpdate {
 	return uu
 }
 
-// SetIsDemoUser sets the "isDemoUser" field.
+// SetIsDemoUser sets the "is_demo_user" field.
 func (uu *UserUpdate) SetIsDemoUser(b bool) *UserUpdate {
 	uu.mutation.SetIsDemoUser(b)
 	return uu
 }
 
-// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+// SetNillableIsDemoUser sets the "is_demo_user" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableIsDemoUser(b *bool) *UserUpdate {
 	if b != nil {
 		uu.SetIsDemoUser(*b)
@@ -100,19 +100,19 @@ func (uu *UserUpdate) SetNillableIsDemoUser(b *bool) *UserUpdate {
 	return uu
 }
 
-// ClearIsDemoUser clears the value of the "isDemoUser" field.
+// ClearIsDemoUser clears the value of the "is_demo_user" field.
 func (uu *UserUpdate) ClearIsDemoUser() *UserUpdate {
 	uu.mutation.ClearIsDemoUser()
 	return uu
 }
 
-// SetFirebaseUID sets the "firebaseUID" field.
+// SetFirebaseUID sets the "firebase_UID" field.
 func (uu *UserUpdate) SetFirebaseUID(s string) *UserUpdate {
 	uu.mutation.SetFirebaseUID(s)
 	return uu
 }
 
-// SetNillableFirebaseUID sets the "firebaseUID" field if the given value is not nil.
+// SetNillableFirebaseUID sets the "firebase_UID" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableFirebaseUID(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetFirebaseUID(*s)
@@ -120,13 +120,13 @@ func (uu *UserUpdate) SetNillableFirebaseUID(s *string) *UserUpdate {
 	return uu
 }
 
-// SetFcmToken sets the "fcmToken" field.
+// SetFcmToken sets the "fcm_token" field.
 func (uu *UserUpdate) SetFcmToken(s string) *UserUpdate {
 	uu.mutation.SetFcmToken(s)
 	return uu
 }
 
-// SetNillableFcmToken sets the "fcmToken" field if the given value is not nil.
+// SetNillableFcmToken sets the "fcm_token" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableFcmToken(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetFcmToken(*s)
@@ -134,19 +134,19 @@ func (uu *UserUpdate) SetNillableFcmToken(s *string) *UserUpdate {
 	return uu
 }
 
-// ClearFcmToken clears the value of the "fcmToken" field.
+// ClearFcmToken clears the value of the "fcm_token" field.
 func (uu *UserUpdate) ClearFcmToken() *UserUpdate {
 	uu.mutation.ClearFcmToken()
 	return uu
 }
 
-// SetExpoPushToken sets the "expoPushToken" field.
+// SetExpoPushToken sets the "expo_push_token" field.
 func (uu *UserUpdate) SetExpoPushToken(s string) *UserUpdate {
 	uu.mutation.SetExpoPushToken(s)
 	return uu
 }
 
-// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+// SetNillableExpoPushToken sets the "expo_push_token" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableExpoPushToken(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetExpoPushToken(*s)
@@ -154,7 +154,7 @@ func (uu *UserUpdate) SetNillableExpoPushToken(s *string) *UserUpdate {
 	return uu
 }
 
-// ClearExpoPushToken clears the value of the "expoPushToken" field.
+// ClearExpoPushToken clears the value of the "expo_push_token" field.
 func (uu *UserUpdate) ClearExpoPushToken() *UserUpdate {
 	uu.mutation.ClearExpoPushToken()
 	return uu
@@ -214,13 +214,13 @@ func (uu *UserUpdate) ClearAvatar() *UserUpdate {
 	return uu
 }
 
-// SetPhotoURL sets the "photoURL" field.
+// SetPhotoURL sets the "photo_URL" field.
 func (uu *UserUpdate) SetPhotoURL(s string) *UserUpdate {
 	uu.mutation.SetPhotoURL(s)
 	return uu
 }
 
-// SetNillablePhotoURL sets the "photoURL" field if the given value is not nil.
+// SetNillablePhotoURL sets the "photo_URL" field if the given value is not nil.
 func (uu *UserUpdate) SetNillablePhotoURL(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetPhotoURL(*s)
@@ -228,7 +228,7 @@ func (uu *UserUpdate) SetNillablePhotoURL(s *string) *UserUpdate {
 	return uu
 }
 
-// ClearPhotoURL clears the value of the "photoURL" field.
+// ClearPhotoURL clears the value of the "photo_URL" field.
 func (uu *UserUpdate) ClearPhotoURL() *UserUpdate {
 	uu.mutation.ClearPhotoURL()
 	return uu
@@ -294,13 +294,13 @@ func (uu *UserUpdate) ClearBirthdate() *UserUpdate {
 	return uu
 }
 
-// SetLastLogin sets the "lastLogin" field.
+// SetLastLogin sets the "last_login" field.
 func (uu *UserUpdate) SetLastLogin(t time.Time) *UserUpdate {
 	uu.mutation.SetLastLogin(t)
 	return uu
 }
 
-// SetNillableLastLogin sets the "lastLogin" field if the given value is not nil.
+// SetNillableLastLogin sets the "last_login" field if the given value is not nil.
 func (uu *UserUpdate) SetNillableLastLogin(t *time.Time) *UserUpdate {
 	if t != nil {
 		uu.SetLastLogin(*t)
@@ -308,7 +308,7 @@ func (uu *UserUpdate) SetNillableLastLogin(t *time.Time) *UserUpdate {
 	return uu
 }
 
-// ClearLastLogin clears the value of the "lastLogin" field.
+// ClearLastLogin clears the value of the "last_login" field.
 func (uu *UserUpdate) ClearLastLogin() *UserUpdate {
 	uu.mutation.ClearLastLogin()
 	return uu
@@ -342,13 +342,13 @@ func (uu *UserUpdate) SetNillableActive(b *bool) *UserUpdate {
 	return uu
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (uu *UserUpdate) AddAccountingEntryIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddAccountingEntryIDs(ids...)
 	return uu
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (uu *UserUpdate) AddAccountingEntries(a ...*AccountingEntry) *UserUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -372,13 +372,13 @@ func (uu *UserUpdate) AddCompany(c ...*Company) *UserUpdate {
 	return uu.AddCompanyIDs(ids...)
 }
 
-// AddAssignedRoleIDs adds the "assignedRoles" edge to the UserRole entity by IDs.
+// AddAssignedRoleIDs adds the "assigned_roles" edge to the UserRole entity by IDs.
 func (uu *UserUpdate) AddAssignedRoleIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddAssignedRoleIDs(ids...)
 	return uu
 }
 
-// AddAssignedRoles adds the "assignedRoles" edges to the UserRole entity.
+// AddAssignedRoles adds the "assigned_roles" edges to the UserRole entity.
 func (uu *UserUpdate) AddAssignedRoles(u ...*UserRole) *UserUpdate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -421,13 +421,13 @@ func (uu *UserUpdate) SetLeader(u *User) *UserUpdate {
 	return uu.SetLeaderID(u.ID)
 }
 
-// AddCreatedMemberSignupTokenIDs adds the "createdMemberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddCreatedMemberSignupTokenIDs adds the "created_member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (uu *UserUpdate) AddCreatedMemberSignupTokenIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddCreatedMemberSignupTokenIDs(ids...)
 	return uu
 }
 
-// AddCreatedMemberSignupTokens adds the "createdMemberSignupTokens" edges to the MemberSignupToken entity.
+// AddCreatedMemberSignupTokens adds the "created_member_signup_tokens" edges to the MemberSignupToken entity.
 func (uu *UserUpdate) AddCreatedMemberSignupTokens(m ...*MemberSignupToken) *UserUpdate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -455,13 +455,13 @@ func (uu *UserUpdate) SetEmployee(e *Employee) *UserUpdate {
 	return uu.SetEmployeeID(e.ID)
 }
 
-// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+// AddIssuedInvoiceIDs adds the "issued_invoices" edge to the Invoice entity by IDs.
 func (uu *UserUpdate) AddIssuedInvoiceIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddIssuedInvoiceIDs(ids...)
 	return uu
 }
 
-// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+// AddIssuedInvoices adds the "issued_invoices" edges to the Invoice entity.
 func (uu *UserUpdate) AddIssuedInvoices(i ...*Invoice) *UserUpdate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -470,13 +470,13 @@ func (uu *UserUpdate) AddIssuedInvoices(i ...*Invoice) *UserUpdate {
 	return uu.AddIssuedInvoiceIDs(ids...)
 }
 
-// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+// AddCreatedProjectIDs adds the "created_projects" edge to the Project entity by IDs.
 func (uu *UserUpdate) AddCreatedProjectIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddCreatedProjectIDs(ids...)
 	return uu
 }
 
-// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+// AddCreatedProjects adds the "created_projects" edges to the Project entity.
 func (uu *UserUpdate) AddCreatedProjects(p ...*Project) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -485,13 +485,13 @@ func (uu *UserUpdate) AddCreatedProjects(p ...*Project) *UserUpdate {
 	return uu.AddCreatedProjectIDs(ids...)
 }
 
-// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+// AddLeaderedProjectIDs adds the "leadered_projects" edge to the Project entity by IDs.
 func (uu *UserUpdate) AddLeaderedProjectIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddLeaderedProjectIDs(ids...)
 	return uu
 }
 
-// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+// AddLeaderedProjects adds the "leadered_projects" edges to the Project entity.
 func (uu *UserUpdate) AddLeaderedProjects(p ...*Project) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -500,13 +500,13 @@ func (uu *UserUpdate) AddLeaderedProjects(p ...*Project) *UserUpdate {
 	return uu.AddLeaderedProjectIDs(ids...)
 }
 
-// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddAssignedProjectTaskIDs adds the "assigned_project_tasks" edge to the ProjectTask entity by IDs.
 func (uu *UserUpdate) AddAssignedProjectTaskIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddAssignedProjectTaskIDs(ids...)
 	return uu
 }
 
-// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+// AddAssignedProjectTasks adds the "assigned_project_tasks" edges to the ProjectTask entity.
 func (uu *UserUpdate) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -515,13 +515,13 @@ func (uu *UserUpdate) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdate {
 	return uu.AddAssignedProjectTaskIDs(ids...)
 }
 
-// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddParticipatedProjectTaskIDs adds the "participated_project_tasks" edge to the ProjectTask entity by IDs.
 func (uu *UserUpdate) AddParticipatedProjectTaskIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddParticipatedProjectTaskIDs(ids...)
 	return uu
 }
 
-// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+// AddParticipatedProjectTasks adds the "participated_project_tasks" edges to the ProjectTask entity.
 func (uu *UserUpdate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -545,13 +545,13 @@ func (uu *UserUpdate) AddTokens(t ...*Token) *UserUpdate {
 	return uu.AddTokenIDs(ids...)
 }
 
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+// AddApprovedWorkShiftIDs adds the "approved_work_shifts" edge to the Workshift entity by IDs.
 func (uu *UserUpdate) AddApprovedWorkShiftIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddApprovedWorkShiftIDs(ids...)
 	return uu
 }
 
-// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+// AddApprovedWorkShifts adds the "approved_work_shifts" edges to the Workshift entity.
 func (uu *UserUpdate) AddApprovedWorkShifts(w ...*Workshift) *UserUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -560,13 +560,13 @@ func (uu *UserUpdate) AddApprovedWorkShifts(w ...*Workshift) *UserUpdate {
 	return uu.AddApprovedWorkShiftIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (uu *UserUpdate) AddWorkShiftIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddWorkShiftIDs(ids...)
 	return uu
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (uu *UserUpdate) AddWorkShifts(w ...*Workshift) *UserUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -575,13 +575,13 @@ func (uu *UserUpdate) AddWorkShifts(w ...*Workshift) *UserUpdate {
 	return uu.AddWorkShiftIDs(ids...)
 }
 
-// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+// AddUploadedDocumentIDs adds the "uploaded_documents" edge to the CompanyDocument entity by IDs.
 func (uu *UserUpdate) AddUploadedDocumentIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddUploadedDocumentIDs(ids...)
 	return uu
 }
 
-// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+// AddUploadedDocuments adds the "uploaded_documents" edges to the CompanyDocument entity.
 func (uu *UserUpdate) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -590,13 +590,13 @@ func (uu *UserUpdate) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdate {
 	return uu.AddUploadedDocumentIDs(ids...)
 }
 
-// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+// AddApprovedDocumentIDs adds the "approved_documents" edge to the CompanyDocument entity by IDs.
 func (uu *UserUpdate) AddApprovedDocumentIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddApprovedDocumentIDs(ids...)
 	return uu
 }
 
-// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+// AddApprovedDocuments adds the "approved_documents" edges to the CompanyDocument entity.
 func (uu *UserUpdate) AddApprovedDocuments(c ...*CompanyDocument) *UserUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -610,19 +610,19 @@ func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
 }
 
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+// ClearAccountingEntries clears all "accounting_entries" edges to the AccountingEntry entity.
 func (uu *UserUpdate) ClearAccountingEntries() *UserUpdate {
 	uu.mutation.ClearAccountingEntries()
 	return uu
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to AccountingEntry entities by IDs.
 func (uu *UserUpdate) RemoveAccountingEntryIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveAccountingEntryIDs(ids...)
 	return uu
 }
 
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+// RemoveAccountingEntries removes "accounting_entries" edges to AccountingEntry entities.
 func (uu *UserUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *UserUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -652,19 +652,19 @@ func (uu *UserUpdate) RemoveCompany(c ...*Company) *UserUpdate {
 	return uu.RemoveCompanyIDs(ids...)
 }
 
-// ClearAssignedRoles clears all "assignedRoles" edges to the UserRole entity.
+// ClearAssignedRoles clears all "assigned_roles" edges to the UserRole entity.
 func (uu *UserUpdate) ClearAssignedRoles() *UserUpdate {
 	uu.mutation.ClearAssignedRoles()
 	return uu
 }
 
-// RemoveAssignedRoleIDs removes the "assignedRoles" edge to UserRole entities by IDs.
+// RemoveAssignedRoleIDs removes the "assigned_roles" edge to UserRole entities by IDs.
 func (uu *UserUpdate) RemoveAssignedRoleIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveAssignedRoleIDs(ids...)
 	return uu
 }
 
-// RemoveAssignedRoles removes "assignedRoles" edges to UserRole entities.
+// RemoveAssignedRoles removes "assigned_roles" edges to UserRole entities.
 func (uu *UserUpdate) RemoveAssignedRoles(u ...*UserRole) *UserUpdate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -700,19 +700,19 @@ func (uu *UserUpdate) ClearLeader() *UserUpdate {
 	return uu
 }
 
-// ClearCreatedMemberSignupTokens clears all "createdMemberSignupTokens" edges to the MemberSignupToken entity.
+// ClearCreatedMemberSignupTokens clears all "created_member_signup_tokens" edges to the MemberSignupToken entity.
 func (uu *UserUpdate) ClearCreatedMemberSignupTokens() *UserUpdate {
 	uu.mutation.ClearCreatedMemberSignupTokens()
 	return uu
 }
 
-// RemoveCreatedMemberSignupTokenIDs removes the "createdMemberSignupTokens" edge to MemberSignupToken entities by IDs.
+// RemoveCreatedMemberSignupTokenIDs removes the "created_member_signup_tokens" edge to MemberSignupToken entities by IDs.
 func (uu *UserUpdate) RemoveCreatedMemberSignupTokenIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveCreatedMemberSignupTokenIDs(ids...)
 	return uu
 }
 
-// RemoveCreatedMemberSignupTokens removes "createdMemberSignupTokens" edges to MemberSignupToken entities.
+// RemoveCreatedMemberSignupTokens removes "created_member_signup_tokens" edges to MemberSignupToken entities.
 func (uu *UserUpdate) RemoveCreatedMemberSignupTokens(m ...*MemberSignupToken) *UserUpdate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -727,19 +727,19 @@ func (uu *UserUpdate) ClearEmployee() *UserUpdate {
 	return uu
 }
 
-// ClearIssuedInvoices clears all "issuedInvoices" edges to the Invoice entity.
+// ClearIssuedInvoices clears all "issued_invoices" edges to the Invoice entity.
 func (uu *UserUpdate) ClearIssuedInvoices() *UserUpdate {
 	uu.mutation.ClearIssuedInvoices()
 	return uu
 }
 
-// RemoveIssuedInvoiceIDs removes the "issuedInvoices" edge to Invoice entities by IDs.
+// RemoveIssuedInvoiceIDs removes the "issued_invoices" edge to Invoice entities by IDs.
 func (uu *UserUpdate) RemoveIssuedInvoiceIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveIssuedInvoiceIDs(ids...)
 	return uu
 }
 
-// RemoveIssuedInvoices removes "issuedInvoices" edges to Invoice entities.
+// RemoveIssuedInvoices removes "issued_invoices" edges to Invoice entities.
 func (uu *UserUpdate) RemoveIssuedInvoices(i ...*Invoice) *UserUpdate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -748,19 +748,19 @@ func (uu *UserUpdate) RemoveIssuedInvoices(i ...*Invoice) *UserUpdate {
 	return uu.RemoveIssuedInvoiceIDs(ids...)
 }
 
-// ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
+// ClearCreatedProjects clears all "created_projects" edges to the Project entity.
 func (uu *UserUpdate) ClearCreatedProjects() *UserUpdate {
 	uu.mutation.ClearCreatedProjects()
 	return uu
 }
 
-// RemoveCreatedProjectIDs removes the "createdProjects" edge to Project entities by IDs.
+// RemoveCreatedProjectIDs removes the "created_projects" edge to Project entities by IDs.
 func (uu *UserUpdate) RemoveCreatedProjectIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveCreatedProjectIDs(ids...)
 	return uu
 }
 
-// RemoveCreatedProjects removes "createdProjects" edges to Project entities.
+// RemoveCreatedProjects removes "created_projects" edges to Project entities.
 func (uu *UserUpdate) RemoveCreatedProjects(p ...*Project) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -769,19 +769,19 @@ func (uu *UserUpdate) RemoveCreatedProjects(p ...*Project) *UserUpdate {
 	return uu.RemoveCreatedProjectIDs(ids...)
 }
 
-// ClearLeaderedProjects clears all "leaderedProjects" edges to the Project entity.
+// ClearLeaderedProjects clears all "leadered_projects" edges to the Project entity.
 func (uu *UserUpdate) ClearLeaderedProjects() *UserUpdate {
 	uu.mutation.ClearLeaderedProjects()
 	return uu
 }
 
-// RemoveLeaderedProjectIDs removes the "leaderedProjects" edge to Project entities by IDs.
+// RemoveLeaderedProjectIDs removes the "leadered_projects" edge to Project entities by IDs.
 func (uu *UserUpdate) RemoveLeaderedProjectIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveLeaderedProjectIDs(ids...)
 	return uu
 }
 
-// RemoveLeaderedProjects removes "leaderedProjects" edges to Project entities.
+// RemoveLeaderedProjects removes "leadered_projects" edges to Project entities.
 func (uu *UserUpdate) RemoveLeaderedProjects(p ...*Project) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -790,19 +790,19 @@ func (uu *UserUpdate) RemoveLeaderedProjects(p ...*Project) *UserUpdate {
 	return uu.RemoveLeaderedProjectIDs(ids...)
 }
 
-// ClearAssignedProjectTasks clears all "assignedProjectTasks" edges to the ProjectTask entity.
+// ClearAssignedProjectTasks clears all "assigned_project_tasks" edges to the ProjectTask entity.
 func (uu *UserUpdate) ClearAssignedProjectTasks() *UserUpdate {
 	uu.mutation.ClearAssignedProjectTasks()
 	return uu
 }
 
-// RemoveAssignedProjectTaskIDs removes the "assignedProjectTasks" edge to ProjectTask entities by IDs.
+// RemoveAssignedProjectTaskIDs removes the "assigned_project_tasks" edge to ProjectTask entities by IDs.
 func (uu *UserUpdate) RemoveAssignedProjectTaskIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveAssignedProjectTaskIDs(ids...)
 	return uu
 }
 
-// RemoveAssignedProjectTasks removes "assignedProjectTasks" edges to ProjectTask entities.
+// RemoveAssignedProjectTasks removes "assigned_project_tasks" edges to ProjectTask entities.
 func (uu *UserUpdate) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -811,19 +811,19 @@ func (uu *UserUpdate) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpdate 
 	return uu.RemoveAssignedProjectTaskIDs(ids...)
 }
 
-// ClearParticipatedProjectTasks clears all "participatedProjectTasks" edges to the ProjectTask entity.
+// ClearParticipatedProjectTasks clears all "participated_project_tasks" edges to the ProjectTask entity.
 func (uu *UserUpdate) ClearParticipatedProjectTasks() *UserUpdate {
 	uu.mutation.ClearParticipatedProjectTasks()
 	return uu
 }
 
-// RemoveParticipatedProjectTaskIDs removes the "participatedProjectTasks" edge to ProjectTask entities by IDs.
+// RemoveParticipatedProjectTaskIDs removes the "participated_project_tasks" edge to ProjectTask entities by IDs.
 func (uu *UserUpdate) RemoveParticipatedProjectTaskIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveParticipatedProjectTaskIDs(ids...)
 	return uu
 }
 
-// RemoveParticipatedProjectTasks removes "participatedProjectTasks" edges to ProjectTask entities.
+// RemoveParticipatedProjectTasks removes "participated_project_tasks" edges to ProjectTask entities.
 func (uu *UserUpdate) RemoveParticipatedProjectTasks(p ...*ProjectTask) *UserUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -853,19 +853,19 @@ func (uu *UserUpdate) RemoveTokens(t ...*Token) *UserUpdate {
 	return uu.RemoveTokenIDs(ids...)
 }
 
-// ClearApprovedWorkShifts clears all "approvedWorkShifts" edges to the Workshift entity.
+// ClearApprovedWorkShifts clears all "approved_work_shifts" edges to the Workshift entity.
 func (uu *UserUpdate) ClearApprovedWorkShifts() *UserUpdate {
 	uu.mutation.ClearApprovedWorkShifts()
 	return uu
 }
 
-// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to Workshift entities by IDs.
+// RemoveApprovedWorkShiftIDs removes the "approved_work_shifts" edge to Workshift entities by IDs.
 func (uu *UserUpdate) RemoveApprovedWorkShiftIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveApprovedWorkShiftIDs(ids...)
 	return uu
 }
 
-// RemoveApprovedWorkShifts removes "approvedWorkShifts" edges to Workshift entities.
+// RemoveApprovedWorkShifts removes "approved_work_shifts" edges to Workshift entities.
 func (uu *UserUpdate) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -874,19 +874,19 @@ func (uu *UserUpdate) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdate {
 	return uu.RemoveApprovedWorkShiftIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (uu *UserUpdate) ClearWorkShifts() *UserUpdate {
 	uu.mutation.ClearWorkShifts()
 	return uu
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (uu *UserUpdate) RemoveWorkShiftIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveWorkShiftIDs(ids...)
 	return uu
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (uu *UserUpdate) RemoveWorkShifts(w ...*Workshift) *UserUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -895,19 +895,19 @@ func (uu *UserUpdate) RemoveWorkShifts(w ...*Workshift) *UserUpdate {
 	return uu.RemoveWorkShiftIDs(ids...)
 }
 
-// ClearUploadedDocuments clears all "uploadedDocuments" edges to the CompanyDocument entity.
+// ClearUploadedDocuments clears all "uploaded_documents" edges to the CompanyDocument entity.
 func (uu *UserUpdate) ClearUploadedDocuments() *UserUpdate {
 	uu.mutation.ClearUploadedDocuments()
 	return uu
 }
 
-// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to CompanyDocument entities by IDs.
+// RemoveUploadedDocumentIDs removes the "uploaded_documents" edge to CompanyDocument entities by IDs.
 func (uu *UserUpdate) RemoveUploadedDocumentIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveUploadedDocumentIDs(ids...)
 	return uu
 }
 
-// RemoveUploadedDocuments removes "uploadedDocuments" edges to CompanyDocument entities.
+// RemoveUploadedDocuments removes "uploaded_documents" edges to CompanyDocument entities.
 func (uu *UserUpdate) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -916,19 +916,19 @@ func (uu *UserUpdate) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUpdate
 	return uu.RemoveUploadedDocumentIDs(ids...)
 }
 
-// ClearApprovedDocuments clears all "approvedDocuments" edges to the CompanyDocument entity.
+// ClearApprovedDocuments clears all "approved_documents" edges to the CompanyDocument entity.
 func (uu *UserUpdate) ClearApprovedDocuments() *UserUpdate {
 	uu.mutation.ClearApprovedDocuments()
 	return uu
 }
 
-// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to CompanyDocument entities by IDs.
+// RemoveApprovedDocumentIDs removes the "approved_documents" edge to CompanyDocument entities by IDs.
 func (uu *UserUpdate) RemoveApprovedDocumentIDs(ids ...int) *UserUpdate {
 	uu.mutation.RemoveApprovedDocumentIDs(ids...)
 	return uu
 }
 
-// RemoveApprovedDocuments removes "approvedDocuments" edges to CompanyDocument entities.
+// RemoveApprovedDocuments removes "approved_documents" edges to CompanyDocument entities.
 func (uu *UserUpdate) RemoveApprovedDocuments(c ...*CompanyDocument) *UserUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -977,7 +977,7 @@ func (uu *UserUpdate) defaults() {
 func (uu *UserUpdate) check() error {
 	if v, ok := uu.mutation.FirebaseUID(); ok {
 		if err := user.FirebaseUIDValidator(v); err != nil {
-			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+			return &ValidationError{Name: "firebase_UID", err: fmt.Errorf(`generated: validator failed for field "User.firebase_UID": %w`, err)}
 		}
 	}
 	if v, ok := uu.mutation.Gender(); ok {
@@ -1848,19 +1848,19 @@ type UserUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (uuo *UserUpdateOne) SetUpdatedAt(t time.Time) *UserUpdateOne {
 	uuo.mutation.SetUpdatedAt(t)
 	return uuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (uuo *UserUpdateOne) SetDeletedAt(t time.Time) *UserUpdateOne {
 	uuo.mutation.SetDeletedAt(t)
 	return uuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
 	if t != nil {
 		uuo.SetDeletedAt(*t)
@@ -1868,7 +1868,7 @@ func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
 	return uuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (uuo *UserUpdateOne) ClearDeletedAt() *UserUpdateOne {
 	uuo.mutation.ClearDeletedAt()
 	return uuo
@@ -1894,13 +1894,13 @@ func (uuo *UserUpdateOne) ClearDevice() *UserUpdateOne {
 	return uuo
 }
 
-// SetIsDemoUser sets the "isDemoUser" field.
+// SetIsDemoUser sets the "is_demo_user" field.
 func (uuo *UserUpdateOne) SetIsDemoUser(b bool) *UserUpdateOne {
 	uuo.mutation.SetIsDemoUser(b)
 	return uuo
 }
 
-// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+// SetNillableIsDemoUser sets the "is_demo_user" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableIsDemoUser(b *bool) *UserUpdateOne {
 	if b != nil {
 		uuo.SetIsDemoUser(*b)
@@ -1908,19 +1908,19 @@ func (uuo *UserUpdateOne) SetNillableIsDemoUser(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// ClearIsDemoUser clears the value of the "isDemoUser" field.
+// ClearIsDemoUser clears the value of the "is_demo_user" field.
 func (uuo *UserUpdateOne) ClearIsDemoUser() *UserUpdateOne {
 	uuo.mutation.ClearIsDemoUser()
 	return uuo
 }
 
-// SetFirebaseUID sets the "firebaseUID" field.
+// SetFirebaseUID sets the "firebase_UID" field.
 func (uuo *UserUpdateOne) SetFirebaseUID(s string) *UserUpdateOne {
 	uuo.mutation.SetFirebaseUID(s)
 	return uuo
 }
 
-// SetNillableFirebaseUID sets the "firebaseUID" field if the given value is not nil.
+// SetNillableFirebaseUID sets the "firebase_UID" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableFirebaseUID(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetFirebaseUID(*s)
@@ -1928,13 +1928,13 @@ func (uuo *UserUpdateOne) SetNillableFirebaseUID(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetFcmToken sets the "fcmToken" field.
+// SetFcmToken sets the "fcm_token" field.
 func (uuo *UserUpdateOne) SetFcmToken(s string) *UserUpdateOne {
 	uuo.mutation.SetFcmToken(s)
 	return uuo
 }
 
-// SetNillableFcmToken sets the "fcmToken" field if the given value is not nil.
+// SetNillableFcmToken sets the "fcm_token" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableFcmToken(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetFcmToken(*s)
@@ -1942,19 +1942,19 @@ func (uuo *UserUpdateOne) SetNillableFcmToken(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// ClearFcmToken clears the value of the "fcmToken" field.
+// ClearFcmToken clears the value of the "fcm_token" field.
 func (uuo *UserUpdateOne) ClearFcmToken() *UserUpdateOne {
 	uuo.mutation.ClearFcmToken()
 	return uuo
 }
 
-// SetExpoPushToken sets the "expoPushToken" field.
+// SetExpoPushToken sets the "expo_push_token" field.
 func (uuo *UserUpdateOne) SetExpoPushToken(s string) *UserUpdateOne {
 	uuo.mutation.SetExpoPushToken(s)
 	return uuo
 }
 
-// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+// SetNillableExpoPushToken sets the "expo_push_token" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableExpoPushToken(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetExpoPushToken(*s)
@@ -1962,7 +1962,7 @@ func (uuo *UserUpdateOne) SetNillableExpoPushToken(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// ClearExpoPushToken clears the value of the "expoPushToken" field.
+// ClearExpoPushToken clears the value of the "expo_push_token" field.
 func (uuo *UserUpdateOne) ClearExpoPushToken() *UserUpdateOne {
 	uuo.mutation.ClearExpoPushToken()
 	return uuo
@@ -2022,13 +2022,13 @@ func (uuo *UserUpdateOne) ClearAvatar() *UserUpdateOne {
 	return uuo
 }
 
-// SetPhotoURL sets the "photoURL" field.
+// SetPhotoURL sets the "photo_URL" field.
 func (uuo *UserUpdateOne) SetPhotoURL(s string) *UserUpdateOne {
 	uuo.mutation.SetPhotoURL(s)
 	return uuo
 }
 
-// SetNillablePhotoURL sets the "photoURL" field if the given value is not nil.
+// SetNillablePhotoURL sets the "photo_URL" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillablePhotoURL(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetPhotoURL(*s)
@@ -2036,7 +2036,7 @@ func (uuo *UserUpdateOne) SetNillablePhotoURL(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// ClearPhotoURL clears the value of the "photoURL" field.
+// ClearPhotoURL clears the value of the "photo_URL" field.
 func (uuo *UserUpdateOne) ClearPhotoURL() *UserUpdateOne {
 	uuo.mutation.ClearPhotoURL()
 	return uuo
@@ -2102,13 +2102,13 @@ func (uuo *UserUpdateOne) ClearBirthdate() *UserUpdateOne {
 	return uuo
 }
 
-// SetLastLogin sets the "lastLogin" field.
+// SetLastLogin sets the "last_login" field.
 func (uuo *UserUpdateOne) SetLastLogin(t time.Time) *UserUpdateOne {
 	uuo.mutation.SetLastLogin(t)
 	return uuo
 }
 
-// SetNillableLastLogin sets the "lastLogin" field if the given value is not nil.
+// SetNillableLastLogin sets the "last_login" field if the given value is not nil.
 func (uuo *UserUpdateOne) SetNillableLastLogin(t *time.Time) *UserUpdateOne {
 	if t != nil {
 		uuo.SetLastLogin(*t)
@@ -2116,7 +2116,7 @@ func (uuo *UserUpdateOne) SetNillableLastLogin(t *time.Time) *UserUpdateOne {
 	return uuo
 }
 
-// ClearLastLogin clears the value of the "lastLogin" field.
+// ClearLastLogin clears the value of the "last_login" field.
 func (uuo *UserUpdateOne) ClearLastLogin() *UserUpdateOne {
 	uuo.mutation.ClearLastLogin()
 	return uuo
@@ -2150,13 +2150,13 @@ func (uuo *UserUpdateOne) SetNillableActive(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (uuo *UserUpdateOne) AddAccountingEntryIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddAccountingEntryIDs(ids...)
 	return uuo
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (uuo *UserUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *UserUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -2180,13 +2180,13 @@ func (uuo *UserUpdateOne) AddCompany(c ...*Company) *UserUpdateOne {
 	return uuo.AddCompanyIDs(ids...)
 }
 
-// AddAssignedRoleIDs adds the "assignedRoles" edge to the UserRole entity by IDs.
+// AddAssignedRoleIDs adds the "assigned_roles" edge to the UserRole entity by IDs.
 func (uuo *UserUpdateOne) AddAssignedRoleIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddAssignedRoleIDs(ids...)
 	return uuo
 }
 
-// AddAssignedRoles adds the "assignedRoles" edges to the UserRole entity.
+// AddAssignedRoles adds the "assigned_roles" edges to the UserRole entity.
 func (uuo *UserUpdateOne) AddAssignedRoles(u ...*UserRole) *UserUpdateOne {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -2229,13 +2229,13 @@ func (uuo *UserUpdateOne) SetLeader(u *User) *UserUpdateOne {
 	return uuo.SetLeaderID(u.ID)
 }
 
-// AddCreatedMemberSignupTokenIDs adds the "createdMemberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddCreatedMemberSignupTokenIDs adds the "created_member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (uuo *UserUpdateOne) AddCreatedMemberSignupTokenIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddCreatedMemberSignupTokenIDs(ids...)
 	return uuo
 }
 
-// AddCreatedMemberSignupTokens adds the "createdMemberSignupTokens" edges to the MemberSignupToken entity.
+// AddCreatedMemberSignupTokens adds the "created_member_signup_tokens" edges to the MemberSignupToken entity.
 func (uuo *UserUpdateOne) AddCreatedMemberSignupTokens(m ...*MemberSignupToken) *UserUpdateOne {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -2263,13 +2263,13 @@ func (uuo *UserUpdateOne) SetEmployee(e *Employee) *UserUpdateOne {
 	return uuo.SetEmployeeID(e.ID)
 }
 
-// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+// AddIssuedInvoiceIDs adds the "issued_invoices" edge to the Invoice entity by IDs.
 func (uuo *UserUpdateOne) AddIssuedInvoiceIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddIssuedInvoiceIDs(ids...)
 	return uuo
 }
 
-// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+// AddIssuedInvoices adds the "issued_invoices" edges to the Invoice entity.
 func (uuo *UserUpdateOne) AddIssuedInvoices(i ...*Invoice) *UserUpdateOne {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -2278,13 +2278,13 @@ func (uuo *UserUpdateOne) AddIssuedInvoices(i ...*Invoice) *UserUpdateOne {
 	return uuo.AddIssuedInvoiceIDs(ids...)
 }
 
-// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+// AddCreatedProjectIDs adds the "created_projects" edge to the Project entity by IDs.
 func (uuo *UserUpdateOne) AddCreatedProjectIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddCreatedProjectIDs(ids...)
 	return uuo
 }
 
-// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+// AddCreatedProjects adds the "created_projects" edges to the Project entity.
 func (uuo *UserUpdateOne) AddCreatedProjects(p ...*Project) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2293,13 +2293,13 @@ func (uuo *UserUpdateOne) AddCreatedProjects(p ...*Project) *UserUpdateOne {
 	return uuo.AddCreatedProjectIDs(ids...)
 }
 
-// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+// AddLeaderedProjectIDs adds the "leadered_projects" edge to the Project entity by IDs.
 func (uuo *UserUpdateOne) AddLeaderedProjectIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddLeaderedProjectIDs(ids...)
 	return uuo
 }
 
-// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+// AddLeaderedProjects adds the "leadered_projects" edges to the Project entity.
 func (uuo *UserUpdateOne) AddLeaderedProjects(p ...*Project) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2308,13 +2308,13 @@ func (uuo *UserUpdateOne) AddLeaderedProjects(p ...*Project) *UserUpdateOne {
 	return uuo.AddLeaderedProjectIDs(ids...)
 }
 
-// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddAssignedProjectTaskIDs adds the "assigned_project_tasks" edge to the ProjectTask entity by IDs.
 func (uuo *UserUpdateOne) AddAssignedProjectTaskIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddAssignedProjectTaskIDs(ids...)
 	return uuo
 }
 
-// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+// AddAssignedProjectTasks adds the "assigned_project_tasks" edges to the ProjectTask entity.
 func (uuo *UserUpdateOne) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2323,13 +2323,13 @@ func (uuo *UserUpdateOne) AddAssignedProjectTasks(p ...*ProjectTask) *UserUpdate
 	return uuo.AddAssignedProjectTaskIDs(ids...)
 }
 
-// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddParticipatedProjectTaskIDs adds the "participated_project_tasks" edge to the ProjectTask entity by IDs.
 func (uuo *UserUpdateOne) AddParticipatedProjectTaskIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddParticipatedProjectTaskIDs(ids...)
 	return uuo
 }
 
-// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+// AddParticipatedProjectTasks adds the "participated_project_tasks" edges to the ProjectTask entity.
 func (uuo *UserUpdateOne) AddParticipatedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2353,13 +2353,13 @@ func (uuo *UserUpdateOne) AddTokens(t ...*Token) *UserUpdateOne {
 	return uuo.AddTokenIDs(ids...)
 }
 
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+// AddApprovedWorkShiftIDs adds the "approved_work_shifts" edge to the Workshift entity by IDs.
 func (uuo *UserUpdateOne) AddApprovedWorkShiftIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddApprovedWorkShiftIDs(ids...)
 	return uuo
 }
 
-// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+// AddApprovedWorkShifts adds the "approved_work_shifts" edges to the Workshift entity.
 func (uuo *UserUpdateOne) AddApprovedWorkShifts(w ...*Workshift) *UserUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -2368,13 +2368,13 @@ func (uuo *UserUpdateOne) AddApprovedWorkShifts(w ...*Workshift) *UserUpdateOne 
 	return uuo.AddApprovedWorkShiftIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (uuo *UserUpdateOne) AddWorkShiftIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddWorkShiftIDs(ids...)
 	return uuo
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (uuo *UserUpdateOne) AddWorkShifts(w ...*Workshift) *UserUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -2383,13 +2383,13 @@ func (uuo *UserUpdateOne) AddWorkShifts(w ...*Workshift) *UserUpdateOne {
 	return uuo.AddWorkShiftIDs(ids...)
 }
 
-// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+// AddUploadedDocumentIDs adds the "uploaded_documents" edge to the CompanyDocument entity by IDs.
 func (uuo *UserUpdateOne) AddUploadedDocumentIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddUploadedDocumentIDs(ids...)
 	return uuo
 }
 
-// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+// AddUploadedDocuments adds the "uploaded_documents" edges to the CompanyDocument entity.
 func (uuo *UserUpdateOne) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -2398,13 +2398,13 @@ func (uuo *UserUpdateOne) AddUploadedDocuments(c ...*CompanyDocument) *UserUpdat
 	return uuo.AddUploadedDocumentIDs(ids...)
 }
 
-// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+// AddApprovedDocumentIDs adds the "approved_documents" edge to the CompanyDocument entity by IDs.
 func (uuo *UserUpdateOne) AddApprovedDocumentIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.AddApprovedDocumentIDs(ids...)
 	return uuo
 }
 
-// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+// AddApprovedDocuments adds the "approved_documents" edges to the CompanyDocument entity.
 func (uuo *UserUpdateOne) AddApprovedDocuments(c ...*CompanyDocument) *UserUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -2418,19 +2418,19 @@ func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
 }
 
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+// ClearAccountingEntries clears all "accounting_entries" edges to the AccountingEntry entity.
 func (uuo *UserUpdateOne) ClearAccountingEntries() *UserUpdateOne {
 	uuo.mutation.ClearAccountingEntries()
 	return uuo
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to AccountingEntry entities by IDs.
 func (uuo *UserUpdateOne) RemoveAccountingEntryIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveAccountingEntryIDs(ids...)
 	return uuo
 }
 
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+// RemoveAccountingEntries removes "accounting_entries" edges to AccountingEntry entities.
 func (uuo *UserUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *UserUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -2460,19 +2460,19 @@ func (uuo *UserUpdateOne) RemoveCompany(c ...*Company) *UserUpdateOne {
 	return uuo.RemoveCompanyIDs(ids...)
 }
 
-// ClearAssignedRoles clears all "assignedRoles" edges to the UserRole entity.
+// ClearAssignedRoles clears all "assigned_roles" edges to the UserRole entity.
 func (uuo *UserUpdateOne) ClearAssignedRoles() *UserUpdateOne {
 	uuo.mutation.ClearAssignedRoles()
 	return uuo
 }
 
-// RemoveAssignedRoleIDs removes the "assignedRoles" edge to UserRole entities by IDs.
+// RemoveAssignedRoleIDs removes the "assigned_roles" edge to UserRole entities by IDs.
 func (uuo *UserUpdateOne) RemoveAssignedRoleIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveAssignedRoleIDs(ids...)
 	return uuo
 }
 
-// RemoveAssignedRoles removes "assignedRoles" edges to UserRole entities.
+// RemoveAssignedRoles removes "assigned_roles" edges to UserRole entities.
 func (uuo *UserUpdateOne) RemoveAssignedRoles(u ...*UserRole) *UserUpdateOne {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -2508,19 +2508,19 @@ func (uuo *UserUpdateOne) ClearLeader() *UserUpdateOne {
 	return uuo
 }
 
-// ClearCreatedMemberSignupTokens clears all "createdMemberSignupTokens" edges to the MemberSignupToken entity.
+// ClearCreatedMemberSignupTokens clears all "created_member_signup_tokens" edges to the MemberSignupToken entity.
 func (uuo *UserUpdateOne) ClearCreatedMemberSignupTokens() *UserUpdateOne {
 	uuo.mutation.ClearCreatedMemberSignupTokens()
 	return uuo
 }
 
-// RemoveCreatedMemberSignupTokenIDs removes the "createdMemberSignupTokens" edge to MemberSignupToken entities by IDs.
+// RemoveCreatedMemberSignupTokenIDs removes the "created_member_signup_tokens" edge to MemberSignupToken entities by IDs.
 func (uuo *UserUpdateOne) RemoveCreatedMemberSignupTokenIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveCreatedMemberSignupTokenIDs(ids...)
 	return uuo
 }
 
-// RemoveCreatedMemberSignupTokens removes "createdMemberSignupTokens" edges to MemberSignupToken entities.
+// RemoveCreatedMemberSignupTokens removes "created_member_signup_tokens" edges to MemberSignupToken entities.
 func (uuo *UserUpdateOne) RemoveCreatedMemberSignupTokens(m ...*MemberSignupToken) *UserUpdateOne {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -2535,19 +2535,19 @@ func (uuo *UserUpdateOne) ClearEmployee() *UserUpdateOne {
 	return uuo
 }
 
-// ClearIssuedInvoices clears all "issuedInvoices" edges to the Invoice entity.
+// ClearIssuedInvoices clears all "issued_invoices" edges to the Invoice entity.
 func (uuo *UserUpdateOne) ClearIssuedInvoices() *UserUpdateOne {
 	uuo.mutation.ClearIssuedInvoices()
 	return uuo
 }
 
-// RemoveIssuedInvoiceIDs removes the "issuedInvoices" edge to Invoice entities by IDs.
+// RemoveIssuedInvoiceIDs removes the "issued_invoices" edge to Invoice entities by IDs.
 func (uuo *UserUpdateOne) RemoveIssuedInvoiceIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveIssuedInvoiceIDs(ids...)
 	return uuo
 }
 
-// RemoveIssuedInvoices removes "issuedInvoices" edges to Invoice entities.
+// RemoveIssuedInvoices removes "issued_invoices" edges to Invoice entities.
 func (uuo *UserUpdateOne) RemoveIssuedInvoices(i ...*Invoice) *UserUpdateOne {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -2556,19 +2556,19 @@ func (uuo *UserUpdateOne) RemoveIssuedInvoices(i ...*Invoice) *UserUpdateOne {
 	return uuo.RemoveIssuedInvoiceIDs(ids...)
 }
 
-// ClearCreatedProjects clears all "createdProjects" edges to the Project entity.
+// ClearCreatedProjects clears all "created_projects" edges to the Project entity.
 func (uuo *UserUpdateOne) ClearCreatedProjects() *UserUpdateOne {
 	uuo.mutation.ClearCreatedProjects()
 	return uuo
 }
 
-// RemoveCreatedProjectIDs removes the "createdProjects" edge to Project entities by IDs.
+// RemoveCreatedProjectIDs removes the "created_projects" edge to Project entities by IDs.
 func (uuo *UserUpdateOne) RemoveCreatedProjectIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveCreatedProjectIDs(ids...)
 	return uuo
 }
 
-// RemoveCreatedProjects removes "createdProjects" edges to Project entities.
+// RemoveCreatedProjects removes "created_projects" edges to Project entities.
 func (uuo *UserUpdateOne) RemoveCreatedProjects(p ...*Project) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2577,19 +2577,19 @@ func (uuo *UserUpdateOne) RemoveCreatedProjects(p ...*Project) *UserUpdateOne {
 	return uuo.RemoveCreatedProjectIDs(ids...)
 }
 
-// ClearLeaderedProjects clears all "leaderedProjects" edges to the Project entity.
+// ClearLeaderedProjects clears all "leadered_projects" edges to the Project entity.
 func (uuo *UserUpdateOne) ClearLeaderedProjects() *UserUpdateOne {
 	uuo.mutation.ClearLeaderedProjects()
 	return uuo
 }
 
-// RemoveLeaderedProjectIDs removes the "leaderedProjects" edge to Project entities by IDs.
+// RemoveLeaderedProjectIDs removes the "leadered_projects" edge to Project entities by IDs.
 func (uuo *UserUpdateOne) RemoveLeaderedProjectIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveLeaderedProjectIDs(ids...)
 	return uuo
 }
 
-// RemoveLeaderedProjects removes "leaderedProjects" edges to Project entities.
+// RemoveLeaderedProjects removes "leadered_projects" edges to Project entities.
 func (uuo *UserUpdateOne) RemoveLeaderedProjects(p ...*Project) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2598,19 +2598,19 @@ func (uuo *UserUpdateOne) RemoveLeaderedProjects(p ...*Project) *UserUpdateOne {
 	return uuo.RemoveLeaderedProjectIDs(ids...)
 }
 
-// ClearAssignedProjectTasks clears all "assignedProjectTasks" edges to the ProjectTask entity.
+// ClearAssignedProjectTasks clears all "assigned_project_tasks" edges to the ProjectTask entity.
 func (uuo *UserUpdateOne) ClearAssignedProjectTasks() *UserUpdateOne {
 	uuo.mutation.ClearAssignedProjectTasks()
 	return uuo
 }
 
-// RemoveAssignedProjectTaskIDs removes the "assignedProjectTasks" edge to ProjectTask entities by IDs.
+// RemoveAssignedProjectTaskIDs removes the "assigned_project_tasks" edge to ProjectTask entities by IDs.
 func (uuo *UserUpdateOne) RemoveAssignedProjectTaskIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveAssignedProjectTaskIDs(ids...)
 	return uuo
 }
 
-// RemoveAssignedProjectTasks removes "assignedProjectTasks" edges to ProjectTask entities.
+// RemoveAssignedProjectTasks removes "assigned_project_tasks" edges to ProjectTask entities.
 func (uuo *UserUpdateOne) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2619,19 +2619,19 @@ func (uuo *UserUpdateOne) RemoveAssignedProjectTasks(p ...*ProjectTask) *UserUpd
 	return uuo.RemoveAssignedProjectTaskIDs(ids...)
 }
 
-// ClearParticipatedProjectTasks clears all "participatedProjectTasks" edges to the ProjectTask entity.
+// ClearParticipatedProjectTasks clears all "participated_project_tasks" edges to the ProjectTask entity.
 func (uuo *UserUpdateOne) ClearParticipatedProjectTasks() *UserUpdateOne {
 	uuo.mutation.ClearParticipatedProjectTasks()
 	return uuo
 }
 
-// RemoveParticipatedProjectTaskIDs removes the "participatedProjectTasks" edge to ProjectTask entities by IDs.
+// RemoveParticipatedProjectTaskIDs removes the "participated_project_tasks" edge to ProjectTask entities by IDs.
 func (uuo *UserUpdateOne) RemoveParticipatedProjectTaskIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveParticipatedProjectTaskIDs(ids...)
 	return uuo
 }
 
-// RemoveParticipatedProjectTasks removes "participatedProjectTasks" edges to ProjectTask entities.
+// RemoveParticipatedProjectTasks removes "participated_project_tasks" edges to ProjectTask entities.
 func (uuo *UserUpdateOne) RemoveParticipatedProjectTasks(p ...*ProjectTask) *UserUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -2661,19 +2661,19 @@ func (uuo *UserUpdateOne) RemoveTokens(t ...*Token) *UserUpdateOne {
 	return uuo.RemoveTokenIDs(ids...)
 }
 
-// ClearApprovedWorkShifts clears all "approvedWorkShifts" edges to the Workshift entity.
+// ClearApprovedWorkShifts clears all "approved_work_shifts" edges to the Workshift entity.
 func (uuo *UserUpdateOne) ClearApprovedWorkShifts() *UserUpdateOne {
 	uuo.mutation.ClearApprovedWorkShifts()
 	return uuo
 }
 
-// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to Workshift entities by IDs.
+// RemoveApprovedWorkShiftIDs removes the "approved_work_shifts" edge to Workshift entities by IDs.
 func (uuo *UserUpdateOne) RemoveApprovedWorkShiftIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveApprovedWorkShiftIDs(ids...)
 	return uuo
 }
 
-// RemoveApprovedWorkShifts removes "approvedWorkShifts" edges to Workshift entities.
+// RemoveApprovedWorkShifts removes "approved_work_shifts" edges to Workshift entities.
 func (uuo *UserUpdateOne) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -2682,19 +2682,19 @@ func (uuo *UserUpdateOne) RemoveApprovedWorkShifts(w ...*Workshift) *UserUpdateO
 	return uuo.RemoveApprovedWorkShiftIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (uuo *UserUpdateOne) ClearWorkShifts() *UserUpdateOne {
 	uuo.mutation.ClearWorkShifts()
 	return uuo
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (uuo *UserUpdateOne) RemoveWorkShiftIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveWorkShiftIDs(ids...)
 	return uuo
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (uuo *UserUpdateOne) RemoveWorkShifts(w ...*Workshift) *UserUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -2703,19 +2703,19 @@ func (uuo *UserUpdateOne) RemoveWorkShifts(w ...*Workshift) *UserUpdateOne {
 	return uuo.RemoveWorkShiftIDs(ids...)
 }
 
-// ClearUploadedDocuments clears all "uploadedDocuments" edges to the CompanyDocument entity.
+// ClearUploadedDocuments clears all "uploaded_documents" edges to the CompanyDocument entity.
 func (uuo *UserUpdateOne) ClearUploadedDocuments() *UserUpdateOne {
 	uuo.mutation.ClearUploadedDocuments()
 	return uuo
 }
 
-// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to CompanyDocument entities by IDs.
+// RemoveUploadedDocumentIDs removes the "uploaded_documents" edge to CompanyDocument entities by IDs.
 func (uuo *UserUpdateOne) RemoveUploadedDocumentIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveUploadedDocumentIDs(ids...)
 	return uuo
 }
 
-// RemoveUploadedDocuments removes "uploadedDocuments" edges to CompanyDocument entities.
+// RemoveUploadedDocuments removes "uploaded_documents" edges to CompanyDocument entities.
 func (uuo *UserUpdateOne) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -2724,19 +2724,19 @@ func (uuo *UserUpdateOne) RemoveUploadedDocuments(c ...*CompanyDocument) *UserUp
 	return uuo.RemoveUploadedDocumentIDs(ids...)
 }
 
-// ClearApprovedDocuments clears all "approvedDocuments" edges to the CompanyDocument entity.
+// ClearApprovedDocuments clears all "approved_documents" edges to the CompanyDocument entity.
 func (uuo *UserUpdateOne) ClearApprovedDocuments() *UserUpdateOne {
 	uuo.mutation.ClearApprovedDocuments()
 	return uuo
 }
 
-// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to CompanyDocument entities by IDs.
+// RemoveApprovedDocumentIDs removes the "approved_documents" edge to CompanyDocument entities by IDs.
 func (uuo *UserUpdateOne) RemoveApprovedDocumentIDs(ids ...int) *UserUpdateOne {
 	uuo.mutation.RemoveApprovedDocumentIDs(ids...)
 	return uuo
 }
 
-// RemoveApprovedDocuments removes "approvedDocuments" edges to CompanyDocument entities.
+// RemoveApprovedDocuments removes "approved_documents" edges to CompanyDocument entities.
 func (uuo *UserUpdateOne) RemoveApprovedDocuments(c ...*CompanyDocument) *UserUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -2798,7 +2798,7 @@ func (uuo *UserUpdateOne) defaults() {
 func (uuo *UserUpdateOne) check() error {
 	if v, ok := uuo.mutation.FirebaseUID(); ok {
 		if err := user.FirebaseUIDValidator(v); err != nil {
-			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+			return &ValidationError{Name: "firebase_UID", err: fmt.Errorf(`generated: validator failed for field "User.firebase_UID": %w`, err)}
 		}
 	}
 	if v, ok := uuo.mutation.Gender(); ok {

@@ -44,13 +44,13 @@ func (pmu *ProjectMilestoneUpdate) SetNillableName(s *string) *ProjectMilestoneU
 	return pmu
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (pmu *ProjectMilestoneUpdate) SetDueDate(t time.Time) *ProjectMilestoneUpdate {
 	pmu.mutation.SetDueDate(t)
 	return pmu
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (pmu *ProjectMilestoneUpdate) SetNillableDueDate(t *time.Time) *ProjectMilestoneUpdate {
 	if t != nil {
 		pmu.SetDueDate(*t)
@@ -209,13 +209,13 @@ func (pmuo *ProjectMilestoneUpdateOne) SetNillableName(s *string) *ProjectMilest
 	return pmuo
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (pmuo *ProjectMilestoneUpdateOne) SetDueDate(t time.Time) *ProjectMilestoneUpdateOne {
 	pmuo.mutation.SetDueDate(t)
 	return pmuo
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (pmuo *ProjectMilestoneUpdateOne) SetNillableDueDate(t *time.Time) *ProjectMilestoneUpdateOne {
 	if t != nil {
 		pmuo.SetDueDate(*t)

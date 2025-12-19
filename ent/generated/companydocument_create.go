@@ -22,13 +22,13 @@ type CompanyDocumentCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (cdc *CompanyDocumentCreate) SetCreatedAt(t time.Time) *CompanyDocumentCreate {
 	cdc.mutation.SetCreatedAt(t)
 	return cdc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (cdc *CompanyDocumentCreate) SetNillableCreatedAt(t *time.Time) *CompanyDocumentCreate {
 	if t != nil {
 		cdc.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (cdc *CompanyDocumentCreate) SetNillableCreatedAt(t *time.Time) *CompanyDoc
 	return cdc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cdc *CompanyDocumentCreate) SetUpdatedAt(t time.Time) *CompanyDocumentCreate {
 	cdc.mutation.SetUpdatedAt(t)
 	return cdc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (cdc *CompanyDocumentCreate) SetNillableUpdatedAt(t *time.Time) *CompanyDocumentCreate {
 	if t != nil {
 		cdc.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (cdc *CompanyDocumentCreate) SetNillableUpdatedAt(t *time.Time) *CompanyDoc
 	return cdc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cdc *CompanyDocumentCreate) SetDeletedAt(t time.Time) *CompanyDocumentCreate {
 	cdc.mutation.SetDeletedAt(t)
 	return cdc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cdc *CompanyDocumentCreate) SetNillableDeletedAt(t *time.Time) *CompanyDocumentCreate {
 	if t != nil {
 		cdc.SetDeletedAt(*t)
@@ -94,7 +94,7 @@ func (cdc *CompanyDocumentCreate) SetSize(i int) *CompanyDocumentCreate {
 	return cdc
 }
 
-// SetFileType sets the "fileType" field.
+// SetFileType sets the "file_type" field.
 func (cdc *CompanyDocumentCreate) SetFileType(s string) *CompanyDocumentCreate {
 	cdc.mutation.SetFileType(s)
 	return cdc
@@ -112,7 +112,7 @@ func (cdc *CompanyDocumentCreate) SetURL(s string) *CompanyDocumentCreate {
 	return cdc
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (cdc *CompanyDocumentCreate) SetStorageURI(s string) *CompanyDocumentCreate {
 	cdc.mutation.SetStorageURI(s)
 	return cdc
@@ -132,7 +132,7 @@ func (cdc *CompanyDocumentCreate) SetNillableThumbnail(s *string) *CompanyDocume
 	return cdc
 }
 
-// SetExpiryDate sets the "expiryDate" field.
+// SetExpiryDate sets the "expiry_date" field.
 func (cdc *CompanyDocumentCreate) SetExpiryDate(t time.Time) *CompanyDocumentCreate {
 	cdc.mutation.SetExpiryDate(t)
 	return cdc
@@ -149,13 +149,13 @@ func (cdc *CompanyDocumentCreate) SetCompany(c *Company) *CompanyDocumentCreate 
 	return cdc.SetCompanyID(c.ID)
 }
 
-// SetUploadedByID sets the "uploadedBy" edge to the User entity by ID.
+// SetUploadedByID sets the "uploaded_by" edge to the User entity by ID.
 func (cdc *CompanyDocumentCreate) SetUploadedByID(id int) *CompanyDocumentCreate {
 	cdc.mutation.SetUploadedByID(id)
 	return cdc
 }
 
-// SetNillableUploadedByID sets the "uploadedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableUploadedByID sets the "uploaded_by" edge to the User entity by ID if the given value is not nil.
 func (cdc *CompanyDocumentCreate) SetNillableUploadedByID(id *int) *CompanyDocumentCreate {
 	if id != nil {
 		cdc = cdc.SetUploadedByID(*id)
@@ -163,18 +163,18 @@ func (cdc *CompanyDocumentCreate) SetNillableUploadedByID(id *int) *CompanyDocum
 	return cdc
 }
 
-// SetUploadedBy sets the "uploadedBy" edge to the User entity.
+// SetUploadedBy sets the "uploaded_by" edge to the User entity.
 func (cdc *CompanyDocumentCreate) SetUploadedBy(u *User) *CompanyDocumentCreate {
 	return cdc.SetUploadedByID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (cdc *CompanyDocumentCreate) SetApprovedByID(id int) *CompanyDocumentCreate {
 	cdc.mutation.SetApprovedByID(id)
 	return cdc
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (cdc *CompanyDocumentCreate) SetNillableApprovedByID(id *int) *CompanyDocumentCreate {
 	if id != nil {
 		cdc = cdc.SetApprovedByID(*id)
@@ -182,7 +182,7 @@ func (cdc *CompanyDocumentCreate) SetNillableApprovedByID(id *int) *CompanyDocum
 	return cdc
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (cdc *CompanyDocumentCreate) SetApprovedBy(u *User) *CompanyDocumentCreate {
 	return cdc.SetApprovedByID(u.ID)
 }
@@ -235,10 +235,10 @@ func (cdc *CompanyDocumentCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (cdc *CompanyDocumentCreate) check() error {
 	if _, ok := cdc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "CompanyDocument.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "CompanyDocument.created_at"`)}
 	}
 	if _, ok := cdc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "CompanyDocument.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "CompanyDocument.updated_at"`)}
 	}
 	if _, ok := cdc.mutation.Filename(); !ok {
 		return &ValidationError{Name: "filename", err: errors.New(`generated: missing required field "CompanyDocument.filename"`)}
@@ -281,7 +281,7 @@ func (cdc *CompanyDocumentCreate) check() error {
 		}
 	}
 	if _, ok := cdc.mutation.FileType(); !ok {
-		return &ValidationError{Name: "fileType", err: errors.New(`generated: missing required field "CompanyDocument.fileType"`)}
+		return &ValidationError{Name: "file_type", err: errors.New(`generated: missing required field "CompanyDocument.file_type"`)}
 	}
 	if _, ok := cdc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "CompanyDocument.status"`)}
@@ -300,15 +300,15 @@ func (cdc *CompanyDocumentCreate) check() error {
 		}
 	}
 	if _, ok := cdc.mutation.StorageURI(); !ok {
-		return &ValidationError{Name: "storageURI", err: errors.New(`generated: missing required field "CompanyDocument.storageURI"`)}
+		return &ValidationError{Name: "storage_URI", err: errors.New(`generated: missing required field "CompanyDocument.storage_URI"`)}
 	}
 	if v, ok := cdc.mutation.StorageURI(); ok {
 		if err := companydocument.StorageURIValidator(v); err != nil {
-			return &ValidationError{Name: "storageURI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storageURI": %w`, err)}
+			return &ValidationError{Name: "storage_URI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storage_URI": %w`, err)}
 		}
 	}
 	if _, ok := cdc.mutation.ExpiryDate(); !ok {
-		return &ValidationError{Name: "expiryDate", err: errors.New(`generated: missing required field "CompanyDocument.expiryDate"`)}
+		return &ValidationError{Name: "expiry_date", err: errors.New(`generated: missing required field "CompanyDocument.expiry_date"`)}
 	}
 	if len(cdc.mutation.CompanyIDs()) == 0 {
 		return &ValidationError{Name: "company", err: errors.New(`generated: missing required edge "CompanyDocument.company"`)}

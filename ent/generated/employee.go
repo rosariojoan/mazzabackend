@@ -19,12 +19,12 @@ type Employee struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Birthdate holds the value of the "birthdate" field.
@@ -41,14 +41,14 @@ type Employee struct {
 	Phone *string `json:"phone,omitempty"`
 	// Avatar holds the value of the "avatar" field.
 	Avatar *string `json:"avatar,omitempty"`
-	// HireDate holds the value of the "hireDate" field.
-	HireDate time.Time `json:"hireDate,omitempty"`
-	// MonthlySalary holds the value of the "monthlySalary" field.
-	MonthlySalary int `json:"monthlySalary,omitempty"`
+	// HireDate holds the value of the "hire_date" field.
+	HireDate time.Time `json:"hire_date,omitempty"`
+	// MonthlySalary holds the value of the "monthly_salary" field.
+	MonthlySalary int `json:"monthly_salary,omitempty"`
 	// Status holds the value of the "status" field.
 	Status employee.Status `json:"status,omitempty"`
-	// PerformaceScore holds the value of the "performaceScore" field.
-	PerformaceScore float64 `json:"performaceScore,omitempty"`
+	// PerformaceScore holds the value of the "performace_score" field.
+	PerformaceScore float64 `json:"performace_score,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EmployeeQuery when eager-loading is set.
 	Edges                 EmployeeEdges `json:"edges"`
@@ -161,19 +161,19 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			e.ID = int(value.Int64)
 		case employee.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				e.CreatedAt = value.Time
 			}
 		case employee.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				e.UpdatedAt = value.Time
 			}
 		case employee.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				e.DeletedAt = new(time.Time)
 				*e.DeletedAt = value.Time
@@ -232,13 +232,13 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			}
 		case employee.FieldHireDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field hireDate", values[i])
+				return fmt.Errorf("unexpected type %T for field hire_date", values[i])
 			} else if value.Valid {
 				e.HireDate = value.Time
 			}
 		case employee.FieldMonthlySalary:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field monthlySalary", values[i])
+				return fmt.Errorf("unexpected type %T for field monthly_salary", values[i])
 			} else if value.Valid {
 				e.MonthlySalary = int(value.Int64)
 			}
@@ -250,7 +250,7 @@ func (e *Employee) assignValues(columns []string, values []any) error {
 			}
 		case employee.FieldPerformaceScore:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field performaceScore", values[i])
+				return fmt.Errorf("unexpected type %T for field performace_score", values[i])
 			} else if value.Valid {
 				e.PerformaceScore = value.Float64
 			}
@@ -331,14 +331,14 @@ func (e *Employee) String() string {
 	var builder strings.Builder
 	builder.WriteString("Employee(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", e.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(e.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(e.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := e.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -374,16 +374,16 @@ func (e *Employee) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("hireDate=")
+	builder.WriteString("hire_date=")
 	builder.WriteString(e.HireDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("monthlySalary=")
+	builder.WriteString("monthly_salary=")
 	builder.WriteString(fmt.Sprintf("%v", e.MonthlySalary))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", e.Status))
 	builder.WriteString(", ")
-	builder.WriteString("performaceScore=")
+	builder.WriteString("performace_score=")
 	builder.WriteString(fmt.Sprintf("%v", e.PerformaceScore))
 	builder.WriteByte(')')
 	return builder.String()

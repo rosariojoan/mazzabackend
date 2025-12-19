@@ -30,19 +30,19 @@ func (fu *FileUpdate) Where(ps ...predicate.File) *FileUpdate {
 	return fu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (fu *FileUpdate) SetUpdatedAt(t time.Time) *FileUpdate {
 	fu.mutation.SetUpdatedAt(t)
 	return fu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (fu *FileUpdate) SetDeletedAt(t time.Time) *FileUpdate {
 	fu.mutation.SetDeletedAt(t)
 	return fu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (fu *FileUpdate) SetNillableDeletedAt(t *time.Time) *FileUpdate {
 	if t != nil {
 		fu.SetDeletedAt(*t)
@@ -50,7 +50,7 @@ func (fu *FileUpdate) SetNillableDeletedAt(t *time.Time) *FileUpdate {
 	return fu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (fu *FileUpdate) ClearDeletedAt() *FileUpdate {
 	fu.mutation.ClearDeletedAt()
 	return fu
@@ -317,19 +317,19 @@ type FileUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (fuo *FileUpdateOne) SetUpdatedAt(t time.Time) *FileUpdateOne {
 	fuo.mutation.SetUpdatedAt(t)
 	return fuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (fuo *FileUpdateOne) SetDeletedAt(t time.Time) *FileUpdateOne {
 	fuo.mutation.SetDeletedAt(t)
 	return fuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (fuo *FileUpdateOne) SetNillableDeletedAt(t *time.Time) *FileUpdateOne {
 	if t != nil {
 		fuo.SetDeletedAt(*t)
@@ -337,7 +337,7 @@ func (fuo *FileUpdateOne) SetNillableDeletedAt(t *time.Time) *FileUpdateOne {
 	return fuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (fuo *FileUpdateOne) ClearDeletedAt() *FileUpdateOne {
 	fuo.mutation.ClearDeletedAt()
 	return fuo

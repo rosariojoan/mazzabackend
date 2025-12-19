@@ -30,19 +30,19 @@ func (tu *TreasuryUpdate) Where(ps ...predicate.Treasury) *TreasuryUpdate {
 	return tu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (tu *TreasuryUpdate) SetUpdatedAt(t time.Time) *TreasuryUpdate {
 	tu.mutation.SetUpdatedAt(t)
 	return tu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (tu *TreasuryUpdate) SetDeletedAt(t time.Time) *TreasuryUpdate {
 	tu.mutation.SetDeletedAt(t)
 	return tu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (tu *TreasuryUpdate) SetNillableDeletedAt(t *time.Time) *TreasuryUpdate {
 	if t != nil {
 		tu.SetDeletedAt(*t)
@@ -50,7 +50,7 @@ func (tu *TreasuryUpdate) SetNillableDeletedAt(t *time.Time) *TreasuryUpdate {
 	return tu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (tu *TreasuryUpdate) ClearDeletedAt() *TreasuryUpdate {
 	tu.mutation.ClearDeletedAt()
 	return tu
@@ -224,19 +224,19 @@ type TreasuryUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (tuo *TreasuryUpdateOne) SetUpdatedAt(t time.Time) *TreasuryUpdateOne {
 	tuo.mutation.SetUpdatedAt(t)
 	return tuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (tuo *TreasuryUpdateOne) SetDeletedAt(t time.Time) *TreasuryUpdateOne {
 	tuo.mutation.SetDeletedAt(t)
 	return tuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (tuo *TreasuryUpdateOne) SetNillableDeletedAt(t *time.Time) *TreasuryUpdateOne {
 	if t != nil {
 		tuo.SetDeletedAt(*t)
@@ -244,7 +244,7 @@ func (tuo *TreasuryUpdateOne) SetNillableDeletedAt(t *time.Time) *TreasuryUpdate
 	return tuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (tuo *TreasuryUpdateOne) ClearDeletedAt() *TreasuryUpdateOne {
 	tuo.mutation.ClearDeletedAt()
 	return tuo

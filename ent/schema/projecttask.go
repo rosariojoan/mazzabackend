@@ -9,8 +9,6 @@ import (
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projecttask"
 
-	"time"
-
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
@@ -25,19 +23,22 @@ type ProjectTask struct {
 	ent.Schema
 }
 
+func (ProjectTask) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseModelMixin{},
+	}
+}
+
 // Fields of the ProjectTask.
 func (ProjectTask) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("createdAt").Default(time.Now).Immutable().Optional(),
-		field.String("name").NotEmpty(),
-		field.String("assigneeName").NotEmpty(),
-		field.String("location").Optional().Comment("Where is task will be executed"),
-		field.Time("dueDate").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
-		field.Time("plannedStartDate").StructTag("plannedStartDate").Annotations(entgql.OrderField("PLANNED_START_DATE")),
-		field.Time("actualStartDate").StructTag("actualStartDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_START_DATE")),
-		field.Time("plannedEndDate").StructTag("plannedEndDate").Nillable().Optional().Annotations(entgql.OrderField("PLANNED_END_DATE")),
-		field.Time("actualEndDate").StructTag("actualEndDate").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_END_DATE")),
+		field.String("assignee_name").NotEmpty(),
 		field.String("description").Optional(),
+		field.Time("due_date").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
+		field.Time("end_date").Nillable().Optional().Annotations(entgql.OrderField("END_DATE")),
+		field.String("location").Optional().Comment("Where is task will be executed"),
+		field.String("name").NotEmpty(),
+		field.Time("start_date").Annotations(entgql.OrderField("START_DATE")),
 		field.Enum("status").Values("pending", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
 	}
 }
@@ -45,11 +46,11 @@ func (ProjectTask) Fields() []ent.Field {
 // Edges of the ProjectTask.
 func (ProjectTask) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("project", Project.Type).Ref("tasks").Unique().Required(),   // a task can belong to only one project
-		edge.From("assignee", User.Type).Ref("assignedProjectTasks").Unique(), // only one user responds for a task
-		edge.From("participants", User.Type).Ref("participatedProjectTasks"),  // more than one user can participate in a task. E.g. meeting
-		edge.From("createdBy", User.Type).Ref("createdTasks").Unique().Immutable(),
-		edge.To("workShifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
+		edge.From("project", Project.Type).Ref("tasks").Unique().Required(),     // a task can belong to only one project
+		edge.From("assignee", User.Type).Ref("assigned_project_tasks").Unique(), // only one user responds for a task
+		edge.From("participants", User.Type).Ref("participated_project_tasks"),  // more than one user can participate in a task. E.g. meeting
+		edge.From("created_by", User.Type).Ref("created_tasks").Unique().Immutable(),
+		edge.To("work_shifts", Workshift.Type).Annotations(entsql.OnDelete(entsql.SetNull)),
 	}
 }
 
@@ -107,9 +108,10 @@ func (ProjectTask) Hooks() []ent.Hook {
 						completed := 0
 						hasStartedTask := false
 						for _, task := range tasks {
-							if task.Status == projecttask.StatusCompleted {
+							switch task.Status {
+							case projecttask.StatusCompleted:
 								completed += 1
-							} else if task.Status == projecttask.StatusInProgress {
+							case projecttask.StatusInProgress:
 								inProgress += 1
 							}
 

@@ -31,19 +31,19 @@ func (imu *InventoryMovementUpdate) Where(ps ...predicate.InventoryMovement) *In
 	return imu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (imu *InventoryMovementUpdate) SetUpdatedAt(t time.Time) *InventoryMovementUpdate {
 	imu.mutation.SetUpdatedAt(t)
 	return imu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (imu *InventoryMovementUpdate) SetDeletedAt(t time.Time) *InventoryMovementUpdate {
 	imu.mutation.SetDeletedAt(t)
 	return imu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (imu *InventoryMovementUpdate) SetNillableDeletedAt(t *time.Time) *InventoryMovementUpdate {
 	if t != nil {
 		imu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (imu *InventoryMovementUpdate) SetNillableDeletedAt(t *time.Time) *Inventor
 	return imu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (imu *InventoryMovementUpdate) ClearDeletedAt() *InventoryMovementUpdate {
 	imu.mutation.ClearDeletedAt()
 	return imu
@@ -412,19 +412,19 @@ type InventoryMovementUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (imuo *InventoryMovementUpdateOne) SetUpdatedAt(t time.Time) *InventoryMovementUpdateOne {
 	imuo.mutation.SetUpdatedAt(t)
 	return imuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (imuo *InventoryMovementUpdateOne) SetDeletedAt(t time.Time) *InventoryMovementUpdateOne {
 	imuo.mutation.SetDeletedAt(t)
 	return imuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (imuo *InventoryMovementUpdateOne) SetNillableDeletedAt(t *time.Time) *InventoryMovementUpdateOne {
 	if t != nil {
 		imuo.SetDeletedAt(*t)
@@ -432,7 +432,7 @@ func (imuo *InventoryMovementUpdateOne) SetNillableDeletedAt(t *time.Time) *Inve
 	return imuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (imuo *InventoryMovementUpdateOne) ClearDeletedAt() *InventoryMovementUpdateOne {
 	imuo.mutation.ClearDeletedAt()
 	return imuo

@@ -17,25 +17,25 @@ const (
 	Label = "payable"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldEntryGroup holds the string denoting the entrygroup field in the database.
+	// FieldEntryGroup holds the string denoting the entry_group field in the database.
 	FieldEntryGroup = "entry_group"
 	// FieldDate holds the string denoting the date field in the database.
 	FieldDate = "date"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldAmountInDefault holds the string denoting the amountindefault field in the database.
+	// FieldAmountInDefault holds the string denoting the amount_in_default field in the database.
 	FieldAmountInDefault = "amount_in_default"
-	// FieldOutstandingBalance holds the string denoting the outstandingbalance field in the database.
+	// FieldOutstandingBalance holds the string denoting the outstanding_balance field in the database.
 	FieldOutstandingBalance = "outstanding_balance"
-	// FieldTotalTransaction holds the string denoting the totaltransaction field in the database.
+	// FieldTotalTransaction holds the string denoting the total_transaction field in the database.
 	FieldTotalTransaction = "total_transaction"
-	// FieldDueDate holds the string denoting the duedate field in the database.
+	// FieldDueDate holds the string denoting the due_date field in the database.
 	FieldDueDate = "due_date"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
@@ -91,23 +91,23 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
+	// EntryGroupValidator is a validator for the "entry_group" field. It is called by the builders before save.
 	EntryGroupValidator func(int) error
 	// DefaultName holds the default value on creation for the "name" field.
 	DefaultName string
-	// DefaultAmountInDefault holds the default value on creation for the "amountInDefault" field.
+	// DefaultAmountInDefault holds the default value on creation for the "amount_in_default" field.
 	DefaultAmountInDefault float64
-	// AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	// AmountInDefaultValidator is a validator for the "amount_in_default" field. It is called by the builders before save.
 	AmountInDefaultValidator func(float64) error
-	// OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	// OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	OutstandingBalanceValidator func(float64) error
-	// TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	// TotalTransactionValidator is a validator for the "total_transaction" field. It is called by the builders before save.
 	TotalTransactionValidator func(float64) error
 )
 
@@ -144,22 +144,22 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByEntryGroup orders the results by the entryGroup field.
+// ByEntryGroup orders the results by the entry_group field.
 func ByEntryGroup(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEntryGroup, opts...).ToFunc()
 }
@@ -174,22 +174,22 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByAmountInDefault orders the results by the amountInDefault field.
+// ByAmountInDefault orders the results by the amount_in_default field.
 func ByAmountInDefault(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAmountInDefault, opts...).ToFunc()
 }
 
-// ByOutstandingBalance orders the results by the outstandingBalance field.
+// ByOutstandingBalance orders the results by the outstanding_balance field.
 func ByOutstandingBalance(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOutstandingBalance, opts...).ToFunc()
 }
 
-// ByTotalTransaction orders the results by the totalTransaction field.
+// ByTotalTransaction orders the results by the total_transaction field.
 func ByTotalTransaction(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTotalTransaction, opts...).ToFunc()
 }
 
-// ByDueDate orders the results by the dueDate field.
+// ByDueDate orders the results by the due_date field.
 func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
 }

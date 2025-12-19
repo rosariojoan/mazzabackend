@@ -21,13 +21,13 @@ type PayableCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (pc *PayableCreate) SetCreatedAt(t time.Time) *PayableCreate {
 	pc.mutation.SetCreatedAt(t)
 	return pc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (pc *PayableCreate) SetNillableCreatedAt(t *time.Time) *PayableCreate {
 	if t != nil {
 		pc.SetCreatedAt(*t)
@@ -35,13 +35,13 @@ func (pc *PayableCreate) SetNillableCreatedAt(t *time.Time) *PayableCreate {
 	return pc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pc *PayableCreate) SetUpdatedAt(t time.Time) *PayableCreate {
 	pc.mutation.SetUpdatedAt(t)
 	return pc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (pc *PayableCreate) SetNillableUpdatedAt(t *time.Time) *PayableCreate {
 	if t != nil {
 		pc.SetUpdatedAt(*t)
@@ -49,13 +49,13 @@ func (pc *PayableCreate) SetNillableUpdatedAt(t *time.Time) *PayableCreate {
 	return pc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pc *PayableCreate) SetDeletedAt(t time.Time) *PayableCreate {
 	pc.mutation.SetDeletedAt(t)
 	return pc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pc *PayableCreate) SetNillableDeletedAt(t *time.Time) *PayableCreate {
 	if t != nil {
 		pc.SetDeletedAt(*t)
@@ -63,7 +63,7 @@ func (pc *PayableCreate) SetNillableDeletedAt(t *time.Time) *PayableCreate {
 	return pc
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (pc *PayableCreate) SetEntryGroup(i int) *PayableCreate {
 	pc.mutation.SetEntryGroup(i)
 	return pc
@@ -89,13 +89,13 @@ func (pc *PayableCreate) SetNillableName(s *string) *PayableCreate {
 	return pc
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (pc *PayableCreate) SetAmountInDefault(f float64) *PayableCreate {
 	pc.mutation.SetAmountInDefault(f)
 	return pc
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (pc *PayableCreate) SetNillableAmountInDefault(f *float64) *PayableCreate {
 	if f != nil {
 		pc.SetAmountInDefault(*f)
@@ -103,19 +103,19 @@ func (pc *PayableCreate) SetNillableAmountInDefault(f *float64) *PayableCreate {
 	return pc
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (pc *PayableCreate) SetOutstandingBalance(f float64) *PayableCreate {
 	pc.mutation.SetOutstandingBalance(f)
 	return pc
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (pc *PayableCreate) SetTotalTransaction(f float64) *PayableCreate {
 	pc.mutation.SetTotalTransaction(f)
 	return pc
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (pc *PayableCreate) SetDueDate(t time.Time) *PayableCreate {
 	pc.mutation.SetDueDate(t)
 	return pc
@@ -202,17 +202,17 @@ func (pc *PayableCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (pc *PayableCreate) check() error {
 	if _, ok := pc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Payable.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Payable.created_at"`)}
 	}
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Payable.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Payable.updated_at"`)}
 	}
 	if _, ok := pc.mutation.EntryGroup(); !ok {
-		return &ValidationError{Name: "entryGroup", err: errors.New(`generated: missing required field "Payable.entryGroup"`)}
+		return &ValidationError{Name: "entry_group", err: errors.New(`generated: missing required field "Payable.entry_group"`)}
 	}
 	if v, ok := pc.mutation.EntryGroup(); ok {
 		if err := payable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Payable.entry_group": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.Date(); !ok {
@@ -222,31 +222,31 @@ func (pc *PayableCreate) check() error {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Payable.name"`)}
 	}
 	if _, ok := pc.mutation.AmountInDefault(); !ok {
-		return &ValidationError{Name: "amountInDefault", err: errors.New(`generated: missing required field "Payable.amountInDefault"`)}
+		return &ValidationError{Name: "amount_in_default", err: errors.New(`generated: missing required field "Payable.amount_in_default"`)}
 	}
 	if v, ok := pc.mutation.AmountInDefault(); ok {
 		if err := payable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Payable.amount_in_default": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.OutstandingBalance(); !ok {
-		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Payable.outstandingBalance"`)}
+		return &ValidationError{Name: "outstanding_balance", err: errors.New(`generated: missing required field "Payable.outstanding_balance"`)}
 	}
 	if v, ok := pc.mutation.OutstandingBalance(); ok {
 		if err := payable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstanding_balance": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.TotalTransaction(); !ok {
-		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Payable.totalTransaction"`)}
+		return &ValidationError{Name: "total_transaction", err: errors.New(`generated: missing required field "Payable.total_transaction"`)}
 	}
 	if v, ok := pc.mutation.TotalTransaction(); ok {
 		if err := payable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Payable.total_transaction": %w`, err)}
 		}
 	}
 	if _, ok := pc.mutation.DueDate(); !ok {
-		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Payable.dueDate"`)}
+		return &ValidationError{Name: "due_date", err: errors.New(`generated: missing required field "Payable.due_date"`)}
 	}
 	if _, ok := pc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Payable.status"`)}

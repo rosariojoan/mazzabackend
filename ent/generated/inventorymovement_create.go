@@ -22,13 +22,13 @@ type InventoryMovementCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (imc *InventoryMovementCreate) SetCreatedAt(t time.Time) *InventoryMovementCreate {
 	imc.mutation.SetCreatedAt(t)
 	return imc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (imc *InventoryMovementCreate) SetNillableCreatedAt(t *time.Time) *InventoryMovementCreate {
 	if t != nil {
 		imc.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (imc *InventoryMovementCreate) SetNillableCreatedAt(t *time.Time) *Inventor
 	return imc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (imc *InventoryMovementCreate) SetUpdatedAt(t time.Time) *InventoryMovementCreate {
 	imc.mutation.SetUpdatedAt(t)
 	return imc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (imc *InventoryMovementCreate) SetNillableUpdatedAt(t *time.Time) *InventoryMovementCreate {
 	if t != nil {
 		imc.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (imc *InventoryMovementCreate) SetNillableUpdatedAt(t *time.Time) *Inventor
 	return imc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (imc *InventoryMovementCreate) SetDeletedAt(t time.Time) *InventoryMovementCreate {
 	imc.mutation.SetDeletedAt(t)
 	return imc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (imc *InventoryMovementCreate) SetNillableDeletedAt(t *time.Time) *InventoryMovementCreate {
 	if t != nil {
 		imc.SetDeletedAt(*t)
@@ -204,10 +204,10 @@ func (imc *InventoryMovementCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (imc *InventoryMovementCreate) check() error {
 	if _, ok := imc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "InventoryMovement.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "InventoryMovement.created_at"`)}
 	}
 	if _, ok := imc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "InventoryMovement.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "InventoryMovement.updated_at"`)}
 	}
 	if _, ok := imc.mutation.Category(); !ok {
 		return &ValidationError{Name: "category", err: errors.New(`generated: missing required field "InventoryMovement.category"`)}

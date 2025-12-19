@@ -30,19 +30,19 @@ func (pu *ProductUpdate) Where(ps ...predicate.Product) *ProductUpdate {
 	return pu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pu *ProductUpdate) SetUpdatedAt(t time.Time) *ProductUpdate {
 	pu.mutation.SetUpdatedAt(t)
 	return pu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pu *ProductUpdate) SetDeletedAt(t time.Time) *ProductUpdate {
 	pu.mutation.SetDeletedAt(t)
 	return pu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pu *ProductUpdate) SetNillableDeletedAt(t *time.Time) *ProductUpdate {
 	if t != nil {
 		pu.SetDeletedAt(*t)
@@ -50,7 +50,7 @@ func (pu *ProductUpdate) SetNillableDeletedAt(t *time.Time) *ProductUpdate {
 	return pu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (pu *ProductUpdate) ClearDeletedAt() *ProductUpdate {
 	pu.mutation.ClearDeletedAt()
 	return pu
@@ -237,19 +237,19 @@ type ProductUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (puo *ProductUpdateOne) SetUpdatedAt(t time.Time) *ProductUpdateOne {
 	puo.mutation.SetUpdatedAt(t)
 	return puo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (puo *ProductUpdateOne) SetDeletedAt(t time.Time) *ProductUpdateOne {
 	puo.mutation.SetDeletedAt(t)
 	return puo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (puo *ProductUpdateOne) SetNillableDeletedAt(t *time.Time) *ProductUpdateOne {
 	if t != nil {
 		puo.SetDeletedAt(*t)
@@ -257,7 +257,7 @@ func (puo *ProductUpdateOne) SetNillableDeletedAt(t *time.Time) *ProductUpdateOn
 	return puo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (puo *ProductUpdateOne) ClearDeletedAt() *ProductUpdateOne {
 	puo.mutation.ClearDeletedAt()
 	return puo

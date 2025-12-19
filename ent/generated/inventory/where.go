@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -85,12 +85,12 @@ func Unit(v string) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldUnit, v))
 }
 
-// MinimumLevel applies equality check predicate on the "minimumLevel" field. It's identical to MinimumLevelEQ.
+// MinimumLevel applies equality check predicate on the "minimum_level" field. It's identical to MinimumLevelEQ.
 func MinimumLevel(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldMinimumLevel, v))
 }
 
-// CurrentValue applies equality check predicate on the "currentValue" field. It's identical to CurrentValueEQ.
+// CurrentValue applies equality check predicate on the "current_value" field. It's identical to CurrentValueEQ.
 func CurrentValue(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldCurrentValue, v))
 }
@@ -100,132 +100,132 @@ func Notes(v string) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldNotes, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Inventory {
 	return predicate.Inventory(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -420,82 +420,82 @@ func UnitContainsFold(v string) predicate.Inventory {
 	return predicate.Inventory(sql.FieldContainsFold(FieldUnit, v))
 }
 
-// MinimumLevelEQ applies the EQ predicate on the "minimumLevel" field.
+// MinimumLevelEQ applies the EQ predicate on the "minimum_level" field.
 func MinimumLevelEQ(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldMinimumLevel, v))
 }
 
-// MinimumLevelNEQ applies the NEQ predicate on the "minimumLevel" field.
+// MinimumLevelNEQ applies the NEQ predicate on the "minimum_level" field.
 func MinimumLevelNEQ(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNEQ(FieldMinimumLevel, v))
 }
 
-// MinimumLevelIn applies the In predicate on the "minimumLevel" field.
+// MinimumLevelIn applies the In predicate on the "minimum_level" field.
 func MinimumLevelIn(vs ...float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldIn(FieldMinimumLevel, vs...))
 }
 
-// MinimumLevelNotIn applies the NotIn predicate on the "minimumLevel" field.
+// MinimumLevelNotIn applies the NotIn predicate on the "minimum_level" field.
 func MinimumLevelNotIn(vs ...float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotIn(FieldMinimumLevel, vs...))
 }
 
-// MinimumLevelGT applies the GT predicate on the "minimumLevel" field.
+// MinimumLevelGT applies the GT predicate on the "minimum_level" field.
 func MinimumLevelGT(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGT(FieldMinimumLevel, v))
 }
 
-// MinimumLevelGTE applies the GTE predicate on the "minimumLevel" field.
+// MinimumLevelGTE applies the GTE predicate on the "minimum_level" field.
 func MinimumLevelGTE(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGTE(FieldMinimumLevel, v))
 }
 
-// MinimumLevelLT applies the LT predicate on the "minimumLevel" field.
+// MinimumLevelLT applies the LT predicate on the "minimum_level" field.
 func MinimumLevelLT(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLT(FieldMinimumLevel, v))
 }
 
-// MinimumLevelLTE applies the LTE predicate on the "minimumLevel" field.
+// MinimumLevelLTE applies the LTE predicate on the "minimum_level" field.
 func MinimumLevelLTE(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldMinimumLevel, v))
 }
 
-// CurrentValueEQ applies the EQ predicate on the "currentValue" field.
+// CurrentValueEQ applies the EQ predicate on the "current_value" field.
 func CurrentValueEQ(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldEQ(FieldCurrentValue, v))
 }
 
-// CurrentValueNEQ applies the NEQ predicate on the "currentValue" field.
+// CurrentValueNEQ applies the NEQ predicate on the "current_value" field.
 func CurrentValueNEQ(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNEQ(FieldCurrentValue, v))
 }
 
-// CurrentValueIn applies the In predicate on the "currentValue" field.
+// CurrentValueIn applies the In predicate on the "current_value" field.
 func CurrentValueIn(vs ...float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldIn(FieldCurrentValue, vs...))
 }
 
-// CurrentValueNotIn applies the NotIn predicate on the "currentValue" field.
+// CurrentValueNotIn applies the NotIn predicate on the "current_value" field.
 func CurrentValueNotIn(vs ...float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldNotIn(FieldCurrentValue, vs...))
 }
 
-// CurrentValueGT applies the GT predicate on the "currentValue" field.
+// CurrentValueGT applies the GT predicate on the "current_value" field.
 func CurrentValueGT(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGT(FieldCurrentValue, v))
 }
 
-// CurrentValueGTE applies the GTE predicate on the "currentValue" field.
+// CurrentValueGTE applies the GTE predicate on the "current_value" field.
 func CurrentValueGTE(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldGTE(FieldCurrentValue, v))
 }
 
-// CurrentValueLT applies the LT predicate on the "currentValue" field.
+// CurrentValueLT applies the LT predicate on the "current_value" field.
 func CurrentValueLT(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLT(FieldCurrentValue, v))
 }
 
-// CurrentValueLTE applies the LTE predicate on the "currentValue" field.
+// CurrentValueLTE applies the LTE predicate on the "current_value" field.
 func CurrentValueLTE(v float64) predicate.Inventory {
 	return predicate.Inventory(sql.FieldLTE(FieldCurrentValue, v))
 }

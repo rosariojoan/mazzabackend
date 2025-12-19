@@ -31,19 +31,19 @@ func (iu *InventoryUpdate) Where(ps ...predicate.Inventory) *InventoryUpdate {
 	return iu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (iu *InventoryUpdate) SetUpdatedAt(t time.Time) *InventoryUpdate {
 	iu.mutation.SetUpdatedAt(t)
 	return iu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (iu *InventoryUpdate) SetDeletedAt(t time.Time) *InventoryUpdate {
 	iu.mutation.SetDeletedAt(t)
 	return iu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (iu *InventoryUpdate) SetNillableDeletedAt(t *time.Time) *InventoryUpdate {
 	if t != nil {
 		iu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (iu *InventoryUpdate) SetNillableDeletedAt(t *time.Time) *InventoryUpdate {
 	return iu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (iu *InventoryUpdate) ClearDeletedAt() *InventoryUpdate {
 	iu.mutation.ClearDeletedAt()
 	return iu
@@ -120,14 +120,14 @@ func (iu *InventoryUpdate) SetNillableUnit(s *string) *InventoryUpdate {
 	return iu
 }
 
-// SetMinimumLevel sets the "minimumLevel" field.
+// SetMinimumLevel sets the "minimum_level" field.
 func (iu *InventoryUpdate) SetMinimumLevel(f float64) *InventoryUpdate {
 	iu.mutation.ResetMinimumLevel()
 	iu.mutation.SetMinimumLevel(f)
 	return iu
 }
 
-// SetNillableMinimumLevel sets the "minimumLevel" field if the given value is not nil.
+// SetNillableMinimumLevel sets the "minimum_level" field if the given value is not nil.
 func (iu *InventoryUpdate) SetNillableMinimumLevel(f *float64) *InventoryUpdate {
 	if f != nil {
 		iu.SetMinimumLevel(*f)
@@ -135,20 +135,20 @@ func (iu *InventoryUpdate) SetNillableMinimumLevel(f *float64) *InventoryUpdate 
 	return iu
 }
 
-// AddMinimumLevel adds f to the "minimumLevel" field.
+// AddMinimumLevel adds f to the "minimum_level" field.
 func (iu *InventoryUpdate) AddMinimumLevel(f float64) *InventoryUpdate {
 	iu.mutation.AddMinimumLevel(f)
 	return iu
 }
 
-// SetCurrentValue sets the "currentValue" field.
+// SetCurrentValue sets the "current_value" field.
 func (iu *InventoryUpdate) SetCurrentValue(f float64) *InventoryUpdate {
 	iu.mutation.ResetCurrentValue()
 	iu.mutation.SetCurrentValue(f)
 	return iu
 }
 
-// SetNillableCurrentValue sets the "currentValue" field if the given value is not nil.
+// SetNillableCurrentValue sets the "current_value" field if the given value is not nil.
 func (iu *InventoryUpdate) SetNillableCurrentValue(f *float64) *InventoryUpdate {
 	if f != nil {
 		iu.SetCurrentValue(*f)
@@ -156,7 +156,7 @@ func (iu *InventoryUpdate) SetNillableCurrentValue(f *float64) *InventoryUpdate 
 	return iu
 }
 
-// AddCurrentValue adds f to the "currentValue" field.
+// AddCurrentValue adds f to the "current_value" field.
 func (iu *InventoryUpdate) AddCurrentValue(f float64) *InventoryUpdate {
 	iu.mutation.AddCurrentValue(f)
 	return iu
@@ -289,12 +289,12 @@ func (iu *InventoryUpdate) check() error {
 	}
 	if v, ok := iu.mutation.MinimumLevel(); ok {
 		if err := inventory.MinimumLevelValidator(v); err != nil {
-			return &ValidationError{Name: "minimumLevel", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimumLevel": %w`, err)}
+			return &ValidationError{Name: "minimum_level", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimum_level": %w`, err)}
 		}
 	}
 	if v, ok := iu.mutation.CurrentValue(); ok {
 		if err := inventory.CurrentValueValidator(v); err != nil {
-			return &ValidationError{Name: "currentValue", err: fmt.Errorf(`generated: validator failed for field "Inventory.currentValue": %w`, err)}
+			return &ValidationError{Name: "current_value", err: fmt.Errorf(`generated: validator failed for field "Inventory.current_value": %w`, err)}
 		}
 	}
 	if v, ok := iu.mutation.Notes(); ok {
@@ -461,19 +461,19 @@ type InventoryUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (iuo *InventoryUpdateOne) SetUpdatedAt(t time.Time) *InventoryUpdateOne {
 	iuo.mutation.SetUpdatedAt(t)
 	return iuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (iuo *InventoryUpdateOne) SetDeletedAt(t time.Time) *InventoryUpdateOne {
 	iuo.mutation.SetDeletedAt(t)
 	return iuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (iuo *InventoryUpdateOne) SetNillableDeletedAt(t *time.Time) *InventoryUpdateOne {
 	if t != nil {
 		iuo.SetDeletedAt(*t)
@@ -481,7 +481,7 @@ func (iuo *InventoryUpdateOne) SetNillableDeletedAt(t *time.Time) *InventoryUpda
 	return iuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (iuo *InventoryUpdateOne) ClearDeletedAt() *InventoryUpdateOne {
 	iuo.mutation.ClearDeletedAt()
 	return iuo
@@ -550,14 +550,14 @@ func (iuo *InventoryUpdateOne) SetNillableUnit(s *string) *InventoryUpdateOne {
 	return iuo
 }
 
-// SetMinimumLevel sets the "minimumLevel" field.
+// SetMinimumLevel sets the "minimum_level" field.
 func (iuo *InventoryUpdateOne) SetMinimumLevel(f float64) *InventoryUpdateOne {
 	iuo.mutation.ResetMinimumLevel()
 	iuo.mutation.SetMinimumLevel(f)
 	return iuo
 }
 
-// SetNillableMinimumLevel sets the "minimumLevel" field if the given value is not nil.
+// SetNillableMinimumLevel sets the "minimum_level" field if the given value is not nil.
 func (iuo *InventoryUpdateOne) SetNillableMinimumLevel(f *float64) *InventoryUpdateOne {
 	if f != nil {
 		iuo.SetMinimumLevel(*f)
@@ -565,20 +565,20 @@ func (iuo *InventoryUpdateOne) SetNillableMinimumLevel(f *float64) *InventoryUpd
 	return iuo
 }
 
-// AddMinimumLevel adds f to the "minimumLevel" field.
+// AddMinimumLevel adds f to the "minimum_level" field.
 func (iuo *InventoryUpdateOne) AddMinimumLevel(f float64) *InventoryUpdateOne {
 	iuo.mutation.AddMinimumLevel(f)
 	return iuo
 }
 
-// SetCurrentValue sets the "currentValue" field.
+// SetCurrentValue sets the "current_value" field.
 func (iuo *InventoryUpdateOne) SetCurrentValue(f float64) *InventoryUpdateOne {
 	iuo.mutation.ResetCurrentValue()
 	iuo.mutation.SetCurrentValue(f)
 	return iuo
 }
 
-// SetNillableCurrentValue sets the "currentValue" field if the given value is not nil.
+// SetNillableCurrentValue sets the "current_value" field if the given value is not nil.
 func (iuo *InventoryUpdateOne) SetNillableCurrentValue(f *float64) *InventoryUpdateOne {
 	if f != nil {
 		iuo.SetCurrentValue(*f)
@@ -586,7 +586,7 @@ func (iuo *InventoryUpdateOne) SetNillableCurrentValue(f *float64) *InventoryUpd
 	return iuo
 }
 
-// AddCurrentValue adds f to the "currentValue" field.
+// AddCurrentValue adds f to the "current_value" field.
 func (iuo *InventoryUpdateOne) AddCurrentValue(f float64) *InventoryUpdateOne {
 	iuo.mutation.AddCurrentValue(f)
 	return iuo
@@ -732,12 +732,12 @@ func (iuo *InventoryUpdateOne) check() error {
 	}
 	if v, ok := iuo.mutation.MinimumLevel(); ok {
 		if err := inventory.MinimumLevelValidator(v); err != nil {
-			return &ValidationError{Name: "minimumLevel", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimumLevel": %w`, err)}
+			return &ValidationError{Name: "minimum_level", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimum_level": %w`, err)}
 		}
 	}
 	if v, ok := iuo.mutation.CurrentValue(); ok {
 		if err := inventory.CurrentValueValidator(v); err != nil {
-			return &ValidationError{Name: "currentValue", err: fmt.Errorf(`generated: validator failed for field "Inventory.currentValue": %w`, err)}
+			return &ValidationError{Name: "current_value", err: fmt.Errorf(`generated: validator failed for field "Inventory.current_value": %w`, err)}
 		}
 	}
 	if v, ok := iuo.mutation.Notes(); ok {

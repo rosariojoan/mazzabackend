@@ -32,31 +32,97 @@ func (ptu *ProjectTaskUpdate) Where(ps ...predicate.ProjectTask) *ProjectTaskUpd
 	return ptu
 }
 
-// SetName sets the "name" field.
-func (ptu *ProjectTaskUpdate) SetName(s string) *ProjectTaskUpdate {
-	ptu.mutation.SetName(s)
+// SetUpdatedAt sets the "updated_at" field.
+func (ptu *ProjectTaskUpdate) SetUpdatedAt(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetUpdatedAt(t)
 	return ptu
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableName(s *string) *ProjectTaskUpdate {
-	if s != nil {
-		ptu.SetName(*s)
+// SetDeletedAt sets the "deleted_at" field.
+func (ptu *ProjectTaskUpdate) SetDeletedAt(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetDeletedAt(t)
+	return ptu
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableDeletedAt(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetDeletedAt(*t)
 	}
 	return ptu
 }
 
-// SetAssigneeName sets the "assigneeName" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (ptu *ProjectTaskUpdate) ClearDeletedAt() *ProjectTaskUpdate {
+	ptu.mutation.ClearDeletedAt()
+	return ptu
+}
+
+// SetAssigneeName sets the "assignee_name" field.
 func (ptu *ProjectTaskUpdate) SetAssigneeName(s string) *ProjectTaskUpdate {
 	ptu.mutation.SetAssigneeName(s)
 	return ptu
 }
 
-// SetNillableAssigneeName sets the "assigneeName" field if the given value is not nil.
+// SetNillableAssigneeName sets the "assignee_name" field if the given value is not nil.
 func (ptu *ProjectTaskUpdate) SetNillableAssigneeName(s *string) *ProjectTaskUpdate {
 	if s != nil {
 		ptu.SetAssigneeName(*s)
 	}
+	return ptu
+}
+
+// SetDescription sets the "description" field.
+func (ptu *ProjectTaskUpdate) SetDescription(s string) *ProjectTaskUpdate {
+	ptu.mutation.SetDescription(s)
+	return ptu
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableDescription(s *string) *ProjectTaskUpdate {
+	if s != nil {
+		ptu.SetDescription(*s)
+	}
+	return ptu
+}
+
+// ClearDescription clears the value of the "description" field.
+func (ptu *ProjectTaskUpdate) ClearDescription() *ProjectTaskUpdate {
+	ptu.mutation.ClearDescription()
+	return ptu
+}
+
+// SetDueDate sets the "due_date" field.
+func (ptu *ProjectTaskUpdate) SetDueDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetDueDate(t)
+	return ptu
+}
+
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableDueDate(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetDueDate(*t)
+	}
+	return ptu
+}
+
+// SetEndDate sets the "end_date" field.
+func (ptu *ProjectTaskUpdate) SetEndDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetEndDate(t)
+	return ptu
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableEndDate(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetEndDate(*t)
+	}
+	return ptu
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (ptu *ProjectTaskUpdate) ClearEndDate() *ProjectTaskUpdate {
+	ptu.mutation.ClearEndDate()
 	return ptu
 }
 
@@ -80,111 +146,31 @@ func (ptu *ProjectTaskUpdate) ClearLocation() *ProjectTaskUpdate {
 	return ptu
 }
 
-// SetDueDate sets the "dueDate" field.
-func (ptu *ProjectTaskUpdate) SetDueDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetDueDate(t)
+// SetName sets the "name" field.
+func (ptu *ProjectTaskUpdate) SetName(s string) *ProjectTaskUpdate {
+	ptu.mutation.SetName(s)
 	return ptu
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableDueDate(t *time.Time) *ProjectTaskUpdate {
-	if t != nil {
-		ptu.SetDueDate(*t)
-	}
-	return ptu
-}
-
-// SetPlannedStartDate sets the "plannedStartDate" field.
-func (ptu *ProjectTaskUpdate) SetPlannedStartDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetPlannedStartDate(t)
-	return ptu
-}
-
-// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillablePlannedStartDate(t *time.Time) *ProjectTaskUpdate {
-	if t != nil {
-		ptu.SetPlannedStartDate(*t)
-	}
-	return ptu
-}
-
-// SetActualStartDate sets the "actualStartDate" field.
-func (ptu *ProjectTaskUpdate) SetActualStartDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetActualStartDate(t)
-	return ptu
-}
-
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableActualStartDate(t *time.Time) *ProjectTaskUpdate {
-	if t != nil {
-		ptu.SetActualStartDate(*t)
-	}
-	return ptu
-}
-
-// ClearActualStartDate clears the value of the "actualStartDate" field.
-func (ptu *ProjectTaskUpdate) ClearActualStartDate() *ProjectTaskUpdate {
-	ptu.mutation.ClearActualStartDate()
-	return ptu
-}
-
-// SetPlannedEndDate sets the "plannedEndDate" field.
-func (ptu *ProjectTaskUpdate) SetPlannedEndDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetPlannedEndDate(t)
-	return ptu
-}
-
-// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskUpdate {
-	if t != nil {
-		ptu.SetPlannedEndDate(*t)
-	}
-	return ptu
-}
-
-// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
-func (ptu *ProjectTaskUpdate) ClearPlannedEndDate() *ProjectTaskUpdate {
-	ptu.mutation.ClearPlannedEndDate()
-	return ptu
-}
-
-// SetActualEndDate sets the "actualEndDate" field.
-func (ptu *ProjectTaskUpdate) SetActualEndDate(t time.Time) *ProjectTaskUpdate {
-	ptu.mutation.SetActualEndDate(t)
-	return ptu
-}
-
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableActualEndDate(t *time.Time) *ProjectTaskUpdate {
-	if t != nil {
-		ptu.SetActualEndDate(*t)
-	}
-	return ptu
-}
-
-// ClearActualEndDate clears the value of the "actualEndDate" field.
-func (ptu *ProjectTaskUpdate) ClearActualEndDate() *ProjectTaskUpdate {
-	ptu.mutation.ClearActualEndDate()
-	return ptu
-}
-
-// SetDescription sets the "description" field.
-func (ptu *ProjectTaskUpdate) SetDescription(s string) *ProjectTaskUpdate {
-	ptu.mutation.SetDescription(s)
-	return ptu
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (ptu *ProjectTaskUpdate) SetNillableDescription(s *string) *ProjectTaskUpdate {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableName(s *string) *ProjectTaskUpdate {
 	if s != nil {
-		ptu.SetDescription(*s)
+		ptu.SetName(*s)
 	}
 	return ptu
 }
 
-// ClearDescription clears the value of the "description" field.
-func (ptu *ProjectTaskUpdate) ClearDescription() *ProjectTaskUpdate {
-	ptu.mutation.ClearDescription()
+// SetStartDate sets the "start_date" field.
+func (ptu *ProjectTaskUpdate) SetStartDate(t time.Time) *ProjectTaskUpdate {
+	ptu.mutation.SetStartDate(t)
+	return ptu
+}
+
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
+func (ptu *ProjectTaskUpdate) SetNillableStartDate(t *time.Time) *ProjectTaskUpdate {
+	if t != nil {
+		ptu.SetStartDate(*t)
+	}
 	return ptu
 }
 
@@ -247,13 +233,13 @@ func (ptu *ProjectTaskUpdate) AddParticipants(u ...*User) *ProjectTaskUpdate {
 	return ptu.AddParticipantIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (ptu *ProjectTaskUpdate) AddWorkShiftIDs(ids ...int) *ProjectTaskUpdate {
 	ptu.mutation.AddWorkShiftIDs(ids...)
 	return ptu
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (ptu *ProjectTaskUpdate) AddWorkShifts(w ...*Workshift) *ProjectTaskUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -300,19 +286,19 @@ func (ptu *ProjectTaskUpdate) RemoveParticipants(u ...*User) *ProjectTaskUpdate 
 	return ptu.RemoveParticipantIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (ptu *ProjectTaskUpdate) ClearWorkShifts() *ProjectTaskUpdate {
 	ptu.mutation.ClearWorkShifts()
 	return ptu
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (ptu *ProjectTaskUpdate) RemoveWorkShiftIDs(ids ...int) *ProjectTaskUpdate {
 	ptu.mutation.RemoveWorkShiftIDs(ids...)
 	return ptu
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (ptu *ProjectTaskUpdate) RemoveWorkShifts(w ...*Workshift) *ProjectTaskUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -323,6 +309,9 @@ func (ptu *ProjectTaskUpdate) RemoveWorkShifts(w ...*Workshift) *ProjectTaskUpda
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ptu *ProjectTaskUpdate) Save(ctx context.Context) (int, error) {
+	if err := ptu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, ptu.sqlSave, ptu.mutation, ptu.hooks)
 }
 
@@ -348,16 +337,28 @@ func (ptu *ProjectTaskUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ptu *ProjectTaskUpdate) defaults() error {
+	if _, ok := ptu.mutation.UpdatedAt(); !ok {
+		if projecttask.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("generated: uninitialized projecttask.UpdateDefaultUpdatedAt (forgotten import generated/runtime?)")
+		}
+		v := projecttask.UpdateDefaultUpdatedAt()
+		ptu.mutation.SetUpdatedAt(v)
+	}
+	return nil
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ptu *ProjectTaskUpdate) check() error {
+	if v, ok := ptu.mutation.AssigneeName(); ok {
+		if err := projecttask.AssigneeNameValidator(v); err != nil {
+			return &ValidationError{Name: "assignee_name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assignee_name": %w`, err)}
+		}
+	}
 	if v, ok := ptu.mutation.Name(); ok {
 		if err := projecttask.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.name": %w`, err)}
-		}
-	}
-	if v, ok := ptu.mutation.AssigneeName(); ok {
-		if err := projecttask.AssigneeNameValidator(v); err != nil {
-			return &ValidationError{Name: "assigneeName", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assigneeName": %w`, err)}
 		}
 	}
 	if v, ok := ptu.mutation.Status(); ok {
@@ -389,14 +390,32 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if ptu.mutation.CreatedAtCleared() {
-		_spec.ClearField(projecttask.FieldCreatedAt, field.TypeTime)
+	if value, ok := ptu.mutation.UpdatedAt(); ok {
+		_spec.SetField(projecttask.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if value, ok := ptu.mutation.Name(); ok {
-		_spec.SetField(projecttask.FieldName, field.TypeString, value)
+	if value, ok := ptu.mutation.DeletedAt(); ok {
+		_spec.SetField(projecttask.FieldDeletedAt, field.TypeTime, value)
+	}
+	if ptu.mutation.DeletedAtCleared() {
+		_spec.ClearField(projecttask.FieldDeletedAt, field.TypeTime)
 	}
 	if value, ok := ptu.mutation.AssigneeName(); ok {
 		_spec.SetField(projecttask.FieldAssigneeName, field.TypeString, value)
+	}
+	if value, ok := ptu.mutation.Description(); ok {
+		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
+	}
+	if ptu.mutation.DescriptionCleared() {
+		_spec.ClearField(projecttask.FieldDescription, field.TypeString)
+	}
+	if value, ok := ptu.mutation.DueDate(); ok {
+		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
+	}
+	if value, ok := ptu.mutation.EndDate(); ok {
+		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	}
+	if ptu.mutation.EndDateCleared() {
+		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
 	}
 	if value, ok := ptu.mutation.Location(); ok {
 		_spec.SetField(projecttask.FieldLocation, field.TypeString, value)
@@ -404,35 +423,11 @@ func (ptu *ProjectTaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if ptu.mutation.LocationCleared() {
 		_spec.ClearField(projecttask.FieldLocation, field.TypeString)
 	}
-	if value, ok := ptu.mutation.DueDate(); ok {
-		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
+	if value, ok := ptu.mutation.Name(); ok {
+		_spec.SetField(projecttask.FieldName, field.TypeString, value)
 	}
-	if value, ok := ptu.mutation.PlannedStartDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
-	}
-	if value, ok := ptu.mutation.ActualStartDate(); ok {
-		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
-	}
-	if ptu.mutation.ActualStartDateCleared() {
-		_spec.ClearField(projecttask.FieldActualStartDate, field.TypeTime)
-	}
-	if value, ok := ptu.mutation.PlannedEndDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
-	}
-	if ptu.mutation.PlannedEndDateCleared() {
-		_spec.ClearField(projecttask.FieldPlannedEndDate, field.TypeTime)
-	}
-	if value, ok := ptu.mutation.ActualEndDate(); ok {
-		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
-	}
-	if ptu.mutation.ActualEndDateCleared() {
-		_spec.ClearField(projecttask.FieldActualEndDate, field.TypeTime)
-	}
-	if value, ok := ptu.mutation.Description(); ok {
-		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
-	}
-	if ptu.mutation.DescriptionCleared() {
-		_spec.ClearField(projecttask.FieldDescription, field.TypeString)
+	if value, ok := ptu.mutation.StartDate(); ok {
+		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
 	}
 	if value, ok := ptu.mutation.Status(); ok {
 		_spec.SetField(projecttask.FieldStatus, field.TypeEnum, value)
@@ -607,31 +602,97 @@ type ProjectTaskUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetName sets the "name" field.
-func (ptuo *ProjectTaskUpdateOne) SetName(s string) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetName(s)
+// SetUpdatedAt sets the "updated_at" field.
+func (ptuo *ProjectTaskUpdateOne) SetUpdatedAt(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetUpdatedAt(t)
 	return ptuo
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableName(s *string) *ProjectTaskUpdateOne {
-	if s != nil {
-		ptuo.SetName(*s)
+// SetDeletedAt sets the "deleted_at" field.
+func (ptuo *ProjectTaskUpdateOne) SetDeletedAt(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetDeletedAt(t)
+	return ptuo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableDeletedAt(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetDeletedAt(*t)
 	}
 	return ptuo
 }
 
-// SetAssigneeName sets the "assigneeName" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (ptuo *ProjectTaskUpdateOne) ClearDeletedAt() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearDeletedAt()
+	return ptuo
+}
+
+// SetAssigneeName sets the "assignee_name" field.
 func (ptuo *ProjectTaskUpdateOne) SetAssigneeName(s string) *ProjectTaskUpdateOne {
 	ptuo.mutation.SetAssigneeName(s)
 	return ptuo
 }
 
-// SetNillableAssigneeName sets the "assigneeName" field if the given value is not nil.
+// SetNillableAssigneeName sets the "assignee_name" field if the given value is not nil.
 func (ptuo *ProjectTaskUpdateOne) SetNillableAssigneeName(s *string) *ProjectTaskUpdateOne {
 	if s != nil {
 		ptuo.SetAssigneeName(*s)
 	}
+	return ptuo
+}
+
+// SetDescription sets the "description" field.
+func (ptuo *ProjectTaskUpdateOne) SetDescription(s string) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetDescription(s)
+	return ptuo
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableDescription(s *string) *ProjectTaskUpdateOne {
+	if s != nil {
+		ptuo.SetDescription(*s)
+	}
+	return ptuo
+}
+
+// ClearDescription clears the value of the "description" field.
+func (ptuo *ProjectTaskUpdateOne) ClearDescription() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearDescription()
+	return ptuo
+}
+
+// SetDueDate sets the "due_date" field.
+func (ptuo *ProjectTaskUpdateOne) SetDueDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetDueDate(t)
+	return ptuo
+}
+
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableDueDate(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetDueDate(*t)
+	}
+	return ptuo
+}
+
+// SetEndDate sets the "end_date" field.
+func (ptuo *ProjectTaskUpdateOne) SetEndDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetEndDate(t)
+	return ptuo
+}
+
+// SetNillableEndDate sets the "end_date" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableEndDate(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetEndDate(*t)
+	}
+	return ptuo
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (ptuo *ProjectTaskUpdateOne) ClearEndDate() *ProjectTaskUpdateOne {
+	ptuo.mutation.ClearEndDate()
 	return ptuo
 }
 
@@ -655,111 +716,31 @@ func (ptuo *ProjectTaskUpdateOne) ClearLocation() *ProjectTaskUpdateOne {
 	return ptuo
 }
 
-// SetDueDate sets the "dueDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetDueDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetDueDate(t)
+// SetName sets the "name" field.
+func (ptuo *ProjectTaskUpdateOne) SetName(s string) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetName(s)
 	return ptuo
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableDueDate(t *time.Time) *ProjectTaskUpdateOne {
-	if t != nil {
-		ptuo.SetDueDate(*t)
-	}
-	return ptuo
-}
-
-// SetPlannedStartDate sets the "plannedStartDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetPlannedStartDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetPlannedStartDate(t)
-	return ptuo
-}
-
-// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillablePlannedStartDate(t *time.Time) *ProjectTaskUpdateOne {
-	if t != nil {
-		ptuo.SetPlannedStartDate(*t)
-	}
-	return ptuo
-}
-
-// SetActualStartDate sets the "actualStartDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetActualStartDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetActualStartDate(t)
-	return ptuo
-}
-
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableActualStartDate(t *time.Time) *ProjectTaskUpdateOne {
-	if t != nil {
-		ptuo.SetActualStartDate(*t)
-	}
-	return ptuo
-}
-
-// ClearActualStartDate clears the value of the "actualStartDate" field.
-func (ptuo *ProjectTaskUpdateOne) ClearActualStartDate() *ProjectTaskUpdateOne {
-	ptuo.mutation.ClearActualStartDate()
-	return ptuo
-}
-
-// SetPlannedEndDate sets the "plannedEndDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetPlannedEndDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetPlannedEndDate(t)
-	return ptuo
-}
-
-// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillablePlannedEndDate(t *time.Time) *ProjectTaskUpdateOne {
-	if t != nil {
-		ptuo.SetPlannedEndDate(*t)
-	}
-	return ptuo
-}
-
-// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
-func (ptuo *ProjectTaskUpdateOne) ClearPlannedEndDate() *ProjectTaskUpdateOne {
-	ptuo.mutation.ClearPlannedEndDate()
-	return ptuo
-}
-
-// SetActualEndDate sets the "actualEndDate" field.
-func (ptuo *ProjectTaskUpdateOne) SetActualEndDate(t time.Time) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetActualEndDate(t)
-	return ptuo
-}
-
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableActualEndDate(t *time.Time) *ProjectTaskUpdateOne {
-	if t != nil {
-		ptuo.SetActualEndDate(*t)
-	}
-	return ptuo
-}
-
-// ClearActualEndDate clears the value of the "actualEndDate" field.
-func (ptuo *ProjectTaskUpdateOne) ClearActualEndDate() *ProjectTaskUpdateOne {
-	ptuo.mutation.ClearActualEndDate()
-	return ptuo
-}
-
-// SetDescription sets the "description" field.
-func (ptuo *ProjectTaskUpdateOne) SetDescription(s string) *ProjectTaskUpdateOne {
-	ptuo.mutation.SetDescription(s)
-	return ptuo
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (ptuo *ProjectTaskUpdateOne) SetNillableDescription(s *string) *ProjectTaskUpdateOne {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableName(s *string) *ProjectTaskUpdateOne {
 	if s != nil {
-		ptuo.SetDescription(*s)
+		ptuo.SetName(*s)
 	}
 	return ptuo
 }
 
-// ClearDescription clears the value of the "description" field.
-func (ptuo *ProjectTaskUpdateOne) ClearDescription() *ProjectTaskUpdateOne {
-	ptuo.mutation.ClearDescription()
+// SetStartDate sets the "start_date" field.
+func (ptuo *ProjectTaskUpdateOne) SetStartDate(t time.Time) *ProjectTaskUpdateOne {
+	ptuo.mutation.SetStartDate(t)
+	return ptuo
+}
+
+// SetNillableStartDate sets the "start_date" field if the given value is not nil.
+func (ptuo *ProjectTaskUpdateOne) SetNillableStartDate(t *time.Time) *ProjectTaskUpdateOne {
+	if t != nil {
+		ptuo.SetStartDate(*t)
+	}
 	return ptuo
 }
 
@@ -822,13 +803,13 @@ func (ptuo *ProjectTaskUpdateOne) AddParticipants(u ...*User) *ProjectTaskUpdate
 	return ptuo.AddParticipantIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (ptuo *ProjectTaskUpdateOne) AddWorkShiftIDs(ids ...int) *ProjectTaskUpdateOne {
 	ptuo.mutation.AddWorkShiftIDs(ids...)
 	return ptuo
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (ptuo *ProjectTaskUpdateOne) AddWorkShifts(w ...*Workshift) *ProjectTaskUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -875,19 +856,19 @@ func (ptuo *ProjectTaskUpdateOne) RemoveParticipants(u ...*User) *ProjectTaskUpd
 	return ptuo.RemoveParticipantIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (ptuo *ProjectTaskUpdateOne) ClearWorkShifts() *ProjectTaskUpdateOne {
 	ptuo.mutation.ClearWorkShifts()
 	return ptuo
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (ptuo *ProjectTaskUpdateOne) RemoveWorkShiftIDs(ids ...int) *ProjectTaskUpdateOne {
 	ptuo.mutation.RemoveWorkShiftIDs(ids...)
 	return ptuo
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (ptuo *ProjectTaskUpdateOne) RemoveWorkShifts(w ...*Workshift) *ProjectTaskUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -911,6 +892,9 @@ func (ptuo *ProjectTaskUpdateOne) Select(field string, fields ...string) *Projec
 
 // Save executes the query and returns the updated ProjectTask entity.
 func (ptuo *ProjectTaskUpdateOne) Save(ctx context.Context) (*ProjectTask, error) {
+	if err := ptuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, ptuo.sqlSave, ptuo.mutation, ptuo.hooks)
 }
 
@@ -936,16 +920,28 @@ func (ptuo *ProjectTaskUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ptuo *ProjectTaskUpdateOne) defaults() error {
+	if _, ok := ptuo.mutation.UpdatedAt(); !ok {
+		if projecttask.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("generated: uninitialized projecttask.UpdateDefaultUpdatedAt (forgotten import generated/runtime?)")
+		}
+		v := projecttask.UpdateDefaultUpdatedAt()
+		ptuo.mutation.SetUpdatedAt(v)
+	}
+	return nil
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ptuo *ProjectTaskUpdateOne) check() error {
+	if v, ok := ptuo.mutation.AssigneeName(); ok {
+		if err := projecttask.AssigneeNameValidator(v); err != nil {
+			return &ValidationError{Name: "assignee_name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assignee_name": %w`, err)}
+		}
+	}
 	if v, ok := ptuo.mutation.Name(); ok {
 		if err := projecttask.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.name": %w`, err)}
-		}
-	}
-	if v, ok := ptuo.mutation.AssigneeName(); ok {
-		if err := projecttask.AssigneeNameValidator(v); err != nil {
-			return &ValidationError{Name: "assigneeName", err: fmt.Errorf(`generated: validator failed for field "ProjectTask.assigneeName": %w`, err)}
 		}
 	}
 	if v, ok := ptuo.mutation.Status(); ok {
@@ -994,14 +990,32 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 			}
 		}
 	}
-	if ptuo.mutation.CreatedAtCleared() {
-		_spec.ClearField(projecttask.FieldCreatedAt, field.TypeTime)
+	if value, ok := ptuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(projecttask.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if value, ok := ptuo.mutation.Name(); ok {
-		_spec.SetField(projecttask.FieldName, field.TypeString, value)
+	if value, ok := ptuo.mutation.DeletedAt(); ok {
+		_spec.SetField(projecttask.FieldDeletedAt, field.TypeTime, value)
+	}
+	if ptuo.mutation.DeletedAtCleared() {
+		_spec.ClearField(projecttask.FieldDeletedAt, field.TypeTime)
 	}
 	if value, ok := ptuo.mutation.AssigneeName(); ok {
 		_spec.SetField(projecttask.FieldAssigneeName, field.TypeString, value)
+	}
+	if value, ok := ptuo.mutation.Description(); ok {
+		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
+	}
+	if ptuo.mutation.DescriptionCleared() {
+		_spec.ClearField(projecttask.FieldDescription, field.TypeString)
+	}
+	if value, ok := ptuo.mutation.DueDate(); ok {
+		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
+	}
+	if value, ok := ptuo.mutation.EndDate(); ok {
+		_spec.SetField(projecttask.FieldEndDate, field.TypeTime, value)
+	}
+	if ptuo.mutation.EndDateCleared() {
+		_spec.ClearField(projecttask.FieldEndDate, field.TypeTime)
 	}
 	if value, ok := ptuo.mutation.Location(); ok {
 		_spec.SetField(projecttask.FieldLocation, field.TypeString, value)
@@ -1009,35 +1023,11 @@ func (ptuo *ProjectTaskUpdateOne) sqlSave(ctx context.Context) (_node *ProjectTa
 	if ptuo.mutation.LocationCleared() {
 		_spec.ClearField(projecttask.FieldLocation, field.TypeString)
 	}
-	if value, ok := ptuo.mutation.DueDate(); ok {
-		_spec.SetField(projecttask.FieldDueDate, field.TypeTime, value)
+	if value, ok := ptuo.mutation.Name(); ok {
+		_spec.SetField(projecttask.FieldName, field.TypeString, value)
 	}
-	if value, ok := ptuo.mutation.PlannedStartDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedStartDate, field.TypeTime, value)
-	}
-	if value, ok := ptuo.mutation.ActualStartDate(); ok {
-		_spec.SetField(projecttask.FieldActualStartDate, field.TypeTime, value)
-	}
-	if ptuo.mutation.ActualStartDateCleared() {
-		_spec.ClearField(projecttask.FieldActualStartDate, field.TypeTime)
-	}
-	if value, ok := ptuo.mutation.PlannedEndDate(); ok {
-		_spec.SetField(projecttask.FieldPlannedEndDate, field.TypeTime, value)
-	}
-	if ptuo.mutation.PlannedEndDateCleared() {
-		_spec.ClearField(projecttask.FieldPlannedEndDate, field.TypeTime)
-	}
-	if value, ok := ptuo.mutation.ActualEndDate(); ok {
-		_spec.SetField(projecttask.FieldActualEndDate, field.TypeTime, value)
-	}
-	if ptuo.mutation.ActualEndDateCleared() {
-		_spec.ClearField(projecttask.FieldActualEndDate, field.TypeTime)
-	}
-	if value, ok := ptuo.mutation.Description(); ok {
-		_spec.SetField(projecttask.FieldDescription, field.TypeString, value)
-	}
-	if ptuo.mutation.DescriptionCleared() {
-		_spec.ClearField(projecttask.FieldDescription, field.TypeString)
+	if value, ok := ptuo.mutation.StartDate(); ok {
+		_spec.SetField(projecttask.FieldStartDate, field.TypeTime, value)
 	}
 	if value, ok := ptuo.mutation.Status(); ok {
 		_spec.SetField(projecttask.FieldStatus, field.TypeEnum, value)

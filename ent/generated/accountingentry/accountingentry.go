@@ -17,11 +17,11 @@ const (
 	Label = "accounting_entry"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldNumber holds the string denoting the number field in the database.
 	FieldNumber = "number"
@@ -37,15 +37,15 @@ const (
 	FieldAmount = "amount"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
-	// FieldAccountType holds the string denoting the accounttype field in the database.
+	// FieldAccountType holds the string denoting the account_type field in the database.
 	FieldAccountType = "account_type"
 	// FieldCategory holds the string denoting the category field in the database.
 	FieldCategory = "category"
 	// FieldMain holds the string denoting the main field in the database.
 	FieldMain = "main"
-	// FieldIsDebit holds the string denoting the isdebit field in the database.
+	// FieldIsDebit holds the string denoting the is_debit field in the database.
 	FieldIsDebit = "is_debit"
-	// FieldIsReversal holds the string denoting the isreversal field in the database.
+	// FieldIsReversal holds the string denoting the is_reversal field in the database.
 	FieldIsReversal = "is_reversal"
 	// FieldReversed holds the string denoting the reversed field in the database.
 	FieldReversed = "reversed"
@@ -138,11 +138,11 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// NumberValidator is a validator for the "number" field. It is called by the builders before save.
 	NumberValidator func(int) error
@@ -156,13 +156,13 @@ var (
 	DefaultCategory string
 	// DefaultMain holds the default value on creation for the "main" field.
 	DefaultMain string
-	// DefaultIsReversal holds the default value on creation for the "isReversal" field.
+	// DefaultIsReversal holds the default value on creation for the "is_reversal" field.
 	DefaultIsReversal bool
 	// DefaultReversed holds the default value on creation for the "reversed" field.
 	DefaultReversed bool
 )
 
-// AccountType defines the type for the "accountType" enum field.
+// AccountType defines the type for the "account_type" enum field.
 type AccountType string
 
 // AccountType values.
@@ -185,13 +185,13 @@ func (at AccountType) String() string {
 	return string(at)
 }
 
-// AccountTypeValidator is a validator for the "accountType" field enum values. It is called by the builders before save.
+// AccountTypeValidator is a validator for the "account_type" field enum values. It is called by the builders before save.
 func AccountTypeValidator(at AccountType) error {
 	switch at {
 	case AccountTypeASSET, AccountTypeLIABILITY, AccountTypeEQUITY, AccountTypeREVENUE, AccountTypeEXPENSE, AccountTypeTAX_EXPENSE, AccountTypeINCOME, AccountTypeDIVIDEND_EXPENSE, AccountTypeCONTRA_ASSET, AccountTypeCONTRA_LIABILITY, AccountTypeCONTRA_REVENUE, AccountTypeCONTRA_EXPENSE:
 		return nil
 	default:
-		return fmt.Errorf("accountingentry: invalid enum value for accountType field: %q", at)
+		return fmt.Errorf("accountingentry: invalid enum value for account_type field: %q", at)
 	}
 }
 
@@ -203,17 +203,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -253,7 +253,7 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDescription, opts...).ToFunc()
 }
 
-// ByAccountType orders the results by the accountType field.
+// ByAccountType orders the results by the account_type field.
 func ByAccountType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAccountType, opts...).ToFunc()
 }
@@ -268,12 +268,12 @@ func ByMain(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMain, opts...).ToFunc()
 }
 
-// ByIsDebit orders the results by the isDebit field.
+// ByIsDebit orders the results by the is_debit field.
 func ByIsDebit(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsDebit, opts...).ToFunc()
 }
 
-// ByIsReversal orders the results by the isReversal field.
+// ByIsReversal orders the results by the is_reversal field.
 func ByIsReversal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsReversal, opts...).ToFunc()
 }

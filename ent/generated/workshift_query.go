@@ -114,7 +114,7 @@ func (wq *WorkshiftQuery) QueryUser() *UserQuery {
 	return query
 }
 
-// QueryApprovedBy chains the current query on the "approvedBy" edge.
+// QueryApprovedBy chains the current query on the "approved_by" edge.
 func (wq *WorkshiftQuery) QueryApprovedBy() *UserQuery {
 	query := (&UserClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -158,7 +158,7 @@ func (wq *WorkshiftQuery) QueryTask() *ProjectTaskQuery {
 	return query
 }
 
-// QueryEditRequest chains the current query on the "editRequest" edge.
+// QueryEditRequest chains the current query on the "edit_request" edge.
 func (wq *WorkshiftQuery) QueryEditRequest() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -180,7 +180,7 @@ func (wq *WorkshiftQuery) QueryEditRequest() *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkShift chains the current query on the "workShift" edge.
+// QueryWorkShift chains the current query on the "work_shift" edge.
 func (wq *WorkshiftQuery) QueryWorkShift() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -430,7 +430,7 @@ func (wq *WorkshiftQuery) WithUser(opts ...func(*UserQuery)) *WorkshiftQuery {
 }
 
 // WithApprovedBy tells the query-builder to eager-load the nodes that are connected to
-// the "approvedBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "approved_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (wq *WorkshiftQuery) WithApprovedBy(opts ...func(*UserQuery)) *WorkshiftQuery {
 	query := (&UserClient{config: wq.config}).Query()
 	for _, opt := range opts {
@@ -452,7 +452,7 @@ func (wq *WorkshiftQuery) WithTask(opts ...func(*ProjectTaskQuery)) *WorkshiftQu
 }
 
 // WithEditRequest tells the query-builder to eager-load the nodes that are connected to
-// the "editRequest" edge. The optional arguments are used to configure the query builder of the edge.
+// the "edit_request" edge. The optional arguments are used to configure the query builder of the edge.
 func (wq *WorkshiftQuery) WithEditRequest(opts ...func(*WorkshiftQuery)) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: wq.config}).Query()
 	for _, opt := range opts {
@@ -463,7 +463,7 @@ func (wq *WorkshiftQuery) WithEditRequest(opts ...func(*WorkshiftQuery)) *Worksh
 }
 
 // WithWorkShift tells the query-builder to eager-load the nodes that are connected to
-// the "workShift" edge. The optional arguments are used to configure the query builder of the edge.
+// the "work_shift" edge. The optional arguments are used to configure the query builder of the edge.
 func (wq *WorkshiftQuery) WithWorkShift(opts ...func(*WorkshiftQuery)) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: wq.config}).Query()
 	for _, opt := range opts {
@@ -479,7 +479,7 @@ func (wq *WorkshiftQuery) WithWorkShift(opts ...func(*WorkshiftQuery)) *Workshif
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -502,7 +502,7 @@ func (wq *WorkshiftQuery) GroupBy(field string, fields ...string) *WorkshiftGrou
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Workshift.Query().

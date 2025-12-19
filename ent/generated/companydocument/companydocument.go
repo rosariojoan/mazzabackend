@@ -17,11 +17,11 @@ const (
 	Label = "company_document"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldFilename holds the string denoting the filename field in the database.
 	FieldFilename = "filename"
@@ -33,24 +33,24 @@ const (
 	FieldCategory = "category"
 	// FieldSize holds the string denoting the size field in the database.
 	FieldSize = "size"
-	// FieldFileType holds the string denoting the filetype field in the database.
+	// FieldFileType holds the string denoting the file_type field in the database.
 	FieldFileType = "file_type"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
-	// FieldStorageURI holds the string denoting the storageuri field in the database.
+	// FieldStorageURI holds the string denoting the storage_uri field in the database.
 	FieldStorageURI = "storage_uri"
 	// FieldThumbnail holds the string denoting the thumbnail field in the database.
 	FieldThumbnail = "thumbnail"
-	// FieldExpiryDate holds the string denoting the expirydate field in the database.
+	// FieldExpiryDate holds the string denoting the expiry_date field in the database.
 	FieldExpiryDate = "expiry_date"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeUploadedBy holds the string denoting the uploadedby edge name in mutations.
-	EdgeUploadedBy = "uploadedBy"
-	// EdgeApprovedBy holds the string denoting the approvedby edge name in mutations.
-	EdgeApprovedBy = "approvedBy"
+	// EdgeUploadedBy holds the string denoting the uploaded_by edge name in mutations.
+	EdgeUploadedBy = "uploaded_by"
+	// EdgeApprovedBy holds the string denoting the approved_by edge name in mutations.
+	EdgeApprovedBy = "approved_by"
 	// Table holds the table name of the companydocument in the database.
 	Table = "company_documents"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -60,19 +60,19 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_documents"
-	// UploadedByTable is the table that holds the uploadedBy relation/edge.
+	// UploadedByTable is the table that holds the uploaded_by relation/edge.
 	UploadedByTable = "company_documents"
 	// UploadedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	UploadedByInverseTable = "users"
-	// UploadedByColumn is the table column denoting the uploadedBy relation/edge.
+	// UploadedByColumn is the table column denoting the uploaded_by relation/edge.
 	UploadedByColumn = "user_uploaded_documents"
-	// ApprovedByTable is the table that holds the approvedBy relation/edge.
+	// ApprovedByTable is the table that holds the approved_by relation/edge.
 	ApprovedByTable = "company_documents"
 	// ApprovedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	ApprovedByInverseTable = "users"
-	// ApprovedByColumn is the table column denoting the approvedBy relation/edge.
+	// ApprovedByColumn is the table column denoting the approved_by relation/edge.
 	ApprovedByColumn = "user_approved_documents"
 )
 
@@ -119,11 +119,11 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// FilenameValidator is a validator for the "filename" field. It is called by the builders before save.
 	FilenameValidator func(string) error
@@ -135,7 +135,7 @@ var (
 	SizeValidator func(int) error
 	// URLValidator is a validator for the "url" field. It is called by the builders before save.
 	URLValidator func(string) error
-	// StorageURIValidator is a validator for the "storageURI" field. It is called by the builders before save.
+	// StorageURIValidator is a validator for the "storage_URI" field. It is called by the builders before save.
 	StorageURIValidator func(string) error
 )
 
@@ -198,17 +198,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -238,7 +238,7 @@ func BySize(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSize, opts...).ToFunc()
 }
 
-// ByFileType orders the results by the fileType field.
+// ByFileType orders the results by the file_type field.
 func ByFileType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFileType, opts...).ToFunc()
 }
@@ -253,7 +253,7 @@ func ByURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldURL, opts...).ToFunc()
 }
 
-// ByStorageURI orders the results by the storageURI field.
+// ByStorageURI orders the results by the storage_URI field.
 func ByStorageURI(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStorageURI, opts...).ToFunc()
 }
@@ -263,7 +263,7 @@ func ByThumbnail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldThumbnail, opts...).ToFunc()
 }
 
-// ByExpiryDate orders the results by the expiryDate field.
+// ByExpiryDate orders the results by the expiry_date field.
 func ByExpiryDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldExpiryDate, opts...).ToFunc()
 }
@@ -275,14 +275,14 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByUploadedByField orders the results by uploadedBy field.
+// ByUploadedByField orders the results by uploaded_by field.
 func ByUploadedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newUploadedByStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByApprovedByField orders the results by approvedBy field.
+// ByApprovedByField orders the results by approved_by field.
 func ByApprovedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newApprovedByStep(), sql.OrderByField(field, opts...))

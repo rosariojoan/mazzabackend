@@ -17,11 +17,11 @@ const (
 	Label = "member_signup_token"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
@@ -35,16 +35,16 @@ const (
 	FieldRole = "role"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
-	// FieldNumberAccessed holds the string denoting the numberaccessed field in the database.
+	// FieldNumberAccessed holds the string denoting the number_accessed field in the database.
 	FieldNumberAccessed = "number_accessed"
-	// FieldExpiresAt holds the string denoting the expiresat field in the database.
+	// FieldExpiresAt holds the string denoting the expires_at field in the database.
 	FieldExpiresAt = "expires_at"
-	// FieldAlreadyUsed holds the string denoting the alreadyused field in the database.
+	// FieldAlreadyUsed holds the string denoting the already_used field in the database.
 	FieldAlreadyUsed = "already_used"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeCreatedBy holds the string denoting the createdby edge name in mutations.
-	EdgeCreatedBy = "createdBy"
+	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
+	EdgeCreatedBy = "created_by"
 	// Table holds the table name of the membersignuptoken in the database.
 	Table = "member_signup_tokens"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -54,12 +54,12 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_member_signup_tokens"
-	// CreatedByTable is the table that holds the createdBy relation/edge.
+	// CreatedByTable is the table that holds the created_by relation/edge.
 	CreatedByTable = "member_signup_tokens"
 	// CreatedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	CreatedByInverseTable = "users"
-	// CreatedByColumn is the table column denoting the createdBy relation/edge.
+	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "user_created_member_signup_tokens"
 )
 
@@ -103,21 +103,21 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// TokenValidator is a validator for the "token" field. It is called by the builders before save.
 	TokenValidator func(string) error
-	// DefaultNumberAccessed holds the default value on creation for the "numberAccessed" field.
+	// DefaultNumberAccessed holds the default value on creation for the "number_accessed" field.
 	DefaultNumberAccessed int
-	// NumberAccessedValidator is a validator for the "numberAccessed" field. It is called by the builders before save.
+	// NumberAccessedValidator is a validator for the "number_accessed" field. It is called by the builders before save.
 	NumberAccessedValidator func(int) error
-	// DefaultAlreadyUsed holds the default value on creation for the "alreadyUsed" field.
+	// DefaultAlreadyUsed holds the default value on creation for the "already_used" field.
 	DefaultAlreadyUsed bool
 )
 
@@ -155,17 +155,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -200,17 +200,17 @@ func ByNote(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNote, opts...).ToFunc()
 }
 
-// ByNumberAccessed orders the results by the numberAccessed field.
+// ByNumberAccessed orders the results by the number_accessed field.
 func ByNumberAccessed(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNumberAccessed, opts...).ToFunc()
 }
 
-// ByExpiresAt orders the results by the expiresAt field.
+// ByExpiresAt orders the results by the expires_at field.
 func ByExpiresAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldExpiresAt, opts...).ToFunc()
 }
 
-// ByAlreadyUsed orders the results by the alreadyUsed field.
+// ByAlreadyUsed orders the results by the already_used field.
 func ByAlreadyUsed(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAlreadyUsed, opts...).ToFunc()
 }
@@ -222,7 +222,7 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByCreatedByField orders the results by createdBy field.
+// ByCreatedByField orders the results by created_by field.
 func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))

@@ -18,26 +18,26 @@ const (
 	Label = "project_task"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
-	// FieldAssigneeName holds the string denoting the assigneename field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "updated_at"
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
+	FieldDeletedAt = "deleted_at"
+	// FieldAssigneeName holds the string denoting the assignee_name field in the database.
 	FieldAssigneeName = "assignee_name"
-	// FieldLocation holds the string denoting the location field in the database.
-	FieldLocation = "location"
-	// FieldDueDate holds the string denoting the duedate field in the database.
-	FieldDueDate = "due_date"
-	// FieldPlannedStartDate holds the string denoting the plannedstartdate field in the database.
-	FieldPlannedStartDate = "planned_start_date"
-	// FieldActualStartDate holds the string denoting the actualstartdate field in the database.
-	FieldActualStartDate = "actual_start_date"
-	// FieldPlannedEndDate holds the string denoting the plannedenddate field in the database.
-	FieldPlannedEndDate = "planned_end_date"
-	// FieldActualEndDate holds the string denoting the actualenddate field in the database.
-	FieldActualEndDate = "actual_end_date"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldDueDate holds the string denoting the due_date field in the database.
+	FieldDueDate = "due_date"
+	// FieldEndDate holds the string denoting the end_date field in the database.
+	FieldEndDate = "end_date"
+	// FieldLocation holds the string denoting the location field in the database.
+	FieldLocation = "location"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// FieldStartDate holds the string denoting the start_date field in the database.
+	FieldStartDate = "start_date"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// EdgeProject holds the string denoting the project edge name in mutations.
@@ -46,10 +46,10 @@ const (
 	EdgeAssignee = "assignee"
 	// EdgeParticipants holds the string denoting the participants edge name in mutations.
 	EdgeParticipants = "participants"
-	// EdgeCreatedBy holds the string denoting the createdby edge name in mutations.
-	EdgeCreatedBy = "createdBy"
-	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
-	EdgeWorkShifts = "workShifts"
+	// EdgeCreatedBy holds the string denoting the created_by edge name in mutations.
+	EdgeCreatedBy = "created_by"
+	// EdgeWorkShifts holds the string denoting the work_shifts edge name in mutations.
+	EdgeWorkShifts = "work_shifts"
 	// Table holds the table name of the projecttask in the database.
 	Table = "project_tasks"
 	// ProjectTable is the table that holds the project relation/edge.
@@ -67,23 +67,23 @@ const (
 	// AssigneeColumn is the table column denoting the assignee relation/edge.
 	AssigneeColumn = "user_assigned_project_tasks"
 	// ParticipantsTable is the table that holds the participants relation/edge. The primary key declared below.
-	ParticipantsTable = "user_participatedProjectTasks"
+	ParticipantsTable = "user_participated_project_tasks"
 	// ParticipantsInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	ParticipantsInverseTable = "users"
-	// CreatedByTable is the table that holds the createdBy relation/edge.
+	// CreatedByTable is the table that holds the created_by relation/edge.
 	CreatedByTable = "project_tasks"
 	// CreatedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	CreatedByInverseTable = "users"
-	// CreatedByColumn is the table column denoting the createdBy relation/edge.
+	// CreatedByColumn is the table column denoting the created_by relation/edge.
 	CreatedByColumn = "user_created_tasks"
-	// WorkShiftsTable is the table that holds the workShifts relation/edge.
+	// WorkShiftsTable is the table that holds the work_shifts relation/edge.
 	WorkShiftsTable = "workshifts"
 	// WorkShiftsInverseTable is the table name for the Workshift entity.
 	// It exists in this package in order to avoid circular dependency with the "workshift" package.
 	WorkShiftsInverseTable = "workshifts"
-	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
+	// WorkShiftsColumn is the table column denoting the work_shifts relation/edge.
 	WorkShiftsColumn = "project_task_work_shifts"
 )
 
@@ -91,15 +91,15 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldName,
+	FieldUpdatedAt,
+	FieldDeletedAt,
 	FieldAssigneeName,
-	FieldLocation,
-	FieldDueDate,
-	FieldPlannedStartDate,
-	FieldActualStartDate,
-	FieldPlannedEndDate,
-	FieldActualEndDate,
 	FieldDescription,
+	FieldDueDate,
+	FieldEndDate,
+	FieldLocation,
+	FieldName,
+	FieldStartDate,
 	FieldStatus,
 }
 
@@ -139,12 +139,16 @@ func ValidColumn(column string) bool {
 //	import _ "mazza/ent/generated/runtime"
 var (
 	Hooks [1]ent.Hook
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
+	// AssigneeNameValidator is a validator for the "assignee_name" field. It is called by the builders before save.
+	AssigneeNameValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// AssigneeNameValidator is a validator for the "assigneeName" field. It is called by the builders before save.
-	AssigneeNameValidator func(string) error
 )
 
 // Status defines the type for the "status" enum field.
@@ -179,19 +183,39 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
+// ByUpdatedAt orders the results by the updated_at field.
+func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByAssigneeName orders the results by the assigneeName field.
+// ByDeletedAt orders the results by the deleted_at field.
+func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
+}
+
+// ByAssigneeName orders the results by the assignee_name field.
 func ByAssigneeName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAssigneeName, opts...).ToFunc()
+}
+
+// ByDescription orders the results by the description field.
+func ByDescription(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDescription, opts...).ToFunc()
+}
+
+// ByDueDate orders the results by the due_date field.
+func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
+}
+
+// ByEndDate orders the results by the end_date field.
+func ByEndDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEndDate, opts...).ToFunc()
 }
 
 // ByLocation orders the results by the location field.
@@ -199,34 +223,14 @@ func ByLocation(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLocation, opts...).ToFunc()
 }
 
-// ByDueDate orders the results by the dueDate field.
-func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByPlannedStartDate orders the results by the plannedStartDate field.
-func ByPlannedStartDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPlannedStartDate, opts...).ToFunc()
-}
-
-// ByActualStartDate orders the results by the actualStartDate field.
-func ByActualStartDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActualStartDate, opts...).ToFunc()
-}
-
-// ByPlannedEndDate orders the results by the plannedEndDate field.
-func ByPlannedEndDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPlannedEndDate, opts...).ToFunc()
-}
-
-// ByActualEndDate orders the results by the actualEndDate field.
-func ByActualEndDate(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldActualEndDate, opts...).ToFunc()
-}
-
-// ByDescription orders the results by the description field.
-func ByDescription(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDescription, opts...).ToFunc()
+// ByStartDate orders the results by the start_date field.
+func ByStartDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStartDate, opts...).ToFunc()
 }
 
 // ByStatus orders the results by the status field.
@@ -262,21 +266,21 @@ func ByParticipants(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByCreatedByField orders the results by createdBy field.
+// ByCreatedByField orders the results by created_by field.
 func ByCreatedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedByStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByWorkShiftsCount orders the results by workShifts count.
+// ByWorkShiftsCount orders the results by work_shifts count.
 func ByWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newWorkShiftsStep(), opts...)
 	}
 }
 
-// ByWorkShifts orders the results by workShifts terms.
+// ByWorkShifts orders the results by work_shifts terms.
 func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)

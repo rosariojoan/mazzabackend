@@ -34,19 +34,19 @@ func (lu *LoanUpdate) Where(ps ...predicate.Loan) *LoanUpdate {
 	return lu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (lu *LoanUpdate) SetUpdatedAt(t time.Time) *LoanUpdate {
 	lu.mutation.SetUpdatedAt(t)
 	return lu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (lu *LoanUpdate) SetDeletedAt(t time.Time) *LoanUpdate {
 	lu.mutation.SetDeletedAt(t)
 	return lu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (lu *LoanUpdate) SetNillableDeletedAt(t *time.Time) *LoanUpdate {
 	if t != nil {
 		lu.SetDeletedAt(*t)
@@ -54,7 +54,7 @@ func (lu *LoanUpdate) SetNillableDeletedAt(t *time.Time) *LoanUpdate {
 	return lu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (lu *LoanUpdate) ClearDeletedAt() *LoanUpdate {
 	lu.mutation.ClearDeletedAt()
 	return lu
@@ -914,19 +914,19 @@ type LoanUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (luo *LoanUpdateOne) SetUpdatedAt(t time.Time) *LoanUpdateOne {
 	luo.mutation.SetUpdatedAt(t)
 	return luo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (luo *LoanUpdateOne) SetDeletedAt(t time.Time) *LoanUpdateOne {
 	luo.mutation.SetDeletedAt(t)
 	return luo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (luo *LoanUpdateOne) SetNillableDeletedAt(t *time.Time) *LoanUpdateOne {
 	if t != nil {
 		luo.SetDeletedAt(*t)
@@ -934,7 +934,7 @@ func (luo *LoanUpdateOne) SetNillableDeletedAt(t *time.Time) *LoanUpdateOne {
 	return luo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (luo *LoanUpdateOne) ClearDeletedAt() *LoanUpdateOne {
 	luo.mutation.ClearDeletedAt()
 	return luo

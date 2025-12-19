@@ -29,11 +29,11 @@ func (Supplier) Fields() []ent.Field {
 		field.String("country").Default("").Optional(),
 		field.String("description").Default("").Optional(),
 		field.String("email").Default("").Optional(),
-		field.Bool("isDefault").Default(false).Optional().
+		field.Bool("is_default").Default(false).Optional().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
 		field.String("name").NotEmpty().Annotations(entgql.OrderField("NAME")),
 		field.String("phone").Default("").Optional(),
-		field.String("taxId").Default("").Optional(),
+		field.String("tax_id").Default("").Optional(),
 	}
 }
 
@@ -41,7 +41,7 @@ func (Supplier) Fields() []ent.Field {
 // Company-wise, supplier must have unique names and unique tax IDs
 func (Supplier) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("name", "taxId").Edges("company").Unique(),
+		index.Fields("name", "tax_id").Edges("company").Unique(),
 	}
 }
 

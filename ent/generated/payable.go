@@ -18,26 +18,26 @@ type Payable struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// EntryGroup holds the value of the "entryGroup" field.
-	EntryGroup int `json:"entryGroup,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// EntryGroup holds the value of the "entry_group" field.
+	EntryGroup int `json:"entry_group,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// AmountInDefault holds the value of the "amountInDefault" field.
-	AmountInDefault float64 `json:"amountInDefault,omitempty"`
-	// OutstandingBalance holds the value of the "outstandingBalance" field.
-	OutstandingBalance float64 `json:"outstandingBalance,omitempty"`
-	// TotalTransaction holds the value of the "totalTransaction" field.
-	TotalTransaction float64 `json:"totalTransaction,omitempty"`
-	// DueDate holds the value of the "dueDate" field.
-	DueDate time.Time `json:"dueDate,omitempty"`
+	// AmountInDefault holds the value of the "amount_in_default" field.
+	AmountInDefault float64 `json:"amount_in_default,omitempty"`
+	// OutstandingBalance holds the value of the "outstanding_balance" field.
+	OutstandingBalance float64 `json:"outstanding_balance,omitempty"`
+	// TotalTransaction holds the value of the "total_transaction" field.
+	TotalTransaction float64 `json:"total_transaction,omitempty"`
+	// DueDate holds the value of the "due_date" field.
+	DueDate time.Time `json:"due_date,omitempty"`
 	// Status holds the value of the "status" field.
 	Status payable.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -110,26 +110,26 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 			pa.ID = int(value.Int64)
 		case payable.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				pa.CreatedAt = value.Time
 			}
 		case payable.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pa.UpdatedAt = value.Time
 			}
 		case payable.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pa.DeletedAt = new(time.Time)
 				*pa.DeletedAt = value.Time
 			}
 		case payable.FieldEntryGroup:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field entryGroup", values[i])
+				return fmt.Errorf("unexpected type %T for field entry_group", values[i])
 			} else if value.Valid {
 				pa.EntryGroup = int(value.Int64)
 			}
@@ -147,25 +147,25 @@ func (pa *Payable) assignValues(columns []string, values []any) error {
 			}
 		case payable.FieldAmountInDefault:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field amountInDefault", values[i])
+				return fmt.Errorf("unexpected type %T for field amount_in_default", values[i])
 			} else if value.Valid {
 				pa.AmountInDefault = value.Float64
 			}
 		case payable.FieldOutstandingBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field outstandingBalance", values[i])
+				return fmt.Errorf("unexpected type %T for field outstanding_balance", values[i])
 			} else if value.Valid {
 				pa.OutstandingBalance = value.Float64
 			}
 		case payable.FieldTotalTransaction:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field totalTransaction", values[i])
+				return fmt.Errorf("unexpected type %T for field total_transaction", values[i])
 			} else if value.Valid {
 				pa.TotalTransaction = value.Float64
 			}
 		case payable.FieldDueDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field dueDate", values[i])
+				return fmt.Errorf("unexpected type %T for field due_date", values[i])
 			} else if value.Valid {
 				pa.DueDate = value.Time
 			}
@@ -230,18 +230,18 @@ func (pa *Payable) String() string {
 	var builder strings.Builder
 	builder.WriteString("Payable(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", pa.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(pa.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(pa.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := pa.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("entryGroup=")
+	builder.WriteString("entry_group=")
 	builder.WriteString(fmt.Sprintf("%v", pa.EntryGroup))
 	builder.WriteString(", ")
 	builder.WriteString("date=")
@@ -250,16 +250,16 @@ func (pa *Payable) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(pa.Name)
 	builder.WriteString(", ")
-	builder.WriteString("amountInDefault=")
+	builder.WriteString("amount_in_default=")
 	builder.WriteString(fmt.Sprintf("%v", pa.AmountInDefault))
 	builder.WriteString(", ")
-	builder.WriteString("outstandingBalance=")
+	builder.WriteString("outstanding_balance=")
 	builder.WriteString(fmt.Sprintf("%v", pa.OutstandingBalance))
 	builder.WriteString(", ")
-	builder.WriteString("totalTransaction=")
+	builder.WriteString("total_transaction=")
 	builder.WriteString(fmt.Sprintf("%v", pa.TotalTransaction))
 	builder.WriteString(", ")
-	builder.WriteString("dueDate=")
+	builder.WriteString("due_date=")
 	builder.WriteString(pa.DueDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")

@@ -17,11 +17,11 @@ const (
 	Label = "employee"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
@@ -39,13 +39,13 @@ const (
 	FieldPhone = "phone"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
-	// FieldHireDate holds the string denoting the hiredate field in the database.
+	// FieldHireDate holds the string denoting the hire_date field in the database.
 	FieldHireDate = "hire_date"
-	// FieldMonthlySalary holds the string denoting the monthlysalary field in the database.
+	// FieldMonthlySalary holds the string denoting the monthly_salary field in the database.
 	FieldMonthlySalary = "monthly_salary"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldPerformaceScore holds the string denoting the performacescore field in the database.
+	// FieldPerformaceScore holds the string denoting the performace_score field in the database.
 	FieldPerformaceScore = "performace_score"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
@@ -125,23 +125,23 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// DefaultDepartment holds the default value on creation for the "department" field.
 	DefaultDepartment string
-	// DefaultMonthlySalary holds the default value on creation for the "monthlySalary" field.
+	// DefaultMonthlySalary holds the default value on creation for the "monthly_salary" field.
 	DefaultMonthlySalary int
-	// MonthlySalaryValidator is a validator for the "monthlySalary" field. It is called by the builders before save.
+	// MonthlySalaryValidator is a validator for the "monthly_salary" field. It is called by the builders before save.
 	MonthlySalaryValidator func(int) error
-	// DefaultPerformaceScore holds the default value on creation for the "performaceScore" field.
+	// DefaultPerformaceScore holds the default value on creation for the "performace_score" field.
 	DefaultPerformaceScore float64
-	// PerformaceScoreValidator is a validator for the "performaceScore" field. It is called by the builders before save.
+	// PerformaceScoreValidator is a validator for the "performace_score" field. It is called by the builders before save.
 	PerformaceScoreValidator func(float64) error
 )
 
@@ -202,17 +202,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -257,12 +257,12 @@ func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
 }
 
-// ByHireDate orders the results by the hireDate field.
+// ByHireDate orders the results by the hire_date field.
 func ByHireDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldHireDate, opts...).ToFunc()
 }
 
-// ByMonthlySalary orders the results by the monthlySalary field.
+// ByMonthlySalary orders the results by the monthly_salary field.
 func ByMonthlySalary(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMonthlySalary, opts...).ToFunc()
 }
@@ -272,7 +272,7 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByPerformaceScore orders the results by the performaceScore field.
+// ByPerformaceScore orders the results by the performace_score field.
 func ByPerformaceScore(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPerformaceScore, opts...).ToFunc()
 }

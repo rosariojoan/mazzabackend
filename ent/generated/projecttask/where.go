@@ -55,49 +55,24 @@ func IDLTE(id int) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
-func Name(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldName, v))
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// AssigneeName applies equality check predicate on the "assigneeName" field. It's identical to AssigneeNameEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
+func DeletedAt(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldDeletedAt, v))
+}
+
+// AssigneeName applies equality check predicate on the "assignee_name" field. It's identical to AssigneeNameEQ.
 func AssigneeName(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldAssigneeName, v))
-}
-
-// Location applies equality check predicate on the "location" field. It's identical to LocationEQ.
-func Location(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldLocation, v))
-}
-
-// DueDate applies equality check predicate on the "dueDate" field. It's identical to DueDateEQ.
-func DueDate(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldDueDate, v))
-}
-
-// PlannedStartDate applies equality check predicate on the "plannedStartDate" field. It's identical to PlannedStartDateEQ.
-func PlannedStartDate(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldPlannedStartDate, v))
-}
-
-// ActualStartDate applies equality check predicate on the "actualStartDate" field. It's identical to ActualStartDateEQ.
-func ActualStartDate(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldActualStartDate, v))
-}
-
-// PlannedEndDate applies equality check predicate on the "plannedEndDate" field. It's identical to PlannedEndDateEQ.
-func PlannedEndDate(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldPlannedEndDate, v))
-}
-
-// ActualEndDate applies equality check predicate on the "actualEndDate" field. It's identical to ActualEndDateEQ.
-func ActualEndDate(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldActualEndDate, v))
 }
 
 // Description applies equality check predicate on the "description" field. It's identical to DescriptionEQ.
@@ -105,184 +80,389 @@ func Description(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldDescription, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// DueDate applies equality check predicate on the "due_date" field. It's identical to DueDateEQ.
+func DueDate(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldDueDate, v))
+}
+
+// EndDate applies equality check predicate on the "end_date" field. It's identical to EndDateEQ.
+func EndDate(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldEndDate, v))
+}
+
+// Location applies equality check predicate on the "location" field. It's identical to LocationEQ.
+func Location(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldLocation, v))
+}
+
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldName, v))
+}
+
+// StartDate applies equality check predicate on the "start_date" field. It's identical to StartDateEQ.
+func StartDate(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldStartDate, v))
+}
+
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// CreatedAtIsNil applies the IsNil predicate on the "createdAt" field.
-func CreatedAtIsNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIsNull(FieldCreatedAt))
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
+func UpdatedAtEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// CreatedAtNotNil applies the NotNil predicate on the "createdAt" field.
-func CreatedAtNotNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotNull(FieldCreatedAt))
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
+func UpdatedAtNEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// NameEQ applies the EQ predicate on the "name" field.
-func NameEQ(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldName, v))
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
+func UpdatedAtIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// NameNEQ applies the NEQ predicate on the "name" field.
-func NameNEQ(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldName, v))
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// NameIn applies the In predicate on the "name" field.
-func NameIn(vs ...string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldName, vs...))
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
+func UpdatedAtGT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// NameNotIn applies the NotIn predicate on the "name" field.
-func NameNotIn(vs ...string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldName, vs...))
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
+func UpdatedAtGTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// NameGT applies the GT predicate on the "name" field.
-func NameGT(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldName, v))
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
+func UpdatedAtLT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// NameGTE applies the GTE predicate on the "name" field.
-func NameGTE(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldName, v))
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
+func UpdatedAtLTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// NameLT applies the LT predicate on the "name" field.
-func NameLT(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldName, v))
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
+func DeletedAtEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// NameLTE applies the LTE predicate on the "name" field.
-func NameLTE(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldName, v))
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
+func DeletedAtNEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// NameContains applies the Contains predicate on the "name" field.
-func NameContains(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldContains(FieldName, v))
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
+func DeletedAtIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// NameHasPrefix applies the HasPrefix predicate on the "name" field.
-func NameHasPrefix(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldHasPrefix(FieldName, v))
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
+func DeletedAtNotIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// NameHasSuffix applies the HasSuffix predicate on the "name" field.
-func NameHasSuffix(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldHasSuffix(FieldName, v))
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
+func DeletedAtGT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// NameEqualFold applies the EqualFold predicate on the "name" field.
-func NameEqualFold(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEqualFold(FieldName, v))
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
+func DeletedAtGTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// NameContainsFold applies the ContainsFold predicate on the "name" field.
-func NameContainsFold(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldContainsFold(FieldName, v))
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
+func DeletedAtLT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// AssigneeNameEQ applies the EQ predicate on the "assigneeName" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
+func DeletedAtLTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldDeletedAt, v))
+}
+
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
+func DeletedAtIsNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIsNull(FieldDeletedAt))
+}
+
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
+func DeletedAtNotNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotNull(FieldDeletedAt))
+}
+
+// AssigneeNameEQ applies the EQ predicate on the "assignee_name" field.
 func AssigneeNameEQ(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEQ(FieldAssigneeName, v))
 }
 
-// AssigneeNameNEQ applies the NEQ predicate on the "assigneeName" field.
+// AssigneeNameNEQ applies the NEQ predicate on the "assignee_name" field.
 func AssigneeNameNEQ(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldNEQ(FieldAssigneeName, v))
 }
 
-// AssigneeNameIn applies the In predicate on the "assigneeName" field.
+// AssigneeNameIn applies the In predicate on the "assignee_name" field.
 func AssigneeNameIn(vs ...string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldIn(FieldAssigneeName, vs...))
 }
 
-// AssigneeNameNotIn applies the NotIn predicate on the "assigneeName" field.
+// AssigneeNameNotIn applies the NotIn predicate on the "assignee_name" field.
 func AssigneeNameNotIn(vs ...string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldNotIn(FieldAssigneeName, vs...))
 }
 
-// AssigneeNameGT applies the GT predicate on the "assigneeName" field.
+// AssigneeNameGT applies the GT predicate on the "assignee_name" field.
 func AssigneeNameGT(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldGT(FieldAssigneeName, v))
 }
 
-// AssigneeNameGTE applies the GTE predicate on the "assigneeName" field.
+// AssigneeNameGTE applies the GTE predicate on the "assignee_name" field.
 func AssigneeNameGTE(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldGTE(FieldAssigneeName, v))
 }
 
-// AssigneeNameLT applies the LT predicate on the "assigneeName" field.
+// AssigneeNameLT applies the LT predicate on the "assignee_name" field.
 func AssigneeNameLT(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLT(FieldAssigneeName, v))
 }
 
-// AssigneeNameLTE applies the LTE predicate on the "assigneeName" field.
+// AssigneeNameLTE applies the LTE predicate on the "assignee_name" field.
 func AssigneeNameLTE(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldLTE(FieldAssigneeName, v))
 }
 
-// AssigneeNameContains applies the Contains predicate on the "assigneeName" field.
+// AssigneeNameContains applies the Contains predicate on the "assignee_name" field.
 func AssigneeNameContains(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldContains(FieldAssigneeName, v))
 }
 
-// AssigneeNameHasPrefix applies the HasPrefix predicate on the "assigneeName" field.
+// AssigneeNameHasPrefix applies the HasPrefix predicate on the "assignee_name" field.
 func AssigneeNameHasPrefix(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldHasPrefix(FieldAssigneeName, v))
 }
 
-// AssigneeNameHasSuffix applies the HasSuffix predicate on the "assigneeName" field.
+// AssigneeNameHasSuffix applies the HasSuffix predicate on the "assignee_name" field.
 func AssigneeNameHasSuffix(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldHasSuffix(FieldAssigneeName, v))
 }
 
-// AssigneeNameEqualFold applies the EqualFold predicate on the "assigneeName" field.
+// AssigneeNameEqualFold applies the EqualFold predicate on the "assignee_name" field.
 func AssigneeNameEqualFold(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldEqualFold(FieldAssigneeName, v))
 }
 
-// AssigneeNameContainsFold applies the ContainsFold predicate on the "assigneeName" field.
+// AssigneeNameContainsFold applies the ContainsFold predicate on the "assignee_name" field.
 func AssigneeNameContainsFold(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldContainsFold(FieldAssigneeName, v))
+}
+
+// DescriptionEQ applies the EQ predicate on the "description" field.
+func DescriptionEQ(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldDescription, v))
+}
+
+// DescriptionNEQ applies the NEQ predicate on the "description" field.
+func DescriptionNEQ(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldDescription, v))
+}
+
+// DescriptionIn applies the In predicate on the "description" field.
+func DescriptionIn(vs ...string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldDescription, vs...))
+}
+
+// DescriptionNotIn applies the NotIn predicate on the "description" field.
+func DescriptionNotIn(vs ...string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldDescription, vs...))
+}
+
+// DescriptionGT applies the GT predicate on the "description" field.
+func DescriptionGT(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldDescription, v))
+}
+
+// DescriptionGTE applies the GTE predicate on the "description" field.
+func DescriptionGTE(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldDescription, v))
+}
+
+// DescriptionLT applies the LT predicate on the "description" field.
+func DescriptionLT(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldDescription, v))
+}
+
+// DescriptionLTE applies the LTE predicate on the "description" field.
+func DescriptionLTE(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldDescription, v))
+}
+
+// DescriptionContains applies the Contains predicate on the "description" field.
+func DescriptionContains(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldContains(FieldDescription, v))
+}
+
+// DescriptionHasPrefix applies the HasPrefix predicate on the "description" field.
+func DescriptionHasPrefix(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldHasPrefix(FieldDescription, v))
+}
+
+// DescriptionHasSuffix applies the HasSuffix predicate on the "description" field.
+func DescriptionHasSuffix(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldHasSuffix(FieldDescription, v))
+}
+
+// DescriptionIsNil applies the IsNil predicate on the "description" field.
+func DescriptionIsNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIsNull(FieldDescription))
+}
+
+// DescriptionNotNil applies the NotNil predicate on the "description" field.
+func DescriptionNotNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotNull(FieldDescription))
+}
+
+// DescriptionEqualFold applies the EqualFold predicate on the "description" field.
+func DescriptionEqualFold(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEqualFold(FieldDescription, v))
+}
+
+// DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
+func DescriptionContainsFold(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldContainsFold(FieldDescription, v))
+}
+
+// DueDateEQ applies the EQ predicate on the "due_date" field.
+func DueDateEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldDueDate, v))
+}
+
+// DueDateNEQ applies the NEQ predicate on the "due_date" field.
+func DueDateNEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldDueDate, v))
+}
+
+// DueDateIn applies the In predicate on the "due_date" field.
+func DueDateIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldDueDate, vs...))
+}
+
+// DueDateNotIn applies the NotIn predicate on the "due_date" field.
+func DueDateNotIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldDueDate, vs...))
+}
+
+// DueDateGT applies the GT predicate on the "due_date" field.
+func DueDateGT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldDueDate, v))
+}
+
+// DueDateGTE applies the GTE predicate on the "due_date" field.
+func DueDateGTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldDueDate, v))
+}
+
+// DueDateLT applies the LT predicate on the "due_date" field.
+func DueDateLT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldDueDate, v))
+}
+
+// DueDateLTE applies the LTE predicate on the "due_date" field.
+func DueDateLTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldDueDate, v))
+}
+
+// EndDateEQ applies the EQ predicate on the "end_date" field.
+func EndDateEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldEndDate, v))
+}
+
+// EndDateNEQ applies the NEQ predicate on the "end_date" field.
+func EndDateNEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldEndDate, v))
+}
+
+// EndDateIn applies the In predicate on the "end_date" field.
+func EndDateIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldEndDate, vs...))
+}
+
+// EndDateNotIn applies the NotIn predicate on the "end_date" field.
+func EndDateNotIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldEndDate, vs...))
+}
+
+// EndDateGT applies the GT predicate on the "end_date" field.
+func EndDateGT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldEndDate, v))
+}
+
+// EndDateGTE applies the GTE predicate on the "end_date" field.
+func EndDateGTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldEndDate, v))
+}
+
+// EndDateLT applies the LT predicate on the "end_date" field.
+func EndDateLT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldEndDate, v))
+}
+
+// EndDateLTE applies the LTE predicate on the "end_date" field.
+func EndDateLTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldEndDate, v))
+}
+
+// EndDateIsNil applies the IsNil predicate on the "end_date" field.
+func EndDateIsNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIsNull(FieldEndDate))
+}
+
+// EndDateNotNil applies the NotNil predicate on the "end_date" field.
+func EndDateNotNil() predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotNull(FieldEndDate))
 }
 
 // LocationEQ applies the EQ predicate on the "location" field.
@@ -360,309 +540,109 @@ func LocationContainsFold(v string) predicate.ProjectTask {
 	return predicate.ProjectTask(sql.FieldContainsFold(FieldLocation, v))
 }
 
-// DueDateEQ applies the EQ predicate on the "dueDate" field.
-func DueDateEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldDueDate, v))
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldName, v))
 }
 
-// DueDateNEQ applies the NEQ predicate on the "dueDate" field.
-func DueDateNEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldDueDate, v))
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldName, v))
 }
 
-// DueDateIn applies the In predicate on the "dueDate" field.
-func DueDateIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldDueDate, vs...))
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldName, vs...))
 }
 
-// DueDateNotIn applies the NotIn predicate on the "dueDate" field.
-func DueDateNotIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldDueDate, vs...))
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldName, vs...))
 }
 
-// DueDateGT applies the GT predicate on the "dueDate" field.
-func DueDateGT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldDueDate, v))
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldName, v))
 }
 
-// DueDateGTE applies the GTE predicate on the "dueDate" field.
-func DueDateGTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldDueDate, v))
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldName, v))
 }
 
-// DueDateLT applies the LT predicate on the "dueDate" field.
-func DueDateLT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldDueDate, v))
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldName, v))
 }
 
-// DueDateLTE applies the LTE predicate on the "dueDate" field.
-func DueDateLTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldDueDate, v))
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldName, v))
 }
 
-// PlannedStartDateEQ applies the EQ predicate on the "plannedStartDate" field.
-func PlannedStartDateEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldPlannedStartDate, v))
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldContains(FieldName, v))
 }
 
-// PlannedStartDateNEQ applies the NEQ predicate on the "plannedStartDate" field.
-func PlannedStartDateNEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldPlannedStartDate, v))
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldHasPrefix(FieldName, v))
 }
 
-// PlannedStartDateIn applies the In predicate on the "plannedStartDate" field.
-func PlannedStartDateIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldPlannedStartDate, vs...))
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldHasSuffix(FieldName, v))
 }
 
-// PlannedStartDateNotIn applies the NotIn predicate on the "plannedStartDate" field.
-func PlannedStartDateNotIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldPlannedStartDate, vs...))
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEqualFold(FieldName, v))
 }
 
-// PlannedStartDateGT applies the GT predicate on the "plannedStartDate" field.
-func PlannedStartDateGT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldPlannedStartDate, v))
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldContainsFold(FieldName, v))
 }
 
-// PlannedStartDateGTE applies the GTE predicate on the "plannedStartDate" field.
-func PlannedStartDateGTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldPlannedStartDate, v))
+// StartDateEQ applies the EQ predicate on the "start_date" field.
+func StartDateEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldEQ(FieldStartDate, v))
 }
 
-// PlannedStartDateLT applies the LT predicate on the "plannedStartDate" field.
-func PlannedStartDateLT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldPlannedStartDate, v))
+// StartDateNEQ applies the NEQ predicate on the "start_date" field.
+func StartDateNEQ(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNEQ(FieldStartDate, v))
 }
 
-// PlannedStartDateLTE applies the LTE predicate on the "plannedStartDate" field.
-func PlannedStartDateLTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldPlannedStartDate, v))
+// StartDateIn applies the In predicate on the "start_date" field.
+func StartDateIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldIn(FieldStartDate, vs...))
 }
 
-// ActualStartDateEQ applies the EQ predicate on the "actualStartDate" field.
-func ActualStartDateEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldActualStartDate, v))
+// StartDateNotIn applies the NotIn predicate on the "start_date" field.
+func StartDateNotIn(vs ...time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldNotIn(FieldStartDate, vs...))
 }
 
-// ActualStartDateNEQ applies the NEQ predicate on the "actualStartDate" field.
-func ActualStartDateNEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldActualStartDate, v))
+// StartDateGT applies the GT predicate on the "start_date" field.
+func StartDateGT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGT(FieldStartDate, v))
 }
 
-// ActualStartDateIn applies the In predicate on the "actualStartDate" field.
-func ActualStartDateIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldActualStartDate, vs...))
+// StartDateGTE applies the GTE predicate on the "start_date" field.
+func StartDateGTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldGTE(FieldStartDate, v))
 }
 
-// ActualStartDateNotIn applies the NotIn predicate on the "actualStartDate" field.
-func ActualStartDateNotIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldActualStartDate, vs...))
+// StartDateLT applies the LT predicate on the "start_date" field.
+func StartDateLT(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLT(FieldStartDate, v))
 }
 
-// ActualStartDateGT applies the GT predicate on the "actualStartDate" field.
-func ActualStartDateGT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldActualStartDate, v))
-}
-
-// ActualStartDateGTE applies the GTE predicate on the "actualStartDate" field.
-func ActualStartDateGTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldActualStartDate, v))
-}
-
-// ActualStartDateLT applies the LT predicate on the "actualStartDate" field.
-func ActualStartDateLT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldActualStartDate, v))
-}
-
-// ActualStartDateLTE applies the LTE predicate on the "actualStartDate" field.
-func ActualStartDateLTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldActualStartDate, v))
-}
-
-// ActualStartDateIsNil applies the IsNil predicate on the "actualStartDate" field.
-func ActualStartDateIsNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIsNull(FieldActualStartDate))
-}
-
-// ActualStartDateNotNil applies the NotNil predicate on the "actualStartDate" field.
-func ActualStartDateNotNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotNull(FieldActualStartDate))
-}
-
-// PlannedEndDateEQ applies the EQ predicate on the "plannedEndDate" field.
-func PlannedEndDateEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateNEQ applies the NEQ predicate on the "plannedEndDate" field.
-func PlannedEndDateNEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateIn applies the In predicate on the "plannedEndDate" field.
-func PlannedEndDateIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldPlannedEndDate, vs...))
-}
-
-// PlannedEndDateNotIn applies the NotIn predicate on the "plannedEndDate" field.
-func PlannedEndDateNotIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldPlannedEndDate, vs...))
-}
-
-// PlannedEndDateGT applies the GT predicate on the "plannedEndDate" field.
-func PlannedEndDateGT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateGTE applies the GTE predicate on the "plannedEndDate" field.
-func PlannedEndDateGTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateLT applies the LT predicate on the "plannedEndDate" field.
-func PlannedEndDateLT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateLTE applies the LTE predicate on the "plannedEndDate" field.
-func PlannedEndDateLTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldPlannedEndDate, v))
-}
-
-// PlannedEndDateIsNil applies the IsNil predicate on the "plannedEndDate" field.
-func PlannedEndDateIsNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIsNull(FieldPlannedEndDate))
-}
-
-// PlannedEndDateNotNil applies the NotNil predicate on the "plannedEndDate" field.
-func PlannedEndDateNotNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotNull(FieldPlannedEndDate))
-}
-
-// ActualEndDateEQ applies the EQ predicate on the "actualEndDate" field.
-func ActualEndDateEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldActualEndDate, v))
-}
-
-// ActualEndDateNEQ applies the NEQ predicate on the "actualEndDate" field.
-func ActualEndDateNEQ(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldActualEndDate, v))
-}
-
-// ActualEndDateIn applies the In predicate on the "actualEndDate" field.
-func ActualEndDateIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldActualEndDate, vs...))
-}
-
-// ActualEndDateNotIn applies the NotIn predicate on the "actualEndDate" field.
-func ActualEndDateNotIn(vs ...time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldActualEndDate, vs...))
-}
-
-// ActualEndDateGT applies the GT predicate on the "actualEndDate" field.
-func ActualEndDateGT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldActualEndDate, v))
-}
-
-// ActualEndDateGTE applies the GTE predicate on the "actualEndDate" field.
-func ActualEndDateGTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldActualEndDate, v))
-}
-
-// ActualEndDateLT applies the LT predicate on the "actualEndDate" field.
-func ActualEndDateLT(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldActualEndDate, v))
-}
-
-// ActualEndDateLTE applies the LTE predicate on the "actualEndDate" field.
-func ActualEndDateLTE(v time.Time) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldActualEndDate, v))
-}
-
-// ActualEndDateIsNil applies the IsNil predicate on the "actualEndDate" field.
-func ActualEndDateIsNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIsNull(FieldActualEndDate))
-}
-
-// ActualEndDateNotNil applies the NotNil predicate on the "actualEndDate" field.
-func ActualEndDateNotNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotNull(FieldActualEndDate))
-}
-
-// DescriptionEQ applies the EQ predicate on the "description" field.
-func DescriptionEQ(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEQ(FieldDescription, v))
-}
-
-// DescriptionNEQ applies the NEQ predicate on the "description" field.
-func DescriptionNEQ(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNEQ(FieldDescription, v))
-}
-
-// DescriptionIn applies the In predicate on the "description" field.
-func DescriptionIn(vs ...string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIn(FieldDescription, vs...))
-}
-
-// DescriptionNotIn applies the NotIn predicate on the "description" field.
-func DescriptionNotIn(vs ...string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotIn(FieldDescription, vs...))
-}
-
-// DescriptionGT applies the GT predicate on the "description" field.
-func DescriptionGT(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGT(FieldDescription, v))
-}
-
-// DescriptionGTE applies the GTE predicate on the "description" field.
-func DescriptionGTE(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldGTE(FieldDescription, v))
-}
-
-// DescriptionLT applies the LT predicate on the "description" field.
-func DescriptionLT(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLT(FieldDescription, v))
-}
-
-// DescriptionLTE applies the LTE predicate on the "description" field.
-func DescriptionLTE(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldLTE(FieldDescription, v))
-}
-
-// DescriptionContains applies the Contains predicate on the "description" field.
-func DescriptionContains(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldContains(FieldDescription, v))
-}
-
-// DescriptionHasPrefix applies the HasPrefix predicate on the "description" field.
-func DescriptionHasPrefix(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldHasPrefix(FieldDescription, v))
-}
-
-// DescriptionHasSuffix applies the HasSuffix predicate on the "description" field.
-func DescriptionHasSuffix(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldHasSuffix(FieldDescription, v))
-}
-
-// DescriptionIsNil applies the IsNil predicate on the "description" field.
-func DescriptionIsNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldIsNull(FieldDescription))
-}
-
-// DescriptionNotNil applies the NotNil predicate on the "description" field.
-func DescriptionNotNil() predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldNotNull(FieldDescription))
-}
-
-// DescriptionEqualFold applies the EqualFold predicate on the "description" field.
-func DescriptionEqualFold(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldEqualFold(FieldDescription, v))
-}
-
-// DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
-func DescriptionContainsFold(v string) predicate.ProjectTask {
-	return predicate.ProjectTask(sql.FieldContainsFold(FieldDescription, v))
+// StartDateLTE applies the LTE predicate on the "start_date" field.
+func StartDateLTE(v time.Time) predicate.ProjectTask {
+	return predicate.ProjectTask(sql.FieldLTE(FieldStartDate, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
@@ -754,7 +734,7 @@ func HasParticipantsWith(preds ...predicate.User) predicate.ProjectTask {
 	})
 }
 
-// HasCreatedBy applies the HasEdge predicate on the "createdBy" edge.
+// HasCreatedBy applies the HasEdge predicate on the "created_by" edge.
 func HasCreatedBy() predicate.ProjectTask {
 	return predicate.ProjectTask(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -765,7 +745,7 @@ func HasCreatedBy() predicate.ProjectTask {
 	})
 }
 
-// HasCreatedByWith applies the HasEdge predicate on the "createdBy" edge with a given conditions (other predicates).
+// HasCreatedByWith applies the HasEdge predicate on the "created_by" edge with a given conditions (other predicates).
 func HasCreatedByWith(preds ...predicate.User) predicate.ProjectTask {
 	return predicate.ProjectTask(func(s *sql.Selector) {
 		step := newCreatedByStep()
@@ -777,7 +757,7 @@ func HasCreatedByWith(preds ...predicate.User) predicate.ProjectTask {
 	})
 }
 
-// HasWorkShifts applies the HasEdge predicate on the "workShifts" edge.
+// HasWorkShifts applies the HasEdge predicate on the "work_shifts" edge.
 func HasWorkShifts() predicate.ProjectTask {
 	return predicate.ProjectTask(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -788,7 +768,7 @@ func HasWorkShifts() predicate.ProjectTask {
 	})
 }
 
-// HasWorkShiftsWith applies the HasEdge predicate on the "workShifts" edge with a given conditions (other predicates).
+// HasWorkShiftsWith applies the HasEdge predicate on the "work_shifts" edge with a given conditions (other predicates).
 func HasWorkShiftsWith(preds ...predicate.Workshift) predicate.ProjectTask {
 	return predicate.ProjectTask(func(s *sql.Selector) {
 		step := newWorkShiftsStep()

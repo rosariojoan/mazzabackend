@@ -19,26 +19,26 @@ type ProjectTask struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
-	// AssigneeName holds the value of the "assigneeName" field.
-	AssigneeName string `json:"assigneeName,omitempty"`
-	// Where is task will be executed
-	Location string `json:"location,omitempty"`
-	// DueDate holds the value of the "dueDate" field.
-	DueDate time.Time `json:"dueDate,omitempty"`
-	// PlannedStartDate holds the value of the "plannedStartDate" field.
-	PlannedStartDate time.Time `json:"plannedStartDate,omitempty" plannedStartDate`
-	// ActualStartDate holds the value of the "actualStartDate" field.
-	ActualStartDate *time.Time `json:"actualStartDate,omitempty" actualStartDate`
-	// PlannedEndDate holds the value of the "plannedEndDate" field.
-	PlannedEndDate *time.Time `json:"plannedEndDate,omitempty" plannedEndDate`
-	// ActualEndDate holds the value of the "actualEndDate" field.
-	ActualEndDate *time.Time `json:"actualEndDate,omitempty" actualEndDate`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// AssigneeName holds the value of the "assignee_name" field.
+	AssigneeName string `json:"assignee_name,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
+	// DueDate holds the value of the "due_date" field.
+	DueDate time.Time `json:"due_date,omitempty"`
+	// EndDate holds the value of the "end_date" field.
+	EndDate *time.Time `json:"end_date,omitempty"`
+	// Where is task will be executed
+	Location string `json:"location,omitempty"`
+	// Name holds the value of the "name" field.
+	Name string `json:"name,omitempty"`
+	// StartDate holds the value of the "start_date" field.
+	StartDate time.Time `json:"start_date,omitempty"`
 	// Status holds the value of the "status" field.
 	Status projecttask.Status `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -58,10 +58,10 @@ type ProjectTaskEdges struct {
 	Assignee *User `json:"assignee,omitempty"`
 	// Participants holds the value of the participants edge.
 	Participants []*User `json:"participants,omitempty"`
-	// CreatedBy holds the value of the createdBy edge.
-	CreatedBy *User `json:"createdBy,omitempty"`
-	// WorkShifts holds the value of the workShifts edge.
-	WorkShifts []*Workshift `json:"workShifts,omitempty"`
+	// CreatedBy holds the value of the created_by edge.
+	CreatedBy *User `json:"created_by,omitempty"`
+	// WorkShifts holds the value of the work_shifts edge.
+	WorkShifts []*Workshift `json:"work_shifts,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [5]bool
@@ -111,7 +111,7 @@ func (e ProjectTaskEdges) CreatedByOrErr() (*User, error) {
 	} else if e.loadedTypes[3] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "createdBy"}
+	return nil, &NotLoadedError{edge: "created_by"}
 }
 
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
@@ -120,7 +120,7 @@ func (e ProjectTaskEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 	if e.loadedTypes[4] {
 		return e.WorkShifts, nil
 	}
-	return nil, &NotLoadedError{edge: "workShifts"}
+	return nil, &NotLoadedError{edge: "work_shifts"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -130,9 +130,9 @@ func (*ProjectTask) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case projecttask.FieldID:
 			values[i] = new(sql.NullInt64)
-		case projecttask.FieldName, projecttask.FieldAssigneeName, projecttask.FieldLocation, projecttask.FieldDescription, projecttask.FieldStatus:
+		case projecttask.FieldAssigneeName, projecttask.FieldDescription, projecttask.FieldLocation, projecttask.FieldName, projecttask.FieldStatus:
 			values[i] = new(sql.NullString)
-		case projecttask.FieldCreatedAt, projecttask.FieldDueDate, projecttask.FieldPlannedStartDate, projecttask.FieldActualStartDate, projecttask.FieldPlannedEndDate, projecttask.FieldActualEndDate:
+		case projecttask.FieldCreatedAt, projecttask.FieldUpdatedAt, projecttask.FieldDeletedAt, projecttask.FieldDueDate, projecttask.FieldEndDate, projecttask.FieldStartDate:
 			values[i] = new(sql.NullTime)
 		case projecttask.ForeignKeys[0]: // project_tasks
 			values[i] = new(sql.NullInt64)
@@ -163,21 +163,47 @@ func (pt *ProjectTask) assignValues(columns []string, values []any) error {
 			pt.ID = int(value.Int64)
 		case projecttask.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				pt.CreatedAt = value.Time
 			}
-		case projecttask.FieldName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
+		case projecttask.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				pt.Name = value.String
+				pt.UpdatedAt = value.Time
+			}
+		case projecttask.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				pt.DeletedAt = new(time.Time)
+				*pt.DeletedAt = value.Time
 			}
 		case projecttask.FieldAssigneeName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field assigneeName", values[i])
+				return fmt.Errorf("unexpected type %T for field assignee_name", values[i])
 			} else if value.Valid {
 				pt.AssigneeName = value.String
+			}
+		case projecttask.FieldDescription:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field description", values[i])
+			} else if value.Valid {
+				pt.Description = value.String
+			}
+		case projecttask.FieldDueDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field due_date", values[i])
+			} else if value.Valid {
+				pt.DueDate = value.Time
+			}
+		case projecttask.FieldEndDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field end_date", values[i])
+			} else if value.Valid {
+				pt.EndDate = new(time.Time)
+				*pt.EndDate = value.Time
 			}
 		case projecttask.FieldLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -185,44 +211,17 @@ func (pt *ProjectTask) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pt.Location = value.String
 			}
-		case projecttask.FieldDueDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field dueDate", values[i])
-			} else if value.Valid {
-				pt.DueDate = value.Time
-			}
-		case projecttask.FieldPlannedStartDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field plannedStartDate", values[i])
-			} else if value.Valid {
-				pt.PlannedStartDate = value.Time
-			}
-		case projecttask.FieldActualStartDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field actualStartDate", values[i])
-			} else if value.Valid {
-				pt.ActualStartDate = new(time.Time)
-				*pt.ActualStartDate = value.Time
-			}
-		case projecttask.FieldPlannedEndDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field plannedEndDate", values[i])
-			} else if value.Valid {
-				pt.PlannedEndDate = new(time.Time)
-				*pt.PlannedEndDate = value.Time
-			}
-		case projecttask.FieldActualEndDate:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field actualEndDate", values[i])
-			} else if value.Valid {
-				pt.ActualEndDate = new(time.Time)
-				*pt.ActualEndDate = value.Time
-			}
-		case projecttask.FieldDescription:
+		case projecttask.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field description", values[i])
+				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				pt.Description = value.String
+				pt.Name = value.String
+			}
+		case projecttask.FieldStartDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field start_date", values[i])
+			} else if value.Valid {
+				pt.StartDate = value.Time
 			}
 		case projecttask.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -279,12 +278,12 @@ func (pt *ProjectTask) QueryParticipants() *UserQuery {
 	return NewProjectTaskClient(pt.config).QueryParticipants(pt)
 }
 
-// QueryCreatedBy queries the "createdBy" edge of the ProjectTask entity.
+// QueryCreatedBy queries the "created_by" edge of the ProjectTask entity.
 func (pt *ProjectTask) QueryCreatedBy() *UserQuery {
 	return NewProjectTaskClient(pt.config).QueryCreatedBy(pt)
 }
 
-// QueryWorkShifts queries the "workShifts" edge of the ProjectTask entity.
+// QueryWorkShifts queries the "work_shifts" edge of the ProjectTask entity.
 func (pt *ProjectTask) QueryWorkShifts() *WorkshiftQuery {
 	return NewProjectTaskClient(pt.config).QueryWorkShifts(pt)
 }
@@ -312,41 +311,39 @@ func (pt *ProjectTask) String() string {
 	var builder strings.Builder
 	builder.WriteString("ProjectTask(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", pt.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(pt.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(pt.Name)
+	builder.WriteString("updated_at=")
+	builder.WriteString(pt.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("assigneeName=")
+	if v := pt.DeletedAt; v != nil {
+		builder.WriteString("deleted_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("assignee_name=")
 	builder.WriteString(pt.AssigneeName)
+	builder.WriteString(", ")
+	builder.WriteString("description=")
+	builder.WriteString(pt.Description)
+	builder.WriteString(", ")
+	builder.WriteString("due_date=")
+	builder.WriteString(pt.DueDate.Format(time.ANSIC))
+	builder.WriteString(", ")
+	if v := pt.EndDate; v != nil {
+		builder.WriteString("end_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("location=")
 	builder.WriteString(pt.Location)
 	builder.WriteString(", ")
-	builder.WriteString("dueDate=")
-	builder.WriteString(pt.DueDate.Format(time.ANSIC))
+	builder.WriteString("name=")
+	builder.WriteString(pt.Name)
 	builder.WriteString(", ")
-	builder.WriteString("plannedStartDate=")
-	builder.WriteString(pt.PlannedStartDate.Format(time.ANSIC))
-	builder.WriteString(", ")
-	if v := pt.ActualStartDate; v != nil {
-		builder.WriteString("actualStartDate=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pt.PlannedEndDate; v != nil {
-		builder.WriteString("plannedEndDate=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := pt.ActualEndDate; v != nil {
-		builder.WriteString("actualEndDate=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("description=")
-	builder.WriteString(pt.Description)
+	builder.WriteString("start_date=")
+	builder.WriteString(pt.StartDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", pt.Status))

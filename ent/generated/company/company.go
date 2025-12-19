@@ -14,23 +14,23 @@ const (
 	Label = "company"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
-	// FieldBaseCurrency holds the string denoting the basecurrency field in the database.
+	// FieldBaseCurrency holds the string denoting the base_currency field in the database.
 	FieldBaseCurrency = "base_currency"
-	// FieldCeoName holds the string denoting the ceoname field in the database.
+	// FieldCeoName holds the string denoting the ceo_name field in the database.
 	FieldCeoName = "ceo_name"
 	// FieldCity holds the string denoting the city field in the database.
 	FieldCity = "city"
 	// FieldCountry holds the string denoting the country field in the database.
 	FieldCountry = "country"
-	// FieldEstablishedAt holds the string denoting the establishedat field in the database.
+	// FieldEstablishedAt holds the string denoting the established_at field in the database.
 	FieldEstablishedAt = "established_at"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
@@ -38,32 +38,32 @@ const (
 	FieldEmail = "email"
 	// FieldIndustry holds the string denoting the industry field in the database.
 	FieldIndustry = "industry"
-	// FieldLastEntryDate holds the string denoting the lastentrydate field in the database.
+	// FieldLastEntryDate holds the string denoting the last_entry_date field in the database.
 	FieldLastEntryDate = "last_entry_date"
-	// FieldLastInvoiceNumber holds the string denoting the lastinvoicenumber field in the database.
+	// FieldLastInvoiceNumber holds the string denoting the last_invoice_number field in the database.
 	FieldLastInvoiceNumber = "last_invoice_number"
-	// FieldLogoURL holds the string denoting the logourl field in the database.
+	// FieldLogoURL holds the string denoting the logo_url field in the database.
 	FieldLogoURL = "logo_url"
-	// FieldLogoStorageURI holds the string denoting the logostorageuri field in the database.
+	// FieldLogoStorageURI holds the string denoting the logo_storage_uri field in the database.
 	FieldLogoStorageURI = "logo_storage_uri"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldNumberOfEmployees holds the string denoting the numberofemployees field in the database.
-	FieldNumberOfEmployees = "number_of_employees"
+	// FieldNumberEmployees holds the string denoting the number_employees field in the database.
+	FieldNumberEmployees = "number_employees"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
-	// FieldTaxId holds the string denoting the taxid field in the database.
-	FieldTaxId = "tax_id"
-	// FieldVatRate holds the string denoting the vatrate field in the database.
+	// FieldTaxID holds the string denoting the tax_id field in the database.
+	FieldTaxID = "tax_id"
+	// FieldVatRate holds the string denoting the vat_rate field in the database.
 	FieldVatRate = "vat_rate"
 	// FieldWebsite holds the string denoting the website field in the database.
 	FieldWebsite = "website"
-	// FieldIncompleteSetup holds the string denoting the incompletesetup field in the database.
+	// FieldIncompleteSetup holds the string denoting the incomplete_setup field in the database.
 	FieldIncompleteSetup = "incomplete_setup"
-	// EdgeAvailableRoles holds the string denoting the availableroles edge name in mutations.
-	EdgeAvailableRoles = "availableRoles"
-	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
-	EdgeAccountingEntries = "accountingEntries"
+	// EdgeAvailableRoles holds the string denoting the available_roles edge name in mutations.
+	EdgeAvailableRoles = "available_roles"
+	// EdgeAccountingEntries holds the string denoting the accounting_entries edge name in mutations.
+	EdgeAccountingEntries = "accounting_entries"
 	// EdgeCustomers holds the string denoting the customers edge name in mutations.
 	EdgeCustomers = "customers"
 	// EdgeDocuments holds the string denoting the documents edge name in mutations.
@@ -74,16 +74,16 @@ const (
 	EdgeFiles = "files"
 	// EdgeInventory holds the string denoting the inventory edge name in mutations.
 	EdgeInventory = "inventory"
-	// EdgeInventoryMovements holds the string denoting the inventorymovements edge name in mutations.
-	EdgeInventoryMovements = "inventoryMovements"
+	// EdgeInventoryMovements holds the string denoting the inventory_movements edge name in mutations.
+	EdgeInventoryMovements = "inventory_movements"
 	// EdgeInvoices holds the string denoting the invoices edge name in mutations.
 	EdgeInvoices = "invoices"
 	// EdgeLoans holds the string denoting the loans edge name in mutations.
 	EdgeLoans = "loans"
 	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
 	EdgeLoanSchedule = "loan_schedule"
-	// EdgeMemberSignupTokens holds the string denoting the membersignuptokens edge name in mutations.
-	EdgeMemberSignupTokens = "memberSignupTokens"
+	// EdgeMemberSignupTokens holds the string denoting the member_signup_tokens edge name in mutations.
+	EdgeMemberSignupTokens = "member_signup_tokens"
 	// EdgeProducts holds the string denoting the products edge name in mutations.
 	EdgeProducts = "products"
 	// EdgeProjects holds the string denoting the projects edge name in mutations.
@@ -98,29 +98,29 @@ const (
 	EdgeTokens = "tokens"
 	// EdgeTreasuries holds the string denoting the treasuries edge name in mutations.
 	EdgeTreasuries = "treasuries"
-	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
-	EdgeWorkShifts = "workShifts"
+	// EdgeWorkShifts holds the string denoting the work_shifts edge name in mutations.
+	EdgeWorkShifts = "work_shifts"
 	// EdgeUsers holds the string denoting the users edge name in mutations.
 	EdgeUsers = "users"
-	// EdgeDaughterCompanies holds the string denoting the daughtercompanies edge name in mutations.
-	EdgeDaughterCompanies = "daughterCompanies"
-	// EdgeParentCompany holds the string denoting the parentcompany edge name in mutations.
-	EdgeParentCompany = "parentCompany"
+	// EdgeDaughterCompanies holds the string denoting the daughter_companies edge name in mutations.
+	EdgeDaughterCompanies = "daughter_companies"
+	// EdgeParentCompany holds the string denoting the parent_company edge name in mutations.
+	EdgeParentCompany = "parent_company"
 	// Table holds the table name of the company in the database.
 	Table = "companies"
-	// AvailableRolesTable is the table that holds the availableRoles relation/edge.
+	// AvailableRolesTable is the table that holds the available_roles relation/edge.
 	AvailableRolesTable = "user_roles"
 	// AvailableRolesInverseTable is the table name for the UserRole entity.
 	// It exists in this package in order to avoid circular dependency with the "userrole" package.
 	AvailableRolesInverseTable = "user_roles"
-	// AvailableRolesColumn is the table column denoting the availableRoles relation/edge.
+	// AvailableRolesColumn is the table column denoting the available_roles relation/edge.
 	AvailableRolesColumn = "company_available_roles"
-	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
+	// AccountingEntriesTable is the table that holds the accounting_entries relation/edge.
 	AccountingEntriesTable = "accounting_entries"
 	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
 	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
 	AccountingEntriesInverseTable = "accounting_entries"
-	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
+	// AccountingEntriesColumn is the table column denoting the accounting_entries relation/edge.
 	AccountingEntriesColumn = "company_accounting_entries"
 	// CustomersTable is the table that holds the customers relation/edge.
 	CustomersTable = "customers"
@@ -157,12 +157,12 @@ const (
 	InventoryInverseTable = "inventories"
 	// InventoryColumn is the table column denoting the inventory relation/edge.
 	InventoryColumn = "company_inventory"
-	// InventoryMovementsTable is the table that holds the inventoryMovements relation/edge.
+	// InventoryMovementsTable is the table that holds the inventory_movements relation/edge.
 	InventoryMovementsTable = "inventory_movements"
 	// InventoryMovementsInverseTable is the table name for the InventoryMovement entity.
 	// It exists in this package in order to avoid circular dependency with the "inventorymovement" package.
 	InventoryMovementsInverseTable = "inventory_movements"
-	// InventoryMovementsColumn is the table column denoting the inventoryMovements relation/edge.
+	// InventoryMovementsColumn is the table column denoting the inventory_movements relation/edge.
 	InventoryMovementsColumn = "company_inventory_movements"
 	// InvoicesTable is the table that holds the invoices relation/edge.
 	InvoicesTable = "invoices"
@@ -185,12 +185,12 @@ const (
 	LoanScheduleInverseTable = "loan_schedules"
 	// LoanScheduleColumn is the table column denoting the loan_schedule relation/edge.
 	LoanScheduleColumn = "company_loan_schedule"
-	// MemberSignupTokensTable is the table that holds the memberSignupTokens relation/edge.
+	// MemberSignupTokensTable is the table that holds the member_signup_tokens relation/edge.
 	MemberSignupTokensTable = "member_signup_tokens"
 	// MemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
 	// It exists in this package in order to avoid circular dependency with the "membersignuptoken" package.
 	MemberSignupTokensInverseTable = "member_signup_tokens"
-	// MemberSignupTokensColumn is the table column denoting the memberSignupTokens relation/edge.
+	// MemberSignupTokensColumn is the table column denoting the member_signup_tokens relation/edge.
 	MemberSignupTokensColumn = "company_member_signup_tokens"
 	// ProductsTable is the table that holds the products relation/edge.
 	ProductsTable = "products"
@@ -241,25 +241,25 @@ const (
 	TreasuriesInverseTable = "treasuries"
 	// TreasuriesColumn is the table column denoting the treasuries relation/edge.
 	TreasuriesColumn = "company_treasuries"
-	// WorkShiftsTable is the table that holds the workShifts relation/edge.
+	// WorkShiftsTable is the table that holds the work_shifts relation/edge.
 	WorkShiftsTable = "workshifts"
 	// WorkShiftsInverseTable is the table name for the Workshift entity.
 	// It exists in this package in order to avoid circular dependency with the "workshift" package.
 	WorkShiftsInverseTable = "workshifts"
-	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
+	// WorkShiftsColumn is the table column denoting the work_shifts relation/edge.
 	WorkShiftsColumn = "company_work_shifts"
 	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
 	UsersTable = "company_users"
 	// UsersInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	UsersInverseTable = "users"
-	// DaughterCompaniesTable is the table that holds the daughterCompanies relation/edge.
+	// DaughterCompaniesTable is the table that holds the daughter_companies relation/edge.
 	DaughterCompaniesTable = "companies"
-	// DaughterCompaniesColumn is the table column denoting the daughterCompanies relation/edge.
+	// DaughterCompaniesColumn is the table column denoting the daughter_companies relation/edge.
 	DaughterCompaniesColumn = "company_daughter_companies"
-	// ParentCompanyTable is the table that holds the parentCompany relation/edge.
+	// ParentCompanyTable is the table that holds the parent_company relation/edge.
 	ParentCompanyTable = "companies"
-	// ParentCompanyColumn is the table column denoting the parentCompany relation/edge.
+	// ParentCompanyColumn is the table column denoting the parent_company relation/edge.
 	ParentCompanyColumn = "company_daughter_companies"
 )
 
@@ -283,9 +283,9 @@ var Columns = []string{
 	FieldLogoURL,
 	FieldLogoStorageURI,
 	FieldName,
-	FieldNumberOfEmployees,
+	FieldNumberEmployees,
 	FieldPhone,
-	FieldTaxId,
+	FieldTaxID,
 	FieldVatRate,
 	FieldWebsite,
 	FieldIncompleteSetup,
@@ -319,25 +319,25 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultBaseCurrency holds the default value on creation for the "baseCurrency" field.
+	// DefaultBaseCurrency holds the default value on creation for the "base_currency" field.
 	DefaultBaseCurrency string
-	// DefaultLastInvoiceNumber holds the default value on creation for the "lastInvoiceNumber" field.
+	// DefaultLastInvoiceNumber holds the default value on creation for the "last_invoice_number" field.
 	DefaultLastInvoiceNumber int32
-	// LastInvoiceNumberValidator is a validator for the "lastInvoiceNumber" field. It is called by the builders before save.
+	// LastInvoiceNumberValidator is a validator for the "last_invoice_number" field. It is called by the builders before save.
 	LastInvoiceNumberValidator func(int32) error
-	// DefaultNumberOfEmployees holds the default value on creation for the "numberOfEmployees" field.
-	DefaultNumberOfEmployees int32
-	// NumberOfEmployeesValidator is a validator for the "numberOfEmployees" field. It is called by the builders before save.
-	NumberOfEmployeesValidator func(int32) error
-	// DefaultVatRate holds the default value on creation for the "vatRate" field.
+	// DefaultNumberEmployees holds the default value on creation for the "number_employees" field.
+	DefaultNumberEmployees int32
+	// NumberEmployeesValidator is a validator for the "number_employees" field. It is called by the builders before save.
+	NumberEmployeesValidator func(int32) error
+	// DefaultVatRate holds the default value on creation for the "vat_rate" field.
 	DefaultVatRate float64
-	// DefaultIncompleteSetup holds the default value on creation for the "incompleteSetup" field.
+	// DefaultIncompleteSetup holds the default value on creation for the "incomplete_setup" field.
 	DefaultIncompleteSetup bool
 )
 
@@ -349,17 +349,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -369,12 +369,12 @@ func ByAddress(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAddress, opts...).ToFunc()
 }
 
-// ByBaseCurrency orders the results by the baseCurrency field.
+// ByBaseCurrency orders the results by the base_currency field.
 func ByBaseCurrency(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBaseCurrency, opts...).ToFunc()
 }
 
-// ByCeoName orders the results by the ceoName field.
+// ByCeoName orders the results by the ceo_name field.
 func ByCeoName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCeoName, opts...).ToFunc()
 }
@@ -389,7 +389,7 @@ func ByCountry(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCountry, opts...).ToFunc()
 }
 
-// ByEstablishedAt orders the results by the establishedAt field.
+// ByEstablishedAt orders the results by the established_at field.
 func ByEstablishedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEstablishedAt, opts...).ToFunc()
 }
@@ -409,22 +409,22 @@ func ByIndustry(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIndustry, opts...).ToFunc()
 }
 
-// ByLastEntryDate orders the results by the lastEntryDate field.
+// ByLastEntryDate orders the results by the last_entry_date field.
 func ByLastEntryDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastEntryDate, opts...).ToFunc()
 }
 
-// ByLastInvoiceNumber orders the results by the lastInvoiceNumber field.
+// ByLastInvoiceNumber orders the results by the last_invoice_number field.
 func ByLastInvoiceNumber(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastInvoiceNumber, opts...).ToFunc()
 }
 
-// ByLogoURL orders the results by the logoURL field.
+// ByLogoURL orders the results by the logo_URL field.
 func ByLogoURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLogoURL, opts...).ToFunc()
 }
 
-// ByLogoStorageURI orders the results by the logoStorageURI field.
+// ByLogoStorageURI orders the results by the logo_storage_URI field.
 func ByLogoStorageURI(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLogoStorageURI, opts...).ToFunc()
 }
@@ -434,9 +434,9 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByNumberOfEmployees orders the results by the numberOfEmployees field.
-func ByNumberOfEmployees(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNumberOfEmployees, opts...).ToFunc()
+// ByNumberEmployees orders the results by the number_employees field.
+func ByNumberEmployees(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNumberEmployees, opts...).ToFunc()
 }
 
 // ByPhone orders the results by the phone field.
@@ -444,12 +444,12 @@ func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
 }
 
-// ByTaxId orders the results by the taxId field.
-func ByTaxId(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTaxId, opts...).ToFunc()
+// ByTaxID orders the results by the tax_id field.
+func ByTaxID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTaxID, opts...).ToFunc()
 }
 
-// ByVatRate orders the results by the vatRate field.
+// ByVatRate orders the results by the vat_rate field.
 func ByVatRate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldVatRate, opts...).ToFunc()
 }
@@ -459,33 +459,33 @@ func ByWebsite(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWebsite, opts...).ToFunc()
 }
 
-// ByIncompleteSetup orders the results by the incompleteSetup field.
+// ByIncompleteSetup orders the results by the incomplete_setup field.
 func ByIncompleteSetup(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIncompleteSetup, opts...).ToFunc()
 }
 
-// ByAvailableRolesCount orders the results by availableRoles count.
+// ByAvailableRolesCount orders the results by available_roles count.
 func ByAvailableRolesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newAvailableRolesStep(), opts...)
 	}
 }
 
-// ByAvailableRoles orders the results by availableRoles terms.
+// ByAvailableRoles orders the results by available_roles terms.
 func ByAvailableRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newAvailableRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByAccountingEntriesCount orders the results by accountingEntries count.
+// ByAccountingEntriesCount orders the results by accounting_entries count.
 func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
 	}
 }
 
-// ByAccountingEntries orders the results by accountingEntries terms.
+// ByAccountingEntries orders the results by accounting_entries terms.
 func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -562,14 +562,14 @@ func ByInventory(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByInventoryMovementsCount orders the results by inventoryMovements count.
+// ByInventoryMovementsCount orders the results by inventory_movements count.
 func ByInventoryMovementsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newInventoryMovementsStep(), opts...)
 	}
 }
 
-// ByInventoryMovements orders the results by inventoryMovements terms.
+// ByInventoryMovements orders the results by inventory_movements terms.
 func ByInventoryMovements(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newInventoryMovementsStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -618,14 +618,14 @@ func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByMemberSignupTokensCount orders the results by memberSignupTokens count.
+// ByMemberSignupTokensCount orders the results by member_signup_tokens count.
 func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newMemberSignupTokensStep(), opts...)
 	}
 }
 
-// ByMemberSignupTokens orders the results by memberSignupTokens terms.
+// ByMemberSignupTokens orders the results by member_signup_tokens terms.
 func ByMemberSignupTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newMemberSignupTokensStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -730,14 +730,14 @@ func ByTreasuries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByWorkShiftsCount orders the results by workShifts count.
+// ByWorkShiftsCount orders the results by work_shifts count.
 func ByWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newWorkShiftsStep(), opts...)
 	}
 }
 
-// ByWorkShifts orders the results by workShifts terms.
+// ByWorkShifts orders the results by work_shifts terms.
 func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -758,21 +758,21 @@ func ByUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByDaughterCompaniesCount orders the results by daughterCompanies count.
+// ByDaughterCompaniesCount orders the results by daughter_companies count.
 func ByDaughterCompaniesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newDaughterCompaniesStep(), opts...)
 	}
 }
 
-// ByDaughterCompanies orders the results by daughterCompanies terms.
+// ByDaughterCompanies orders the results by daughter_companies terms.
 func ByDaughterCompanies(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newDaughterCompaniesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByParentCompanyField orders the results by parentCompany field.
+// ByParentCompanyField orders the results by parent_company field.
 func ByParentCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newParentCompanyStep(), sql.OrderByField(field, opts...))

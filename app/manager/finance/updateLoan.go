@@ -7,6 +7,7 @@ import (
 	"mazza/ent/generated"
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
 )
@@ -27,6 +28,23 @@ func UpdateLoan(ctx context.Context, client *generated.Client, input model.Updat
 		_ = tx.Rollback()
 		fmt.Println(err)
 		return nil, fmt.Errorf("an error occurred")
+	}
+
+	for _, item := range input.InstallmentUpdate {
+		amountPaid := item.InterestPaid + item.PrincipalPaid
+		_, err = tx.LoanSchedule.UpdateOneID(item.ID).
+			Where(
+				loanschedule.HasLoanWith(
+					loan.ID(input.ID))).
+			SetAmountPaid(amountPaid).
+			SetDatePaid(item.Date).
+			SetStatus(item.Status).
+			Save(ctx)
+		if err != nil {
+			_ = tx.Rollback()
+			fmt.Println(err)
+			return nil, fmt.Errorf("an error occurred")
+		}
 	}
 
 	if input.AccountingEntry != nil {

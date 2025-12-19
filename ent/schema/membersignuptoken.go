@@ -29,11 +29,11 @@ func (MemberSignupToken) Fields() []ent.Field {
 		field.String("avatar").Nillable().Comment("Must be an emoji"),
 		field.Enum("role").Values(userRoles...),
 		field.String("note").Comment("A description about the user and its role of this user"),
-		field.Int("numberAccessed").Default(0).NonNegative().
+		field.Int("number_accessed").Default(0).NonNegative().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
-		field.Time("expiresAt").
+		field.Time("expires_at").
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
-		field.Bool("alreadyUsed").Default(false).
+		field.Bool("already_used").Default(false).
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
 	}
 }
@@ -41,9 +41,9 @@ func (MemberSignupToken) Fields() []ent.Field {
 // Edges of the MemberSignupToken.
 func (MemberSignupToken) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("memberSignupTokens").Unique().Required().
+		edge.From("company", Company.Type).Ref("member_signup_tokens").Unique().Required().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput)), // one company can own multiple tokens
-		edge.From("createdBy", User.Type).Ref("createdMemberSignupTokens").Unique().
+		edge.From("created_by", User.Type).Ref("created_member_signup_tokens").Unique().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput)), // one user can create multiple tokens
 	}
 }

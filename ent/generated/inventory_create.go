@@ -22,13 +22,13 @@ type InventoryCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (ic *InventoryCreate) SetCreatedAt(t time.Time) *InventoryCreate {
 	ic.mutation.SetCreatedAt(t)
 	return ic
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (ic *InventoryCreate) SetNillableCreatedAt(t *time.Time) *InventoryCreate {
 	if t != nil {
 		ic.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (ic *InventoryCreate) SetNillableCreatedAt(t *time.Time) *InventoryCreate {
 	return ic
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (ic *InventoryCreate) SetUpdatedAt(t time.Time) *InventoryCreate {
 	ic.mutation.SetUpdatedAt(t)
 	return ic
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (ic *InventoryCreate) SetNillableUpdatedAt(t *time.Time) *InventoryCreate {
 	if t != nil {
 		ic.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (ic *InventoryCreate) SetNillableUpdatedAt(t *time.Time) *InventoryCreate {
 	return ic
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (ic *InventoryCreate) SetDeletedAt(t time.Time) *InventoryCreate {
 	ic.mutation.SetDeletedAt(t)
 	return ic
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (ic *InventoryCreate) SetNillableDeletedAt(t *time.Time) *InventoryCreate {
 	if t != nil {
 		ic.SetDeletedAt(*t)
@@ -88,13 +88,13 @@ func (ic *InventoryCreate) SetUnit(s string) *InventoryCreate {
 	return ic
 }
 
-// SetMinimumLevel sets the "minimumLevel" field.
+// SetMinimumLevel sets the "minimum_level" field.
 func (ic *InventoryCreate) SetMinimumLevel(f float64) *InventoryCreate {
 	ic.mutation.SetMinimumLevel(f)
 	return ic
 }
 
-// SetCurrentValue sets the "currentValue" field.
+// SetCurrentValue sets the "current_value" field.
 func (ic *InventoryCreate) SetCurrentValue(f float64) *InventoryCreate {
 	ic.mutation.SetCurrentValue(f)
 	return ic
@@ -180,10 +180,10 @@ func (ic *InventoryCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ic *InventoryCreate) check() error {
 	if _, ok := ic.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Inventory.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Inventory.created_at"`)}
 	}
 	if _, ok := ic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Inventory.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Inventory.updated_at"`)}
 	}
 	if _, ok := ic.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Inventory.name"`)}
@@ -213,19 +213,19 @@ func (ic *InventoryCreate) check() error {
 		return &ValidationError{Name: "unit", err: errors.New(`generated: missing required field "Inventory.unit"`)}
 	}
 	if _, ok := ic.mutation.MinimumLevel(); !ok {
-		return &ValidationError{Name: "minimumLevel", err: errors.New(`generated: missing required field "Inventory.minimumLevel"`)}
+		return &ValidationError{Name: "minimum_level", err: errors.New(`generated: missing required field "Inventory.minimum_level"`)}
 	}
 	if v, ok := ic.mutation.MinimumLevel(); ok {
 		if err := inventory.MinimumLevelValidator(v); err != nil {
-			return &ValidationError{Name: "minimumLevel", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimumLevel": %w`, err)}
+			return &ValidationError{Name: "minimum_level", err: fmt.Errorf(`generated: validator failed for field "Inventory.minimum_level": %w`, err)}
 		}
 	}
 	if _, ok := ic.mutation.CurrentValue(); !ok {
-		return &ValidationError{Name: "currentValue", err: errors.New(`generated: missing required field "Inventory.currentValue"`)}
+		return &ValidationError{Name: "current_value", err: errors.New(`generated: missing required field "Inventory.current_value"`)}
 	}
 	if v, ok := ic.mutation.CurrentValue(); ok {
 		if err := inventory.CurrentValueValidator(v); err != nil {
-			return &ValidationError{Name: "currentValue", err: fmt.Errorf(`generated: validator failed for field "Inventory.currentValue": %w`, err)}
+			return &ValidationError{Name: "current_value", err: fmt.Errorf(`generated: validator failed for field "Inventory.current_value": %w`, err)}
 		}
 	}
 	if _, ok := ic.mutation.Notes(); !ok {

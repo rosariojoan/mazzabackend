@@ -212,9 +212,9 @@ type CreateCompanyInput struct {
 	LastEntryDate        *time.Time
 	LastInvoiceNumber    *int32
 	Name                 string
-	NumberOfEmployees    *int32
+	NumberEmployees      *int32
 	Phone                *string
-	TaxId                *string
+	TaxID                *string
 	VatRate              *float64
 	Website              *string
 	IncompleteSetup      *bool
@@ -273,14 +273,14 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 		m.SetLastInvoiceNumber(*v)
 	}
 	m.SetName(i.Name)
-	if v := i.NumberOfEmployees; v != nil {
-		m.SetNumberOfEmployees(*v)
+	if v := i.NumberEmployees; v != nil {
+		m.SetNumberEmployees(*v)
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 	if v := i.VatRate; v != nil {
 		m.SetVatRate(*v)
@@ -389,11 +389,11 @@ type UpdateCompanyInput struct {
 	ClearLastInvoiceNumber     bool
 	LastInvoiceNumber          *int32
 	Name                       *string
-	NumberOfEmployees          *int32
+	NumberEmployees            *int32
 	ClearPhone                 bool
 	Phone                      *string
-	ClearTaxId                 bool
-	TaxId                      *string
+	ClearTaxID                 bool
+	TaxID                      *string
 	VatRate                    *float64
 	ClearWebsite               bool
 	Website                    *string
@@ -528,8 +528,8 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if v := i.NumberOfEmployees; v != nil {
-		m.SetNumberOfEmployees(*v)
+	if v := i.NumberEmployees; v != nil {
+		m.SetNumberEmployees(*v)
 	}
 	if i.ClearPhone {
 		m.ClearPhone()
@@ -537,11 +537,11 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if i.ClearTaxId {
-		m.ClearTaxId()
+	if i.ClearTaxID {
+		m.ClearTaxID()
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 	if v := i.VatRate; v != nil {
 		m.SetVatRate(*v)
@@ -909,7 +909,7 @@ type CreateCustomerInput struct {
 	Email       *string
 	Name        string
 	Phone       *string
-	TaxId       *string
+	TaxID       *string
 }
 
 // Mutate applies the CreateCustomerInput on the CustomerMutation builder.
@@ -933,8 +933,8 @@ func (i *CreateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 }
 
@@ -959,8 +959,8 @@ type UpdateCustomerInput struct {
 	Name             *string
 	ClearPhone       bool
 	Phone            *string
-	ClearTaxId       bool
-	TaxId            *string
+	ClearTaxID       bool
+	TaxID            *string
 }
 
 // Mutate applies the UpdateCustomerInput on the CustomerMutation builder.
@@ -1004,11 +1004,11 @@ func (i *UpdateCustomerInput) Mutate(m *CustomerMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if i.ClearTaxId {
-		m.ClearTaxId()
+	if i.ClearTaxID {
+		m.ClearTaxID()
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 }
 
@@ -2634,48 +2634,36 @@ func (c *ProjectMilestoneUpdateOne) SetInput(i UpdateProjectMilestoneInput) *Pro
 
 // CreateProjectTaskInput represents a mutation input for creating projecttasks.
 type CreateProjectTaskInput struct {
-	CreatedAt        *time.Time
-	Name             string
-	AssigneeName     string
-	Location         *string
-	DueDate          time.Time
-	PlannedStartDate time.Time
-	ActualStartDate  *time.Time
-	PlannedEndDate   *time.Time
-	ActualEndDate    *time.Time
-	Description      *string
-	Status           projecttask.Status
-	ProjectID        int
-	AssigneeID       *int
-	ParticipantIDs   []int
-	CreatedByID      *int
-	WorkShiftIDs     []int
+	AssigneeName   string
+	Description    *string
+	DueDate        time.Time
+	EndDate        *time.Time
+	Location       *string
+	Name           string
+	StartDate      time.Time
+	Status         projecttask.Status
+	ProjectID      int
+	AssigneeID     *int
+	ParticipantIDs []int
+	CreatedByID    *int
+	WorkShiftIDs   []int
 }
 
 // Mutate applies the CreateProjectTaskInput on the ProjectTaskMutation builder.
 func (i *CreateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	m.SetName(i.Name)
 	m.SetAssigneeName(i.AssigneeName)
-	if v := i.Location; v != nil {
-		m.SetLocation(*v)
-	}
-	m.SetDueDate(i.DueDate)
-	m.SetPlannedStartDate(i.PlannedStartDate)
-	if v := i.ActualStartDate; v != nil {
-		m.SetActualStartDate(*v)
-	}
-	if v := i.PlannedEndDate; v != nil {
-		m.SetPlannedEndDate(*v)
-	}
-	if v := i.ActualEndDate; v != nil {
-		m.SetActualEndDate(*v)
-	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
 	}
+	m.SetDueDate(i.DueDate)
+	if v := i.EndDate; v != nil {
+		m.SetEndDate(*v)
+	}
+	if v := i.Location; v != nil {
+		m.SetLocation(*v)
+	}
+	m.SetName(i.Name)
+	m.SetStartDate(i.StartDate)
 	m.SetStatus(i.Status)
 	m.SetProjectID(i.ProjectID)
 	if v := i.AssigneeID; v != nil {
@@ -2700,20 +2688,16 @@ func (c *ProjectTaskCreate) SetInput(i CreateProjectTaskInput) *ProjectTaskCreat
 
 // UpdateProjectTaskInput represents a mutation input for updating projecttasks.
 type UpdateProjectTaskInput struct {
-	Name                 *string
 	AssigneeName         *string
-	ClearLocation        bool
-	Location             *string
-	DueDate              *time.Time
-	PlannedStartDate     *time.Time
-	ClearActualStartDate bool
-	ActualStartDate      *time.Time
-	ClearPlannedEndDate  bool
-	PlannedEndDate       *time.Time
-	ClearActualEndDate   bool
-	ActualEndDate        *time.Time
 	ClearDescription     bool
 	Description          *string
+	DueDate              *time.Time
+	ClearEndDate         bool
+	EndDate              *time.Time
+	ClearLocation        bool
+	Location             *string
+	Name                 *string
+	StartDate            *time.Time
 	Status               *projecttask.Status
 	ProjectID            *int
 	ClearAssignee        bool
@@ -2728,11 +2712,23 @@ type UpdateProjectTaskInput struct {
 
 // Mutate applies the UpdateProjectTaskInput on the ProjectTaskMutation builder.
 func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
-	if v := i.Name; v != nil {
-		m.SetName(*v)
-	}
 	if v := i.AssigneeName; v != nil {
 		m.SetAssigneeName(*v)
+	}
+	if i.ClearDescription {
+		m.ClearDescription()
+	}
+	if v := i.Description; v != nil {
+		m.SetDescription(*v)
+	}
+	if v := i.DueDate; v != nil {
+		m.SetDueDate(*v)
+	}
+	if i.ClearEndDate {
+		m.ClearEndDate()
+	}
+	if v := i.EndDate; v != nil {
+		m.SetEndDate(*v)
 	}
 	if i.ClearLocation {
 		m.ClearLocation()
@@ -2740,35 +2736,11 @@ func (i *UpdateProjectTaskInput) Mutate(m *ProjectTaskMutation) {
 	if v := i.Location; v != nil {
 		m.SetLocation(*v)
 	}
-	if v := i.DueDate; v != nil {
-		m.SetDueDate(*v)
+	if v := i.Name; v != nil {
+		m.SetName(*v)
 	}
-	if v := i.PlannedStartDate; v != nil {
-		m.SetPlannedStartDate(*v)
-	}
-	if i.ClearActualStartDate {
-		m.ClearActualStartDate()
-	}
-	if v := i.ActualStartDate; v != nil {
-		m.SetActualStartDate(*v)
-	}
-	if i.ClearPlannedEndDate {
-		m.ClearPlannedEndDate()
-	}
-	if v := i.PlannedEndDate; v != nil {
-		m.SetPlannedEndDate(*v)
-	}
-	if i.ClearActualEndDate {
-		m.ClearActualEndDate()
-	}
-	if v := i.ActualEndDate; v != nil {
-		m.SetActualEndDate(*v)
-	}
-	if i.ClearDescription {
-		m.ClearDescription()
-	}
-	if v := i.Description; v != nil {
-		m.SetDescription(*v)
+	if v := i.StartDate; v != nil {
+		m.SetStartDate(*v)
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
@@ -2925,7 +2897,7 @@ type CreateSupplierInput struct {
 	Email       *string
 	Name        string
 	Phone       *string
-	TaxId       *string
+	TaxID       *string
 	CompanyID   *int
 	PayableIDs  []int
 }
@@ -2951,8 +2923,8 @@ func (i *CreateSupplierInput) Mutate(m *SupplierMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 	if v := i.CompanyID; v != nil {
 		m.SetCompanyID(*v)
@@ -2983,8 +2955,8 @@ type UpdateSupplierInput struct {
 	Name             *string
 	ClearPhone       bool
 	Phone            *string
-	ClearTaxId       bool
-	TaxId            *string
+	ClearTaxID       bool
+	TaxID            *string
 	ClearCompany     bool
 	CompanyID        *int
 	ClearPayables    bool
@@ -3033,11 +3005,11 @@ func (i *UpdateSupplierInput) Mutate(m *SupplierMutation) {
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
 	}
-	if i.ClearTaxId {
-		m.ClearTaxId()
+	if i.ClearTaxID {
+		m.ClearTaxID()
 	}
-	if v := i.TaxId; v != nil {
-		m.SetTaxId(*v)
+	if v := i.TaxID; v != nil {
+		m.SetTaxID(*v)
 	}
 	if i.ClearCompany {
 		m.ClearCompany()

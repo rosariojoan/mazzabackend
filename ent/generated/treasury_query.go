@@ -302,7 +302,7 @@ func (tq *TreasuryQuery) WithCompany(opts ...func(*CompanyQuery)) *TreasuryQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -325,7 +325,7 @@ func (tq *TreasuryQuery) GroupBy(field string, fields ...string) *TreasuryGroupB
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Treasury.Query().

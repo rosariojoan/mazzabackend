@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -95,147 +95,147 @@ func Note(v string) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldNote, v))
 }
 
-// NumberAccessed applies equality check predicate on the "numberAccessed" field. It's identical to NumberAccessedEQ.
+// NumberAccessed applies equality check predicate on the "number_accessed" field. It's identical to NumberAccessedEQ.
 func NumberAccessed(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldNumberAccessed, v))
 }
 
-// ExpiresAt applies equality check predicate on the "expiresAt" field. It's identical to ExpiresAtEQ.
+// ExpiresAt applies equality check predicate on the "expires_at" field. It's identical to ExpiresAtEQ.
 func ExpiresAt(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldExpiresAt, v))
 }
 
-// AlreadyUsed applies equality check predicate on the "alreadyUsed" field. It's identical to AlreadyUsedEQ.
+// AlreadyUsed applies equality check predicate on the "already_used" field. It's identical to AlreadyUsedEQ.
 func AlreadyUsed(v bool) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldAlreadyUsed, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -595,92 +595,92 @@ func NoteContainsFold(v string) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldContainsFold(FieldNote, v))
 }
 
-// NumberAccessedEQ applies the EQ predicate on the "numberAccessed" field.
+// NumberAccessedEQ applies the EQ predicate on the "number_accessed" field.
 func NumberAccessedEQ(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldNumberAccessed, v))
 }
 
-// NumberAccessedNEQ applies the NEQ predicate on the "numberAccessed" field.
+// NumberAccessedNEQ applies the NEQ predicate on the "number_accessed" field.
 func NumberAccessedNEQ(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldNumberAccessed, v))
 }
 
-// NumberAccessedIn applies the In predicate on the "numberAccessed" field.
+// NumberAccessedIn applies the In predicate on the "number_accessed" field.
 func NumberAccessedIn(vs ...int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIn(FieldNumberAccessed, vs...))
 }
 
-// NumberAccessedNotIn applies the NotIn predicate on the "numberAccessed" field.
+// NumberAccessedNotIn applies the NotIn predicate on the "number_accessed" field.
 func NumberAccessedNotIn(vs ...int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotIn(FieldNumberAccessed, vs...))
 }
 
-// NumberAccessedGT applies the GT predicate on the "numberAccessed" field.
+// NumberAccessedGT applies the GT predicate on the "number_accessed" field.
 func NumberAccessedGT(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGT(FieldNumberAccessed, v))
 }
 
-// NumberAccessedGTE applies the GTE predicate on the "numberAccessed" field.
+// NumberAccessedGTE applies the GTE predicate on the "number_accessed" field.
 func NumberAccessedGTE(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGTE(FieldNumberAccessed, v))
 }
 
-// NumberAccessedLT applies the LT predicate on the "numberAccessed" field.
+// NumberAccessedLT applies the LT predicate on the "number_accessed" field.
 func NumberAccessedLT(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLT(FieldNumberAccessed, v))
 }
 
-// NumberAccessedLTE applies the LTE predicate on the "numberAccessed" field.
+// NumberAccessedLTE applies the LTE predicate on the "number_accessed" field.
 func NumberAccessedLTE(v int) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldNumberAccessed, v))
 }
 
-// ExpiresAtEQ applies the EQ predicate on the "expiresAt" field.
+// ExpiresAtEQ applies the EQ predicate on the "expires_at" field.
 func ExpiresAtEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldExpiresAt, v))
 }
 
-// ExpiresAtNEQ applies the NEQ predicate on the "expiresAt" field.
+// ExpiresAtNEQ applies the NEQ predicate on the "expires_at" field.
 func ExpiresAtNEQ(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldExpiresAt, v))
 }
 
-// ExpiresAtIn applies the In predicate on the "expiresAt" field.
+// ExpiresAtIn applies the In predicate on the "expires_at" field.
 func ExpiresAtIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldIn(FieldExpiresAt, vs...))
 }
 
-// ExpiresAtNotIn applies the NotIn predicate on the "expiresAt" field.
+// ExpiresAtNotIn applies the NotIn predicate on the "expires_at" field.
 func ExpiresAtNotIn(vs ...time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNotIn(FieldExpiresAt, vs...))
 }
 
-// ExpiresAtGT applies the GT predicate on the "expiresAt" field.
+// ExpiresAtGT applies the GT predicate on the "expires_at" field.
 func ExpiresAtGT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGT(FieldExpiresAt, v))
 }
 
-// ExpiresAtGTE applies the GTE predicate on the "expiresAt" field.
+// ExpiresAtGTE applies the GTE predicate on the "expires_at" field.
 func ExpiresAtGTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldGTE(FieldExpiresAt, v))
 }
 
-// ExpiresAtLT applies the LT predicate on the "expiresAt" field.
+// ExpiresAtLT applies the LT predicate on the "expires_at" field.
 func ExpiresAtLT(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLT(FieldExpiresAt, v))
 }
 
-// ExpiresAtLTE applies the LTE predicate on the "expiresAt" field.
+// ExpiresAtLTE applies the LTE predicate on the "expires_at" field.
 func ExpiresAtLTE(v time.Time) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldLTE(FieldExpiresAt, v))
 }
 
-// AlreadyUsedEQ applies the EQ predicate on the "alreadyUsed" field.
+// AlreadyUsedEQ applies the EQ predicate on the "already_used" field.
 func AlreadyUsedEQ(v bool) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldEQ(FieldAlreadyUsed, v))
 }
 
-// AlreadyUsedNEQ applies the NEQ predicate on the "alreadyUsed" field.
+// AlreadyUsedNEQ applies the NEQ predicate on the "already_used" field.
 func AlreadyUsedNEQ(v bool) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(sql.FieldNEQ(FieldAlreadyUsed, v))
 }
@@ -708,7 +708,7 @@ func HasCompanyWith(preds ...predicate.Company) predicate.MemberSignupToken {
 	})
 }
 
-// HasCreatedBy applies the HasEdge predicate on the "createdBy" edge.
+// HasCreatedBy applies the HasEdge predicate on the "created_by" edge.
 func HasCreatedBy() predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -719,7 +719,7 @@ func HasCreatedBy() predicate.MemberSignupToken {
 	})
 }
 
-// HasCreatedByWith applies the HasEdge predicate on the "createdBy" edge with a given conditions (other predicates).
+// HasCreatedByWith applies the HasEdge predicate on the "created_by" edge with a given conditions (other predicates).
 func HasCreatedByWith(preds ...predicate.User) predicate.MemberSignupToken {
 	return predicate.MemberSignupToken(func(s *sql.Selector) {
 		step := newCreatedByStep()

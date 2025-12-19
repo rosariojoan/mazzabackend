@@ -10,6 +10,7 @@ import (
 	"mazza/ent/generated/companydocument"
 	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/invoice"
+	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/receivable"
 	"strconv"
@@ -254,6 +255,14 @@ type LoanCounterpartySummary struct {
 	AverageInterestRate float64 `json:"averageInterestRate"`
 }
 
+type LoanInstallmentUpdateInput struct {
+	ID            int                 `json:"id"`
+	Date          time.Time           `json:"date"`
+	InterestPaid  float64             `json:"interestPaid"`
+	PrincipalPaid float64             `json:"principalPaid"`
+	Status        loanschedule.Status `json:"status"`
+}
+
 type LoginInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -391,9 +400,10 @@ type TrialBalanceRowItem struct {
 }
 
 type UpdateLoanInputData struct {
-	ID              int                         `json:"id"`
-	LoanInput       *generated.UpdateLoanInput  `json:"loanInput"`
-	AccountingEntry *BaseEntryRegistrationInput `json:"accountingEntry,omitempty"`
+	ID                int                           `json:"id"`
+	AccountingEntry   *BaseEntryRegistrationInput   `json:"accountingEntry,omitempty"`
+	InstallmentUpdate []*LoanInstallmentUpdateInput `json:"installmentUpdate"`
+	LoanInput         *generated.UpdateLoanInput    `json:"loanInput"`
 }
 
 type VerifyMemberSignupTokenInput struct {

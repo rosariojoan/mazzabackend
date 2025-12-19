@@ -24,13 +24,13 @@ type ProjectCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (pc *ProjectCreate) SetCreatedAt(t time.Time) *ProjectCreate {
 	pc.mutation.SetCreatedAt(t)
 	return pc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (pc *ProjectCreate) SetNillableCreatedAt(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetCreatedAt(*t)
@@ -38,13 +38,13 @@ func (pc *ProjectCreate) SetNillableCreatedAt(t *time.Time) *ProjectCreate {
 	return pc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pc *ProjectCreate) SetUpdatedAt(t time.Time) *ProjectCreate {
 	pc.mutation.SetUpdatedAt(t)
 	return pc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (pc *ProjectCreate) SetNillableUpdatedAt(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetUpdatedAt(*t)
@@ -52,13 +52,13 @@ func (pc *ProjectCreate) SetNillableUpdatedAt(t *time.Time) *ProjectCreate {
 	return pc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pc *ProjectCreate) SetDeletedAt(t time.Time) *ProjectCreate {
 	pc.mutation.SetDeletedAt(t)
 	return pc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pc *ProjectCreate) SetNillableDeletedAt(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetDeletedAt(*t)
@@ -78,19 +78,19 @@ func (pc *ProjectCreate) SetDescription(s string) *ProjectCreate {
 	return pc
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
+// SetPlannedStartDate sets the "planned_start_date" field.
 func (pc *ProjectCreate) SetPlannedStartDate(t time.Time) *ProjectCreate {
 	pc.mutation.SetPlannedStartDate(t)
 	return pc
 }
 
-// SetActualStartDate sets the "actualStartDate" field.
+// SetActualStartDate sets the "actual_start_date" field.
 func (pc *ProjectCreate) SetActualStartDate(t time.Time) *ProjectCreate {
 	pc.mutation.SetActualStartDate(t)
 	return pc
 }
 
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+// SetNillableActualStartDate sets the "actual_start_date" field if the given value is not nil.
 func (pc *ProjectCreate) SetNillableActualStartDate(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetActualStartDate(*t)
@@ -98,19 +98,19 @@ func (pc *ProjectCreate) SetNillableActualStartDate(t *time.Time) *ProjectCreate
 	return pc
 }
 
-// SetPlannedEndDate sets the "plannedEndDate" field.
+// SetPlannedEndDate sets the "planned_end_date" field.
 func (pc *ProjectCreate) SetPlannedEndDate(t time.Time) *ProjectCreate {
 	pc.mutation.SetPlannedEndDate(t)
 	return pc
 }
 
-// SetActualEndDate sets the "actualEndDate" field.
+// SetActualEndDate sets the "actual_end_date" field.
 func (pc *ProjectCreate) SetActualEndDate(t time.Time) *ProjectCreate {
 	pc.mutation.SetActualEndDate(t)
 	return pc
 }
 
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+// SetNillableActualEndDate sets the "actual_end_date" field if the given value is not nil.
 func (pc *ProjectCreate) SetNillableActualEndDate(t *time.Time) *ProjectCreate {
 	if t != nil {
 		pc.SetActualEndDate(*t)
@@ -165,13 +165,13 @@ func (pc *ProjectCreate) SetCompany(c *Company) *ProjectCreate {
 	return pc.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (pc *ProjectCreate) SetCreatedByID(id int) *ProjectCreate {
 	pc.mutation.SetCreatedByID(id)
 	return pc
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (pc *ProjectCreate) SetNillableCreatedByID(id *int) *ProjectCreate {
 	if id != nil {
 		pc = pc.SetCreatedByID(*id)
@@ -179,7 +179,7 @@ func (pc *ProjectCreate) SetNillableCreatedByID(id *int) *ProjectCreate {
 	return pc
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (pc *ProjectCreate) SetCreatedBy(u *User) *ProjectCreate {
 	return pc.SetCreatedByID(u.ID)
 }
@@ -289,10 +289,10 @@ func (pc *ProjectCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (pc *ProjectCreate) check() error {
 	if _, ok := pc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Project.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Project.created_at"`)}
 	}
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Project.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Project.updated_at"`)}
 	}
 	if _, ok := pc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Project.name"`)}
@@ -311,10 +311,10 @@ func (pc *ProjectCreate) check() error {
 		}
 	}
 	if _, ok := pc.mutation.PlannedStartDate(); !ok {
-		return &ValidationError{Name: "plannedStartDate", err: errors.New(`generated: missing required field "Project.plannedStartDate"`)}
+		return &ValidationError{Name: "planned_start_date", err: errors.New(`generated: missing required field "Project.planned_start_date"`)}
 	}
 	if _, ok := pc.mutation.PlannedEndDate(); !ok {
-		return &ValidationError{Name: "plannedEndDate", err: errors.New(`generated: missing required field "Project.plannedEndDate"`)}
+		return &ValidationError{Name: "planned_end_date", err: errors.New(`generated: missing required field "Project.planned_end_date"`)}
 	}
 	if _, ok := pc.mutation.Progress(); !ok {
 		return &ValidationError{Name: "progress", err: errors.New(`generated: missing required field "Project.progress"`)}

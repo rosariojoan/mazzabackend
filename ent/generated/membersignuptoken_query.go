@@ -87,7 +87,7 @@ func (mstq *MemberSignupTokenQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryCreatedBy chains the current query on the "createdBy" edge.
+// QueryCreatedBy chains the current query on the "created_by" edge.
 func (mstq *MemberSignupTokenQuery) QueryCreatedBy() *UserQuery {
 	query := (&UserClient{config: mstq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -322,7 +322,7 @@ func (mstq *MemberSignupTokenQuery) WithCompany(opts ...func(*CompanyQuery)) *Me
 }
 
 // WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
-// the "createdBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (mstq *MemberSignupTokenQuery) WithCreatedBy(opts ...func(*UserQuery)) *MemberSignupTokenQuery {
 	query := (&UserClient{config: mstq.config}).Query()
 	for _, opt := range opts {
@@ -338,7 +338,7 @@ func (mstq *MemberSignupTokenQuery) WithCreatedBy(opts ...func(*UserQuery)) *Mem
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -361,7 +361,7 @@ func (mstq *MemberSignupTokenQuery) GroupBy(field string, fields ...string) *Mem
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.MemberSignupToken.Query().

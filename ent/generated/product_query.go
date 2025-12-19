@@ -302,7 +302,7 @@ func (pq *ProductQuery) WithCompany(opts ...func(*CompanyQuery)) *ProductQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -325,7 +325,7 @@ func (pq *ProductQuery) GroupBy(field string, fields ...string) *ProductGroupBy 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Product.Query().

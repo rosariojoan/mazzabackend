@@ -17,47 +17,47 @@ const (
 	Label = "invoice"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCompanyLogo holds the string denoting the companylogo field in the database.
+	// FieldCompanyLogo holds the string denoting the company_logo field in the database.
 	FieldCompanyLogo = "company_logo"
-	// FieldCompanyName holds the string denoting the companyname field in the database.
+	// FieldCompanyName holds the string denoting the company_name field in the database.
 	FieldCompanyName = "company_name"
-	// FieldCompanyTaxID holds the string denoting the companytaxid field in the database.
+	// FieldCompanyTaxID holds the string denoting the company_tax_id field in the database.
 	FieldCompanyTaxID = "company_tax_id"
-	// FieldCompanyAddress holds the string denoting the companyaddress field in the database.
+	// FieldCompanyAddress holds the string denoting the company_address field in the database.
 	FieldCompanyAddress = "company_address"
-	// FieldCompanyCity holds the string denoting the companycity field in the database.
+	// FieldCompanyCity holds the string denoting the company_city field in the database.
 	FieldCompanyCity = "company_city"
-	// FieldCompanyEmail holds the string denoting the companyemail field in the database.
+	// FieldCompanyEmail holds the string denoting the company_email field in the database.
 	FieldCompanyEmail = "company_email"
-	// FieldCompanyPhone holds the string denoting the companyphone field in the database.
+	// FieldCompanyPhone holds the string denoting the company_phone field in the database.
 	FieldCompanyPhone = "company_phone"
 	// FieldNumber holds the string denoting the number field in the database.
 	FieldNumber = "number"
-	// FieldIssueDate holds the string denoting the issuedate field in the database.
+	// FieldIssueDate holds the string denoting the issue_date field in the database.
 	FieldIssueDate = "issue_date"
-	// FieldDueDate holds the string denoting the duedate field in the database.
+	// FieldDueDate holds the string denoting the due_date field in the database.
 	FieldDueDate = "due_date"
-	// FieldPaidAt holds the string denoting the paidat field in the database.
+	// FieldPaidAt holds the string denoting the paid_at field in the database.
 	FieldPaidAt = "paid_at"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldCustomerName holds the string denoting the customername field in the database.
+	// FieldCustomerName holds the string denoting the customer_name field in the database.
 	FieldCustomerName = "customer_name"
-	// FieldCustomerTaxID holds the string denoting the customertaxid field in the database.
+	// FieldCustomerTaxID holds the string denoting the customer_tax_id field in the database.
 	FieldCustomerTaxID = "customer_tax_id"
-	// FieldCustomerAddress holds the string denoting the customeraddress field in the database.
+	// FieldCustomerAddress holds the string denoting the customer_address field in the database.
 	FieldCustomerAddress = "customer_address"
-	// FieldCustomerCity holds the string denoting the customercity field in the database.
+	// FieldCustomerCity holds the string denoting the customer_city field in the database.
 	FieldCustomerCity = "customer_city"
-	// FieldCustomerEmail holds the string denoting the customeremail field in the database.
+	// FieldCustomerEmail holds the string denoting the customer_email field in the database.
 	FieldCustomerEmail = "customer_email"
-	// FieldCustomerPhone holds the string denoting the customerphone field in the database.
+	// FieldCustomerPhone holds the string denoting the customer_phone field in the database.
 	FieldCustomerPhone = "customer_phone"
 	// FieldItems holds the string denoting the items field in the database.
 	FieldItems = "items"
@@ -69,17 +69,17 @@ const (
 	FieldTotal = "total"
 	// FieldNotes holds the string denoting the notes field in the database.
 	FieldNotes = "notes"
-	// FieldPaymentMethod holds the string denoting the paymentmethod field in the database.
+	// FieldPaymentMethod holds the string denoting the payment_method field in the database.
 	FieldPaymentMethod = "payment_method"
-	// FieldBankName holds the string denoting the bankname field in the database.
+	// FieldBankName holds the string denoting the bank_name field in the database.
 	FieldBankName = "bank_name"
-	// FieldBankAgency holds the string denoting the bankagency field in the database.
+	// FieldBankAgency holds the string denoting the bank_agency field in the database.
 	FieldBankAgency = "bank_agency"
-	// FieldBankAccountNumber holds the string denoting the bankaccountnumber field in the database.
+	// FieldBankAccountNumber holds the string denoting the bank_account_number field in the database.
 	FieldBankAccountNumber = "bank_account_number"
-	// FieldBankAccountName holds the string denoting the bankaccountname field in the database.
+	// FieldBankAccountName holds the string denoting the bank_account_name field in the database.
 	FieldBankAccountName = "bank_account_name"
-	// FieldStorageURI holds the string denoting the storageuri field in the database.
+	// FieldStorageURI holds the string denoting the storage_uri field in the database.
 	FieldStorageURI = "storage_uri"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
@@ -91,8 +91,8 @@ const (
 	FieldKeywords = "keywords"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeIssuedBy holds the string denoting the issuedby edge name in mutations.
-	EdgeIssuedBy = "issuedBy"
+	// EdgeIssuedBy holds the string denoting the issued_by edge name in mutations.
+	EdgeIssuedBy = "issued_by"
 	// EdgeClient holds the string denoting the client edge name in mutations.
 	EdgeClient = "client"
 	// EdgeReceivable holds the string denoting the receivable edge name in mutations.
@@ -106,12 +106,12 @@ const (
 	CompanyInverseTable = "companies"
 	// CompanyColumn is the table column denoting the company relation/edge.
 	CompanyColumn = "company_invoices"
-	// IssuedByTable is the table that holds the issuedBy relation/edge.
+	// IssuedByTable is the table that holds the issued_by relation/edge.
 	IssuedByTable = "invoices"
 	// IssuedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	IssuedByInverseTable = "users"
-	// IssuedByColumn is the table column denoting the issuedBy relation/edge.
+	// IssuedByColumn is the table column denoting the issued_by relation/edge.
 	IssuedByColumn = "user_issued_invoices"
 	// ClientTable is the table that holds the client relation/edge.
 	ClientTable = "invoices"
@@ -194,13 +194,13 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultCustomerName holds the default value on creation for the "customerName" field.
+	// DefaultCustomerName holds the default value on creation for the "customer_name" field.
 	DefaultCustomerName string
 	// ItemsValidator is a validator for the "items" field. It is called by the builders before save.
 	ItemsValidator func(string) error
@@ -254,52 +254,52 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByCompanyLogo orders the results by the companyLogo field.
+// ByCompanyLogo orders the results by the company_logo field.
 func ByCompanyLogo(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyLogo, opts...).ToFunc()
 }
 
-// ByCompanyName orders the results by the companyName field.
+// ByCompanyName orders the results by the company_name field.
 func ByCompanyName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyName, opts...).ToFunc()
 }
 
-// ByCompanyTaxID orders the results by the companyTaxID field.
+// ByCompanyTaxID orders the results by the company_tax_id field.
 func ByCompanyTaxID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyTaxID, opts...).ToFunc()
 }
 
-// ByCompanyAddress orders the results by the companyAddress field.
+// ByCompanyAddress orders the results by the company_address field.
 func ByCompanyAddress(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyAddress, opts...).ToFunc()
 }
 
-// ByCompanyCity orders the results by the companyCity field.
+// ByCompanyCity orders the results by the company_city field.
 func ByCompanyCity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyCity, opts...).ToFunc()
 }
 
-// ByCompanyEmail orders the results by the companyEmail field.
+// ByCompanyEmail orders the results by the company_email field.
 func ByCompanyEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyEmail, opts...).ToFunc()
 }
 
-// ByCompanyPhone orders the results by the companyPhone field.
+// ByCompanyPhone orders the results by the company_phone field.
 func ByCompanyPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyPhone, opts...).ToFunc()
 }
@@ -309,17 +309,17 @@ func ByNumber(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNumber, opts...).ToFunc()
 }
 
-// ByIssueDate orders the results by the issueDate field.
+// ByIssueDate orders the results by the issue_date field.
 func ByIssueDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIssueDate, opts...).ToFunc()
 }
 
-// ByDueDate orders the results by the dueDate field.
+// ByDueDate orders the results by the due_date field.
 func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
 }
 
-// ByPaidAt orders the results by the paidAt field.
+// ByPaidAt orders the results by the paid_at field.
 func ByPaidAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaidAt, opts...).ToFunc()
 }
@@ -329,32 +329,32 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
-// ByCustomerName orders the results by the customerName field.
+// ByCustomerName orders the results by the customer_name field.
 func ByCustomerName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerName, opts...).ToFunc()
 }
 
-// ByCustomerTaxID orders the results by the customerTaxID field.
+// ByCustomerTaxID orders the results by the customer_tax_id field.
 func ByCustomerTaxID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerTaxID, opts...).ToFunc()
 }
 
-// ByCustomerAddress orders the results by the customerAddress field.
+// ByCustomerAddress orders the results by the customer_address field.
 func ByCustomerAddress(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerAddress, opts...).ToFunc()
 }
 
-// ByCustomerCity orders the results by the customerCity field.
+// ByCustomerCity orders the results by the customer_city field.
 func ByCustomerCity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerCity, opts...).ToFunc()
 }
 
-// ByCustomerEmail orders the results by the customerEmail field.
+// ByCustomerEmail orders the results by the customer_email field.
 func ByCustomerEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerEmail, opts...).ToFunc()
 }
 
-// ByCustomerPhone orders the results by the customerPhone field.
+// ByCustomerPhone orders the results by the customer_phone field.
 func ByCustomerPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCustomerPhone, opts...).ToFunc()
 }
@@ -384,32 +384,32 @@ func ByNotes(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNotes, opts...).ToFunc()
 }
 
-// ByPaymentMethod orders the results by the paymentMethod field.
+// ByPaymentMethod orders the results by the payment_method field.
 func ByPaymentMethod(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPaymentMethod, opts...).ToFunc()
 }
 
-// ByBankName orders the results by the bankName field.
+// ByBankName orders the results by the bank_name field.
 func ByBankName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBankName, opts...).ToFunc()
 }
 
-// ByBankAgency orders the results by the bankAgency field.
+// ByBankAgency orders the results by the bank_agency field.
 func ByBankAgency(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBankAgency, opts...).ToFunc()
 }
 
-// ByBankAccountNumber orders the results by the bankAccountNumber field.
+// ByBankAccountNumber orders the results by the bank_account_number field.
 func ByBankAccountNumber(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBankAccountNumber, opts...).ToFunc()
 }
 
-// ByBankAccountName orders the results by the bankAccountName field.
+// ByBankAccountName orders the results by the bank_account_name field.
 func ByBankAccountName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBankAccountName, opts...).ToFunc()
 }
 
-// ByStorageURI orders the results by the storageURI field.
+// ByStorageURI orders the results by the storage_URI field.
 func ByStorageURI(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStorageURI, opts...).ToFunc()
 }
@@ -441,7 +441,7 @@ func ByCompanyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByIssuedByField orders the results by issuedBy field.
+// ByIssuedByField orders the results by issued_by field.
 func ByIssuedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newIssuedByStep(), sql.OrderByField(field, opts...))

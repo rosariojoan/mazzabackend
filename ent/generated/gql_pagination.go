@@ -364,7 +364,7 @@ func (ae *AccountingEntryQuery) Paginate(
 }
 
 var (
-	// AccountingEntryOrderFieldCreatedAt orders AccountingEntry by createdAt.
+	// AccountingEntryOrderFieldCreatedAt orders AccountingEntry by created_at.
 	AccountingEntryOrderFieldCreatedAt = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
 			return ae.CreatedAt, nil
@@ -378,7 +378,7 @@ var (
 			}
 		},
 	}
-	// AccountingEntryOrderFieldUpdatedAt orders AccountingEntry by updatedAt.
+	// AccountingEntryOrderFieldUpdatedAt orders AccountingEntry by updated_at.
 	AccountingEntryOrderFieldUpdatedAt = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
 			return ae.UpdatedAt, nil
@@ -462,7 +462,7 @@ var (
 			}
 		},
 	}
-	// AccountingEntryOrderFieldAccountType orders AccountingEntry by accountType.
+	// AccountingEntryOrderFieldAccountType orders AccountingEntry by account_type.
 	AccountingEntryOrderFieldAccountType = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
 			return ae.AccountType, nil
@@ -504,7 +504,7 @@ var (
 			}
 		},
 	}
-	// AccountingEntryOrderFieldIsDebit orders AccountingEntry by isDebit.
+	// AccountingEntryOrderFieldIsDebit orders AccountingEntry by is_debit.
 	AccountingEntryOrderFieldIsDebit = &AccountingEntryOrderField{
 		Value: func(ae *AccountingEntry) (ent.Value, error) {
 			return ae.IsDebit, nil
@@ -1083,7 +1083,7 @@ func (c *CompanyQuery) Paginate(
 }
 
 var (
-	// CompanyOrderFieldCreatedAt orders Company by createdAt.
+	// CompanyOrderFieldCreatedAt orders Company by created_at.
 	CompanyOrderFieldCreatedAt = &CompanyOrderField{
 		Value: func(c *Company) (ent.Value, error) {
 			return c.CreatedAt, nil
@@ -1097,7 +1097,7 @@ var (
 			}
 		},
 	}
-	// CompanyOrderFieldUpdatedAt orders Company by updatedAt.
+	// CompanyOrderFieldUpdatedAt orders Company by updated_at.
 	CompanyOrderFieldUpdatedAt = &CompanyOrderField{
 		Value: func(c *Company) (ent.Value, error) {
 			return c.UpdatedAt, nil
@@ -1139,7 +1139,7 @@ var (
 			}
 		},
 	}
-	// CompanyOrderFieldEstablishedAt orders Company by establishedAt.
+	// CompanyOrderFieldEstablishedAt orders Company by established_at.
 	CompanyOrderFieldEstablishedAt = &CompanyOrderField{
 		Value: func(c *Company) (ent.Value, error) {
 			return c.EstablishedAt, nil
@@ -1502,7 +1502,7 @@ func (cd *CompanyDocumentQuery) Paginate(
 }
 
 var (
-	// CompanyDocumentOrderFieldCreatedAt orders CompanyDocument by createdAt.
+	// CompanyDocumentOrderFieldCreatedAt orders CompanyDocument by created_at.
 	CompanyDocumentOrderFieldCreatedAt = &CompanyDocumentOrderField{
 		Value: func(cd *CompanyDocument) (ent.Value, error) {
 			return cd.CreatedAt, nil
@@ -1516,7 +1516,7 @@ var (
 			}
 		},
 	}
-	// CompanyDocumentOrderFieldUpdatedAt orders CompanyDocument by updatedAt.
+	// CompanyDocumentOrderFieldUpdatedAt orders CompanyDocument by updated_at.
 	CompanyDocumentOrderFieldUpdatedAt = &CompanyDocumentOrderField{
 		Value: func(cd *CompanyDocument) (ent.Value, error) {
 			return cd.UpdatedAt, nil
@@ -1558,7 +1558,7 @@ var (
 			}
 		},
 	}
-	// CompanyDocumentOrderFieldExpiryDate orders CompanyDocument by expiryDate.
+	// CompanyDocumentOrderFieldExpiryDate orders CompanyDocument by expiry_date.
 	CompanyDocumentOrderFieldExpiryDate = &CompanyDocumentOrderField{
 		Value: func(cd *CompanyDocument) (ent.Value, error) {
 			return cd.ExpiryDate, nil
@@ -1903,7 +1903,7 @@ func (c *CustomerQuery) Paginate(
 }
 
 var (
-	// CustomerOrderFieldCreatedAt orders Customer by createdAt.
+	// CustomerOrderFieldCreatedAt orders Customer by created_at.
 	CustomerOrderFieldCreatedAt = &CustomerOrderField{
 		Value: func(c *Customer) (ent.Value, error) {
 			return c.CreatedAt, nil
@@ -1917,7 +1917,7 @@ var (
 			}
 		},
 	}
-	// CustomerOrderFieldUpdatedAt orders Customer by updatedAt.
+	// CustomerOrderFieldUpdatedAt orders Customer by updated_at.
 	CustomerOrderFieldUpdatedAt = &CustomerOrderField{
 		Value: func(c *Customer) (ent.Value, error) {
 			return c.UpdatedAt, nil
@@ -2250,7 +2250,7 @@ func (e *EmployeeQuery) Paginate(
 }
 
 var (
-	// EmployeeOrderFieldCreatedAt orders Employee by createdAt.
+	// EmployeeOrderFieldCreatedAt orders Employee by created_at.
 	EmployeeOrderFieldCreatedAt = &EmployeeOrderField{
 		Value: func(e *Employee) (ent.Value, error) {
 			return e.CreatedAt, nil
@@ -2264,7 +2264,7 @@ var (
 			}
 		},
 	}
-	// EmployeeOrderFieldUpdatedAt orders Employee by updatedAt.
+	// EmployeeOrderFieldUpdatedAt orders Employee by updated_at.
 	EmployeeOrderFieldUpdatedAt = &EmployeeOrderField{
 		Value: func(e *Employee) (ent.Value, error) {
 			return e.UpdatedAt, nil
@@ -2597,7 +2597,7 @@ func (f *FileQuery) Paginate(
 }
 
 var (
-	// FileOrderFieldCreatedAt orders File by createdAt.
+	// FileOrderFieldCreatedAt orders File by created_at.
 	FileOrderFieldCreatedAt = &FileOrderField{
 		Value: func(f *File) (ent.Value, error) {
 			return f.CreatedAt, nil
@@ -2611,7 +2611,7 @@ var (
 			}
 		},
 	}
-	// FileOrderFieldUpdatedAt orders File by updatedAt.
+	// FileOrderFieldUpdatedAt orders File by updated_at.
 	FileOrderFieldUpdatedAt = &FileOrderField{
 		Value: func(f *File) (ent.Value, error) {
 			return f.UpdatedAt, nil
@@ -2962,7 +2962,7 @@ func (i *InventoryQuery) Paginate(
 }
 
 var (
-	// InventoryOrderFieldCreatedAt orders Inventory by createdAt.
+	// InventoryOrderFieldCreatedAt orders Inventory by created_at.
 	InventoryOrderFieldCreatedAt = &InventoryOrderField{
 		Value: func(i *Inventory) (ent.Value, error) {
 			return i.CreatedAt, nil
@@ -2976,7 +2976,7 @@ var (
 			}
 		},
 	}
-	// InventoryOrderFieldUpdatedAt orders Inventory by updatedAt.
+	// InventoryOrderFieldUpdatedAt orders Inventory by updated_at.
 	InventoryOrderFieldUpdatedAt = &InventoryOrderField{
 		Value: func(i *Inventory) (ent.Value, error) {
 			return i.UpdatedAt, nil
@@ -3004,7 +3004,7 @@ var (
 			}
 		},
 	}
-	// InventoryOrderFieldCurrentValue orders Inventory by currentValue.
+	// InventoryOrderFieldCurrentValue orders Inventory by current_value.
 	InventoryOrderFieldCurrentValue = &InventoryOrderField{
 		Value: func(i *Inventory) (ent.Value, error) {
 			return i.CurrentValue, nil
@@ -3345,7 +3345,7 @@ func (im *InventoryMovementQuery) Paginate(
 }
 
 var (
-	// InventoryMovementOrderFieldCreatedAt orders InventoryMovement by createdAt.
+	// InventoryMovementOrderFieldCreatedAt orders InventoryMovement by created_at.
 	InventoryMovementOrderFieldCreatedAt = &InventoryMovementOrderField{
 		Value: func(im *InventoryMovement) (ent.Value, error) {
 			return im.CreatedAt, nil
@@ -3359,7 +3359,7 @@ var (
 			}
 		},
 	}
-	// InventoryMovementOrderFieldUpdatedAt orders InventoryMovement by updatedAt.
+	// InventoryMovementOrderFieldUpdatedAt orders InventoryMovement by updated_at.
 	InventoryMovementOrderFieldUpdatedAt = &InventoryMovementOrderField{
 		Value: func(im *InventoryMovement) (ent.Value, error) {
 			return im.UpdatedAt, nil
@@ -3710,7 +3710,7 @@ func (i *InvoiceQuery) Paginate(
 }
 
 var (
-	// InvoiceOrderFieldCreatedAt orders Invoice by createdAt.
+	// InvoiceOrderFieldCreatedAt orders Invoice by created_at.
 	InvoiceOrderFieldCreatedAt = &InvoiceOrderField{
 		Value: func(i *Invoice) (ent.Value, error) {
 			return i.CreatedAt, nil
@@ -3724,7 +3724,7 @@ var (
 			}
 		},
 	}
-	// InvoiceOrderFieldUpdatedAt orders Invoice by updatedAt.
+	// InvoiceOrderFieldUpdatedAt orders Invoice by updated_at.
 	InvoiceOrderFieldUpdatedAt = &InvoiceOrderField{
 		Value: func(i *Invoice) (ent.Value, error) {
 			return i.UpdatedAt, nil
@@ -3738,7 +3738,7 @@ var (
 			}
 		},
 	}
-	// InvoiceOrderFieldIssueDate orders Invoice by issueDate.
+	// InvoiceOrderFieldIssueDate orders Invoice by issue_date.
 	InvoiceOrderFieldIssueDate = &InvoiceOrderField{
 		Value: func(i *Invoice) (ent.Value, error) {
 			return i.IssueDate, nil
@@ -3752,7 +3752,7 @@ var (
 			}
 		},
 	}
-	// InvoiceOrderFieldDueDate orders Invoice by dueDate.
+	// InvoiceOrderFieldDueDate orders Invoice by due_date.
 	InvoiceOrderFieldDueDate = &InvoiceOrderField{
 		Value: func(i *Invoice) (ent.Value, error) {
 			return i.DueDate, nil
@@ -3766,7 +3766,7 @@ var (
 			}
 		},
 	}
-	// InvoiceOrderFieldPaidAt orders Invoice by paidAt.
+	// InvoiceOrderFieldPaidAt orders Invoice by paid_at.
 	InvoiceOrderFieldPaidAt = &InvoiceOrderField{
 		Value: func(i *Invoice) (ent.Value, error) {
 			return i.PaidAt, nil
@@ -4147,7 +4147,7 @@ func (l *LoanQuery) Paginate(
 }
 
 var (
-	// LoanOrderFieldCreatedAt orders Loan by createdAt.
+	// LoanOrderFieldCreatedAt orders Loan by created_at.
 	LoanOrderFieldCreatedAt = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.CreatedAt, nil
@@ -4161,7 +4161,7 @@ var (
 			}
 		},
 	}
-	// LoanOrderFieldUpdatedAt orders Loan by updatedAt.
+	// LoanOrderFieldUpdatedAt orders Loan by updated_at.
 	LoanOrderFieldUpdatedAt = &LoanOrderField{
 		Value: func(l *Loan) (ent.Value, error) {
 			return l.UpdatedAt, nil
@@ -4656,7 +4656,7 @@ func (ls *LoanScheduleQuery) Paginate(
 }
 
 var (
-	// LoanScheduleOrderFieldCreatedAt orders LoanSchedule by createdAt.
+	// LoanScheduleOrderFieldCreatedAt orders LoanSchedule by created_at.
 	LoanScheduleOrderFieldCreatedAt = &LoanScheduleOrderField{
 		Value: func(ls *LoanSchedule) (ent.Value, error) {
 			return ls.CreatedAt, nil
@@ -4670,7 +4670,7 @@ var (
 			}
 		},
 	}
-	// LoanScheduleOrderFieldUpdatedAt orders LoanSchedule by updatedAt.
+	// LoanScheduleOrderFieldUpdatedAt orders LoanSchedule by updated_at.
 	LoanScheduleOrderFieldUpdatedAt = &LoanScheduleOrderField{
 		Value: func(ls *LoanSchedule) (ent.Value, error) {
 			return ls.UpdatedAt, nil
@@ -5003,7 +5003,7 @@ func (mst *MemberSignupTokenQuery) Paginate(
 }
 
 var (
-	// MemberSignupTokenOrderFieldCreatedAt orders MemberSignupToken by createdAt.
+	// MemberSignupTokenOrderFieldCreatedAt orders MemberSignupToken by created_at.
 	MemberSignupTokenOrderFieldCreatedAt = &MemberSignupTokenOrderField{
 		Value: func(mst *MemberSignupToken) (ent.Value, error) {
 			return mst.CreatedAt, nil
@@ -5017,7 +5017,7 @@ var (
 			}
 		},
 	}
-	// MemberSignupTokenOrderFieldUpdatedAt orders MemberSignupToken by updatedAt.
+	// MemberSignupTokenOrderFieldUpdatedAt orders MemberSignupToken by updated_at.
 	MemberSignupTokenOrderFieldUpdatedAt = &MemberSignupTokenOrderField{
 		Value: func(mst *MemberSignupToken) (ent.Value, error) {
 			return mst.UpdatedAt, nil
@@ -5350,7 +5350,7 @@ func (pa *PayableQuery) Paginate(
 }
 
 var (
-	// PayableOrderFieldCreatedAt orders Payable by createdAt.
+	// PayableOrderFieldCreatedAt orders Payable by created_at.
 	PayableOrderFieldCreatedAt = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.CreatedAt, nil
@@ -5364,7 +5364,7 @@ var (
 			}
 		},
 	}
-	// PayableOrderFieldUpdatedAt orders Payable by updatedAt.
+	// PayableOrderFieldUpdatedAt orders Payable by updated_at.
 	PayableOrderFieldUpdatedAt = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.UpdatedAt, nil
@@ -5392,7 +5392,7 @@ var (
 			}
 		},
 	}
-	// PayableOrderFieldAmountInDefault orders Payable by amountInDefault.
+	// PayableOrderFieldAmountInDefault orders Payable by amount_in_default.
 	PayableOrderFieldAmountInDefault = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.AmountInDefault, nil
@@ -5406,7 +5406,7 @@ var (
 			}
 		},
 	}
-	// PayableOrderFieldOutstandingBalance orders Payable by outstandingBalance.
+	// PayableOrderFieldOutstandingBalance orders Payable by outstanding_balance.
 	PayableOrderFieldOutstandingBalance = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.OutstandingBalance, nil
@@ -5420,7 +5420,7 @@ var (
 			}
 		},
 	}
-	// PayableOrderFieldTotalTransaction orders Payable by totalTransaction.
+	// PayableOrderFieldTotalTransaction orders Payable by total_transaction.
 	PayableOrderFieldTotalTransaction = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.TotalTransaction, nil
@@ -5434,7 +5434,7 @@ var (
 			}
 		},
 	}
-	// PayableOrderFieldDueDate orders Payable by dueDate.
+	// PayableOrderFieldDueDate orders Payable by due_date.
 	PayableOrderFieldDueDate = &PayableOrderField{
 		Value: func(pa *Payable) (ent.Value, error) {
 			return pa.DueDate, nil
@@ -5769,7 +5769,7 @@ func (pr *ProductQuery) Paginate(
 }
 
 var (
-	// ProductOrderFieldCreatedAt orders Product by createdAt.
+	// ProductOrderFieldCreatedAt orders Product by created_at.
 	ProductOrderFieldCreatedAt = &ProductOrderField{
 		Value: func(pr *Product) (ent.Value, error) {
 			return pr.CreatedAt, nil
@@ -5783,7 +5783,7 @@ var (
 			}
 		},
 	}
-	// ProductOrderFieldUpdatedAt orders Product by updatedAt.
+	// ProductOrderFieldUpdatedAt orders Product by updated_at.
 	ProductOrderFieldUpdatedAt = &ProductOrderField{
 		Value: func(pr *Product) (ent.Value, error) {
 			return pr.UpdatedAt, nil
@@ -6116,7 +6116,7 @@ func (pr *ProjectQuery) Paginate(
 }
 
 var (
-	// ProjectOrderFieldCreatedAt orders Project by createdAt.
+	// ProjectOrderFieldCreatedAt orders Project by created_at.
 	ProjectOrderFieldCreatedAt = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.CreatedAt, nil
@@ -6130,7 +6130,7 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldUpdatedAt orders Project by updatedAt.
+	// ProjectOrderFieldUpdatedAt orders Project by updated_at.
 	ProjectOrderFieldUpdatedAt = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.UpdatedAt, nil
@@ -6144,7 +6144,7 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldPlannedStartDate orders Project by plannedStartDate.
+	// ProjectOrderFieldPlannedStartDate orders Project by planned_start_date.
 	ProjectOrderFieldPlannedStartDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.PlannedStartDate, nil
@@ -6158,7 +6158,7 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldActualStartDate orders Project by actualStartDate.
+	// ProjectOrderFieldActualStartDate orders Project by actual_start_date.
 	ProjectOrderFieldActualStartDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.ActualStartDate, nil
@@ -6172,7 +6172,7 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldPlannedEndDate orders Project by plannedEndDate.
+	// ProjectOrderFieldPlannedEndDate orders Project by planned_end_date.
 	ProjectOrderFieldPlannedEndDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.PlannedEndDate, nil
@@ -6186,7 +6186,7 @@ var (
 			}
 		},
 	}
-	// ProjectOrderFieldActualEndDate orders Project by actualEndDate.
+	// ProjectOrderFieldActualEndDate orders Project by actual_end_date.
 	ProjectOrderFieldActualEndDate = &ProjectOrderField{
 		Value: func(pr *Project) (ent.Value, error) {
 			return pr.ActualEndDate, nil
@@ -6817,7 +6817,35 @@ func (pt *ProjectTaskQuery) Paginate(
 }
 
 var (
-	// ProjectTaskOrderFieldDueDate orders ProjectTask by dueDate.
+	// ProjectTaskOrderFieldCreatedAt orders ProjectTask by created_at.
+	ProjectTaskOrderFieldCreatedAt = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.CreatedAt, nil
+		},
+		column: projecttask.FieldCreatedAt,
+		toTerm: projecttask.ByCreatedAt,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.CreatedAt,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldUpdatedAt orders ProjectTask by updated_at.
+	ProjectTaskOrderFieldUpdatedAt = &ProjectTaskOrderField{
+		Value: func(pt *ProjectTask) (ent.Value, error) {
+			return pt.UpdatedAt, nil
+		},
+		column: projecttask.FieldUpdatedAt,
+		toTerm: projecttask.ByUpdatedAt,
+		toCursor: func(pt *ProjectTask) Cursor {
+			return Cursor{
+				ID:    pt.ID,
+				Value: pt.UpdatedAt,
+			}
+		},
+	}
+	// ProjectTaskOrderFieldDueDate orders ProjectTask by due_date.
 	ProjectTaskOrderFieldDueDate = &ProjectTaskOrderField{
 		Value: func(pt *ProjectTask) (ent.Value, error) {
 			return pt.DueDate, nil
@@ -6831,59 +6859,31 @@ var (
 			}
 		},
 	}
-	// ProjectTaskOrderFieldPlannedStartDate orders ProjectTask by plannedStartDate.
-	ProjectTaskOrderFieldPlannedStartDate = &ProjectTaskOrderField{
+	// ProjectTaskOrderFieldEndDate orders ProjectTask by end_date.
+	ProjectTaskOrderFieldEndDate = &ProjectTaskOrderField{
 		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.PlannedStartDate, nil
+			return pt.EndDate, nil
 		},
-		column: projecttask.FieldPlannedStartDate,
-		toTerm: projecttask.ByPlannedStartDate,
+		column: projecttask.FieldEndDate,
+		toTerm: projecttask.ByEndDate,
 		toCursor: func(pt *ProjectTask) Cursor {
 			return Cursor{
 				ID:    pt.ID,
-				Value: pt.PlannedStartDate,
+				Value: pt.EndDate,
 			}
 		},
 	}
-	// ProjectTaskOrderFieldActualStartDate orders ProjectTask by actualStartDate.
-	ProjectTaskOrderFieldActualStartDate = &ProjectTaskOrderField{
+	// ProjectTaskOrderFieldStartDate orders ProjectTask by start_date.
+	ProjectTaskOrderFieldStartDate = &ProjectTaskOrderField{
 		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.ActualStartDate, nil
+			return pt.StartDate, nil
 		},
-		column: projecttask.FieldActualStartDate,
-		toTerm: projecttask.ByActualStartDate,
+		column: projecttask.FieldStartDate,
+		toTerm: projecttask.ByStartDate,
 		toCursor: func(pt *ProjectTask) Cursor {
 			return Cursor{
 				ID:    pt.ID,
-				Value: pt.ActualStartDate,
-			}
-		},
-	}
-	// ProjectTaskOrderFieldPlannedEndDate orders ProjectTask by plannedEndDate.
-	ProjectTaskOrderFieldPlannedEndDate = &ProjectTaskOrderField{
-		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.PlannedEndDate, nil
-		},
-		column: projecttask.FieldPlannedEndDate,
-		toTerm: projecttask.ByPlannedEndDate,
-		toCursor: func(pt *ProjectTask) Cursor {
-			return Cursor{
-				ID:    pt.ID,
-				Value: pt.PlannedEndDate,
-			}
-		},
-	}
-	// ProjectTaskOrderFieldActualEndDate orders ProjectTask by actualEndDate.
-	ProjectTaskOrderFieldActualEndDate = &ProjectTaskOrderField{
-		Value: func(pt *ProjectTask) (ent.Value, error) {
-			return pt.ActualEndDate, nil
-		},
-		column: projecttask.FieldActualEndDate,
-		toTerm: projecttask.ByActualEndDate,
-		toCursor: func(pt *ProjectTask) Cursor {
-			return Cursor{
-				ID:    pt.ID,
-				Value: pt.ActualEndDate,
+				Value: pt.StartDate,
 			}
 		},
 	}
@@ -6907,16 +6907,16 @@ var (
 func (f ProjectTaskOrderField) String() string {
 	var str string
 	switch f.column {
+	case ProjectTaskOrderFieldCreatedAt.column:
+		str = "CREATED_AT"
+	case ProjectTaskOrderFieldUpdatedAt.column:
+		str = "UPDATED_AT"
 	case ProjectTaskOrderFieldDueDate.column:
 		str = "DUE_DATE"
-	case ProjectTaskOrderFieldPlannedStartDate.column:
-		str = "PLANNED_START_DATE"
-	case ProjectTaskOrderFieldActualStartDate.column:
-		str = "ACTUAL_START_DATE"
-	case ProjectTaskOrderFieldPlannedEndDate.column:
-		str = "PLANNED_END_DATE"
-	case ProjectTaskOrderFieldActualEndDate.column:
-		str = "ACTUAL_END_DATE"
+	case ProjectTaskOrderFieldEndDate.column:
+		str = "END_DATE"
+	case ProjectTaskOrderFieldStartDate.column:
+		str = "START_DATE"
 	case ProjectTaskOrderFieldStatus.column:
 		str = "STATUS"
 	}
@@ -6935,16 +6935,16 @@ func (f *ProjectTaskOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ProjectTaskOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATED_AT":
+		*f = *ProjectTaskOrderFieldCreatedAt
+	case "UPDATED_AT":
+		*f = *ProjectTaskOrderFieldUpdatedAt
 	case "DUE_DATE":
 		*f = *ProjectTaskOrderFieldDueDate
-	case "PLANNED_START_DATE":
-		*f = *ProjectTaskOrderFieldPlannedStartDate
-	case "ACTUAL_START_DATE":
-		*f = *ProjectTaskOrderFieldActualStartDate
-	case "PLANNED_END_DATE":
-		*f = *ProjectTaskOrderFieldPlannedEndDate
-	case "ACTUAL_END_DATE":
-		*f = *ProjectTaskOrderFieldActualEndDate
+	case "END_DATE":
+		*f = *ProjectTaskOrderFieldEndDate
+	case "START_DATE":
+		*f = *ProjectTaskOrderFieldStartDate
 	case "STATUS":
 		*f = *ProjectTaskOrderFieldStatus
 	default:
@@ -7236,7 +7236,7 @@ func (r *ReceivableQuery) Paginate(
 }
 
 var (
-	// ReceivableOrderFieldCreatedAt orders Receivable by createdAt.
+	// ReceivableOrderFieldCreatedAt orders Receivable by created_at.
 	ReceivableOrderFieldCreatedAt = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.CreatedAt, nil
@@ -7250,7 +7250,7 @@ var (
 			}
 		},
 	}
-	// ReceivableOrderFieldUpdatedAt orders Receivable by updatedAt.
+	// ReceivableOrderFieldUpdatedAt orders Receivable by updated_at.
 	ReceivableOrderFieldUpdatedAt = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.UpdatedAt, nil
@@ -7278,7 +7278,7 @@ var (
 			}
 		},
 	}
-	// ReceivableOrderFieldAmountInDefault orders Receivable by amountInDefault.
+	// ReceivableOrderFieldAmountInDefault orders Receivable by amount_in_default.
 	ReceivableOrderFieldAmountInDefault = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.AmountInDefault, nil
@@ -7292,7 +7292,7 @@ var (
 			}
 		},
 	}
-	// ReceivableOrderFieldOutstandingBalance orders Receivable by outstandingBalance.
+	// ReceivableOrderFieldOutstandingBalance orders Receivable by outstanding_balance.
 	ReceivableOrderFieldOutstandingBalance = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.OutstandingBalance, nil
@@ -7306,7 +7306,7 @@ var (
 			}
 		},
 	}
-	// ReceivableOrderFieldTotalTransaction orders Receivable by totalTransaction.
+	// ReceivableOrderFieldTotalTransaction orders Receivable by total_transaction.
 	ReceivableOrderFieldTotalTransaction = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.TotalTransaction, nil
@@ -7320,7 +7320,7 @@ var (
 			}
 		},
 	}
-	// ReceivableOrderFieldDueDate orders Receivable by dueDate.
+	// ReceivableOrderFieldDueDate orders Receivable by due_date.
 	ReceivableOrderFieldDueDate = &ReceivableOrderField{
 		Value: func(r *Receivable) (ent.Value, error) {
 			return r.DueDate, nil
@@ -7655,7 +7655,7 @@ func (s *SupplierQuery) Paginate(
 }
 
 var (
-	// SupplierOrderFieldCreatedAt orders Supplier by createdAt.
+	// SupplierOrderFieldCreatedAt orders Supplier by created_at.
 	SupplierOrderFieldCreatedAt = &SupplierOrderField{
 		Value: func(s *Supplier) (ent.Value, error) {
 			return s.CreatedAt, nil
@@ -7669,7 +7669,7 @@ var (
 			}
 		},
 	}
-	// SupplierOrderFieldUpdatedAt orders Supplier by updatedAt.
+	// SupplierOrderFieldUpdatedAt orders Supplier by updated_at.
 	SupplierOrderFieldUpdatedAt = &SupplierOrderField{
 		Value: func(s *Supplier) (ent.Value, error) {
 			return s.UpdatedAt, nil
@@ -8248,7 +8248,7 @@ func (t *TreasuryQuery) Paginate(
 }
 
 var (
-	// TreasuryOrderFieldCreatedAt orders Treasury by createdAt.
+	// TreasuryOrderFieldCreatedAt orders Treasury by created_at.
 	TreasuryOrderFieldCreatedAt = &TreasuryOrderField{
 		Value: func(t *Treasury) (ent.Value, error) {
 			return t.CreatedAt, nil
@@ -8262,7 +8262,7 @@ var (
 			}
 		},
 	}
-	// TreasuryOrderFieldUpdatedAt orders Treasury by updatedAt.
+	// TreasuryOrderFieldUpdatedAt orders Treasury by updated_at.
 	TreasuryOrderFieldUpdatedAt = &TreasuryOrderField{
 		Value: func(t *Treasury) (ent.Value, error) {
 			return t.UpdatedAt, nil
@@ -8559,7 +8559,7 @@ func (u *UserQuery) Paginate(
 }
 
 var (
-	// UserOrderFieldCreatedAt orders User by createdAt.
+	// UserOrderFieldCreatedAt orders User by created_at.
 	UserOrderFieldCreatedAt = &UserOrderField{
 		Value: func(u *User) (ent.Value, error) {
 			return u.CreatedAt, nil
@@ -8573,7 +8573,7 @@ var (
 			}
 		},
 	}
-	// UserOrderFieldUpdatedAt orders User by updatedAt.
+	// UserOrderFieldUpdatedAt orders User by updated_at.
 	UserOrderFieldUpdatedAt = &UserOrderField{
 		Value: func(u *User) (ent.Value, error) {
 			return u.UpdatedAt, nil
@@ -9217,7 +9217,7 @@ func (w *WorkshiftQuery) Paginate(
 }
 
 var (
-	// WorkshiftOrderFieldCreatedAt orders Workshift by createdAt.
+	// WorkshiftOrderFieldCreatedAt orders Workshift by created_at.
 	WorkshiftOrderFieldCreatedAt = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
 			return w.CreatedAt, nil
@@ -9231,7 +9231,7 @@ var (
 			}
 		},
 	}
-	// WorkshiftOrderFieldUpdatedAt orders Workshift by updatedAt.
+	// WorkshiftOrderFieldUpdatedAt orders Workshift by updated_at.
 	WorkshiftOrderFieldUpdatedAt = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
 			return w.UpdatedAt, nil
@@ -9245,7 +9245,7 @@ var (
 			}
 		},
 	}
-	// WorkshiftOrderFieldApprovedAt orders Workshift by approvedAt.
+	// WorkshiftOrderFieldApprovedAt orders Workshift by approved_at.
 	WorkshiftOrderFieldApprovedAt = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
 			return w.ApprovedAt, nil
@@ -9259,7 +9259,7 @@ var (
 			}
 		},
 	}
-	// WorkshiftOrderFieldClockIn orders Workshift by clockIn.
+	// WorkshiftOrderFieldClockIn orders Workshift by clock_in.
 	WorkshiftOrderFieldClockIn = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
 			return w.ClockIn, nil
@@ -9273,7 +9273,7 @@ var (
 			}
 		},
 	}
-	// WorkshiftOrderFieldClockOut orders Workshift by clockOut.
+	// WorkshiftOrderFieldClockOut orders Workshift by clock_out.
 	WorkshiftOrderFieldClockOut = &WorkshiftOrderField{
 		Value: func(w *Workshift) (ent.Value, error) {
 			return w.ClockOut, nil

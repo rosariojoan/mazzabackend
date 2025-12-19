@@ -20,12 +20,12 @@ type Loan struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// True if the company is the lender
 	IsLending bool `json:"is_lending,omitempty"`
 	// Amount holds the value of the "amount" field.
@@ -189,19 +189,19 @@ func (l *Loan) assignValues(columns []string, values []any) error {
 			l.ID = int(value.Int64)
 		case loan.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				l.CreatedAt = value.Time
 			}
 		case loan.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				l.UpdatedAt = value.Time
 			}
 		case loan.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				l.DeletedAt = new(time.Time)
 				*l.DeletedAt = value.Time
@@ -390,14 +390,14 @@ func (l *Loan) String() string {
 	var builder strings.Builder
 	builder.WriteString("Loan(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", l.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(l.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(l.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := l.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")

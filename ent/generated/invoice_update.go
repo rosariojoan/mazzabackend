@@ -33,19 +33,19 @@ func (iu *InvoiceUpdate) Where(ps ...predicate.Invoice) *InvoiceUpdate {
 	return iu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (iu *InvoiceUpdate) SetUpdatedAt(t time.Time) *InvoiceUpdate {
 	iu.mutation.SetUpdatedAt(t)
 	return iu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (iu *InvoiceUpdate) SetDeletedAt(t time.Time) *InvoiceUpdate {
 	iu.mutation.SetDeletedAt(t)
 	return iu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableDeletedAt(t *time.Time) *InvoiceUpdate {
 	if t != nil {
 		iu.SetDeletedAt(*t)
@@ -53,19 +53,19 @@ func (iu *InvoiceUpdate) SetNillableDeletedAt(t *time.Time) *InvoiceUpdate {
 	return iu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (iu *InvoiceUpdate) ClearDeletedAt() *InvoiceUpdate {
 	iu.mutation.ClearDeletedAt()
 	return iu
 }
 
-// SetCompanyLogo sets the "companyLogo" field.
+// SetCompanyLogo sets the "company_logo" field.
 func (iu *InvoiceUpdate) SetCompanyLogo(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyLogo(s)
 	return iu
 }
 
-// SetNillableCompanyLogo sets the "companyLogo" field if the given value is not nil.
+// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyLogo(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyLogo(*s)
@@ -73,19 +73,19 @@ func (iu *InvoiceUpdate) SetNillableCompanyLogo(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCompanyLogo clears the value of the "companyLogo" field.
+// ClearCompanyLogo clears the value of the "company_logo" field.
 func (iu *InvoiceUpdate) ClearCompanyLogo() *InvoiceUpdate {
 	iu.mutation.ClearCompanyLogo()
 	return iu
 }
 
-// SetCompanyName sets the "companyName" field.
+// SetCompanyName sets the "company_name" field.
 func (iu *InvoiceUpdate) SetCompanyName(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyName(s)
 	return iu
 }
 
-// SetNillableCompanyName sets the "companyName" field if the given value is not nil.
+// SetNillableCompanyName sets the "company_name" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyName(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyName(*s)
@@ -93,13 +93,13 @@ func (iu *InvoiceUpdate) SetNillableCompanyName(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// SetCompanyTaxID sets the "companyTaxID" field.
+// SetCompanyTaxID sets the "company_tax_id" field.
 func (iu *InvoiceUpdate) SetCompanyTaxID(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyTaxID(s)
 	return iu
 }
 
-// SetNillableCompanyTaxID sets the "companyTaxID" field if the given value is not nil.
+// SetNillableCompanyTaxID sets the "company_tax_id" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyTaxID(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyTaxID(*s)
@@ -107,19 +107,19 @@ func (iu *InvoiceUpdate) SetNillableCompanyTaxID(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCompanyTaxID clears the value of the "companyTaxID" field.
+// ClearCompanyTaxID clears the value of the "company_tax_id" field.
 func (iu *InvoiceUpdate) ClearCompanyTaxID() *InvoiceUpdate {
 	iu.mutation.ClearCompanyTaxID()
 	return iu
 }
 
-// SetCompanyAddress sets the "companyAddress" field.
+// SetCompanyAddress sets the "company_address" field.
 func (iu *InvoiceUpdate) SetCompanyAddress(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyAddress(s)
 	return iu
 }
 
-// SetNillableCompanyAddress sets the "companyAddress" field if the given value is not nil.
+// SetNillableCompanyAddress sets the "company_address" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyAddress(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyAddress(*s)
@@ -127,13 +127,13 @@ func (iu *InvoiceUpdate) SetNillableCompanyAddress(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// SetCompanyCity sets the "companyCity" field.
+// SetCompanyCity sets the "company_city" field.
 func (iu *InvoiceUpdate) SetCompanyCity(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyCity(s)
 	return iu
 }
 
-// SetNillableCompanyCity sets the "companyCity" field if the given value is not nil.
+// SetNillableCompanyCity sets the "company_city" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyCity(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyCity(*s)
@@ -141,13 +141,13 @@ func (iu *InvoiceUpdate) SetNillableCompanyCity(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// SetCompanyEmail sets the "companyEmail" field.
+// SetCompanyEmail sets the "company_email" field.
 func (iu *InvoiceUpdate) SetCompanyEmail(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyEmail(s)
 	return iu
 }
 
-// SetNillableCompanyEmail sets the "companyEmail" field if the given value is not nil.
+// SetNillableCompanyEmail sets the "company_email" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyEmail(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyEmail(*s)
@@ -155,19 +155,19 @@ func (iu *InvoiceUpdate) SetNillableCompanyEmail(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCompanyEmail clears the value of the "companyEmail" field.
+// ClearCompanyEmail clears the value of the "company_email" field.
 func (iu *InvoiceUpdate) ClearCompanyEmail() *InvoiceUpdate {
 	iu.mutation.ClearCompanyEmail()
 	return iu
 }
 
-// SetCompanyPhone sets the "companyPhone" field.
+// SetCompanyPhone sets the "company_phone" field.
 func (iu *InvoiceUpdate) SetCompanyPhone(s string) *InvoiceUpdate {
 	iu.mutation.SetCompanyPhone(s)
 	return iu
 }
 
-// SetNillableCompanyPhone sets the "companyPhone" field if the given value is not nil.
+// SetNillableCompanyPhone sets the "company_phone" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCompanyPhone(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCompanyPhone(*s)
@@ -175,7 +175,7 @@ func (iu *InvoiceUpdate) SetNillableCompanyPhone(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCompanyPhone clears the value of the "companyPhone" field.
+// ClearCompanyPhone clears the value of the "company_phone" field.
 func (iu *InvoiceUpdate) ClearCompanyPhone() *InvoiceUpdate {
 	iu.mutation.ClearCompanyPhone()
 	return iu
@@ -201,13 +201,13 @@ func (iu *InvoiceUpdate) ClearNumber() *InvoiceUpdate {
 	return iu
 }
 
-// SetIssueDate sets the "issueDate" field.
+// SetIssueDate sets the "issue_date" field.
 func (iu *InvoiceUpdate) SetIssueDate(t time.Time) *InvoiceUpdate {
 	iu.mutation.SetIssueDate(t)
 	return iu
 }
 
-// SetNillableIssueDate sets the "issueDate" field if the given value is not nil.
+// SetNillableIssueDate sets the "issue_date" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableIssueDate(t *time.Time) *InvoiceUpdate {
 	if t != nil {
 		iu.SetIssueDate(*t)
@@ -215,13 +215,13 @@ func (iu *InvoiceUpdate) SetNillableIssueDate(t *time.Time) *InvoiceUpdate {
 	return iu
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (iu *InvoiceUpdate) SetDueDate(t time.Time) *InvoiceUpdate {
 	iu.mutation.SetDueDate(t)
 	return iu
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableDueDate(t *time.Time) *InvoiceUpdate {
 	if t != nil {
 		iu.SetDueDate(*t)
@@ -229,13 +229,13 @@ func (iu *InvoiceUpdate) SetNillableDueDate(t *time.Time) *InvoiceUpdate {
 	return iu
 }
 
-// SetPaidAt sets the "paidAt" field.
+// SetPaidAt sets the "paid_at" field.
 func (iu *InvoiceUpdate) SetPaidAt(t time.Time) *InvoiceUpdate {
 	iu.mutation.SetPaidAt(t)
 	return iu
 }
 
-// SetNillablePaidAt sets the "paidAt" field if the given value is not nil.
+// SetNillablePaidAt sets the "paid_at" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillablePaidAt(t *time.Time) *InvoiceUpdate {
 	if t != nil {
 		iu.SetPaidAt(*t)
@@ -243,7 +243,7 @@ func (iu *InvoiceUpdate) SetNillablePaidAt(t *time.Time) *InvoiceUpdate {
 	return iu
 }
 
-// ClearPaidAt clears the value of the "paidAt" field.
+// ClearPaidAt clears the value of the "paid_at" field.
 func (iu *InvoiceUpdate) ClearPaidAt() *InvoiceUpdate {
 	iu.mutation.ClearPaidAt()
 	return iu
@@ -263,13 +263,13 @@ func (iu *InvoiceUpdate) SetNillableStatus(i *invoice.Status) *InvoiceUpdate {
 	return iu
 }
 
-// SetCustomerName sets the "customerName" field.
+// SetCustomerName sets the "customer_name" field.
 func (iu *InvoiceUpdate) SetCustomerName(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerName(s)
 	return iu
 }
 
-// SetNillableCustomerName sets the "customerName" field if the given value is not nil.
+// SetNillableCustomerName sets the "customer_name" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerName(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerName(*s)
@@ -277,19 +277,19 @@ func (iu *InvoiceUpdate) SetNillableCustomerName(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerName clears the value of the "customerName" field.
+// ClearCustomerName clears the value of the "customer_name" field.
 func (iu *InvoiceUpdate) ClearCustomerName() *InvoiceUpdate {
 	iu.mutation.ClearCustomerName()
 	return iu
 }
 
-// SetCustomerTaxID sets the "customerTaxID" field.
+// SetCustomerTaxID sets the "customer_tax_id" field.
 func (iu *InvoiceUpdate) SetCustomerTaxID(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerTaxID(s)
 	return iu
 }
 
-// SetNillableCustomerTaxID sets the "customerTaxID" field if the given value is not nil.
+// SetNillableCustomerTaxID sets the "customer_tax_id" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerTaxID(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerTaxID(*s)
@@ -297,19 +297,19 @@ func (iu *InvoiceUpdate) SetNillableCustomerTaxID(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerTaxID clears the value of the "customerTaxID" field.
+// ClearCustomerTaxID clears the value of the "customer_tax_id" field.
 func (iu *InvoiceUpdate) ClearCustomerTaxID() *InvoiceUpdate {
 	iu.mutation.ClearCustomerTaxID()
 	return iu
 }
 
-// SetCustomerAddress sets the "customerAddress" field.
+// SetCustomerAddress sets the "customer_address" field.
 func (iu *InvoiceUpdate) SetCustomerAddress(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerAddress(s)
 	return iu
 }
 
-// SetNillableCustomerAddress sets the "customerAddress" field if the given value is not nil.
+// SetNillableCustomerAddress sets the "customer_address" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerAddress(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerAddress(*s)
@@ -317,19 +317,19 @@ func (iu *InvoiceUpdate) SetNillableCustomerAddress(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerAddress clears the value of the "customerAddress" field.
+// ClearCustomerAddress clears the value of the "customer_address" field.
 func (iu *InvoiceUpdate) ClearCustomerAddress() *InvoiceUpdate {
 	iu.mutation.ClearCustomerAddress()
 	return iu
 }
 
-// SetCustomerCity sets the "customerCity" field.
+// SetCustomerCity sets the "customer_city" field.
 func (iu *InvoiceUpdate) SetCustomerCity(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerCity(s)
 	return iu
 }
 
-// SetNillableCustomerCity sets the "customerCity" field if the given value is not nil.
+// SetNillableCustomerCity sets the "customer_city" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerCity(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerCity(*s)
@@ -337,19 +337,19 @@ func (iu *InvoiceUpdate) SetNillableCustomerCity(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerCity clears the value of the "customerCity" field.
+// ClearCustomerCity clears the value of the "customer_city" field.
 func (iu *InvoiceUpdate) ClearCustomerCity() *InvoiceUpdate {
 	iu.mutation.ClearCustomerCity()
 	return iu
 }
 
-// SetCustomerEmail sets the "customerEmail" field.
+// SetCustomerEmail sets the "customer_email" field.
 func (iu *InvoiceUpdate) SetCustomerEmail(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerEmail(s)
 	return iu
 }
 
-// SetNillableCustomerEmail sets the "customerEmail" field if the given value is not nil.
+// SetNillableCustomerEmail sets the "customer_email" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerEmail(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerEmail(*s)
@@ -357,19 +357,19 @@ func (iu *InvoiceUpdate) SetNillableCustomerEmail(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerEmail clears the value of the "customerEmail" field.
+// ClearCustomerEmail clears the value of the "customer_email" field.
 func (iu *InvoiceUpdate) ClearCustomerEmail() *InvoiceUpdate {
 	iu.mutation.ClearCustomerEmail()
 	return iu
 }
 
-// SetCustomerPhone sets the "customerPhone" field.
+// SetCustomerPhone sets the "customer_phone" field.
 func (iu *InvoiceUpdate) SetCustomerPhone(s string) *InvoiceUpdate {
 	iu.mutation.SetCustomerPhone(s)
 	return iu
 }
 
-// SetNillableCustomerPhone sets the "customerPhone" field if the given value is not nil.
+// SetNillableCustomerPhone sets the "customer_phone" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableCustomerPhone(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetCustomerPhone(*s)
@@ -377,7 +377,7 @@ func (iu *InvoiceUpdate) SetNillableCustomerPhone(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearCustomerPhone clears the value of the "customerPhone" field.
+// ClearCustomerPhone clears the value of the "customer_phone" field.
 func (iu *InvoiceUpdate) ClearCustomerPhone() *InvoiceUpdate {
 	iu.mutation.ClearCustomerPhone()
 	return iu
@@ -480,13 +480,13 @@ func (iu *InvoiceUpdate) ClearNotes() *InvoiceUpdate {
 	return iu
 }
 
-// SetPaymentMethod sets the "paymentMethod" field.
+// SetPaymentMethod sets the "payment_method" field.
 func (iu *InvoiceUpdate) SetPaymentMethod(s string) *InvoiceUpdate {
 	iu.mutation.SetPaymentMethod(s)
 	return iu
 }
 
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
+// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillablePaymentMethod(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetPaymentMethod(*s)
@@ -494,19 +494,19 @@ func (iu *InvoiceUpdate) SetNillablePaymentMethod(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
+// ClearPaymentMethod clears the value of the "payment_method" field.
 func (iu *InvoiceUpdate) ClearPaymentMethod() *InvoiceUpdate {
 	iu.mutation.ClearPaymentMethod()
 	return iu
 }
 
-// SetBankName sets the "bankName" field.
+// SetBankName sets the "bank_name" field.
 func (iu *InvoiceUpdate) SetBankName(s string) *InvoiceUpdate {
 	iu.mutation.SetBankName(s)
 	return iu
 }
 
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableBankName(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetBankName(*s)
@@ -514,19 +514,19 @@ func (iu *InvoiceUpdate) SetNillableBankName(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearBankName clears the value of the "bankName" field.
+// ClearBankName clears the value of the "bank_name" field.
 func (iu *InvoiceUpdate) ClearBankName() *InvoiceUpdate {
 	iu.mutation.ClearBankName()
 	return iu
 }
 
-// SetBankAgency sets the "bankAgency" field.
+// SetBankAgency sets the "bank_agency" field.
 func (iu *InvoiceUpdate) SetBankAgency(s string) *InvoiceUpdate {
 	iu.mutation.SetBankAgency(s)
 	return iu
 }
 
-// SetNillableBankAgency sets the "bankAgency" field if the given value is not nil.
+// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableBankAgency(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetBankAgency(*s)
@@ -534,19 +534,19 @@ func (iu *InvoiceUpdate) SetNillableBankAgency(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearBankAgency clears the value of the "bankAgency" field.
+// ClearBankAgency clears the value of the "bank_agency" field.
 func (iu *InvoiceUpdate) ClearBankAgency() *InvoiceUpdate {
 	iu.mutation.ClearBankAgency()
 	return iu
 }
 
-// SetBankAccountNumber sets the "bankAccountNumber" field.
+// SetBankAccountNumber sets the "bank_account_number" field.
 func (iu *InvoiceUpdate) SetBankAccountNumber(s string) *InvoiceUpdate {
 	iu.mutation.SetBankAccountNumber(s)
 	return iu
 }
 
-// SetNillableBankAccountNumber sets the "bankAccountNumber" field if the given value is not nil.
+// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableBankAccountNumber(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetBankAccountNumber(*s)
@@ -554,19 +554,19 @@ func (iu *InvoiceUpdate) SetNillableBankAccountNumber(s *string) *InvoiceUpdate 
 	return iu
 }
 
-// ClearBankAccountNumber clears the value of the "bankAccountNumber" field.
+// ClearBankAccountNumber clears the value of the "bank_account_number" field.
 func (iu *InvoiceUpdate) ClearBankAccountNumber() *InvoiceUpdate {
 	iu.mutation.ClearBankAccountNumber()
 	return iu
 }
 
-// SetBankAccountName sets the "bankAccountName" field.
+// SetBankAccountName sets the "bank_account_name" field.
 func (iu *InvoiceUpdate) SetBankAccountName(s string) *InvoiceUpdate {
 	iu.mutation.SetBankAccountName(s)
 	return iu
 }
 
-// SetNillableBankAccountName sets the "bankAccountName" field if the given value is not nil.
+// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableBankAccountName(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetBankAccountName(*s)
@@ -574,19 +574,19 @@ func (iu *InvoiceUpdate) SetNillableBankAccountName(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearBankAccountName clears the value of the "bankAccountName" field.
+// ClearBankAccountName clears the value of the "bank_account_name" field.
 func (iu *InvoiceUpdate) ClearBankAccountName() *InvoiceUpdate {
 	iu.mutation.ClearBankAccountName()
 	return iu
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (iu *InvoiceUpdate) SetStorageURI(s string) *InvoiceUpdate {
 	iu.mutation.SetStorageURI(s)
 	return iu
 }
 
-// SetNillableStorageURI sets the "storageURI" field if the given value is not nil.
+// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableStorageURI(s *string) *InvoiceUpdate {
 	if s != nil {
 		iu.SetStorageURI(*s)
@@ -594,7 +594,7 @@ func (iu *InvoiceUpdate) SetNillableStorageURI(s *string) *InvoiceUpdate {
 	return iu
 }
 
-// ClearStorageURI clears the value of the "storageURI" field.
+// ClearStorageURI clears the value of the "storage_URI" field.
 func (iu *InvoiceUpdate) ClearStorageURI() *InvoiceUpdate {
 	iu.mutation.ClearStorageURI()
 	return iu
@@ -692,13 +692,13 @@ func (iu *InvoiceUpdate) SetCompany(c *Company) *InvoiceUpdate {
 	return iu.SetCompanyID(c.ID)
 }
 
-// SetIssuedByID sets the "issuedBy" edge to the User entity by ID.
+// SetIssuedByID sets the "issued_by" edge to the User entity by ID.
 func (iu *InvoiceUpdate) SetIssuedByID(id int) *InvoiceUpdate {
 	iu.mutation.SetIssuedByID(id)
 	return iu
 }
 
-// SetNillableIssuedByID sets the "issuedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableIssuedByID sets the "issued_by" edge to the User entity by ID if the given value is not nil.
 func (iu *InvoiceUpdate) SetNillableIssuedByID(id *int) *InvoiceUpdate {
 	if id != nil {
 		iu = iu.SetIssuedByID(*id)
@@ -706,7 +706,7 @@ func (iu *InvoiceUpdate) SetNillableIssuedByID(id *int) *InvoiceUpdate {
 	return iu
 }
 
-// SetIssuedBy sets the "issuedBy" edge to the User entity.
+// SetIssuedBy sets the "issued_by" edge to the User entity.
 func (iu *InvoiceUpdate) SetIssuedBy(u *User) *InvoiceUpdate {
 	return iu.SetIssuedByID(u.ID)
 }
@@ -760,7 +760,7 @@ func (iu *InvoiceUpdate) ClearCompany() *InvoiceUpdate {
 	return iu
 }
 
-// ClearIssuedBy clears the "issuedBy" edge to the User entity.
+// ClearIssuedBy clears the "issued_by" edge to the User entity.
 func (iu *InvoiceUpdate) ClearIssuedBy() *InvoiceUpdate {
 	iu.mutation.ClearIssuedBy()
 	return iu
@@ -1199,19 +1199,19 @@ type InvoiceUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (iuo *InvoiceUpdateOne) SetUpdatedAt(t time.Time) *InvoiceUpdateOne {
 	iuo.mutation.SetUpdatedAt(t)
 	return iuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (iuo *InvoiceUpdateOne) SetDeletedAt(t time.Time) *InvoiceUpdateOne {
 	iuo.mutation.SetDeletedAt(t)
 	return iuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableDeletedAt(t *time.Time) *InvoiceUpdateOne {
 	if t != nil {
 		iuo.SetDeletedAt(*t)
@@ -1219,19 +1219,19 @@ func (iuo *InvoiceUpdateOne) SetNillableDeletedAt(t *time.Time) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (iuo *InvoiceUpdateOne) ClearDeletedAt() *InvoiceUpdateOne {
 	iuo.mutation.ClearDeletedAt()
 	return iuo
 }
 
-// SetCompanyLogo sets the "companyLogo" field.
+// SetCompanyLogo sets the "company_logo" field.
 func (iuo *InvoiceUpdateOne) SetCompanyLogo(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyLogo(s)
 	return iuo
 }
 
-// SetNillableCompanyLogo sets the "companyLogo" field if the given value is not nil.
+// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyLogo(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyLogo(*s)
@@ -1239,19 +1239,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyLogo(s *string) *InvoiceUpdateOne
 	return iuo
 }
 
-// ClearCompanyLogo clears the value of the "companyLogo" field.
+// ClearCompanyLogo clears the value of the "company_logo" field.
 func (iuo *InvoiceUpdateOne) ClearCompanyLogo() *InvoiceUpdateOne {
 	iuo.mutation.ClearCompanyLogo()
 	return iuo
 }
 
-// SetCompanyName sets the "companyName" field.
+// SetCompanyName sets the "company_name" field.
 func (iuo *InvoiceUpdateOne) SetCompanyName(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyName(s)
 	return iuo
 }
 
-// SetNillableCompanyName sets the "companyName" field if the given value is not nil.
+// SetNillableCompanyName sets the "company_name" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyName(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyName(*s)
@@ -1259,13 +1259,13 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyName(s *string) *InvoiceUpdateOne
 	return iuo
 }
 
-// SetCompanyTaxID sets the "companyTaxID" field.
+// SetCompanyTaxID sets the "company_tax_id" field.
 func (iuo *InvoiceUpdateOne) SetCompanyTaxID(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyTaxID(s)
 	return iuo
 }
 
-// SetNillableCompanyTaxID sets the "companyTaxID" field if the given value is not nil.
+// SetNillableCompanyTaxID sets the "company_tax_id" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyTaxID(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyTaxID(*s)
@@ -1273,19 +1273,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyTaxID(s *string) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearCompanyTaxID clears the value of the "companyTaxID" field.
+// ClearCompanyTaxID clears the value of the "company_tax_id" field.
 func (iuo *InvoiceUpdateOne) ClearCompanyTaxID() *InvoiceUpdateOne {
 	iuo.mutation.ClearCompanyTaxID()
 	return iuo
 }
 
-// SetCompanyAddress sets the "companyAddress" field.
+// SetCompanyAddress sets the "company_address" field.
 func (iuo *InvoiceUpdateOne) SetCompanyAddress(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyAddress(s)
 	return iuo
 }
 
-// SetNillableCompanyAddress sets the "companyAddress" field if the given value is not nil.
+// SetNillableCompanyAddress sets the "company_address" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyAddress(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyAddress(*s)
@@ -1293,13 +1293,13 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyAddress(s *string) *InvoiceUpdate
 	return iuo
 }
 
-// SetCompanyCity sets the "companyCity" field.
+// SetCompanyCity sets the "company_city" field.
 func (iuo *InvoiceUpdateOne) SetCompanyCity(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyCity(s)
 	return iuo
 }
 
-// SetNillableCompanyCity sets the "companyCity" field if the given value is not nil.
+// SetNillableCompanyCity sets the "company_city" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyCity(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyCity(*s)
@@ -1307,13 +1307,13 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyCity(s *string) *InvoiceUpdateOne
 	return iuo
 }
 
-// SetCompanyEmail sets the "companyEmail" field.
+// SetCompanyEmail sets the "company_email" field.
 func (iuo *InvoiceUpdateOne) SetCompanyEmail(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyEmail(s)
 	return iuo
 }
 
-// SetNillableCompanyEmail sets the "companyEmail" field if the given value is not nil.
+// SetNillableCompanyEmail sets the "company_email" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyEmail(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyEmail(*s)
@@ -1321,19 +1321,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyEmail(s *string) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearCompanyEmail clears the value of the "companyEmail" field.
+// ClearCompanyEmail clears the value of the "company_email" field.
 func (iuo *InvoiceUpdateOne) ClearCompanyEmail() *InvoiceUpdateOne {
 	iuo.mutation.ClearCompanyEmail()
 	return iuo
 }
 
-// SetCompanyPhone sets the "companyPhone" field.
+// SetCompanyPhone sets the "company_phone" field.
 func (iuo *InvoiceUpdateOne) SetCompanyPhone(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCompanyPhone(s)
 	return iuo
 }
 
-// SetNillableCompanyPhone sets the "companyPhone" field if the given value is not nil.
+// SetNillableCompanyPhone sets the "company_phone" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCompanyPhone(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCompanyPhone(*s)
@@ -1341,7 +1341,7 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyPhone(s *string) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearCompanyPhone clears the value of the "companyPhone" field.
+// ClearCompanyPhone clears the value of the "company_phone" field.
 func (iuo *InvoiceUpdateOne) ClearCompanyPhone() *InvoiceUpdateOne {
 	iuo.mutation.ClearCompanyPhone()
 	return iuo
@@ -1367,13 +1367,13 @@ func (iuo *InvoiceUpdateOne) ClearNumber() *InvoiceUpdateOne {
 	return iuo
 }
 
-// SetIssueDate sets the "issueDate" field.
+// SetIssueDate sets the "issue_date" field.
 func (iuo *InvoiceUpdateOne) SetIssueDate(t time.Time) *InvoiceUpdateOne {
 	iuo.mutation.SetIssueDate(t)
 	return iuo
 }
 
-// SetNillableIssueDate sets the "issueDate" field if the given value is not nil.
+// SetNillableIssueDate sets the "issue_date" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableIssueDate(t *time.Time) *InvoiceUpdateOne {
 	if t != nil {
 		iuo.SetIssueDate(*t)
@@ -1381,13 +1381,13 @@ func (iuo *InvoiceUpdateOne) SetNillableIssueDate(t *time.Time) *InvoiceUpdateOn
 	return iuo
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (iuo *InvoiceUpdateOne) SetDueDate(t time.Time) *InvoiceUpdateOne {
 	iuo.mutation.SetDueDate(t)
 	return iuo
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableDueDate(t *time.Time) *InvoiceUpdateOne {
 	if t != nil {
 		iuo.SetDueDate(*t)
@@ -1395,13 +1395,13 @@ func (iuo *InvoiceUpdateOne) SetNillableDueDate(t *time.Time) *InvoiceUpdateOne 
 	return iuo
 }
 
-// SetPaidAt sets the "paidAt" field.
+// SetPaidAt sets the "paid_at" field.
 func (iuo *InvoiceUpdateOne) SetPaidAt(t time.Time) *InvoiceUpdateOne {
 	iuo.mutation.SetPaidAt(t)
 	return iuo
 }
 
-// SetNillablePaidAt sets the "paidAt" field if the given value is not nil.
+// SetNillablePaidAt sets the "paid_at" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillablePaidAt(t *time.Time) *InvoiceUpdateOne {
 	if t != nil {
 		iuo.SetPaidAt(*t)
@@ -1409,7 +1409,7 @@ func (iuo *InvoiceUpdateOne) SetNillablePaidAt(t *time.Time) *InvoiceUpdateOne {
 	return iuo
 }
 
-// ClearPaidAt clears the value of the "paidAt" field.
+// ClearPaidAt clears the value of the "paid_at" field.
 func (iuo *InvoiceUpdateOne) ClearPaidAt() *InvoiceUpdateOne {
 	iuo.mutation.ClearPaidAt()
 	return iuo
@@ -1429,13 +1429,13 @@ func (iuo *InvoiceUpdateOne) SetNillableStatus(i *invoice.Status) *InvoiceUpdate
 	return iuo
 }
 
-// SetCustomerName sets the "customerName" field.
+// SetCustomerName sets the "customer_name" field.
 func (iuo *InvoiceUpdateOne) SetCustomerName(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerName(s)
 	return iuo
 }
 
-// SetNillableCustomerName sets the "customerName" field if the given value is not nil.
+// SetNillableCustomerName sets the "customer_name" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerName(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerName(*s)
@@ -1443,19 +1443,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerName(s *string) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearCustomerName clears the value of the "customerName" field.
+// ClearCustomerName clears the value of the "customer_name" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerName() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerName()
 	return iuo
 }
 
-// SetCustomerTaxID sets the "customerTaxID" field.
+// SetCustomerTaxID sets the "customer_tax_id" field.
 func (iuo *InvoiceUpdateOne) SetCustomerTaxID(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerTaxID(s)
 	return iuo
 }
 
-// SetNillableCustomerTaxID sets the "customerTaxID" field if the given value is not nil.
+// SetNillableCustomerTaxID sets the "customer_tax_id" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerTaxID(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerTaxID(*s)
@@ -1463,19 +1463,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerTaxID(s *string) *InvoiceUpdateO
 	return iuo
 }
 
-// ClearCustomerTaxID clears the value of the "customerTaxID" field.
+// ClearCustomerTaxID clears the value of the "customer_tax_id" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerTaxID() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerTaxID()
 	return iuo
 }
 
-// SetCustomerAddress sets the "customerAddress" field.
+// SetCustomerAddress sets the "customer_address" field.
 func (iuo *InvoiceUpdateOne) SetCustomerAddress(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerAddress(s)
 	return iuo
 }
 
-// SetNillableCustomerAddress sets the "customerAddress" field if the given value is not nil.
+// SetNillableCustomerAddress sets the "customer_address" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerAddress(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerAddress(*s)
@@ -1483,19 +1483,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerAddress(s *string) *InvoiceUpdat
 	return iuo
 }
 
-// ClearCustomerAddress clears the value of the "customerAddress" field.
+// ClearCustomerAddress clears the value of the "customer_address" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerAddress() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerAddress()
 	return iuo
 }
 
-// SetCustomerCity sets the "customerCity" field.
+// SetCustomerCity sets the "customer_city" field.
 func (iuo *InvoiceUpdateOne) SetCustomerCity(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerCity(s)
 	return iuo
 }
 
-// SetNillableCustomerCity sets the "customerCity" field if the given value is not nil.
+// SetNillableCustomerCity sets the "customer_city" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerCity(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerCity(*s)
@@ -1503,19 +1503,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerCity(s *string) *InvoiceUpdateOn
 	return iuo
 }
 
-// ClearCustomerCity clears the value of the "customerCity" field.
+// ClearCustomerCity clears the value of the "customer_city" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerCity() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerCity()
 	return iuo
 }
 
-// SetCustomerEmail sets the "customerEmail" field.
+// SetCustomerEmail sets the "customer_email" field.
 func (iuo *InvoiceUpdateOne) SetCustomerEmail(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerEmail(s)
 	return iuo
 }
 
-// SetNillableCustomerEmail sets the "customerEmail" field if the given value is not nil.
+// SetNillableCustomerEmail sets the "customer_email" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerEmail(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerEmail(*s)
@@ -1523,19 +1523,19 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerEmail(s *string) *InvoiceUpdateO
 	return iuo
 }
 
-// ClearCustomerEmail clears the value of the "customerEmail" field.
+// ClearCustomerEmail clears the value of the "customer_email" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerEmail() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerEmail()
 	return iuo
 }
 
-// SetCustomerPhone sets the "customerPhone" field.
+// SetCustomerPhone sets the "customer_phone" field.
 func (iuo *InvoiceUpdateOne) SetCustomerPhone(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetCustomerPhone(s)
 	return iuo
 }
 
-// SetNillableCustomerPhone sets the "customerPhone" field if the given value is not nil.
+// SetNillableCustomerPhone sets the "customer_phone" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableCustomerPhone(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetCustomerPhone(*s)
@@ -1543,7 +1543,7 @@ func (iuo *InvoiceUpdateOne) SetNillableCustomerPhone(s *string) *InvoiceUpdateO
 	return iuo
 }
 
-// ClearCustomerPhone clears the value of the "customerPhone" field.
+// ClearCustomerPhone clears the value of the "customer_phone" field.
 func (iuo *InvoiceUpdateOne) ClearCustomerPhone() *InvoiceUpdateOne {
 	iuo.mutation.ClearCustomerPhone()
 	return iuo
@@ -1646,13 +1646,13 @@ func (iuo *InvoiceUpdateOne) ClearNotes() *InvoiceUpdateOne {
 	return iuo
 }
 
-// SetPaymentMethod sets the "paymentMethod" field.
+// SetPaymentMethod sets the "payment_method" field.
 func (iuo *InvoiceUpdateOne) SetPaymentMethod(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetPaymentMethod(s)
 	return iuo
 }
 
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
+// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillablePaymentMethod(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetPaymentMethod(*s)
@@ -1660,19 +1660,19 @@ func (iuo *InvoiceUpdateOne) SetNillablePaymentMethod(s *string) *InvoiceUpdateO
 	return iuo
 }
 
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
+// ClearPaymentMethod clears the value of the "payment_method" field.
 func (iuo *InvoiceUpdateOne) ClearPaymentMethod() *InvoiceUpdateOne {
 	iuo.mutation.ClearPaymentMethod()
 	return iuo
 }
 
-// SetBankName sets the "bankName" field.
+// SetBankName sets the "bank_name" field.
 func (iuo *InvoiceUpdateOne) SetBankName(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetBankName(s)
 	return iuo
 }
 
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableBankName(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetBankName(*s)
@@ -1680,19 +1680,19 @@ func (iuo *InvoiceUpdateOne) SetNillableBankName(s *string) *InvoiceUpdateOne {
 	return iuo
 }
 
-// ClearBankName clears the value of the "bankName" field.
+// ClearBankName clears the value of the "bank_name" field.
 func (iuo *InvoiceUpdateOne) ClearBankName() *InvoiceUpdateOne {
 	iuo.mutation.ClearBankName()
 	return iuo
 }
 
-// SetBankAgency sets the "bankAgency" field.
+// SetBankAgency sets the "bank_agency" field.
 func (iuo *InvoiceUpdateOne) SetBankAgency(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetBankAgency(s)
 	return iuo
 }
 
-// SetNillableBankAgency sets the "bankAgency" field if the given value is not nil.
+// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableBankAgency(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetBankAgency(*s)
@@ -1700,19 +1700,19 @@ func (iuo *InvoiceUpdateOne) SetNillableBankAgency(s *string) *InvoiceUpdateOne 
 	return iuo
 }
 
-// ClearBankAgency clears the value of the "bankAgency" field.
+// ClearBankAgency clears the value of the "bank_agency" field.
 func (iuo *InvoiceUpdateOne) ClearBankAgency() *InvoiceUpdateOne {
 	iuo.mutation.ClearBankAgency()
 	return iuo
 }
 
-// SetBankAccountNumber sets the "bankAccountNumber" field.
+// SetBankAccountNumber sets the "bank_account_number" field.
 func (iuo *InvoiceUpdateOne) SetBankAccountNumber(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetBankAccountNumber(s)
 	return iuo
 }
 
-// SetNillableBankAccountNumber sets the "bankAccountNumber" field if the given value is not nil.
+// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableBankAccountNumber(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetBankAccountNumber(*s)
@@ -1720,19 +1720,19 @@ func (iuo *InvoiceUpdateOne) SetNillableBankAccountNumber(s *string) *InvoiceUpd
 	return iuo
 }
 
-// ClearBankAccountNumber clears the value of the "bankAccountNumber" field.
+// ClearBankAccountNumber clears the value of the "bank_account_number" field.
 func (iuo *InvoiceUpdateOne) ClearBankAccountNumber() *InvoiceUpdateOne {
 	iuo.mutation.ClearBankAccountNumber()
 	return iuo
 }
 
-// SetBankAccountName sets the "bankAccountName" field.
+// SetBankAccountName sets the "bank_account_name" field.
 func (iuo *InvoiceUpdateOne) SetBankAccountName(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetBankAccountName(s)
 	return iuo
 }
 
-// SetNillableBankAccountName sets the "bankAccountName" field if the given value is not nil.
+// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableBankAccountName(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetBankAccountName(*s)
@@ -1740,19 +1740,19 @@ func (iuo *InvoiceUpdateOne) SetNillableBankAccountName(s *string) *InvoiceUpdat
 	return iuo
 }
 
-// ClearBankAccountName clears the value of the "bankAccountName" field.
+// ClearBankAccountName clears the value of the "bank_account_name" field.
 func (iuo *InvoiceUpdateOne) ClearBankAccountName() *InvoiceUpdateOne {
 	iuo.mutation.ClearBankAccountName()
 	return iuo
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (iuo *InvoiceUpdateOne) SetStorageURI(s string) *InvoiceUpdateOne {
 	iuo.mutation.SetStorageURI(s)
 	return iuo
 }
 
-// SetNillableStorageURI sets the "storageURI" field if the given value is not nil.
+// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableStorageURI(s *string) *InvoiceUpdateOne {
 	if s != nil {
 		iuo.SetStorageURI(*s)
@@ -1760,7 +1760,7 @@ func (iuo *InvoiceUpdateOne) SetNillableStorageURI(s *string) *InvoiceUpdateOne 
 	return iuo
 }
 
-// ClearStorageURI clears the value of the "storageURI" field.
+// ClearStorageURI clears the value of the "storage_URI" field.
 func (iuo *InvoiceUpdateOne) ClearStorageURI() *InvoiceUpdateOne {
 	iuo.mutation.ClearStorageURI()
 	return iuo
@@ -1858,13 +1858,13 @@ func (iuo *InvoiceUpdateOne) SetCompany(c *Company) *InvoiceUpdateOne {
 	return iuo.SetCompanyID(c.ID)
 }
 
-// SetIssuedByID sets the "issuedBy" edge to the User entity by ID.
+// SetIssuedByID sets the "issued_by" edge to the User entity by ID.
 func (iuo *InvoiceUpdateOne) SetIssuedByID(id int) *InvoiceUpdateOne {
 	iuo.mutation.SetIssuedByID(id)
 	return iuo
 }
 
-// SetNillableIssuedByID sets the "issuedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableIssuedByID sets the "issued_by" edge to the User entity by ID if the given value is not nil.
 func (iuo *InvoiceUpdateOne) SetNillableIssuedByID(id *int) *InvoiceUpdateOne {
 	if id != nil {
 		iuo = iuo.SetIssuedByID(*id)
@@ -1872,7 +1872,7 @@ func (iuo *InvoiceUpdateOne) SetNillableIssuedByID(id *int) *InvoiceUpdateOne {
 	return iuo
 }
 
-// SetIssuedBy sets the "issuedBy" edge to the User entity.
+// SetIssuedBy sets the "issued_by" edge to the User entity.
 func (iuo *InvoiceUpdateOne) SetIssuedBy(u *User) *InvoiceUpdateOne {
 	return iuo.SetIssuedByID(u.ID)
 }
@@ -1926,7 +1926,7 @@ func (iuo *InvoiceUpdateOne) ClearCompany() *InvoiceUpdateOne {
 	return iuo
 }
 
-// ClearIssuedBy clears the "issuedBy" edge to the User entity.
+// ClearIssuedBy clears the "issued_by" edge to the User entity.
 func (iuo *InvoiceUpdateOne) ClearIssuedBy() *InvoiceUpdateOne {
 	iuo.mutation.ClearIssuedBy()
 	return iuo

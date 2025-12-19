@@ -21,48 +21,48 @@ type Invoice struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// CompanyLogo holds the value of the "companyLogo" field.
-	CompanyLogo *string `json:"companyLogo,omitempty"`
-	// CompanyName holds the value of the "companyName" field.
-	CompanyName string `json:"companyName,omitempty"`
-	// CompanyTaxID holds the value of the "companyTaxID" field.
-	CompanyTaxID *string `json:"companyTaxID,omitempty"`
-	// CompanyAddress holds the value of the "companyAddress" field.
-	CompanyAddress string `json:"companyAddress,omitempty"`
-	// CompanyCity holds the value of the "companyCity" field.
-	CompanyCity string `json:"companyCity,omitempty"`
-	// CompanyEmail holds the value of the "companyEmail" field.
-	CompanyEmail *string `json:"companyEmail,omitempty"`
-	// CompanyPhone holds the value of the "companyPhone" field.
-	CompanyPhone *string `json:"companyPhone,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// CompanyLogo holds the value of the "company_logo" field.
+	CompanyLogo *string `json:"company_logo,omitempty"`
+	// CompanyName holds the value of the "company_name" field.
+	CompanyName string `json:"company_name,omitempty"`
+	// CompanyTaxID holds the value of the "company_tax_id" field.
+	CompanyTaxID *string `json:"company_tax_id,omitempty"`
+	// CompanyAddress holds the value of the "company_address" field.
+	CompanyAddress string `json:"company_address,omitempty"`
+	// CompanyCity holds the value of the "company_city" field.
+	CompanyCity string `json:"company_city,omitempty"`
+	// CompanyEmail holds the value of the "company_email" field.
+	CompanyEmail *string `json:"company_email,omitempty"`
+	// CompanyPhone holds the value of the "company_phone" field.
+	CompanyPhone *string `json:"company_phone,omitempty"`
 	// Number holds the value of the "number" field.
 	Number *string `json:"number,omitempty"`
-	// IssueDate holds the value of the "issueDate" field.
-	IssueDate time.Time `json:"issueDate,omitempty"`
-	// DueDate holds the value of the "dueDate" field.
-	DueDate time.Time `json:"dueDate,omitempty"`
-	// PaidAt holds the value of the "paidAt" field.
-	PaidAt *time.Time `json:"paidAt,omitempty"`
+	// IssueDate holds the value of the "issue_date" field.
+	IssueDate time.Time `json:"issue_date,omitempty"`
+	// DueDate holds the value of the "due_date" field.
+	DueDate time.Time `json:"due_date,omitempty"`
+	// PaidAt holds the value of the "paid_at" field.
+	PaidAt *time.Time `json:"paid_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status invoice.Status `json:"status,omitempty"`
-	// CustomerName holds the value of the "customerName" field.
-	CustomerName string `json:"customerName,omitempty"`
-	// CustomerTaxID holds the value of the "customerTaxID" field.
-	CustomerTaxID *string `json:"customerTaxID,omitempty"`
-	// CustomerAddress holds the value of the "customerAddress" field.
-	CustomerAddress *string `json:"customerAddress,omitempty"`
-	// CustomerCity holds the value of the "customerCity" field.
-	CustomerCity *string `json:"customerCity,omitempty"`
-	// CustomerEmail holds the value of the "customerEmail" field.
-	CustomerEmail *string `json:"customerEmail,omitempty"`
-	// CustomerPhone holds the value of the "customerPhone" field.
-	CustomerPhone *string `json:"customerPhone,omitempty"`
+	// CustomerName holds the value of the "customer_name" field.
+	CustomerName string `json:"customer_name,omitempty"`
+	// CustomerTaxID holds the value of the "customer_tax_id" field.
+	CustomerTaxID *string `json:"customer_tax_id,omitempty"`
+	// CustomerAddress holds the value of the "customer_address" field.
+	CustomerAddress *string `json:"customer_address,omitempty"`
+	// CustomerCity holds the value of the "customer_city" field.
+	CustomerCity *string `json:"customer_city,omitempty"`
+	// CustomerEmail holds the value of the "customer_email" field.
+	CustomerEmail *string `json:"customer_email,omitempty"`
+	// CustomerPhone holds the value of the "customer_phone" field.
+	CustomerPhone *string `json:"customer_phone,omitempty"`
 	// stringified JSON of product rows
 	Items string `json:"items,omitempty"`
 	// Subtotal holds the value of the "subtotal" field.
@@ -73,17 +73,17 @@ type Invoice struct {
 	Total float64 `json:"total,omitempty"`
 	// Notes holds the value of the "notes" field.
 	Notes *string `json:"notes,omitempty"`
-	// PaymentMethod holds the value of the "paymentMethod" field.
-	PaymentMethod *string `json:"paymentMethod,omitempty"`
-	// BankName holds the value of the "bankName" field.
-	BankName *string `json:"bankName,omitempty"`
-	// BankAgency holds the value of the "bankAgency" field.
-	BankAgency *string `json:"bankAgency,omitempty"`
-	// BankAccountNumber holds the value of the "bankAccountNumber" field.
-	BankAccountNumber *string `json:"bankAccountNumber,omitempty"`
-	// BankAccountName holds the value of the "bankAccountName" field.
-	BankAccountName *string `json:"bankAccountName,omitempty"`
-	// StorageURI holds the value of the "storageURI" field.
+	// PaymentMethod holds the value of the "payment_method" field.
+	PaymentMethod *string `json:"payment_method,omitempty"`
+	// BankName holds the value of the "bank_name" field.
+	BankName *string `json:"bank_name,omitempty"`
+	// BankAgency holds the value of the "bank_agency" field.
+	BankAgency *string `json:"bank_agency,omitempty"`
+	// BankAccountNumber holds the value of the "bank_account_number" field.
+	BankAccountNumber *string `json:"bank_account_number,omitempty"`
+	// BankAccountName holds the value of the "bank_account_name" field.
+	BankAccountName *string `json:"bank_account_name,omitempty"`
+	// StorageURI holds the value of the "storage_URI" field.
 	StorageURI *string `json:"-"`
 	// URL holds the value of the "URL" field.
 	URL *string `json:"URL,omitempty"`
@@ -106,8 +106,8 @@ type Invoice struct {
 type InvoiceEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// IssuedBy holds the value of the issuedBy edge.
-	IssuedBy *User `json:"issuedBy,omitempty"`
+	// IssuedBy holds the value of the issued_by edge.
+	IssuedBy *User `json:"issued_by,omitempty"`
 	// Client holds the value of the client edge.
 	Client *Customer `json:"client,omitempty"`
 	// Receivable holds the value of the receivable edge.
@@ -138,7 +138,7 @@ func (e InvoiceEdges) IssuedByOrErr() (*User, error) {
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "issuedBy"}
+	return nil, &NotLoadedError{edge: "issued_by"}
 }
 
 // ClientOrErr returns the Client value or an error if the edge
@@ -205,65 +205,65 @@ func (i *Invoice) assignValues(columns []string, values []any) error {
 			i.ID = int(value.Int64)
 		case invoice.FieldCreatedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[j])
+				return fmt.Errorf("unexpected type %T for field created_at", values[j])
 			} else if value.Valid {
 				i.CreatedAt = value.Time
 			}
 		case invoice.FieldUpdatedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[j])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[j])
 			} else if value.Valid {
 				i.UpdatedAt = value.Time
 			}
 		case invoice.FieldDeletedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[j])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[j])
 			} else if value.Valid {
 				i.DeletedAt = new(time.Time)
 				*i.DeletedAt = value.Time
 			}
 		case invoice.FieldCompanyLogo:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyLogo", values[j])
+				return fmt.Errorf("unexpected type %T for field company_logo", values[j])
 			} else if value.Valid {
 				i.CompanyLogo = new(string)
 				*i.CompanyLogo = value.String
 			}
 		case invoice.FieldCompanyName:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyName", values[j])
+				return fmt.Errorf("unexpected type %T for field company_name", values[j])
 			} else if value.Valid {
 				i.CompanyName = value.String
 			}
 		case invoice.FieldCompanyTaxID:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyTaxID", values[j])
+				return fmt.Errorf("unexpected type %T for field company_tax_id", values[j])
 			} else if value.Valid {
 				i.CompanyTaxID = new(string)
 				*i.CompanyTaxID = value.String
 			}
 		case invoice.FieldCompanyAddress:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyAddress", values[j])
+				return fmt.Errorf("unexpected type %T for field company_address", values[j])
 			} else if value.Valid {
 				i.CompanyAddress = value.String
 			}
 		case invoice.FieldCompanyCity:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyCity", values[j])
+				return fmt.Errorf("unexpected type %T for field company_city", values[j])
 			} else if value.Valid {
 				i.CompanyCity = value.String
 			}
 		case invoice.FieldCompanyEmail:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyEmail", values[j])
+				return fmt.Errorf("unexpected type %T for field company_email", values[j])
 			} else if value.Valid {
 				i.CompanyEmail = new(string)
 				*i.CompanyEmail = value.String
 			}
 		case invoice.FieldCompanyPhone:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field companyPhone", values[j])
+				return fmt.Errorf("unexpected type %T for field company_phone", values[j])
 			} else if value.Valid {
 				i.CompanyPhone = new(string)
 				*i.CompanyPhone = value.String
@@ -277,19 +277,19 @@ func (i *Invoice) assignValues(columns []string, values []any) error {
 			}
 		case invoice.FieldIssueDate:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field issueDate", values[j])
+				return fmt.Errorf("unexpected type %T for field issue_date", values[j])
 			} else if value.Valid {
 				i.IssueDate = value.Time
 			}
 		case invoice.FieldDueDate:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field dueDate", values[j])
+				return fmt.Errorf("unexpected type %T for field due_date", values[j])
 			} else if value.Valid {
 				i.DueDate = value.Time
 			}
 		case invoice.FieldPaidAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field paidAt", values[j])
+				return fmt.Errorf("unexpected type %T for field paid_at", values[j])
 			} else if value.Valid {
 				i.PaidAt = new(time.Time)
 				*i.PaidAt = value.Time
@@ -302,41 +302,41 @@ func (i *Invoice) assignValues(columns []string, values []any) error {
 			}
 		case invoice.FieldCustomerName:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerName", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_name", values[j])
 			} else if value.Valid {
 				i.CustomerName = value.String
 			}
 		case invoice.FieldCustomerTaxID:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerTaxID", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_tax_id", values[j])
 			} else if value.Valid {
 				i.CustomerTaxID = new(string)
 				*i.CustomerTaxID = value.String
 			}
 		case invoice.FieldCustomerAddress:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerAddress", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_address", values[j])
 			} else if value.Valid {
 				i.CustomerAddress = new(string)
 				*i.CustomerAddress = value.String
 			}
 		case invoice.FieldCustomerCity:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerCity", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_city", values[j])
 			} else if value.Valid {
 				i.CustomerCity = new(string)
 				*i.CustomerCity = value.String
 			}
 		case invoice.FieldCustomerEmail:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerEmail", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_email", values[j])
 			} else if value.Valid {
 				i.CustomerEmail = new(string)
 				*i.CustomerEmail = value.String
 			}
 		case invoice.FieldCustomerPhone:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field customerPhone", values[j])
+				return fmt.Errorf("unexpected type %T for field customer_phone", values[j])
 			} else if value.Valid {
 				i.CustomerPhone = new(string)
 				*i.CustomerPhone = value.String
@@ -374,42 +374,42 @@ func (i *Invoice) assignValues(columns []string, values []any) error {
 			}
 		case invoice.FieldPaymentMethod:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field paymentMethod", values[j])
+				return fmt.Errorf("unexpected type %T for field payment_method", values[j])
 			} else if value.Valid {
 				i.PaymentMethod = new(string)
 				*i.PaymentMethod = value.String
 			}
 		case invoice.FieldBankName:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bankName", values[j])
+				return fmt.Errorf("unexpected type %T for field bank_name", values[j])
 			} else if value.Valid {
 				i.BankName = new(string)
 				*i.BankName = value.String
 			}
 		case invoice.FieldBankAgency:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bankAgency", values[j])
+				return fmt.Errorf("unexpected type %T for field bank_agency", values[j])
 			} else if value.Valid {
 				i.BankAgency = new(string)
 				*i.BankAgency = value.String
 			}
 		case invoice.FieldBankAccountNumber:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bankAccountNumber", values[j])
+				return fmt.Errorf("unexpected type %T for field bank_account_number", values[j])
 			} else if value.Valid {
 				i.BankAccountNumber = new(string)
 				*i.BankAccountNumber = value.String
 			}
 		case invoice.FieldBankAccountName:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field bankAccountName", values[j])
+				return fmt.Errorf("unexpected type %T for field bank_account_name", values[j])
 			} else if value.Valid {
 				i.BankAccountName = new(string)
 				*i.BankAccountName = value.String
 			}
 		case invoice.FieldStorageURI:
 			if value, ok := values[j].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field storageURI", values[j])
+				return fmt.Errorf("unexpected type %T for field storage_URI", values[j])
 			} else if value.Valid {
 				i.StorageURI = new(string)
 				*i.StorageURI = value.String
@@ -480,7 +480,7 @@ func (i *Invoice) QueryCompany() *CompanyQuery {
 	return NewInvoiceClient(i.config).QueryCompany(i)
 }
 
-// QueryIssuedBy queries the "issuedBy" edge of the Invoice entity.
+// QueryIssuedBy queries the "issued_by" edge of the Invoice entity.
 func (i *Invoice) QueryIssuedBy() *UserQuery {
 	return NewInvoiceClient(i.config).QueryIssuedBy(i)
 }
@@ -518,43 +518,43 @@ func (i *Invoice) String() string {
 	var builder strings.Builder
 	builder.WriteString("Invoice(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", i.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(i.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(i.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := i.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
 	if v := i.CompanyLogo; v != nil {
-		builder.WriteString("companyLogo=")
+		builder.WriteString("company_logo=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("companyName=")
+	builder.WriteString("company_name=")
 	builder.WriteString(i.CompanyName)
 	builder.WriteString(", ")
 	if v := i.CompanyTaxID; v != nil {
-		builder.WriteString("companyTaxID=")
+		builder.WriteString("company_tax_id=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("companyAddress=")
+	builder.WriteString("company_address=")
 	builder.WriteString(i.CompanyAddress)
 	builder.WriteString(", ")
-	builder.WriteString("companyCity=")
+	builder.WriteString("company_city=")
 	builder.WriteString(i.CompanyCity)
 	builder.WriteString(", ")
 	if v := i.CompanyEmail; v != nil {
-		builder.WriteString("companyEmail=")
+		builder.WriteString("company_email=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.CompanyPhone; v != nil {
-		builder.WriteString("companyPhone=")
+		builder.WriteString("company_phone=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -563,45 +563,45 @@ func (i *Invoice) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("issueDate=")
+	builder.WriteString("issue_date=")
 	builder.WriteString(i.IssueDate.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("dueDate=")
+	builder.WriteString("due_date=")
 	builder.WriteString(i.DueDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := i.PaidAt; v != nil {
-		builder.WriteString("paidAt=")
+		builder.WriteString("paid_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", i.Status))
 	builder.WriteString(", ")
-	builder.WriteString("customerName=")
+	builder.WriteString("customer_name=")
 	builder.WriteString(i.CustomerName)
 	builder.WriteString(", ")
 	if v := i.CustomerTaxID; v != nil {
-		builder.WriteString("customerTaxID=")
+		builder.WriteString("customer_tax_id=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.CustomerAddress; v != nil {
-		builder.WriteString("customerAddress=")
+		builder.WriteString("customer_address=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.CustomerCity; v != nil {
-		builder.WriteString("customerCity=")
+		builder.WriteString("customer_city=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.CustomerEmail; v != nil {
-		builder.WriteString("customerEmail=")
+		builder.WriteString("customer_email=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.CustomerPhone; v != nil {
-		builder.WriteString("customerPhone=")
+		builder.WriteString("customer_phone=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -623,31 +623,31 @@ func (i *Invoice) String() string {
 	}
 	builder.WriteString(", ")
 	if v := i.PaymentMethod; v != nil {
-		builder.WriteString("paymentMethod=")
+		builder.WriteString("payment_method=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.BankName; v != nil {
-		builder.WriteString("bankName=")
+		builder.WriteString("bank_name=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.BankAgency; v != nil {
-		builder.WriteString("bankAgency=")
+		builder.WriteString("bank_agency=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.BankAccountNumber; v != nil {
-		builder.WriteString("bankAccountNumber=")
+		builder.WriteString("bank_account_number=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := i.BankAccountName; v != nil {
-		builder.WriteString("bankAccountName=")
+		builder.WriteString("bank_account_name=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("storageURI=<sensitive>")
+	builder.WriteString("storage_URI=<sensitive>")
 	builder.WriteString(", ")
 	if v := i.URL; v != nil {
 		builder.WriteString("URL=")

@@ -60,7 +60,7 @@ func Name(v string) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldEQ(FieldName, v))
 }
 
-// DueDate applies equality check predicate on the "dueDate" field. It's identical to DueDateEQ.
+// DueDate applies equality check predicate on the "due_date" field. It's identical to DueDateEQ.
 func DueDate(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldEQ(FieldDueDate, v))
 }
@@ -130,42 +130,42 @@ func NameContainsFold(v string) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldContainsFold(FieldName, v))
 }
 
-// DueDateEQ applies the EQ predicate on the "dueDate" field.
+// DueDateEQ applies the EQ predicate on the "due_date" field.
 func DueDateEQ(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldEQ(FieldDueDate, v))
 }
 
-// DueDateNEQ applies the NEQ predicate on the "dueDate" field.
+// DueDateNEQ applies the NEQ predicate on the "due_date" field.
 func DueDateNEQ(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldNEQ(FieldDueDate, v))
 }
 
-// DueDateIn applies the In predicate on the "dueDate" field.
+// DueDateIn applies the In predicate on the "due_date" field.
 func DueDateIn(vs ...time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldIn(FieldDueDate, vs...))
 }
 
-// DueDateNotIn applies the NotIn predicate on the "dueDate" field.
+// DueDateNotIn applies the NotIn predicate on the "due_date" field.
 func DueDateNotIn(vs ...time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldNotIn(FieldDueDate, vs...))
 }
 
-// DueDateGT applies the GT predicate on the "dueDate" field.
+// DueDateGT applies the GT predicate on the "due_date" field.
 func DueDateGT(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldGT(FieldDueDate, v))
 }
 
-// DueDateGTE applies the GTE predicate on the "dueDate" field.
+// DueDateGTE applies the GTE predicate on the "due_date" field.
 func DueDateGTE(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldGTE(FieldDueDate, v))
 }
 
-// DueDateLT applies the LT predicate on the "dueDate" field.
+// DueDateLT applies the LT predicate on the "due_date" field.
 func DueDateLT(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldLT(FieldDueDate, v))
 }
 
-// DueDateLTE applies the LTE predicate on the "dueDate" field.
+// DueDateLTE applies the LTE predicate on the "due_date" field.
 func DueDateLTE(v time.Time) predicate.ProjectMilestone {
 	return predicate.ProjectMilestone(sql.FieldLTE(FieldDueDate, v))
 }

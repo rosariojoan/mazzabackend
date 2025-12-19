@@ -107,7 +107,7 @@ func (uq *UserQuery) Order(o ...user.OrderOption) *UserQuery {
 	return uq
 }
 
-// QueryAccountingEntries chains the current query on the "accountingEntries" edge.
+// QueryAccountingEntries chains the current query on the "accounting_entries" edge.
 func (uq *UserQuery) QueryAccountingEntries() *AccountingEntryQuery {
 	query := (&AccountingEntryClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -151,7 +151,7 @@ func (uq *UserQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryAssignedRoles chains the current query on the "assignedRoles" edge.
+// QueryAssignedRoles chains the current query on the "assigned_roles" edge.
 func (uq *UserQuery) QueryAssignedRoles() *UserRoleQuery {
 	query := (&UserRoleClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -217,7 +217,7 @@ func (uq *UserQuery) QueryLeader() *UserQuery {
 	return query
 }
 
-// QueryCreatedMemberSignupTokens chains the current query on the "createdMemberSignupTokens" edge.
+// QueryCreatedMemberSignupTokens chains the current query on the "created_member_signup_tokens" edge.
 func (uq *UserQuery) QueryCreatedMemberSignupTokens() *MemberSignupTokenQuery {
 	query := (&MemberSignupTokenClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -261,7 +261,7 @@ func (uq *UserQuery) QueryEmployee() *EmployeeQuery {
 	return query
 }
 
-// QueryIssuedInvoices chains the current query on the "issuedInvoices" edge.
+// QueryIssuedInvoices chains the current query on the "issued_invoices" edge.
 func (uq *UserQuery) QueryIssuedInvoices() *InvoiceQuery {
 	query := (&InvoiceClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -283,7 +283,7 @@ func (uq *UserQuery) QueryIssuedInvoices() *InvoiceQuery {
 	return query
 }
 
-// QueryCreatedProjects chains the current query on the "createdProjects" edge.
+// QueryCreatedProjects chains the current query on the "created_projects" edge.
 func (uq *UserQuery) QueryCreatedProjects() *ProjectQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -305,7 +305,7 @@ func (uq *UserQuery) QueryCreatedProjects() *ProjectQuery {
 	return query
 }
 
-// QueryLeaderedProjects chains the current query on the "leaderedProjects" edge.
+// QueryLeaderedProjects chains the current query on the "leadered_projects" edge.
 func (uq *UserQuery) QueryLeaderedProjects() *ProjectQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -327,7 +327,7 @@ func (uq *UserQuery) QueryLeaderedProjects() *ProjectQuery {
 	return query
 }
 
-// QueryAssignedProjectTasks chains the current query on the "assignedProjectTasks" edge.
+// QueryAssignedProjectTasks chains the current query on the "assigned_project_tasks" edge.
 func (uq *UserQuery) QueryAssignedProjectTasks() *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -349,7 +349,7 @@ func (uq *UserQuery) QueryAssignedProjectTasks() *ProjectTaskQuery {
 	return query
 }
 
-// QueryParticipatedProjectTasks chains the current query on the "participatedProjectTasks" edge.
+// QueryParticipatedProjectTasks chains the current query on the "participated_project_tasks" edge.
 func (uq *UserQuery) QueryParticipatedProjectTasks() *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -371,7 +371,7 @@ func (uq *UserQuery) QueryParticipatedProjectTasks() *ProjectTaskQuery {
 	return query
 }
 
-// QueryCreatedTasks chains the current query on the "createdTasks" edge.
+// QueryCreatedTasks chains the current query on the "created_tasks" edge.
 func (uq *UserQuery) QueryCreatedTasks() *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -415,7 +415,7 @@ func (uq *UserQuery) QueryTokens() *TokenQuery {
 	return query
 }
 
-// QueryApprovedWorkShifts chains the current query on the "approvedWorkShifts" edge.
+// QueryApprovedWorkShifts chains the current query on the "approved_work_shifts" edge.
 func (uq *UserQuery) QueryApprovedWorkShifts() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -437,7 +437,7 @@ func (uq *UserQuery) QueryApprovedWorkShifts() *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkShifts chains the current query on the "workShifts" edge.
+// QueryWorkShifts chains the current query on the "work_shifts" edge.
 func (uq *UserQuery) QueryWorkShifts() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -459,7 +459,7 @@ func (uq *UserQuery) QueryWorkShifts() *WorkshiftQuery {
 	return query
 }
 
-// QueryUploadedDocuments chains the current query on the "uploadedDocuments" edge.
+// QueryUploadedDocuments chains the current query on the "uploaded_documents" edge.
 func (uq *UserQuery) QueryUploadedDocuments() *CompanyDocumentQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -481,7 +481,7 @@ func (uq *UserQuery) QueryUploadedDocuments() *CompanyDocumentQuery {
 	return query
 }
 
-// QueryApprovedDocuments chains the current query on the "approvedDocuments" edge.
+// QueryApprovedDocuments chains the current query on the "approved_documents" edge.
 func (uq *UserQuery) QueryApprovedDocuments() *CompanyDocumentQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -721,7 +721,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 }
 
 // WithAccountingEntries tells the query-builder to eager-load the nodes that are connected to
-// the "accountingEntries" edge. The optional arguments are used to configure the query builder of the edge.
+// the "accounting_entries" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithAccountingEntries(opts ...func(*AccountingEntryQuery)) *UserQuery {
 	query := (&AccountingEntryClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -743,7 +743,7 @@ func (uq *UserQuery) WithCompany(opts ...func(*CompanyQuery)) *UserQuery {
 }
 
 // WithAssignedRoles tells the query-builder to eager-load the nodes that are connected to
-// the "assignedRoles" edge. The optional arguments are used to configure the query builder of the edge.
+// the "assigned_roles" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithAssignedRoles(opts ...func(*UserRoleQuery)) *UserQuery {
 	query := (&UserRoleClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -776,7 +776,7 @@ func (uq *UserQuery) WithLeader(opts ...func(*UserQuery)) *UserQuery {
 }
 
 // WithCreatedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to
-// the "createdMemberSignupTokens" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_member_signup_tokens" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithCreatedMemberSignupTokens(opts ...func(*MemberSignupTokenQuery)) *UserQuery {
 	query := (&MemberSignupTokenClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -798,7 +798,7 @@ func (uq *UserQuery) WithEmployee(opts ...func(*EmployeeQuery)) *UserQuery {
 }
 
 // WithIssuedInvoices tells the query-builder to eager-load the nodes that are connected to
-// the "issuedInvoices" edge. The optional arguments are used to configure the query builder of the edge.
+// the "issued_invoices" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithIssuedInvoices(opts ...func(*InvoiceQuery)) *UserQuery {
 	query := (&InvoiceClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -809,7 +809,7 @@ func (uq *UserQuery) WithIssuedInvoices(opts ...func(*InvoiceQuery)) *UserQuery 
 }
 
 // WithCreatedProjects tells the query-builder to eager-load the nodes that are connected to
-// the "createdProjects" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_projects" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithCreatedProjects(opts ...func(*ProjectQuery)) *UserQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -820,7 +820,7 @@ func (uq *UserQuery) WithCreatedProjects(opts ...func(*ProjectQuery)) *UserQuery
 }
 
 // WithLeaderedProjects tells the query-builder to eager-load the nodes that are connected to
-// the "leaderedProjects" edge. The optional arguments are used to configure the query builder of the edge.
+// the "leadered_projects" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithLeaderedProjects(opts ...func(*ProjectQuery)) *UserQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -831,7 +831,7 @@ func (uq *UserQuery) WithLeaderedProjects(opts ...func(*ProjectQuery)) *UserQuer
 }
 
 // WithAssignedProjectTasks tells the query-builder to eager-load the nodes that are connected to
-// the "assignedProjectTasks" edge. The optional arguments are used to configure the query builder of the edge.
+// the "assigned_project_tasks" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithAssignedProjectTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -842,7 +842,7 @@ func (uq *UserQuery) WithAssignedProjectTasks(opts ...func(*ProjectTaskQuery)) *
 }
 
 // WithParticipatedProjectTasks tells the query-builder to eager-load the nodes that are connected to
-// the "participatedProjectTasks" edge. The optional arguments are used to configure the query builder of the edge.
+// the "participated_project_tasks" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithParticipatedProjectTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -853,7 +853,7 @@ func (uq *UserQuery) WithParticipatedProjectTasks(opts ...func(*ProjectTaskQuery
 }
 
 // WithCreatedTasks tells the query-builder to eager-load the nodes that are connected to
-// the "createdTasks" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_tasks" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithCreatedTasks(opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -875,7 +875,7 @@ func (uq *UserQuery) WithTokens(opts ...func(*TokenQuery)) *UserQuery {
 }
 
 // WithApprovedWorkShifts tells the query-builder to eager-load the nodes that are connected to
-// the "approvedWorkShifts" edge. The optional arguments are used to configure the query builder of the edge.
+// the "approved_work_shifts" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithApprovedWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -886,7 +886,7 @@ func (uq *UserQuery) WithApprovedWorkShifts(opts ...func(*WorkshiftQuery)) *User
 }
 
 // WithWorkShifts tells the query-builder to eager-load the nodes that are connected to
-// the "workShifts" edge. The optional arguments are used to configure the query builder of the edge.
+// the "work_shifts" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -897,7 +897,7 @@ func (uq *UserQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *UserQuery {
 }
 
 // WithUploadedDocuments tells the query-builder to eager-load the nodes that are connected to
-// the "uploadedDocuments" edge. The optional arguments are used to configure the query builder of the edge.
+// the "uploaded_documents" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithUploadedDocuments(opts ...func(*CompanyDocumentQuery)) *UserQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -908,7 +908,7 @@ func (uq *UserQuery) WithUploadedDocuments(opts ...func(*CompanyDocumentQuery)) 
 }
 
 // WithApprovedDocuments tells the query-builder to eager-load the nodes that are connected to
-// the "approvedDocuments" edge. The optional arguments are used to configure the query builder of the edge.
+// the "approved_documents" edge. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithApprovedDocuments(opts ...func(*CompanyDocumentQuery)) *UserQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()
 	for _, opt := range opts {
@@ -924,7 +924,7 @@ func (uq *UserQuery) WithApprovedDocuments(opts ...func(*CompanyDocumentQuery)) 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -947,7 +947,7 @@ func (uq *UserQuery) GroupBy(field string, fields ...string) *UserGroupBy {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.User.Query().
@@ -1715,7 +1715,7 @@ func (uq *UserQuery) loadParticipatedProjectTasks(ctx context.Context, query *Pr
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "participatedProjectTasks" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "participated_project_tasks" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)
@@ -2003,7 +2003,7 @@ func (uq *UserQuery) Modify(modifiers ...func(s *sql.Selector)) *UserSelect {
 	return uq.Select()
 }
 
-// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accountingEntries"
+// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accounting_entries"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedAccountingEntries(name string, opts ...func(*AccountingEntryQuery)) *UserQuery {
 	query := (&AccountingEntryClient{config: uq.config}).Query()
@@ -2031,7 +2031,7 @@ func (uq *UserQuery) WithNamedCompany(name string, opts ...func(*CompanyQuery)) 
 	return uq
 }
 
-// WithNamedAssignedRoles tells the query-builder to eager-load the nodes that are connected to the "assignedRoles"
+// WithNamedAssignedRoles tells the query-builder to eager-load the nodes that are connected to the "assigned_roles"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedAssignedRoles(name string, opts ...func(*UserRoleQuery)) *UserQuery {
 	query := (&UserRoleClient{config: uq.config}).Query()
@@ -2059,7 +2059,7 @@ func (uq *UserQuery) WithNamedSubordinates(name string, opts ...func(*UserQuery)
 	return uq
 }
 
-// WithNamedCreatedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to the "createdMemberSignupTokens"
+// WithNamedCreatedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to the "created_member_signup_tokens"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedCreatedMemberSignupTokens(name string, opts ...func(*MemberSignupTokenQuery)) *UserQuery {
 	query := (&MemberSignupTokenClient{config: uq.config}).Query()
@@ -2073,7 +2073,7 @@ func (uq *UserQuery) WithNamedCreatedMemberSignupTokens(name string, opts ...fun
 	return uq
 }
 
-// WithNamedIssuedInvoices tells the query-builder to eager-load the nodes that are connected to the "issuedInvoices"
+// WithNamedIssuedInvoices tells the query-builder to eager-load the nodes that are connected to the "issued_invoices"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedIssuedInvoices(name string, opts ...func(*InvoiceQuery)) *UserQuery {
 	query := (&InvoiceClient{config: uq.config}).Query()
@@ -2087,7 +2087,7 @@ func (uq *UserQuery) WithNamedIssuedInvoices(name string, opts ...func(*InvoiceQ
 	return uq
 }
 
-// WithNamedCreatedProjects tells the query-builder to eager-load the nodes that are connected to the "createdProjects"
+// WithNamedCreatedProjects tells the query-builder to eager-load the nodes that are connected to the "created_projects"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedCreatedProjects(name string, opts ...func(*ProjectQuery)) *UserQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
@@ -2101,7 +2101,7 @@ func (uq *UserQuery) WithNamedCreatedProjects(name string, opts ...func(*Project
 	return uq
 }
 
-// WithNamedLeaderedProjects tells the query-builder to eager-load the nodes that are connected to the "leaderedProjects"
+// WithNamedLeaderedProjects tells the query-builder to eager-load the nodes that are connected to the "leadered_projects"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedLeaderedProjects(name string, opts ...func(*ProjectQuery)) *UserQuery {
 	query := (&ProjectClient{config: uq.config}).Query()
@@ -2115,7 +2115,7 @@ func (uq *UserQuery) WithNamedLeaderedProjects(name string, opts ...func(*Projec
 	return uq
 }
 
-// WithNamedAssignedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "assignedProjectTasks"
+// WithNamedAssignedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "assigned_project_tasks"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedAssignedProjectTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
@@ -2129,7 +2129,7 @@ func (uq *UserQuery) WithNamedAssignedProjectTasks(name string, opts ...func(*Pr
 	return uq
 }
 
-// WithNamedParticipatedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "participatedProjectTasks"
+// WithNamedParticipatedProjectTasks tells the query-builder to eager-load the nodes that are connected to the "participated_project_tasks"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedParticipatedProjectTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
@@ -2143,7 +2143,7 @@ func (uq *UserQuery) WithNamedParticipatedProjectTasks(name string, opts ...func
 	return uq
 }
 
-// WithNamedCreatedTasks tells the query-builder to eager-load the nodes that are connected to the "createdTasks"
+// WithNamedCreatedTasks tells the query-builder to eager-load the nodes that are connected to the "created_tasks"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedCreatedTasks(name string, opts ...func(*ProjectTaskQuery)) *UserQuery {
 	query := (&ProjectTaskClient{config: uq.config}).Query()
@@ -2171,7 +2171,7 @@ func (uq *UserQuery) WithNamedTokens(name string, opts ...func(*TokenQuery)) *Us
 	return uq
 }
 
-// WithNamedApprovedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "approvedWorkShifts"
+// WithNamedApprovedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "approved_work_shifts"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedApprovedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *UserQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
@@ -2185,7 +2185,7 @@ func (uq *UserQuery) WithNamedApprovedWorkShifts(name string, opts ...func(*Work
 	return uq
 }
 
-// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "workShifts"
+// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "work_shifts"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *UserQuery {
 	query := (&WorkshiftClient{config: uq.config}).Query()
@@ -2199,7 +2199,7 @@ func (uq *UserQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQue
 	return uq
 }
 
-// WithNamedUploadedDocuments tells the query-builder to eager-load the nodes that are connected to the "uploadedDocuments"
+// WithNamedUploadedDocuments tells the query-builder to eager-load the nodes that are connected to the "uploaded_documents"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedUploadedDocuments(name string, opts ...func(*CompanyDocumentQuery)) *UserQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()
@@ -2213,7 +2213,7 @@ func (uq *UserQuery) WithNamedUploadedDocuments(name string, opts ...func(*Compa
 	return uq
 }
 
-// WithNamedApprovedDocuments tells the query-builder to eager-load the nodes that are connected to the "approvedDocuments"
+// WithNamedApprovedDocuments tells the query-builder to eager-load the nodes that are connected to the "approved_documents"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (uq *UserQuery) WithNamedApprovedDocuments(name string, opts ...func(*CompanyDocumentQuery)) *UserQuery {
 	query := (&CompanyDocumentClient{config: uq.config}).Query()

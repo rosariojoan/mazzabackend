@@ -138,7 +138,7 @@ func (ptq *ProjectTaskQuery) QueryParticipants() *UserQuery {
 	return query
 }
 
-// QueryCreatedBy chains the current query on the "createdBy" edge.
+// QueryCreatedBy chains the current query on the "created_by" edge.
 func (ptq *ProjectTaskQuery) QueryCreatedBy() *UserQuery {
 	query := (&UserClient{config: ptq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -160,7 +160,7 @@ func (ptq *ProjectTaskQuery) QueryCreatedBy() *UserQuery {
 	return query
 }
 
-// QueryWorkShifts chains the current query on the "workShifts" edge.
+// QueryWorkShifts chains the current query on the "work_shifts" edge.
 func (ptq *ProjectTaskQuery) QueryWorkShifts() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: ptq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -420,7 +420,7 @@ func (ptq *ProjectTaskQuery) WithParticipants(opts ...func(*UserQuery)) *Project
 }
 
 // WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
-// the "createdBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (ptq *ProjectTaskQuery) WithCreatedBy(opts ...func(*UserQuery)) *ProjectTaskQuery {
 	query := (&UserClient{config: ptq.config}).Query()
 	for _, opt := range opts {
@@ -431,7 +431,7 @@ func (ptq *ProjectTaskQuery) WithCreatedBy(opts ...func(*UserQuery)) *ProjectTas
 }
 
 // WithWorkShifts tells the query-builder to eager-load the nodes that are connected to
-// the "workShifts" edge. The optional arguments are used to configure the query builder of the edge.
+// the "work_shifts" edge. The optional arguments are used to configure the query builder of the edge.
 func (ptq *ProjectTaskQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *ProjectTaskQuery {
 	query := (&WorkshiftClient{config: ptq.config}).Query()
 	for _, opt := range opts {
@@ -447,7 +447,7 @@ func (ptq *ProjectTaskQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *Proj
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -470,7 +470,7 @@ func (ptq *ProjectTaskQuery) GroupBy(field string, fields ...string) *ProjectTas
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.ProjectTask.Query().
@@ -905,7 +905,7 @@ func (ptq *ProjectTaskQuery) WithNamedParticipants(name string, opts ...func(*Us
 	return ptq
 }
 
-// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "workShifts"
+// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "work_shifts"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (ptq *ProjectTaskQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *ProjectTaskQuery {
 	query := (&WorkshiftClient{config: ptq.config}).Query()

@@ -19,12 +19,12 @@ type InventoryMovement struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Category holds the value of the "category" field.
 	Category inventorymovement.Category `json:"category,omitempty"`
 	// Quantity holds the value of the "quantity" field.
@@ -122,19 +122,19 @@ func (im *InventoryMovement) assignValues(columns []string, values []any) error 
 			im.ID = int(value.Int64)
 		case inventorymovement.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				im.CreatedAt = value.Time
 			}
 		case inventorymovement.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				im.UpdatedAt = value.Time
 			}
 		case inventorymovement.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				im.DeletedAt = new(time.Time)
 				*im.DeletedAt = value.Time
@@ -243,14 +243,14 @@ func (im *InventoryMovement) String() string {
 	var builder strings.Builder
 	builder.WriteString("InventoryMovement(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", im.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(im.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(im.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := im.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")

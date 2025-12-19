@@ -7,10 +7,19 @@ input CreateLoanInputData {
    loanCounterpartyID: ID
 }
 
+input LoanInstallmentUpdateInput {
+   id: ID!
+   date: Time!
+   interestPaid: Float!
+   principalPaid: Float!
+   status: LoanScheduleStatus!
+}
+
 input UpdateLoanInputData {
    id: ID!
-   loanInput: UpdateLoanInput!
    accountingEntry: BaseEntryRegistrationInput
+   installmentUpdate: [LoanInstallmentUpdateInput!]!
+   loanInput: UpdateLoanInput!
 }
 
 type LoanCounterpartySummary {
@@ -30,8 +39,12 @@ extend type Mutation {
 }
 
 extend type Query {
+   aggregateLoans(
+      where: LoanWhereInput
+      groupBy: [LoansGroupBy!]
+   ): [LoanAggregationOutput!]!
    getDebtorsList(companyID: ID!): [Customer!]!
    getLendersList(companyID: ID!): [Supplier!]!
    loanCounterpartySummary(lending: Boolean!, top: Int): [LoanCounterpartySummary!]!
-  loansAging(isLending: Boolean!): [AgingBucket!]!
+   loansAging(isLending: Boolean!): [AgingBucket!]!
 }

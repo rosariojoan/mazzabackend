@@ -27,7 +27,7 @@ func (pmc *ProjectMilestoneCreate) SetName(s string) *ProjectMilestoneCreate {
 	return pmc
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (pmc *ProjectMilestoneCreate) SetDueDate(t time.Time) *ProjectMilestoneCreate {
 	pmc.mutation.SetDueDate(t)
 	return pmc
@@ -87,7 +87,7 @@ func (pmc *ProjectMilestoneCreate) check() error {
 		}
 	}
 	if _, ok := pmc.mutation.DueDate(); !ok {
-		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "ProjectMilestone.dueDate"`)}
+		return &ValidationError{Name: "due_date", err: errors.New(`generated: missing required field "ProjectMilestone.due_date"`)}
 	}
 	if len(pmc.mutation.ProjectIDs()) == 0 {
 		return &ValidationError{Name: "project", err: errors.New(`generated: missing required edge "ProjectMilestone.project"`)}

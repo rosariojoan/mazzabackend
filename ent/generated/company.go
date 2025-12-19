@@ -17,52 +17,52 @@ type Company struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Address holds the value of the "address" field.
 	Address *string `json:"address,omitempty"`
-	// BaseCurrency holds the value of the "baseCurrency" field.
-	BaseCurrency string `json:"baseCurrency,omitempty"`
-	// CeoName holds the value of the "ceoName" field.
-	CeoName *string `json:"ceoName,omitempty"`
+	// BaseCurrency holds the value of the "base_currency" field.
+	BaseCurrency string `json:"base_currency,omitempty"`
+	// CeoName holds the value of the "ceo_name" field.
+	CeoName *string `json:"ceo_name,omitempty"`
 	// City holds the value of the "city" field.
 	City string `json:"city,omitempty"`
 	// Country holds the value of the "country" field.
 	Country string `json:"country,omitempty"`
-	// EstablishedAt holds the value of the "establishedAt" field.
-	EstablishedAt time.Time `json:"establishedAt,omitempty"`
+	// EstablishedAt holds the value of the "established_at" field.
+	EstablishedAt time.Time `json:"established_at,omitempty"`
 	// Description holds the value of the "description" field.
 	Description *string `json:"description,omitempty"`
 	// Email holds the value of the "email" field.
 	Email *string `json:"email,omitempty"`
 	// Industry holds the value of the "industry" field.
 	Industry *string `json:"industry,omitempty"`
-	// LastEntryDate holds the value of the "lastEntryDate" field.
-	LastEntryDate *time.Time `json:"lastEntryDate,omitempty"`
-	// LastInvoiceNumber holds the value of the "lastInvoiceNumber" field.
-	LastInvoiceNumber int32 `json:"lastInvoiceNumber,omitempty"`
-	// LogoURL holds the value of the "logoURL" field.
-	LogoURL *string `json:"logoURL,omitempty"`
-	// LogoStorageURI holds the value of the "logoStorageURI" field.
+	// LastEntryDate holds the value of the "last_entry_date" field.
+	LastEntryDate *time.Time `json:"last_entry_date,omitempty"`
+	// LastInvoiceNumber holds the value of the "last_invoice_number" field.
+	LastInvoiceNumber int32 `json:"last_invoice_number,omitempty"`
+	// LogoURL holds the value of the "logo_URL" field.
+	LogoURL *string `json:"logo_URL,omitempty"`
+	// LogoStorageURI holds the value of the "logo_storage_URI" field.
 	LogoStorageURI *string `json:"-"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// NumberOfEmployees holds the value of the "numberOfEmployees" field.
-	NumberOfEmployees int32 `json:"numberOfEmployees,omitempty"`
+	// NumberEmployees holds the value of the "number_employees" field.
+	NumberEmployees int32 `json:"number_employees,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone *string `json:"phone,omitempty"`
-	// TaxId holds the value of the "taxId" field.
-	TaxId *string `json:"taxId,omitempty"`
-	// VatRate holds the value of the "vatRate" field.
-	VatRate float64 `json:"vatRate,omitempty"`
+	// TaxID holds the value of the "tax_id" field.
+	TaxID *string `json:"tax_id,omitempty"`
+	// VatRate holds the value of the "vat_rate" field.
+	VatRate float64 `json:"vat_rate,omitempty"`
 	// Website holds the value of the "website" field.
 	Website *string `json:"website,omitempty"`
-	// IncompleteSetup holds the value of the "incompleteSetup" field.
-	IncompleteSetup bool `json:"incompleteSetup,omitempty"`
+	// IncompleteSetup holds the value of the "incomplete_setup" field.
+	IncompleteSetup bool `json:"incomplete_setup,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CompanyQuery when eager-loading is set.
 	Edges                      CompanyEdges `json:"edges"`
@@ -72,10 +72,10 @@ type Company struct {
 
 // CompanyEdges holds the relations/edges for other nodes in the graph.
 type CompanyEdges struct {
-	// AvailableRoles holds the value of the availableRoles edge.
-	AvailableRoles []*UserRole `json:"availableRoles,omitempty"`
-	// AccountingEntries holds the value of the accountingEntries edge.
-	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
+	// AvailableRoles holds the value of the available_roles edge.
+	AvailableRoles []*UserRole `json:"available_roles,omitempty"`
+	// AccountingEntries holds the value of the accounting_entries edge.
+	AccountingEntries []*AccountingEntry `json:"accounting_entries,omitempty"`
 	// Customers holds the value of the customers edge.
 	Customers []*Customer `json:"customers,omitempty"`
 	// Documents holds the value of the documents edge.
@@ -86,16 +86,16 @@ type CompanyEdges struct {
 	Files []*File `json:"files,omitempty"`
 	// Inventory holds the value of the inventory edge.
 	Inventory []*Inventory `json:"inventory,omitempty"`
-	// InventoryMovements holds the value of the inventoryMovements edge.
-	InventoryMovements []*InventoryMovement `json:"inventoryMovements,omitempty"`
+	// InventoryMovements holds the value of the inventory_movements edge.
+	InventoryMovements []*InventoryMovement `json:"inventory_movements,omitempty"`
 	// Invoices holds the value of the invoices edge.
 	Invoices []*Invoice `json:"invoices,omitempty"`
 	// Loans holds the value of the loans edge.
 	Loans []*Loan `json:"loans,omitempty"`
 	// LoanSchedule holds the value of the loan_schedule edge.
 	LoanSchedule []*LoanSchedule `json:"loan_schedule,omitempty"`
-	// MemberSignupTokens holds the value of the memberSignupTokens edge.
-	MemberSignupTokens []*MemberSignupToken `json:"memberSignupTokens,omitempty"`
+	// MemberSignupTokens holds the value of the member_signup_tokens edge.
+	MemberSignupTokens []*MemberSignupToken `json:"member_signup_tokens,omitempty"`
 	// Products holds the value of the products edge.
 	Products []*Product `json:"products,omitempty"`
 	// Projects holds the value of the projects edge.
@@ -110,14 +110,14 @@ type CompanyEdges struct {
 	Tokens []*Token `json:"tokens,omitempty"`
 	// Treasuries holds the value of the treasuries edge.
 	Treasuries []*Treasury `json:"treasuries,omitempty"`
-	// WorkShifts holds the value of the workShifts edge.
-	WorkShifts []*Workshift `json:"workShifts,omitempty"`
+	// WorkShifts holds the value of the work_shifts edge.
+	WorkShifts []*Workshift `json:"work_shifts,omitempty"`
 	// Users holds the value of the users edge.
 	Users []*User `json:"users,omitempty"`
-	// DaughterCompanies holds the value of the daughterCompanies edge.
-	DaughterCompanies []*Company `json:"daughterCompanies,omitempty"`
-	// ParentCompany holds the value of the parentCompany edge.
-	ParentCompany *Company `json:"parentCompany,omitempty"`
+	// DaughterCompanies holds the value of the daughter_companies edge.
+	DaughterCompanies []*Company `json:"daughter_companies,omitempty"`
+	// ParentCompany holds the value of the parent_company edge.
+	ParentCompany *Company `json:"parent_company,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [23]bool
@@ -154,7 +154,7 @@ func (e CompanyEdges) AvailableRolesOrErr() ([]*UserRole, error) {
 	if e.loadedTypes[0] {
 		return e.AvailableRoles, nil
 	}
-	return nil, &NotLoadedError{edge: "availableRoles"}
+	return nil, &NotLoadedError{edge: "available_roles"}
 }
 
 // AccountingEntriesOrErr returns the AccountingEntries value or an error if the edge
@@ -163,7 +163,7 @@ func (e CompanyEdges) AccountingEntriesOrErr() ([]*AccountingEntry, error) {
 	if e.loadedTypes[1] {
 		return e.AccountingEntries, nil
 	}
-	return nil, &NotLoadedError{edge: "accountingEntries"}
+	return nil, &NotLoadedError{edge: "accounting_entries"}
 }
 
 // CustomersOrErr returns the Customers value or an error if the edge
@@ -217,7 +217,7 @@ func (e CompanyEdges) InventoryMovementsOrErr() ([]*InventoryMovement, error) {
 	if e.loadedTypes[7] {
 		return e.InventoryMovements, nil
 	}
-	return nil, &NotLoadedError{edge: "inventoryMovements"}
+	return nil, &NotLoadedError{edge: "inventory_movements"}
 }
 
 // InvoicesOrErr returns the Invoices value or an error if the edge
@@ -253,7 +253,7 @@ func (e CompanyEdges) MemberSignupTokensOrErr() ([]*MemberSignupToken, error) {
 	if e.loadedTypes[11] {
 		return e.MemberSignupTokens, nil
 	}
-	return nil, &NotLoadedError{edge: "memberSignupTokens"}
+	return nil, &NotLoadedError{edge: "member_signup_tokens"}
 }
 
 // ProductsOrErr returns the Products value or an error if the edge
@@ -325,7 +325,7 @@ func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 	if e.loadedTypes[19] {
 		return e.WorkShifts, nil
 	}
-	return nil, &NotLoadedError{edge: "workShifts"}
+	return nil, &NotLoadedError{edge: "work_shifts"}
 }
 
 // UsersOrErr returns the Users value or an error if the edge
@@ -343,7 +343,7 @@ func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
 	if e.loadedTypes[21] {
 		return e.DaughterCompanies, nil
 	}
-	return nil, &NotLoadedError{edge: "daughterCompanies"}
+	return nil, &NotLoadedError{edge: "daughter_companies"}
 }
 
 // ParentCompanyOrErr returns the ParentCompany value or an error if the edge
@@ -354,7 +354,7 @@ func (e CompanyEdges) ParentCompanyOrErr() (*Company, error) {
 	} else if e.loadedTypes[22] {
 		return nil, &NotFoundError{label: company.Label}
 	}
-	return nil, &NotLoadedError{edge: "parentCompany"}
+	return nil, &NotLoadedError{edge: "parent_company"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -366,9 +366,9 @@ func (*Company) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case company.FieldVatRate:
 			values[i] = new(sql.NullFloat64)
-		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldNumberOfEmployees:
+		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldNumberEmployees:
 			values[i] = new(sql.NullInt64)
-		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldLogoURL, company.FieldLogoStorageURI, company.FieldName, company.FieldPhone, company.FieldTaxId, company.FieldWebsite:
+		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldLogoURL, company.FieldLogoStorageURI, company.FieldName, company.FieldPhone, company.FieldTaxID, company.FieldWebsite:
 			values[i] = new(sql.NullString)
 		case company.FieldCreatedAt, company.FieldUpdatedAt, company.FieldDeletedAt, company.FieldEstablishedAt, company.FieldLastEntryDate:
 			values[i] = new(sql.NullTime)
@@ -397,19 +397,19 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			c.ID = int(value.Int64)
 		case company.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				c.CreatedAt = value.Time
 			}
 		case company.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				c.UpdatedAt = value.Time
 			}
 		case company.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				c.DeletedAt = new(time.Time)
 				*c.DeletedAt = value.Time
@@ -423,13 +423,13 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			}
 		case company.FieldBaseCurrency:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field baseCurrency", values[i])
+				return fmt.Errorf("unexpected type %T for field base_currency", values[i])
 			} else if value.Valid {
 				c.BaseCurrency = value.String
 			}
 		case company.FieldCeoName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field ceoName", values[i])
+				return fmt.Errorf("unexpected type %T for field ceo_name", values[i])
 			} else if value.Valid {
 				c.CeoName = new(string)
 				*c.CeoName = value.String
@@ -448,7 +448,7 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			}
 		case company.FieldEstablishedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field establishedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field established_at", values[i])
 			} else if value.Valid {
 				c.EstablishedAt = value.Time
 			}
@@ -475,27 +475,27 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			}
 		case company.FieldLastEntryDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field lastEntryDate", values[i])
+				return fmt.Errorf("unexpected type %T for field last_entry_date", values[i])
 			} else if value.Valid {
 				c.LastEntryDate = new(time.Time)
 				*c.LastEntryDate = value.Time
 			}
 		case company.FieldLastInvoiceNumber:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field lastInvoiceNumber", values[i])
+				return fmt.Errorf("unexpected type %T for field last_invoice_number", values[i])
 			} else if value.Valid {
 				c.LastInvoiceNumber = int32(value.Int64)
 			}
 		case company.FieldLogoURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field logoURL", values[i])
+				return fmt.Errorf("unexpected type %T for field logo_URL", values[i])
 			} else if value.Valid {
 				c.LogoURL = new(string)
 				*c.LogoURL = value.String
 			}
 		case company.FieldLogoStorageURI:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field logoStorageURI", values[i])
+				return fmt.Errorf("unexpected type %T for field logo_storage_URI", values[i])
 			} else if value.Valid {
 				c.LogoStorageURI = new(string)
 				*c.LogoStorageURI = value.String
@@ -506,11 +506,11 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Name = value.String
 			}
-		case company.FieldNumberOfEmployees:
+		case company.FieldNumberEmployees:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field numberOfEmployees", values[i])
+				return fmt.Errorf("unexpected type %T for field number_employees", values[i])
 			} else if value.Valid {
-				c.NumberOfEmployees = int32(value.Int64)
+				c.NumberEmployees = int32(value.Int64)
 			}
 		case company.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -519,16 +519,16 @@ func (c *Company) assignValues(columns []string, values []any) error {
 				c.Phone = new(string)
 				*c.Phone = value.String
 			}
-		case company.FieldTaxId:
+		case company.FieldTaxID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field taxId", values[i])
+				return fmt.Errorf("unexpected type %T for field tax_id", values[i])
 			} else if value.Valid {
-				c.TaxId = new(string)
-				*c.TaxId = value.String
+				c.TaxID = new(string)
+				*c.TaxID = value.String
 			}
 		case company.FieldVatRate:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field vatRate", values[i])
+				return fmt.Errorf("unexpected type %T for field vat_rate", values[i])
 			} else if value.Valid {
 				c.VatRate = value.Float64
 			}
@@ -541,7 +541,7 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			}
 		case company.FieldIncompleteSetup:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field incompleteSetup", values[i])
+				return fmt.Errorf("unexpected type %T for field incomplete_setup", values[i])
 			} else if value.Valid {
 				c.IncompleteSetup = value.Bool
 			}
@@ -565,12 +565,12 @@ func (c *Company) Value(name string) (ent.Value, error) {
 	return c.selectValues.Get(name)
 }
 
-// QueryAvailableRoles queries the "availableRoles" edge of the Company entity.
+// QueryAvailableRoles queries the "available_roles" edge of the Company entity.
 func (c *Company) QueryAvailableRoles() *UserRoleQuery {
 	return NewCompanyClient(c.config).QueryAvailableRoles(c)
 }
 
-// QueryAccountingEntries queries the "accountingEntries" edge of the Company entity.
+// QueryAccountingEntries queries the "accounting_entries" edge of the Company entity.
 func (c *Company) QueryAccountingEntries() *AccountingEntryQuery {
 	return NewCompanyClient(c.config).QueryAccountingEntries(c)
 }
@@ -600,7 +600,7 @@ func (c *Company) QueryInventory() *InventoryQuery {
 	return NewCompanyClient(c.config).QueryInventory(c)
 }
 
-// QueryInventoryMovements queries the "inventoryMovements" edge of the Company entity.
+// QueryInventoryMovements queries the "inventory_movements" edge of the Company entity.
 func (c *Company) QueryInventoryMovements() *InventoryMovementQuery {
 	return NewCompanyClient(c.config).QueryInventoryMovements(c)
 }
@@ -620,7 +620,7 @@ func (c *Company) QueryLoanSchedule() *LoanScheduleQuery {
 	return NewCompanyClient(c.config).QueryLoanSchedule(c)
 }
 
-// QueryMemberSignupTokens queries the "memberSignupTokens" edge of the Company entity.
+// QueryMemberSignupTokens queries the "member_signup_tokens" edge of the Company entity.
 func (c *Company) QueryMemberSignupTokens() *MemberSignupTokenQuery {
 	return NewCompanyClient(c.config).QueryMemberSignupTokens(c)
 }
@@ -660,7 +660,7 @@ func (c *Company) QueryTreasuries() *TreasuryQuery {
 	return NewCompanyClient(c.config).QueryTreasuries(c)
 }
 
-// QueryWorkShifts queries the "workShifts" edge of the Company entity.
+// QueryWorkShifts queries the "work_shifts" edge of the Company entity.
 func (c *Company) QueryWorkShifts() *WorkshiftQuery {
 	return NewCompanyClient(c.config).QueryWorkShifts(c)
 }
@@ -670,12 +670,12 @@ func (c *Company) QueryUsers() *UserQuery {
 	return NewCompanyClient(c.config).QueryUsers(c)
 }
 
-// QueryDaughterCompanies queries the "daughterCompanies" edge of the Company entity.
+// QueryDaughterCompanies queries the "daughter_companies" edge of the Company entity.
 func (c *Company) QueryDaughterCompanies() *CompanyQuery {
 	return NewCompanyClient(c.config).QueryDaughterCompanies(c)
 }
 
-// QueryParentCompany queries the "parentCompany" edge of the Company entity.
+// QueryParentCompany queries the "parent_company" edge of the Company entity.
 func (c *Company) QueryParentCompany() *CompanyQuery {
 	return NewCompanyClient(c.config).QueryParentCompany(c)
 }
@@ -703,14 +703,14 @@ func (c *Company) String() string {
 	var builder strings.Builder
 	builder.WriteString("Company(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(c.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(c.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := c.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -719,11 +719,11 @@ func (c *Company) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("baseCurrency=")
+	builder.WriteString("base_currency=")
 	builder.WriteString(c.BaseCurrency)
 	builder.WriteString(", ")
 	if v := c.CeoName; v != nil {
-		builder.WriteString("ceoName=")
+		builder.WriteString("ceo_name=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -733,7 +733,7 @@ func (c *Company) String() string {
 	builder.WriteString("country=")
 	builder.WriteString(c.Country)
 	builder.WriteString(", ")
-	builder.WriteString("establishedAt=")
+	builder.WriteString("established_at=")
 	builder.WriteString(c.EstablishedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := c.Description; v != nil {
@@ -752,37 +752,37 @@ func (c *Company) String() string {
 	}
 	builder.WriteString(", ")
 	if v := c.LastEntryDate; v != nil {
-		builder.WriteString("lastEntryDate=")
+		builder.WriteString("last_entry_date=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("lastInvoiceNumber=")
+	builder.WriteString("last_invoice_number=")
 	builder.WriteString(fmt.Sprintf("%v", c.LastInvoiceNumber))
 	builder.WriteString(", ")
 	if v := c.LogoURL; v != nil {
-		builder.WriteString("logoURL=")
+		builder.WriteString("logo_URL=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("logoStorageURI=<sensitive>")
+	builder.WriteString("logo_storage_URI=<sensitive>")
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(c.Name)
 	builder.WriteString(", ")
-	builder.WriteString("numberOfEmployees=")
-	builder.WriteString(fmt.Sprintf("%v", c.NumberOfEmployees))
+	builder.WriteString("number_employees=")
+	builder.WriteString(fmt.Sprintf("%v", c.NumberEmployees))
 	builder.WriteString(", ")
 	if v := c.Phone; v != nil {
 		builder.WriteString("phone=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	if v := c.TaxId; v != nil {
-		builder.WriteString("taxId=")
+	if v := c.TaxID; v != nil {
+		builder.WriteString("tax_id=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("vatRate=")
+	builder.WriteString("vat_rate=")
 	builder.WriteString(fmt.Sprintf("%v", c.VatRate))
 	builder.WriteString(", ")
 	if v := c.Website; v != nil {
@@ -790,7 +790,7 @@ func (c *Company) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("incompleteSetup=")
+	builder.WriteString("incomplete_setup=")
 	builder.WriteString(fmt.Sprintf("%v", c.IncompleteSetup))
 	builder.WriteByte(')')
 	return builder.String()

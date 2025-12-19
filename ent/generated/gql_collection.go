@@ -97,17 +97,17 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 			ae.WithNamedLoanSchedules(alias, func(wq *LoanScheduleQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[accountingentry.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldCreatedAt)
 				fieldSeen[accountingentry.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[accountingentry.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldUpdatedAt)
 				fieldSeen[accountingentry.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[accountingentry.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldDeletedAt)
 				fieldSeen[accountingentry.FieldDeletedAt] = struct{}{}
@@ -147,7 +147,7 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, accountingentry.FieldDescription)
 				fieldSeen[accountingentry.FieldDescription] = struct{}{}
 			}
-		case "accounttype":
+		case "accountType":
 			if _, ok := fieldSeen[accountingentry.FieldAccountType]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldAccountType)
 				fieldSeen[accountingentry.FieldAccountType] = struct{}{}
@@ -162,12 +162,12 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, accountingentry.FieldMain)
 				fieldSeen[accountingentry.FieldMain] = struct{}{}
 			}
-		case "isdebit":
+		case "isDebit":
 			if _, ok := fieldSeen[accountingentry.FieldIsDebit]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldIsDebit)
 				fieldSeen[accountingentry.FieldIsDebit] = struct{}{}
 			}
-		case "isreversal":
+		case "isReversal":
 			if _, ok := fieldSeen[accountingentry.FieldIsReversal]; !ok {
 				selectedFields = append(selectedFields, accountingentry.FieldIsReversal)
 				fieldSeen[accountingentry.FieldIsReversal] = struct{}{}
@@ -313,7 +313,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
-		case "availableroles":
+		case "availableRoles":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -325,7 +325,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedAvailableRoles(alias, func(wq *UserRoleQuery) {
 				*wq = *query
 			})
-		case "accountingentries":
+		case "accountingEntries":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -397,7 +397,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedInventory(alias, func(wq *InventoryQuery) {
 				*wq = *query
 			})
-		case "inventorymovements":
+		case "inventoryMovements":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -445,7 +445,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedLoanSchedule(alias, func(wq *LoanScheduleQuery) {
 				*wq = *query
 			})
-		case "membersignuptokens":
+		case "memberSignupTokens":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -541,7 +541,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedTreasuries(alias, func(wq *TreasuryQuery) {
 				*wq = *query
 			})
-		case "workshifts":
+		case "workShifts":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -565,7 +565,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedUsers(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
-		case "daughtercompanies":
+		case "daughterCompanies":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -577,7 +577,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedDaughterCompanies(alias, func(wq *CompanyQuery) {
 				*wq = *query
 			})
-		case "parentcompany":
+		case "parentCompany":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -587,17 +587,17 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			c.withParentCompany = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[company.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, company.FieldCreatedAt)
 				fieldSeen[company.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[company.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, company.FieldUpdatedAt)
 				fieldSeen[company.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[company.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, company.FieldDeletedAt)
 				fieldSeen[company.FieldDeletedAt] = struct{}{}
@@ -607,12 +607,12 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldAddress)
 				fieldSeen[company.FieldAddress] = struct{}{}
 			}
-		case "basecurrency":
+		case "baseCurrency":
 			if _, ok := fieldSeen[company.FieldBaseCurrency]; !ok {
 				selectedFields = append(selectedFields, company.FieldBaseCurrency)
 				fieldSeen[company.FieldBaseCurrency] = struct{}{}
 			}
-		case "ceoname":
+		case "ceoName":
 			if _, ok := fieldSeen[company.FieldCeoName]; !ok {
 				selectedFields = append(selectedFields, company.FieldCeoName)
 				fieldSeen[company.FieldCeoName] = struct{}{}
@@ -627,7 +627,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldCountry)
 				fieldSeen[company.FieldCountry] = struct{}{}
 			}
-		case "establishedat":
+		case "establishedAt":
 			if _, ok := fieldSeen[company.FieldEstablishedAt]; !ok {
 				selectedFields = append(selectedFields, company.FieldEstablishedAt)
 				fieldSeen[company.FieldEstablishedAt] = struct{}{}
@@ -647,17 +647,17 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldIndustry)
 				fieldSeen[company.FieldIndustry] = struct{}{}
 			}
-		case "lastentrydate":
+		case "lastEntryDate":
 			if _, ok := fieldSeen[company.FieldLastEntryDate]; !ok {
 				selectedFields = append(selectedFields, company.FieldLastEntryDate)
 				fieldSeen[company.FieldLastEntryDate] = struct{}{}
 			}
-		case "lastinvoicenumber":
+		case "lastInvoiceNumber":
 			if _, ok := fieldSeen[company.FieldLastInvoiceNumber]; !ok {
 				selectedFields = append(selectedFields, company.FieldLastInvoiceNumber)
 				fieldSeen[company.FieldLastInvoiceNumber] = struct{}{}
 			}
-		case "logourl":
+		case "logoURL":
 			if _, ok := fieldSeen[company.FieldLogoURL]; !ok {
 				selectedFields = append(selectedFields, company.FieldLogoURL)
 				fieldSeen[company.FieldLogoURL] = struct{}{}
@@ -667,22 +667,22 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldName)
 				fieldSeen[company.FieldName] = struct{}{}
 			}
-		case "numberofemployees":
-			if _, ok := fieldSeen[company.FieldNumberOfEmployees]; !ok {
-				selectedFields = append(selectedFields, company.FieldNumberOfEmployees)
-				fieldSeen[company.FieldNumberOfEmployees] = struct{}{}
+		case "numberEmployees":
+			if _, ok := fieldSeen[company.FieldNumberEmployees]; !ok {
+				selectedFields = append(selectedFields, company.FieldNumberEmployees)
+				fieldSeen[company.FieldNumberEmployees] = struct{}{}
 			}
 		case "phone":
 			if _, ok := fieldSeen[company.FieldPhone]; !ok {
 				selectedFields = append(selectedFields, company.FieldPhone)
 				fieldSeen[company.FieldPhone] = struct{}{}
 			}
-		case "taxid":
-			if _, ok := fieldSeen[company.FieldTaxId]; !ok {
-				selectedFields = append(selectedFields, company.FieldTaxId)
-				fieldSeen[company.FieldTaxId] = struct{}{}
+		case "taxID":
+			if _, ok := fieldSeen[company.FieldTaxID]; !ok {
+				selectedFields = append(selectedFields, company.FieldTaxID)
+				fieldSeen[company.FieldTaxID] = struct{}{}
 			}
-		case "vatrate":
+		case "vatRate":
 			if _, ok := fieldSeen[company.FieldVatRate]; !ok {
 				selectedFields = append(selectedFields, company.FieldVatRate)
 				fieldSeen[company.FieldVatRate] = struct{}{}
@@ -692,7 +692,7 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldWebsite)
 				fieldSeen[company.FieldWebsite] = struct{}{}
 			}
-		case "incompletesetup":
+		case "incompleteSetup":
 			if _, ok := fieldSeen[company.FieldIncompleteSetup]; !ok {
 				selectedFields = append(selectedFields, company.FieldIncompleteSetup)
 				fieldSeen[company.FieldIncompleteSetup] = struct{}{}
@@ -791,7 +791,7 @@ func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			cd.withCompany = query
-		case "uploadedby":
+		case "uploadedBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -801,7 +801,7 @@ func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			cd.withUploadedBy = query
-		case "approvedby":
+		case "approvedBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -811,17 +811,17 @@ func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			cd.withApprovedBy = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[companydocument.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, companydocument.FieldCreatedAt)
 				fieldSeen[companydocument.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[companydocument.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, companydocument.FieldUpdatedAt)
 				fieldSeen[companydocument.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[companydocument.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, companydocument.FieldDeletedAt)
 				fieldSeen[companydocument.FieldDeletedAt] = struct{}{}
@@ -851,7 +851,7 @@ func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, companydocument.FieldSize)
 				fieldSeen[companydocument.FieldSize] = struct{}{}
 			}
-		case "filetype":
+		case "fileType":
 			if _, ok := fieldSeen[companydocument.FieldFileType]; !ok {
 				selectedFields = append(selectedFields, companydocument.FieldFileType)
 				fieldSeen[companydocument.FieldFileType] = struct{}{}
@@ -871,7 +871,7 @@ func (cd *CompanyDocumentQuery) collectField(ctx context.Context, opCtx *graphql
 				selectedFields = append(selectedFields, companydocument.FieldThumbnail)
 				fieldSeen[companydocument.FieldThumbnail] = struct{}{}
 			}
-		case "expirydate":
+		case "expiryDate":
 			if _, ok := fieldSeen[companydocument.FieldExpiryDate]; !ok {
 				selectedFields = append(selectedFields, companydocument.FieldExpiryDate)
 				fieldSeen[companydocument.FieldExpiryDate] = struct{}{}
@@ -1012,17 +1012,17 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			c.WithNamedInvoices(alias, func(wq *InvoiceQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[customer.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, customer.FieldCreatedAt)
 				fieldSeen[customer.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[customer.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, customer.FieldUpdatedAt)
 				fieldSeen[customer.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[customer.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, customer.FieldDeletedAt)
 				fieldSeen[customer.FieldDeletedAt] = struct{}{}
@@ -1052,7 +1052,7 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, customer.FieldEmail)
 				fieldSeen[customer.FieldEmail] = struct{}{}
 			}
-		case "isdefault":
+		case "isDefault":
 			if _, ok := fieldSeen[customer.FieldIsDefault]; !ok {
 				selectedFields = append(selectedFields, customer.FieldIsDefault)
 				fieldSeen[customer.FieldIsDefault] = struct{}{}
@@ -1067,10 +1067,10 @@ func (c *CustomerQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, customer.FieldPhone)
 				fieldSeen[customer.FieldPhone] = struct{}{}
 			}
-		case "taxid":
-			if _, ok := fieldSeen[customer.FieldTaxId]; !ok {
-				selectedFields = append(selectedFields, customer.FieldTaxId)
-				fieldSeen[customer.FieldTaxId] = struct{}{}
+		case "taxID":
+			if _, ok := fieldSeen[customer.FieldTaxID]; !ok {
+				selectedFields = append(selectedFields, customer.FieldTaxID)
+				fieldSeen[customer.FieldTaxID] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -1204,17 +1204,17 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			e.withLeader = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[employee.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, employee.FieldCreatedAt)
 				fieldSeen[employee.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[employee.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, employee.FieldUpdatedAt)
 				fieldSeen[employee.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[employee.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, employee.FieldDeletedAt)
 				fieldSeen[employee.FieldDeletedAt] = struct{}{}
@@ -1259,12 +1259,12 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, employee.FieldAvatar)
 				fieldSeen[employee.FieldAvatar] = struct{}{}
 			}
-		case "hiredate":
+		case "hireDate":
 			if _, ok := fieldSeen[employee.FieldHireDate]; !ok {
 				selectedFields = append(selectedFields, employee.FieldHireDate)
 				fieldSeen[employee.FieldHireDate] = struct{}{}
 			}
-		case "monthlysalary":
+		case "monthlySalary":
 			if _, ok := fieldSeen[employee.FieldMonthlySalary]; !ok {
 				selectedFields = append(selectedFields, employee.FieldMonthlySalary)
 				fieldSeen[employee.FieldMonthlySalary] = struct{}{}
@@ -1274,7 +1274,7 @@ func (e *EmployeeQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, employee.FieldStatus)
 				fieldSeen[employee.FieldStatus] = struct{}{}
 			}
-		case "performacescore":
+		case "performaceScore":
 			if _, ok := fieldSeen[employee.FieldPerformaceScore]; !ok {
 				selectedFields = append(selectedFields, employee.FieldPerformaceScore)
 				fieldSeen[employee.FieldPerformaceScore] = struct{}{}
@@ -1373,17 +1373,17 @@ func (f *FileQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			f.withCompany = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[file.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, file.FieldCreatedAt)
 				fieldSeen[file.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[file.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, file.FieldUpdatedAt)
 				fieldSeen[file.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[file.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, file.FieldDeletedAt)
 				fieldSeen[file.FieldDeletedAt] = struct{}{}
@@ -1519,17 +1519,17 @@ func (i *InventoryQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 			i.WithNamedMovements(alias, func(wq *InventoryMovementQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[inventory.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, inventory.FieldCreatedAt)
 				fieldSeen[inventory.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[inventory.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, inventory.FieldUpdatedAt)
 				fieldSeen[inventory.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[inventory.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, inventory.FieldDeletedAt)
 				fieldSeen[inventory.FieldDeletedAt] = struct{}{}
@@ -1554,12 +1554,12 @@ func (i *InventoryQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				selectedFields = append(selectedFields, inventory.FieldUnit)
 				fieldSeen[inventory.FieldUnit] = struct{}{}
 			}
-		case "minimumlevel":
+		case "minimumLevel":
 			if _, ok := fieldSeen[inventory.FieldMinimumLevel]; !ok {
 				selectedFields = append(selectedFields, inventory.FieldMinimumLevel)
 				fieldSeen[inventory.FieldMinimumLevel] = struct{}{}
 			}
-		case "currentvalue":
+		case "currentValue":
 			if _, ok := fieldSeen[inventory.FieldCurrentValue]; !ok {
 				selectedFields = append(selectedFields, inventory.FieldCurrentValue)
 				fieldSeen[inventory.FieldCurrentValue] = struct{}{}
@@ -1679,17 +1679,17 @@ func (im *InventoryMovementQuery) collectField(ctx context.Context, opCtx *graph
 				return err
 			}
 			im.withInventory = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[inventorymovement.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, inventorymovement.FieldCreatedAt)
 				fieldSeen[inventorymovement.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[inventorymovement.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, inventorymovement.FieldUpdatedAt)
 				fieldSeen[inventorymovement.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[inventorymovement.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, inventorymovement.FieldDeletedAt)
 				fieldSeen[inventorymovement.FieldDeletedAt] = struct{}{}
@@ -1829,7 +1829,7 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			i.withCompany = query
-		case "issuedby":
+		case "issuedBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -1859,52 +1859,52 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				return err
 			}
 			i.withReceivable = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[invoice.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCreatedAt)
 				fieldSeen[invoice.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[invoice.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldUpdatedAt)
 				fieldSeen[invoice.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[invoice.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldDeletedAt)
 				fieldSeen[invoice.FieldDeletedAt] = struct{}{}
 			}
-		case "companylogo":
+		case "companyLogo":
 			if _, ok := fieldSeen[invoice.FieldCompanyLogo]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyLogo)
 				fieldSeen[invoice.FieldCompanyLogo] = struct{}{}
 			}
-		case "companyname":
+		case "companyName":
 			if _, ok := fieldSeen[invoice.FieldCompanyName]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyName)
 				fieldSeen[invoice.FieldCompanyName] = struct{}{}
 			}
-		case "companytaxid":
+		case "companyTaxID":
 			if _, ok := fieldSeen[invoice.FieldCompanyTaxID]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyTaxID)
 				fieldSeen[invoice.FieldCompanyTaxID] = struct{}{}
 			}
-		case "companyaddress":
+		case "companyAddress":
 			if _, ok := fieldSeen[invoice.FieldCompanyAddress]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyAddress)
 				fieldSeen[invoice.FieldCompanyAddress] = struct{}{}
 			}
-		case "companycity":
+		case "companyCity":
 			if _, ok := fieldSeen[invoice.FieldCompanyCity]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyCity)
 				fieldSeen[invoice.FieldCompanyCity] = struct{}{}
 			}
-		case "companyemail":
+		case "companyEmail":
 			if _, ok := fieldSeen[invoice.FieldCompanyEmail]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyEmail)
 				fieldSeen[invoice.FieldCompanyEmail] = struct{}{}
 			}
-		case "companyphone":
+		case "companyPhone":
 			if _, ok := fieldSeen[invoice.FieldCompanyPhone]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyPhone)
 				fieldSeen[invoice.FieldCompanyPhone] = struct{}{}
@@ -1914,17 +1914,17 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, invoice.FieldNumber)
 				fieldSeen[invoice.FieldNumber] = struct{}{}
 			}
-		case "issuedate":
+		case "issueDate":
 			if _, ok := fieldSeen[invoice.FieldIssueDate]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldIssueDate)
 				fieldSeen[invoice.FieldIssueDate] = struct{}{}
 			}
-		case "duedate":
+		case "dueDate":
 			if _, ok := fieldSeen[invoice.FieldDueDate]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldDueDate)
 				fieldSeen[invoice.FieldDueDate] = struct{}{}
 			}
-		case "paidat":
+		case "paidAt":
 			if _, ok := fieldSeen[invoice.FieldPaidAt]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldPaidAt)
 				fieldSeen[invoice.FieldPaidAt] = struct{}{}
@@ -1934,32 +1934,32 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, invoice.FieldStatus)
 				fieldSeen[invoice.FieldStatus] = struct{}{}
 			}
-		case "customername":
+		case "customerName":
 			if _, ok := fieldSeen[invoice.FieldCustomerName]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerName)
 				fieldSeen[invoice.FieldCustomerName] = struct{}{}
 			}
-		case "customertaxid":
+		case "customerTaxID":
 			if _, ok := fieldSeen[invoice.FieldCustomerTaxID]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerTaxID)
 				fieldSeen[invoice.FieldCustomerTaxID] = struct{}{}
 			}
-		case "customeraddress":
+		case "customerAddress":
 			if _, ok := fieldSeen[invoice.FieldCustomerAddress]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerAddress)
 				fieldSeen[invoice.FieldCustomerAddress] = struct{}{}
 			}
-		case "customercity":
+		case "customerCity":
 			if _, ok := fieldSeen[invoice.FieldCustomerCity]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerCity)
 				fieldSeen[invoice.FieldCustomerCity] = struct{}{}
 			}
-		case "customeremail":
+		case "customerEmail":
 			if _, ok := fieldSeen[invoice.FieldCustomerEmail]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerEmail)
 				fieldSeen[invoice.FieldCustomerEmail] = struct{}{}
 			}
-		case "customerphone":
+		case "customerPhone":
 			if _, ok := fieldSeen[invoice.FieldCustomerPhone]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCustomerPhone)
 				fieldSeen[invoice.FieldCustomerPhone] = struct{}{}
@@ -1989,27 +1989,27 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, invoice.FieldNotes)
 				fieldSeen[invoice.FieldNotes] = struct{}{}
 			}
-		case "paymentmethod":
+		case "paymentMethod":
 			if _, ok := fieldSeen[invoice.FieldPaymentMethod]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldPaymentMethod)
 				fieldSeen[invoice.FieldPaymentMethod] = struct{}{}
 			}
-		case "bankname":
+		case "bankName":
 			if _, ok := fieldSeen[invoice.FieldBankName]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldBankName)
 				fieldSeen[invoice.FieldBankName] = struct{}{}
 			}
-		case "bankagency":
+		case "bankAgency":
 			if _, ok := fieldSeen[invoice.FieldBankAgency]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldBankAgency)
 				fieldSeen[invoice.FieldBankAgency] = struct{}{}
 			}
-		case "bankaccountnumber":
+		case "bankAccountNumber":
 			if _, ok := fieldSeen[invoice.FieldBankAccountNumber]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldBankAccountNumber)
 				fieldSeen[invoice.FieldBankAccountNumber] = struct{}{}
 			}
-		case "bankaccountname":
+		case "bankAccountName":
 			if _, ok := fieldSeen[invoice.FieldBankAccountName]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldBankAccountName)
 				fieldSeen[invoice.FieldBankAccountName] = struct{}{}
@@ -2178,17 +2178,17 @@ func (l *LoanQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			l.WithNamedTransactionHistory(alias, func(wq *AccountingEntryQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[loan.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, loan.FieldCreatedAt)
 				fieldSeen[loan.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[loan.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, loan.FieldUpdatedAt)
 				fieldSeen[loan.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[loan.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, loan.FieldDeletedAt)
 				fieldSeen[loan.FieldDeletedAt] = struct{}{}
@@ -2390,17 +2390,17 @@ func (ls *LoanScheduleQuery) collectField(ctx context.Context, opCtx *graphql.Op
 			ls.WithNamedTransactionHistory(alias, func(wq *AccountingEntryQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[loanschedule.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, loanschedule.FieldCreatedAt)
 				fieldSeen[loanschedule.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[loanschedule.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, loanschedule.FieldUpdatedAt)
 				fieldSeen[loanschedule.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[loanschedule.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, loanschedule.FieldDeletedAt)
 				fieldSeen[loanschedule.FieldDeletedAt] = struct{}{}
@@ -2550,7 +2550,7 @@ func (mst *MemberSignupTokenQuery) collectField(ctx context.Context, opCtx *grap
 				return err
 			}
 			mst.withCompany = query
-		case "createdby":
+		case "createdBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -2560,17 +2560,17 @@ func (mst *MemberSignupTokenQuery) collectField(ctx context.Context, opCtx *grap
 				return err
 			}
 			mst.withCreatedBy = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[membersignuptoken.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldCreatedAt)
 				fieldSeen[membersignuptoken.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[membersignuptoken.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldUpdatedAt)
 				fieldSeen[membersignuptoken.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[membersignuptoken.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldDeletedAt)
 				fieldSeen[membersignuptoken.FieldDeletedAt] = struct{}{}
@@ -2605,17 +2605,17 @@ func (mst *MemberSignupTokenQuery) collectField(ctx context.Context, opCtx *grap
 				selectedFields = append(selectedFields, membersignuptoken.FieldNote)
 				fieldSeen[membersignuptoken.FieldNote] = struct{}{}
 			}
-		case "numberaccessed":
+		case "numberAccessed":
 			if _, ok := fieldSeen[membersignuptoken.FieldNumberAccessed]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldNumberAccessed)
 				fieldSeen[membersignuptoken.FieldNumberAccessed] = struct{}{}
 			}
-		case "expiresat":
+		case "expiresAt":
 			if _, ok := fieldSeen[membersignuptoken.FieldExpiresAt]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldExpiresAt)
 				fieldSeen[membersignuptoken.FieldExpiresAt] = struct{}{}
 			}
-		case "alreadyused":
+		case "alreadyUsed":
 			if _, ok := fieldSeen[membersignuptoken.FieldAlreadyUsed]; !ok {
 				selectedFields = append(selectedFields, membersignuptoken.FieldAlreadyUsed)
 				fieldSeen[membersignuptoken.FieldAlreadyUsed] = struct{}{}
@@ -2720,22 +2720,22 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			pa.withCompany = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[payable.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, payable.FieldCreatedAt)
 				fieldSeen[payable.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[payable.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, payable.FieldUpdatedAt)
 				fieldSeen[payable.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[payable.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, payable.FieldDeletedAt)
 				fieldSeen[payable.FieldDeletedAt] = struct{}{}
 			}
-		case "entrygroup":
+		case "entryGroup":
 			if _, ok := fieldSeen[payable.FieldEntryGroup]; !ok {
 				selectedFields = append(selectedFields, payable.FieldEntryGroup)
 				fieldSeen[payable.FieldEntryGroup] = struct{}{}
@@ -2750,22 +2750,22 @@ func (pa *PayableQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, payable.FieldName)
 				fieldSeen[payable.FieldName] = struct{}{}
 			}
-		case "amountindefault":
+		case "amountInDefault":
 			if _, ok := fieldSeen[payable.FieldAmountInDefault]; !ok {
 				selectedFields = append(selectedFields, payable.FieldAmountInDefault)
 				fieldSeen[payable.FieldAmountInDefault] = struct{}{}
 			}
-		case "outstandingbalance":
+		case "outstandingBalance":
 			if _, ok := fieldSeen[payable.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, payable.FieldOutstandingBalance)
 				fieldSeen[payable.FieldOutstandingBalance] = struct{}{}
 			}
-		case "totaltransaction":
+		case "totalTransaction":
 			if _, ok := fieldSeen[payable.FieldTotalTransaction]; !ok {
 				selectedFields = append(selectedFields, payable.FieldTotalTransaction)
 				fieldSeen[payable.FieldTotalTransaction] = struct{}{}
 			}
-		case "duedate":
+		case "dueDate":
 			if _, ok := fieldSeen[payable.FieldDueDate]; !ok {
 				selectedFields = append(selectedFields, payable.FieldDueDate)
 				fieldSeen[payable.FieldDueDate] = struct{}{}
@@ -2875,17 +2875,17 @@ func (pr *ProductQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			pr.withCompany = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[product.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, product.FieldCreatedAt)
 				fieldSeen[product.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[product.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, product.FieldUpdatedAt)
 				fieldSeen[product.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[product.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, product.FieldDeletedAt)
 				fieldSeen[product.FieldDeletedAt] = struct{}{}
@@ -2989,7 +2989,7 @@ func (pr *ProjectQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			pr.withCompany = query
-		case "createdby":
+		case "createdBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -3033,17 +3033,17 @@ func (pr *ProjectQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			pr.WithNamedMilestones(alias, func(wq *ProjectMilestoneQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[project.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, project.FieldCreatedAt)
 				fieldSeen[project.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[project.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, project.FieldUpdatedAt)
 				fieldSeen[project.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[project.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, project.FieldDeletedAt)
 				fieldSeen[project.FieldDeletedAt] = struct{}{}
@@ -3058,22 +3058,22 @@ func (pr *ProjectQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, project.FieldDescription)
 				fieldSeen[project.FieldDescription] = struct{}{}
 			}
-		case "plannedstartdate":
+		case "plannedStartDate":
 			if _, ok := fieldSeen[project.FieldPlannedStartDate]; !ok {
 				selectedFields = append(selectedFields, project.FieldPlannedStartDate)
 				fieldSeen[project.FieldPlannedStartDate] = struct{}{}
 			}
-		case "actualstartdate":
+		case "actualStartDate":
 			if _, ok := fieldSeen[project.FieldActualStartDate]; !ok {
 				selectedFields = append(selectedFields, project.FieldActualStartDate)
 				fieldSeen[project.FieldActualStartDate] = struct{}{}
 			}
-		case "plannedenddate":
+		case "plannedEndDate":
 			if _, ok := fieldSeen[project.FieldPlannedEndDate]; !ok {
 				selectedFields = append(selectedFields, project.FieldPlannedEndDate)
 				fieldSeen[project.FieldPlannedEndDate] = struct{}{}
 			}
-		case "actualenddate":
+		case "actualEndDate":
 			if _, ok := fieldSeen[project.FieldActualEndDate]; !ok {
 				selectedFields = append(selectedFields, project.FieldActualEndDate)
 				fieldSeen[project.FieldActualEndDate] = struct{}{}
@@ -3193,7 +3193,7 @@ func (pm *ProjectMilestoneQuery) collectField(ctx context.Context, opCtx *graphq
 				selectedFields = append(selectedFields, projectmilestone.FieldName)
 				fieldSeen[projectmilestone.FieldName] = struct{}{}
 			}
-		case "duedate":
+		case "dueDate":
 			if _, ok := fieldSeen[projectmilestone.FieldDueDate]; !ok {
 				selectedFields = append(selectedFields, projectmilestone.FieldDueDate)
 				fieldSeen[projectmilestone.FieldDueDate] = struct{}{}
@@ -3292,7 +3292,7 @@ func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.Ope
 			pt.WithNamedParticipants(alias, func(wq *UserQuery) {
 				*wq = *query
 			})
-		case "createdby":
+		case "createdBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -3302,7 +3302,7 @@ func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.Ope
 				return err
 			}
 			pt.withCreatedBy = query
-		case "workshifts":
+		case "workShifts":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -3314,55 +3314,55 @@ func (pt *ProjectTaskQuery) collectField(ctx context.Context, opCtx *graphql.Ope
 			pt.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[projecttask.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, projecttask.FieldCreatedAt)
 				fieldSeen[projecttask.FieldCreatedAt] = struct{}{}
 			}
-		case "name":
-			if _, ok := fieldSeen[projecttask.FieldName]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldName)
-				fieldSeen[projecttask.FieldName] = struct{}{}
+		case "updatedAt":
+			if _, ok := fieldSeen[projecttask.FieldUpdatedAt]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldUpdatedAt)
+				fieldSeen[projecttask.FieldUpdatedAt] = struct{}{}
 			}
-		case "assigneename":
+		case "deletedAt":
+			if _, ok := fieldSeen[projecttask.FieldDeletedAt]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldDeletedAt)
+				fieldSeen[projecttask.FieldDeletedAt] = struct{}{}
+			}
+		case "assigneeName":
 			if _, ok := fieldSeen[projecttask.FieldAssigneeName]; !ok {
 				selectedFields = append(selectedFields, projecttask.FieldAssigneeName)
 				fieldSeen[projecttask.FieldAssigneeName] = struct{}{}
+			}
+		case "description":
+			if _, ok := fieldSeen[projecttask.FieldDescription]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldDescription)
+				fieldSeen[projecttask.FieldDescription] = struct{}{}
+			}
+		case "dueDate":
+			if _, ok := fieldSeen[projecttask.FieldDueDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldDueDate)
+				fieldSeen[projecttask.FieldDueDate] = struct{}{}
+			}
+		case "endDate":
+			if _, ok := fieldSeen[projecttask.FieldEndDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldEndDate)
+				fieldSeen[projecttask.FieldEndDate] = struct{}{}
 			}
 		case "location":
 			if _, ok := fieldSeen[projecttask.FieldLocation]; !ok {
 				selectedFields = append(selectedFields, projecttask.FieldLocation)
 				fieldSeen[projecttask.FieldLocation] = struct{}{}
 			}
-		case "duedate":
-			if _, ok := fieldSeen[projecttask.FieldDueDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldDueDate)
-				fieldSeen[projecttask.FieldDueDate] = struct{}{}
+		case "name":
+			if _, ok := fieldSeen[projecttask.FieldName]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldName)
+				fieldSeen[projecttask.FieldName] = struct{}{}
 			}
-		case "plannedstartdate":
-			if _, ok := fieldSeen[projecttask.FieldPlannedStartDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldPlannedStartDate)
-				fieldSeen[projecttask.FieldPlannedStartDate] = struct{}{}
-			}
-		case "actualstartdate":
-			if _, ok := fieldSeen[projecttask.FieldActualStartDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldActualStartDate)
-				fieldSeen[projecttask.FieldActualStartDate] = struct{}{}
-			}
-		case "plannedenddate":
-			if _, ok := fieldSeen[projecttask.FieldPlannedEndDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldPlannedEndDate)
-				fieldSeen[projecttask.FieldPlannedEndDate] = struct{}{}
-			}
-		case "actualenddate":
-			if _, ok := fieldSeen[projecttask.FieldActualEndDate]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldActualEndDate)
-				fieldSeen[projecttask.FieldActualEndDate] = struct{}{}
-			}
-		case "description":
-			if _, ok := fieldSeen[projecttask.FieldDescription]; !ok {
-				selectedFields = append(selectedFields, projecttask.FieldDescription)
-				fieldSeen[projecttask.FieldDescription] = struct{}{}
+		case "startDate":
+			if _, ok := fieldSeen[projecttask.FieldStartDate]; !ok {
+				selectedFields = append(selectedFields, projecttask.FieldStartDate)
+				fieldSeen[projecttask.FieldStartDate] = struct{}{}
 			}
 		case "status":
 			if _, ok := fieldSeen[projecttask.FieldStatus]; !ok {
@@ -3479,22 +3479,22 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 				return err
 			}
 			r.withInvoice = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[receivable.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldCreatedAt)
 				fieldSeen[receivable.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[receivable.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldUpdatedAt)
 				fieldSeen[receivable.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[receivable.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldDeletedAt)
 				fieldSeen[receivable.FieldDeletedAt] = struct{}{}
 			}
-		case "entrygroup":
+		case "entryGroup":
 			if _, ok := fieldSeen[receivable.FieldEntryGroup]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldEntryGroup)
 				fieldSeen[receivable.FieldEntryGroup] = struct{}{}
@@ -3509,22 +3509,22 @@ func (r *ReceivableQuery) collectField(ctx context.Context, opCtx *graphql.Opera
 				selectedFields = append(selectedFields, receivable.FieldName)
 				fieldSeen[receivable.FieldName] = struct{}{}
 			}
-		case "amountindefault":
+		case "amountInDefault":
 			if _, ok := fieldSeen[receivable.FieldAmountInDefault]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldAmountInDefault)
 				fieldSeen[receivable.FieldAmountInDefault] = struct{}{}
 			}
-		case "outstandingbalance":
+		case "outstandingBalance":
 			if _, ok := fieldSeen[receivable.FieldOutstandingBalance]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldOutstandingBalance)
 				fieldSeen[receivable.FieldOutstandingBalance] = struct{}{}
 			}
-		case "totaltransaction":
+		case "totalTransaction":
 			if _, ok := fieldSeen[receivable.FieldTotalTransaction]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldTotalTransaction)
 				fieldSeen[receivable.FieldTotalTransaction] = struct{}{}
 			}
-		case "duedate":
+		case "dueDate":
 			if _, ok := fieldSeen[receivable.FieldDueDate]; !ok {
 				selectedFields = append(selectedFields, receivable.FieldDueDate)
 				fieldSeen[receivable.FieldDueDate] = struct{}{}
@@ -3658,17 +3658,17 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 			s.WithNamedPayables(alias, func(wq *PayableQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[supplier.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, supplier.FieldCreatedAt)
 				fieldSeen[supplier.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[supplier.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, supplier.FieldUpdatedAt)
 				fieldSeen[supplier.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[supplier.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, supplier.FieldDeletedAt)
 				fieldSeen[supplier.FieldDeletedAt] = struct{}{}
@@ -3698,7 +3698,7 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, supplier.FieldEmail)
 				fieldSeen[supplier.FieldEmail] = struct{}{}
 			}
-		case "isdefault":
+		case "isDefault":
 			if _, ok := fieldSeen[supplier.FieldIsDefault]; !ok {
 				selectedFields = append(selectedFields, supplier.FieldIsDefault)
 				fieldSeen[supplier.FieldIsDefault] = struct{}{}
@@ -3713,10 +3713,10 @@ func (s *SupplierQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, supplier.FieldPhone)
 				fieldSeen[supplier.FieldPhone] = struct{}{}
 			}
-		case "taxid":
-			if _, ok := fieldSeen[supplier.FieldTaxId]; !ok {
-				selectedFields = append(selectedFields, supplier.FieldTaxId)
-				fieldSeen[supplier.FieldTaxId] = struct{}{}
+		case "taxID":
+			if _, ok := fieldSeen[supplier.FieldTaxID]; !ok {
+				selectedFields = append(selectedFields, supplier.FieldTaxID)
+				fieldSeen[supplier.FieldTaxID] = struct{}{}
 			}
 		case "id":
 		case "__typename":
@@ -3909,17 +3909,17 @@ func (t *TreasuryQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				return err
 			}
 			t.withCompany = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[treasury.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, treasury.FieldCreatedAt)
 				fieldSeen[treasury.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[treasury.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, treasury.FieldUpdatedAt)
 				fieldSeen[treasury.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[treasury.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, treasury.FieldDeletedAt)
 				fieldSeen[treasury.FieldDeletedAt] = struct{}{}
@@ -4013,7 +4013,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 	)
 	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
 		switch field.Name {
-		case "accountingentries":
+		case "accountingEntries":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4037,7 +4037,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedCompany(alias, func(wq *CompanyQuery) {
 				*wq = *query
 			})
-		case "assignedroles":
+		case "assignedRoles":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4071,7 +4071,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.withLeader = query
-		case "createdmembersignuptokens":
+		case "createdMemberSignupTokens":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4093,7 +4093,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				return err
 			}
 			u.withEmployee = query
-		case "issuedinvoices":
+		case "issuedInvoices":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4105,7 +4105,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedIssuedInvoices(alias, func(wq *InvoiceQuery) {
 				*wq = *query
 			})
-		case "createdprojects":
+		case "createdProjects":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4117,7 +4117,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedCreatedProjects(alias, func(wq *ProjectQuery) {
 				*wq = *query
 			})
-		case "leaderedprojects":
+		case "leaderedProjects":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4129,7 +4129,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedLeaderedProjects(alias, func(wq *ProjectQuery) {
 				*wq = *query
 			})
-		case "assignedprojecttasks":
+		case "assignedProjectTasks":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4141,7 +4141,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedAssignedProjectTasks(alias, func(wq *ProjectTaskQuery) {
 				*wq = *query
 			})
-		case "participatedprojecttasks":
+		case "participatedProjectTasks":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4153,7 +4153,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedParticipatedProjectTasks(alias, func(wq *ProjectTaskQuery) {
 				*wq = *query
 			})
-		case "createdtasks":
+		case "createdTasks":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4177,7 +4177,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedTokens(alias, func(wq *TokenQuery) {
 				*wq = *query
 			})
-		case "approvedworkshifts":
+		case "approvedWorkShifts":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4189,7 +4189,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedApprovedWorkShifts(alias, func(wq *WorkshiftQuery) {
 				*wq = *query
 			})
-		case "workshifts":
+		case "workShifts":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4201,7 +4201,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedWorkShifts(alias, func(wq *WorkshiftQuery) {
 				*wq = *query
 			})
-		case "uploadeddocuments":
+		case "uploadedDocuments":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4213,7 +4213,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedUploadedDocuments(alias, func(wq *CompanyDocumentQuery) {
 				*wq = *query
 			})
-		case "approveddocuments":
+		case "approvedDocuments":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4225,17 +4225,17 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 			u.WithNamedApprovedDocuments(alias, func(wq *CompanyDocumentQuery) {
 				*wq = *query
 			})
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[user.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldCreatedAt)
 				fieldSeen[user.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[user.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldUpdatedAt)
 				fieldSeen[user.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[user.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, user.FieldDeletedAt)
 				fieldSeen[user.FieldDeletedAt] = struct{}{}
@@ -4245,7 +4245,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldDevice)
 				fieldSeen[user.FieldDevice] = struct{}{}
 			}
-		case "isdemouser":
+		case "isDemoUser":
 			if _, ok := fieldSeen[user.FieldIsDemoUser]; !ok {
 				selectedFields = append(selectedFields, user.FieldIsDemoUser)
 				fieldSeen[user.FieldIsDemoUser] = struct{}{}
@@ -4270,7 +4270,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldAvatar)
 				fieldSeen[user.FieldAvatar] = struct{}{}
 			}
-		case "photourl":
+		case "photoURL":
 			if _, ok := fieldSeen[user.FieldPhotoURL]; !ok {
 				selectedFields = append(selectedFields, user.FieldPhotoURL)
 				fieldSeen[user.FieldPhotoURL] = struct{}{}
@@ -4290,7 +4290,7 @@ func (u *UserQuery) collectField(ctx context.Context, opCtx *graphql.OperationCo
 				selectedFields = append(selectedFields, user.FieldBirthdate)
 				fieldSeen[user.FieldBirthdate] = struct{}{}
 			}
-		case "lastlogin":
+		case "lastLogin":
 			if _, ok := fieldSeen[user.FieldLastLogin]; !ok {
 				selectedFields = append(selectedFields, user.FieldLastLogin)
 				fieldSeen[user.FieldLastLogin] = struct{}{}
@@ -4523,7 +4523,7 @@ func (w *WorkshiftQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				return err
 			}
 			w.withUser = query
-		case "approvedby":
+		case "approvedBy":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4543,7 +4543,7 @@ func (w *WorkshiftQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				return err
 			}
 			w.withTask = query
-		case "editrequest":
+		case "editRequest":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4553,7 +4553,7 @@ func (w *WorkshiftQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				return err
 			}
 			w.withEditRequest = query
-		case "workshift":
+		case "workShift":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -4563,42 +4563,42 @@ func (w *WorkshiftQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				return err
 			}
 			w.withWorkShift = query
-		case "createdat":
+		case "createdAt":
 			if _, ok := fieldSeen[workshift.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldCreatedAt)
 				fieldSeen[workshift.FieldCreatedAt] = struct{}{}
 			}
-		case "updatedat":
+		case "updatedAt":
 			if _, ok := fieldSeen[workshift.FieldUpdatedAt]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldUpdatedAt)
 				fieldSeen[workshift.FieldUpdatedAt] = struct{}{}
 			}
-		case "deletedat":
+		case "deletedAt":
 			if _, ok := fieldSeen[workshift.FieldDeletedAt]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldDeletedAt)
 				fieldSeen[workshift.FieldDeletedAt] = struct{}{}
 			}
-		case "approvedat":
+		case "approvedAt":
 			if _, ok := fieldSeen[workshift.FieldApprovedAt]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldApprovedAt)
 				fieldSeen[workshift.FieldApprovedAt] = struct{}{}
 			}
-		case "clockin":
+		case "clockIn":
 			if _, ok := fieldSeen[workshift.FieldClockIn]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldClockIn)
 				fieldSeen[workshift.FieldClockIn] = struct{}{}
 			}
-		case "clockout":
+		case "clockOut":
 			if _, ok := fieldSeen[workshift.FieldClockOut]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldClockOut)
 				fieldSeen[workshift.FieldClockOut] = struct{}{}
 			}
-		case "clockinlocation":
+		case "clockInLocation":
 			if _, ok := fieldSeen[workshift.FieldClockInLocation]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldClockInLocation)
 				fieldSeen[workshift.FieldClockInLocation] = struct{}{}
 			}
-		case "clockoutlocation":
+		case "clockOutLocation":
 			if _, ok := fieldSeen[workshift.FieldClockOutLocation]; !ok {
 				selectedFields = append(selectedFields, workshift.FieldClockOutLocation)
 				fieldSeen[workshift.FieldClockOutLocation] = struct{}{}

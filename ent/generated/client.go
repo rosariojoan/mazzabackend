@@ -848,7 +848,7 @@ func (c *CompanyClient) GetX(ctx context.Context, id int) *Company {
 	return obj
 }
 
-// QueryAvailableRoles queries the availableRoles edge of a Company.
+// QueryAvailableRoles queries the available_roles edge of a Company.
 func (c *CompanyClient) QueryAvailableRoles(co *Company) *UserRoleQuery {
 	query := (&UserRoleClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -864,7 +864,7 @@ func (c *CompanyClient) QueryAvailableRoles(co *Company) *UserRoleQuery {
 	return query
 }
 
-// QueryAccountingEntries queries the accountingEntries edge of a Company.
+// QueryAccountingEntries queries the accounting_entries edge of a Company.
 func (c *CompanyClient) QueryAccountingEntries(co *Company) *AccountingEntryQuery {
 	query := (&AccountingEntryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -960,7 +960,7 @@ func (c *CompanyClient) QueryInventory(co *Company) *InventoryQuery {
 	return query
 }
 
-// QueryInventoryMovements queries the inventoryMovements edge of a Company.
+// QueryInventoryMovements queries the inventory_movements edge of a Company.
 func (c *CompanyClient) QueryInventoryMovements(co *Company) *InventoryMovementQuery {
 	query := (&InventoryMovementClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1024,7 +1024,7 @@ func (c *CompanyClient) QueryLoanSchedule(co *Company) *LoanScheduleQuery {
 	return query
 }
 
-// QueryMemberSignupTokens queries the memberSignupTokens edge of a Company.
+// QueryMemberSignupTokens queries the member_signup_tokens edge of a Company.
 func (c *CompanyClient) QueryMemberSignupTokens(co *Company) *MemberSignupTokenQuery {
 	query := (&MemberSignupTokenClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1152,7 +1152,7 @@ func (c *CompanyClient) QueryTreasuries(co *Company) *TreasuryQuery {
 	return query
 }
 
-// QueryWorkShifts queries the workShifts edge of a Company.
+// QueryWorkShifts queries the work_shifts edge of a Company.
 func (c *CompanyClient) QueryWorkShifts(co *Company) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1184,7 +1184,7 @@ func (c *CompanyClient) QueryUsers(co *Company) *UserQuery {
 	return query
 }
 
-// QueryDaughterCompanies queries the daughterCompanies edge of a Company.
+// QueryDaughterCompanies queries the daughter_companies edge of a Company.
 func (c *CompanyClient) QueryDaughterCompanies(co *Company) *CompanyQuery {
 	query := (&CompanyClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1200,7 +1200,7 @@ func (c *CompanyClient) QueryDaughterCompanies(co *Company) *CompanyQuery {
 	return query
 }
 
-// QueryParentCompany queries the parentCompany edge of a Company.
+// QueryParentCompany queries the parent_company edge of a Company.
 func (c *CompanyClient) QueryParentCompany(co *Company) *CompanyQuery {
 	query := (&CompanyClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1365,7 +1365,7 @@ func (c *CompanyDocumentClient) QueryCompany(cd *CompanyDocument) *CompanyQuery 
 	return query
 }
 
-// QueryUploadedBy queries the uploadedBy edge of a CompanyDocument.
+// QueryUploadedBy queries the uploaded_by edge of a CompanyDocument.
 func (c *CompanyDocumentClient) QueryUploadedBy(cd *CompanyDocument) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -1381,7 +1381,7 @@ func (c *CompanyDocumentClient) QueryUploadedBy(cd *CompanyDocument) *UserQuery 
 	return query
 }
 
-// QueryApprovedBy queries the approvedBy edge of a CompanyDocument.
+// QueryApprovedBy queries the approved_by edge of a CompanyDocument.
 func (c *CompanyDocumentClient) QueryApprovedBy(cd *CompanyDocument) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -2419,7 +2419,7 @@ func (c *InvoiceClient) QueryCompany(i *Invoice) *CompanyQuery {
 	return query
 }
 
-// QueryIssuedBy queries the issuedBy edge of a Invoice.
+// QueryIssuedBy queries the issued_by edge of a Invoice.
 func (c *InvoiceClient) QueryIssuedBy(i *Invoice) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -2994,7 +2994,7 @@ func (c *MemberSignupTokenClient) QueryCompany(mst *MemberSignupToken) *CompanyQ
 	return query
 }
 
-// QueryCreatedBy queries the createdBy edge of a MemberSignupToken.
+// QueryCreatedBy queries the created_by edge of a MemberSignupToken.
 func (c *MemberSignupTokenClient) QueryCreatedBy(mst *MemberSignupToken) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -3457,7 +3457,7 @@ func (c *ProjectClient) QueryCompany(pr *Project) *CompanyQuery {
 	return query
 }
 
-// QueryCreatedBy queries the createdBy edge of a Project.
+// QueryCreatedBy queries the created_by edge of a Project.
 func (c *ProjectClient) QueryCreatedBy(pr *Project) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -3851,7 +3851,7 @@ func (c *ProjectTaskClient) QueryParticipants(pt *ProjectTask) *UserQuery {
 	return query
 }
 
-// QueryCreatedBy queries the createdBy edge of a ProjectTask.
+// QueryCreatedBy queries the created_by edge of a ProjectTask.
 func (c *ProjectTaskClient) QueryCreatedBy(pt *ProjectTask) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -3867,7 +3867,7 @@ func (c *ProjectTaskClient) QueryCreatedBy(pt *ProjectTask) *UserQuery {
 	return query
 }
 
-// QueryWorkShifts queries the workShifts edge of a ProjectTask.
+// QueryWorkShifts queries the work_shifts edge of a ProjectTask.
 func (c *ProjectTaskClient) QueryWorkShifts(pt *ProjectTask) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4677,7 +4677,7 @@ func (c *UserClient) GetX(ctx context.Context, id int) *User {
 	return obj
 }
 
-// QueryAccountingEntries queries the accountingEntries edge of a User.
+// QueryAccountingEntries queries the accounting_entries edge of a User.
 func (c *UserClient) QueryAccountingEntries(u *User) *AccountingEntryQuery {
 	query := (&AccountingEntryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4709,7 +4709,7 @@ func (c *UserClient) QueryCompany(u *User) *CompanyQuery {
 	return query
 }
 
-// QueryAssignedRoles queries the assignedRoles edge of a User.
+// QueryAssignedRoles queries the assigned_roles edge of a User.
 func (c *UserClient) QueryAssignedRoles(u *User) *UserRoleQuery {
 	query := (&UserRoleClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4757,7 +4757,7 @@ func (c *UserClient) QueryLeader(u *User) *UserQuery {
 	return query
 }
 
-// QueryCreatedMemberSignupTokens queries the createdMemberSignupTokens edge of a User.
+// QueryCreatedMemberSignupTokens queries the created_member_signup_tokens edge of a User.
 func (c *UserClient) QueryCreatedMemberSignupTokens(u *User) *MemberSignupTokenQuery {
 	query := (&MemberSignupTokenClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4789,7 +4789,7 @@ func (c *UserClient) QueryEmployee(u *User) *EmployeeQuery {
 	return query
 }
 
-// QueryIssuedInvoices queries the issuedInvoices edge of a User.
+// QueryIssuedInvoices queries the issued_invoices edge of a User.
 func (c *UserClient) QueryIssuedInvoices(u *User) *InvoiceQuery {
 	query := (&InvoiceClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4805,7 +4805,7 @@ func (c *UserClient) QueryIssuedInvoices(u *User) *InvoiceQuery {
 	return query
 }
 
-// QueryCreatedProjects queries the createdProjects edge of a User.
+// QueryCreatedProjects queries the created_projects edge of a User.
 func (c *UserClient) QueryCreatedProjects(u *User) *ProjectQuery {
 	query := (&ProjectClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4821,7 +4821,7 @@ func (c *UserClient) QueryCreatedProjects(u *User) *ProjectQuery {
 	return query
 }
 
-// QueryLeaderedProjects queries the leaderedProjects edge of a User.
+// QueryLeaderedProjects queries the leadered_projects edge of a User.
 func (c *UserClient) QueryLeaderedProjects(u *User) *ProjectQuery {
 	query := (&ProjectClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4837,7 +4837,7 @@ func (c *UserClient) QueryLeaderedProjects(u *User) *ProjectQuery {
 	return query
 }
 
-// QueryAssignedProjectTasks queries the assignedProjectTasks edge of a User.
+// QueryAssignedProjectTasks queries the assigned_project_tasks edge of a User.
 func (c *UserClient) QueryAssignedProjectTasks(u *User) *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4853,7 +4853,7 @@ func (c *UserClient) QueryAssignedProjectTasks(u *User) *ProjectTaskQuery {
 	return query
 }
 
-// QueryParticipatedProjectTasks queries the participatedProjectTasks edge of a User.
+// QueryParticipatedProjectTasks queries the participated_project_tasks edge of a User.
 func (c *UserClient) QueryParticipatedProjectTasks(u *User) *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4869,7 +4869,7 @@ func (c *UserClient) QueryParticipatedProjectTasks(u *User) *ProjectTaskQuery {
 	return query
 }
 
-// QueryCreatedTasks queries the createdTasks edge of a User.
+// QueryCreatedTasks queries the created_tasks edge of a User.
 func (c *UserClient) QueryCreatedTasks(u *User) *ProjectTaskQuery {
 	query := (&ProjectTaskClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4901,7 +4901,7 @@ func (c *UserClient) QueryTokens(u *User) *TokenQuery {
 	return query
 }
 
-// QueryApprovedWorkShifts queries the approvedWorkShifts edge of a User.
+// QueryApprovedWorkShifts queries the approved_work_shifts edge of a User.
 func (c *UserClient) QueryApprovedWorkShifts(u *User) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4917,7 +4917,7 @@ func (c *UserClient) QueryApprovedWorkShifts(u *User) *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkShifts queries the workShifts edge of a User.
+// QueryWorkShifts queries the work_shifts edge of a User.
 func (c *UserClient) QueryWorkShifts(u *User) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4933,7 +4933,7 @@ func (c *UserClient) QueryWorkShifts(u *User) *WorkshiftQuery {
 	return query
 }
 
-// QueryUploadedDocuments queries the uploadedDocuments edge of a User.
+// QueryUploadedDocuments queries the uploaded_documents edge of a User.
 func (c *UserClient) QueryUploadedDocuments(u *User) *CompanyDocumentQuery {
 	query := (&CompanyDocumentClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -4949,7 +4949,7 @@ func (c *UserClient) QueryUploadedDocuments(u *User) *CompanyDocumentQuery {
 	return query
 }
 
-// QueryApprovedDocuments queries the approvedDocuments edge of a User.
+// QueryApprovedDocuments queries the approved_documents edge of a User.
 func (c *UserClient) QueryApprovedDocuments(u *User) *CompanyDocumentQuery {
 	query := (&CompanyDocumentClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -5295,7 +5295,7 @@ func (c *WorkshiftClient) QueryUser(w *Workshift) *UserQuery {
 	return query
 }
 
-// QueryApprovedBy queries the approvedBy edge of a Workshift.
+// QueryApprovedBy queries the approved_by edge of a Workshift.
 func (c *WorkshiftClient) QueryApprovedBy(w *Workshift) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -5327,7 +5327,7 @@ func (c *WorkshiftClient) QueryTask(w *Workshift) *ProjectTaskQuery {
 	return query
 }
 
-// QueryEditRequest queries the editRequest edge of a Workshift.
+// QueryEditRequest queries the edit_request edge of a Workshift.
 func (c *WorkshiftClient) QueryEditRequest(w *Workshift) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
@@ -5343,7 +5343,7 @@ func (c *WorkshiftClient) QueryEditRequest(w *Workshift) *WorkshiftQuery {
 	return query
 }
 
-// QueryWorkShift queries the workShift edge of a Workshift.
+// QueryWorkShift queries the work_shift edge of a Workshift.
 func (c *WorkshiftClient) QueryWorkShift(w *Workshift) *WorkshiftQuery {
 	query := (&WorkshiftClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {

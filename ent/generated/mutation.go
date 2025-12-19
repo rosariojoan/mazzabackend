@@ -80,9 +80,9 @@ type AccountingEntryMutation struct {
 	op                   Op
 	typ                  string
 	id                   *int
-	createdAt            *time.Time
-	updatedAt            *time.Time
-	deletedAt            *time.Time
+	created_at           *time.Time
+	updated_at           *time.Time
+	deleted_at           *time.Time
 	number               *int
 	addnumber            *int
 	group                *int
@@ -93,11 +93,11 @@ type AccountingEntryMutation struct {
 	amount               *float64
 	addamount            *float64
 	description          *string
-	accountType          *accountingentry.AccountType
+	account_type         *accountingentry.AccountType
 	category             *string
 	main                 *string
-	isDebit              *bool
-	isReversal           *bool
+	is_debit             *bool
+	is_reversal          *bool
 	reversed             *bool
 	clearedFields        map[string]struct{}
 	company              *int
@@ -212,21 +212,21 @@ func (m *AccountingEntryMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *AccountingEntryMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *AccountingEntryMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the AccountingEntry entity.
+// OldCreatedAt returns the old "created_at" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -243,26 +243,26 @@ func (m *AccountingEntryMutation) OldCreatedAt(ctx context.Context) (v time.Time
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *AccountingEntryMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *AccountingEntryMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *AccountingEntryMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the AccountingEntry entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -279,26 +279,26 @@ func (m *AccountingEntryMutation) OldUpdatedAt(ctx context.Context) (v time.Time
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *AccountingEntryMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *AccountingEntryMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *AccountingEntryMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the AccountingEntry entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -315,21 +315,21 @@ func (m *AccountingEntryMutation) OldDeletedAt(ctx context.Context) (v *time.Tim
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *AccountingEntryMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[accountingentry.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *AccountingEntryMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[accountingentry.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *AccountingEntryMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, accountingentry.FieldDeletedAt)
 }
 
@@ -645,21 +645,21 @@ func (m *AccountingEntryMutation) ResetDescription() {
 	m.description = nil
 }
 
-// SetAccountType sets the "accountType" field.
+// SetAccountType sets the "account_type" field.
 func (m *AccountingEntryMutation) SetAccountType(at accountingentry.AccountType) {
-	m.accountType = &at
+	m.account_type = &at
 }
 
-// AccountType returns the value of the "accountType" field in the mutation.
+// AccountType returns the value of the "account_type" field in the mutation.
 func (m *AccountingEntryMutation) AccountType() (r accountingentry.AccountType, exists bool) {
-	v := m.accountType
+	v := m.account_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAccountType returns the old "accountType" field's value of the AccountingEntry entity.
+// OldAccountType returns the old "account_type" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldAccountType(ctx context.Context) (v accountingentry.AccountType, err error) {
@@ -676,9 +676,9 @@ func (m *AccountingEntryMutation) OldAccountType(ctx context.Context) (v account
 	return oldValue.AccountType, nil
 }
 
-// ResetAccountType resets all changes to the "accountType" field.
+// ResetAccountType resets all changes to the "account_type" field.
 func (m *AccountingEntryMutation) ResetAccountType() {
-	m.accountType = nil
+	m.account_type = nil
 }
 
 // SetCategory sets the "category" field.
@@ -753,21 +753,21 @@ func (m *AccountingEntryMutation) ResetMain() {
 	m.main = nil
 }
 
-// SetIsDebit sets the "isDebit" field.
+// SetIsDebit sets the "is_debit" field.
 func (m *AccountingEntryMutation) SetIsDebit(b bool) {
-	m.isDebit = &b
+	m.is_debit = &b
 }
 
-// IsDebit returns the value of the "isDebit" field in the mutation.
+// IsDebit returns the value of the "is_debit" field in the mutation.
 func (m *AccountingEntryMutation) IsDebit() (r bool, exists bool) {
-	v := m.isDebit
+	v := m.is_debit
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsDebit returns the old "isDebit" field's value of the AccountingEntry entity.
+// OldIsDebit returns the old "is_debit" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldIsDebit(ctx context.Context) (v bool, err error) {
@@ -784,26 +784,26 @@ func (m *AccountingEntryMutation) OldIsDebit(ctx context.Context) (v bool, err e
 	return oldValue.IsDebit, nil
 }
 
-// ResetIsDebit resets all changes to the "isDebit" field.
+// ResetIsDebit resets all changes to the "is_debit" field.
 func (m *AccountingEntryMutation) ResetIsDebit() {
-	m.isDebit = nil
+	m.is_debit = nil
 }
 
-// SetIsReversal sets the "isReversal" field.
+// SetIsReversal sets the "is_reversal" field.
 func (m *AccountingEntryMutation) SetIsReversal(b bool) {
-	m.isReversal = &b
+	m.is_reversal = &b
 }
 
-// IsReversal returns the value of the "isReversal" field in the mutation.
+// IsReversal returns the value of the "is_reversal" field in the mutation.
 func (m *AccountingEntryMutation) IsReversal() (r bool, exists bool) {
-	v := m.isReversal
+	v := m.is_reversal
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsReversal returns the old "isReversal" field's value of the AccountingEntry entity.
+// OldIsReversal returns the old "is_reversal" field's value of the AccountingEntry entity.
 // If the AccountingEntry object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *AccountingEntryMutation) OldIsReversal(ctx context.Context) (v bool, err error) {
@@ -820,9 +820,9 @@ func (m *AccountingEntryMutation) OldIsReversal(ctx context.Context) (v bool, er
 	return oldValue.IsReversal, nil
 }
 
-// ResetIsReversal resets all changes to the "isReversal" field.
+// ResetIsReversal resets all changes to the "is_reversal" field.
 func (m *AccountingEntryMutation) ResetIsReversal() {
-	m.isReversal = nil
+	m.is_reversal = nil
 }
 
 // SetReversed sets the "reversed" field.
@@ -1067,13 +1067,13 @@ func (m *AccountingEntryMutation) Type() string {
 // AddedFields().
 func (m *AccountingEntryMutation) Fields() []string {
 	fields := make([]string, 0, 16)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, accountingentry.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, accountingentry.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, accountingentry.FieldDeletedAt)
 	}
 	if m.number != nil {
@@ -1097,7 +1097,7 @@ func (m *AccountingEntryMutation) Fields() []string {
 	if m.description != nil {
 		fields = append(fields, accountingentry.FieldDescription)
 	}
-	if m.accountType != nil {
+	if m.account_type != nil {
 		fields = append(fields, accountingentry.FieldAccountType)
 	}
 	if m.category != nil {
@@ -1106,10 +1106,10 @@ func (m *AccountingEntryMutation) Fields() []string {
 	if m.main != nil {
 		fields = append(fields, accountingentry.FieldMain)
 	}
-	if m.isDebit != nil {
+	if m.is_debit != nil {
 		fields = append(fields, accountingentry.FieldIsDebit)
 	}
-	if m.isReversal != nil {
+	if m.is_reversal != nil {
 		fields = append(fields, accountingentry.FieldIsReversal)
 	}
 	if m.reversed != nil {
@@ -1871,107 +1871,107 @@ func (m *CalendarMutation) ResetEdge(name string) error {
 // CompanyMutation represents an operation that mutates the Company nodes in the graph.
 type CompanyMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	createdAt                 *time.Time
-	updatedAt                 *time.Time
-	deletedAt                 *time.Time
-	address                   *string
-	baseCurrency              *string
-	ceoName                   *string
-	city                      *string
-	country                   *string
-	establishedAt             *time.Time
-	description               *string
-	email                     *string
-	industry                  *string
-	lastEntryDate             *time.Time
-	lastInvoiceNumber         *int32
-	addlastInvoiceNumber      *int32
-	logoURL                   *string
-	logoStorageURI            *string
-	name                      *string
-	numberOfEmployees         *int32
-	addnumberOfEmployees      *int32
-	phone                     *string
-	taxId                     *string
-	vatRate                   *float64
-	addvatRate                *float64
-	website                   *string
-	incompleteSetup           *bool
-	clearedFields             map[string]struct{}
-	availableRoles            map[int]struct{}
-	removedavailableRoles     map[int]struct{}
-	clearedavailableRoles     bool
-	accountingEntries         map[int]struct{}
-	removedaccountingEntries  map[int]struct{}
-	clearedaccountingEntries  bool
-	customers                 map[int]struct{}
-	removedcustomers          map[int]struct{}
-	clearedcustomers          bool
-	documents                 map[int]struct{}
-	removeddocuments          map[int]struct{}
-	cleareddocuments          bool
-	employees                 map[int]struct{}
-	removedemployees          map[int]struct{}
-	clearedemployees          bool
-	files                     map[int]struct{}
-	removedfiles              map[int]struct{}
-	clearedfiles              bool
-	inventory                 map[int]struct{}
-	removedinventory          map[int]struct{}
-	clearedinventory          bool
-	inventoryMovements        map[int]struct{}
-	removedinventoryMovements map[int]struct{}
-	clearedinventoryMovements bool
-	invoices                  map[int]struct{}
-	removedinvoices           map[int]struct{}
-	clearedinvoices           bool
-	loans                     map[int]struct{}
-	removedloans              map[int]struct{}
-	clearedloans              bool
-	loan_schedule             map[int]struct{}
-	removedloan_schedule      map[int]struct{}
-	clearedloan_schedule      bool
-	memberSignupTokens        map[int]struct{}
-	removedmemberSignupTokens map[int]struct{}
-	clearedmemberSignupTokens bool
-	products                  map[int]struct{}
-	removedproducts           map[int]struct{}
-	clearedproducts           bool
-	projects                  map[int]struct{}
-	removedprojects           map[int]struct{}
-	clearedprojects           bool
-	payables                  map[int]struct{}
-	removedpayables           map[int]struct{}
-	clearedpayables           bool
-	receivables               map[int]struct{}
-	removedreceivables        map[int]struct{}
-	clearedreceivables        bool
-	suppliers                 map[int]struct{}
-	removedsuppliers          map[int]struct{}
-	clearedsuppliers          bool
-	tokens                    map[int]struct{}
-	removedtokens             map[int]struct{}
-	clearedtokens             bool
-	treasuries                map[int]struct{}
-	removedtreasuries         map[int]struct{}
-	clearedtreasuries         bool
-	workShifts                map[int]struct{}
-	removedworkShifts         map[int]struct{}
-	clearedworkShifts         bool
-	users                     map[int]struct{}
-	removedusers              map[int]struct{}
-	clearedusers              bool
-	daughterCompanies         map[int]struct{}
-	removeddaughterCompanies  map[int]struct{}
-	cleareddaughterCompanies  bool
-	parentCompany             *int
-	clearedparentCompany      bool
-	done                      bool
-	oldValue                  func(context.Context) (*Company, error)
-	predicates                []predicate.Company
+	op                          Op
+	typ                         string
+	id                          *int
+	created_at                  *time.Time
+	updated_at                  *time.Time
+	deleted_at                  *time.Time
+	address                     *string
+	base_currency               *string
+	ceo_name                    *string
+	city                        *string
+	country                     *string
+	established_at              *time.Time
+	description                 *string
+	email                       *string
+	industry                    *string
+	last_entry_date             *time.Time
+	last_invoice_number         *int32
+	addlast_invoice_number      *int32
+	logo_URL                    *string
+	logo_storage_URI            *string
+	name                        *string
+	number_employees            *int32
+	addnumber_employees         *int32
+	phone                       *string
+	tax_id                      *string
+	vat_rate                    *float64
+	addvat_rate                 *float64
+	website                     *string
+	incomplete_setup            *bool
+	clearedFields               map[string]struct{}
+	available_roles             map[int]struct{}
+	removedavailable_roles      map[int]struct{}
+	clearedavailable_roles      bool
+	accounting_entries          map[int]struct{}
+	removedaccounting_entries   map[int]struct{}
+	clearedaccounting_entries   bool
+	customers                   map[int]struct{}
+	removedcustomers            map[int]struct{}
+	clearedcustomers            bool
+	documents                   map[int]struct{}
+	removeddocuments            map[int]struct{}
+	cleareddocuments            bool
+	employees                   map[int]struct{}
+	removedemployees            map[int]struct{}
+	clearedemployees            bool
+	files                       map[int]struct{}
+	removedfiles                map[int]struct{}
+	clearedfiles                bool
+	inventory                   map[int]struct{}
+	removedinventory            map[int]struct{}
+	clearedinventory            bool
+	inventory_movements         map[int]struct{}
+	removedinventory_movements  map[int]struct{}
+	clearedinventory_movements  bool
+	invoices                    map[int]struct{}
+	removedinvoices             map[int]struct{}
+	clearedinvoices             bool
+	loans                       map[int]struct{}
+	removedloans                map[int]struct{}
+	clearedloans                bool
+	loan_schedule               map[int]struct{}
+	removedloan_schedule        map[int]struct{}
+	clearedloan_schedule        bool
+	member_signup_tokens        map[int]struct{}
+	removedmember_signup_tokens map[int]struct{}
+	clearedmember_signup_tokens bool
+	products                    map[int]struct{}
+	removedproducts             map[int]struct{}
+	clearedproducts             bool
+	projects                    map[int]struct{}
+	removedprojects             map[int]struct{}
+	clearedprojects             bool
+	payables                    map[int]struct{}
+	removedpayables             map[int]struct{}
+	clearedpayables             bool
+	receivables                 map[int]struct{}
+	removedreceivables          map[int]struct{}
+	clearedreceivables          bool
+	suppliers                   map[int]struct{}
+	removedsuppliers            map[int]struct{}
+	clearedsuppliers            bool
+	tokens                      map[int]struct{}
+	removedtokens               map[int]struct{}
+	clearedtokens               bool
+	treasuries                  map[int]struct{}
+	removedtreasuries           map[int]struct{}
+	clearedtreasuries           bool
+	work_shifts                 map[int]struct{}
+	removedwork_shifts          map[int]struct{}
+	clearedwork_shifts          bool
+	users                       map[int]struct{}
+	removedusers                map[int]struct{}
+	clearedusers                bool
+	daughter_companies          map[int]struct{}
+	removeddaughter_companies   map[int]struct{}
+	cleareddaughter_companies   bool
+	parent_company              *int
+	clearedparent_company       bool
+	done                        bool
+	oldValue                    func(context.Context) (*Company, error)
+	predicates                  []predicate.Company
 }
 
 var _ ent.Mutation = (*CompanyMutation)(nil)
@@ -2072,21 +2072,21 @@ func (m *CompanyMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *CompanyMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *CompanyMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Company entity.
+// OldCreatedAt returns the old "created_at" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -2103,26 +2103,26 @@ func (m *CompanyMutation) OldCreatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *CompanyMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *CompanyMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *CompanyMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Company entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -2139,26 +2139,26 @@ func (m *CompanyMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *CompanyMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *CompanyMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *CompanyMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Company entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -2175,21 +2175,21 @@ func (m *CompanyMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err e
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *CompanyMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[company.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *CompanyMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[company.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *CompanyMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, company.FieldDeletedAt)
 }
 
@@ -2242,21 +2242,21 @@ func (m *CompanyMutation) ResetAddress() {
 	delete(m.clearedFields, company.FieldAddress)
 }
 
-// SetBaseCurrency sets the "baseCurrency" field.
+// SetBaseCurrency sets the "base_currency" field.
 func (m *CompanyMutation) SetBaseCurrency(s string) {
-	m.baseCurrency = &s
+	m.base_currency = &s
 }
 
-// BaseCurrency returns the value of the "baseCurrency" field in the mutation.
+// BaseCurrency returns the value of the "base_currency" field in the mutation.
 func (m *CompanyMutation) BaseCurrency() (r string, exists bool) {
-	v := m.baseCurrency
+	v := m.base_currency
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldBaseCurrency returns the old "baseCurrency" field's value of the Company entity.
+// OldBaseCurrency returns the old "base_currency" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldBaseCurrency(ctx context.Context) (v string, err error) {
@@ -2273,26 +2273,26 @@ func (m *CompanyMutation) OldBaseCurrency(ctx context.Context) (v string, err er
 	return oldValue.BaseCurrency, nil
 }
 
-// ResetBaseCurrency resets all changes to the "baseCurrency" field.
+// ResetBaseCurrency resets all changes to the "base_currency" field.
 func (m *CompanyMutation) ResetBaseCurrency() {
-	m.baseCurrency = nil
+	m.base_currency = nil
 }
 
-// SetCeoName sets the "ceoName" field.
+// SetCeoName sets the "ceo_name" field.
 func (m *CompanyMutation) SetCeoName(s string) {
-	m.ceoName = &s
+	m.ceo_name = &s
 }
 
-// CeoName returns the value of the "ceoName" field in the mutation.
+// CeoName returns the value of the "ceo_name" field in the mutation.
 func (m *CompanyMutation) CeoName() (r string, exists bool) {
-	v := m.ceoName
+	v := m.ceo_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCeoName returns the old "ceoName" field's value of the Company entity.
+// OldCeoName returns the old "ceo_name" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldCeoName(ctx context.Context) (v *string, err error) {
@@ -2309,21 +2309,21 @@ func (m *CompanyMutation) OldCeoName(ctx context.Context) (v *string, err error)
 	return oldValue.CeoName, nil
 }
 
-// ClearCeoName clears the value of the "ceoName" field.
+// ClearCeoName clears the value of the "ceo_name" field.
 func (m *CompanyMutation) ClearCeoName() {
-	m.ceoName = nil
+	m.ceo_name = nil
 	m.clearedFields[company.FieldCeoName] = struct{}{}
 }
 
-// CeoNameCleared returns if the "ceoName" field was cleared in this mutation.
+// CeoNameCleared returns if the "ceo_name" field was cleared in this mutation.
 func (m *CompanyMutation) CeoNameCleared() bool {
 	_, ok := m.clearedFields[company.FieldCeoName]
 	return ok
 }
 
-// ResetCeoName resets all changes to the "ceoName" field.
+// ResetCeoName resets all changes to the "ceo_name" field.
 func (m *CompanyMutation) ResetCeoName() {
-	m.ceoName = nil
+	m.ceo_name = nil
 	delete(m.clearedFields, company.FieldCeoName)
 }
 
@@ -2399,21 +2399,21 @@ func (m *CompanyMutation) ResetCountry() {
 	m.country = nil
 }
 
-// SetEstablishedAt sets the "establishedAt" field.
+// SetEstablishedAt sets the "established_at" field.
 func (m *CompanyMutation) SetEstablishedAt(t time.Time) {
-	m.establishedAt = &t
+	m.established_at = &t
 }
 
-// EstablishedAt returns the value of the "establishedAt" field in the mutation.
+// EstablishedAt returns the value of the "established_at" field in the mutation.
 func (m *CompanyMutation) EstablishedAt() (r time.Time, exists bool) {
-	v := m.establishedAt
+	v := m.established_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEstablishedAt returns the old "establishedAt" field's value of the Company entity.
+// OldEstablishedAt returns the old "established_at" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldEstablishedAt(ctx context.Context) (v time.Time, err error) {
@@ -2430,9 +2430,9 @@ func (m *CompanyMutation) OldEstablishedAt(ctx context.Context) (v time.Time, er
 	return oldValue.EstablishedAt, nil
 }
 
-// ResetEstablishedAt resets all changes to the "establishedAt" field.
+// ResetEstablishedAt resets all changes to the "established_at" field.
 func (m *CompanyMutation) ResetEstablishedAt() {
-	m.establishedAt = nil
+	m.established_at = nil
 }
 
 // SetDescription sets the "description" field.
@@ -2582,21 +2582,21 @@ func (m *CompanyMutation) ResetIndustry() {
 	delete(m.clearedFields, company.FieldIndustry)
 }
 
-// SetLastEntryDate sets the "lastEntryDate" field.
+// SetLastEntryDate sets the "last_entry_date" field.
 func (m *CompanyMutation) SetLastEntryDate(t time.Time) {
-	m.lastEntryDate = &t
+	m.last_entry_date = &t
 }
 
-// LastEntryDate returns the value of the "lastEntryDate" field in the mutation.
+// LastEntryDate returns the value of the "last_entry_date" field in the mutation.
 func (m *CompanyMutation) LastEntryDate() (r time.Time, exists bool) {
-	v := m.lastEntryDate
+	v := m.last_entry_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLastEntryDate returns the old "lastEntryDate" field's value of the Company entity.
+// OldLastEntryDate returns the old "last_entry_date" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldLastEntryDate(ctx context.Context) (v *time.Time, err error) {
@@ -2613,40 +2613,40 @@ func (m *CompanyMutation) OldLastEntryDate(ctx context.Context) (v *time.Time, e
 	return oldValue.LastEntryDate, nil
 }
 
-// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+// ClearLastEntryDate clears the value of the "last_entry_date" field.
 func (m *CompanyMutation) ClearLastEntryDate() {
-	m.lastEntryDate = nil
+	m.last_entry_date = nil
 	m.clearedFields[company.FieldLastEntryDate] = struct{}{}
 }
 
-// LastEntryDateCleared returns if the "lastEntryDate" field was cleared in this mutation.
+// LastEntryDateCleared returns if the "last_entry_date" field was cleared in this mutation.
 func (m *CompanyMutation) LastEntryDateCleared() bool {
 	_, ok := m.clearedFields[company.FieldLastEntryDate]
 	return ok
 }
 
-// ResetLastEntryDate resets all changes to the "lastEntryDate" field.
+// ResetLastEntryDate resets all changes to the "last_entry_date" field.
 func (m *CompanyMutation) ResetLastEntryDate() {
-	m.lastEntryDate = nil
+	m.last_entry_date = nil
 	delete(m.clearedFields, company.FieldLastEntryDate)
 }
 
-// SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
+// SetLastInvoiceNumber sets the "last_invoice_number" field.
 func (m *CompanyMutation) SetLastInvoiceNumber(i int32) {
-	m.lastInvoiceNumber = &i
-	m.addlastInvoiceNumber = nil
+	m.last_invoice_number = &i
+	m.addlast_invoice_number = nil
 }
 
-// LastInvoiceNumber returns the value of the "lastInvoiceNumber" field in the mutation.
+// LastInvoiceNumber returns the value of the "last_invoice_number" field in the mutation.
 func (m *CompanyMutation) LastInvoiceNumber() (r int32, exists bool) {
-	v := m.lastInvoiceNumber
+	v := m.last_invoice_number
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLastInvoiceNumber returns the old "lastInvoiceNumber" field's value of the Company entity.
+// OldLastInvoiceNumber returns the old "last_invoice_number" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldLastInvoiceNumber(ctx context.Context) (v int32, err error) {
@@ -2663,59 +2663,59 @@ func (m *CompanyMutation) OldLastInvoiceNumber(ctx context.Context) (v int32, er
 	return oldValue.LastInvoiceNumber, nil
 }
 
-// AddLastInvoiceNumber adds i to the "lastInvoiceNumber" field.
+// AddLastInvoiceNumber adds i to the "last_invoice_number" field.
 func (m *CompanyMutation) AddLastInvoiceNumber(i int32) {
-	if m.addlastInvoiceNumber != nil {
-		*m.addlastInvoiceNumber += i
+	if m.addlast_invoice_number != nil {
+		*m.addlast_invoice_number += i
 	} else {
-		m.addlastInvoiceNumber = &i
+		m.addlast_invoice_number = &i
 	}
 }
 
-// AddedLastInvoiceNumber returns the value that was added to the "lastInvoiceNumber" field in this mutation.
+// AddedLastInvoiceNumber returns the value that was added to the "last_invoice_number" field in this mutation.
 func (m *CompanyMutation) AddedLastInvoiceNumber() (r int32, exists bool) {
-	v := m.addlastInvoiceNumber
+	v := m.addlast_invoice_number
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearLastInvoiceNumber clears the value of the "lastInvoiceNumber" field.
+// ClearLastInvoiceNumber clears the value of the "last_invoice_number" field.
 func (m *CompanyMutation) ClearLastInvoiceNumber() {
-	m.lastInvoiceNumber = nil
-	m.addlastInvoiceNumber = nil
+	m.last_invoice_number = nil
+	m.addlast_invoice_number = nil
 	m.clearedFields[company.FieldLastInvoiceNumber] = struct{}{}
 }
 
-// LastInvoiceNumberCleared returns if the "lastInvoiceNumber" field was cleared in this mutation.
+// LastInvoiceNumberCleared returns if the "last_invoice_number" field was cleared in this mutation.
 func (m *CompanyMutation) LastInvoiceNumberCleared() bool {
 	_, ok := m.clearedFields[company.FieldLastInvoiceNumber]
 	return ok
 }
 
-// ResetLastInvoiceNumber resets all changes to the "lastInvoiceNumber" field.
+// ResetLastInvoiceNumber resets all changes to the "last_invoice_number" field.
 func (m *CompanyMutation) ResetLastInvoiceNumber() {
-	m.lastInvoiceNumber = nil
-	m.addlastInvoiceNumber = nil
+	m.last_invoice_number = nil
+	m.addlast_invoice_number = nil
 	delete(m.clearedFields, company.FieldLastInvoiceNumber)
 }
 
-// SetLogoURL sets the "logoURL" field.
+// SetLogoURL sets the "logo_URL" field.
 func (m *CompanyMutation) SetLogoURL(s string) {
-	m.logoURL = &s
+	m.logo_URL = &s
 }
 
-// LogoURL returns the value of the "logoURL" field in the mutation.
+// LogoURL returns the value of the "logo_URL" field in the mutation.
 func (m *CompanyMutation) LogoURL() (r string, exists bool) {
-	v := m.logoURL
+	v := m.logo_URL
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLogoURL returns the old "logoURL" field's value of the Company entity.
+// OldLogoURL returns the old "logo_URL" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldLogoURL(ctx context.Context) (v *string, err error) {
@@ -2732,39 +2732,39 @@ func (m *CompanyMutation) OldLogoURL(ctx context.Context) (v *string, err error)
 	return oldValue.LogoURL, nil
 }
 
-// ClearLogoURL clears the value of the "logoURL" field.
+// ClearLogoURL clears the value of the "logo_URL" field.
 func (m *CompanyMutation) ClearLogoURL() {
-	m.logoURL = nil
+	m.logo_URL = nil
 	m.clearedFields[company.FieldLogoURL] = struct{}{}
 }
 
-// LogoURLCleared returns if the "logoURL" field was cleared in this mutation.
+// LogoURLCleared returns if the "logo_URL" field was cleared in this mutation.
 func (m *CompanyMutation) LogoURLCleared() bool {
 	_, ok := m.clearedFields[company.FieldLogoURL]
 	return ok
 }
 
-// ResetLogoURL resets all changes to the "logoURL" field.
+// ResetLogoURL resets all changes to the "logo_URL" field.
 func (m *CompanyMutation) ResetLogoURL() {
-	m.logoURL = nil
+	m.logo_URL = nil
 	delete(m.clearedFields, company.FieldLogoURL)
 }
 
-// SetLogoStorageURI sets the "logoStorageURI" field.
+// SetLogoStorageURI sets the "logo_storage_URI" field.
 func (m *CompanyMutation) SetLogoStorageURI(s string) {
-	m.logoStorageURI = &s
+	m.logo_storage_URI = &s
 }
 
-// LogoStorageURI returns the value of the "logoStorageURI" field in the mutation.
+// LogoStorageURI returns the value of the "logo_storage_URI" field in the mutation.
 func (m *CompanyMutation) LogoStorageURI() (r string, exists bool) {
-	v := m.logoStorageURI
+	v := m.logo_storage_URI
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLogoStorageURI returns the old "logoStorageURI" field's value of the Company entity.
+// OldLogoStorageURI returns the old "logo_storage_URI" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldLogoStorageURI(ctx context.Context) (v *string, err error) {
@@ -2781,21 +2781,21 @@ func (m *CompanyMutation) OldLogoStorageURI(ctx context.Context) (v *string, err
 	return oldValue.LogoStorageURI, nil
 }
 
-// ClearLogoStorageURI clears the value of the "logoStorageURI" field.
+// ClearLogoStorageURI clears the value of the "logo_storage_URI" field.
 func (m *CompanyMutation) ClearLogoStorageURI() {
-	m.logoStorageURI = nil
+	m.logo_storage_URI = nil
 	m.clearedFields[company.FieldLogoStorageURI] = struct{}{}
 }
 
-// LogoStorageURICleared returns if the "logoStorageURI" field was cleared in this mutation.
+// LogoStorageURICleared returns if the "logo_storage_URI" field was cleared in this mutation.
 func (m *CompanyMutation) LogoStorageURICleared() bool {
 	_, ok := m.clearedFields[company.FieldLogoStorageURI]
 	return ok
 }
 
-// ResetLogoStorageURI resets all changes to the "logoStorageURI" field.
+// ResetLogoStorageURI resets all changes to the "logo_storage_URI" field.
 func (m *CompanyMutation) ResetLogoStorageURI() {
-	m.logoStorageURI = nil
+	m.logo_storage_URI = nil
 	delete(m.clearedFields, company.FieldLogoStorageURI)
 }
 
@@ -2835,60 +2835,60 @@ func (m *CompanyMutation) ResetName() {
 	m.name = nil
 }
 
-// SetNumberOfEmployees sets the "numberOfEmployees" field.
-func (m *CompanyMutation) SetNumberOfEmployees(i int32) {
-	m.numberOfEmployees = &i
-	m.addnumberOfEmployees = nil
+// SetNumberEmployees sets the "number_employees" field.
+func (m *CompanyMutation) SetNumberEmployees(i int32) {
+	m.number_employees = &i
+	m.addnumber_employees = nil
 }
 
-// NumberOfEmployees returns the value of the "numberOfEmployees" field in the mutation.
-func (m *CompanyMutation) NumberOfEmployees() (r int32, exists bool) {
-	v := m.numberOfEmployees
+// NumberEmployees returns the value of the "number_employees" field in the mutation.
+func (m *CompanyMutation) NumberEmployees() (r int32, exists bool) {
+	v := m.number_employees
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNumberOfEmployees returns the old "numberOfEmployees" field's value of the Company entity.
+// OldNumberEmployees returns the old "number_employees" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CompanyMutation) OldNumberOfEmployees(ctx context.Context) (v int32, err error) {
+func (m *CompanyMutation) OldNumberEmployees(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldNumberOfEmployees is only allowed on UpdateOne operations")
+		return v, errors.New("OldNumberEmployees is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldNumberOfEmployees requires an ID field in the mutation")
+		return v, errors.New("OldNumberEmployees requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldNumberOfEmployees: %w", err)
+		return v, fmt.Errorf("querying old value for OldNumberEmployees: %w", err)
 	}
-	return oldValue.NumberOfEmployees, nil
+	return oldValue.NumberEmployees, nil
 }
 
-// AddNumberOfEmployees adds i to the "numberOfEmployees" field.
-func (m *CompanyMutation) AddNumberOfEmployees(i int32) {
-	if m.addnumberOfEmployees != nil {
-		*m.addnumberOfEmployees += i
+// AddNumberEmployees adds i to the "number_employees" field.
+func (m *CompanyMutation) AddNumberEmployees(i int32) {
+	if m.addnumber_employees != nil {
+		*m.addnumber_employees += i
 	} else {
-		m.addnumberOfEmployees = &i
+		m.addnumber_employees = &i
 	}
 }
 
-// AddedNumberOfEmployees returns the value that was added to the "numberOfEmployees" field in this mutation.
-func (m *CompanyMutation) AddedNumberOfEmployees() (r int32, exists bool) {
-	v := m.addnumberOfEmployees
+// AddedNumberEmployees returns the value that was added to the "number_employees" field in this mutation.
+func (m *CompanyMutation) AddedNumberEmployees() (r int32, exists bool) {
+	v := m.addnumber_employees
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetNumberOfEmployees resets all changes to the "numberOfEmployees" field.
-func (m *CompanyMutation) ResetNumberOfEmployees() {
-	m.numberOfEmployees = nil
-	m.addnumberOfEmployees = nil
+// ResetNumberEmployees resets all changes to the "number_employees" field.
+func (m *CompanyMutation) ResetNumberEmployees() {
+	m.number_employees = nil
+	m.addnumber_employees = nil
 }
 
 // SetPhone sets the "phone" field.
@@ -2940,71 +2940,71 @@ func (m *CompanyMutation) ResetPhone() {
 	delete(m.clearedFields, company.FieldPhone)
 }
 
-// SetTaxId sets the "taxId" field.
-func (m *CompanyMutation) SetTaxId(s string) {
-	m.taxId = &s
+// SetTaxID sets the "tax_id" field.
+func (m *CompanyMutation) SetTaxID(s string) {
+	m.tax_id = &s
 }
 
-// TaxId returns the value of the "taxId" field in the mutation.
-func (m *CompanyMutation) TaxId() (r string, exists bool) {
-	v := m.taxId
+// TaxID returns the value of the "tax_id" field in the mutation.
+func (m *CompanyMutation) TaxID() (r string, exists bool) {
+	v := m.tax_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTaxId returns the old "taxId" field's value of the Company entity.
+// OldTaxID returns the old "tax_id" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CompanyMutation) OldTaxId(ctx context.Context) (v *string, err error) {
+func (m *CompanyMutation) OldTaxID(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTaxId is only allowed on UpdateOne operations")
+		return v, errors.New("OldTaxID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTaxId requires an ID field in the mutation")
+		return v, errors.New("OldTaxID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTaxId: %w", err)
+		return v, fmt.Errorf("querying old value for OldTaxID: %w", err)
 	}
-	return oldValue.TaxId, nil
+	return oldValue.TaxID, nil
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (m *CompanyMutation) ClearTaxId() {
-	m.taxId = nil
-	m.clearedFields[company.FieldTaxId] = struct{}{}
+// ClearTaxID clears the value of the "tax_id" field.
+func (m *CompanyMutation) ClearTaxID() {
+	m.tax_id = nil
+	m.clearedFields[company.FieldTaxID] = struct{}{}
 }
 
-// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
-func (m *CompanyMutation) TaxIdCleared() bool {
-	_, ok := m.clearedFields[company.FieldTaxId]
+// TaxIDCleared returns if the "tax_id" field was cleared in this mutation.
+func (m *CompanyMutation) TaxIDCleared() bool {
+	_, ok := m.clearedFields[company.FieldTaxID]
 	return ok
 }
 
-// ResetTaxId resets all changes to the "taxId" field.
-func (m *CompanyMutation) ResetTaxId() {
-	m.taxId = nil
-	delete(m.clearedFields, company.FieldTaxId)
+// ResetTaxID resets all changes to the "tax_id" field.
+func (m *CompanyMutation) ResetTaxID() {
+	m.tax_id = nil
+	delete(m.clearedFields, company.FieldTaxID)
 }
 
-// SetVatRate sets the "vatRate" field.
+// SetVatRate sets the "vat_rate" field.
 func (m *CompanyMutation) SetVatRate(f float64) {
-	m.vatRate = &f
-	m.addvatRate = nil
+	m.vat_rate = &f
+	m.addvat_rate = nil
 }
 
-// VatRate returns the value of the "vatRate" field in the mutation.
+// VatRate returns the value of the "vat_rate" field in the mutation.
 func (m *CompanyMutation) VatRate() (r float64, exists bool) {
-	v := m.vatRate
+	v := m.vat_rate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldVatRate returns the old "vatRate" field's value of the Company entity.
+// OldVatRate returns the old "vat_rate" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldVatRate(ctx context.Context) (v float64, err error) {
@@ -3021,28 +3021,28 @@ func (m *CompanyMutation) OldVatRate(ctx context.Context) (v float64, err error)
 	return oldValue.VatRate, nil
 }
 
-// AddVatRate adds f to the "vatRate" field.
+// AddVatRate adds f to the "vat_rate" field.
 func (m *CompanyMutation) AddVatRate(f float64) {
-	if m.addvatRate != nil {
-		*m.addvatRate += f
+	if m.addvat_rate != nil {
+		*m.addvat_rate += f
 	} else {
-		m.addvatRate = &f
+		m.addvat_rate = &f
 	}
 }
 
-// AddedVatRate returns the value that was added to the "vatRate" field in this mutation.
+// AddedVatRate returns the value that was added to the "vat_rate" field in this mutation.
 func (m *CompanyMutation) AddedVatRate() (r float64, exists bool) {
-	v := m.addvatRate
+	v := m.addvat_rate
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetVatRate resets all changes to the "vatRate" field.
+// ResetVatRate resets all changes to the "vat_rate" field.
 func (m *CompanyMutation) ResetVatRate() {
-	m.vatRate = nil
-	m.addvatRate = nil
+	m.vat_rate = nil
+	m.addvat_rate = nil
 }
 
 // SetWebsite sets the "website" field.
@@ -3094,21 +3094,21 @@ func (m *CompanyMutation) ResetWebsite() {
 	delete(m.clearedFields, company.FieldWebsite)
 }
 
-// SetIncompleteSetup sets the "incompleteSetup" field.
+// SetIncompleteSetup sets the "incomplete_setup" field.
 func (m *CompanyMutation) SetIncompleteSetup(b bool) {
-	m.incompleteSetup = &b
+	m.incomplete_setup = &b
 }
 
-// IncompleteSetup returns the value of the "incompleteSetup" field in the mutation.
+// IncompleteSetup returns the value of the "incomplete_setup" field in the mutation.
 func (m *CompanyMutation) IncompleteSetup() (r bool, exists bool) {
-	v := m.incompleteSetup
+	v := m.incomplete_setup
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIncompleteSetup returns the old "incompleteSetup" field's value of the Company entity.
+// OldIncompleteSetup returns the old "incomplete_setup" field's value of the Company entity.
 // If the Company object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyMutation) OldIncompleteSetup(ctx context.Context) (v bool, err error) {
@@ -3125,130 +3125,130 @@ func (m *CompanyMutation) OldIncompleteSetup(ctx context.Context) (v bool, err e
 	return oldValue.IncompleteSetup, nil
 }
 
-// ClearIncompleteSetup clears the value of the "incompleteSetup" field.
+// ClearIncompleteSetup clears the value of the "incomplete_setup" field.
 func (m *CompanyMutation) ClearIncompleteSetup() {
-	m.incompleteSetup = nil
+	m.incomplete_setup = nil
 	m.clearedFields[company.FieldIncompleteSetup] = struct{}{}
 }
 
-// IncompleteSetupCleared returns if the "incompleteSetup" field was cleared in this mutation.
+// IncompleteSetupCleared returns if the "incomplete_setup" field was cleared in this mutation.
 func (m *CompanyMutation) IncompleteSetupCleared() bool {
 	_, ok := m.clearedFields[company.FieldIncompleteSetup]
 	return ok
 }
 
-// ResetIncompleteSetup resets all changes to the "incompleteSetup" field.
+// ResetIncompleteSetup resets all changes to the "incomplete_setup" field.
 func (m *CompanyMutation) ResetIncompleteSetup() {
-	m.incompleteSetup = nil
+	m.incomplete_setup = nil
 	delete(m.clearedFields, company.FieldIncompleteSetup)
 }
 
-// AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by ids.
+// AddAvailableRoleIDs adds the "available_roles" edge to the UserRole entity by ids.
 func (m *CompanyMutation) AddAvailableRoleIDs(ids ...int) {
-	if m.availableRoles == nil {
-		m.availableRoles = make(map[int]struct{})
+	if m.available_roles == nil {
+		m.available_roles = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.availableRoles[ids[i]] = struct{}{}
+		m.available_roles[ids[i]] = struct{}{}
 	}
 }
 
-// ClearAvailableRoles clears the "availableRoles" edge to the UserRole entity.
+// ClearAvailableRoles clears the "available_roles" edge to the UserRole entity.
 func (m *CompanyMutation) ClearAvailableRoles() {
-	m.clearedavailableRoles = true
+	m.clearedavailable_roles = true
 }
 
-// AvailableRolesCleared reports if the "availableRoles" edge to the UserRole entity was cleared.
+// AvailableRolesCleared reports if the "available_roles" edge to the UserRole entity was cleared.
 func (m *CompanyMutation) AvailableRolesCleared() bool {
-	return m.clearedavailableRoles
+	return m.clearedavailable_roles
 }
 
-// RemoveAvailableRoleIDs removes the "availableRoles" edge to the UserRole entity by IDs.
+// RemoveAvailableRoleIDs removes the "available_roles" edge to the UserRole entity by IDs.
 func (m *CompanyMutation) RemoveAvailableRoleIDs(ids ...int) {
-	if m.removedavailableRoles == nil {
-		m.removedavailableRoles = make(map[int]struct{})
+	if m.removedavailable_roles == nil {
+		m.removedavailable_roles = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.availableRoles, ids[i])
-		m.removedavailableRoles[ids[i]] = struct{}{}
+		delete(m.available_roles, ids[i])
+		m.removedavailable_roles[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedAvailableRoles returns the removed IDs of the "availableRoles" edge to the UserRole entity.
+// RemovedAvailableRoles returns the removed IDs of the "available_roles" edge to the UserRole entity.
 func (m *CompanyMutation) RemovedAvailableRolesIDs() (ids []int) {
-	for id := range m.removedavailableRoles {
+	for id := range m.removedavailable_roles {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// AvailableRolesIDs returns the "availableRoles" edge IDs in the mutation.
+// AvailableRolesIDs returns the "available_roles" edge IDs in the mutation.
 func (m *CompanyMutation) AvailableRolesIDs() (ids []int) {
-	for id := range m.availableRoles {
+	for id := range m.available_roles {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetAvailableRoles resets all changes to the "availableRoles" edge.
+// ResetAvailableRoles resets all changes to the "available_roles" edge.
 func (m *CompanyMutation) ResetAvailableRoles() {
-	m.availableRoles = nil
-	m.clearedavailableRoles = false
-	m.removedavailableRoles = nil
+	m.available_roles = nil
+	m.clearedavailable_roles = false
+	m.removedavailable_roles = nil
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by ids.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by ids.
 func (m *CompanyMutation) AddAccountingEntryIDs(ids ...int) {
-	if m.accountingEntries == nil {
-		m.accountingEntries = make(map[int]struct{})
+	if m.accounting_entries == nil {
+		m.accounting_entries = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.accountingEntries[ids[i]] = struct{}{}
+		m.accounting_entries[ids[i]] = struct{}{}
 	}
 }
 
-// ClearAccountingEntries clears the "accountingEntries" edge to the AccountingEntry entity.
+// ClearAccountingEntries clears the "accounting_entries" edge to the AccountingEntry entity.
 func (m *CompanyMutation) ClearAccountingEntries() {
-	m.clearedaccountingEntries = true
+	m.clearedaccounting_entries = true
 }
 
-// AccountingEntriesCleared reports if the "accountingEntries" edge to the AccountingEntry entity was cleared.
+// AccountingEntriesCleared reports if the "accounting_entries" edge to the AccountingEntry entity was cleared.
 func (m *CompanyMutation) AccountingEntriesCleared() bool {
-	return m.clearedaccountingEntries
+	return m.clearedaccounting_entries
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (m *CompanyMutation) RemoveAccountingEntryIDs(ids ...int) {
-	if m.removedaccountingEntries == nil {
-		m.removedaccountingEntries = make(map[int]struct{})
+	if m.removedaccounting_entries == nil {
+		m.removedaccounting_entries = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.accountingEntries, ids[i])
-		m.removedaccountingEntries[ids[i]] = struct{}{}
+		delete(m.accounting_entries, ids[i])
+		m.removedaccounting_entries[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedAccountingEntries returns the removed IDs of the "accountingEntries" edge to the AccountingEntry entity.
+// RemovedAccountingEntries returns the removed IDs of the "accounting_entries" edge to the AccountingEntry entity.
 func (m *CompanyMutation) RemovedAccountingEntriesIDs() (ids []int) {
-	for id := range m.removedaccountingEntries {
+	for id := range m.removedaccounting_entries {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// AccountingEntriesIDs returns the "accountingEntries" edge IDs in the mutation.
+// AccountingEntriesIDs returns the "accounting_entries" edge IDs in the mutation.
 func (m *CompanyMutation) AccountingEntriesIDs() (ids []int) {
-	for id := range m.accountingEntries {
+	for id := range m.accounting_entries {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetAccountingEntries resets all changes to the "accountingEntries" edge.
+// ResetAccountingEntries resets all changes to the "accounting_entries" edge.
 func (m *CompanyMutation) ResetAccountingEntries() {
-	m.accountingEntries = nil
-	m.clearedaccountingEntries = false
-	m.removedaccountingEntries = nil
+	m.accounting_entries = nil
+	m.clearedaccounting_entries = false
+	m.removedaccounting_entries = nil
 }
 
 // AddCustomerIDs adds the "customers" edge to the Customer entity by ids.
@@ -3521,58 +3521,58 @@ func (m *CompanyMutation) ResetInventory() {
 	m.removedinventory = nil
 }
 
-// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by ids.
+// AddInventoryMovementIDs adds the "inventory_movements" edge to the InventoryMovement entity by ids.
 func (m *CompanyMutation) AddInventoryMovementIDs(ids ...int) {
-	if m.inventoryMovements == nil {
-		m.inventoryMovements = make(map[int]struct{})
+	if m.inventory_movements == nil {
+		m.inventory_movements = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.inventoryMovements[ids[i]] = struct{}{}
+		m.inventory_movements[ids[i]] = struct{}{}
 	}
 }
 
-// ClearInventoryMovements clears the "inventoryMovements" edge to the InventoryMovement entity.
+// ClearInventoryMovements clears the "inventory_movements" edge to the InventoryMovement entity.
 func (m *CompanyMutation) ClearInventoryMovements() {
-	m.clearedinventoryMovements = true
+	m.clearedinventory_movements = true
 }
 
-// InventoryMovementsCleared reports if the "inventoryMovements" edge to the InventoryMovement entity was cleared.
+// InventoryMovementsCleared reports if the "inventory_movements" edge to the InventoryMovement entity was cleared.
 func (m *CompanyMutation) InventoryMovementsCleared() bool {
-	return m.clearedinventoryMovements
+	return m.clearedinventory_movements
 }
 
-// RemoveInventoryMovementIDs removes the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+// RemoveInventoryMovementIDs removes the "inventory_movements" edge to the InventoryMovement entity by IDs.
 func (m *CompanyMutation) RemoveInventoryMovementIDs(ids ...int) {
-	if m.removedinventoryMovements == nil {
-		m.removedinventoryMovements = make(map[int]struct{})
+	if m.removedinventory_movements == nil {
+		m.removedinventory_movements = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.inventoryMovements, ids[i])
-		m.removedinventoryMovements[ids[i]] = struct{}{}
+		delete(m.inventory_movements, ids[i])
+		m.removedinventory_movements[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedInventoryMovements returns the removed IDs of the "inventoryMovements" edge to the InventoryMovement entity.
+// RemovedInventoryMovements returns the removed IDs of the "inventory_movements" edge to the InventoryMovement entity.
 func (m *CompanyMutation) RemovedInventoryMovementsIDs() (ids []int) {
-	for id := range m.removedinventoryMovements {
+	for id := range m.removedinventory_movements {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// InventoryMovementsIDs returns the "inventoryMovements" edge IDs in the mutation.
+// InventoryMovementsIDs returns the "inventory_movements" edge IDs in the mutation.
 func (m *CompanyMutation) InventoryMovementsIDs() (ids []int) {
-	for id := range m.inventoryMovements {
+	for id := range m.inventory_movements {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetInventoryMovements resets all changes to the "inventoryMovements" edge.
+// ResetInventoryMovements resets all changes to the "inventory_movements" edge.
 func (m *CompanyMutation) ResetInventoryMovements() {
-	m.inventoryMovements = nil
-	m.clearedinventoryMovements = false
-	m.removedinventoryMovements = nil
+	m.inventory_movements = nil
+	m.clearedinventory_movements = false
+	m.removedinventory_movements = nil
 }
 
 // AddInvoiceIDs adds the "invoices" edge to the Invoice entity by ids.
@@ -3737,58 +3737,58 @@ func (m *CompanyMutation) ResetLoanSchedule() {
 	m.removedloan_schedule = nil
 }
 
-// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by ids.
+// AddMemberSignupTokenIDs adds the "member_signup_tokens" edge to the MemberSignupToken entity by ids.
 func (m *CompanyMutation) AddMemberSignupTokenIDs(ids ...int) {
-	if m.memberSignupTokens == nil {
-		m.memberSignupTokens = make(map[int]struct{})
+	if m.member_signup_tokens == nil {
+		m.member_signup_tokens = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.memberSignupTokens[ids[i]] = struct{}{}
+		m.member_signup_tokens[ids[i]] = struct{}{}
 	}
 }
 
-// ClearMemberSignupTokens clears the "memberSignupTokens" edge to the MemberSignupToken entity.
+// ClearMemberSignupTokens clears the "member_signup_tokens" edge to the MemberSignupToken entity.
 func (m *CompanyMutation) ClearMemberSignupTokens() {
-	m.clearedmemberSignupTokens = true
+	m.clearedmember_signup_tokens = true
 }
 
-// MemberSignupTokensCleared reports if the "memberSignupTokens" edge to the MemberSignupToken entity was cleared.
+// MemberSignupTokensCleared reports if the "member_signup_tokens" edge to the MemberSignupToken entity was cleared.
 func (m *CompanyMutation) MemberSignupTokensCleared() bool {
-	return m.clearedmemberSignupTokens
+	return m.clearedmember_signup_tokens
 }
 
-// RemoveMemberSignupTokenIDs removes the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// RemoveMemberSignupTokenIDs removes the "member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (m *CompanyMutation) RemoveMemberSignupTokenIDs(ids ...int) {
-	if m.removedmemberSignupTokens == nil {
-		m.removedmemberSignupTokens = make(map[int]struct{})
+	if m.removedmember_signup_tokens == nil {
+		m.removedmember_signup_tokens = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.memberSignupTokens, ids[i])
-		m.removedmemberSignupTokens[ids[i]] = struct{}{}
+		delete(m.member_signup_tokens, ids[i])
+		m.removedmember_signup_tokens[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedMemberSignupTokens returns the removed IDs of the "memberSignupTokens" edge to the MemberSignupToken entity.
+// RemovedMemberSignupTokens returns the removed IDs of the "member_signup_tokens" edge to the MemberSignupToken entity.
 func (m *CompanyMutation) RemovedMemberSignupTokensIDs() (ids []int) {
-	for id := range m.removedmemberSignupTokens {
+	for id := range m.removedmember_signup_tokens {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// MemberSignupTokensIDs returns the "memberSignupTokens" edge IDs in the mutation.
+// MemberSignupTokensIDs returns the "member_signup_tokens" edge IDs in the mutation.
 func (m *CompanyMutation) MemberSignupTokensIDs() (ids []int) {
-	for id := range m.memberSignupTokens {
+	for id := range m.member_signup_tokens {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetMemberSignupTokens resets all changes to the "memberSignupTokens" edge.
+// ResetMemberSignupTokens resets all changes to the "member_signup_tokens" edge.
 func (m *CompanyMutation) ResetMemberSignupTokens() {
-	m.memberSignupTokens = nil
-	m.clearedmemberSignupTokens = false
-	m.removedmemberSignupTokens = nil
+	m.member_signup_tokens = nil
+	m.clearedmember_signup_tokens = false
+	m.removedmember_signup_tokens = nil
 }
 
 // AddProductIDs adds the "products" edge to the Product entity by ids.
@@ -4169,58 +4169,58 @@ func (m *CompanyMutation) ResetTreasuries() {
 	m.removedtreasuries = nil
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by ids.
 func (m *CompanyMutation) AddWorkShiftIDs(ids ...int) {
-	if m.workShifts == nil {
-		m.workShifts = make(map[int]struct{})
+	if m.work_shifts == nil {
+		m.work_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.workShifts[ids[i]] = struct{}{}
+		m.work_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
+// ClearWorkShifts clears the "work_shifts" edge to the Workshift entity.
 func (m *CompanyMutation) ClearWorkShifts() {
-	m.clearedworkShifts = true
+	m.clearedwork_shifts = true
 }
 
-// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
+// WorkShiftsCleared reports if the "work_shifts" edge to the Workshift entity was cleared.
 func (m *CompanyMutation) WorkShiftsCleared() bool {
-	return m.clearedworkShifts
+	return m.clearedwork_shifts
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to the Workshift entity by IDs.
 func (m *CompanyMutation) RemoveWorkShiftIDs(ids ...int) {
-	if m.removedworkShifts == nil {
-		m.removedworkShifts = make(map[int]struct{})
+	if m.removedwork_shifts == nil {
+		m.removedwork_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.workShifts, ids[i])
-		m.removedworkShifts[ids[i]] = struct{}{}
+		delete(m.work_shifts, ids[i])
+		m.removedwork_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
+// RemovedWorkShifts returns the removed IDs of the "work_shifts" edge to the Workshift entity.
 func (m *CompanyMutation) RemovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedworkShifts {
+	for id := range m.removedwork_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
+// WorkShiftsIDs returns the "work_shifts" edge IDs in the mutation.
 func (m *CompanyMutation) WorkShiftsIDs() (ids []int) {
-	for id := range m.workShifts {
+	for id := range m.work_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetWorkShifts resets all changes to the "workShifts" edge.
+// ResetWorkShifts resets all changes to the "work_shifts" edge.
 func (m *CompanyMutation) ResetWorkShifts() {
-	m.workShifts = nil
-	m.clearedworkShifts = false
-	m.removedworkShifts = nil
+	m.work_shifts = nil
+	m.clearedwork_shifts = false
+	m.removedwork_shifts = nil
 }
 
 // AddUserIDs adds the "users" edge to the User entity by ids.
@@ -4277,97 +4277,97 @@ func (m *CompanyMutation) ResetUsers() {
 	m.removedusers = nil
 }
 
-// AddDaughterCompanyIDs adds the "daughterCompanies" edge to the Company entity by ids.
+// AddDaughterCompanyIDs adds the "daughter_companies" edge to the Company entity by ids.
 func (m *CompanyMutation) AddDaughterCompanyIDs(ids ...int) {
-	if m.daughterCompanies == nil {
-		m.daughterCompanies = make(map[int]struct{})
+	if m.daughter_companies == nil {
+		m.daughter_companies = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.daughterCompanies[ids[i]] = struct{}{}
+		m.daughter_companies[ids[i]] = struct{}{}
 	}
 }
 
-// ClearDaughterCompanies clears the "daughterCompanies" edge to the Company entity.
+// ClearDaughterCompanies clears the "daughter_companies" edge to the Company entity.
 func (m *CompanyMutation) ClearDaughterCompanies() {
-	m.cleareddaughterCompanies = true
+	m.cleareddaughter_companies = true
 }
 
-// DaughterCompaniesCleared reports if the "daughterCompanies" edge to the Company entity was cleared.
+// DaughterCompaniesCleared reports if the "daughter_companies" edge to the Company entity was cleared.
 func (m *CompanyMutation) DaughterCompaniesCleared() bool {
-	return m.cleareddaughterCompanies
+	return m.cleareddaughter_companies
 }
 
-// RemoveDaughterCompanyIDs removes the "daughterCompanies" edge to the Company entity by IDs.
+// RemoveDaughterCompanyIDs removes the "daughter_companies" edge to the Company entity by IDs.
 func (m *CompanyMutation) RemoveDaughterCompanyIDs(ids ...int) {
-	if m.removeddaughterCompanies == nil {
-		m.removeddaughterCompanies = make(map[int]struct{})
+	if m.removeddaughter_companies == nil {
+		m.removeddaughter_companies = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.daughterCompanies, ids[i])
-		m.removeddaughterCompanies[ids[i]] = struct{}{}
+		delete(m.daughter_companies, ids[i])
+		m.removeddaughter_companies[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedDaughterCompanies returns the removed IDs of the "daughterCompanies" edge to the Company entity.
+// RemovedDaughterCompanies returns the removed IDs of the "daughter_companies" edge to the Company entity.
 func (m *CompanyMutation) RemovedDaughterCompaniesIDs() (ids []int) {
-	for id := range m.removeddaughterCompanies {
+	for id := range m.removeddaughter_companies {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// DaughterCompaniesIDs returns the "daughterCompanies" edge IDs in the mutation.
+// DaughterCompaniesIDs returns the "daughter_companies" edge IDs in the mutation.
 func (m *CompanyMutation) DaughterCompaniesIDs() (ids []int) {
-	for id := range m.daughterCompanies {
+	for id := range m.daughter_companies {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetDaughterCompanies resets all changes to the "daughterCompanies" edge.
+// ResetDaughterCompanies resets all changes to the "daughter_companies" edge.
 func (m *CompanyMutation) ResetDaughterCompanies() {
-	m.daughterCompanies = nil
-	m.cleareddaughterCompanies = false
-	m.removeddaughterCompanies = nil
+	m.daughter_companies = nil
+	m.cleareddaughter_companies = false
+	m.removeddaughter_companies = nil
 }
 
-// SetParentCompanyID sets the "parentCompany" edge to the Company entity by id.
+// SetParentCompanyID sets the "parent_company" edge to the Company entity by id.
 func (m *CompanyMutation) SetParentCompanyID(id int) {
-	m.parentCompany = &id
+	m.parent_company = &id
 }
 
-// ClearParentCompany clears the "parentCompany" edge to the Company entity.
+// ClearParentCompany clears the "parent_company" edge to the Company entity.
 func (m *CompanyMutation) ClearParentCompany() {
-	m.clearedparentCompany = true
+	m.clearedparent_company = true
 }
 
-// ParentCompanyCleared reports if the "parentCompany" edge to the Company entity was cleared.
+// ParentCompanyCleared reports if the "parent_company" edge to the Company entity was cleared.
 func (m *CompanyMutation) ParentCompanyCleared() bool {
-	return m.clearedparentCompany
+	return m.clearedparent_company
 }
 
-// ParentCompanyID returns the "parentCompany" edge ID in the mutation.
+// ParentCompanyID returns the "parent_company" edge ID in the mutation.
 func (m *CompanyMutation) ParentCompanyID() (id int, exists bool) {
-	if m.parentCompany != nil {
-		return *m.parentCompany, true
+	if m.parent_company != nil {
+		return *m.parent_company, true
 	}
 	return
 }
 
-// ParentCompanyIDs returns the "parentCompany" edge IDs in the mutation.
+// ParentCompanyIDs returns the "parent_company" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // ParentCompanyID instead. It exists only for internal usage by the builders.
 func (m *CompanyMutation) ParentCompanyIDs() (ids []int) {
-	if id := m.parentCompany; id != nil {
+	if id := m.parent_company; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetParentCompany resets all changes to the "parentCompany" edge.
+// ResetParentCompany resets all changes to the "parent_company" edge.
 func (m *CompanyMutation) ResetParentCompany() {
-	m.parentCompany = nil
-	m.clearedparentCompany = false
+	m.parent_company = nil
+	m.clearedparent_company = false
 }
 
 // Where appends a list predicates to the CompanyMutation builder.
@@ -4405,22 +4405,22 @@ func (m *CompanyMutation) Type() string {
 // AddedFields().
 func (m *CompanyMutation) Fields() []string {
 	fields := make([]string, 0, 23)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, company.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, company.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, company.FieldDeletedAt)
 	}
 	if m.address != nil {
 		fields = append(fields, company.FieldAddress)
 	}
-	if m.baseCurrency != nil {
+	if m.base_currency != nil {
 		fields = append(fields, company.FieldBaseCurrency)
 	}
-	if m.ceoName != nil {
+	if m.ceo_name != nil {
 		fields = append(fields, company.FieldCeoName)
 	}
 	if m.city != nil {
@@ -4429,7 +4429,7 @@ func (m *CompanyMutation) Fields() []string {
 	if m.country != nil {
 		fields = append(fields, company.FieldCountry)
 	}
-	if m.establishedAt != nil {
+	if m.established_at != nil {
 		fields = append(fields, company.FieldEstablishedAt)
 	}
 	if m.description != nil {
@@ -4441,37 +4441,37 @@ func (m *CompanyMutation) Fields() []string {
 	if m.industry != nil {
 		fields = append(fields, company.FieldIndustry)
 	}
-	if m.lastEntryDate != nil {
+	if m.last_entry_date != nil {
 		fields = append(fields, company.FieldLastEntryDate)
 	}
-	if m.lastInvoiceNumber != nil {
+	if m.last_invoice_number != nil {
 		fields = append(fields, company.FieldLastInvoiceNumber)
 	}
-	if m.logoURL != nil {
+	if m.logo_URL != nil {
 		fields = append(fields, company.FieldLogoURL)
 	}
-	if m.logoStorageURI != nil {
+	if m.logo_storage_URI != nil {
 		fields = append(fields, company.FieldLogoStorageURI)
 	}
 	if m.name != nil {
 		fields = append(fields, company.FieldName)
 	}
-	if m.numberOfEmployees != nil {
-		fields = append(fields, company.FieldNumberOfEmployees)
+	if m.number_employees != nil {
+		fields = append(fields, company.FieldNumberEmployees)
 	}
 	if m.phone != nil {
 		fields = append(fields, company.FieldPhone)
 	}
-	if m.taxId != nil {
-		fields = append(fields, company.FieldTaxId)
+	if m.tax_id != nil {
+		fields = append(fields, company.FieldTaxID)
 	}
-	if m.vatRate != nil {
+	if m.vat_rate != nil {
 		fields = append(fields, company.FieldVatRate)
 	}
 	if m.website != nil {
 		fields = append(fields, company.FieldWebsite)
 	}
-	if m.incompleteSetup != nil {
+	if m.incomplete_setup != nil {
 		fields = append(fields, company.FieldIncompleteSetup)
 	}
 	return fields
@@ -4516,12 +4516,12 @@ func (m *CompanyMutation) Field(name string) (ent.Value, bool) {
 		return m.LogoStorageURI()
 	case company.FieldName:
 		return m.Name()
-	case company.FieldNumberOfEmployees:
-		return m.NumberOfEmployees()
+	case company.FieldNumberEmployees:
+		return m.NumberEmployees()
 	case company.FieldPhone:
 		return m.Phone()
-	case company.FieldTaxId:
-		return m.TaxId()
+	case company.FieldTaxID:
+		return m.TaxID()
 	case company.FieldVatRate:
 		return m.VatRate()
 	case company.FieldWebsite:
@@ -4571,12 +4571,12 @@ func (m *CompanyMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldLogoStorageURI(ctx)
 	case company.FieldName:
 		return m.OldName(ctx)
-	case company.FieldNumberOfEmployees:
-		return m.OldNumberOfEmployees(ctx)
+	case company.FieldNumberEmployees:
+		return m.OldNumberEmployees(ctx)
 	case company.FieldPhone:
 		return m.OldPhone(ctx)
-	case company.FieldTaxId:
-		return m.OldTaxId(ctx)
+	case company.FieldTaxID:
+		return m.OldTaxID(ctx)
 	case company.FieldVatRate:
 		return m.OldVatRate(ctx)
 	case company.FieldWebsite:
@@ -4711,12 +4711,12 @@ func (m *CompanyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case company.FieldNumberOfEmployees:
+	case company.FieldNumberEmployees:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetNumberOfEmployees(v)
+		m.SetNumberEmployees(v)
 		return nil
 	case company.FieldPhone:
 		v, ok := value.(string)
@@ -4725,12 +4725,12 @@ func (m *CompanyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPhone(v)
 		return nil
-	case company.FieldTaxId:
+	case company.FieldTaxID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTaxId(v)
+		m.SetTaxID(v)
 		return nil
 	case company.FieldVatRate:
 		v, ok := value.(float64)
@@ -4761,13 +4761,13 @@ func (m *CompanyMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *CompanyMutation) AddedFields() []string {
 	var fields []string
-	if m.addlastInvoiceNumber != nil {
+	if m.addlast_invoice_number != nil {
 		fields = append(fields, company.FieldLastInvoiceNumber)
 	}
-	if m.addnumberOfEmployees != nil {
-		fields = append(fields, company.FieldNumberOfEmployees)
+	if m.addnumber_employees != nil {
+		fields = append(fields, company.FieldNumberEmployees)
 	}
-	if m.addvatRate != nil {
+	if m.addvat_rate != nil {
 		fields = append(fields, company.FieldVatRate)
 	}
 	return fields
@@ -4780,8 +4780,8 @@ func (m *CompanyMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case company.FieldLastInvoiceNumber:
 		return m.AddedLastInvoiceNumber()
-	case company.FieldNumberOfEmployees:
-		return m.AddedNumberOfEmployees()
+	case company.FieldNumberEmployees:
+		return m.AddedNumberEmployees()
 	case company.FieldVatRate:
 		return m.AddedVatRate()
 	}
@@ -4800,12 +4800,12 @@ func (m *CompanyMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddLastInvoiceNumber(v)
 		return nil
-	case company.FieldNumberOfEmployees:
+	case company.FieldNumberEmployees:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddNumberOfEmployees(v)
+		m.AddNumberEmployees(v)
 		return nil
 	case company.FieldVatRate:
 		v, ok := value.(float64)
@@ -4855,8 +4855,8 @@ func (m *CompanyMutation) ClearedFields() []string {
 	if m.FieldCleared(company.FieldPhone) {
 		fields = append(fields, company.FieldPhone)
 	}
-	if m.FieldCleared(company.FieldTaxId) {
-		fields = append(fields, company.FieldTaxId)
+	if m.FieldCleared(company.FieldTaxID) {
+		fields = append(fields, company.FieldTaxID)
 	}
 	if m.FieldCleared(company.FieldWebsite) {
 		fields = append(fields, company.FieldWebsite)
@@ -4911,8 +4911,8 @@ func (m *CompanyMutation) ClearField(name string) error {
 	case company.FieldPhone:
 		m.ClearPhone()
 		return nil
-	case company.FieldTaxId:
-		m.ClearTaxId()
+	case company.FieldTaxID:
+		m.ClearTaxID()
 		return nil
 	case company.FieldWebsite:
 		m.ClearWebsite()
@@ -4979,14 +4979,14 @@ func (m *CompanyMutation) ResetField(name string) error {
 	case company.FieldName:
 		m.ResetName()
 		return nil
-	case company.FieldNumberOfEmployees:
-		m.ResetNumberOfEmployees()
+	case company.FieldNumberEmployees:
+		m.ResetNumberEmployees()
 		return nil
 	case company.FieldPhone:
 		m.ResetPhone()
 		return nil
-	case company.FieldTaxId:
-		m.ResetTaxId()
+	case company.FieldTaxID:
+		m.ResetTaxID()
 		return nil
 	case company.FieldVatRate:
 		m.ResetVatRate()
@@ -5004,10 +5004,10 @@ func (m *CompanyMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CompanyMutation) AddedEdges() []string {
 	edges := make([]string, 0, 23)
-	if m.availableRoles != nil {
+	if m.available_roles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
-	if m.accountingEntries != nil {
+	if m.accounting_entries != nil {
 		edges = append(edges, company.EdgeAccountingEntries)
 	}
 	if m.customers != nil {
@@ -5025,7 +5025,7 @@ func (m *CompanyMutation) AddedEdges() []string {
 	if m.inventory != nil {
 		edges = append(edges, company.EdgeInventory)
 	}
-	if m.inventoryMovements != nil {
+	if m.inventory_movements != nil {
 		edges = append(edges, company.EdgeInventoryMovements)
 	}
 	if m.invoices != nil {
@@ -5037,7 +5037,7 @@ func (m *CompanyMutation) AddedEdges() []string {
 	if m.loan_schedule != nil {
 		edges = append(edges, company.EdgeLoanSchedule)
 	}
-	if m.memberSignupTokens != nil {
+	if m.member_signup_tokens != nil {
 		edges = append(edges, company.EdgeMemberSignupTokens)
 	}
 	if m.products != nil {
@@ -5061,16 +5061,16 @@ func (m *CompanyMutation) AddedEdges() []string {
 	if m.treasuries != nil {
 		edges = append(edges, company.EdgeTreasuries)
 	}
-	if m.workShifts != nil {
+	if m.work_shifts != nil {
 		edges = append(edges, company.EdgeWorkShifts)
 	}
 	if m.users != nil {
 		edges = append(edges, company.EdgeUsers)
 	}
-	if m.daughterCompanies != nil {
+	if m.daughter_companies != nil {
 		edges = append(edges, company.EdgeDaughterCompanies)
 	}
-	if m.parentCompany != nil {
+	if m.parent_company != nil {
 		edges = append(edges, company.EdgeParentCompany)
 	}
 	return edges
@@ -5081,14 +5081,14 @@ func (m *CompanyMutation) AddedEdges() []string {
 func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case company.EdgeAvailableRoles:
-		ids := make([]ent.Value, 0, len(m.availableRoles))
-		for id := range m.availableRoles {
+		ids := make([]ent.Value, 0, len(m.available_roles))
+		for id := range m.available_roles {
 			ids = append(ids, id)
 		}
 		return ids
 	case company.EdgeAccountingEntries:
-		ids := make([]ent.Value, 0, len(m.accountingEntries))
-		for id := range m.accountingEntries {
+		ids := make([]ent.Value, 0, len(m.accounting_entries))
+		for id := range m.accounting_entries {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5123,8 +5123,8 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeInventoryMovements:
-		ids := make([]ent.Value, 0, len(m.inventoryMovements))
-		for id := range m.inventoryMovements {
+		ids := make([]ent.Value, 0, len(m.inventory_movements))
+		for id := range m.inventory_movements {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5147,8 +5147,8 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeMemberSignupTokens:
-		ids := make([]ent.Value, 0, len(m.memberSignupTokens))
-		for id := range m.memberSignupTokens {
+		ids := make([]ent.Value, 0, len(m.member_signup_tokens))
+		for id := range m.member_signup_tokens {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5195,8 +5195,8 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.workShifts))
-		for id := range m.workShifts {
+		ids := make([]ent.Value, 0, len(m.work_shifts))
+		for id := range m.work_shifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5207,13 +5207,13 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeDaughterCompanies:
-		ids := make([]ent.Value, 0, len(m.daughterCompanies))
-		for id := range m.daughterCompanies {
+		ids := make([]ent.Value, 0, len(m.daughter_companies))
+		for id := range m.daughter_companies {
 			ids = append(ids, id)
 		}
 		return ids
 	case company.EdgeParentCompany:
-		if id := m.parentCompany; id != nil {
+		if id := m.parent_company; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -5223,10 +5223,10 @@ func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CompanyMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 23)
-	if m.removedavailableRoles != nil {
+	if m.removedavailable_roles != nil {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
-	if m.removedaccountingEntries != nil {
+	if m.removedaccounting_entries != nil {
 		edges = append(edges, company.EdgeAccountingEntries)
 	}
 	if m.removedcustomers != nil {
@@ -5244,7 +5244,7 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	if m.removedinventory != nil {
 		edges = append(edges, company.EdgeInventory)
 	}
-	if m.removedinventoryMovements != nil {
+	if m.removedinventory_movements != nil {
 		edges = append(edges, company.EdgeInventoryMovements)
 	}
 	if m.removedinvoices != nil {
@@ -5256,7 +5256,7 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	if m.removedloan_schedule != nil {
 		edges = append(edges, company.EdgeLoanSchedule)
 	}
-	if m.removedmemberSignupTokens != nil {
+	if m.removedmember_signup_tokens != nil {
 		edges = append(edges, company.EdgeMemberSignupTokens)
 	}
 	if m.removedproducts != nil {
@@ -5280,13 +5280,13 @@ func (m *CompanyMutation) RemovedEdges() []string {
 	if m.removedtreasuries != nil {
 		edges = append(edges, company.EdgeTreasuries)
 	}
-	if m.removedworkShifts != nil {
+	if m.removedwork_shifts != nil {
 		edges = append(edges, company.EdgeWorkShifts)
 	}
 	if m.removedusers != nil {
 		edges = append(edges, company.EdgeUsers)
 	}
-	if m.removeddaughterCompanies != nil {
+	if m.removeddaughter_companies != nil {
 		edges = append(edges, company.EdgeDaughterCompanies)
 	}
 	return edges
@@ -5297,14 +5297,14 @@ func (m *CompanyMutation) RemovedEdges() []string {
 func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
 	case company.EdgeAvailableRoles:
-		ids := make([]ent.Value, 0, len(m.removedavailableRoles))
-		for id := range m.removedavailableRoles {
+		ids := make([]ent.Value, 0, len(m.removedavailable_roles))
+		for id := range m.removedavailable_roles {
 			ids = append(ids, id)
 		}
 		return ids
 	case company.EdgeAccountingEntries:
-		ids := make([]ent.Value, 0, len(m.removedaccountingEntries))
-		for id := range m.removedaccountingEntries {
+		ids := make([]ent.Value, 0, len(m.removedaccounting_entries))
+		for id := range m.removedaccounting_entries {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5339,8 +5339,8 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeInventoryMovements:
-		ids := make([]ent.Value, 0, len(m.removedinventoryMovements))
-		for id := range m.removedinventoryMovements {
+		ids := make([]ent.Value, 0, len(m.removedinventory_movements))
+		for id := range m.removedinventory_movements {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5363,8 +5363,8 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeMemberSignupTokens:
-		ids := make([]ent.Value, 0, len(m.removedmemberSignupTokens))
-		for id := range m.removedmemberSignupTokens {
+		ids := make([]ent.Value, 0, len(m.removedmember_signup_tokens))
+		for id := range m.removedmember_signup_tokens {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5411,8 +5411,8 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedworkShifts))
-		for id := range m.removedworkShifts {
+		ids := make([]ent.Value, 0, len(m.removedwork_shifts))
+		for id := range m.removedwork_shifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5423,8 +5423,8 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case company.EdgeDaughterCompanies:
-		ids := make([]ent.Value, 0, len(m.removeddaughterCompanies))
-		for id := range m.removeddaughterCompanies {
+		ids := make([]ent.Value, 0, len(m.removeddaughter_companies))
+		for id := range m.removeddaughter_companies {
 			ids = append(ids, id)
 		}
 		return ids
@@ -5435,10 +5435,10 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CompanyMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 23)
-	if m.clearedavailableRoles {
+	if m.clearedavailable_roles {
 		edges = append(edges, company.EdgeAvailableRoles)
 	}
-	if m.clearedaccountingEntries {
+	if m.clearedaccounting_entries {
 		edges = append(edges, company.EdgeAccountingEntries)
 	}
 	if m.clearedcustomers {
@@ -5456,7 +5456,7 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	if m.clearedinventory {
 		edges = append(edges, company.EdgeInventory)
 	}
-	if m.clearedinventoryMovements {
+	if m.clearedinventory_movements {
 		edges = append(edges, company.EdgeInventoryMovements)
 	}
 	if m.clearedinvoices {
@@ -5468,7 +5468,7 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	if m.clearedloan_schedule {
 		edges = append(edges, company.EdgeLoanSchedule)
 	}
-	if m.clearedmemberSignupTokens {
+	if m.clearedmember_signup_tokens {
 		edges = append(edges, company.EdgeMemberSignupTokens)
 	}
 	if m.clearedproducts {
@@ -5492,16 +5492,16 @@ func (m *CompanyMutation) ClearedEdges() []string {
 	if m.clearedtreasuries {
 		edges = append(edges, company.EdgeTreasuries)
 	}
-	if m.clearedworkShifts {
+	if m.clearedwork_shifts {
 		edges = append(edges, company.EdgeWorkShifts)
 	}
 	if m.clearedusers {
 		edges = append(edges, company.EdgeUsers)
 	}
-	if m.cleareddaughterCompanies {
+	if m.cleareddaughter_companies {
 		edges = append(edges, company.EdgeDaughterCompanies)
 	}
-	if m.clearedparentCompany {
+	if m.clearedparent_company {
 		edges = append(edges, company.EdgeParentCompany)
 	}
 	return edges
@@ -5512,9 +5512,9 @@ func (m *CompanyMutation) ClearedEdges() []string {
 func (m *CompanyMutation) EdgeCleared(name string) bool {
 	switch name {
 	case company.EdgeAvailableRoles:
-		return m.clearedavailableRoles
+		return m.clearedavailable_roles
 	case company.EdgeAccountingEntries:
-		return m.clearedaccountingEntries
+		return m.clearedaccounting_entries
 	case company.EdgeCustomers:
 		return m.clearedcustomers
 	case company.EdgeDocuments:
@@ -5526,7 +5526,7 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 	case company.EdgeInventory:
 		return m.clearedinventory
 	case company.EdgeInventoryMovements:
-		return m.clearedinventoryMovements
+		return m.clearedinventory_movements
 	case company.EdgeInvoices:
 		return m.clearedinvoices
 	case company.EdgeLoans:
@@ -5534,7 +5534,7 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 	case company.EdgeLoanSchedule:
 		return m.clearedloan_schedule
 	case company.EdgeMemberSignupTokens:
-		return m.clearedmemberSignupTokens
+		return m.clearedmember_signup_tokens
 	case company.EdgeProducts:
 		return m.clearedproducts
 	case company.EdgeProjects:
@@ -5550,13 +5550,13 @@ func (m *CompanyMutation) EdgeCleared(name string) bool {
 	case company.EdgeTreasuries:
 		return m.clearedtreasuries
 	case company.EdgeWorkShifts:
-		return m.clearedworkShifts
+		return m.clearedwork_shifts
 	case company.EdgeUsers:
 		return m.clearedusers
 	case company.EdgeDaughterCompanies:
-		return m.cleareddaughterCompanies
+		return m.cleareddaughter_companies
 	case company.EdgeParentCompany:
-		return m.clearedparentCompany
+		return m.clearedparent_company
 	}
 	return false
 }
@@ -5652,34 +5652,34 @@ func (m *CompanyMutation) ResetEdge(name string) error {
 // CompanyDocumentMutation represents an operation that mutates the CompanyDocument nodes in the graph.
 type CompanyDocumentMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	deletedAt         *time.Time
-	filename          *string
-	title             *string
-	keywords          *string
-	category          *companydocument.Category
-	size              *int
-	addsize           *int
-	fileType          *string
-	status            *companydocument.Status
-	url               *string
-	storageURI        *string
-	thumbnail         *string
-	expiryDate        *time.Time
-	clearedFields     map[string]struct{}
-	company           *int
-	clearedcompany    bool
-	uploadedBy        *int
-	cleareduploadedBy bool
-	approvedBy        *int
-	clearedapprovedBy bool
-	done              bool
-	oldValue          func(context.Context) (*CompanyDocument, error)
-	predicates        []predicate.CompanyDocument
+	op                 Op
+	typ                string
+	id                 *int
+	created_at         *time.Time
+	updated_at         *time.Time
+	deleted_at         *time.Time
+	filename           *string
+	title              *string
+	keywords           *string
+	category           *companydocument.Category
+	size               *int
+	addsize            *int
+	file_type          *string
+	status             *companydocument.Status
+	url                *string
+	storage_URI        *string
+	thumbnail          *string
+	expiry_date        *time.Time
+	clearedFields      map[string]struct{}
+	company            *int
+	clearedcompany     bool
+	uploaded_by        *int
+	cleareduploaded_by bool
+	approved_by        *int
+	clearedapproved_by bool
+	done               bool
+	oldValue           func(context.Context) (*CompanyDocument, error)
+	predicates         []predicate.CompanyDocument
 }
 
 var _ ent.Mutation = (*CompanyDocumentMutation)(nil)
@@ -5780,21 +5780,21 @@ func (m *CompanyDocumentMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *CompanyDocumentMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *CompanyDocumentMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the CompanyDocument entity.
+// OldCreatedAt returns the old "created_at" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -5811,26 +5811,26 @@ func (m *CompanyDocumentMutation) OldCreatedAt(ctx context.Context) (v time.Time
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *CompanyDocumentMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *CompanyDocumentMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *CompanyDocumentMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the CompanyDocument entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -5847,26 +5847,26 @@ func (m *CompanyDocumentMutation) OldUpdatedAt(ctx context.Context) (v time.Time
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *CompanyDocumentMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *CompanyDocumentMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *CompanyDocumentMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the CompanyDocument entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -5883,21 +5883,21 @@ func (m *CompanyDocumentMutation) OldDeletedAt(ctx context.Context) (v *time.Tim
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *CompanyDocumentMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[companydocument.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *CompanyDocumentMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[companydocument.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *CompanyDocumentMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, companydocument.FieldDeletedAt)
 }
 
@@ -6101,21 +6101,21 @@ func (m *CompanyDocumentMutation) ResetSize() {
 	m.addsize = nil
 }
 
-// SetFileType sets the "fileType" field.
+// SetFileType sets the "file_type" field.
 func (m *CompanyDocumentMutation) SetFileType(s string) {
-	m.fileType = &s
+	m.file_type = &s
 }
 
-// FileType returns the value of the "fileType" field in the mutation.
+// FileType returns the value of the "file_type" field in the mutation.
 func (m *CompanyDocumentMutation) FileType() (r string, exists bool) {
-	v := m.fileType
+	v := m.file_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFileType returns the old "fileType" field's value of the CompanyDocument entity.
+// OldFileType returns the old "file_type" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldFileType(ctx context.Context) (v *string, err error) {
@@ -6132,9 +6132,9 @@ func (m *CompanyDocumentMutation) OldFileType(ctx context.Context) (v *string, e
 	return oldValue.FileType, nil
 }
 
-// ResetFileType resets all changes to the "fileType" field.
+// ResetFileType resets all changes to the "file_type" field.
 func (m *CompanyDocumentMutation) ResetFileType() {
-	m.fileType = nil
+	m.file_type = nil
 }
 
 // SetStatus sets the "status" field.
@@ -6209,21 +6209,21 @@ func (m *CompanyDocumentMutation) ResetURL() {
 	m.url = nil
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (m *CompanyDocumentMutation) SetStorageURI(s string) {
-	m.storageURI = &s
+	m.storage_URI = &s
 }
 
-// StorageURI returns the value of the "storageURI" field in the mutation.
+// StorageURI returns the value of the "storage_URI" field in the mutation.
 func (m *CompanyDocumentMutation) StorageURI() (r string, exists bool) {
-	v := m.storageURI
+	v := m.storage_URI
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStorageURI returns the old "storageURI" field's value of the CompanyDocument entity.
+// OldStorageURI returns the old "storage_URI" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldStorageURI(ctx context.Context) (v string, err error) {
@@ -6240,9 +6240,9 @@ func (m *CompanyDocumentMutation) OldStorageURI(ctx context.Context) (v string, 
 	return oldValue.StorageURI, nil
 }
 
-// ResetStorageURI resets all changes to the "storageURI" field.
+// ResetStorageURI resets all changes to the "storage_URI" field.
 func (m *CompanyDocumentMutation) ResetStorageURI() {
-	m.storageURI = nil
+	m.storage_URI = nil
 }
 
 // SetThumbnail sets the "thumbnail" field.
@@ -6294,21 +6294,21 @@ func (m *CompanyDocumentMutation) ResetThumbnail() {
 	delete(m.clearedFields, companydocument.FieldThumbnail)
 }
 
-// SetExpiryDate sets the "expiryDate" field.
+// SetExpiryDate sets the "expiry_date" field.
 func (m *CompanyDocumentMutation) SetExpiryDate(t time.Time) {
-	m.expiryDate = &t
+	m.expiry_date = &t
 }
 
-// ExpiryDate returns the value of the "expiryDate" field in the mutation.
+// ExpiryDate returns the value of the "expiry_date" field in the mutation.
 func (m *CompanyDocumentMutation) ExpiryDate() (r time.Time, exists bool) {
-	v := m.expiryDate
+	v := m.expiry_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldExpiryDate returns the old "expiryDate" field's value of the CompanyDocument entity.
+// OldExpiryDate returns the old "expiry_date" field's value of the CompanyDocument entity.
 // If the CompanyDocument object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CompanyDocumentMutation) OldExpiryDate(ctx context.Context) (v *time.Time, err error) {
@@ -6325,9 +6325,9 @@ func (m *CompanyDocumentMutation) OldExpiryDate(ctx context.Context) (v *time.Ti
 	return oldValue.ExpiryDate, nil
 }
 
-// ResetExpiryDate resets all changes to the "expiryDate" field.
+// ResetExpiryDate resets all changes to the "expiry_date" field.
 func (m *CompanyDocumentMutation) ResetExpiryDate() {
-	m.expiryDate = nil
+	m.expiry_date = nil
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -6369,82 +6369,82 @@ func (m *CompanyDocumentMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// SetUploadedByID sets the "uploadedBy" edge to the User entity by id.
+// SetUploadedByID sets the "uploaded_by" edge to the User entity by id.
 func (m *CompanyDocumentMutation) SetUploadedByID(id int) {
-	m.uploadedBy = &id
+	m.uploaded_by = &id
 }
 
-// ClearUploadedBy clears the "uploadedBy" edge to the User entity.
+// ClearUploadedBy clears the "uploaded_by" edge to the User entity.
 func (m *CompanyDocumentMutation) ClearUploadedBy() {
-	m.cleareduploadedBy = true
+	m.cleareduploaded_by = true
 }
 
-// UploadedByCleared reports if the "uploadedBy" edge to the User entity was cleared.
+// UploadedByCleared reports if the "uploaded_by" edge to the User entity was cleared.
 func (m *CompanyDocumentMutation) UploadedByCleared() bool {
-	return m.cleareduploadedBy
+	return m.cleareduploaded_by
 }
 
-// UploadedByID returns the "uploadedBy" edge ID in the mutation.
+// UploadedByID returns the "uploaded_by" edge ID in the mutation.
 func (m *CompanyDocumentMutation) UploadedByID() (id int, exists bool) {
-	if m.uploadedBy != nil {
-		return *m.uploadedBy, true
+	if m.uploaded_by != nil {
+		return *m.uploaded_by, true
 	}
 	return
 }
 
-// UploadedByIDs returns the "uploadedBy" edge IDs in the mutation.
+// UploadedByIDs returns the "uploaded_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // UploadedByID instead. It exists only for internal usage by the builders.
 func (m *CompanyDocumentMutation) UploadedByIDs() (ids []int) {
-	if id := m.uploadedBy; id != nil {
+	if id := m.uploaded_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetUploadedBy resets all changes to the "uploadedBy" edge.
+// ResetUploadedBy resets all changes to the "uploaded_by" edge.
 func (m *CompanyDocumentMutation) ResetUploadedBy() {
-	m.uploadedBy = nil
-	m.cleareduploadedBy = false
+	m.uploaded_by = nil
+	m.cleareduploaded_by = false
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by id.
+// SetApprovedByID sets the "approved_by" edge to the User entity by id.
 func (m *CompanyDocumentMutation) SetApprovedByID(id int) {
-	m.approvedBy = &id
+	m.approved_by = &id
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (m *CompanyDocumentMutation) ClearApprovedBy() {
-	m.clearedapprovedBy = true
+	m.clearedapproved_by = true
 }
 
-// ApprovedByCleared reports if the "approvedBy" edge to the User entity was cleared.
+// ApprovedByCleared reports if the "approved_by" edge to the User entity was cleared.
 func (m *CompanyDocumentMutation) ApprovedByCleared() bool {
-	return m.clearedapprovedBy
+	return m.clearedapproved_by
 }
 
-// ApprovedByID returns the "approvedBy" edge ID in the mutation.
+// ApprovedByID returns the "approved_by" edge ID in the mutation.
 func (m *CompanyDocumentMutation) ApprovedByID() (id int, exists bool) {
-	if m.approvedBy != nil {
-		return *m.approvedBy, true
+	if m.approved_by != nil {
+		return *m.approved_by, true
 	}
 	return
 }
 
-// ApprovedByIDs returns the "approvedBy" edge IDs in the mutation.
+// ApprovedByIDs returns the "approved_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // ApprovedByID instead. It exists only for internal usage by the builders.
 func (m *CompanyDocumentMutation) ApprovedByIDs() (ids []int) {
-	if id := m.approvedBy; id != nil {
+	if id := m.approved_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetApprovedBy resets all changes to the "approvedBy" edge.
+// ResetApprovedBy resets all changes to the "approved_by" edge.
 func (m *CompanyDocumentMutation) ResetApprovedBy() {
-	m.approvedBy = nil
-	m.clearedapprovedBy = false
+	m.approved_by = nil
+	m.clearedapproved_by = false
 }
 
 // Where appends a list predicates to the CompanyDocumentMutation builder.
@@ -6482,13 +6482,13 @@ func (m *CompanyDocumentMutation) Type() string {
 // AddedFields().
 func (m *CompanyDocumentMutation) Fields() []string {
 	fields := make([]string, 0, 14)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, companydocument.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, companydocument.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, companydocument.FieldDeletedAt)
 	}
 	if m.filename != nil {
@@ -6506,7 +6506,7 @@ func (m *CompanyDocumentMutation) Fields() []string {
 	if m.size != nil {
 		fields = append(fields, companydocument.FieldSize)
 	}
-	if m.fileType != nil {
+	if m.file_type != nil {
 		fields = append(fields, companydocument.FieldFileType)
 	}
 	if m.status != nil {
@@ -6515,13 +6515,13 @@ func (m *CompanyDocumentMutation) Fields() []string {
 	if m.url != nil {
 		fields = append(fields, companydocument.FieldURL)
 	}
-	if m.storageURI != nil {
+	if m.storage_URI != nil {
 		fields = append(fields, companydocument.FieldStorageURI)
 	}
 	if m.thumbnail != nil {
 		fields = append(fields, companydocument.FieldThumbnail)
 	}
-	if m.expiryDate != nil {
+	if m.expiry_date != nil {
 		fields = append(fields, companydocument.FieldExpiryDate)
 	}
 	return fields
@@ -6835,10 +6835,10 @@ func (m *CompanyDocumentMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, companydocument.EdgeCompany)
 	}
-	if m.uploadedBy != nil {
+	if m.uploaded_by != nil {
 		edges = append(edges, companydocument.EdgeUploadedBy)
 	}
-	if m.approvedBy != nil {
+	if m.approved_by != nil {
 		edges = append(edges, companydocument.EdgeApprovedBy)
 	}
 	return edges
@@ -6853,11 +6853,11 @@ func (m *CompanyDocumentMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case companydocument.EdgeUploadedBy:
-		if id := m.uploadedBy; id != nil {
+		if id := m.uploaded_by; id != nil {
 			return []ent.Value{*id}
 		}
 	case companydocument.EdgeApprovedBy:
-		if id := m.approvedBy; id != nil {
+		if id := m.approved_by; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -6882,10 +6882,10 @@ func (m *CompanyDocumentMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, companydocument.EdgeCompany)
 	}
-	if m.cleareduploadedBy {
+	if m.cleareduploaded_by {
 		edges = append(edges, companydocument.EdgeUploadedBy)
 	}
-	if m.clearedapprovedBy {
+	if m.clearedapproved_by {
 		edges = append(edges, companydocument.EdgeApprovedBy)
 	}
 	return edges
@@ -6898,9 +6898,9 @@ func (m *CompanyDocumentMutation) EdgeCleared(name string) bool {
 	case companydocument.EdgeCompany:
 		return m.clearedcompany
 	case companydocument.EdgeUploadedBy:
-		return m.cleareduploadedBy
+		return m.cleareduploaded_by
 	case companydocument.EdgeApprovedBy:
-		return m.clearedapprovedBy
+		return m.clearedapproved_by
 	}
 	return false
 }
@@ -6945,18 +6945,18 @@ type CustomerMutation struct {
 	op                 Op
 	typ                string
 	id                 *int
-	createdAt          *time.Time
-	updatedAt          *time.Time
-	deletedAt          *time.Time
+	created_at         *time.Time
+	updated_at         *time.Time
+	deleted_at         *time.Time
 	address            *string
 	city               *string
 	country            *string
 	description        *string
 	email              *string
-	isDefault          *bool
+	is_default         *bool
 	name               *string
 	phone              *string
-	taxId              *string
+	tax_id             *string
 	clearedFields      map[string]struct{}
 	company            *int
 	clearedcompany     bool
@@ -7072,21 +7072,21 @@ func (m *CustomerMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *CustomerMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *CustomerMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Customer entity.
+// OldCreatedAt returns the old "created_at" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CustomerMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -7103,26 +7103,26 @@ func (m *CustomerMutation) OldCreatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *CustomerMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *CustomerMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *CustomerMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Customer entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CustomerMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -7139,26 +7139,26 @@ func (m *CustomerMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *CustomerMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *CustomerMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *CustomerMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Customer entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CustomerMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -7175,21 +7175,21 @@ func (m *CustomerMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err 
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *CustomerMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[customer.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *CustomerMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[customer.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *CustomerMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, customer.FieldDeletedAt)
 }
 
@@ -7438,21 +7438,21 @@ func (m *CustomerMutation) ResetEmail() {
 	delete(m.clearedFields, customer.FieldEmail)
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (m *CustomerMutation) SetIsDefault(b bool) {
-	m.isDefault = &b
+	m.is_default = &b
 }
 
-// IsDefault returns the value of the "isDefault" field in the mutation.
+// IsDefault returns the value of the "is_default" field in the mutation.
 func (m *CustomerMutation) IsDefault() (r bool, exists bool) {
-	v := m.isDefault
+	v := m.is_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsDefault returns the old "isDefault" field's value of the Customer entity.
+// OldIsDefault returns the old "is_default" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *CustomerMutation) OldIsDefault(ctx context.Context) (v bool, err error) {
@@ -7469,21 +7469,21 @@ func (m *CustomerMutation) OldIsDefault(ctx context.Context) (v bool, err error)
 	return oldValue.IsDefault, nil
 }
 
-// ClearIsDefault clears the value of the "isDefault" field.
+// ClearIsDefault clears the value of the "is_default" field.
 func (m *CustomerMutation) ClearIsDefault() {
-	m.isDefault = nil
+	m.is_default = nil
 	m.clearedFields[customer.FieldIsDefault] = struct{}{}
 }
 
-// IsDefaultCleared returns if the "isDefault" field was cleared in this mutation.
+// IsDefaultCleared returns if the "is_default" field was cleared in this mutation.
 func (m *CustomerMutation) IsDefaultCleared() bool {
 	_, ok := m.clearedFields[customer.FieldIsDefault]
 	return ok
 }
 
-// ResetIsDefault resets all changes to the "isDefault" field.
+// ResetIsDefault resets all changes to the "is_default" field.
 func (m *CustomerMutation) ResetIsDefault() {
-	m.isDefault = nil
+	m.is_default = nil
 	delete(m.clearedFields, customer.FieldIsDefault)
 }
 
@@ -7572,53 +7572,53 @@ func (m *CustomerMutation) ResetPhone() {
 	delete(m.clearedFields, customer.FieldPhone)
 }
 
-// SetTaxId sets the "taxId" field.
-func (m *CustomerMutation) SetTaxId(s string) {
-	m.taxId = &s
+// SetTaxID sets the "tax_id" field.
+func (m *CustomerMutation) SetTaxID(s string) {
+	m.tax_id = &s
 }
 
-// TaxId returns the value of the "taxId" field in the mutation.
-func (m *CustomerMutation) TaxId() (r string, exists bool) {
-	v := m.taxId
+// TaxID returns the value of the "tax_id" field in the mutation.
+func (m *CustomerMutation) TaxID() (r string, exists bool) {
+	v := m.tax_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTaxId returns the old "taxId" field's value of the Customer entity.
+// OldTaxID returns the old "tax_id" field's value of the Customer entity.
 // If the Customer object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CustomerMutation) OldTaxId(ctx context.Context) (v string, err error) {
+func (m *CustomerMutation) OldTaxID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTaxId is only allowed on UpdateOne operations")
+		return v, errors.New("OldTaxID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTaxId requires an ID field in the mutation")
+		return v, errors.New("OldTaxID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTaxId: %w", err)
+		return v, fmt.Errorf("querying old value for OldTaxID: %w", err)
 	}
-	return oldValue.TaxId, nil
+	return oldValue.TaxID, nil
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (m *CustomerMutation) ClearTaxId() {
-	m.taxId = nil
-	m.clearedFields[customer.FieldTaxId] = struct{}{}
+// ClearTaxID clears the value of the "tax_id" field.
+func (m *CustomerMutation) ClearTaxID() {
+	m.tax_id = nil
+	m.clearedFields[customer.FieldTaxID] = struct{}{}
 }
 
-// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
-func (m *CustomerMutation) TaxIdCleared() bool {
-	_, ok := m.clearedFields[customer.FieldTaxId]
+// TaxIDCleared returns if the "tax_id" field was cleared in this mutation.
+func (m *CustomerMutation) TaxIDCleared() bool {
+	_, ok := m.clearedFields[customer.FieldTaxID]
 	return ok
 }
 
-// ResetTaxId resets all changes to the "taxId" field.
-func (m *CustomerMutation) ResetTaxId() {
-	m.taxId = nil
-	delete(m.clearedFields, customer.FieldTaxId)
+// ResetTaxID resets all changes to the "tax_id" field.
+func (m *CustomerMutation) ResetTaxID() {
+	m.tax_id = nil
+	delete(m.clearedFields, customer.FieldTaxID)
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -7857,13 +7857,13 @@ func (m *CustomerMutation) Type() string {
 // AddedFields().
 func (m *CustomerMutation) Fields() []string {
 	fields := make([]string, 0, 12)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, customer.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, customer.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, customer.FieldDeletedAt)
 	}
 	if m.address != nil {
@@ -7881,7 +7881,7 @@ func (m *CustomerMutation) Fields() []string {
 	if m.email != nil {
 		fields = append(fields, customer.FieldEmail)
 	}
-	if m.isDefault != nil {
+	if m.is_default != nil {
 		fields = append(fields, customer.FieldIsDefault)
 	}
 	if m.name != nil {
@@ -7890,8 +7890,8 @@ func (m *CustomerMutation) Fields() []string {
 	if m.phone != nil {
 		fields = append(fields, customer.FieldPhone)
 	}
-	if m.taxId != nil {
-		fields = append(fields, customer.FieldTaxId)
+	if m.tax_id != nil {
+		fields = append(fields, customer.FieldTaxID)
 	}
 	return fields
 }
@@ -7923,8 +7923,8 @@ func (m *CustomerMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case customer.FieldPhone:
 		return m.Phone()
-	case customer.FieldTaxId:
-		return m.TaxId()
+	case customer.FieldTaxID:
+		return m.TaxID()
 	}
 	return nil, false
 }
@@ -7956,8 +7956,8 @@ func (m *CustomerMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldName(ctx)
 	case customer.FieldPhone:
 		return m.OldPhone(ctx)
-	case customer.FieldTaxId:
-		return m.OldTaxId(ctx)
+	case customer.FieldTaxID:
+		return m.OldTaxID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Customer field %s", name)
 }
@@ -8044,12 +8044,12 @@ func (m *CustomerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPhone(v)
 		return nil
-	case customer.FieldTaxId:
+	case customer.FieldTaxID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTaxId(v)
+		m.SetTaxID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
@@ -8105,8 +8105,8 @@ func (m *CustomerMutation) ClearedFields() []string {
 	if m.FieldCleared(customer.FieldPhone) {
 		fields = append(fields, customer.FieldPhone)
 	}
-	if m.FieldCleared(customer.FieldTaxId) {
-		fields = append(fields, customer.FieldTaxId)
+	if m.FieldCleared(customer.FieldTaxID) {
+		fields = append(fields, customer.FieldTaxID)
 	}
 	return fields
 }
@@ -8146,8 +8146,8 @@ func (m *CustomerMutation) ClearField(name string) error {
 	case customer.FieldPhone:
 		m.ClearPhone()
 		return nil
-	case customer.FieldTaxId:
-		m.ClearTaxId()
+	case customer.FieldTaxID:
+		m.ClearTaxID()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer nullable field %s", name)
@@ -8190,8 +8190,8 @@ func (m *CustomerMutation) ResetField(name string) error {
 	case customer.FieldPhone:
 		m.ResetPhone()
 		return nil
-	case customer.FieldTaxId:
-		m.ResetTaxId()
+	case customer.FieldTaxID:
+		m.ResetTaxID()
 		return nil
 	}
 	return fmt.Errorf("unknown Customer field %s", name)
@@ -8357,9 +8357,9 @@ type EmployeeMutation struct {
 	op                  Op
 	typ                 string
 	id                  *int
-	createdAt           *time.Time
-	updatedAt           *time.Time
-	deletedAt           *time.Time
+	created_at          *time.Time
+	updated_at          *time.Time
+	deleted_at          *time.Time
 	name                *string
 	birthdate           *time.Time
 	gender              *employee.Gender
@@ -8368,12 +8368,12 @@ type EmployeeMutation struct {
 	email               *string
 	phone               *string
 	avatar              *string
-	hireDate            *time.Time
-	monthlySalary       *int
-	addmonthlySalary    *int
+	hire_date           *time.Time
+	monthly_salary      *int
+	addmonthly_salary   *int
 	status              *employee.Status
-	performaceScore     *float64
-	addperformaceScore  *float64
+	performace_score    *float64
+	addperformace_score *float64
 	clearedFields       map[string]struct{}
 	company             *int
 	clearedcompany      bool
@@ -8487,21 +8487,21 @@ func (m *EmployeeMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *EmployeeMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *EmployeeMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Employee entity.
+// OldCreatedAt returns the old "created_at" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -8518,26 +8518,26 @@ func (m *EmployeeMutation) OldCreatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *EmployeeMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *EmployeeMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *EmployeeMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Employee entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -8554,26 +8554,26 @@ func (m *EmployeeMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *EmployeeMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *EmployeeMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *EmployeeMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Employee entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -8590,21 +8590,21 @@ func (m *EmployeeMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err 
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *EmployeeMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[employee.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *EmployeeMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[employee.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *EmployeeMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, employee.FieldDeletedAt)
 }
 
@@ -8961,21 +8961,21 @@ func (m *EmployeeMutation) ResetAvatar() {
 	delete(m.clearedFields, employee.FieldAvatar)
 }
 
-// SetHireDate sets the "hireDate" field.
+// SetHireDate sets the "hire_date" field.
 func (m *EmployeeMutation) SetHireDate(t time.Time) {
-	m.hireDate = &t
+	m.hire_date = &t
 }
 
-// HireDate returns the value of the "hireDate" field in the mutation.
+// HireDate returns the value of the "hire_date" field in the mutation.
 func (m *EmployeeMutation) HireDate() (r time.Time, exists bool) {
-	v := m.hireDate
+	v := m.hire_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldHireDate returns the old "hireDate" field's value of the Employee entity.
+// OldHireDate returns the old "hire_date" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldHireDate(ctx context.Context) (v time.Time, err error) {
@@ -8992,27 +8992,27 @@ func (m *EmployeeMutation) OldHireDate(ctx context.Context) (v time.Time, err er
 	return oldValue.HireDate, nil
 }
 
-// ResetHireDate resets all changes to the "hireDate" field.
+// ResetHireDate resets all changes to the "hire_date" field.
 func (m *EmployeeMutation) ResetHireDate() {
-	m.hireDate = nil
+	m.hire_date = nil
 }
 
-// SetMonthlySalary sets the "monthlySalary" field.
+// SetMonthlySalary sets the "monthly_salary" field.
 func (m *EmployeeMutation) SetMonthlySalary(i int) {
-	m.monthlySalary = &i
-	m.addmonthlySalary = nil
+	m.monthly_salary = &i
+	m.addmonthly_salary = nil
 }
 
-// MonthlySalary returns the value of the "monthlySalary" field in the mutation.
+// MonthlySalary returns the value of the "monthly_salary" field in the mutation.
 func (m *EmployeeMutation) MonthlySalary() (r int, exists bool) {
-	v := m.monthlySalary
+	v := m.monthly_salary
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMonthlySalary returns the old "monthlySalary" field's value of the Employee entity.
+// OldMonthlySalary returns the old "monthly_salary" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldMonthlySalary(ctx context.Context) (v int, err error) {
@@ -9029,28 +9029,28 @@ func (m *EmployeeMutation) OldMonthlySalary(ctx context.Context) (v int, err err
 	return oldValue.MonthlySalary, nil
 }
 
-// AddMonthlySalary adds i to the "monthlySalary" field.
+// AddMonthlySalary adds i to the "monthly_salary" field.
 func (m *EmployeeMutation) AddMonthlySalary(i int) {
-	if m.addmonthlySalary != nil {
-		*m.addmonthlySalary += i
+	if m.addmonthly_salary != nil {
+		*m.addmonthly_salary += i
 	} else {
-		m.addmonthlySalary = &i
+		m.addmonthly_salary = &i
 	}
 }
 
-// AddedMonthlySalary returns the value that was added to the "monthlySalary" field in this mutation.
+// AddedMonthlySalary returns the value that was added to the "monthly_salary" field in this mutation.
 func (m *EmployeeMutation) AddedMonthlySalary() (r int, exists bool) {
-	v := m.addmonthlySalary
+	v := m.addmonthly_salary
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetMonthlySalary resets all changes to the "monthlySalary" field.
+// ResetMonthlySalary resets all changes to the "monthly_salary" field.
 func (m *EmployeeMutation) ResetMonthlySalary() {
-	m.monthlySalary = nil
-	m.addmonthlySalary = nil
+	m.monthly_salary = nil
+	m.addmonthly_salary = nil
 }
 
 // SetStatus sets the "status" field.
@@ -9102,22 +9102,22 @@ func (m *EmployeeMutation) ResetStatus() {
 	delete(m.clearedFields, employee.FieldStatus)
 }
 
-// SetPerformaceScore sets the "performaceScore" field.
+// SetPerformaceScore sets the "performace_score" field.
 func (m *EmployeeMutation) SetPerformaceScore(f float64) {
-	m.performaceScore = &f
-	m.addperformaceScore = nil
+	m.performace_score = &f
+	m.addperformace_score = nil
 }
 
-// PerformaceScore returns the value of the "performaceScore" field in the mutation.
+// PerformaceScore returns the value of the "performace_score" field in the mutation.
 func (m *EmployeeMutation) PerformaceScore() (r float64, exists bool) {
-	v := m.performaceScore
+	v := m.performace_score
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPerformaceScore returns the old "performaceScore" field's value of the Employee entity.
+// OldPerformaceScore returns the old "performace_score" field's value of the Employee entity.
 // If the Employee object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *EmployeeMutation) OldPerformaceScore(ctx context.Context) (v float64, err error) {
@@ -9134,41 +9134,41 @@ func (m *EmployeeMutation) OldPerformaceScore(ctx context.Context) (v float64, e
 	return oldValue.PerformaceScore, nil
 }
 
-// AddPerformaceScore adds f to the "performaceScore" field.
+// AddPerformaceScore adds f to the "performace_score" field.
 func (m *EmployeeMutation) AddPerformaceScore(f float64) {
-	if m.addperformaceScore != nil {
-		*m.addperformaceScore += f
+	if m.addperformace_score != nil {
+		*m.addperformace_score += f
 	} else {
-		m.addperformaceScore = &f
+		m.addperformace_score = &f
 	}
 }
 
-// AddedPerformaceScore returns the value that was added to the "performaceScore" field in this mutation.
+// AddedPerformaceScore returns the value that was added to the "performace_score" field in this mutation.
 func (m *EmployeeMutation) AddedPerformaceScore() (r float64, exists bool) {
-	v := m.addperformaceScore
+	v := m.addperformace_score
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearPerformaceScore clears the value of the "performaceScore" field.
+// ClearPerformaceScore clears the value of the "performace_score" field.
 func (m *EmployeeMutation) ClearPerformaceScore() {
-	m.performaceScore = nil
-	m.addperformaceScore = nil
+	m.performace_score = nil
+	m.addperformace_score = nil
 	m.clearedFields[employee.FieldPerformaceScore] = struct{}{}
 }
 
-// PerformaceScoreCleared returns if the "performaceScore" field was cleared in this mutation.
+// PerformaceScoreCleared returns if the "performace_score" field was cleared in this mutation.
 func (m *EmployeeMutation) PerformaceScoreCleared() bool {
 	_, ok := m.clearedFields[employee.FieldPerformaceScore]
 	return ok
 }
 
-// ResetPerformaceScore resets all changes to the "performaceScore" field.
+// ResetPerformaceScore resets all changes to the "performace_score" field.
 func (m *EmployeeMutation) ResetPerformaceScore() {
-	m.performaceScore = nil
-	m.addperformaceScore = nil
+	m.performace_score = nil
+	m.addperformace_score = nil
 	delete(m.clearedFields, employee.FieldPerformaceScore)
 }
 
@@ -9378,13 +9378,13 @@ func (m *EmployeeMutation) Type() string {
 // AddedFields().
 func (m *EmployeeMutation) Fields() []string {
 	fields := make([]string, 0, 15)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, employee.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, employee.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, employee.FieldDeletedAt)
 	}
 	if m.name != nil {
@@ -9411,16 +9411,16 @@ func (m *EmployeeMutation) Fields() []string {
 	if m.avatar != nil {
 		fields = append(fields, employee.FieldAvatar)
 	}
-	if m.hireDate != nil {
+	if m.hire_date != nil {
 		fields = append(fields, employee.FieldHireDate)
 	}
-	if m.monthlySalary != nil {
+	if m.monthly_salary != nil {
 		fields = append(fields, employee.FieldMonthlySalary)
 	}
 	if m.status != nil {
 		fields = append(fields, employee.FieldStatus)
 	}
-	if m.performaceScore != nil {
+	if m.performace_score != nil {
 		fields = append(fields, employee.FieldPerformaceScore)
 	}
 	return fields
@@ -9622,10 +9622,10 @@ func (m *EmployeeMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *EmployeeMutation) AddedFields() []string {
 	var fields []string
-	if m.addmonthlySalary != nil {
+	if m.addmonthly_salary != nil {
 		fields = append(fields, employee.FieldMonthlySalary)
 	}
-	if m.addperformaceScore != nil {
+	if m.addperformace_score != nil {
 		fields = append(fields, employee.FieldPerformaceScore)
 	}
 	return fields
@@ -9934,9 +9934,9 @@ type FileMutation struct {
 	op             Op
 	typ            string
 	id             *int
-	createdAt      *time.Time
-	updatedAt      *time.Time
-	deletedAt      *time.Time
+	created_at     *time.Time
+	updated_at     *time.Time
+	deleted_at     *time.Time
 	category       *file.Category
 	extension      *string
 	size           *string
@@ -10049,21 +10049,21 @@ func (m *FileMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *FileMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *FileMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the File entity.
+// OldCreatedAt returns the old "created_at" field's value of the File entity.
 // If the File object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *FileMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -10080,26 +10080,26 @@ func (m *FileMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *FileMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *FileMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *FileMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the File entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the File entity.
 // If the File object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *FileMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -10116,26 +10116,26 @@ func (m *FileMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *FileMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *FileMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *FileMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the File entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the File entity.
 // If the File object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *FileMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -10152,21 +10152,21 @@ func (m *FileMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err erro
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *FileMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[file.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *FileMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[file.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *FileMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, file.FieldDeletedAt)
 }
 
@@ -10460,13 +10460,13 @@ func (m *FileMutation) Type() string {
 // AddedFields().
 func (m *FileMutation) Fields() []string {
 	fields := make([]string, 0, 9)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, file.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, file.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, file.FieldDeletedAt)
 	}
 	if m.category != nil {
@@ -10781,18 +10781,18 @@ type InventoryMutation struct {
 	op               Op
 	typ              string
 	id               *int
-	createdAt        *time.Time
-	updatedAt        *time.Time
-	deletedAt        *time.Time
+	created_at       *time.Time
+	updated_at       *time.Time
+	deleted_at       *time.Time
 	name             *string
 	category         *inventory.Category
 	quantity         *float64
 	addquantity      *float64
 	unit             *string
-	minimumLevel     *float64
-	addminimumLevel  *float64
-	currentValue     *float64
-	addcurrentValue  *float64
+	minimum_level    *float64
+	addminimum_level *float64
+	current_value    *float64
+	addcurrent_value *float64
 	notes            *string
 	clearedFields    map[string]struct{}
 	company          *int
@@ -10903,21 +10903,21 @@ func (m *InventoryMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *InventoryMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *InventoryMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Inventory entity.
+// OldCreatedAt returns the old "created_at" field's value of the Inventory entity.
 // If the Inventory object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -10934,26 +10934,26 @@ func (m *InventoryMutation) OldCreatedAt(ctx context.Context) (v time.Time, err 
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *InventoryMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *InventoryMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *InventoryMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Inventory entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Inventory entity.
 // If the Inventory object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -10970,26 +10970,26 @@ func (m *InventoryMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err 
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *InventoryMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *InventoryMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *InventoryMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Inventory entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Inventory entity.
 // If the Inventory object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -11006,21 +11006,21 @@ func (m *InventoryMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *InventoryMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[inventory.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *InventoryMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[inventory.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *InventoryMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, inventory.FieldDeletedAt)
 }
 
@@ -11188,22 +11188,22 @@ func (m *InventoryMutation) ResetUnit() {
 	m.unit = nil
 }
 
-// SetMinimumLevel sets the "minimumLevel" field.
+// SetMinimumLevel sets the "minimum_level" field.
 func (m *InventoryMutation) SetMinimumLevel(f float64) {
-	m.minimumLevel = &f
-	m.addminimumLevel = nil
+	m.minimum_level = &f
+	m.addminimum_level = nil
 }
 
-// MinimumLevel returns the value of the "minimumLevel" field in the mutation.
+// MinimumLevel returns the value of the "minimum_level" field in the mutation.
 func (m *InventoryMutation) MinimumLevel() (r float64, exists bool) {
-	v := m.minimumLevel
+	v := m.minimum_level
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMinimumLevel returns the old "minimumLevel" field's value of the Inventory entity.
+// OldMinimumLevel returns the old "minimum_level" field's value of the Inventory entity.
 // If the Inventory object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMutation) OldMinimumLevel(ctx context.Context) (v float64, err error) {
@@ -11220,46 +11220,46 @@ func (m *InventoryMutation) OldMinimumLevel(ctx context.Context) (v float64, err
 	return oldValue.MinimumLevel, nil
 }
 
-// AddMinimumLevel adds f to the "minimumLevel" field.
+// AddMinimumLevel adds f to the "minimum_level" field.
 func (m *InventoryMutation) AddMinimumLevel(f float64) {
-	if m.addminimumLevel != nil {
-		*m.addminimumLevel += f
+	if m.addminimum_level != nil {
+		*m.addminimum_level += f
 	} else {
-		m.addminimumLevel = &f
+		m.addminimum_level = &f
 	}
 }
 
-// AddedMinimumLevel returns the value that was added to the "minimumLevel" field in this mutation.
+// AddedMinimumLevel returns the value that was added to the "minimum_level" field in this mutation.
 func (m *InventoryMutation) AddedMinimumLevel() (r float64, exists bool) {
-	v := m.addminimumLevel
+	v := m.addminimum_level
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetMinimumLevel resets all changes to the "minimumLevel" field.
+// ResetMinimumLevel resets all changes to the "minimum_level" field.
 func (m *InventoryMutation) ResetMinimumLevel() {
-	m.minimumLevel = nil
-	m.addminimumLevel = nil
+	m.minimum_level = nil
+	m.addminimum_level = nil
 }
 
-// SetCurrentValue sets the "currentValue" field.
+// SetCurrentValue sets the "current_value" field.
 func (m *InventoryMutation) SetCurrentValue(f float64) {
-	m.currentValue = &f
-	m.addcurrentValue = nil
+	m.current_value = &f
+	m.addcurrent_value = nil
 }
 
-// CurrentValue returns the value of the "currentValue" field in the mutation.
+// CurrentValue returns the value of the "current_value" field in the mutation.
 func (m *InventoryMutation) CurrentValue() (r float64, exists bool) {
-	v := m.currentValue
+	v := m.current_value
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCurrentValue returns the old "currentValue" field's value of the Inventory entity.
+// OldCurrentValue returns the old "current_value" field's value of the Inventory entity.
 // If the Inventory object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMutation) OldCurrentValue(ctx context.Context) (v float64, err error) {
@@ -11276,28 +11276,28 @@ func (m *InventoryMutation) OldCurrentValue(ctx context.Context) (v float64, err
 	return oldValue.CurrentValue, nil
 }
 
-// AddCurrentValue adds f to the "currentValue" field.
+// AddCurrentValue adds f to the "current_value" field.
 func (m *InventoryMutation) AddCurrentValue(f float64) {
-	if m.addcurrentValue != nil {
-		*m.addcurrentValue += f
+	if m.addcurrent_value != nil {
+		*m.addcurrent_value += f
 	} else {
-		m.addcurrentValue = &f
+		m.addcurrent_value = &f
 	}
 }
 
-// AddedCurrentValue returns the value that was added to the "currentValue" field in this mutation.
+// AddedCurrentValue returns the value that was added to the "current_value" field in this mutation.
 func (m *InventoryMutation) AddedCurrentValue() (r float64, exists bool) {
-	v := m.addcurrentValue
+	v := m.addcurrent_value
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetCurrentValue resets all changes to the "currentValue" field.
+// ResetCurrentValue resets all changes to the "current_value" field.
 func (m *InventoryMutation) ResetCurrentValue() {
-	m.currentValue = nil
-	m.addcurrentValue = nil
+	m.current_value = nil
+	m.addcurrent_value = nil
 }
 
 // SetNotes sets the "notes" field.
@@ -11464,13 +11464,13 @@ func (m *InventoryMutation) Type() string {
 // AddedFields().
 func (m *InventoryMutation) Fields() []string {
 	fields := make([]string, 0, 10)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, inventory.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, inventory.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, inventory.FieldDeletedAt)
 	}
 	if m.name != nil {
@@ -11485,10 +11485,10 @@ func (m *InventoryMutation) Fields() []string {
 	if m.unit != nil {
 		fields = append(fields, inventory.FieldUnit)
 	}
-	if m.minimumLevel != nil {
+	if m.minimum_level != nil {
 		fields = append(fields, inventory.FieldMinimumLevel)
 	}
-	if m.currentValue != nil {
+	if m.current_value != nil {
 		fields = append(fields, inventory.FieldCurrentValue)
 	}
 	if m.notes != nil {
@@ -11641,10 +11641,10 @@ func (m *InventoryMutation) AddedFields() []string {
 	if m.addquantity != nil {
 		fields = append(fields, inventory.FieldQuantity)
 	}
-	if m.addminimumLevel != nil {
+	if m.addminimum_level != nil {
 		fields = append(fields, inventory.FieldMinimumLevel)
 	}
-	if m.addcurrentValue != nil {
+	if m.addcurrent_value != nil {
 		fields = append(fields, inventory.FieldCurrentValue)
 	}
 	return fields
@@ -11869,9 +11869,9 @@ type InventoryMovementMutation struct {
 	op               Op
 	typ              string
 	id               *int
-	createdAt        *time.Time
-	updatedAt        *time.Time
-	deletedAt        *time.Time
+	created_at       *time.Time
+	updated_at       *time.Time
+	deleted_at       *time.Time
 	category         *inventorymovement.Category
 	quantity         *float64
 	addquantity      *float64
@@ -11989,21 +11989,21 @@ func (m *InventoryMovementMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *InventoryMovementMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *InventoryMovementMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the InventoryMovement entity.
+// OldCreatedAt returns the old "created_at" field's value of the InventoryMovement entity.
 // If the InventoryMovement object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMovementMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -12020,26 +12020,26 @@ func (m *InventoryMovementMutation) OldCreatedAt(ctx context.Context) (v time.Ti
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *InventoryMovementMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *InventoryMovementMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *InventoryMovementMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the InventoryMovement entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the InventoryMovement entity.
 // If the InventoryMovement object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMovementMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -12056,26 +12056,26 @@ func (m *InventoryMovementMutation) OldUpdatedAt(ctx context.Context) (v time.Ti
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *InventoryMovementMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *InventoryMovementMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *InventoryMovementMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the InventoryMovement entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the InventoryMovement entity.
 // If the InventoryMovement object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InventoryMovementMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -12092,21 +12092,21 @@ func (m *InventoryMovementMutation) OldDeletedAt(ctx context.Context) (v *time.T
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *InventoryMovementMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[inventorymovement.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *InventoryMovementMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[inventorymovement.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *InventoryMovementMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, inventorymovement.FieldDeletedAt)
 }
 
@@ -12541,13 +12541,13 @@ func (m *InventoryMovementMutation) Type() string {
 // AddedFields().
 func (m *InventoryMovementMutation) Fields() []string {
 	fields := make([]string, 0, 10)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, inventorymovement.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, inventorymovement.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, inventorymovement.FieldDeletedAt)
 	}
 	if m.category != nil {
@@ -12933,61 +12933,61 @@ func (m *InventoryMovementMutation) ResetEdge(name string) error {
 // InvoiceMutation represents an operation that mutates the Invoice nodes in the graph.
 type InvoiceMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	deletedAt         *time.Time
-	companyLogo       *string
-	companyName       *string
-	companyTaxID      *string
-	companyAddress    *string
-	companyCity       *string
-	companyEmail      *string
-	companyPhone      *string
-	number            *string
-	issueDate         *time.Time
-	dueDate           *time.Time
-	paidAt            *time.Time
-	status            *invoice.Status
-	customerName      *string
-	customerTaxID     *string
-	customerAddress   *string
-	customerCity      *string
-	customerEmail     *string
-	customerPhone     *string
-	items             *string
-	subtotal          *float64
-	addsubtotal       *float64
-	tax               *float64
-	addtax            *float64
-	total             *float64
-	addtotal          *float64
-	notes             *string
-	paymentMethod     *string
-	bankName          *string
-	bankAgency        *string
-	bankAccountNumber *string
-	bankAccountName   *string
-	storageURI        *string
-	_URL              *string
-	filename          *string
-	size              *float64
-	addsize           *float64
-	keywords          *string
-	clearedFields     map[string]struct{}
-	company           *int
-	clearedcompany    bool
-	issuedBy          *int
-	clearedissuedBy   bool
-	client            *int
-	clearedclient     bool
-	receivable        *int
-	clearedreceivable bool
-	done              bool
-	oldValue          func(context.Context) (*Invoice, error)
-	predicates        []predicate.Invoice
+	op                  Op
+	typ                 string
+	id                  *int
+	created_at          *time.Time
+	updated_at          *time.Time
+	deleted_at          *time.Time
+	company_logo        *string
+	company_name        *string
+	company_tax_id      *string
+	company_address     *string
+	company_city        *string
+	company_email       *string
+	company_phone       *string
+	number              *string
+	issue_date          *time.Time
+	due_date            *time.Time
+	paid_at             *time.Time
+	status              *invoice.Status
+	customer_name       *string
+	customer_tax_id     *string
+	customer_address    *string
+	customer_city       *string
+	customer_email      *string
+	customer_phone      *string
+	items               *string
+	subtotal            *float64
+	addsubtotal         *float64
+	tax                 *float64
+	addtax              *float64
+	total               *float64
+	addtotal            *float64
+	notes               *string
+	payment_method      *string
+	bank_name           *string
+	bank_agency         *string
+	bank_account_number *string
+	bank_account_name   *string
+	storage_URI         *string
+	_URL                *string
+	filename            *string
+	size                *float64
+	addsize             *float64
+	keywords            *string
+	clearedFields       map[string]struct{}
+	company             *int
+	clearedcompany      bool
+	issued_by           *int
+	clearedissued_by    bool
+	client              *int
+	clearedclient       bool
+	receivable          *int
+	clearedreceivable   bool
+	done                bool
+	oldValue            func(context.Context) (*Invoice, error)
+	predicates          []predicate.Invoice
 }
 
 var _ ent.Mutation = (*InvoiceMutation)(nil)
@@ -13088,21 +13088,21 @@ func (m *InvoiceMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *InvoiceMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *InvoiceMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Invoice entity.
+// OldCreatedAt returns the old "created_at" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -13119,26 +13119,26 @@ func (m *InvoiceMutation) OldCreatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *InvoiceMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *InvoiceMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *InvoiceMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Invoice entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -13155,26 +13155,26 @@ func (m *InvoiceMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *InvoiceMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *InvoiceMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *InvoiceMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Invoice entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -13191,39 +13191,39 @@ func (m *InvoiceMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err e
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *InvoiceMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[invoice.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *InvoiceMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *InvoiceMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, invoice.FieldDeletedAt)
 }
 
-// SetCompanyLogo sets the "companyLogo" field.
+// SetCompanyLogo sets the "company_logo" field.
 func (m *InvoiceMutation) SetCompanyLogo(s string) {
-	m.companyLogo = &s
+	m.company_logo = &s
 }
 
-// CompanyLogo returns the value of the "companyLogo" field in the mutation.
+// CompanyLogo returns the value of the "company_logo" field in the mutation.
 func (m *InvoiceMutation) CompanyLogo() (r string, exists bool) {
-	v := m.companyLogo
+	v := m.company_logo
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyLogo returns the old "companyLogo" field's value of the Invoice entity.
+// OldCompanyLogo returns the old "company_logo" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyLogo(ctx context.Context) (v *string, err error) {
@@ -13240,39 +13240,39 @@ func (m *InvoiceMutation) OldCompanyLogo(ctx context.Context) (v *string, err er
 	return oldValue.CompanyLogo, nil
 }
 
-// ClearCompanyLogo clears the value of the "companyLogo" field.
+// ClearCompanyLogo clears the value of the "company_logo" field.
 func (m *InvoiceMutation) ClearCompanyLogo() {
-	m.companyLogo = nil
+	m.company_logo = nil
 	m.clearedFields[invoice.FieldCompanyLogo] = struct{}{}
 }
 
-// CompanyLogoCleared returns if the "companyLogo" field was cleared in this mutation.
+// CompanyLogoCleared returns if the "company_logo" field was cleared in this mutation.
 func (m *InvoiceMutation) CompanyLogoCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCompanyLogo]
 	return ok
 }
 
-// ResetCompanyLogo resets all changes to the "companyLogo" field.
+// ResetCompanyLogo resets all changes to the "company_logo" field.
 func (m *InvoiceMutation) ResetCompanyLogo() {
-	m.companyLogo = nil
+	m.company_logo = nil
 	delete(m.clearedFields, invoice.FieldCompanyLogo)
 }
 
-// SetCompanyName sets the "companyName" field.
+// SetCompanyName sets the "company_name" field.
 func (m *InvoiceMutation) SetCompanyName(s string) {
-	m.companyName = &s
+	m.company_name = &s
 }
 
-// CompanyName returns the value of the "companyName" field in the mutation.
+// CompanyName returns the value of the "company_name" field in the mutation.
 func (m *InvoiceMutation) CompanyName() (r string, exists bool) {
-	v := m.companyName
+	v := m.company_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyName returns the old "companyName" field's value of the Invoice entity.
+// OldCompanyName returns the old "company_name" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyName(ctx context.Context) (v string, err error) {
@@ -13289,26 +13289,26 @@ func (m *InvoiceMutation) OldCompanyName(ctx context.Context) (v string, err err
 	return oldValue.CompanyName, nil
 }
 
-// ResetCompanyName resets all changes to the "companyName" field.
+// ResetCompanyName resets all changes to the "company_name" field.
 func (m *InvoiceMutation) ResetCompanyName() {
-	m.companyName = nil
+	m.company_name = nil
 }
 
-// SetCompanyTaxID sets the "companyTaxID" field.
+// SetCompanyTaxID sets the "company_tax_id" field.
 func (m *InvoiceMutation) SetCompanyTaxID(s string) {
-	m.companyTaxID = &s
+	m.company_tax_id = &s
 }
 
-// CompanyTaxID returns the value of the "companyTaxID" field in the mutation.
+// CompanyTaxID returns the value of the "company_tax_id" field in the mutation.
 func (m *InvoiceMutation) CompanyTaxID() (r string, exists bool) {
-	v := m.companyTaxID
+	v := m.company_tax_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyTaxID returns the old "companyTaxID" field's value of the Invoice entity.
+// OldCompanyTaxID returns the old "company_tax_id" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyTaxID(ctx context.Context) (v *string, err error) {
@@ -13325,39 +13325,39 @@ func (m *InvoiceMutation) OldCompanyTaxID(ctx context.Context) (v *string, err e
 	return oldValue.CompanyTaxID, nil
 }
 
-// ClearCompanyTaxID clears the value of the "companyTaxID" field.
+// ClearCompanyTaxID clears the value of the "company_tax_id" field.
 func (m *InvoiceMutation) ClearCompanyTaxID() {
-	m.companyTaxID = nil
+	m.company_tax_id = nil
 	m.clearedFields[invoice.FieldCompanyTaxID] = struct{}{}
 }
 
-// CompanyTaxIDCleared returns if the "companyTaxID" field was cleared in this mutation.
+// CompanyTaxIDCleared returns if the "company_tax_id" field was cleared in this mutation.
 func (m *InvoiceMutation) CompanyTaxIDCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCompanyTaxID]
 	return ok
 }
 
-// ResetCompanyTaxID resets all changes to the "companyTaxID" field.
+// ResetCompanyTaxID resets all changes to the "company_tax_id" field.
 func (m *InvoiceMutation) ResetCompanyTaxID() {
-	m.companyTaxID = nil
+	m.company_tax_id = nil
 	delete(m.clearedFields, invoice.FieldCompanyTaxID)
 }
 
-// SetCompanyAddress sets the "companyAddress" field.
+// SetCompanyAddress sets the "company_address" field.
 func (m *InvoiceMutation) SetCompanyAddress(s string) {
-	m.companyAddress = &s
+	m.company_address = &s
 }
 
-// CompanyAddress returns the value of the "companyAddress" field in the mutation.
+// CompanyAddress returns the value of the "company_address" field in the mutation.
 func (m *InvoiceMutation) CompanyAddress() (r string, exists bool) {
-	v := m.companyAddress
+	v := m.company_address
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyAddress returns the old "companyAddress" field's value of the Invoice entity.
+// OldCompanyAddress returns the old "company_address" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyAddress(ctx context.Context) (v string, err error) {
@@ -13374,26 +13374,26 @@ func (m *InvoiceMutation) OldCompanyAddress(ctx context.Context) (v string, err 
 	return oldValue.CompanyAddress, nil
 }
 
-// ResetCompanyAddress resets all changes to the "companyAddress" field.
+// ResetCompanyAddress resets all changes to the "company_address" field.
 func (m *InvoiceMutation) ResetCompanyAddress() {
-	m.companyAddress = nil
+	m.company_address = nil
 }
 
-// SetCompanyCity sets the "companyCity" field.
+// SetCompanyCity sets the "company_city" field.
 func (m *InvoiceMutation) SetCompanyCity(s string) {
-	m.companyCity = &s
+	m.company_city = &s
 }
 
-// CompanyCity returns the value of the "companyCity" field in the mutation.
+// CompanyCity returns the value of the "company_city" field in the mutation.
 func (m *InvoiceMutation) CompanyCity() (r string, exists bool) {
-	v := m.companyCity
+	v := m.company_city
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyCity returns the old "companyCity" field's value of the Invoice entity.
+// OldCompanyCity returns the old "company_city" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyCity(ctx context.Context) (v string, err error) {
@@ -13410,26 +13410,26 @@ func (m *InvoiceMutation) OldCompanyCity(ctx context.Context) (v string, err err
 	return oldValue.CompanyCity, nil
 }
 
-// ResetCompanyCity resets all changes to the "companyCity" field.
+// ResetCompanyCity resets all changes to the "company_city" field.
 func (m *InvoiceMutation) ResetCompanyCity() {
-	m.companyCity = nil
+	m.company_city = nil
 }
 
-// SetCompanyEmail sets the "companyEmail" field.
+// SetCompanyEmail sets the "company_email" field.
 func (m *InvoiceMutation) SetCompanyEmail(s string) {
-	m.companyEmail = &s
+	m.company_email = &s
 }
 
-// CompanyEmail returns the value of the "companyEmail" field in the mutation.
+// CompanyEmail returns the value of the "company_email" field in the mutation.
 func (m *InvoiceMutation) CompanyEmail() (r string, exists bool) {
-	v := m.companyEmail
+	v := m.company_email
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyEmail returns the old "companyEmail" field's value of the Invoice entity.
+// OldCompanyEmail returns the old "company_email" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyEmail(ctx context.Context) (v *string, err error) {
@@ -13446,39 +13446,39 @@ func (m *InvoiceMutation) OldCompanyEmail(ctx context.Context) (v *string, err e
 	return oldValue.CompanyEmail, nil
 }
 
-// ClearCompanyEmail clears the value of the "companyEmail" field.
+// ClearCompanyEmail clears the value of the "company_email" field.
 func (m *InvoiceMutation) ClearCompanyEmail() {
-	m.companyEmail = nil
+	m.company_email = nil
 	m.clearedFields[invoice.FieldCompanyEmail] = struct{}{}
 }
 
-// CompanyEmailCleared returns if the "companyEmail" field was cleared in this mutation.
+// CompanyEmailCleared returns if the "company_email" field was cleared in this mutation.
 func (m *InvoiceMutation) CompanyEmailCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCompanyEmail]
 	return ok
 }
 
-// ResetCompanyEmail resets all changes to the "companyEmail" field.
+// ResetCompanyEmail resets all changes to the "company_email" field.
 func (m *InvoiceMutation) ResetCompanyEmail() {
-	m.companyEmail = nil
+	m.company_email = nil
 	delete(m.clearedFields, invoice.FieldCompanyEmail)
 }
 
-// SetCompanyPhone sets the "companyPhone" field.
+// SetCompanyPhone sets the "company_phone" field.
 func (m *InvoiceMutation) SetCompanyPhone(s string) {
-	m.companyPhone = &s
+	m.company_phone = &s
 }
 
-// CompanyPhone returns the value of the "companyPhone" field in the mutation.
+// CompanyPhone returns the value of the "company_phone" field in the mutation.
 func (m *InvoiceMutation) CompanyPhone() (r string, exists bool) {
-	v := m.companyPhone
+	v := m.company_phone
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCompanyPhone returns the old "companyPhone" field's value of the Invoice entity.
+// OldCompanyPhone returns the old "company_phone" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCompanyPhone(ctx context.Context) (v *string, err error) {
@@ -13495,21 +13495,21 @@ func (m *InvoiceMutation) OldCompanyPhone(ctx context.Context) (v *string, err e
 	return oldValue.CompanyPhone, nil
 }
 
-// ClearCompanyPhone clears the value of the "companyPhone" field.
+// ClearCompanyPhone clears the value of the "company_phone" field.
 func (m *InvoiceMutation) ClearCompanyPhone() {
-	m.companyPhone = nil
+	m.company_phone = nil
 	m.clearedFields[invoice.FieldCompanyPhone] = struct{}{}
 }
 
-// CompanyPhoneCleared returns if the "companyPhone" field was cleared in this mutation.
+// CompanyPhoneCleared returns if the "company_phone" field was cleared in this mutation.
 func (m *InvoiceMutation) CompanyPhoneCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCompanyPhone]
 	return ok
 }
 
-// ResetCompanyPhone resets all changes to the "companyPhone" field.
+// ResetCompanyPhone resets all changes to the "company_phone" field.
 func (m *InvoiceMutation) ResetCompanyPhone() {
-	m.companyPhone = nil
+	m.company_phone = nil
 	delete(m.clearedFields, invoice.FieldCompanyPhone)
 }
 
@@ -13562,21 +13562,21 @@ func (m *InvoiceMutation) ResetNumber() {
 	delete(m.clearedFields, invoice.FieldNumber)
 }
 
-// SetIssueDate sets the "issueDate" field.
+// SetIssueDate sets the "issue_date" field.
 func (m *InvoiceMutation) SetIssueDate(t time.Time) {
-	m.issueDate = &t
+	m.issue_date = &t
 }
 
-// IssueDate returns the value of the "issueDate" field in the mutation.
+// IssueDate returns the value of the "issue_date" field in the mutation.
 func (m *InvoiceMutation) IssueDate() (r time.Time, exists bool) {
-	v := m.issueDate
+	v := m.issue_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIssueDate returns the old "issueDate" field's value of the Invoice entity.
+// OldIssueDate returns the old "issue_date" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldIssueDate(ctx context.Context) (v time.Time, err error) {
@@ -13593,26 +13593,26 @@ func (m *InvoiceMutation) OldIssueDate(ctx context.Context) (v time.Time, err er
 	return oldValue.IssueDate, nil
 }
 
-// ResetIssueDate resets all changes to the "issueDate" field.
+// ResetIssueDate resets all changes to the "issue_date" field.
 func (m *InvoiceMutation) ResetIssueDate() {
-	m.issueDate = nil
+	m.issue_date = nil
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (m *InvoiceMutation) SetDueDate(t time.Time) {
-	m.dueDate = &t
+	m.due_date = &t
 }
 
-// DueDate returns the value of the "dueDate" field in the mutation.
+// DueDate returns the value of the "due_date" field in the mutation.
 func (m *InvoiceMutation) DueDate() (r time.Time, exists bool) {
-	v := m.dueDate
+	v := m.due_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDueDate returns the old "dueDate" field's value of the Invoice entity.
+// OldDueDate returns the old "due_date" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
@@ -13629,26 +13629,26 @@ func (m *InvoiceMutation) OldDueDate(ctx context.Context) (v time.Time, err erro
 	return oldValue.DueDate, nil
 }
 
-// ResetDueDate resets all changes to the "dueDate" field.
+// ResetDueDate resets all changes to the "due_date" field.
 func (m *InvoiceMutation) ResetDueDate() {
-	m.dueDate = nil
+	m.due_date = nil
 }
 
-// SetPaidAt sets the "paidAt" field.
+// SetPaidAt sets the "paid_at" field.
 func (m *InvoiceMutation) SetPaidAt(t time.Time) {
-	m.paidAt = &t
+	m.paid_at = &t
 }
 
-// PaidAt returns the value of the "paidAt" field in the mutation.
+// PaidAt returns the value of the "paid_at" field in the mutation.
 func (m *InvoiceMutation) PaidAt() (r time.Time, exists bool) {
-	v := m.paidAt
+	v := m.paid_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaidAt returns the old "paidAt" field's value of the Invoice entity.
+// OldPaidAt returns the old "paid_at" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldPaidAt(ctx context.Context) (v *time.Time, err error) {
@@ -13665,21 +13665,21 @@ func (m *InvoiceMutation) OldPaidAt(ctx context.Context) (v *time.Time, err erro
 	return oldValue.PaidAt, nil
 }
 
-// ClearPaidAt clears the value of the "paidAt" field.
+// ClearPaidAt clears the value of the "paid_at" field.
 func (m *InvoiceMutation) ClearPaidAt() {
-	m.paidAt = nil
+	m.paid_at = nil
 	m.clearedFields[invoice.FieldPaidAt] = struct{}{}
 }
 
-// PaidAtCleared returns if the "paidAt" field was cleared in this mutation.
+// PaidAtCleared returns if the "paid_at" field was cleared in this mutation.
 func (m *InvoiceMutation) PaidAtCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldPaidAt]
 	return ok
 }
 
-// ResetPaidAt resets all changes to the "paidAt" field.
+// ResetPaidAt resets all changes to the "paid_at" field.
 func (m *InvoiceMutation) ResetPaidAt() {
-	m.paidAt = nil
+	m.paid_at = nil
 	delete(m.clearedFields, invoice.FieldPaidAt)
 }
 
@@ -13719,21 +13719,21 @@ func (m *InvoiceMutation) ResetStatus() {
 	m.status = nil
 }
 
-// SetCustomerName sets the "customerName" field.
+// SetCustomerName sets the "customer_name" field.
 func (m *InvoiceMutation) SetCustomerName(s string) {
-	m.customerName = &s
+	m.customer_name = &s
 }
 
-// CustomerName returns the value of the "customerName" field in the mutation.
+// CustomerName returns the value of the "customer_name" field in the mutation.
 func (m *InvoiceMutation) CustomerName() (r string, exists bool) {
-	v := m.customerName
+	v := m.customer_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerName returns the old "customerName" field's value of the Invoice entity.
+// OldCustomerName returns the old "customer_name" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerName(ctx context.Context) (v string, err error) {
@@ -13750,39 +13750,39 @@ func (m *InvoiceMutation) OldCustomerName(ctx context.Context) (v string, err er
 	return oldValue.CustomerName, nil
 }
 
-// ClearCustomerName clears the value of the "customerName" field.
+// ClearCustomerName clears the value of the "customer_name" field.
 func (m *InvoiceMutation) ClearCustomerName() {
-	m.customerName = nil
+	m.customer_name = nil
 	m.clearedFields[invoice.FieldCustomerName] = struct{}{}
 }
 
-// CustomerNameCleared returns if the "customerName" field was cleared in this mutation.
+// CustomerNameCleared returns if the "customer_name" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerNameCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerName]
 	return ok
 }
 
-// ResetCustomerName resets all changes to the "customerName" field.
+// ResetCustomerName resets all changes to the "customer_name" field.
 func (m *InvoiceMutation) ResetCustomerName() {
-	m.customerName = nil
+	m.customer_name = nil
 	delete(m.clearedFields, invoice.FieldCustomerName)
 }
 
-// SetCustomerTaxID sets the "customerTaxID" field.
+// SetCustomerTaxID sets the "customer_tax_id" field.
 func (m *InvoiceMutation) SetCustomerTaxID(s string) {
-	m.customerTaxID = &s
+	m.customer_tax_id = &s
 }
 
-// CustomerTaxID returns the value of the "customerTaxID" field in the mutation.
+// CustomerTaxID returns the value of the "customer_tax_id" field in the mutation.
 func (m *InvoiceMutation) CustomerTaxID() (r string, exists bool) {
-	v := m.customerTaxID
+	v := m.customer_tax_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerTaxID returns the old "customerTaxID" field's value of the Invoice entity.
+// OldCustomerTaxID returns the old "customer_tax_id" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerTaxID(ctx context.Context) (v *string, err error) {
@@ -13799,39 +13799,39 @@ func (m *InvoiceMutation) OldCustomerTaxID(ctx context.Context) (v *string, err 
 	return oldValue.CustomerTaxID, nil
 }
 
-// ClearCustomerTaxID clears the value of the "customerTaxID" field.
+// ClearCustomerTaxID clears the value of the "customer_tax_id" field.
 func (m *InvoiceMutation) ClearCustomerTaxID() {
-	m.customerTaxID = nil
+	m.customer_tax_id = nil
 	m.clearedFields[invoice.FieldCustomerTaxID] = struct{}{}
 }
 
-// CustomerTaxIDCleared returns if the "customerTaxID" field was cleared in this mutation.
+// CustomerTaxIDCleared returns if the "customer_tax_id" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerTaxIDCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerTaxID]
 	return ok
 }
 
-// ResetCustomerTaxID resets all changes to the "customerTaxID" field.
+// ResetCustomerTaxID resets all changes to the "customer_tax_id" field.
 func (m *InvoiceMutation) ResetCustomerTaxID() {
-	m.customerTaxID = nil
+	m.customer_tax_id = nil
 	delete(m.clearedFields, invoice.FieldCustomerTaxID)
 }
 
-// SetCustomerAddress sets the "customerAddress" field.
+// SetCustomerAddress sets the "customer_address" field.
 func (m *InvoiceMutation) SetCustomerAddress(s string) {
-	m.customerAddress = &s
+	m.customer_address = &s
 }
 
-// CustomerAddress returns the value of the "customerAddress" field in the mutation.
+// CustomerAddress returns the value of the "customer_address" field in the mutation.
 func (m *InvoiceMutation) CustomerAddress() (r string, exists bool) {
-	v := m.customerAddress
+	v := m.customer_address
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerAddress returns the old "customerAddress" field's value of the Invoice entity.
+// OldCustomerAddress returns the old "customer_address" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerAddress(ctx context.Context) (v *string, err error) {
@@ -13848,39 +13848,39 @@ func (m *InvoiceMutation) OldCustomerAddress(ctx context.Context) (v *string, er
 	return oldValue.CustomerAddress, nil
 }
 
-// ClearCustomerAddress clears the value of the "customerAddress" field.
+// ClearCustomerAddress clears the value of the "customer_address" field.
 func (m *InvoiceMutation) ClearCustomerAddress() {
-	m.customerAddress = nil
+	m.customer_address = nil
 	m.clearedFields[invoice.FieldCustomerAddress] = struct{}{}
 }
 
-// CustomerAddressCleared returns if the "customerAddress" field was cleared in this mutation.
+// CustomerAddressCleared returns if the "customer_address" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerAddressCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerAddress]
 	return ok
 }
 
-// ResetCustomerAddress resets all changes to the "customerAddress" field.
+// ResetCustomerAddress resets all changes to the "customer_address" field.
 func (m *InvoiceMutation) ResetCustomerAddress() {
-	m.customerAddress = nil
+	m.customer_address = nil
 	delete(m.clearedFields, invoice.FieldCustomerAddress)
 }
 
-// SetCustomerCity sets the "customerCity" field.
+// SetCustomerCity sets the "customer_city" field.
 func (m *InvoiceMutation) SetCustomerCity(s string) {
-	m.customerCity = &s
+	m.customer_city = &s
 }
 
-// CustomerCity returns the value of the "customerCity" field in the mutation.
+// CustomerCity returns the value of the "customer_city" field in the mutation.
 func (m *InvoiceMutation) CustomerCity() (r string, exists bool) {
-	v := m.customerCity
+	v := m.customer_city
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerCity returns the old "customerCity" field's value of the Invoice entity.
+// OldCustomerCity returns the old "customer_city" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerCity(ctx context.Context) (v *string, err error) {
@@ -13897,39 +13897,39 @@ func (m *InvoiceMutation) OldCustomerCity(ctx context.Context) (v *string, err e
 	return oldValue.CustomerCity, nil
 }
 
-// ClearCustomerCity clears the value of the "customerCity" field.
+// ClearCustomerCity clears the value of the "customer_city" field.
 func (m *InvoiceMutation) ClearCustomerCity() {
-	m.customerCity = nil
+	m.customer_city = nil
 	m.clearedFields[invoice.FieldCustomerCity] = struct{}{}
 }
 
-// CustomerCityCleared returns if the "customerCity" field was cleared in this mutation.
+// CustomerCityCleared returns if the "customer_city" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerCityCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerCity]
 	return ok
 }
 
-// ResetCustomerCity resets all changes to the "customerCity" field.
+// ResetCustomerCity resets all changes to the "customer_city" field.
 func (m *InvoiceMutation) ResetCustomerCity() {
-	m.customerCity = nil
+	m.customer_city = nil
 	delete(m.clearedFields, invoice.FieldCustomerCity)
 }
 
-// SetCustomerEmail sets the "customerEmail" field.
+// SetCustomerEmail sets the "customer_email" field.
 func (m *InvoiceMutation) SetCustomerEmail(s string) {
-	m.customerEmail = &s
+	m.customer_email = &s
 }
 
-// CustomerEmail returns the value of the "customerEmail" field in the mutation.
+// CustomerEmail returns the value of the "customer_email" field in the mutation.
 func (m *InvoiceMutation) CustomerEmail() (r string, exists bool) {
-	v := m.customerEmail
+	v := m.customer_email
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerEmail returns the old "customerEmail" field's value of the Invoice entity.
+// OldCustomerEmail returns the old "customer_email" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerEmail(ctx context.Context) (v *string, err error) {
@@ -13946,39 +13946,39 @@ func (m *InvoiceMutation) OldCustomerEmail(ctx context.Context) (v *string, err 
 	return oldValue.CustomerEmail, nil
 }
 
-// ClearCustomerEmail clears the value of the "customerEmail" field.
+// ClearCustomerEmail clears the value of the "customer_email" field.
 func (m *InvoiceMutation) ClearCustomerEmail() {
-	m.customerEmail = nil
+	m.customer_email = nil
 	m.clearedFields[invoice.FieldCustomerEmail] = struct{}{}
 }
 
-// CustomerEmailCleared returns if the "customerEmail" field was cleared in this mutation.
+// CustomerEmailCleared returns if the "customer_email" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerEmailCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerEmail]
 	return ok
 }
 
-// ResetCustomerEmail resets all changes to the "customerEmail" field.
+// ResetCustomerEmail resets all changes to the "customer_email" field.
 func (m *InvoiceMutation) ResetCustomerEmail() {
-	m.customerEmail = nil
+	m.customer_email = nil
 	delete(m.clearedFields, invoice.FieldCustomerEmail)
 }
 
-// SetCustomerPhone sets the "customerPhone" field.
+// SetCustomerPhone sets the "customer_phone" field.
 func (m *InvoiceMutation) SetCustomerPhone(s string) {
-	m.customerPhone = &s
+	m.customer_phone = &s
 }
 
-// CustomerPhone returns the value of the "customerPhone" field in the mutation.
+// CustomerPhone returns the value of the "customer_phone" field in the mutation.
 func (m *InvoiceMutation) CustomerPhone() (r string, exists bool) {
-	v := m.customerPhone
+	v := m.customer_phone
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCustomerPhone returns the old "customerPhone" field's value of the Invoice entity.
+// OldCustomerPhone returns the old "customer_phone" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldCustomerPhone(ctx context.Context) (v *string, err error) {
@@ -13995,21 +13995,21 @@ func (m *InvoiceMutation) OldCustomerPhone(ctx context.Context) (v *string, err 
 	return oldValue.CustomerPhone, nil
 }
 
-// ClearCustomerPhone clears the value of the "customerPhone" field.
+// ClearCustomerPhone clears the value of the "customer_phone" field.
 func (m *InvoiceMutation) ClearCustomerPhone() {
-	m.customerPhone = nil
+	m.customer_phone = nil
 	m.clearedFields[invoice.FieldCustomerPhone] = struct{}{}
 }
 
-// CustomerPhoneCleared returns if the "customerPhone" field was cleared in this mutation.
+// CustomerPhoneCleared returns if the "customer_phone" field was cleared in this mutation.
 func (m *InvoiceMutation) CustomerPhoneCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldCustomerPhone]
 	return ok
 }
 
-// ResetCustomerPhone resets all changes to the "customerPhone" field.
+// ResetCustomerPhone resets all changes to the "customer_phone" field.
 func (m *InvoiceMutation) ResetCustomerPhone() {
-	m.customerPhone = nil
+	m.customer_phone = nil
 	delete(m.clearedFields, invoice.FieldCustomerPhone)
 }
 
@@ -14266,21 +14266,21 @@ func (m *InvoiceMutation) ResetNotes() {
 	delete(m.clearedFields, invoice.FieldNotes)
 }
 
-// SetPaymentMethod sets the "paymentMethod" field.
+// SetPaymentMethod sets the "payment_method" field.
 func (m *InvoiceMutation) SetPaymentMethod(s string) {
-	m.paymentMethod = &s
+	m.payment_method = &s
 }
 
-// PaymentMethod returns the value of the "paymentMethod" field in the mutation.
+// PaymentMethod returns the value of the "payment_method" field in the mutation.
 func (m *InvoiceMutation) PaymentMethod() (r string, exists bool) {
-	v := m.paymentMethod
+	v := m.payment_method
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaymentMethod returns the old "paymentMethod" field's value of the Invoice entity.
+// OldPaymentMethod returns the old "payment_method" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldPaymentMethod(ctx context.Context) (v *string, err error) {
@@ -14297,39 +14297,39 @@ func (m *InvoiceMutation) OldPaymentMethod(ctx context.Context) (v *string, err 
 	return oldValue.PaymentMethod, nil
 }
 
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
+// ClearPaymentMethod clears the value of the "payment_method" field.
 func (m *InvoiceMutation) ClearPaymentMethod() {
-	m.paymentMethod = nil
+	m.payment_method = nil
 	m.clearedFields[invoice.FieldPaymentMethod] = struct{}{}
 }
 
-// PaymentMethodCleared returns if the "paymentMethod" field was cleared in this mutation.
+// PaymentMethodCleared returns if the "payment_method" field was cleared in this mutation.
 func (m *InvoiceMutation) PaymentMethodCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldPaymentMethod]
 	return ok
 }
 
-// ResetPaymentMethod resets all changes to the "paymentMethod" field.
+// ResetPaymentMethod resets all changes to the "payment_method" field.
 func (m *InvoiceMutation) ResetPaymentMethod() {
-	m.paymentMethod = nil
+	m.payment_method = nil
 	delete(m.clearedFields, invoice.FieldPaymentMethod)
 }
 
-// SetBankName sets the "bankName" field.
+// SetBankName sets the "bank_name" field.
 func (m *InvoiceMutation) SetBankName(s string) {
-	m.bankName = &s
+	m.bank_name = &s
 }
 
-// BankName returns the value of the "bankName" field in the mutation.
+// BankName returns the value of the "bank_name" field in the mutation.
 func (m *InvoiceMutation) BankName() (r string, exists bool) {
-	v := m.bankName
+	v := m.bank_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldBankName returns the old "bankName" field's value of the Invoice entity.
+// OldBankName returns the old "bank_name" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldBankName(ctx context.Context) (v *string, err error) {
@@ -14346,39 +14346,39 @@ func (m *InvoiceMutation) OldBankName(ctx context.Context) (v *string, err error
 	return oldValue.BankName, nil
 }
 
-// ClearBankName clears the value of the "bankName" field.
+// ClearBankName clears the value of the "bank_name" field.
 func (m *InvoiceMutation) ClearBankName() {
-	m.bankName = nil
+	m.bank_name = nil
 	m.clearedFields[invoice.FieldBankName] = struct{}{}
 }
 
-// BankNameCleared returns if the "bankName" field was cleared in this mutation.
+// BankNameCleared returns if the "bank_name" field was cleared in this mutation.
 func (m *InvoiceMutation) BankNameCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldBankName]
 	return ok
 }
 
-// ResetBankName resets all changes to the "bankName" field.
+// ResetBankName resets all changes to the "bank_name" field.
 func (m *InvoiceMutation) ResetBankName() {
-	m.bankName = nil
+	m.bank_name = nil
 	delete(m.clearedFields, invoice.FieldBankName)
 }
 
-// SetBankAgency sets the "bankAgency" field.
+// SetBankAgency sets the "bank_agency" field.
 func (m *InvoiceMutation) SetBankAgency(s string) {
-	m.bankAgency = &s
+	m.bank_agency = &s
 }
 
-// BankAgency returns the value of the "bankAgency" field in the mutation.
+// BankAgency returns the value of the "bank_agency" field in the mutation.
 func (m *InvoiceMutation) BankAgency() (r string, exists bool) {
-	v := m.bankAgency
+	v := m.bank_agency
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldBankAgency returns the old "bankAgency" field's value of the Invoice entity.
+// OldBankAgency returns the old "bank_agency" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldBankAgency(ctx context.Context) (v *string, err error) {
@@ -14395,39 +14395,39 @@ func (m *InvoiceMutation) OldBankAgency(ctx context.Context) (v *string, err err
 	return oldValue.BankAgency, nil
 }
 
-// ClearBankAgency clears the value of the "bankAgency" field.
+// ClearBankAgency clears the value of the "bank_agency" field.
 func (m *InvoiceMutation) ClearBankAgency() {
-	m.bankAgency = nil
+	m.bank_agency = nil
 	m.clearedFields[invoice.FieldBankAgency] = struct{}{}
 }
 
-// BankAgencyCleared returns if the "bankAgency" field was cleared in this mutation.
+// BankAgencyCleared returns if the "bank_agency" field was cleared in this mutation.
 func (m *InvoiceMutation) BankAgencyCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldBankAgency]
 	return ok
 }
 
-// ResetBankAgency resets all changes to the "bankAgency" field.
+// ResetBankAgency resets all changes to the "bank_agency" field.
 func (m *InvoiceMutation) ResetBankAgency() {
-	m.bankAgency = nil
+	m.bank_agency = nil
 	delete(m.clearedFields, invoice.FieldBankAgency)
 }
 
-// SetBankAccountNumber sets the "bankAccountNumber" field.
+// SetBankAccountNumber sets the "bank_account_number" field.
 func (m *InvoiceMutation) SetBankAccountNumber(s string) {
-	m.bankAccountNumber = &s
+	m.bank_account_number = &s
 }
 
-// BankAccountNumber returns the value of the "bankAccountNumber" field in the mutation.
+// BankAccountNumber returns the value of the "bank_account_number" field in the mutation.
 func (m *InvoiceMutation) BankAccountNumber() (r string, exists bool) {
-	v := m.bankAccountNumber
+	v := m.bank_account_number
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldBankAccountNumber returns the old "bankAccountNumber" field's value of the Invoice entity.
+// OldBankAccountNumber returns the old "bank_account_number" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldBankAccountNumber(ctx context.Context) (v *string, err error) {
@@ -14444,39 +14444,39 @@ func (m *InvoiceMutation) OldBankAccountNumber(ctx context.Context) (v *string, 
 	return oldValue.BankAccountNumber, nil
 }
 
-// ClearBankAccountNumber clears the value of the "bankAccountNumber" field.
+// ClearBankAccountNumber clears the value of the "bank_account_number" field.
 func (m *InvoiceMutation) ClearBankAccountNumber() {
-	m.bankAccountNumber = nil
+	m.bank_account_number = nil
 	m.clearedFields[invoice.FieldBankAccountNumber] = struct{}{}
 }
 
-// BankAccountNumberCleared returns if the "bankAccountNumber" field was cleared in this mutation.
+// BankAccountNumberCleared returns if the "bank_account_number" field was cleared in this mutation.
 func (m *InvoiceMutation) BankAccountNumberCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldBankAccountNumber]
 	return ok
 }
 
-// ResetBankAccountNumber resets all changes to the "bankAccountNumber" field.
+// ResetBankAccountNumber resets all changes to the "bank_account_number" field.
 func (m *InvoiceMutation) ResetBankAccountNumber() {
-	m.bankAccountNumber = nil
+	m.bank_account_number = nil
 	delete(m.clearedFields, invoice.FieldBankAccountNumber)
 }
 
-// SetBankAccountName sets the "bankAccountName" field.
+// SetBankAccountName sets the "bank_account_name" field.
 func (m *InvoiceMutation) SetBankAccountName(s string) {
-	m.bankAccountName = &s
+	m.bank_account_name = &s
 }
 
-// BankAccountName returns the value of the "bankAccountName" field in the mutation.
+// BankAccountName returns the value of the "bank_account_name" field in the mutation.
 func (m *InvoiceMutation) BankAccountName() (r string, exists bool) {
-	v := m.bankAccountName
+	v := m.bank_account_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldBankAccountName returns the old "bankAccountName" field's value of the Invoice entity.
+// OldBankAccountName returns the old "bank_account_name" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldBankAccountName(ctx context.Context) (v *string, err error) {
@@ -14493,39 +14493,39 @@ func (m *InvoiceMutation) OldBankAccountName(ctx context.Context) (v *string, er
 	return oldValue.BankAccountName, nil
 }
 
-// ClearBankAccountName clears the value of the "bankAccountName" field.
+// ClearBankAccountName clears the value of the "bank_account_name" field.
 func (m *InvoiceMutation) ClearBankAccountName() {
-	m.bankAccountName = nil
+	m.bank_account_name = nil
 	m.clearedFields[invoice.FieldBankAccountName] = struct{}{}
 }
 
-// BankAccountNameCleared returns if the "bankAccountName" field was cleared in this mutation.
+// BankAccountNameCleared returns if the "bank_account_name" field was cleared in this mutation.
 func (m *InvoiceMutation) BankAccountNameCleared() bool {
 	_, ok := m.clearedFields[invoice.FieldBankAccountName]
 	return ok
 }
 
-// ResetBankAccountName resets all changes to the "bankAccountName" field.
+// ResetBankAccountName resets all changes to the "bank_account_name" field.
 func (m *InvoiceMutation) ResetBankAccountName() {
-	m.bankAccountName = nil
+	m.bank_account_name = nil
 	delete(m.clearedFields, invoice.FieldBankAccountName)
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (m *InvoiceMutation) SetStorageURI(s string) {
-	m.storageURI = &s
+	m.storage_URI = &s
 }
 
-// StorageURI returns the value of the "storageURI" field in the mutation.
+// StorageURI returns the value of the "storage_URI" field in the mutation.
 func (m *InvoiceMutation) StorageURI() (r string, exists bool) {
-	v := m.storageURI
+	v := m.storage_URI
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStorageURI returns the old "storageURI" field's value of the Invoice entity.
+// OldStorageURI returns the old "storage_URI" field's value of the Invoice entity.
 // If the Invoice object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *InvoiceMutation) OldStorageURI(ctx context.Context) (v *string, err error) {
@@ -14542,21 +14542,21 @@ func (m *InvoiceMutation) OldStorageURI(ctx context.Context) (v *string, err err
 	return oldValue.StorageURI, nil
 }
 
-// ClearStorageURI clears the value of the "storageURI" field.
+// ClearStorageURI clears the value of the "storage_URI" field.
 func (m *InvoiceMutation) ClearStorageURI() {
-	m.storageURI = nil
+	m.storage_URI = nil
 	m.clearedFields[invoice.FieldStorageURI] = struct{}{}
 }
 
-// StorageURICleared returns if the "storageURI" field was cleared in this mutation.
+// StorageURICleared returns if the "storage_URI" field was cleared in this mutation.
 func (m *InvoiceMutation) StorageURICleared() bool {
 	_, ok := m.clearedFields[invoice.FieldStorageURI]
 	return ok
 }
 
-// ResetStorageURI resets all changes to the "storageURI" field.
+// ResetStorageURI resets all changes to the "storage_URI" field.
 func (m *InvoiceMutation) ResetStorageURI() {
-	m.storageURI = nil
+	m.storage_URI = nil
 	delete(m.clearedFields, invoice.FieldStorageURI)
 }
 
@@ -14803,43 +14803,43 @@ func (m *InvoiceMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// SetIssuedByID sets the "issuedBy" edge to the User entity by id.
+// SetIssuedByID sets the "issued_by" edge to the User entity by id.
 func (m *InvoiceMutation) SetIssuedByID(id int) {
-	m.issuedBy = &id
+	m.issued_by = &id
 }
 
-// ClearIssuedBy clears the "issuedBy" edge to the User entity.
+// ClearIssuedBy clears the "issued_by" edge to the User entity.
 func (m *InvoiceMutation) ClearIssuedBy() {
-	m.clearedissuedBy = true
+	m.clearedissued_by = true
 }
 
-// IssuedByCleared reports if the "issuedBy" edge to the User entity was cleared.
+// IssuedByCleared reports if the "issued_by" edge to the User entity was cleared.
 func (m *InvoiceMutation) IssuedByCleared() bool {
-	return m.clearedissuedBy
+	return m.clearedissued_by
 }
 
-// IssuedByID returns the "issuedBy" edge ID in the mutation.
+// IssuedByID returns the "issued_by" edge ID in the mutation.
 func (m *InvoiceMutation) IssuedByID() (id int, exists bool) {
-	if m.issuedBy != nil {
-		return *m.issuedBy, true
+	if m.issued_by != nil {
+		return *m.issued_by, true
 	}
 	return
 }
 
-// IssuedByIDs returns the "issuedBy" edge IDs in the mutation.
+// IssuedByIDs returns the "issued_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // IssuedByID instead. It exists only for internal usage by the builders.
 func (m *InvoiceMutation) IssuedByIDs() (ids []int) {
-	if id := m.issuedBy; id != nil {
+	if id := m.issued_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetIssuedBy resets all changes to the "issuedBy" edge.
+// ResetIssuedBy resets all changes to the "issued_by" edge.
 func (m *InvoiceMutation) ResetIssuedBy() {
-	m.issuedBy = nil
-	m.clearedissuedBy = false
+	m.issued_by = nil
+	m.clearedissued_by = false
 }
 
 // SetClientID sets the "client" edge to the Customer entity by id.
@@ -14955,67 +14955,67 @@ func (m *InvoiceMutation) Type() string {
 // AddedFields().
 func (m *InvoiceMutation) Fields() []string {
 	fields := make([]string, 0, 36)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, invoice.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, invoice.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, invoice.FieldDeletedAt)
 	}
-	if m.companyLogo != nil {
+	if m.company_logo != nil {
 		fields = append(fields, invoice.FieldCompanyLogo)
 	}
-	if m.companyName != nil {
+	if m.company_name != nil {
 		fields = append(fields, invoice.FieldCompanyName)
 	}
-	if m.companyTaxID != nil {
+	if m.company_tax_id != nil {
 		fields = append(fields, invoice.FieldCompanyTaxID)
 	}
-	if m.companyAddress != nil {
+	if m.company_address != nil {
 		fields = append(fields, invoice.FieldCompanyAddress)
 	}
-	if m.companyCity != nil {
+	if m.company_city != nil {
 		fields = append(fields, invoice.FieldCompanyCity)
 	}
-	if m.companyEmail != nil {
+	if m.company_email != nil {
 		fields = append(fields, invoice.FieldCompanyEmail)
 	}
-	if m.companyPhone != nil {
+	if m.company_phone != nil {
 		fields = append(fields, invoice.FieldCompanyPhone)
 	}
 	if m.number != nil {
 		fields = append(fields, invoice.FieldNumber)
 	}
-	if m.issueDate != nil {
+	if m.issue_date != nil {
 		fields = append(fields, invoice.FieldIssueDate)
 	}
-	if m.dueDate != nil {
+	if m.due_date != nil {
 		fields = append(fields, invoice.FieldDueDate)
 	}
-	if m.paidAt != nil {
+	if m.paid_at != nil {
 		fields = append(fields, invoice.FieldPaidAt)
 	}
 	if m.status != nil {
 		fields = append(fields, invoice.FieldStatus)
 	}
-	if m.customerName != nil {
+	if m.customer_name != nil {
 		fields = append(fields, invoice.FieldCustomerName)
 	}
-	if m.customerTaxID != nil {
+	if m.customer_tax_id != nil {
 		fields = append(fields, invoice.FieldCustomerTaxID)
 	}
-	if m.customerAddress != nil {
+	if m.customer_address != nil {
 		fields = append(fields, invoice.FieldCustomerAddress)
 	}
-	if m.customerCity != nil {
+	if m.customer_city != nil {
 		fields = append(fields, invoice.FieldCustomerCity)
 	}
-	if m.customerEmail != nil {
+	if m.customer_email != nil {
 		fields = append(fields, invoice.FieldCustomerEmail)
 	}
-	if m.customerPhone != nil {
+	if m.customer_phone != nil {
 		fields = append(fields, invoice.FieldCustomerPhone)
 	}
 	if m.items != nil {
@@ -15033,22 +15033,22 @@ func (m *InvoiceMutation) Fields() []string {
 	if m.notes != nil {
 		fields = append(fields, invoice.FieldNotes)
 	}
-	if m.paymentMethod != nil {
+	if m.payment_method != nil {
 		fields = append(fields, invoice.FieldPaymentMethod)
 	}
-	if m.bankName != nil {
+	if m.bank_name != nil {
 		fields = append(fields, invoice.FieldBankName)
 	}
-	if m.bankAgency != nil {
+	if m.bank_agency != nil {
 		fields = append(fields, invoice.FieldBankAgency)
 	}
-	if m.bankAccountNumber != nil {
+	if m.bank_account_number != nil {
 		fields = append(fields, invoice.FieldBankAccountNumber)
 	}
-	if m.bankAccountName != nil {
+	if m.bank_account_name != nil {
 		fields = append(fields, invoice.FieldBankAccountName)
 	}
-	if m.storageURI != nil {
+	if m.storage_URI != nil {
 		fields = append(fields, invoice.FieldStorageURI)
 	}
 	if m._URL != nil {
@@ -15844,7 +15844,7 @@ func (m *InvoiceMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, invoice.EdgeCompany)
 	}
-	if m.issuedBy != nil {
+	if m.issued_by != nil {
 		edges = append(edges, invoice.EdgeIssuedBy)
 	}
 	if m.client != nil {
@@ -15865,7 +15865,7 @@ func (m *InvoiceMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case invoice.EdgeIssuedBy:
-		if id := m.issuedBy; id != nil {
+		if id := m.issued_by; id != nil {
 			return []ent.Value{*id}
 		}
 	case invoice.EdgeClient:
@@ -15898,7 +15898,7 @@ func (m *InvoiceMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, invoice.EdgeCompany)
 	}
-	if m.clearedissuedBy {
+	if m.clearedissued_by {
 		edges = append(edges, invoice.EdgeIssuedBy)
 	}
 	if m.clearedclient {
@@ -15917,7 +15917,7 @@ func (m *InvoiceMutation) EdgeCleared(name string) bool {
 	case invoice.EdgeCompany:
 		return m.clearedcompany
 	case invoice.EdgeIssuedBy:
-		return m.clearedissuedBy
+		return m.clearedissued_by
 	case invoice.EdgeClient:
 		return m.clearedclient
 	case invoice.EdgeReceivable:
@@ -15972,9 +15972,9 @@ type LoanMutation struct {
 	op                         Op
 	typ                        string
 	id                         *int
-	createdAt                  *time.Time
-	updatedAt                  *time.Time
-	deletedAt                  *time.Time
+	created_at                 *time.Time
+	updated_at                 *time.Time
+	deleted_at                 *time.Time
 	is_lending                 *bool
 	amount                     *float64
 	addamount                  *float64
@@ -16114,21 +16114,21 @@ func (m *LoanMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *LoanMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *LoanMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Loan entity.
+// OldCreatedAt returns the old "created_at" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -16145,26 +16145,26 @@ func (m *LoanMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *LoanMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *LoanMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *LoanMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Loan entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -16181,26 +16181,26 @@ func (m *LoanMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *LoanMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *LoanMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *LoanMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Loan entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Loan entity.
 // If the Loan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -16217,21 +16217,21 @@ func (m *LoanMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err erro
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *LoanMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[loan.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *LoanMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[loan.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *LoanMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, loan.FieldDeletedAt)
 }
 
@@ -17280,13 +17280,13 @@ func (m *LoanMutation) Type() string {
 // AddedFields().
 func (m *LoanMutation) Fields() []string {
 	fields := make([]string, 0, 20)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, loan.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, loan.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, loan.FieldDeletedAt)
 	}
 	if m.is_lending != nil {
@@ -17977,9 +17977,9 @@ type LoanScheduleMutation struct {
 	op                         Op
 	typ                        string
 	id                         *int
-	createdAt                  *time.Time
-	updatedAt                  *time.Time
-	deletedAt                  *time.Time
+	created_at                 *time.Time
+	updated_at                 *time.Time
+	deleted_at                 *time.Time
 	amount                     *float64
 	addamount                  *float64
 	amount_paid                *float64
@@ -18104,21 +18104,21 @@ func (m *LoanScheduleMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *LoanScheduleMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *LoanScheduleMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the LoanSchedule entity.
+// OldCreatedAt returns the old "created_at" field's value of the LoanSchedule entity.
 // If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanScheduleMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -18135,26 +18135,26 @@ func (m *LoanScheduleMutation) OldCreatedAt(ctx context.Context) (v time.Time, e
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *LoanScheduleMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *LoanScheduleMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *LoanScheduleMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the LoanSchedule entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the LoanSchedule entity.
 // If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanScheduleMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -18171,26 +18171,26 @@ func (m *LoanScheduleMutation) OldUpdatedAt(ctx context.Context) (v time.Time, e
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *LoanScheduleMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *LoanScheduleMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *LoanScheduleMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the LoanSchedule entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the LoanSchedule entity.
 // If the LoanSchedule object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *LoanScheduleMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -18207,21 +18207,21 @@ func (m *LoanScheduleMutation) OldDeletedAt(ctx context.Context) (v *time.Time, 
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *LoanScheduleMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[loanschedule.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *LoanScheduleMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[loanschedule.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *LoanScheduleMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, loanschedule.FieldDeletedAt)
 }
 
@@ -18824,13 +18824,13 @@ func (m *LoanScheduleMutation) Type() string {
 // AddedFields().
 func (m *LoanScheduleMutation) Fields() []string {
 	fields := make([]string, 0, 12)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, loanschedule.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, loanschedule.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, loanschedule.FieldDeletedAt)
 	}
 	if m.amount != nil {
@@ -19308,30 +19308,30 @@ func (m *LoanScheduleMutation) ResetEdge(name string) error {
 // MemberSignupTokenMutation represents an operation that mutates the MemberSignupToken nodes in the graph.
 type MemberSignupTokenMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	deletedAt         *time.Time
-	name              *string
-	email             *string
-	token             *string
-	avatar            *string
-	role              *membersignuptoken.Role
-	note              *string
-	numberAccessed    *int
-	addnumberAccessed *int
-	expiresAt         *time.Time
-	alreadyUsed       *bool
-	clearedFields     map[string]struct{}
-	company           *int
-	clearedcompany    bool
-	createdBy         *int
-	clearedcreatedBy  bool
-	done              bool
-	oldValue          func(context.Context) (*MemberSignupToken, error)
-	predicates        []predicate.MemberSignupToken
+	op                 Op
+	typ                string
+	id                 *int
+	created_at         *time.Time
+	updated_at         *time.Time
+	deleted_at         *time.Time
+	name               *string
+	email              *string
+	token              *string
+	avatar             *string
+	role               *membersignuptoken.Role
+	note               *string
+	number_accessed    *int
+	addnumber_accessed *int
+	expires_at         *time.Time
+	already_used       *bool
+	clearedFields      map[string]struct{}
+	company            *int
+	clearedcompany     bool
+	created_by         *int
+	clearedcreated_by  bool
+	done               bool
+	oldValue           func(context.Context) (*MemberSignupToken, error)
+	predicates         []predicate.MemberSignupToken
 }
 
 var _ ent.Mutation = (*MemberSignupTokenMutation)(nil)
@@ -19432,21 +19432,21 @@ func (m *MemberSignupTokenMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *MemberSignupTokenMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *MemberSignupTokenMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the MemberSignupToken entity.
+// OldCreatedAt returns the old "created_at" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -19463,26 +19463,26 @@ func (m *MemberSignupTokenMutation) OldCreatedAt(ctx context.Context) (v time.Ti
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *MemberSignupTokenMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *MemberSignupTokenMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *MemberSignupTokenMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the MemberSignupToken entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -19499,26 +19499,26 @@ func (m *MemberSignupTokenMutation) OldUpdatedAt(ctx context.Context) (v time.Ti
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *MemberSignupTokenMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *MemberSignupTokenMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *MemberSignupTokenMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the MemberSignupToken entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -19535,21 +19535,21 @@ func (m *MemberSignupTokenMutation) OldDeletedAt(ctx context.Context) (v *time.T
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *MemberSignupTokenMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[membersignuptoken.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *MemberSignupTokenMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[membersignuptoken.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *MemberSignupTokenMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, membersignuptoken.FieldDeletedAt)
 }
 
@@ -19782,22 +19782,22 @@ func (m *MemberSignupTokenMutation) ResetNote() {
 	m.note = nil
 }
 
-// SetNumberAccessed sets the "numberAccessed" field.
+// SetNumberAccessed sets the "number_accessed" field.
 func (m *MemberSignupTokenMutation) SetNumberAccessed(i int) {
-	m.numberAccessed = &i
-	m.addnumberAccessed = nil
+	m.number_accessed = &i
+	m.addnumber_accessed = nil
 }
 
-// NumberAccessed returns the value of the "numberAccessed" field in the mutation.
+// NumberAccessed returns the value of the "number_accessed" field in the mutation.
 func (m *MemberSignupTokenMutation) NumberAccessed() (r int, exists bool) {
-	v := m.numberAccessed
+	v := m.number_accessed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldNumberAccessed returns the old "numberAccessed" field's value of the MemberSignupToken entity.
+// OldNumberAccessed returns the old "number_accessed" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldNumberAccessed(ctx context.Context) (v int, err error) {
@@ -19814,45 +19814,45 @@ func (m *MemberSignupTokenMutation) OldNumberAccessed(ctx context.Context) (v in
 	return oldValue.NumberAccessed, nil
 }
 
-// AddNumberAccessed adds i to the "numberAccessed" field.
+// AddNumberAccessed adds i to the "number_accessed" field.
 func (m *MemberSignupTokenMutation) AddNumberAccessed(i int) {
-	if m.addnumberAccessed != nil {
-		*m.addnumberAccessed += i
+	if m.addnumber_accessed != nil {
+		*m.addnumber_accessed += i
 	} else {
-		m.addnumberAccessed = &i
+		m.addnumber_accessed = &i
 	}
 }
 
-// AddedNumberAccessed returns the value that was added to the "numberAccessed" field in this mutation.
+// AddedNumberAccessed returns the value that was added to the "number_accessed" field in this mutation.
 func (m *MemberSignupTokenMutation) AddedNumberAccessed() (r int, exists bool) {
-	v := m.addnumberAccessed
+	v := m.addnumber_accessed
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetNumberAccessed resets all changes to the "numberAccessed" field.
+// ResetNumberAccessed resets all changes to the "number_accessed" field.
 func (m *MemberSignupTokenMutation) ResetNumberAccessed() {
-	m.numberAccessed = nil
-	m.addnumberAccessed = nil
+	m.number_accessed = nil
+	m.addnumber_accessed = nil
 }
 
-// SetExpiresAt sets the "expiresAt" field.
+// SetExpiresAt sets the "expires_at" field.
 func (m *MemberSignupTokenMutation) SetExpiresAt(t time.Time) {
-	m.expiresAt = &t
+	m.expires_at = &t
 }
 
-// ExpiresAt returns the value of the "expiresAt" field in the mutation.
+// ExpiresAt returns the value of the "expires_at" field in the mutation.
 func (m *MemberSignupTokenMutation) ExpiresAt() (r time.Time, exists bool) {
-	v := m.expiresAt
+	v := m.expires_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldExpiresAt returns the old "expiresAt" field's value of the MemberSignupToken entity.
+// OldExpiresAt returns the old "expires_at" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldExpiresAt(ctx context.Context) (v time.Time, err error) {
@@ -19869,26 +19869,26 @@ func (m *MemberSignupTokenMutation) OldExpiresAt(ctx context.Context) (v time.Ti
 	return oldValue.ExpiresAt, nil
 }
 
-// ResetExpiresAt resets all changes to the "expiresAt" field.
+// ResetExpiresAt resets all changes to the "expires_at" field.
 func (m *MemberSignupTokenMutation) ResetExpiresAt() {
-	m.expiresAt = nil
+	m.expires_at = nil
 }
 
-// SetAlreadyUsed sets the "alreadyUsed" field.
+// SetAlreadyUsed sets the "already_used" field.
 func (m *MemberSignupTokenMutation) SetAlreadyUsed(b bool) {
-	m.alreadyUsed = &b
+	m.already_used = &b
 }
 
-// AlreadyUsed returns the value of the "alreadyUsed" field in the mutation.
+// AlreadyUsed returns the value of the "already_used" field in the mutation.
 func (m *MemberSignupTokenMutation) AlreadyUsed() (r bool, exists bool) {
-	v := m.alreadyUsed
+	v := m.already_used
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAlreadyUsed returns the old "alreadyUsed" field's value of the MemberSignupToken entity.
+// OldAlreadyUsed returns the old "already_used" field's value of the MemberSignupToken entity.
 // If the MemberSignupToken object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *MemberSignupTokenMutation) OldAlreadyUsed(ctx context.Context) (v bool, err error) {
@@ -19905,9 +19905,9 @@ func (m *MemberSignupTokenMutation) OldAlreadyUsed(ctx context.Context) (v bool,
 	return oldValue.AlreadyUsed, nil
 }
 
-// ResetAlreadyUsed resets all changes to the "alreadyUsed" field.
+// ResetAlreadyUsed resets all changes to the "already_used" field.
 func (m *MemberSignupTokenMutation) ResetAlreadyUsed() {
-	m.alreadyUsed = nil
+	m.already_used = nil
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -19949,43 +19949,43 @@ func (m *MemberSignupTokenMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by id.
+// SetCreatedByID sets the "created_by" edge to the User entity by id.
 func (m *MemberSignupTokenMutation) SetCreatedByID(id int) {
-	m.createdBy = &id
+	m.created_by = &id
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (m *MemberSignupTokenMutation) ClearCreatedBy() {
-	m.clearedcreatedBy = true
+	m.clearedcreated_by = true
 }
 
-// CreatedByCleared reports if the "createdBy" edge to the User entity was cleared.
+// CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
 func (m *MemberSignupTokenMutation) CreatedByCleared() bool {
-	return m.clearedcreatedBy
+	return m.clearedcreated_by
 }
 
-// CreatedByID returns the "createdBy" edge ID in the mutation.
+// CreatedByID returns the "created_by" edge ID in the mutation.
 func (m *MemberSignupTokenMutation) CreatedByID() (id int, exists bool) {
-	if m.createdBy != nil {
-		return *m.createdBy, true
+	if m.created_by != nil {
+		return *m.created_by, true
 	}
 	return
 }
 
-// CreatedByIDs returns the "createdBy" edge IDs in the mutation.
+// CreatedByIDs returns the "created_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // CreatedByID instead. It exists only for internal usage by the builders.
 func (m *MemberSignupTokenMutation) CreatedByIDs() (ids []int) {
-	if id := m.createdBy; id != nil {
+	if id := m.created_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetCreatedBy resets all changes to the "createdBy" edge.
+// ResetCreatedBy resets all changes to the "created_by" edge.
 func (m *MemberSignupTokenMutation) ResetCreatedBy() {
-	m.createdBy = nil
-	m.clearedcreatedBy = false
+	m.created_by = nil
+	m.clearedcreated_by = false
 }
 
 // Where appends a list predicates to the MemberSignupTokenMutation builder.
@@ -20023,13 +20023,13 @@ func (m *MemberSignupTokenMutation) Type() string {
 // AddedFields().
 func (m *MemberSignupTokenMutation) Fields() []string {
 	fields := make([]string, 0, 12)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, membersignuptoken.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, membersignuptoken.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, membersignuptoken.FieldDeletedAt)
 	}
 	if m.name != nil {
@@ -20050,13 +20050,13 @@ func (m *MemberSignupTokenMutation) Fields() []string {
 	if m.note != nil {
 		fields = append(fields, membersignuptoken.FieldNote)
 	}
-	if m.numberAccessed != nil {
+	if m.number_accessed != nil {
 		fields = append(fields, membersignuptoken.FieldNumberAccessed)
 	}
-	if m.expiresAt != nil {
+	if m.expires_at != nil {
 		fields = append(fields, membersignuptoken.FieldExpiresAt)
 	}
-	if m.alreadyUsed != nil {
+	if m.already_used != nil {
 		fields = append(fields, membersignuptoken.FieldAlreadyUsed)
 	}
 	return fields
@@ -20225,7 +20225,7 @@ func (m *MemberSignupTokenMutation) SetField(name string, value ent.Value) error
 // this mutation.
 func (m *MemberSignupTokenMutation) AddedFields() []string {
 	var fields []string
-	if m.addnumberAccessed != nil {
+	if m.addnumber_accessed != nil {
 		fields = append(fields, membersignuptoken.FieldNumberAccessed)
 	}
 	return fields
@@ -20342,7 +20342,7 @@ func (m *MemberSignupTokenMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, membersignuptoken.EdgeCompany)
 	}
-	if m.createdBy != nil {
+	if m.created_by != nil {
 		edges = append(edges, membersignuptoken.EdgeCreatedBy)
 	}
 	return edges
@@ -20357,7 +20357,7 @@ func (m *MemberSignupTokenMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case membersignuptoken.EdgeCreatedBy:
-		if id := m.createdBy; id != nil {
+		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -20382,7 +20382,7 @@ func (m *MemberSignupTokenMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, membersignuptoken.EdgeCompany)
 	}
-	if m.clearedcreatedBy {
+	if m.clearedcreated_by {
 		edges = append(edges, membersignuptoken.EdgeCreatedBy)
 	}
 	return edges
@@ -20395,7 +20395,7 @@ func (m *MemberSignupTokenMutation) EdgeCleared(name string) bool {
 	case membersignuptoken.EdgeCompany:
 		return m.clearedcompany
 	case membersignuptoken.EdgeCreatedBy:
-		return m.clearedcreatedBy
+		return m.clearedcreated_by
 	}
 	return false
 }
@@ -20431,30 +20431,30 @@ func (m *MemberSignupTokenMutation) ResetEdge(name string) error {
 // PayableMutation represents an operation that mutates the Payable nodes in the graph.
 type PayableMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *int
-	createdAt             *time.Time
-	updatedAt             *time.Time
-	deletedAt             *time.Time
-	entryGroup            *int
-	addentryGroup         *int
-	date                  *time.Time
-	name                  *string
-	amountInDefault       *float64
-	addamountInDefault    *float64
-	outstandingBalance    *float64
-	addoutstandingBalance *float64
-	totalTransaction      *float64
-	addtotalTransaction   *float64
-	dueDate               *time.Time
-	status                *payable.Status
-	clearedFields         map[string]struct{}
-	company               *int
-	clearedcompany        bool
-	done                  bool
-	oldValue              func(context.Context) (*Payable, error)
-	predicates            []predicate.Payable
+	op                     Op
+	typ                    string
+	id                     *int
+	created_at             *time.Time
+	updated_at             *time.Time
+	deleted_at             *time.Time
+	entry_group            *int
+	addentry_group         *int
+	date                   *time.Time
+	name                   *string
+	amount_in_default      *float64
+	addamount_in_default   *float64
+	outstanding_balance    *float64
+	addoutstanding_balance *float64
+	total_transaction      *float64
+	addtotal_transaction   *float64
+	due_date               *time.Time
+	status                 *payable.Status
+	clearedFields          map[string]struct{}
+	company                *int
+	clearedcompany         bool
+	done                   bool
+	oldValue               func(context.Context) (*Payable, error)
+	predicates             []predicate.Payable
 }
 
 var _ ent.Mutation = (*PayableMutation)(nil)
@@ -20555,21 +20555,21 @@ func (m *PayableMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *PayableMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *PayableMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Payable entity.
+// OldCreatedAt returns the old "created_at" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -20586,26 +20586,26 @@ func (m *PayableMutation) OldCreatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *PayableMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *PayableMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *PayableMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Payable entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -20622,26 +20622,26 @@ func (m *PayableMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *PayableMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *PayableMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *PayableMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Payable entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -20658,40 +20658,40 @@ func (m *PayableMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err e
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *PayableMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[payable.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *PayableMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[payable.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *PayableMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, payable.FieldDeletedAt)
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (m *PayableMutation) SetEntryGroup(i int) {
-	m.entryGroup = &i
-	m.addentryGroup = nil
+	m.entry_group = &i
+	m.addentry_group = nil
 }
 
-// EntryGroup returns the value of the "entryGroup" field in the mutation.
+// EntryGroup returns the value of the "entry_group" field in the mutation.
 func (m *PayableMutation) EntryGroup() (r int, exists bool) {
-	v := m.entryGroup
+	v := m.entry_group
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEntryGroup returns the old "entryGroup" field's value of the Payable entity.
+// OldEntryGroup returns the old "entry_group" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldEntryGroup(ctx context.Context) (v int, err error) {
@@ -20708,28 +20708,28 @@ func (m *PayableMutation) OldEntryGroup(ctx context.Context) (v int, err error) 
 	return oldValue.EntryGroup, nil
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (m *PayableMutation) AddEntryGroup(i int) {
-	if m.addentryGroup != nil {
-		*m.addentryGroup += i
+	if m.addentry_group != nil {
+		*m.addentry_group += i
 	} else {
-		m.addentryGroup = &i
+		m.addentry_group = &i
 	}
 }
 
-// AddedEntryGroup returns the value that was added to the "entryGroup" field in this mutation.
+// AddedEntryGroup returns the value that was added to the "entry_group" field in this mutation.
 func (m *PayableMutation) AddedEntryGroup() (r int, exists bool) {
-	v := m.addentryGroup
+	v := m.addentry_group
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetEntryGroup resets all changes to the "entryGroup" field.
+// ResetEntryGroup resets all changes to the "entry_group" field.
 func (m *PayableMutation) ResetEntryGroup() {
-	m.entryGroup = nil
-	m.addentryGroup = nil
+	m.entry_group = nil
+	m.addentry_group = nil
 }
 
 // SetDate sets the "date" field.
@@ -20804,22 +20804,22 @@ func (m *PayableMutation) ResetName() {
 	m.name = nil
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (m *PayableMutation) SetAmountInDefault(f float64) {
-	m.amountInDefault = &f
-	m.addamountInDefault = nil
+	m.amount_in_default = &f
+	m.addamount_in_default = nil
 }
 
-// AmountInDefault returns the value of the "amountInDefault" field in the mutation.
+// AmountInDefault returns the value of the "amount_in_default" field in the mutation.
 func (m *PayableMutation) AmountInDefault() (r float64, exists bool) {
-	v := m.amountInDefault
+	v := m.amount_in_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAmountInDefault returns the old "amountInDefault" field's value of the Payable entity.
+// OldAmountInDefault returns the old "amount_in_default" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldAmountInDefault(ctx context.Context) (v float64, err error) {
@@ -20836,46 +20836,46 @@ func (m *PayableMutation) OldAmountInDefault(ctx context.Context) (v float64, er
 	return oldValue.AmountInDefault, nil
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (m *PayableMutation) AddAmountInDefault(f float64) {
-	if m.addamountInDefault != nil {
-		*m.addamountInDefault += f
+	if m.addamount_in_default != nil {
+		*m.addamount_in_default += f
 	} else {
-		m.addamountInDefault = &f
+		m.addamount_in_default = &f
 	}
 }
 
-// AddedAmountInDefault returns the value that was added to the "amountInDefault" field in this mutation.
+// AddedAmountInDefault returns the value that was added to the "amount_in_default" field in this mutation.
 func (m *PayableMutation) AddedAmountInDefault() (r float64, exists bool) {
-	v := m.addamountInDefault
+	v := m.addamount_in_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetAmountInDefault resets all changes to the "amountInDefault" field.
+// ResetAmountInDefault resets all changes to the "amount_in_default" field.
 func (m *PayableMutation) ResetAmountInDefault() {
-	m.amountInDefault = nil
-	m.addamountInDefault = nil
+	m.amount_in_default = nil
+	m.addamount_in_default = nil
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (m *PayableMutation) SetOutstandingBalance(f float64) {
-	m.outstandingBalance = &f
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = &f
+	m.addoutstanding_balance = nil
 }
 
-// OutstandingBalance returns the value of the "outstandingBalance" field in the mutation.
+// OutstandingBalance returns the value of the "outstanding_balance" field in the mutation.
 func (m *PayableMutation) OutstandingBalance() (r float64, exists bool) {
-	v := m.outstandingBalance
+	v := m.outstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOutstandingBalance returns the old "outstandingBalance" field's value of the Payable entity.
+// OldOutstandingBalance returns the old "outstanding_balance" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldOutstandingBalance(ctx context.Context) (v float64, err error) {
@@ -20892,46 +20892,46 @@ func (m *PayableMutation) OldOutstandingBalance(ctx context.Context) (v float64,
 	return oldValue.OutstandingBalance, nil
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (m *PayableMutation) AddOutstandingBalance(f float64) {
-	if m.addoutstandingBalance != nil {
-		*m.addoutstandingBalance += f
+	if m.addoutstanding_balance != nil {
+		*m.addoutstanding_balance += f
 	} else {
-		m.addoutstandingBalance = &f
+		m.addoutstanding_balance = &f
 	}
 }
 
-// AddedOutstandingBalance returns the value that was added to the "outstandingBalance" field in this mutation.
+// AddedOutstandingBalance returns the value that was added to the "outstanding_balance" field in this mutation.
 func (m *PayableMutation) AddedOutstandingBalance() (r float64, exists bool) {
-	v := m.addoutstandingBalance
+	v := m.addoutstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetOutstandingBalance resets all changes to the "outstandingBalance" field.
+// ResetOutstandingBalance resets all changes to the "outstanding_balance" field.
 func (m *PayableMutation) ResetOutstandingBalance() {
-	m.outstandingBalance = nil
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = nil
+	m.addoutstanding_balance = nil
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (m *PayableMutation) SetTotalTransaction(f float64) {
-	m.totalTransaction = &f
-	m.addtotalTransaction = nil
+	m.total_transaction = &f
+	m.addtotal_transaction = nil
 }
 
-// TotalTransaction returns the value of the "totalTransaction" field in the mutation.
+// TotalTransaction returns the value of the "total_transaction" field in the mutation.
 func (m *PayableMutation) TotalTransaction() (r float64, exists bool) {
-	v := m.totalTransaction
+	v := m.total_transaction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTotalTransaction returns the old "totalTransaction" field's value of the Payable entity.
+// OldTotalTransaction returns the old "total_transaction" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldTotalTransaction(ctx context.Context) (v float64, err error) {
@@ -20948,45 +20948,45 @@ func (m *PayableMutation) OldTotalTransaction(ctx context.Context) (v float64, e
 	return oldValue.TotalTransaction, nil
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (m *PayableMutation) AddTotalTransaction(f float64) {
-	if m.addtotalTransaction != nil {
-		*m.addtotalTransaction += f
+	if m.addtotal_transaction != nil {
+		*m.addtotal_transaction += f
 	} else {
-		m.addtotalTransaction = &f
+		m.addtotal_transaction = &f
 	}
 }
 
-// AddedTotalTransaction returns the value that was added to the "totalTransaction" field in this mutation.
+// AddedTotalTransaction returns the value that was added to the "total_transaction" field in this mutation.
 func (m *PayableMutation) AddedTotalTransaction() (r float64, exists bool) {
-	v := m.addtotalTransaction
+	v := m.addtotal_transaction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetTotalTransaction resets all changes to the "totalTransaction" field.
+// ResetTotalTransaction resets all changes to the "total_transaction" field.
 func (m *PayableMutation) ResetTotalTransaction() {
-	m.totalTransaction = nil
-	m.addtotalTransaction = nil
+	m.total_transaction = nil
+	m.addtotal_transaction = nil
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (m *PayableMutation) SetDueDate(t time.Time) {
-	m.dueDate = &t
+	m.due_date = &t
 }
 
-// DueDate returns the value of the "dueDate" field in the mutation.
+// DueDate returns the value of the "due_date" field in the mutation.
 func (m *PayableMutation) DueDate() (r time.Time, exists bool) {
-	v := m.dueDate
+	v := m.due_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDueDate returns the old "dueDate" field's value of the Payable entity.
+// OldDueDate returns the old "due_date" field's value of the Payable entity.
 // If the Payable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *PayableMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
@@ -21003,9 +21003,9 @@ func (m *PayableMutation) OldDueDate(ctx context.Context) (v time.Time, err erro
 	return oldValue.DueDate, nil
 }
 
-// ResetDueDate resets all changes to the "dueDate" field.
+// ResetDueDate resets all changes to the "due_date" field.
 func (m *PayableMutation) ResetDueDate() {
-	m.dueDate = nil
+	m.due_date = nil
 }
 
 // SetStatus sets the "status" field.
@@ -21118,16 +21118,16 @@ func (m *PayableMutation) Type() string {
 // AddedFields().
 func (m *PayableMutation) Fields() []string {
 	fields := make([]string, 0, 11)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, payable.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, payable.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, payable.FieldDeletedAt)
 	}
-	if m.entryGroup != nil {
+	if m.entry_group != nil {
 		fields = append(fields, payable.FieldEntryGroup)
 	}
 	if m.date != nil {
@@ -21136,16 +21136,16 @@ func (m *PayableMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, payable.FieldName)
 	}
-	if m.amountInDefault != nil {
+	if m.amount_in_default != nil {
 		fields = append(fields, payable.FieldAmountInDefault)
 	}
-	if m.outstandingBalance != nil {
+	if m.outstanding_balance != nil {
 		fields = append(fields, payable.FieldOutstandingBalance)
 	}
-	if m.totalTransaction != nil {
+	if m.total_transaction != nil {
 		fields = append(fields, payable.FieldTotalTransaction)
 	}
-	if m.dueDate != nil {
+	if m.due_date != nil {
 		fields = append(fields, payable.FieldDueDate)
 	}
 	if m.status != nil {
@@ -21306,16 +21306,16 @@ func (m *PayableMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *PayableMutation) AddedFields() []string {
 	var fields []string
-	if m.addentryGroup != nil {
+	if m.addentry_group != nil {
 		fields = append(fields, payable.FieldEntryGroup)
 	}
-	if m.addamountInDefault != nil {
+	if m.addamount_in_default != nil {
 		fields = append(fields, payable.FieldAmountInDefault)
 	}
-	if m.addoutstandingBalance != nil {
+	if m.addoutstanding_balance != nil {
 		fields = append(fields, payable.FieldOutstandingBalance)
 	}
-	if m.addtotalTransaction != nil {
+	if m.addtotal_transaction != nil {
 		fields = append(fields, payable.FieldTotalTransaction)
 	}
 	return fields
@@ -21524,9 +21524,9 @@ type ProductMutation struct {
 	op             Op
 	typ            string
 	id             *int
-	createdAt      *time.Time
-	updatedAt      *time.Time
-	deletedAt      *time.Time
+	created_at     *time.Time
+	updated_at     *time.Time
+	deleted_at     *time.Time
 	stock          *int
 	addstock       *int
 	clearedFields  map[string]struct{}
@@ -21635,21 +21635,21 @@ func (m *ProductMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *ProductMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *ProductMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Product entity.
+// OldCreatedAt returns the old "created_at" field's value of the Product entity.
 // If the Product object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProductMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -21666,26 +21666,26 @@ func (m *ProductMutation) OldCreatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *ProductMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *ProductMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *ProductMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Product entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Product entity.
 // If the Product object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProductMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -21702,26 +21702,26 @@ func (m *ProductMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *ProductMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *ProductMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *ProductMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Product entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Product entity.
 // If the Product object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProductMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -21738,21 +21738,21 @@ func (m *ProductMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err e
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *ProductMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[product.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *ProductMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[product.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *ProductMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, product.FieldDeletedAt)
 }
 
@@ -21886,13 +21886,13 @@ func (m *ProductMutation) Type() string {
 // AddedFields().
 func (m *ProductMutation) Fields() []string {
 	fields := make([]string, 0, 4)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, product.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, product.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, product.FieldDeletedAt)
 	}
 	if m.stock != nil {
@@ -22134,37 +22134,37 @@ func (m *ProductMutation) ResetEdge(name string) error {
 // ProjectMutation represents an operation that mutates the Project nodes in the graph.
 type ProjectMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	deletedAt         *time.Time
-	name              *string
-	description       *string
-	plannedStartDate  *time.Time
-	actualStartDate   *time.Time
-	plannedEndDate    *time.Time
-	actualEndDate     *time.Time
-	progress          *float64
-	addprogress       *float64
-	status            *project.Status
-	clearedFields     map[string]struct{}
-	company           *int
-	clearedcompany    bool
-	createdBy         *int
-	clearedcreatedBy  bool
-	leader            *int
-	clearedleader     bool
-	tasks             map[int]struct{}
-	removedtasks      map[int]struct{}
-	clearedtasks      bool
-	milestones        map[int]struct{}
-	removedmilestones map[int]struct{}
-	clearedmilestones bool
-	done              bool
-	oldValue          func(context.Context) (*Project, error)
-	predicates        []predicate.Project
+	op                 Op
+	typ                string
+	id                 *int
+	created_at         *time.Time
+	updated_at         *time.Time
+	deleted_at         *time.Time
+	name               *string
+	description        *string
+	planned_start_date *time.Time
+	actual_start_date  *time.Time
+	planned_end_date   *time.Time
+	actual_end_date    *time.Time
+	progress           *float64
+	addprogress        *float64
+	status             *project.Status
+	clearedFields      map[string]struct{}
+	company            *int
+	clearedcompany     bool
+	created_by         *int
+	clearedcreated_by  bool
+	leader             *int
+	clearedleader      bool
+	tasks              map[int]struct{}
+	removedtasks       map[int]struct{}
+	clearedtasks       bool
+	milestones         map[int]struct{}
+	removedmilestones  map[int]struct{}
+	clearedmilestones  bool
+	done               bool
+	oldValue           func(context.Context) (*Project, error)
+	predicates         []predicate.Project
 }
 
 var _ ent.Mutation = (*ProjectMutation)(nil)
@@ -22265,21 +22265,21 @@ func (m *ProjectMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *ProjectMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *ProjectMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Project entity.
+// OldCreatedAt returns the old "created_at" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -22296,26 +22296,26 @@ func (m *ProjectMutation) OldCreatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *ProjectMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *ProjectMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *ProjectMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Project entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -22332,26 +22332,26 @@ func (m *ProjectMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err er
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *ProjectMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *ProjectMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *ProjectMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Project entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -22368,21 +22368,21 @@ func (m *ProjectMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err e
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *ProjectMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[project.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *ProjectMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[project.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *ProjectMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, project.FieldDeletedAt)
 }
 
@@ -22458,21 +22458,21 @@ func (m *ProjectMutation) ResetDescription() {
 	m.description = nil
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
+// SetPlannedStartDate sets the "planned_start_date" field.
 func (m *ProjectMutation) SetPlannedStartDate(t time.Time) {
-	m.plannedStartDate = &t
+	m.planned_start_date = &t
 }
 
-// PlannedStartDate returns the value of the "plannedStartDate" field in the mutation.
+// PlannedStartDate returns the value of the "planned_start_date" field in the mutation.
 func (m *ProjectMutation) PlannedStartDate() (r time.Time, exists bool) {
-	v := m.plannedStartDate
+	v := m.planned_start_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPlannedStartDate returns the old "plannedStartDate" field's value of the Project entity.
+// OldPlannedStartDate returns the old "planned_start_date" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldPlannedStartDate(ctx context.Context) (v time.Time, err error) {
@@ -22489,26 +22489,26 @@ func (m *ProjectMutation) OldPlannedStartDate(ctx context.Context) (v time.Time,
 	return oldValue.PlannedStartDate, nil
 }
 
-// ResetPlannedStartDate resets all changes to the "plannedStartDate" field.
+// ResetPlannedStartDate resets all changes to the "planned_start_date" field.
 func (m *ProjectMutation) ResetPlannedStartDate() {
-	m.plannedStartDate = nil
+	m.planned_start_date = nil
 }
 
-// SetActualStartDate sets the "actualStartDate" field.
+// SetActualStartDate sets the "actual_start_date" field.
 func (m *ProjectMutation) SetActualStartDate(t time.Time) {
-	m.actualStartDate = &t
+	m.actual_start_date = &t
 }
 
-// ActualStartDate returns the value of the "actualStartDate" field in the mutation.
+// ActualStartDate returns the value of the "actual_start_date" field in the mutation.
 func (m *ProjectMutation) ActualStartDate() (r time.Time, exists bool) {
-	v := m.actualStartDate
+	v := m.actual_start_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActualStartDate returns the old "actualStartDate" field's value of the Project entity.
+// OldActualStartDate returns the old "actual_start_date" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldActualStartDate(ctx context.Context) (v *time.Time, err error) {
@@ -22525,39 +22525,39 @@ func (m *ProjectMutation) OldActualStartDate(ctx context.Context) (v *time.Time,
 	return oldValue.ActualStartDate, nil
 }
 
-// ClearActualStartDate clears the value of the "actualStartDate" field.
+// ClearActualStartDate clears the value of the "actual_start_date" field.
 func (m *ProjectMutation) ClearActualStartDate() {
-	m.actualStartDate = nil
+	m.actual_start_date = nil
 	m.clearedFields[project.FieldActualStartDate] = struct{}{}
 }
 
-// ActualStartDateCleared returns if the "actualStartDate" field was cleared in this mutation.
+// ActualStartDateCleared returns if the "actual_start_date" field was cleared in this mutation.
 func (m *ProjectMutation) ActualStartDateCleared() bool {
 	_, ok := m.clearedFields[project.FieldActualStartDate]
 	return ok
 }
 
-// ResetActualStartDate resets all changes to the "actualStartDate" field.
+// ResetActualStartDate resets all changes to the "actual_start_date" field.
 func (m *ProjectMutation) ResetActualStartDate() {
-	m.actualStartDate = nil
+	m.actual_start_date = nil
 	delete(m.clearedFields, project.FieldActualStartDate)
 }
 
-// SetPlannedEndDate sets the "plannedEndDate" field.
+// SetPlannedEndDate sets the "planned_end_date" field.
 func (m *ProjectMutation) SetPlannedEndDate(t time.Time) {
-	m.plannedEndDate = &t
+	m.planned_end_date = &t
 }
 
-// PlannedEndDate returns the value of the "plannedEndDate" field in the mutation.
+// PlannedEndDate returns the value of the "planned_end_date" field in the mutation.
 func (m *ProjectMutation) PlannedEndDate() (r time.Time, exists bool) {
-	v := m.plannedEndDate
+	v := m.planned_end_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPlannedEndDate returns the old "plannedEndDate" field's value of the Project entity.
+// OldPlannedEndDate returns the old "planned_end_date" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldPlannedEndDate(ctx context.Context) (v time.Time, err error) {
@@ -22574,26 +22574,26 @@ func (m *ProjectMutation) OldPlannedEndDate(ctx context.Context) (v time.Time, e
 	return oldValue.PlannedEndDate, nil
 }
 
-// ResetPlannedEndDate resets all changes to the "plannedEndDate" field.
+// ResetPlannedEndDate resets all changes to the "planned_end_date" field.
 func (m *ProjectMutation) ResetPlannedEndDate() {
-	m.plannedEndDate = nil
+	m.planned_end_date = nil
 }
 
-// SetActualEndDate sets the "actualEndDate" field.
+// SetActualEndDate sets the "actual_end_date" field.
 func (m *ProjectMutation) SetActualEndDate(t time.Time) {
-	m.actualEndDate = &t
+	m.actual_end_date = &t
 }
 
-// ActualEndDate returns the value of the "actualEndDate" field in the mutation.
+// ActualEndDate returns the value of the "actual_end_date" field in the mutation.
 func (m *ProjectMutation) ActualEndDate() (r time.Time, exists bool) {
-	v := m.actualEndDate
+	v := m.actual_end_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldActualEndDate returns the old "actualEndDate" field's value of the Project entity.
+// OldActualEndDate returns the old "actual_end_date" field's value of the Project entity.
 // If the Project object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMutation) OldActualEndDate(ctx context.Context) (v *time.Time, err error) {
@@ -22610,21 +22610,21 @@ func (m *ProjectMutation) OldActualEndDate(ctx context.Context) (v *time.Time, e
 	return oldValue.ActualEndDate, nil
 }
 
-// ClearActualEndDate clears the value of the "actualEndDate" field.
+// ClearActualEndDate clears the value of the "actual_end_date" field.
 func (m *ProjectMutation) ClearActualEndDate() {
-	m.actualEndDate = nil
+	m.actual_end_date = nil
 	m.clearedFields[project.FieldActualEndDate] = struct{}{}
 }
 
-// ActualEndDateCleared returns if the "actualEndDate" field was cleared in this mutation.
+// ActualEndDateCleared returns if the "actual_end_date" field was cleared in this mutation.
 func (m *ProjectMutation) ActualEndDateCleared() bool {
 	_, ok := m.clearedFields[project.FieldActualEndDate]
 	return ok
 }
 
-// ResetActualEndDate resets all changes to the "actualEndDate" field.
+// ResetActualEndDate resets all changes to the "actual_end_date" field.
 func (m *ProjectMutation) ResetActualEndDate() {
-	m.actualEndDate = nil
+	m.actual_end_date = nil
 	delete(m.clearedFields, project.FieldActualEndDate)
 }
 
@@ -22759,43 +22759,43 @@ func (m *ProjectMutation) ResetCompany() {
 	m.clearedcompany = false
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by id.
+// SetCreatedByID sets the "created_by" edge to the User entity by id.
 func (m *ProjectMutation) SetCreatedByID(id int) {
-	m.createdBy = &id
+	m.created_by = &id
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (m *ProjectMutation) ClearCreatedBy() {
-	m.clearedcreatedBy = true
+	m.clearedcreated_by = true
 }
 
-// CreatedByCleared reports if the "createdBy" edge to the User entity was cleared.
+// CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
 func (m *ProjectMutation) CreatedByCleared() bool {
-	return m.clearedcreatedBy
+	return m.clearedcreated_by
 }
 
-// CreatedByID returns the "createdBy" edge ID in the mutation.
+// CreatedByID returns the "created_by" edge ID in the mutation.
 func (m *ProjectMutation) CreatedByID() (id int, exists bool) {
-	if m.createdBy != nil {
-		return *m.createdBy, true
+	if m.created_by != nil {
+		return *m.created_by, true
 	}
 	return
 }
 
-// CreatedByIDs returns the "createdBy" edge IDs in the mutation.
+// CreatedByIDs returns the "created_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // CreatedByID instead. It exists only for internal usage by the builders.
 func (m *ProjectMutation) CreatedByIDs() (ids []int) {
-	if id := m.createdBy; id != nil {
+	if id := m.created_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetCreatedBy resets all changes to the "createdBy" edge.
+// ResetCreatedBy resets all changes to the "created_by" edge.
 func (m *ProjectMutation) ResetCreatedBy() {
-	m.createdBy = nil
-	m.clearedcreatedBy = false
+	m.created_by = nil
+	m.clearedcreated_by = false
 }
 
 // SetLeaderID sets the "leader" edge to the User entity by id.
@@ -22980,13 +22980,13 @@ func (m *ProjectMutation) Type() string {
 // AddedFields().
 func (m *ProjectMutation) Fields() []string {
 	fields := make([]string, 0, 11)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, project.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, project.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, project.FieldDeletedAt)
 	}
 	if m.name != nil {
@@ -22995,16 +22995,16 @@ func (m *ProjectMutation) Fields() []string {
 	if m.description != nil {
 		fields = append(fields, project.FieldDescription)
 	}
-	if m.plannedStartDate != nil {
+	if m.planned_start_date != nil {
 		fields = append(fields, project.FieldPlannedStartDate)
 	}
-	if m.actualStartDate != nil {
+	if m.actual_start_date != nil {
 		fields = append(fields, project.FieldActualStartDate)
 	}
-	if m.plannedEndDate != nil {
+	if m.planned_end_date != nil {
 		fields = append(fields, project.FieldPlannedEndDate)
 	}
-	if m.actualEndDate != nil {
+	if m.actual_end_date != nil {
 		fields = append(fields, project.FieldActualEndDate)
 	}
 	if m.progress != nil {
@@ -23288,7 +23288,7 @@ func (m *ProjectMutation) AddedEdges() []string {
 	if m.company != nil {
 		edges = append(edges, project.EdgeCompany)
 	}
-	if m.createdBy != nil {
+	if m.created_by != nil {
 		edges = append(edges, project.EdgeCreatedBy)
 	}
 	if m.leader != nil {
@@ -23312,7 +23312,7 @@ func (m *ProjectMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case project.EdgeCreatedBy:
-		if id := m.createdBy; id != nil {
+		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
 	case project.EdgeLeader:
@@ -23373,7 +23373,7 @@ func (m *ProjectMutation) ClearedEdges() []string {
 	if m.clearedcompany {
 		edges = append(edges, project.EdgeCompany)
 	}
-	if m.clearedcreatedBy {
+	if m.clearedcreated_by {
 		edges = append(edges, project.EdgeCreatedBy)
 	}
 	if m.clearedleader {
@@ -23395,7 +23395,7 @@ func (m *ProjectMutation) EdgeCleared(name string) bool {
 	case project.EdgeCompany:
 		return m.clearedcompany
 	case project.EdgeCreatedBy:
-		return m.clearedcreatedBy
+		return m.clearedcreated_by
 	case project.EdgeLeader:
 		return m.clearedleader
 	case project.EdgeTasks:
@@ -23453,7 +23453,7 @@ type ProjectMilestoneMutation struct {
 	typ            string
 	id             *int
 	name           *string
-	dueDate        *time.Time
+	due_date       *time.Time
 	clearedFields  map[string]struct{}
 	project        *int
 	clearedproject bool
@@ -23596,21 +23596,21 @@ func (m *ProjectMilestoneMutation) ResetName() {
 	m.name = nil
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (m *ProjectMilestoneMutation) SetDueDate(t time.Time) {
-	m.dueDate = &t
+	m.due_date = &t
 }
 
-// DueDate returns the value of the "dueDate" field in the mutation.
+// DueDate returns the value of the "due_date" field in the mutation.
 func (m *ProjectMilestoneMutation) DueDate() (r time.Time, exists bool) {
-	v := m.dueDate
+	v := m.due_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDueDate returns the old "dueDate" field's value of the ProjectMilestone entity.
+// OldDueDate returns the old "due_date" field's value of the ProjectMilestone entity.
 // If the ProjectMilestone object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectMilestoneMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
@@ -23627,9 +23627,9 @@ func (m *ProjectMilestoneMutation) OldDueDate(ctx context.Context) (v time.Time,
 	return oldValue.DueDate, nil
 }
 
-// ResetDueDate resets all changes to the "dueDate" field.
+// ResetDueDate resets all changes to the "due_date" field.
 func (m *ProjectMilestoneMutation) ResetDueDate() {
-	m.dueDate = nil
+	m.due_date = nil
 }
 
 // SetProjectID sets the "project" edge to the Project entity by id.
@@ -23709,7 +23709,7 @@ func (m *ProjectMilestoneMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, projectmilestone.FieldName)
 	}
-	if m.dueDate != nil {
+	if m.due_date != nil {
 		fields = append(fields, projectmilestone.FieldDueDate)
 	}
 	return fields
@@ -23899,16 +23899,16 @@ type ProjectTaskMutation struct {
 	op                  Op
 	typ                 string
 	id                  *int
-	createdAt           *time.Time
-	name                *string
-	assigneeName        *string
-	location            *string
-	dueDate             *time.Time
-	plannedStartDate    *time.Time
-	actualStartDate     *time.Time
-	plannedEndDate      *time.Time
-	actualEndDate       *time.Time
+	created_at          *time.Time
+	updated_at          *time.Time
+	deleted_at          *time.Time
+	assignee_name       *string
 	description         *string
+	due_date            *time.Time
+	end_date            *time.Time
+	location            *string
+	name                *string
+	start_date          *time.Time
 	status              *projecttask.Status
 	clearedFields       map[string]struct{}
 	project             *int
@@ -23918,11 +23918,11 @@ type ProjectTaskMutation struct {
 	participants        map[int]struct{}
 	removedparticipants map[int]struct{}
 	clearedparticipants bool
-	createdBy           *int
-	clearedcreatedBy    bool
-	workShifts          map[int]struct{}
-	removedworkShifts   map[int]struct{}
-	clearedworkShifts   bool
+	created_by          *int
+	clearedcreated_by   bool
+	work_shifts         map[int]struct{}
+	removedwork_shifts  map[int]struct{}
+	clearedwork_shifts  bool
 	done                bool
 	oldValue            func(context.Context) (*ProjectTask, error)
 	predicates          []predicate.ProjectTask
@@ -24026,21 +24026,21 @@ func (m *ProjectTaskMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *ProjectTaskMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *ProjectTaskMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the ProjectTask entity.
+// OldCreatedAt returns the old "created_at" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectTaskMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -24057,75 +24057,111 @@ func (m *ProjectTaskMutation) OldCreatedAt(ctx context.Context) (v time.Time, er
 	return oldValue.CreatedAt, nil
 }
 
-// ClearCreatedAt clears the value of the "createdAt" field.
-func (m *ProjectTaskMutation) ClearCreatedAt() {
-	m.createdAt = nil
-	m.clearedFields[projecttask.FieldCreatedAt] = struct{}{}
-}
-
-// CreatedAtCleared returns if the "createdAt" field was cleared in this mutation.
-func (m *ProjectTaskMutation) CreatedAtCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldCreatedAt]
-	return ok
-}
-
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *ProjectTaskMutation) ResetCreatedAt() {
-	m.createdAt = nil
-	delete(m.clearedFields, projecttask.FieldCreatedAt)
+	m.created_at = nil
 }
 
-// SetName sets the "name" field.
-func (m *ProjectTaskMutation) SetName(s string) {
-	m.name = &s
+// SetUpdatedAt sets the "updated_at" field.
+func (m *ProjectTaskMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// Name returns the value of the "name" field in the mutation.
-func (m *ProjectTaskMutation) Name() (r string, exists bool) {
-	v := m.name
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *ProjectTaskMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old "name" field's value of the ProjectTask entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *ProjectTaskMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.Name, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetName resets all changes to the "name" field.
-func (m *ProjectTaskMutation) ResetName() {
-	m.name = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *ProjectTaskMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
-// SetAssigneeName sets the "assigneeName" field.
-func (m *ProjectTaskMutation) SetAssigneeName(s string) {
-	m.assigneeName = &s
+// SetDeletedAt sets the "deleted_at" field.
+func (m *ProjectTaskMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
 }
 
-// AssigneeName returns the value of the "assigneeName" field in the mutation.
-func (m *ProjectTaskMutation) AssigneeName() (r string, exists bool) {
-	v := m.assigneeName
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *ProjectTaskMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAssigneeName returns the old "assigneeName" field's value of the ProjectTask entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (m *ProjectTaskMutation) ClearDeletedAt() {
+	m.deleted_at = nil
+	m.clearedFields[projecttask.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
+func (m *ProjectTaskMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *ProjectTaskMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	delete(m.clearedFields, projecttask.FieldDeletedAt)
+}
+
+// SetAssigneeName sets the "assignee_name" field.
+func (m *ProjectTaskMutation) SetAssigneeName(s string) {
+	m.assignee_name = &s
+}
+
+// AssigneeName returns the value of the "assignee_name" field in the mutation.
+func (m *ProjectTaskMutation) AssigneeName() (r string, exists bool) {
+	v := m.assignee_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAssigneeName returns the old "assignee_name" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ProjectTaskMutation) OldAssigneeName(ctx context.Context) (v string, err error) {
@@ -24142,9 +24178,143 @@ func (m *ProjectTaskMutation) OldAssigneeName(ctx context.Context) (v string, er
 	return oldValue.AssigneeName, nil
 }
 
-// ResetAssigneeName resets all changes to the "assigneeName" field.
+// ResetAssigneeName resets all changes to the "assignee_name" field.
 func (m *ProjectTaskMutation) ResetAssigneeName() {
-	m.assigneeName = nil
+	m.assignee_name = nil
+}
+
+// SetDescription sets the "description" field.
+func (m *ProjectTaskMutation) SetDescription(s string) {
+	m.description = &s
+}
+
+// Description returns the value of the "description" field in the mutation.
+func (m *ProjectTaskMutation) Description() (r string, exists bool) {
+	v := m.description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDescription returns the old "description" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldDescription(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+	}
+	return oldValue.Description, nil
+}
+
+// ClearDescription clears the value of the "description" field.
+func (m *ProjectTaskMutation) ClearDescription() {
+	m.description = nil
+	m.clearedFields[projecttask.FieldDescription] = struct{}{}
+}
+
+// DescriptionCleared returns if the "description" field was cleared in this mutation.
+func (m *ProjectTaskMutation) DescriptionCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldDescription]
+	return ok
+}
+
+// ResetDescription resets all changes to the "description" field.
+func (m *ProjectTaskMutation) ResetDescription() {
+	m.description = nil
+	delete(m.clearedFields, projecttask.FieldDescription)
+}
+
+// SetDueDate sets the "due_date" field.
+func (m *ProjectTaskMutation) SetDueDate(t time.Time) {
+	m.due_date = &t
+}
+
+// DueDate returns the value of the "due_date" field in the mutation.
+func (m *ProjectTaskMutation) DueDate() (r time.Time, exists bool) {
+	v := m.due_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDueDate returns the old "due_date" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDueDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDueDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDueDate: %w", err)
+	}
+	return oldValue.DueDate, nil
+}
+
+// ResetDueDate resets all changes to the "due_date" field.
+func (m *ProjectTaskMutation) ResetDueDate() {
+	m.due_date = nil
+}
+
+// SetEndDate sets the "end_date" field.
+func (m *ProjectTaskMutation) SetEndDate(t time.Time) {
+	m.end_date = &t
+}
+
+// EndDate returns the value of the "end_date" field in the mutation.
+func (m *ProjectTaskMutation) EndDate() (r time.Time, exists bool) {
+	v := m.end_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndDate returns the old "end_date" field's value of the ProjectTask entity.
+// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProjectTaskMutation) OldEndDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndDate: %w", err)
+	}
+	return oldValue.EndDate, nil
+}
+
+// ClearEndDate clears the value of the "end_date" field.
+func (m *ProjectTaskMutation) ClearEndDate() {
+	m.end_date = nil
+	m.clearedFields[projecttask.FieldEndDate] = struct{}{}
+}
+
+// EndDateCleared returns if the "end_date" field was cleared in this mutation.
+func (m *ProjectTaskMutation) EndDateCleared() bool {
+	_, ok := m.clearedFields[projecttask.FieldEndDate]
+	return ok
+}
+
+// ResetEndDate resets all changes to the "end_date" field.
+func (m *ProjectTaskMutation) ResetEndDate() {
+	m.end_date = nil
+	delete(m.clearedFields, projecttask.FieldEndDate)
 }
 
 // SetLocation sets the "location" field.
@@ -24196,272 +24366,76 @@ func (m *ProjectTaskMutation) ResetLocation() {
 	delete(m.clearedFields, projecttask.FieldLocation)
 }
 
-// SetDueDate sets the "dueDate" field.
-func (m *ProjectTaskMutation) SetDueDate(t time.Time) {
-	m.dueDate = &t
+// SetName sets the "name" field.
+func (m *ProjectTaskMutation) SetName(s string) {
+	m.name = &s
 }
 
-// DueDate returns the value of the "dueDate" field in the mutation.
-func (m *ProjectTaskMutation) DueDate() (r time.Time, exists bool) {
-	v := m.dueDate
+// Name returns the value of the "name" field in the mutation.
+func (m *ProjectTaskMutation) Name() (r string, exists bool) {
+	v := m.name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDueDate returns the old "dueDate" field's value of the ProjectTask entity.
+// OldName returns the old "name" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectTaskMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDueDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDueDate requires an ID field in the mutation")
+		return v, errors.New("OldName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDueDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
 	}
-	return oldValue.DueDate, nil
+	return oldValue.Name, nil
 }
 
-// ResetDueDate resets all changes to the "dueDate" field.
-func (m *ProjectTaskMutation) ResetDueDate() {
-	m.dueDate = nil
+// ResetName resets all changes to the "name" field.
+func (m *ProjectTaskMutation) ResetName() {
+	m.name = nil
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
-func (m *ProjectTaskMutation) SetPlannedStartDate(t time.Time) {
-	m.plannedStartDate = &t
+// SetStartDate sets the "start_date" field.
+func (m *ProjectTaskMutation) SetStartDate(t time.Time) {
+	m.start_date = &t
 }
 
-// PlannedStartDate returns the value of the "plannedStartDate" field in the mutation.
-func (m *ProjectTaskMutation) PlannedStartDate() (r time.Time, exists bool) {
-	v := m.plannedStartDate
+// StartDate returns the value of the "start_date" field in the mutation.
+func (m *ProjectTaskMutation) StartDate() (r time.Time, exists bool) {
+	v := m.start_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPlannedStartDate returns the old "plannedStartDate" field's value of the ProjectTask entity.
+// OldStartDate returns the old "start_date" field's value of the ProjectTask entity.
 // If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldPlannedStartDate(ctx context.Context) (v time.Time, err error) {
+func (m *ProjectTaskMutation) OldStartDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPlannedStartDate is only allowed on UpdateOne operations")
+		return v, errors.New("OldStartDate is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPlannedStartDate requires an ID field in the mutation")
+		return v, errors.New("OldStartDate requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPlannedStartDate: %w", err)
+		return v, fmt.Errorf("querying old value for OldStartDate: %w", err)
 	}
-	return oldValue.PlannedStartDate, nil
+	return oldValue.StartDate, nil
 }
 
-// ResetPlannedStartDate resets all changes to the "plannedStartDate" field.
-func (m *ProjectTaskMutation) ResetPlannedStartDate() {
-	m.plannedStartDate = nil
-}
-
-// SetActualStartDate sets the "actualStartDate" field.
-func (m *ProjectTaskMutation) SetActualStartDate(t time.Time) {
-	m.actualStartDate = &t
-}
-
-// ActualStartDate returns the value of the "actualStartDate" field in the mutation.
-func (m *ProjectTaskMutation) ActualStartDate() (r time.Time, exists bool) {
-	v := m.actualStartDate
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldActualStartDate returns the old "actualStartDate" field's value of the ProjectTask entity.
-// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldActualStartDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActualStartDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActualStartDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActualStartDate: %w", err)
-	}
-	return oldValue.ActualStartDate, nil
-}
-
-// ClearActualStartDate clears the value of the "actualStartDate" field.
-func (m *ProjectTaskMutation) ClearActualStartDate() {
-	m.actualStartDate = nil
-	m.clearedFields[projecttask.FieldActualStartDate] = struct{}{}
-}
-
-// ActualStartDateCleared returns if the "actualStartDate" field was cleared in this mutation.
-func (m *ProjectTaskMutation) ActualStartDateCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldActualStartDate]
-	return ok
-}
-
-// ResetActualStartDate resets all changes to the "actualStartDate" field.
-func (m *ProjectTaskMutation) ResetActualStartDate() {
-	m.actualStartDate = nil
-	delete(m.clearedFields, projecttask.FieldActualStartDate)
-}
-
-// SetPlannedEndDate sets the "plannedEndDate" field.
-func (m *ProjectTaskMutation) SetPlannedEndDate(t time.Time) {
-	m.plannedEndDate = &t
-}
-
-// PlannedEndDate returns the value of the "plannedEndDate" field in the mutation.
-func (m *ProjectTaskMutation) PlannedEndDate() (r time.Time, exists bool) {
-	v := m.plannedEndDate
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPlannedEndDate returns the old "plannedEndDate" field's value of the ProjectTask entity.
-// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldPlannedEndDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPlannedEndDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPlannedEndDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPlannedEndDate: %w", err)
-	}
-	return oldValue.PlannedEndDate, nil
-}
-
-// ClearPlannedEndDate clears the value of the "plannedEndDate" field.
-func (m *ProjectTaskMutation) ClearPlannedEndDate() {
-	m.plannedEndDate = nil
-	m.clearedFields[projecttask.FieldPlannedEndDate] = struct{}{}
-}
-
-// PlannedEndDateCleared returns if the "plannedEndDate" field was cleared in this mutation.
-func (m *ProjectTaskMutation) PlannedEndDateCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldPlannedEndDate]
-	return ok
-}
-
-// ResetPlannedEndDate resets all changes to the "plannedEndDate" field.
-func (m *ProjectTaskMutation) ResetPlannedEndDate() {
-	m.plannedEndDate = nil
-	delete(m.clearedFields, projecttask.FieldPlannedEndDate)
-}
-
-// SetActualEndDate sets the "actualEndDate" field.
-func (m *ProjectTaskMutation) SetActualEndDate(t time.Time) {
-	m.actualEndDate = &t
-}
-
-// ActualEndDate returns the value of the "actualEndDate" field in the mutation.
-func (m *ProjectTaskMutation) ActualEndDate() (r time.Time, exists bool) {
-	v := m.actualEndDate
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldActualEndDate returns the old "actualEndDate" field's value of the ProjectTask entity.
-// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldActualEndDate(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldActualEndDate is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldActualEndDate requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldActualEndDate: %w", err)
-	}
-	return oldValue.ActualEndDate, nil
-}
-
-// ClearActualEndDate clears the value of the "actualEndDate" field.
-func (m *ProjectTaskMutation) ClearActualEndDate() {
-	m.actualEndDate = nil
-	m.clearedFields[projecttask.FieldActualEndDate] = struct{}{}
-}
-
-// ActualEndDateCleared returns if the "actualEndDate" field was cleared in this mutation.
-func (m *ProjectTaskMutation) ActualEndDateCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldActualEndDate]
-	return ok
-}
-
-// ResetActualEndDate resets all changes to the "actualEndDate" field.
-func (m *ProjectTaskMutation) ResetActualEndDate() {
-	m.actualEndDate = nil
-	delete(m.clearedFields, projecttask.FieldActualEndDate)
-}
-
-// SetDescription sets the "description" field.
-func (m *ProjectTaskMutation) SetDescription(s string) {
-	m.description = &s
-}
-
-// Description returns the value of the "description" field in the mutation.
-func (m *ProjectTaskMutation) Description() (r string, exists bool) {
-	v := m.description
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDescription returns the old "description" field's value of the ProjectTask entity.
-// If the ProjectTask object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProjectTaskMutation) OldDescription(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDescription requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
-	}
-	return oldValue.Description, nil
-}
-
-// ClearDescription clears the value of the "description" field.
-func (m *ProjectTaskMutation) ClearDescription() {
-	m.description = nil
-	m.clearedFields[projecttask.FieldDescription] = struct{}{}
-}
-
-// DescriptionCleared returns if the "description" field was cleared in this mutation.
-func (m *ProjectTaskMutation) DescriptionCleared() bool {
-	_, ok := m.clearedFields[projecttask.FieldDescription]
-	return ok
-}
-
-// ResetDescription resets all changes to the "description" field.
-func (m *ProjectTaskMutation) ResetDescription() {
-	m.description = nil
-	delete(m.clearedFields, projecttask.FieldDescription)
+// ResetStartDate resets all changes to the "start_date" field.
+func (m *ProjectTaskMutation) ResetStartDate() {
+	m.start_date = nil
 }
 
 // SetStatus sets the "status" field.
@@ -24632,97 +24606,97 @@ func (m *ProjectTaskMutation) ResetParticipants() {
 	m.removedparticipants = nil
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by id.
+// SetCreatedByID sets the "created_by" edge to the User entity by id.
 func (m *ProjectTaskMutation) SetCreatedByID(id int) {
-	m.createdBy = &id
+	m.created_by = &id
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (m *ProjectTaskMutation) ClearCreatedBy() {
-	m.clearedcreatedBy = true
+	m.clearedcreated_by = true
 }
 
-// CreatedByCleared reports if the "createdBy" edge to the User entity was cleared.
+// CreatedByCleared reports if the "created_by" edge to the User entity was cleared.
 func (m *ProjectTaskMutation) CreatedByCleared() bool {
-	return m.clearedcreatedBy
+	return m.clearedcreated_by
 }
 
-// CreatedByID returns the "createdBy" edge ID in the mutation.
+// CreatedByID returns the "created_by" edge ID in the mutation.
 func (m *ProjectTaskMutation) CreatedByID() (id int, exists bool) {
-	if m.createdBy != nil {
-		return *m.createdBy, true
+	if m.created_by != nil {
+		return *m.created_by, true
 	}
 	return
 }
 
-// CreatedByIDs returns the "createdBy" edge IDs in the mutation.
+// CreatedByIDs returns the "created_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // CreatedByID instead. It exists only for internal usage by the builders.
 func (m *ProjectTaskMutation) CreatedByIDs() (ids []int) {
-	if id := m.createdBy; id != nil {
+	if id := m.created_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetCreatedBy resets all changes to the "createdBy" edge.
+// ResetCreatedBy resets all changes to the "created_by" edge.
 func (m *ProjectTaskMutation) ResetCreatedBy() {
-	m.createdBy = nil
-	m.clearedcreatedBy = false
+	m.created_by = nil
+	m.clearedcreated_by = false
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by ids.
 func (m *ProjectTaskMutation) AddWorkShiftIDs(ids ...int) {
-	if m.workShifts == nil {
-		m.workShifts = make(map[int]struct{})
+	if m.work_shifts == nil {
+		m.work_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.workShifts[ids[i]] = struct{}{}
+		m.work_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
+// ClearWorkShifts clears the "work_shifts" edge to the Workshift entity.
 func (m *ProjectTaskMutation) ClearWorkShifts() {
-	m.clearedworkShifts = true
+	m.clearedwork_shifts = true
 }
 
-// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
+// WorkShiftsCleared reports if the "work_shifts" edge to the Workshift entity was cleared.
 func (m *ProjectTaskMutation) WorkShiftsCleared() bool {
-	return m.clearedworkShifts
+	return m.clearedwork_shifts
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to the Workshift entity by IDs.
 func (m *ProjectTaskMutation) RemoveWorkShiftIDs(ids ...int) {
-	if m.removedworkShifts == nil {
-		m.removedworkShifts = make(map[int]struct{})
+	if m.removedwork_shifts == nil {
+		m.removedwork_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.workShifts, ids[i])
-		m.removedworkShifts[ids[i]] = struct{}{}
+		delete(m.work_shifts, ids[i])
+		m.removedwork_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
+// RemovedWorkShifts returns the removed IDs of the "work_shifts" edge to the Workshift entity.
 func (m *ProjectTaskMutation) RemovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedworkShifts {
+	for id := range m.removedwork_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
+// WorkShiftsIDs returns the "work_shifts" edge IDs in the mutation.
 func (m *ProjectTaskMutation) WorkShiftsIDs() (ids []int) {
-	for id := range m.workShifts {
+	for id := range m.work_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetWorkShifts resets all changes to the "workShifts" edge.
+// ResetWorkShifts resets all changes to the "work_shifts" edge.
 func (m *ProjectTaskMutation) ResetWorkShifts() {
-	m.workShifts = nil
-	m.clearedworkShifts = false
-	m.removedworkShifts = nil
+	m.work_shifts = nil
+	m.clearedwork_shifts = false
+	m.removedwork_shifts = nil
 }
 
 // Where appends a list predicates to the ProjectTaskMutation builder.
@@ -24760,35 +24734,35 @@ func (m *ProjectTaskMutation) Type() string {
 // AddedFields().
 func (m *ProjectTaskMutation) Fields() []string {
 	fields := make([]string, 0, 11)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, projecttask.FieldCreatedAt)
 	}
-	if m.name != nil {
-		fields = append(fields, projecttask.FieldName)
+	if m.updated_at != nil {
+		fields = append(fields, projecttask.FieldUpdatedAt)
 	}
-	if m.assigneeName != nil {
+	if m.deleted_at != nil {
+		fields = append(fields, projecttask.FieldDeletedAt)
+	}
+	if m.assignee_name != nil {
 		fields = append(fields, projecttask.FieldAssigneeName)
+	}
+	if m.description != nil {
+		fields = append(fields, projecttask.FieldDescription)
+	}
+	if m.due_date != nil {
+		fields = append(fields, projecttask.FieldDueDate)
+	}
+	if m.end_date != nil {
+		fields = append(fields, projecttask.FieldEndDate)
 	}
 	if m.location != nil {
 		fields = append(fields, projecttask.FieldLocation)
 	}
-	if m.dueDate != nil {
-		fields = append(fields, projecttask.FieldDueDate)
+	if m.name != nil {
+		fields = append(fields, projecttask.FieldName)
 	}
-	if m.plannedStartDate != nil {
-		fields = append(fields, projecttask.FieldPlannedStartDate)
-	}
-	if m.actualStartDate != nil {
-		fields = append(fields, projecttask.FieldActualStartDate)
-	}
-	if m.plannedEndDate != nil {
-		fields = append(fields, projecttask.FieldPlannedEndDate)
-	}
-	if m.actualEndDate != nil {
-		fields = append(fields, projecttask.FieldActualEndDate)
-	}
-	if m.description != nil {
-		fields = append(fields, projecttask.FieldDescription)
+	if m.start_date != nil {
+		fields = append(fields, projecttask.FieldStartDate)
 	}
 	if m.status != nil {
 		fields = append(fields, projecttask.FieldStatus)
@@ -24803,24 +24777,24 @@ func (m *ProjectTaskMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case projecttask.FieldCreatedAt:
 		return m.CreatedAt()
-	case projecttask.FieldName:
-		return m.Name()
+	case projecttask.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case projecttask.FieldDeletedAt:
+		return m.DeletedAt()
 	case projecttask.FieldAssigneeName:
 		return m.AssigneeName()
-	case projecttask.FieldLocation:
-		return m.Location()
-	case projecttask.FieldDueDate:
-		return m.DueDate()
-	case projecttask.FieldPlannedStartDate:
-		return m.PlannedStartDate()
-	case projecttask.FieldActualStartDate:
-		return m.ActualStartDate()
-	case projecttask.FieldPlannedEndDate:
-		return m.PlannedEndDate()
-	case projecttask.FieldActualEndDate:
-		return m.ActualEndDate()
 	case projecttask.FieldDescription:
 		return m.Description()
+	case projecttask.FieldDueDate:
+		return m.DueDate()
+	case projecttask.FieldEndDate:
+		return m.EndDate()
+	case projecttask.FieldLocation:
+		return m.Location()
+	case projecttask.FieldName:
+		return m.Name()
+	case projecttask.FieldStartDate:
+		return m.StartDate()
 	case projecttask.FieldStatus:
 		return m.Status()
 	}
@@ -24834,24 +24808,24 @@ func (m *ProjectTaskMutation) OldField(ctx context.Context, name string) (ent.Va
 	switch name {
 	case projecttask.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
-	case projecttask.FieldName:
-		return m.OldName(ctx)
+	case projecttask.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case projecttask.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
 	case projecttask.FieldAssigneeName:
 		return m.OldAssigneeName(ctx)
-	case projecttask.FieldLocation:
-		return m.OldLocation(ctx)
-	case projecttask.FieldDueDate:
-		return m.OldDueDate(ctx)
-	case projecttask.FieldPlannedStartDate:
-		return m.OldPlannedStartDate(ctx)
-	case projecttask.FieldActualStartDate:
-		return m.OldActualStartDate(ctx)
-	case projecttask.FieldPlannedEndDate:
-		return m.OldPlannedEndDate(ctx)
-	case projecttask.FieldActualEndDate:
-		return m.OldActualEndDate(ctx)
 	case projecttask.FieldDescription:
 		return m.OldDescription(ctx)
+	case projecttask.FieldDueDate:
+		return m.OldDueDate(ctx)
+	case projecttask.FieldEndDate:
+		return m.OldEndDate(ctx)
+	case projecttask.FieldLocation:
+		return m.OldLocation(ctx)
+	case projecttask.FieldName:
+		return m.OldName(ctx)
+	case projecttask.FieldStartDate:
+		return m.OldStartDate(ctx)
 	case projecttask.FieldStatus:
 		return m.OldStatus(ctx)
 	}
@@ -24870,12 +24844,19 @@ func (m *ProjectTaskMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCreatedAt(v)
 		return nil
-	case projecttask.FieldName:
-		v, ok := value.(string)
+	case projecttask.FieldUpdatedAt:
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetUpdatedAt(v)
+		return nil
+	case projecttask.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
 		return nil
 	case projecttask.FieldAssigneeName:
 		v, ok := value.(string)
@@ -24884,12 +24865,12 @@ func (m *ProjectTaskMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAssigneeName(v)
 		return nil
-	case projecttask.FieldLocation:
+	case projecttask.FieldDescription:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetLocation(v)
+		m.SetDescription(v)
 		return nil
 	case projecttask.FieldDueDate:
 		v, ok := value.(time.Time)
@@ -24898,40 +24879,33 @@ func (m *ProjectTaskMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDueDate(v)
 		return nil
-	case projecttask.FieldPlannedStartDate:
+	case projecttask.FieldEndDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPlannedStartDate(v)
+		m.SetEndDate(v)
 		return nil
-	case projecttask.FieldActualStartDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetActualStartDate(v)
-		return nil
-	case projecttask.FieldPlannedEndDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPlannedEndDate(v)
-		return nil
-	case projecttask.FieldActualEndDate:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetActualEndDate(v)
-		return nil
-	case projecttask.FieldDescription:
+	case projecttask.FieldLocation:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDescription(v)
+		m.SetLocation(v)
+		return nil
+	case projecttask.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case projecttask.FieldStartDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartDate(v)
 		return nil
 	case projecttask.FieldStatus:
 		v, ok := value.(projecttask.Status)
@@ -24970,23 +24944,17 @@ func (m *ProjectTaskMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ProjectTaskMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(projecttask.FieldCreatedAt) {
-		fields = append(fields, projecttask.FieldCreatedAt)
-	}
-	if m.FieldCleared(projecttask.FieldLocation) {
-		fields = append(fields, projecttask.FieldLocation)
-	}
-	if m.FieldCleared(projecttask.FieldActualStartDate) {
-		fields = append(fields, projecttask.FieldActualStartDate)
-	}
-	if m.FieldCleared(projecttask.FieldPlannedEndDate) {
-		fields = append(fields, projecttask.FieldPlannedEndDate)
-	}
-	if m.FieldCleared(projecttask.FieldActualEndDate) {
-		fields = append(fields, projecttask.FieldActualEndDate)
+	if m.FieldCleared(projecttask.FieldDeletedAt) {
+		fields = append(fields, projecttask.FieldDeletedAt)
 	}
 	if m.FieldCleared(projecttask.FieldDescription) {
 		fields = append(fields, projecttask.FieldDescription)
+	}
+	if m.FieldCleared(projecttask.FieldEndDate) {
+		fields = append(fields, projecttask.FieldEndDate)
+	}
+	if m.FieldCleared(projecttask.FieldLocation) {
+		fields = append(fields, projecttask.FieldLocation)
 	}
 	return fields
 }
@@ -25002,23 +24970,17 @@ func (m *ProjectTaskMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ProjectTaskMutation) ClearField(name string) error {
 	switch name {
-	case projecttask.FieldCreatedAt:
-		m.ClearCreatedAt()
-		return nil
-	case projecttask.FieldLocation:
-		m.ClearLocation()
-		return nil
-	case projecttask.FieldActualStartDate:
-		m.ClearActualStartDate()
-		return nil
-	case projecttask.FieldPlannedEndDate:
-		m.ClearPlannedEndDate()
-		return nil
-	case projecttask.FieldActualEndDate:
-		m.ClearActualEndDate()
+	case projecttask.FieldDeletedAt:
+		m.ClearDeletedAt()
 		return nil
 	case projecttask.FieldDescription:
 		m.ClearDescription()
+		return nil
+	case projecttask.FieldEndDate:
+		m.ClearEndDate()
+		return nil
+	case projecttask.FieldLocation:
+		m.ClearLocation()
 		return nil
 	}
 	return fmt.Errorf("unknown ProjectTask nullable field %s", name)
@@ -25031,32 +24993,32 @@ func (m *ProjectTaskMutation) ResetField(name string) error {
 	case projecttask.FieldCreatedAt:
 		m.ResetCreatedAt()
 		return nil
-	case projecttask.FieldName:
-		m.ResetName()
+	case projecttask.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case projecttask.FieldDeletedAt:
+		m.ResetDeletedAt()
 		return nil
 	case projecttask.FieldAssigneeName:
 		m.ResetAssigneeName()
 		return nil
-	case projecttask.FieldLocation:
-		m.ResetLocation()
+	case projecttask.FieldDescription:
+		m.ResetDescription()
 		return nil
 	case projecttask.FieldDueDate:
 		m.ResetDueDate()
 		return nil
-	case projecttask.FieldPlannedStartDate:
-		m.ResetPlannedStartDate()
+	case projecttask.FieldEndDate:
+		m.ResetEndDate()
 		return nil
-	case projecttask.FieldActualStartDate:
-		m.ResetActualStartDate()
+	case projecttask.FieldLocation:
+		m.ResetLocation()
 		return nil
-	case projecttask.FieldPlannedEndDate:
-		m.ResetPlannedEndDate()
+	case projecttask.FieldName:
+		m.ResetName()
 		return nil
-	case projecttask.FieldActualEndDate:
-		m.ResetActualEndDate()
-		return nil
-	case projecttask.FieldDescription:
-		m.ResetDescription()
+	case projecttask.FieldStartDate:
+		m.ResetStartDate()
 		return nil
 	case projecttask.FieldStatus:
 		m.ResetStatus()
@@ -25077,10 +25039,10 @@ func (m *ProjectTaskMutation) AddedEdges() []string {
 	if m.participants != nil {
 		edges = append(edges, projecttask.EdgeParticipants)
 	}
-	if m.createdBy != nil {
+	if m.created_by != nil {
 		edges = append(edges, projecttask.EdgeCreatedBy)
 	}
-	if m.workShifts != nil {
+	if m.work_shifts != nil {
 		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
@@ -25105,12 +25067,12 @@ func (m *ProjectTaskMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case projecttask.EdgeCreatedBy:
-		if id := m.createdBy; id != nil {
+		if id := m.created_by; id != nil {
 			return []ent.Value{*id}
 		}
 	case projecttask.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.workShifts))
-		for id := range m.workShifts {
+		ids := make([]ent.Value, 0, len(m.work_shifts))
+		for id := range m.work_shifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -25124,7 +25086,7 @@ func (m *ProjectTaskMutation) RemovedEdges() []string {
 	if m.removedparticipants != nil {
 		edges = append(edges, projecttask.EdgeParticipants)
 	}
-	if m.removedworkShifts != nil {
+	if m.removedwork_shifts != nil {
 		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
@@ -25141,8 +25103,8 @@ func (m *ProjectTaskMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case projecttask.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedworkShifts))
-		for id := range m.removedworkShifts {
+		ids := make([]ent.Value, 0, len(m.removedwork_shifts))
+		for id := range m.removedwork_shifts {
 			ids = append(ids, id)
 		}
 		return ids
@@ -25162,10 +25124,10 @@ func (m *ProjectTaskMutation) ClearedEdges() []string {
 	if m.clearedparticipants {
 		edges = append(edges, projecttask.EdgeParticipants)
 	}
-	if m.clearedcreatedBy {
+	if m.clearedcreated_by {
 		edges = append(edges, projecttask.EdgeCreatedBy)
 	}
-	if m.clearedworkShifts {
+	if m.clearedwork_shifts {
 		edges = append(edges, projecttask.EdgeWorkShifts)
 	}
 	return edges
@@ -25182,9 +25144,9 @@ func (m *ProjectTaskMutation) EdgeCleared(name string) bool {
 	case projecttask.EdgeParticipants:
 		return m.clearedparticipants
 	case projecttask.EdgeCreatedBy:
-		return m.clearedcreatedBy
+		return m.clearedcreated_by
 	case projecttask.EdgeWorkShifts:
-		return m.clearedworkShifts
+		return m.clearedwork_shifts
 	}
 	return false
 }
@@ -25232,32 +25194,32 @@ func (m *ProjectTaskMutation) ResetEdge(name string) error {
 // ReceivableMutation represents an operation that mutates the Receivable nodes in the graph.
 type ReceivableMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *int
-	createdAt             *time.Time
-	updatedAt             *time.Time
-	deletedAt             *time.Time
-	entryGroup            *int
-	addentryGroup         *int
-	date                  *time.Time
-	name                  *string
-	amountInDefault       *float64
-	addamountInDefault    *float64
-	outstandingBalance    *float64
-	addoutstandingBalance *float64
-	totalTransaction      *float64
-	addtotalTransaction   *float64
-	dueDate               *time.Time
-	status                *receivable.Status
-	clearedFields         map[string]struct{}
-	company               *int
-	clearedcompany        bool
-	invoice               *int
-	clearedinvoice        bool
-	done                  bool
-	oldValue              func(context.Context) (*Receivable, error)
-	predicates            []predicate.Receivable
+	op                     Op
+	typ                    string
+	id                     *int
+	created_at             *time.Time
+	updated_at             *time.Time
+	deleted_at             *time.Time
+	entry_group            *int
+	addentry_group         *int
+	date                   *time.Time
+	name                   *string
+	amount_in_default      *float64
+	addamount_in_default   *float64
+	outstanding_balance    *float64
+	addoutstanding_balance *float64
+	total_transaction      *float64
+	addtotal_transaction   *float64
+	due_date               *time.Time
+	status                 *receivable.Status
+	clearedFields          map[string]struct{}
+	company                *int
+	clearedcompany         bool
+	invoice                *int
+	clearedinvoice         bool
+	done                   bool
+	oldValue               func(context.Context) (*Receivable, error)
+	predicates             []predicate.Receivable
 }
 
 var _ ent.Mutation = (*ReceivableMutation)(nil)
@@ -25358,21 +25320,21 @@ func (m *ReceivableMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *ReceivableMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *ReceivableMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Receivable entity.
+// OldCreatedAt returns the old "created_at" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -25389,26 +25351,26 @@ func (m *ReceivableMutation) OldCreatedAt(ctx context.Context) (v time.Time, err
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *ReceivableMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *ReceivableMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *ReceivableMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Receivable entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -25425,26 +25387,26 @@ func (m *ReceivableMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *ReceivableMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *ReceivableMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *ReceivableMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Receivable entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -25461,40 +25423,40 @@ func (m *ReceivableMutation) OldDeletedAt(ctx context.Context) (v *time.Time, er
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *ReceivableMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[receivable.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *ReceivableMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[receivable.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *ReceivableMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, receivable.FieldDeletedAt)
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (m *ReceivableMutation) SetEntryGroup(i int) {
-	m.entryGroup = &i
-	m.addentryGroup = nil
+	m.entry_group = &i
+	m.addentry_group = nil
 }
 
-// EntryGroup returns the value of the "entryGroup" field in the mutation.
+// EntryGroup returns the value of the "entry_group" field in the mutation.
 func (m *ReceivableMutation) EntryGroup() (r int, exists bool) {
-	v := m.entryGroup
+	v := m.entry_group
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEntryGroup returns the old "entryGroup" field's value of the Receivable entity.
+// OldEntryGroup returns the old "entry_group" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldEntryGroup(ctx context.Context) (v int, err error) {
@@ -25511,28 +25473,28 @@ func (m *ReceivableMutation) OldEntryGroup(ctx context.Context) (v int, err erro
 	return oldValue.EntryGroup, nil
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (m *ReceivableMutation) AddEntryGroup(i int) {
-	if m.addentryGroup != nil {
-		*m.addentryGroup += i
+	if m.addentry_group != nil {
+		*m.addentry_group += i
 	} else {
-		m.addentryGroup = &i
+		m.addentry_group = &i
 	}
 }
 
-// AddedEntryGroup returns the value that was added to the "entryGroup" field in this mutation.
+// AddedEntryGroup returns the value that was added to the "entry_group" field in this mutation.
 func (m *ReceivableMutation) AddedEntryGroup() (r int, exists bool) {
-	v := m.addentryGroup
+	v := m.addentry_group
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetEntryGroup resets all changes to the "entryGroup" field.
+// ResetEntryGroup resets all changes to the "entry_group" field.
 func (m *ReceivableMutation) ResetEntryGroup() {
-	m.entryGroup = nil
-	m.addentryGroup = nil
+	m.entry_group = nil
+	m.addentry_group = nil
 }
 
 // SetDate sets the "date" field.
@@ -25607,22 +25569,22 @@ func (m *ReceivableMutation) ResetName() {
 	m.name = nil
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (m *ReceivableMutation) SetAmountInDefault(f float64) {
-	m.amountInDefault = &f
-	m.addamountInDefault = nil
+	m.amount_in_default = &f
+	m.addamount_in_default = nil
 }
 
-// AmountInDefault returns the value of the "amountInDefault" field in the mutation.
+// AmountInDefault returns the value of the "amount_in_default" field in the mutation.
 func (m *ReceivableMutation) AmountInDefault() (r float64, exists bool) {
-	v := m.amountInDefault
+	v := m.amount_in_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAmountInDefault returns the old "amountInDefault" field's value of the Receivable entity.
+// OldAmountInDefault returns the old "amount_in_default" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldAmountInDefault(ctx context.Context) (v float64, err error) {
@@ -25639,46 +25601,46 @@ func (m *ReceivableMutation) OldAmountInDefault(ctx context.Context) (v float64,
 	return oldValue.AmountInDefault, nil
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (m *ReceivableMutation) AddAmountInDefault(f float64) {
-	if m.addamountInDefault != nil {
-		*m.addamountInDefault += f
+	if m.addamount_in_default != nil {
+		*m.addamount_in_default += f
 	} else {
-		m.addamountInDefault = &f
+		m.addamount_in_default = &f
 	}
 }
 
-// AddedAmountInDefault returns the value that was added to the "amountInDefault" field in this mutation.
+// AddedAmountInDefault returns the value that was added to the "amount_in_default" field in this mutation.
 func (m *ReceivableMutation) AddedAmountInDefault() (r float64, exists bool) {
-	v := m.addamountInDefault
+	v := m.addamount_in_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetAmountInDefault resets all changes to the "amountInDefault" field.
+// ResetAmountInDefault resets all changes to the "amount_in_default" field.
 func (m *ReceivableMutation) ResetAmountInDefault() {
-	m.amountInDefault = nil
-	m.addamountInDefault = nil
+	m.amount_in_default = nil
+	m.addamount_in_default = nil
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (m *ReceivableMutation) SetOutstandingBalance(f float64) {
-	m.outstandingBalance = &f
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = &f
+	m.addoutstanding_balance = nil
 }
 
-// OutstandingBalance returns the value of the "outstandingBalance" field in the mutation.
+// OutstandingBalance returns the value of the "outstanding_balance" field in the mutation.
 func (m *ReceivableMutation) OutstandingBalance() (r float64, exists bool) {
-	v := m.outstandingBalance
+	v := m.outstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOutstandingBalance returns the old "outstandingBalance" field's value of the Receivable entity.
+// OldOutstandingBalance returns the old "outstanding_balance" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldOutstandingBalance(ctx context.Context) (v float64, err error) {
@@ -25695,46 +25657,46 @@ func (m *ReceivableMutation) OldOutstandingBalance(ctx context.Context) (v float
 	return oldValue.OutstandingBalance, nil
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (m *ReceivableMutation) AddOutstandingBalance(f float64) {
-	if m.addoutstandingBalance != nil {
-		*m.addoutstandingBalance += f
+	if m.addoutstanding_balance != nil {
+		*m.addoutstanding_balance += f
 	} else {
-		m.addoutstandingBalance = &f
+		m.addoutstanding_balance = &f
 	}
 }
 
-// AddedOutstandingBalance returns the value that was added to the "outstandingBalance" field in this mutation.
+// AddedOutstandingBalance returns the value that was added to the "outstanding_balance" field in this mutation.
 func (m *ReceivableMutation) AddedOutstandingBalance() (r float64, exists bool) {
-	v := m.addoutstandingBalance
+	v := m.addoutstanding_balance
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetOutstandingBalance resets all changes to the "outstandingBalance" field.
+// ResetOutstandingBalance resets all changes to the "outstanding_balance" field.
 func (m *ReceivableMutation) ResetOutstandingBalance() {
-	m.outstandingBalance = nil
-	m.addoutstandingBalance = nil
+	m.outstanding_balance = nil
+	m.addoutstanding_balance = nil
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (m *ReceivableMutation) SetTotalTransaction(f float64) {
-	m.totalTransaction = &f
-	m.addtotalTransaction = nil
+	m.total_transaction = &f
+	m.addtotal_transaction = nil
 }
 
-// TotalTransaction returns the value of the "totalTransaction" field in the mutation.
+// TotalTransaction returns the value of the "total_transaction" field in the mutation.
 func (m *ReceivableMutation) TotalTransaction() (r float64, exists bool) {
-	v := m.totalTransaction
+	v := m.total_transaction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTotalTransaction returns the old "totalTransaction" field's value of the Receivable entity.
+// OldTotalTransaction returns the old "total_transaction" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldTotalTransaction(ctx context.Context) (v float64, err error) {
@@ -25751,45 +25713,45 @@ func (m *ReceivableMutation) OldTotalTransaction(ctx context.Context) (v float64
 	return oldValue.TotalTransaction, nil
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (m *ReceivableMutation) AddTotalTransaction(f float64) {
-	if m.addtotalTransaction != nil {
-		*m.addtotalTransaction += f
+	if m.addtotal_transaction != nil {
+		*m.addtotal_transaction += f
 	} else {
-		m.addtotalTransaction = &f
+		m.addtotal_transaction = &f
 	}
 }
 
-// AddedTotalTransaction returns the value that was added to the "totalTransaction" field in this mutation.
+// AddedTotalTransaction returns the value that was added to the "total_transaction" field in this mutation.
 func (m *ReceivableMutation) AddedTotalTransaction() (r float64, exists bool) {
-	v := m.addtotalTransaction
+	v := m.addtotal_transaction
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetTotalTransaction resets all changes to the "totalTransaction" field.
+// ResetTotalTransaction resets all changes to the "total_transaction" field.
 func (m *ReceivableMutation) ResetTotalTransaction() {
-	m.totalTransaction = nil
-	m.addtotalTransaction = nil
+	m.total_transaction = nil
+	m.addtotal_transaction = nil
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (m *ReceivableMutation) SetDueDate(t time.Time) {
-	m.dueDate = &t
+	m.due_date = &t
 }
 
-// DueDate returns the value of the "dueDate" field in the mutation.
+// DueDate returns the value of the "due_date" field in the mutation.
 func (m *ReceivableMutation) DueDate() (r time.Time, exists bool) {
-	v := m.dueDate
+	v := m.due_date
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDueDate returns the old "dueDate" field's value of the Receivable entity.
+// OldDueDate returns the old "due_date" field's value of the Receivable entity.
 // If the Receivable object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ReceivableMutation) OldDueDate(ctx context.Context) (v time.Time, err error) {
@@ -25806,9 +25768,9 @@ func (m *ReceivableMutation) OldDueDate(ctx context.Context) (v time.Time, err e
 	return oldValue.DueDate, nil
 }
 
-// ResetDueDate resets all changes to the "dueDate" field.
+// ResetDueDate resets all changes to the "due_date" field.
 func (m *ReceivableMutation) ResetDueDate() {
-	m.dueDate = nil
+	m.due_date = nil
 }
 
 // SetStatus sets the "status" field.
@@ -25960,16 +25922,16 @@ func (m *ReceivableMutation) Type() string {
 // AddedFields().
 func (m *ReceivableMutation) Fields() []string {
 	fields := make([]string, 0, 11)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, receivable.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, receivable.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, receivable.FieldDeletedAt)
 	}
-	if m.entryGroup != nil {
+	if m.entry_group != nil {
 		fields = append(fields, receivable.FieldEntryGroup)
 	}
 	if m.date != nil {
@@ -25978,16 +25940,16 @@ func (m *ReceivableMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, receivable.FieldName)
 	}
-	if m.amountInDefault != nil {
+	if m.amount_in_default != nil {
 		fields = append(fields, receivable.FieldAmountInDefault)
 	}
-	if m.outstandingBalance != nil {
+	if m.outstanding_balance != nil {
 		fields = append(fields, receivable.FieldOutstandingBalance)
 	}
-	if m.totalTransaction != nil {
+	if m.total_transaction != nil {
 		fields = append(fields, receivable.FieldTotalTransaction)
 	}
-	if m.dueDate != nil {
+	if m.due_date != nil {
 		fields = append(fields, receivable.FieldDueDate)
 	}
 	if m.status != nil {
@@ -26148,16 +26110,16 @@ func (m *ReceivableMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *ReceivableMutation) AddedFields() []string {
 	var fields []string
-	if m.addentryGroup != nil {
+	if m.addentry_group != nil {
 		fields = append(fields, receivable.FieldEntryGroup)
 	}
-	if m.addamountInDefault != nil {
+	if m.addamount_in_default != nil {
 		fields = append(fields, receivable.FieldAmountInDefault)
 	}
-	if m.addoutstandingBalance != nil {
+	if m.addoutstanding_balance != nil {
 		fields = append(fields, receivable.FieldOutstandingBalance)
 	}
-	if m.addtotalTransaction != nil {
+	if m.addtotal_transaction != nil {
 		fields = append(fields, receivable.FieldTotalTransaction)
 	}
 	return fields
@@ -26384,18 +26346,18 @@ type SupplierMutation struct {
 	op              Op
 	typ             string
 	id              *int
-	createdAt       *time.Time
-	updatedAt       *time.Time
-	deletedAt       *time.Time
+	created_at      *time.Time
+	updated_at      *time.Time
+	deleted_at      *time.Time
 	address         *string
 	city            *string
 	country         *string
 	description     *string
 	email           *string
-	isDefault       *bool
+	is_default      *bool
 	name            *string
 	phone           *string
-	taxId           *string
+	tax_id          *string
 	clearedFields   map[string]struct{}
 	company         *int
 	clearedcompany  bool
@@ -26508,21 +26470,21 @@ func (m *SupplierMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *SupplierMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *SupplierMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Supplier entity.
+// OldCreatedAt returns the old "created_at" field's value of the Supplier entity.
 // If the Supplier object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SupplierMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -26539,26 +26501,26 @@ func (m *SupplierMutation) OldCreatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *SupplierMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *SupplierMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *SupplierMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Supplier entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Supplier entity.
 // If the Supplier object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SupplierMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -26575,26 +26537,26 @@ func (m *SupplierMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *SupplierMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *SupplierMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *SupplierMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Supplier entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Supplier entity.
 // If the Supplier object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SupplierMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -26611,21 +26573,21 @@ func (m *SupplierMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err 
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *SupplierMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[supplier.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *SupplierMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[supplier.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *SupplierMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, supplier.FieldDeletedAt)
 }
 
@@ -26874,21 +26836,21 @@ func (m *SupplierMutation) ResetEmail() {
 	delete(m.clearedFields, supplier.FieldEmail)
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (m *SupplierMutation) SetIsDefault(b bool) {
-	m.isDefault = &b
+	m.is_default = &b
 }
 
-// IsDefault returns the value of the "isDefault" field in the mutation.
+// IsDefault returns the value of the "is_default" field in the mutation.
 func (m *SupplierMutation) IsDefault() (r bool, exists bool) {
-	v := m.isDefault
+	v := m.is_default
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsDefault returns the old "isDefault" field's value of the Supplier entity.
+// OldIsDefault returns the old "is_default" field's value of the Supplier entity.
 // If the Supplier object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SupplierMutation) OldIsDefault(ctx context.Context) (v bool, err error) {
@@ -26905,21 +26867,21 @@ func (m *SupplierMutation) OldIsDefault(ctx context.Context) (v bool, err error)
 	return oldValue.IsDefault, nil
 }
 
-// ClearIsDefault clears the value of the "isDefault" field.
+// ClearIsDefault clears the value of the "is_default" field.
 func (m *SupplierMutation) ClearIsDefault() {
-	m.isDefault = nil
+	m.is_default = nil
 	m.clearedFields[supplier.FieldIsDefault] = struct{}{}
 }
 
-// IsDefaultCleared returns if the "isDefault" field was cleared in this mutation.
+// IsDefaultCleared returns if the "is_default" field was cleared in this mutation.
 func (m *SupplierMutation) IsDefaultCleared() bool {
 	_, ok := m.clearedFields[supplier.FieldIsDefault]
 	return ok
 }
 
-// ResetIsDefault resets all changes to the "isDefault" field.
+// ResetIsDefault resets all changes to the "is_default" field.
 func (m *SupplierMutation) ResetIsDefault() {
-	m.isDefault = nil
+	m.is_default = nil
 	delete(m.clearedFields, supplier.FieldIsDefault)
 }
 
@@ -27008,53 +26970,53 @@ func (m *SupplierMutation) ResetPhone() {
 	delete(m.clearedFields, supplier.FieldPhone)
 }
 
-// SetTaxId sets the "taxId" field.
-func (m *SupplierMutation) SetTaxId(s string) {
-	m.taxId = &s
+// SetTaxID sets the "tax_id" field.
+func (m *SupplierMutation) SetTaxID(s string) {
+	m.tax_id = &s
 }
 
-// TaxId returns the value of the "taxId" field in the mutation.
-func (m *SupplierMutation) TaxId() (r string, exists bool) {
-	v := m.taxId
+// TaxID returns the value of the "tax_id" field in the mutation.
+func (m *SupplierMutation) TaxID() (r string, exists bool) {
+	v := m.tax_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTaxId returns the old "taxId" field's value of the Supplier entity.
+// OldTaxID returns the old "tax_id" field's value of the Supplier entity.
 // If the Supplier object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SupplierMutation) OldTaxId(ctx context.Context) (v string, err error) {
+func (m *SupplierMutation) OldTaxID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTaxId is only allowed on UpdateOne operations")
+		return v, errors.New("OldTaxID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTaxId requires an ID field in the mutation")
+		return v, errors.New("OldTaxID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTaxId: %w", err)
+		return v, fmt.Errorf("querying old value for OldTaxID: %w", err)
 	}
-	return oldValue.TaxId, nil
+	return oldValue.TaxID, nil
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (m *SupplierMutation) ClearTaxId() {
-	m.taxId = nil
-	m.clearedFields[supplier.FieldTaxId] = struct{}{}
+// ClearTaxID clears the value of the "tax_id" field.
+func (m *SupplierMutation) ClearTaxID() {
+	m.tax_id = nil
+	m.clearedFields[supplier.FieldTaxID] = struct{}{}
 }
 
-// TaxIdCleared returns if the "taxId" field was cleared in this mutation.
-func (m *SupplierMutation) TaxIdCleared() bool {
-	_, ok := m.clearedFields[supplier.FieldTaxId]
+// TaxIDCleared returns if the "tax_id" field was cleared in this mutation.
+func (m *SupplierMutation) TaxIDCleared() bool {
+	_, ok := m.clearedFields[supplier.FieldTaxID]
 	return ok
 }
 
-// ResetTaxId resets all changes to the "taxId" field.
-func (m *SupplierMutation) ResetTaxId() {
-	m.taxId = nil
-	delete(m.clearedFields, supplier.FieldTaxId)
+// ResetTaxID resets all changes to the "tax_id" field.
+func (m *SupplierMutation) ResetTaxID() {
+	m.tax_id = nil
+	delete(m.clearedFields, supplier.FieldTaxID)
 }
 
 // SetCompanyID sets the "company" edge to the Company entity by id.
@@ -27239,13 +27201,13 @@ func (m *SupplierMutation) Type() string {
 // AddedFields().
 func (m *SupplierMutation) Fields() []string {
 	fields := make([]string, 0, 12)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, supplier.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, supplier.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, supplier.FieldDeletedAt)
 	}
 	if m.address != nil {
@@ -27263,7 +27225,7 @@ func (m *SupplierMutation) Fields() []string {
 	if m.email != nil {
 		fields = append(fields, supplier.FieldEmail)
 	}
-	if m.isDefault != nil {
+	if m.is_default != nil {
 		fields = append(fields, supplier.FieldIsDefault)
 	}
 	if m.name != nil {
@@ -27272,8 +27234,8 @@ func (m *SupplierMutation) Fields() []string {
 	if m.phone != nil {
 		fields = append(fields, supplier.FieldPhone)
 	}
-	if m.taxId != nil {
-		fields = append(fields, supplier.FieldTaxId)
+	if m.tax_id != nil {
+		fields = append(fields, supplier.FieldTaxID)
 	}
 	return fields
 }
@@ -27305,8 +27267,8 @@ func (m *SupplierMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case supplier.FieldPhone:
 		return m.Phone()
-	case supplier.FieldTaxId:
-		return m.TaxId()
+	case supplier.FieldTaxID:
+		return m.TaxID()
 	}
 	return nil, false
 }
@@ -27338,8 +27300,8 @@ func (m *SupplierMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldName(ctx)
 	case supplier.FieldPhone:
 		return m.OldPhone(ctx)
-	case supplier.FieldTaxId:
-		return m.OldTaxId(ctx)
+	case supplier.FieldTaxID:
+		return m.OldTaxID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Supplier field %s", name)
 }
@@ -27426,12 +27388,12 @@ func (m *SupplierMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPhone(v)
 		return nil
-	case supplier.FieldTaxId:
+	case supplier.FieldTaxID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTaxId(v)
+		m.SetTaxID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Supplier field %s", name)
@@ -27487,8 +27449,8 @@ func (m *SupplierMutation) ClearedFields() []string {
 	if m.FieldCleared(supplier.FieldPhone) {
 		fields = append(fields, supplier.FieldPhone)
 	}
-	if m.FieldCleared(supplier.FieldTaxId) {
-		fields = append(fields, supplier.FieldTaxId)
+	if m.FieldCleared(supplier.FieldTaxID) {
+		fields = append(fields, supplier.FieldTaxID)
 	}
 	return fields
 }
@@ -27528,8 +27490,8 @@ func (m *SupplierMutation) ClearField(name string) error {
 	case supplier.FieldPhone:
 		m.ClearPhone()
 		return nil
-	case supplier.FieldTaxId:
-		m.ClearTaxId()
+	case supplier.FieldTaxID:
+		m.ClearTaxID()
 		return nil
 	}
 	return fmt.Errorf("unknown Supplier nullable field %s", name)
@@ -27572,8 +27534,8 @@ func (m *SupplierMutation) ResetField(name string) error {
 	case supplier.FieldPhone:
 		m.ResetPhone()
 		return nil
-	case supplier.FieldTaxId:
-		m.ResetTaxId()
+	case supplier.FieldTaxID:
+		m.ResetTaxID()
 		return nil
 	}
 	return fmt.Errorf("unknown Supplier field %s", name)
@@ -28273,9 +28235,9 @@ type TreasuryMutation struct {
 	op             Op
 	typ            string
 	id             *int
-	createdAt      *time.Time
-	updatedAt      *time.Time
-	deletedAt      *time.Time
+	created_at     *time.Time
+	updated_at     *time.Time
+	deleted_at     *time.Time
 	balance        *float64
 	addbalance     *float64
 	clearedFields  map[string]struct{}
@@ -28384,21 +28346,21 @@ func (m *TreasuryMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *TreasuryMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *TreasuryMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Treasury entity.
+// OldCreatedAt returns the old "created_at" field's value of the Treasury entity.
 // If the Treasury object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *TreasuryMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -28415,26 +28377,26 @@ func (m *TreasuryMutation) OldCreatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *TreasuryMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *TreasuryMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *TreasuryMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Treasury entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Treasury entity.
 // If the Treasury object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *TreasuryMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -28451,26 +28413,26 @@ func (m *TreasuryMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err e
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *TreasuryMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *TreasuryMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *TreasuryMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Treasury entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Treasury entity.
 // If the Treasury object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *TreasuryMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -28487,21 +28449,21 @@ func (m *TreasuryMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err 
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *TreasuryMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[treasury.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *TreasuryMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[treasury.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *TreasuryMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, treasury.FieldDeletedAt)
 }
 
@@ -28635,13 +28597,13 @@ func (m *TreasuryMutation) Type() string {
 // AddedFields().
 func (m *TreasuryMutation) Fields() []string {
 	fields := make([]string, 0, 4)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, treasury.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, treasury.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, treasury.FieldDeletedAt)
 	}
 	if m.balance != nil {
@@ -28883,84 +28845,84 @@ func (m *TreasuryMutation) ResetEdge(name string) error {
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op                               Op
-	typ                              string
-	id                               *int
-	createdAt                        *time.Time
-	updatedAt                        *time.Time
-	deletedAt                        *time.Time
-	device                           *string
-	isDemoUser                       *bool
-	firebaseUID                      *string
-	fcmToken                         *string
-	expoPushToken                    *string
-	email                            *string
-	name                             *string
-	address                          *string
-	avatar                           *string
-	photoURL                         *string
-	department                       *string
-	phone                            *string
-	birthdate                        *time.Time
-	lastLogin                        *time.Time
-	gender                           *user.Gender
-	active                           *bool
-	clearedFields                    map[string]struct{}
-	accountingEntries                map[int]struct{}
-	removedaccountingEntries         map[int]struct{}
-	clearedaccountingEntries         bool
-	company                          map[int]struct{}
-	removedcompany                   map[int]struct{}
-	clearedcompany                   bool
-	assignedRoles                    map[int]struct{}
-	removedassignedRoles             map[int]struct{}
-	clearedassignedRoles             bool
-	subordinates                     map[int]struct{}
-	removedsubordinates              map[int]struct{}
-	clearedsubordinates              bool
-	leader                           *int
-	clearedleader                    bool
-	createdMemberSignupTokens        map[int]struct{}
-	removedcreatedMemberSignupTokens map[int]struct{}
-	clearedcreatedMemberSignupTokens bool
-	employee                         *int
-	clearedemployee                  bool
-	issuedInvoices                   map[int]struct{}
-	removedissuedInvoices            map[int]struct{}
-	clearedissuedInvoices            bool
-	createdProjects                  map[int]struct{}
-	removedcreatedProjects           map[int]struct{}
-	clearedcreatedProjects           bool
-	leaderedProjects                 map[int]struct{}
-	removedleaderedProjects          map[int]struct{}
-	clearedleaderedProjects          bool
-	assignedProjectTasks             map[int]struct{}
-	removedassignedProjectTasks      map[int]struct{}
-	clearedassignedProjectTasks      bool
-	participatedProjectTasks         map[int]struct{}
-	removedparticipatedProjectTasks  map[int]struct{}
-	clearedparticipatedProjectTasks  bool
-	createdTasks                     map[int]struct{}
-	removedcreatedTasks              map[int]struct{}
-	clearedcreatedTasks              bool
-	tokens                           map[int]struct{}
-	removedtokens                    map[int]struct{}
-	clearedtokens                    bool
-	approvedWorkShifts               map[int]struct{}
-	removedapprovedWorkShifts        map[int]struct{}
-	clearedapprovedWorkShifts        bool
-	workShifts                       map[int]struct{}
-	removedworkShifts                map[int]struct{}
-	clearedworkShifts                bool
-	uploadedDocuments                map[int]struct{}
-	removeduploadedDocuments         map[int]struct{}
-	cleareduploadedDocuments         bool
-	approvedDocuments                map[int]struct{}
-	removedapprovedDocuments         map[int]struct{}
-	clearedapprovedDocuments         bool
-	done                             bool
-	oldValue                         func(context.Context) (*User, error)
-	predicates                       []predicate.User
+	op                                  Op
+	typ                                 string
+	id                                  *int
+	created_at                          *time.Time
+	updated_at                          *time.Time
+	deleted_at                          *time.Time
+	device                              *string
+	is_demo_user                        *bool
+	firebase_UID                        *string
+	fcm_token                           *string
+	expo_push_token                     *string
+	email                               *string
+	name                                *string
+	address                             *string
+	avatar                              *string
+	photo_URL                           *string
+	department                          *string
+	phone                               *string
+	birthdate                           *time.Time
+	last_login                          *time.Time
+	gender                              *user.Gender
+	active                              *bool
+	clearedFields                       map[string]struct{}
+	accounting_entries                  map[int]struct{}
+	removedaccounting_entries           map[int]struct{}
+	clearedaccounting_entries           bool
+	company                             map[int]struct{}
+	removedcompany                      map[int]struct{}
+	clearedcompany                      bool
+	assigned_roles                      map[int]struct{}
+	removedassigned_roles               map[int]struct{}
+	clearedassigned_roles               bool
+	subordinates                        map[int]struct{}
+	removedsubordinates                 map[int]struct{}
+	clearedsubordinates                 bool
+	leader                              *int
+	clearedleader                       bool
+	created_member_signup_tokens        map[int]struct{}
+	removedcreated_member_signup_tokens map[int]struct{}
+	clearedcreated_member_signup_tokens bool
+	employee                            *int
+	clearedemployee                     bool
+	issued_invoices                     map[int]struct{}
+	removedissued_invoices              map[int]struct{}
+	clearedissued_invoices              bool
+	created_projects                    map[int]struct{}
+	removedcreated_projects             map[int]struct{}
+	clearedcreated_projects             bool
+	leadered_projects                   map[int]struct{}
+	removedleadered_projects            map[int]struct{}
+	clearedleadered_projects            bool
+	assigned_project_tasks              map[int]struct{}
+	removedassigned_project_tasks       map[int]struct{}
+	clearedassigned_project_tasks       bool
+	participated_project_tasks          map[int]struct{}
+	removedparticipated_project_tasks   map[int]struct{}
+	clearedparticipated_project_tasks   bool
+	created_tasks                       map[int]struct{}
+	removedcreated_tasks                map[int]struct{}
+	clearedcreated_tasks                bool
+	tokens                              map[int]struct{}
+	removedtokens                       map[int]struct{}
+	clearedtokens                       bool
+	approved_work_shifts                map[int]struct{}
+	removedapproved_work_shifts         map[int]struct{}
+	clearedapproved_work_shifts         bool
+	work_shifts                         map[int]struct{}
+	removedwork_shifts                  map[int]struct{}
+	clearedwork_shifts                  bool
+	uploaded_documents                  map[int]struct{}
+	removeduploaded_documents           map[int]struct{}
+	cleareduploaded_documents           bool
+	approved_documents                  map[int]struct{}
+	removedapproved_documents           map[int]struct{}
+	clearedapproved_documents           bool
+	done                                bool
+	oldValue                            func(context.Context) (*User, error)
+	predicates                          []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -29061,21 +29023,21 @@ func (m *UserMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *UserMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *UserMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the User entity.
+// OldCreatedAt returns the old "created_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -29092,26 +29054,26 @@ func (m *UserMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *UserMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *UserMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *UserMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the User entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -29128,26 +29090,26 @@ func (m *UserMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *UserMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *UserMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *UserMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the User entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -29164,21 +29126,21 @@ func (m *UserMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err erro
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *UserMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[user.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *UserMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[user.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *UserMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, user.FieldDeletedAt)
 }
 
@@ -29231,21 +29193,21 @@ func (m *UserMutation) ResetDevice() {
 	delete(m.clearedFields, user.FieldDevice)
 }
 
-// SetIsDemoUser sets the "isDemoUser" field.
+// SetIsDemoUser sets the "is_demo_user" field.
 func (m *UserMutation) SetIsDemoUser(b bool) {
-	m.isDemoUser = &b
+	m.is_demo_user = &b
 }
 
-// IsDemoUser returns the value of the "isDemoUser" field in the mutation.
+// IsDemoUser returns the value of the "is_demo_user" field in the mutation.
 func (m *UserMutation) IsDemoUser() (r bool, exists bool) {
-	v := m.isDemoUser
+	v := m.is_demo_user
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIsDemoUser returns the old "isDemoUser" field's value of the User entity.
+// OldIsDemoUser returns the old "is_demo_user" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldIsDemoUser(ctx context.Context) (v *bool, err error) {
@@ -29262,39 +29224,39 @@ func (m *UserMutation) OldIsDemoUser(ctx context.Context) (v *bool, err error) {
 	return oldValue.IsDemoUser, nil
 }
 
-// ClearIsDemoUser clears the value of the "isDemoUser" field.
+// ClearIsDemoUser clears the value of the "is_demo_user" field.
 func (m *UserMutation) ClearIsDemoUser() {
-	m.isDemoUser = nil
+	m.is_demo_user = nil
 	m.clearedFields[user.FieldIsDemoUser] = struct{}{}
 }
 
-// IsDemoUserCleared returns if the "isDemoUser" field was cleared in this mutation.
+// IsDemoUserCleared returns if the "is_demo_user" field was cleared in this mutation.
 func (m *UserMutation) IsDemoUserCleared() bool {
 	_, ok := m.clearedFields[user.FieldIsDemoUser]
 	return ok
 }
 
-// ResetIsDemoUser resets all changes to the "isDemoUser" field.
+// ResetIsDemoUser resets all changes to the "is_demo_user" field.
 func (m *UserMutation) ResetIsDemoUser() {
-	m.isDemoUser = nil
+	m.is_demo_user = nil
 	delete(m.clearedFields, user.FieldIsDemoUser)
 }
 
-// SetFirebaseUID sets the "firebaseUID" field.
+// SetFirebaseUID sets the "firebase_UID" field.
 func (m *UserMutation) SetFirebaseUID(s string) {
-	m.firebaseUID = &s
+	m.firebase_UID = &s
 }
 
-// FirebaseUID returns the value of the "firebaseUID" field in the mutation.
+// FirebaseUID returns the value of the "firebase_UID" field in the mutation.
 func (m *UserMutation) FirebaseUID() (r string, exists bool) {
-	v := m.firebaseUID
+	v := m.firebase_UID
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFirebaseUID returns the old "firebaseUID" field's value of the User entity.
+// OldFirebaseUID returns the old "firebase_UID" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldFirebaseUID(ctx context.Context) (v string, err error) {
@@ -29311,26 +29273,26 @@ func (m *UserMutation) OldFirebaseUID(ctx context.Context) (v string, err error)
 	return oldValue.FirebaseUID, nil
 }
 
-// ResetFirebaseUID resets all changes to the "firebaseUID" field.
+// ResetFirebaseUID resets all changes to the "firebase_UID" field.
 func (m *UserMutation) ResetFirebaseUID() {
-	m.firebaseUID = nil
+	m.firebase_UID = nil
 }
 
-// SetFcmToken sets the "fcmToken" field.
+// SetFcmToken sets the "fcm_token" field.
 func (m *UserMutation) SetFcmToken(s string) {
-	m.fcmToken = &s
+	m.fcm_token = &s
 }
 
-// FcmToken returns the value of the "fcmToken" field in the mutation.
+// FcmToken returns the value of the "fcm_token" field in the mutation.
 func (m *UserMutation) FcmToken() (r string, exists bool) {
-	v := m.fcmToken
+	v := m.fcm_token
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFcmToken returns the old "fcmToken" field's value of the User entity.
+// OldFcmToken returns the old "fcm_token" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldFcmToken(ctx context.Context) (v *string, err error) {
@@ -29347,39 +29309,39 @@ func (m *UserMutation) OldFcmToken(ctx context.Context) (v *string, err error) {
 	return oldValue.FcmToken, nil
 }
 
-// ClearFcmToken clears the value of the "fcmToken" field.
+// ClearFcmToken clears the value of the "fcm_token" field.
 func (m *UserMutation) ClearFcmToken() {
-	m.fcmToken = nil
+	m.fcm_token = nil
 	m.clearedFields[user.FieldFcmToken] = struct{}{}
 }
 
-// FcmTokenCleared returns if the "fcmToken" field was cleared in this mutation.
+// FcmTokenCleared returns if the "fcm_token" field was cleared in this mutation.
 func (m *UserMutation) FcmTokenCleared() bool {
 	_, ok := m.clearedFields[user.FieldFcmToken]
 	return ok
 }
 
-// ResetFcmToken resets all changes to the "fcmToken" field.
+// ResetFcmToken resets all changes to the "fcm_token" field.
 func (m *UserMutation) ResetFcmToken() {
-	m.fcmToken = nil
+	m.fcm_token = nil
 	delete(m.clearedFields, user.FieldFcmToken)
 }
 
-// SetExpoPushToken sets the "expoPushToken" field.
+// SetExpoPushToken sets the "expo_push_token" field.
 func (m *UserMutation) SetExpoPushToken(s string) {
-	m.expoPushToken = &s
+	m.expo_push_token = &s
 }
 
-// ExpoPushToken returns the value of the "expoPushToken" field in the mutation.
+// ExpoPushToken returns the value of the "expo_push_token" field in the mutation.
 func (m *UserMutation) ExpoPushToken() (r string, exists bool) {
-	v := m.expoPushToken
+	v := m.expo_push_token
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldExpoPushToken returns the old "expoPushToken" field's value of the User entity.
+// OldExpoPushToken returns the old "expo_push_token" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldExpoPushToken(ctx context.Context) (v *string, err error) {
@@ -29396,21 +29358,21 @@ func (m *UserMutation) OldExpoPushToken(ctx context.Context) (v *string, err err
 	return oldValue.ExpoPushToken, nil
 }
 
-// ClearExpoPushToken clears the value of the "expoPushToken" field.
+// ClearExpoPushToken clears the value of the "expo_push_token" field.
 func (m *UserMutation) ClearExpoPushToken() {
-	m.expoPushToken = nil
+	m.expo_push_token = nil
 	m.clearedFields[user.FieldExpoPushToken] = struct{}{}
 }
 
-// ExpoPushTokenCleared returns if the "expoPushToken" field was cleared in this mutation.
+// ExpoPushTokenCleared returns if the "expo_push_token" field was cleared in this mutation.
 func (m *UserMutation) ExpoPushTokenCleared() bool {
 	_, ok := m.clearedFields[user.FieldExpoPushToken]
 	return ok
 }
 
-// ResetExpoPushToken resets all changes to the "expoPushToken" field.
+// ResetExpoPushToken resets all changes to the "expo_push_token" field.
 func (m *UserMutation) ResetExpoPushToken() {
-	m.expoPushToken = nil
+	m.expo_push_token = nil
 	delete(m.clearedFields, user.FieldExpoPushToken)
 }
 
@@ -29584,21 +29546,21 @@ func (m *UserMutation) ResetAvatar() {
 	delete(m.clearedFields, user.FieldAvatar)
 }
 
-// SetPhotoURL sets the "photoURL" field.
+// SetPhotoURL sets the "photo_URL" field.
 func (m *UserMutation) SetPhotoURL(s string) {
-	m.photoURL = &s
+	m.photo_URL = &s
 }
 
-// PhotoURL returns the value of the "photoURL" field in the mutation.
+// PhotoURL returns the value of the "photo_URL" field in the mutation.
 func (m *UserMutation) PhotoURL() (r string, exists bool) {
-	v := m.photoURL
+	v := m.photo_URL
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPhotoURL returns the old "photoURL" field's value of the User entity.
+// OldPhotoURL returns the old "photo_URL" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldPhotoURL(ctx context.Context) (v *string, err error) {
@@ -29615,21 +29577,21 @@ func (m *UserMutation) OldPhotoURL(ctx context.Context) (v *string, err error) {
 	return oldValue.PhotoURL, nil
 }
 
-// ClearPhotoURL clears the value of the "photoURL" field.
+// ClearPhotoURL clears the value of the "photo_URL" field.
 func (m *UserMutation) ClearPhotoURL() {
-	m.photoURL = nil
+	m.photo_URL = nil
 	m.clearedFields[user.FieldPhotoURL] = struct{}{}
 }
 
-// PhotoURLCleared returns if the "photoURL" field was cleared in this mutation.
+// PhotoURLCleared returns if the "photo_URL" field was cleared in this mutation.
 func (m *UserMutation) PhotoURLCleared() bool {
 	_, ok := m.clearedFields[user.FieldPhotoURL]
 	return ok
 }
 
-// ResetPhotoURL resets all changes to the "photoURL" field.
+// ResetPhotoURL resets all changes to the "photo_URL" field.
 func (m *UserMutation) ResetPhotoURL() {
-	m.photoURL = nil
+	m.photo_URL = nil
 	delete(m.clearedFields, user.FieldPhotoURL)
 }
 
@@ -29780,21 +29742,21 @@ func (m *UserMutation) ResetBirthdate() {
 	delete(m.clearedFields, user.FieldBirthdate)
 }
 
-// SetLastLogin sets the "lastLogin" field.
+// SetLastLogin sets the "last_login" field.
 func (m *UserMutation) SetLastLogin(t time.Time) {
-	m.lastLogin = &t
+	m.last_login = &t
 }
 
-// LastLogin returns the value of the "lastLogin" field in the mutation.
+// LastLogin returns the value of the "last_login" field in the mutation.
 func (m *UserMutation) LastLogin() (r time.Time, exists bool) {
-	v := m.lastLogin
+	v := m.last_login
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLastLogin returns the old "lastLogin" field's value of the User entity.
+// OldLastLogin returns the old "last_login" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *UserMutation) OldLastLogin(ctx context.Context) (v *time.Time, err error) {
@@ -29811,21 +29773,21 @@ func (m *UserMutation) OldLastLogin(ctx context.Context) (v *time.Time, err erro
 	return oldValue.LastLogin, nil
 }
 
-// ClearLastLogin clears the value of the "lastLogin" field.
+// ClearLastLogin clears the value of the "last_login" field.
 func (m *UserMutation) ClearLastLogin() {
-	m.lastLogin = nil
+	m.last_login = nil
 	m.clearedFields[user.FieldLastLogin] = struct{}{}
 }
 
-// LastLoginCleared returns if the "lastLogin" field was cleared in this mutation.
+// LastLoginCleared returns if the "last_login" field was cleared in this mutation.
 func (m *UserMutation) LastLoginCleared() bool {
 	_, ok := m.clearedFields[user.FieldLastLogin]
 	return ok
 }
 
-// ResetLastLogin resets all changes to the "lastLogin" field.
+// ResetLastLogin resets all changes to the "last_login" field.
 func (m *UserMutation) ResetLastLogin() {
-	m.lastLogin = nil
+	m.last_login = nil
 	delete(m.clearedFields, user.FieldLastLogin)
 }
 
@@ -29901,58 +29863,58 @@ func (m *UserMutation) ResetActive() {
 	m.active = nil
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by ids.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by ids.
 func (m *UserMutation) AddAccountingEntryIDs(ids ...int) {
-	if m.accountingEntries == nil {
-		m.accountingEntries = make(map[int]struct{})
+	if m.accounting_entries == nil {
+		m.accounting_entries = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.accountingEntries[ids[i]] = struct{}{}
+		m.accounting_entries[ids[i]] = struct{}{}
 	}
 }
 
-// ClearAccountingEntries clears the "accountingEntries" edge to the AccountingEntry entity.
+// ClearAccountingEntries clears the "accounting_entries" edge to the AccountingEntry entity.
 func (m *UserMutation) ClearAccountingEntries() {
-	m.clearedaccountingEntries = true
+	m.clearedaccounting_entries = true
 }
 
-// AccountingEntriesCleared reports if the "accountingEntries" edge to the AccountingEntry entity was cleared.
+// AccountingEntriesCleared reports if the "accounting_entries" edge to the AccountingEntry entity was cleared.
 func (m *UserMutation) AccountingEntriesCleared() bool {
-	return m.clearedaccountingEntries
+	return m.clearedaccounting_entries
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (m *UserMutation) RemoveAccountingEntryIDs(ids ...int) {
-	if m.removedaccountingEntries == nil {
-		m.removedaccountingEntries = make(map[int]struct{})
+	if m.removedaccounting_entries == nil {
+		m.removedaccounting_entries = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.accountingEntries, ids[i])
-		m.removedaccountingEntries[ids[i]] = struct{}{}
+		delete(m.accounting_entries, ids[i])
+		m.removedaccounting_entries[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedAccountingEntries returns the removed IDs of the "accountingEntries" edge to the AccountingEntry entity.
+// RemovedAccountingEntries returns the removed IDs of the "accounting_entries" edge to the AccountingEntry entity.
 func (m *UserMutation) RemovedAccountingEntriesIDs() (ids []int) {
-	for id := range m.removedaccountingEntries {
+	for id := range m.removedaccounting_entries {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// AccountingEntriesIDs returns the "accountingEntries" edge IDs in the mutation.
+// AccountingEntriesIDs returns the "accounting_entries" edge IDs in the mutation.
 func (m *UserMutation) AccountingEntriesIDs() (ids []int) {
-	for id := range m.accountingEntries {
+	for id := range m.accounting_entries {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetAccountingEntries resets all changes to the "accountingEntries" edge.
+// ResetAccountingEntries resets all changes to the "accounting_entries" edge.
 func (m *UserMutation) ResetAccountingEntries() {
-	m.accountingEntries = nil
-	m.clearedaccountingEntries = false
-	m.removedaccountingEntries = nil
+	m.accounting_entries = nil
+	m.clearedaccounting_entries = false
+	m.removedaccounting_entries = nil
 }
 
 // AddCompanyIDs adds the "company" edge to the Company entity by ids.
@@ -30009,58 +29971,58 @@ func (m *UserMutation) ResetCompany() {
 	m.removedcompany = nil
 }
 
-// AddAssignedRoleIDs adds the "assignedRoles" edge to the UserRole entity by ids.
+// AddAssignedRoleIDs adds the "assigned_roles" edge to the UserRole entity by ids.
 func (m *UserMutation) AddAssignedRoleIDs(ids ...int) {
-	if m.assignedRoles == nil {
-		m.assignedRoles = make(map[int]struct{})
+	if m.assigned_roles == nil {
+		m.assigned_roles = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.assignedRoles[ids[i]] = struct{}{}
+		m.assigned_roles[ids[i]] = struct{}{}
 	}
 }
 
-// ClearAssignedRoles clears the "assignedRoles" edge to the UserRole entity.
+// ClearAssignedRoles clears the "assigned_roles" edge to the UserRole entity.
 func (m *UserMutation) ClearAssignedRoles() {
-	m.clearedassignedRoles = true
+	m.clearedassigned_roles = true
 }
 
-// AssignedRolesCleared reports if the "assignedRoles" edge to the UserRole entity was cleared.
+// AssignedRolesCleared reports if the "assigned_roles" edge to the UserRole entity was cleared.
 func (m *UserMutation) AssignedRolesCleared() bool {
-	return m.clearedassignedRoles
+	return m.clearedassigned_roles
 }
 
-// RemoveAssignedRoleIDs removes the "assignedRoles" edge to the UserRole entity by IDs.
+// RemoveAssignedRoleIDs removes the "assigned_roles" edge to the UserRole entity by IDs.
 func (m *UserMutation) RemoveAssignedRoleIDs(ids ...int) {
-	if m.removedassignedRoles == nil {
-		m.removedassignedRoles = make(map[int]struct{})
+	if m.removedassigned_roles == nil {
+		m.removedassigned_roles = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.assignedRoles, ids[i])
-		m.removedassignedRoles[ids[i]] = struct{}{}
+		delete(m.assigned_roles, ids[i])
+		m.removedassigned_roles[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedAssignedRoles returns the removed IDs of the "assignedRoles" edge to the UserRole entity.
+// RemovedAssignedRoles returns the removed IDs of the "assigned_roles" edge to the UserRole entity.
 func (m *UserMutation) RemovedAssignedRolesIDs() (ids []int) {
-	for id := range m.removedassignedRoles {
+	for id := range m.removedassigned_roles {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// AssignedRolesIDs returns the "assignedRoles" edge IDs in the mutation.
+// AssignedRolesIDs returns the "assigned_roles" edge IDs in the mutation.
 func (m *UserMutation) AssignedRolesIDs() (ids []int) {
-	for id := range m.assignedRoles {
+	for id := range m.assigned_roles {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetAssignedRoles resets all changes to the "assignedRoles" edge.
+// ResetAssignedRoles resets all changes to the "assigned_roles" edge.
 func (m *UserMutation) ResetAssignedRoles() {
-	m.assignedRoles = nil
-	m.clearedassignedRoles = false
-	m.removedassignedRoles = nil
+	m.assigned_roles = nil
+	m.clearedassigned_roles = false
+	m.removedassigned_roles = nil
 }
 
 // AddSubordinateIDs adds the "subordinates" edge to the User entity by ids.
@@ -30156,58 +30118,58 @@ func (m *UserMutation) ResetLeader() {
 	m.clearedleader = false
 }
 
-// AddCreatedMemberSignupTokenIDs adds the "createdMemberSignupTokens" edge to the MemberSignupToken entity by ids.
+// AddCreatedMemberSignupTokenIDs adds the "created_member_signup_tokens" edge to the MemberSignupToken entity by ids.
 func (m *UserMutation) AddCreatedMemberSignupTokenIDs(ids ...int) {
-	if m.createdMemberSignupTokens == nil {
-		m.createdMemberSignupTokens = make(map[int]struct{})
+	if m.created_member_signup_tokens == nil {
+		m.created_member_signup_tokens = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.createdMemberSignupTokens[ids[i]] = struct{}{}
+		m.created_member_signup_tokens[ids[i]] = struct{}{}
 	}
 }
 
-// ClearCreatedMemberSignupTokens clears the "createdMemberSignupTokens" edge to the MemberSignupToken entity.
+// ClearCreatedMemberSignupTokens clears the "created_member_signup_tokens" edge to the MemberSignupToken entity.
 func (m *UserMutation) ClearCreatedMemberSignupTokens() {
-	m.clearedcreatedMemberSignupTokens = true
+	m.clearedcreated_member_signup_tokens = true
 }
 
-// CreatedMemberSignupTokensCleared reports if the "createdMemberSignupTokens" edge to the MemberSignupToken entity was cleared.
+// CreatedMemberSignupTokensCleared reports if the "created_member_signup_tokens" edge to the MemberSignupToken entity was cleared.
 func (m *UserMutation) CreatedMemberSignupTokensCleared() bool {
-	return m.clearedcreatedMemberSignupTokens
+	return m.clearedcreated_member_signup_tokens
 }
 
-// RemoveCreatedMemberSignupTokenIDs removes the "createdMemberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// RemoveCreatedMemberSignupTokenIDs removes the "created_member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (m *UserMutation) RemoveCreatedMemberSignupTokenIDs(ids ...int) {
-	if m.removedcreatedMemberSignupTokens == nil {
-		m.removedcreatedMemberSignupTokens = make(map[int]struct{})
+	if m.removedcreated_member_signup_tokens == nil {
+		m.removedcreated_member_signup_tokens = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.createdMemberSignupTokens, ids[i])
-		m.removedcreatedMemberSignupTokens[ids[i]] = struct{}{}
+		delete(m.created_member_signup_tokens, ids[i])
+		m.removedcreated_member_signup_tokens[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedCreatedMemberSignupTokens returns the removed IDs of the "createdMemberSignupTokens" edge to the MemberSignupToken entity.
+// RemovedCreatedMemberSignupTokens returns the removed IDs of the "created_member_signup_tokens" edge to the MemberSignupToken entity.
 func (m *UserMutation) RemovedCreatedMemberSignupTokensIDs() (ids []int) {
-	for id := range m.removedcreatedMemberSignupTokens {
+	for id := range m.removedcreated_member_signup_tokens {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// CreatedMemberSignupTokensIDs returns the "createdMemberSignupTokens" edge IDs in the mutation.
+// CreatedMemberSignupTokensIDs returns the "created_member_signup_tokens" edge IDs in the mutation.
 func (m *UserMutation) CreatedMemberSignupTokensIDs() (ids []int) {
-	for id := range m.createdMemberSignupTokens {
+	for id := range m.created_member_signup_tokens {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetCreatedMemberSignupTokens resets all changes to the "createdMemberSignupTokens" edge.
+// ResetCreatedMemberSignupTokens resets all changes to the "created_member_signup_tokens" edge.
 func (m *UserMutation) ResetCreatedMemberSignupTokens() {
-	m.createdMemberSignupTokens = nil
-	m.clearedcreatedMemberSignupTokens = false
-	m.removedcreatedMemberSignupTokens = nil
+	m.created_member_signup_tokens = nil
+	m.clearedcreated_member_signup_tokens = false
+	m.removedcreated_member_signup_tokens = nil
 }
 
 // SetEmployeeID sets the "employee" edge to the Employee entity by id.
@@ -30249,328 +30211,328 @@ func (m *UserMutation) ResetEmployee() {
 	m.clearedemployee = false
 }
 
-// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by ids.
+// AddIssuedInvoiceIDs adds the "issued_invoices" edge to the Invoice entity by ids.
 func (m *UserMutation) AddIssuedInvoiceIDs(ids ...int) {
-	if m.issuedInvoices == nil {
-		m.issuedInvoices = make(map[int]struct{})
+	if m.issued_invoices == nil {
+		m.issued_invoices = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.issuedInvoices[ids[i]] = struct{}{}
+		m.issued_invoices[ids[i]] = struct{}{}
 	}
 }
 
-// ClearIssuedInvoices clears the "issuedInvoices" edge to the Invoice entity.
+// ClearIssuedInvoices clears the "issued_invoices" edge to the Invoice entity.
 func (m *UserMutation) ClearIssuedInvoices() {
-	m.clearedissuedInvoices = true
+	m.clearedissued_invoices = true
 }
 
-// IssuedInvoicesCleared reports if the "issuedInvoices" edge to the Invoice entity was cleared.
+// IssuedInvoicesCleared reports if the "issued_invoices" edge to the Invoice entity was cleared.
 func (m *UserMutation) IssuedInvoicesCleared() bool {
-	return m.clearedissuedInvoices
+	return m.clearedissued_invoices
 }
 
-// RemoveIssuedInvoiceIDs removes the "issuedInvoices" edge to the Invoice entity by IDs.
+// RemoveIssuedInvoiceIDs removes the "issued_invoices" edge to the Invoice entity by IDs.
 func (m *UserMutation) RemoveIssuedInvoiceIDs(ids ...int) {
-	if m.removedissuedInvoices == nil {
-		m.removedissuedInvoices = make(map[int]struct{})
+	if m.removedissued_invoices == nil {
+		m.removedissued_invoices = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.issuedInvoices, ids[i])
-		m.removedissuedInvoices[ids[i]] = struct{}{}
+		delete(m.issued_invoices, ids[i])
+		m.removedissued_invoices[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedIssuedInvoices returns the removed IDs of the "issuedInvoices" edge to the Invoice entity.
+// RemovedIssuedInvoices returns the removed IDs of the "issued_invoices" edge to the Invoice entity.
 func (m *UserMutation) RemovedIssuedInvoicesIDs() (ids []int) {
-	for id := range m.removedissuedInvoices {
+	for id := range m.removedissued_invoices {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// IssuedInvoicesIDs returns the "issuedInvoices" edge IDs in the mutation.
+// IssuedInvoicesIDs returns the "issued_invoices" edge IDs in the mutation.
 func (m *UserMutation) IssuedInvoicesIDs() (ids []int) {
-	for id := range m.issuedInvoices {
+	for id := range m.issued_invoices {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetIssuedInvoices resets all changes to the "issuedInvoices" edge.
+// ResetIssuedInvoices resets all changes to the "issued_invoices" edge.
 func (m *UserMutation) ResetIssuedInvoices() {
-	m.issuedInvoices = nil
-	m.clearedissuedInvoices = false
-	m.removedissuedInvoices = nil
+	m.issued_invoices = nil
+	m.clearedissued_invoices = false
+	m.removedissued_invoices = nil
 }
 
-// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by ids.
+// AddCreatedProjectIDs adds the "created_projects" edge to the Project entity by ids.
 func (m *UserMutation) AddCreatedProjectIDs(ids ...int) {
-	if m.createdProjects == nil {
-		m.createdProjects = make(map[int]struct{})
+	if m.created_projects == nil {
+		m.created_projects = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.createdProjects[ids[i]] = struct{}{}
+		m.created_projects[ids[i]] = struct{}{}
 	}
 }
 
-// ClearCreatedProjects clears the "createdProjects" edge to the Project entity.
+// ClearCreatedProjects clears the "created_projects" edge to the Project entity.
 func (m *UserMutation) ClearCreatedProjects() {
-	m.clearedcreatedProjects = true
+	m.clearedcreated_projects = true
 }
 
-// CreatedProjectsCleared reports if the "createdProjects" edge to the Project entity was cleared.
+// CreatedProjectsCleared reports if the "created_projects" edge to the Project entity was cleared.
 func (m *UserMutation) CreatedProjectsCleared() bool {
-	return m.clearedcreatedProjects
+	return m.clearedcreated_projects
 }
 
-// RemoveCreatedProjectIDs removes the "createdProjects" edge to the Project entity by IDs.
+// RemoveCreatedProjectIDs removes the "created_projects" edge to the Project entity by IDs.
 func (m *UserMutation) RemoveCreatedProjectIDs(ids ...int) {
-	if m.removedcreatedProjects == nil {
-		m.removedcreatedProjects = make(map[int]struct{})
+	if m.removedcreated_projects == nil {
+		m.removedcreated_projects = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.createdProjects, ids[i])
-		m.removedcreatedProjects[ids[i]] = struct{}{}
+		delete(m.created_projects, ids[i])
+		m.removedcreated_projects[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedCreatedProjects returns the removed IDs of the "createdProjects" edge to the Project entity.
+// RemovedCreatedProjects returns the removed IDs of the "created_projects" edge to the Project entity.
 func (m *UserMutation) RemovedCreatedProjectsIDs() (ids []int) {
-	for id := range m.removedcreatedProjects {
+	for id := range m.removedcreated_projects {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// CreatedProjectsIDs returns the "createdProjects" edge IDs in the mutation.
+// CreatedProjectsIDs returns the "created_projects" edge IDs in the mutation.
 func (m *UserMutation) CreatedProjectsIDs() (ids []int) {
-	for id := range m.createdProjects {
+	for id := range m.created_projects {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetCreatedProjects resets all changes to the "createdProjects" edge.
+// ResetCreatedProjects resets all changes to the "created_projects" edge.
 func (m *UserMutation) ResetCreatedProjects() {
-	m.createdProjects = nil
-	m.clearedcreatedProjects = false
-	m.removedcreatedProjects = nil
+	m.created_projects = nil
+	m.clearedcreated_projects = false
+	m.removedcreated_projects = nil
 }
 
-// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by ids.
+// AddLeaderedProjectIDs adds the "leadered_projects" edge to the Project entity by ids.
 func (m *UserMutation) AddLeaderedProjectIDs(ids ...int) {
-	if m.leaderedProjects == nil {
-		m.leaderedProjects = make(map[int]struct{})
+	if m.leadered_projects == nil {
+		m.leadered_projects = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.leaderedProjects[ids[i]] = struct{}{}
+		m.leadered_projects[ids[i]] = struct{}{}
 	}
 }
 
-// ClearLeaderedProjects clears the "leaderedProjects" edge to the Project entity.
+// ClearLeaderedProjects clears the "leadered_projects" edge to the Project entity.
 func (m *UserMutation) ClearLeaderedProjects() {
-	m.clearedleaderedProjects = true
+	m.clearedleadered_projects = true
 }
 
-// LeaderedProjectsCleared reports if the "leaderedProjects" edge to the Project entity was cleared.
+// LeaderedProjectsCleared reports if the "leadered_projects" edge to the Project entity was cleared.
 func (m *UserMutation) LeaderedProjectsCleared() bool {
-	return m.clearedleaderedProjects
+	return m.clearedleadered_projects
 }
 
-// RemoveLeaderedProjectIDs removes the "leaderedProjects" edge to the Project entity by IDs.
+// RemoveLeaderedProjectIDs removes the "leadered_projects" edge to the Project entity by IDs.
 func (m *UserMutation) RemoveLeaderedProjectIDs(ids ...int) {
-	if m.removedleaderedProjects == nil {
-		m.removedleaderedProjects = make(map[int]struct{})
+	if m.removedleadered_projects == nil {
+		m.removedleadered_projects = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.leaderedProjects, ids[i])
-		m.removedleaderedProjects[ids[i]] = struct{}{}
+		delete(m.leadered_projects, ids[i])
+		m.removedleadered_projects[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedLeaderedProjects returns the removed IDs of the "leaderedProjects" edge to the Project entity.
+// RemovedLeaderedProjects returns the removed IDs of the "leadered_projects" edge to the Project entity.
 func (m *UserMutation) RemovedLeaderedProjectsIDs() (ids []int) {
-	for id := range m.removedleaderedProjects {
+	for id := range m.removedleadered_projects {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// LeaderedProjectsIDs returns the "leaderedProjects" edge IDs in the mutation.
+// LeaderedProjectsIDs returns the "leadered_projects" edge IDs in the mutation.
 func (m *UserMutation) LeaderedProjectsIDs() (ids []int) {
-	for id := range m.leaderedProjects {
+	for id := range m.leadered_projects {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetLeaderedProjects resets all changes to the "leaderedProjects" edge.
+// ResetLeaderedProjects resets all changes to the "leadered_projects" edge.
 func (m *UserMutation) ResetLeaderedProjects() {
-	m.leaderedProjects = nil
-	m.clearedleaderedProjects = false
-	m.removedleaderedProjects = nil
+	m.leadered_projects = nil
+	m.clearedleadered_projects = false
+	m.removedleadered_projects = nil
 }
 
-// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by ids.
+// AddAssignedProjectTaskIDs adds the "assigned_project_tasks" edge to the ProjectTask entity by ids.
 func (m *UserMutation) AddAssignedProjectTaskIDs(ids ...int) {
-	if m.assignedProjectTasks == nil {
-		m.assignedProjectTasks = make(map[int]struct{})
+	if m.assigned_project_tasks == nil {
+		m.assigned_project_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.assignedProjectTasks[ids[i]] = struct{}{}
+		m.assigned_project_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// ClearAssignedProjectTasks clears the "assignedProjectTasks" edge to the ProjectTask entity.
+// ClearAssignedProjectTasks clears the "assigned_project_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) ClearAssignedProjectTasks() {
-	m.clearedassignedProjectTasks = true
+	m.clearedassigned_project_tasks = true
 }
 
-// AssignedProjectTasksCleared reports if the "assignedProjectTasks" edge to the ProjectTask entity was cleared.
+// AssignedProjectTasksCleared reports if the "assigned_project_tasks" edge to the ProjectTask entity was cleared.
 func (m *UserMutation) AssignedProjectTasksCleared() bool {
-	return m.clearedassignedProjectTasks
+	return m.clearedassigned_project_tasks
 }
 
-// RemoveAssignedProjectTaskIDs removes the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+// RemoveAssignedProjectTaskIDs removes the "assigned_project_tasks" edge to the ProjectTask entity by IDs.
 func (m *UserMutation) RemoveAssignedProjectTaskIDs(ids ...int) {
-	if m.removedassignedProjectTasks == nil {
-		m.removedassignedProjectTasks = make(map[int]struct{})
+	if m.removedassigned_project_tasks == nil {
+		m.removedassigned_project_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.assignedProjectTasks, ids[i])
-		m.removedassignedProjectTasks[ids[i]] = struct{}{}
+		delete(m.assigned_project_tasks, ids[i])
+		m.removedassigned_project_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedAssignedProjectTasks returns the removed IDs of the "assignedProjectTasks" edge to the ProjectTask entity.
+// RemovedAssignedProjectTasks returns the removed IDs of the "assigned_project_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) RemovedAssignedProjectTasksIDs() (ids []int) {
-	for id := range m.removedassignedProjectTasks {
+	for id := range m.removedassigned_project_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// AssignedProjectTasksIDs returns the "assignedProjectTasks" edge IDs in the mutation.
+// AssignedProjectTasksIDs returns the "assigned_project_tasks" edge IDs in the mutation.
 func (m *UserMutation) AssignedProjectTasksIDs() (ids []int) {
-	for id := range m.assignedProjectTasks {
+	for id := range m.assigned_project_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetAssignedProjectTasks resets all changes to the "assignedProjectTasks" edge.
+// ResetAssignedProjectTasks resets all changes to the "assigned_project_tasks" edge.
 func (m *UserMutation) ResetAssignedProjectTasks() {
-	m.assignedProjectTasks = nil
-	m.clearedassignedProjectTasks = false
-	m.removedassignedProjectTasks = nil
+	m.assigned_project_tasks = nil
+	m.clearedassigned_project_tasks = false
+	m.removedassigned_project_tasks = nil
 }
 
-// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by ids.
+// AddParticipatedProjectTaskIDs adds the "participated_project_tasks" edge to the ProjectTask entity by ids.
 func (m *UserMutation) AddParticipatedProjectTaskIDs(ids ...int) {
-	if m.participatedProjectTasks == nil {
-		m.participatedProjectTasks = make(map[int]struct{})
+	if m.participated_project_tasks == nil {
+		m.participated_project_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.participatedProjectTasks[ids[i]] = struct{}{}
+		m.participated_project_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// ClearParticipatedProjectTasks clears the "participatedProjectTasks" edge to the ProjectTask entity.
+// ClearParticipatedProjectTasks clears the "participated_project_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) ClearParticipatedProjectTasks() {
-	m.clearedparticipatedProjectTasks = true
+	m.clearedparticipated_project_tasks = true
 }
 
-// ParticipatedProjectTasksCleared reports if the "participatedProjectTasks" edge to the ProjectTask entity was cleared.
+// ParticipatedProjectTasksCleared reports if the "participated_project_tasks" edge to the ProjectTask entity was cleared.
 func (m *UserMutation) ParticipatedProjectTasksCleared() bool {
-	return m.clearedparticipatedProjectTasks
+	return m.clearedparticipated_project_tasks
 }
 
-// RemoveParticipatedProjectTaskIDs removes the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+// RemoveParticipatedProjectTaskIDs removes the "participated_project_tasks" edge to the ProjectTask entity by IDs.
 func (m *UserMutation) RemoveParticipatedProjectTaskIDs(ids ...int) {
-	if m.removedparticipatedProjectTasks == nil {
-		m.removedparticipatedProjectTasks = make(map[int]struct{})
+	if m.removedparticipated_project_tasks == nil {
+		m.removedparticipated_project_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.participatedProjectTasks, ids[i])
-		m.removedparticipatedProjectTasks[ids[i]] = struct{}{}
+		delete(m.participated_project_tasks, ids[i])
+		m.removedparticipated_project_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedParticipatedProjectTasks returns the removed IDs of the "participatedProjectTasks" edge to the ProjectTask entity.
+// RemovedParticipatedProjectTasks returns the removed IDs of the "participated_project_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) RemovedParticipatedProjectTasksIDs() (ids []int) {
-	for id := range m.removedparticipatedProjectTasks {
+	for id := range m.removedparticipated_project_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ParticipatedProjectTasksIDs returns the "participatedProjectTasks" edge IDs in the mutation.
+// ParticipatedProjectTasksIDs returns the "participated_project_tasks" edge IDs in the mutation.
 func (m *UserMutation) ParticipatedProjectTasksIDs() (ids []int) {
-	for id := range m.participatedProjectTasks {
+	for id := range m.participated_project_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetParticipatedProjectTasks resets all changes to the "participatedProjectTasks" edge.
+// ResetParticipatedProjectTasks resets all changes to the "participated_project_tasks" edge.
 func (m *UserMutation) ResetParticipatedProjectTasks() {
-	m.participatedProjectTasks = nil
-	m.clearedparticipatedProjectTasks = false
-	m.removedparticipatedProjectTasks = nil
+	m.participated_project_tasks = nil
+	m.clearedparticipated_project_tasks = false
+	m.removedparticipated_project_tasks = nil
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the ProjectTask entity by ids.
+// AddCreatedTaskIDs adds the "created_tasks" edge to the ProjectTask entity by ids.
 func (m *UserMutation) AddCreatedTaskIDs(ids ...int) {
-	if m.createdTasks == nil {
-		m.createdTasks = make(map[int]struct{})
+	if m.created_tasks == nil {
+		m.created_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.createdTasks[ids[i]] = struct{}{}
+		m.created_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// ClearCreatedTasks clears the "createdTasks" edge to the ProjectTask entity.
+// ClearCreatedTasks clears the "created_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) ClearCreatedTasks() {
-	m.clearedcreatedTasks = true
+	m.clearedcreated_tasks = true
 }
 
-// CreatedTasksCleared reports if the "createdTasks" edge to the ProjectTask entity was cleared.
+// CreatedTasksCleared reports if the "created_tasks" edge to the ProjectTask entity was cleared.
 func (m *UserMutation) CreatedTasksCleared() bool {
-	return m.clearedcreatedTasks
+	return m.clearedcreated_tasks
 }
 
-// RemoveCreatedTaskIDs removes the "createdTasks" edge to the ProjectTask entity by IDs.
+// RemoveCreatedTaskIDs removes the "created_tasks" edge to the ProjectTask entity by IDs.
 func (m *UserMutation) RemoveCreatedTaskIDs(ids ...int) {
-	if m.removedcreatedTasks == nil {
-		m.removedcreatedTasks = make(map[int]struct{})
+	if m.removedcreated_tasks == nil {
+		m.removedcreated_tasks = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.createdTasks, ids[i])
-		m.removedcreatedTasks[ids[i]] = struct{}{}
+		delete(m.created_tasks, ids[i])
+		m.removedcreated_tasks[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedCreatedTasks returns the removed IDs of the "createdTasks" edge to the ProjectTask entity.
+// RemovedCreatedTasks returns the removed IDs of the "created_tasks" edge to the ProjectTask entity.
 func (m *UserMutation) RemovedCreatedTasksIDs() (ids []int) {
-	for id := range m.removedcreatedTasks {
+	for id := range m.removedcreated_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// CreatedTasksIDs returns the "createdTasks" edge IDs in the mutation.
+// CreatedTasksIDs returns the "created_tasks" edge IDs in the mutation.
 func (m *UserMutation) CreatedTasksIDs() (ids []int) {
-	for id := range m.createdTasks {
+	for id := range m.created_tasks {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetCreatedTasks resets all changes to the "createdTasks" edge.
+// ResetCreatedTasks resets all changes to the "created_tasks" edge.
 func (m *UserMutation) ResetCreatedTasks() {
-	m.createdTasks = nil
-	m.clearedcreatedTasks = false
-	m.removedcreatedTasks = nil
+	m.created_tasks = nil
+	m.clearedcreated_tasks = false
+	m.removedcreated_tasks = nil
 }
 
 // AddTokenIDs adds the "tokens" edge to the Token entity by ids.
@@ -30627,220 +30589,220 @@ func (m *UserMutation) ResetTokens() {
 	m.removedtokens = nil
 }
 
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by ids.
+// AddApprovedWorkShiftIDs adds the "approved_work_shifts" edge to the Workshift entity by ids.
 func (m *UserMutation) AddApprovedWorkShiftIDs(ids ...int) {
-	if m.approvedWorkShifts == nil {
-		m.approvedWorkShifts = make(map[int]struct{})
+	if m.approved_work_shifts == nil {
+		m.approved_work_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.approvedWorkShifts[ids[i]] = struct{}{}
+		m.approved_work_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// ClearApprovedWorkShifts clears the "approvedWorkShifts" edge to the Workshift entity.
+// ClearApprovedWorkShifts clears the "approved_work_shifts" edge to the Workshift entity.
 func (m *UserMutation) ClearApprovedWorkShifts() {
-	m.clearedapprovedWorkShifts = true
+	m.clearedapproved_work_shifts = true
 }
 
-// ApprovedWorkShiftsCleared reports if the "approvedWorkShifts" edge to the Workshift entity was cleared.
+// ApprovedWorkShiftsCleared reports if the "approved_work_shifts" edge to the Workshift entity was cleared.
 func (m *UserMutation) ApprovedWorkShiftsCleared() bool {
-	return m.clearedapprovedWorkShifts
+	return m.clearedapproved_work_shifts
 }
 
-// RemoveApprovedWorkShiftIDs removes the "approvedWorkShifts" edge to the Workshift entity by IDs.
+// RemoveApprovedWorkShiftIDs removes the "approved_work_shifts" edge to the Workshift entity by IDs.
 func (m *UserMutation) RemoveApprovedWorkShiftIDs(ids ...int) {
-	if m.removedapprovedWorkShifts == nil {
-		m.removedapprovedWorkShifts = make(map[int]struct{})
+	if m.removedapproved_work_shifts == nil {
+		m.removedapproved_work_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.approvedWorkShifts, ids[i])
-		m.removedapprovedWorkShifts[ids[i]] = struct{}{}
+		delete(m.approved_work_shifts, ids[i])
+		m.removedapproved_work_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedApprovedWorkShifts returns the removed IDs of the "approvedWorkShifts" edge to the Workshift entity.
+// RemovedApprovedWorkShifts returns the removed IDs of the "approved_work_shifts" edge to the Workshift entity.
 func (m *UserMutation) RemovedApprovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedapprovedWorkShifts {
+	for id := range m.removedapproved_work_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ApprovedWorkShiftsIDs returns the "approvedWorkShifts" edge IDs in the mutation.
+// ApprovedWorkShiftsIDs returns the "approved_work_shifts" edge IDs in the mutation.
 func (m *UserMutation) ApprovedWorkShiftsIDs() (ids []int) {
-	for id := range m.approvedWorkShifts {
+	for id := range m.approved_work_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetApprovedWorkShifts resets all changes to the "approvedWorkShifts" edge.
+// ResetApprovedWorkShifts resets all changes to the "approved_work_shifts" edge.
 func (m *UserMutation) ResetApprovedWorkShifts() {
-	m.approvedWorkShifts = nil
-	m.clearedapprovedWorkShifts = false
-	m.removedapprovedWorkShifts = nil
+	m.approved_work_shifts = nil
+	m.clearedapproved_work_shifts = false
+	m.removedapproved_work_shifts = nil
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by ids.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by ids.
 func (m *UserMutation) AddWorkShiftIDs(ids ...int) {
-	if m.workShifts == nil {
-		m.workShifts = make(map[int]struct{})
+	if m.work_shifts == nil {
+		m.work_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.workShifts[ids[i]] = struct{}{}
+		m.work_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// ClearWorkShifts clears the "workShifts" edge to the Workshift entity.
+// ClearWorkShifts clears the "work_shifts" edge to the Workshift entity.
 func (m *UserMutation) ClearWorkShifts() {
-	m.clearedworkShifts = true
+	m.clearedwork_shifts = true
 }
 
-// WorkShiftsCleared reports if the "workShifts" edge to the Workshift entity was cleared.
+// WorkShiftsCleared reports if the "work_shifts" edge to the Workshift entity was cleared.
 func (m *UserMutation) WorkShiftsCleared() bool {
-	return m.clearedworkShifts
+	return m.clearedwork_shifts
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to the Workshift entity by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to the Workshift entity by IDs.
 func (m *UserMutation) RemoveWorkShiftIDs(ids ...int) {
-	if m.removedworkShifts == nil {
-		m.removedworkShifts = make(map[int]struct{})
+	if m.removedwork_shifts == nil {
+		m.removedwork_shifts = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.workShifts, ids[i])
-		m.removedworkShifts[ids[i]] = struct{}{}
+		delete(m.work_shifts, ids[i])
+		m.removedwork_shifts[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedWorkShifts returns the removed IDs of the "workShifts" edge to the Workshift entity.
+// RemovedWorkShifts returns the removed IDs of the "work_shifts" edge to the Workshift entity.
 func (m *UserMutation) RemovedWorkShiftsIDs() (ids []int) {
-	for id := range m.removedworkShifts {
+	for id := range m.removedwork_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// WorkShiftsIDs returns the "workShifts" edge IDs in the mutation.
+// WorkShiftsIDs returns the "work_shifts" edge IDs in the mutation.
 func (m *UserMutation) WorkShiftsIDs() (ids []int) {
-	for id := range m.workShifts {
+	for id := range m.work_shifts {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetWorkShifts resets all changes to the "workShifts" edge.
+// ResetWorkShifts resets all changes to the "work_shifts" edge.
 func (m *UserMutation) ResetWorkShifts() {
-	m.workShifts = nil
-	m.clearedworkShifts = false
-	m.removedworkShifts = nil
+	m.work_shifts = nil
+	m.clearedwork_shifts = false
+	m.removedwork_shifts = nil
 }
 
-// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by ids.
+// AddUploadedDocumentIDs adds the "uploaded_documents" edge to the CompanyDocument entity by ids.
 func (m *UserMutation) AddUploadedDocumentIDs(ids ...int) {
-	if m.uploadedDocuments == nil {
-		m.uploadedDocuments = make(map[int]struct{})
+	if m.uploaded_documents == nil {
+		m.uploaded_documents = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.uploadedDocuments[ids[i]] = struct{}{}
+		m.uploaded_documents[ids[i]] = struct{}{}
 	}
 }
 
-// ClearUploadedDocuments clears the "uploadedDocuments" edge to the CompanyDocument entity.
+// ClearUploadedDocuments clears the "uploaded_documents" edge to the CompanyDocument entity.
 func (m *UserMutation) ClearUploadedDocuments() {
-	m.cleareduploadedDocuments = true
+	m.cleareduploaded_documents = true
 }
 
-// UploadedDocumentsCleared reports if the "uploadedDocuments" edge to the CompanyDocument entity was cleared.
+// UploadedDocumentsCleared reports if the "uploaded_documents" edge to the CompanyDocument entity was cleared.
 func (m *UserMutation) UploadedDocumentsCleared() bool {
-	return m.cleareduploadedDocuments
+	return m.cleareduploaded_documents
 }
 
-// RemoveUploadedDocumentIDs removes the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+// RemoveUploadedDocumentIDs removes the "uploaded_documents" edge to the CompanyDocument entity by IDs.
 func (m *UserMutation) RemoveUploadedDocumentIDs(ids ...int) {
-	if m.removeduploadedDocuments == nil {
-		m.removeduploadedDocuments = make(map[int]struct{})
+	if m.removeduploaded_documents == nil {
+		m.removeduploaded_documents = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.uploadedDocuments, ids[i])
-		m.removeduploadedDocuments[ids[i]] = struct{}{}
+		delete(m.uploaded_documents, ids[i])
+		m.removeduploaded_documents[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedUploadedDocuments returns the removed IDs of the "uploadedDocuments" edge to the CompanyDocument entity.
+// RemovedUploadedDocuments returns the removed IDs of the "uploaded_documents" edge to the CompanyDocument entity.
 func (m *UserMutation) RemovedUploadedDocumentsIDs() (ids []int) {
-	for id := range m.removeduploadedDocuments {
+	for id := range m.removeduploaded_documents {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// UploadedDocumentsIDs returns the "uploadedDocuments" edge IDs in the mutation.
+// UploadedDocumentsIDs returns the "uploaded_documents" edge IDs in the mutation.
 func (m *UserMutation) UploadedDocumentsIDs() (ids []int) {
-	for id := range m.uploadedDocuments {
+	for id := range m.uploaded_documents {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetUploadedDocuments resets all changes to the "uploadedDocuments" edge.
+// ResetUploadedDocuments resets all changes to the "uploaded_documents" edge.
 func (m *UserMutation) ResetUploadedDocuments() {
-	m.uploadedDocuments = nil
-	m.cleareduploadedDocuments = false
-	m.removeduploadedDocuments = nil
+	m.uploaded_documents = nil
+	m.cleareduploaded_documents = false
+	m.removeduploaded_documents = nil
 }
 
-// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by ids.
+// AddApprovedDocumentIDs adds the "approved_documents" edge to the CompanyDocument entity by ids.
 func (m *UserMutation) AddApprovedDocumentIDs(ids ...int) {
-	if m.approvedDocuments == nil {
-		m.approvedDocuments = make(map[int]struct{})
+	if m.approved_documents == nil {
+		m.approved_documents = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.approvedDocuments[ids[i]] = struct{}{}
+		m.approved_documents[ids[i]] = struct{}{}
 	}
 }
 
-// ClearApprovedDocuments clears the "approvedDocuments" edge to the CompanyDocument entity.
+// ClearApprovedDocuments clears the "approved_documents" edge to the CompanyDocument entity.
 func (m *UserMutation) ClearApprovedDocuments() {
-	m.clearedapprovedDocuments = true
+	m.clearedapproved_documents = true
 }
 
-// ApprovedDocumentsCleared reports if the "approvedDocuments" edge to the CompanyDocument entity was cleared.
+// ApprovedDocumentsCleared reports if the "approved_documents" edge to the CompanyDocument entity was cleared.
 func (m *UserMutation) ApprovedDocumentsCleared() bool {
-	return m.clearedapprovedDocuments
+	return m.clearedapproved_documents
 }
 
-// RemoveApprovedDocumentIDs removes the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+// RemoveApprovedDocumentIDs removes the "approved_documents" edge to the CompanyDocument entity by IDs.
 func (m *UserMutation) RemoveApprovedDocumentIDs(ids ...int) {
-	if m.removedapprovedDocuments == nil {
-		m.removedapprovedDocuments = make(map[int]struct{})
+	if m.removedapproved_documents == nil {
+		m.removedapproved_documents = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.approvedDocuments, ids[i])
-		m.removedapprovedDocuments[ids[i]] = struct{}{}
+		delete(m.approved_documents, ids[i])
+		m.removedapproved_documents[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedApprovedDocuments returns the removed IDs of the "approvedDocuments" edge to the CompanyDocument entity.
+// RemovedApprovedDocuments returns the removed IDs of the "approved_documents" edge to the CompanyDocument entity.
 func (m *UserMutation) RemovedApprovedDocumentsIDs() (ids []int) {
-	for id := range m.removedapprovedDocuments {
+	for id := range m.removedapproved_documents {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ApprovedDocumentsIDs returns the "approvedDocuments" edge IDs in the mutation.
+// ApprovedDocumentsIDs returns the "approved_documents" edge IDs in the mutation.
 func (m *UserMutation) ApprovedDocumentsIDs() (ids []int) {
-	for id := range m.approvedDocuments {
+	for id := range m.approved_documents {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetApprovedDocuments resets all changes to the "approvedDocuments" edge.
+// ResetApprovedDocuments resets all changes to the "approved_documents" edge.
 func (m *UserMutation) ResetApprovedDocuments() {
-	m.approvedDocuments = nil
-	m.clearedapprovedDocuments = false
-	m.removedapprovedDocuments = nil
+	m.approved_documents = nil
+	m.clearedapproved_documents = false
+	m.removedapproved_documents = nil
 }
 
 // Where appends a list predicates to the UserMutation builder.
@@ -30878,28 +30840,28 @@ func (m *UserMutation) Type() string {
 // AddedFields().
 func (m *UserMutation) Fields() []string {
 	fields := make([]string, 0, 19)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, user.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, user.FieldDeletedAt)
 	}
 	if m.device != nil {
 		fields = append(fields, user.FieldDevice)
 	}
-	if m.isDemoUser != nil {
+	if m.is_demo_user != nil {
 		fields = append(fields, user.FieldIsDemoUser)
 	}
-	if m.firebaseUID != nil {
+	if m.firebase_UID != nil {
 		fields = append(fields, user.FieldFirebaseUID)
 	}
-	if m.fcmToken != nil {
+	if m.fcm_token != nil {
 		fields = append(fields, user.FieldFcmToken)
 	}
-	if m.expoPushToken != nil {
+	if m.expo_push_token != nil {
 		fields = append(fields, user.FieldExpoPushToken)
 	}
 	if m.email != nil {
@@ -30914,7 +30876,7 @@ func (m *UserMutation) Fields() []string {
 	if m.avatar != nil {
 		fields = append(fields, user.FieldAvatar)
 	}
-	if m.photoURL != nil {
+	if m.photo_URL != nil {
 		fields = append(fields, user.FieldPhotoURL)
 	}
 	if m.department != nil {
@@ -30926,7 +30888,7 @@ func (m *UserMutation) Fields() []string {
 	if m.birthdate != nil {
 		fields = append(fields, user.FieldBirthdate)
 	}
-	if m.lastLogin != nil {
+	if m.last_login != nil {
 		fields = append(fields, user.FieldLastLogin)
 	}
 	if m.gender != nil {
@@ -31358,13 +31320,13 @@ func (m *UserMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
 	edges := make([]string, 0, 18)
-	if m.accountingEntries != nil {
+	if m.accounting_entries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
 	if m.company != nil {
 		edges = append(edges, user.EdgeCompany)
 	}
-	if m.assignedRoles != nil {
+	if m.assigned_roles != nil {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
 	if m.subordinates != nil {
@@ -31373,43 +31335,43 @@ func (m *UserMutation) AddedEdges() []string {
 	if m.leader != nil {
 		edges = append(edges, user.EdgeLeader)
 	}
-	if m.createdMemberSignupTokens != nil {
+	if m.created_member_signup_tokens != nil {
 		edges = append(edges, user.EdgeCreatedMemberSignupTokens)
 	}
 	if m.employee != nil {
 		edges = append(edges, user.EdgeEmployee)
 	}
-	if m.issuedInvoices != nil {
+	if m.issued_invoices != nil {
 		edges = append(edges, user.EdgeIssuedInvoices)
 	}
-	if m.createdProjects != nil {
+	if m.created_projects != nil {
 		edges = append(edges, user.EdgeCreatedProjects)
 	}
-	if m.leaderedProjects != nil {
+	if m.leadered_projects != nil {
 		edges = append(edges, user.EdgeLeaderedProjects)
 	}
-	if m.assignedProjectTasks != nil {
+	if m.assigned_project_tasks != nil {
 		edges = append(edges, user.EdgeAssignedProjectTasks)
 	}
-	if m.participatedProjectTasks != nil {
+	if m.participated_project_tasks != nil {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
-	if m.createdTasks != nil {
+	if m.created_tasks != nil {
 		edges = append(edges, user.EdgeCreatedTasks)
 	}
 	if m.tokens != nil {
 		edges = append(edges, user.EdgeTokens)
 	}
-	if m.approvedWorkShifts != nil {
+	if m.approved_work_shifts != nil {
 		edges = append(edges, user.EdgeApprovedWorkShifts)
 	}
-	if m.workShifts != nil {
+	if m.work_shifts != nil {
 		edges = append(edges, user.EdgeWorkShifts)
 	}
-	if m.uploadedDocuments != nil {
+	if m.uploaded_documents != nil {
 		edges = append(edges, user.EdgeUploadedDocuments)
 	}
-	if m.approvedDocuments != nil {
+	if m.approved_documents != nil {
 		edges = append(edges, user.EdgeApprovedDocuments)
 	}
 	return edges
@@ -31420,8 +31382,8 @@ func (m *UserMutation) AddedEdges() []string {
 func (m *UserMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case user.EdgeAccountingEntries:
-		ids := make([]ent.Value, 0, len(m.accountingEntries))
-		for id := range m.accountingEntries {
+		ids := make([]ent.Value, 0, len(m.accounting_entries))
+		for id := range m.accounting_entries {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31432,8 +31394,8 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case user.EdgeAssignedRoles:
-		ids := make([]ent.Value, 0, len(m.assignedRoles))
-		for id := range m.assignedRoles {
+		ids := make([]ent.Value, 0, len(m.assigned_roles))
+		for id := range m.assigned_roles {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31448,8 +31410,8 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case user.EdgeCreatedMemberSignupTokens:
-		ids := make([]ent.Value, 0, len(m.createdMemberSignupTokens))
-		for id := range m.createdMemberSignupTokens {
+		ids := make([]ent.Value, 0, len(m.created_member_signup_tokens))
+		for id := range m.created_member_signup_tokens {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31458,38 +31420,38 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case user.EdgeIssuedInvoices:
-		ids := make([]ent.Value, 0, len(m.issuedInvoices))
-		for id := range m.issuedInvoices {
+		ids := make([]ent.Value, 0, len(m.issued_invoices))
+		for id := range m.issued_invoices {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeCreatedProjects:
-		ids := make([]ent.Value, 0, len(m.createdProjects))
-		for id := range m.createdProjects {
+		ids := make([]ent.Value, 0, len(m.created_projects))
+		for id := range m.created_projects {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeLeaderedProjects:
-		ids := make([]ent.Value, 0, len(m.leaderedProjects))
-		for id := range m.leaderedProjects {
+		ids := make([]ent.Value, 0, len(m.leadered_projects))
+		for id := range m.leadered_projects {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeAssignedProjectTasks:
-		ids := make([]ent.Value, 0, len(m.assignedProjectTasks))
-		for id := range m.assignedProjectTasks {
+		ids := make([]ent.Value, 0, len(m.assigned_project_tasks))
+		for id := range m.assigned_project_tasks {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeParticipatedProjectTasks:
-		ids := make([]ent.Value, 0, len(m.participatedProjectTasks))
-		for id := range m.participatedProjectTasks {
+		ids := make([]ent.Value, 0, len(m.participated_project_tasks))
+		for id := range m.participated_project_tasks {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeCreatedTasks:
-		ids := make([]ent.Value, 0, len(m.createdTasks))
-		for id := range m.createdTasks {
+		ids := make([]ent.Value, 0, len(m.created_tasks))
+		for id := range m.created_tasks {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31500,26 +31462,26 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case user.EdgeApprovedWorkShifts:
-		ids := make([]ent.Value, 0, len(m.approvedWorkShifts))
-		for id := range m.approvedWorkShifts {
+		ids := make([]ent.Value, 0, len(m.approved_work_shifts))
+		for id := range m.approved_work_shifts {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.workShifts))
-		for id := range m.workShifts {
+		ids := make([]ent.Value, 0, len(m.work_shifts))
+		for id := range m.work_shifts {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeUploadedDocuments:
-		ids := make([]ent.Value, 0, len(m.uploadedDocuments))
-		for id := range m.uploadedDocuments {
+		ids := make([]ent.Value, 0, len(m.uploaded_documents))
+		for id := range m.uploaded_documents {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeApprovedDocuments:
-		ids := make([]ent.Value, 0, len(m.approvedDocuments))
-		for id := range m.approvedDocuments {
+		ids := make([]ent.Value, 0, len(m.approved_documents))
+		for id := range m.approved_documents {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31530,52 +31492,52 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 18)
-	if m.removedaccountingEntries != nil {
+	if m.removedaccounting_entries != nil {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
 	if m.removedcompany != nil {
 		edges = append(edges, user.EdgeCompany)
 	}
-	if m.removedassignedRoles != nil {
+	if m.removedassigned_roles != nil {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
 	if m.removedsubordinates != nil {
 		edges = append(edges, user.EdgeSubordinates)
 	}
-	if m.removedcreatedMemberSignupTokens != nil {
+	if m.removedcreated_member_signup_tokens != nil {
 		edges = append(edges, user.EdgeCreatedMemberSignupTokens)
 	}
-	if m.removedissuedInvoices != nil {
+	if m.removedissued_invoices != nil {
 		edges = append(edges, user.EdgeIssuedInvoices)
 	}
-	if m.removedcreatedProjects != nil {
+	if m.removedcreated_projects != nil {
 		edges = append(edges, user.EdgeCreatedProjects)
 	}
-	if m.removedleaderedProjects != nil {
+	if m.removedleadered_projects != nil {
 		edges = append(edges, user.EdgeLeaderedProjects)
 	}
-	if m.removedassignedProjectTasks != nil {
+	if m.removedassigned_project_tasks != nil {
 		edges = append(edges, user.EdgeAssignedProjectTasks)
 	}
-	if m.removedparticipatedProjectTasks != nil {
+	if m.removedparticipated_project_tasks != nil {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
-	if m.removedcreatedTasks != nil {
+	if m.removedcreated_tasks != nil {
 		edges = append(edges, user.EdgeCreatedTasks)
 	}
 	if m.removedtokens != nil {
 		edges = append(edges, user.EdgeTokens)
 	}
-	if m.removedapprovedWorkShifts != nil {
+	if m.removedapproved_work_shifts != nil {
 		edges = append(edges, user.EdgeApprovedWorkShifts)
 	}
-	if m.removedworkShifts != nil {
+	if m.removedwork_shifts != nil {
 		edges = append(edges, user.EdgeWorkShifts)
 	}
-	if m.removeduploadedDocuments != nil {
+	if m.removeduploaded_documents != nil {
 		edges = append(edges, user.EdgeUploadedDocuments)
 	}
-	if m.removedapprovedDocuments != nil {
+	if m.removedapproved_documents != nil {
 		edges = append(edges, user.EdgeApprovedDocuments)
 	}
 	return edges
@@ -31586,8 +31548,8 @@ func (m *UserMutation) RemovedEdges() []string {
 func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
 	case user.EdgeAccountingEntries:
-		ids := make([]ent.Value, 0, len(m.removedaccountingEntries))
-		for id := range m.removedaccountingEntries {
+		ids := make([]ent.Value, 0, len(m.removedaccounting_entries))
+		for id := range m.removedaccounting_entries {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31598,8 +31560,8 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case user.EdgeAssignedRoles:
-		ids := make([]ent.Value, 0, len(m.removedassignedRoles))
-		for id := range m.removedassignedRoles {
+		ids := make([]ent.Value, 0, len(m.removedassigned_roles))
+		for id := range m.removedassigned_roles {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31610,44 +31572,44 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case user.EdgeCreatedMemberSignupTokens:
-		ids := make([]ent.Value, 0, len(m.removedcreatedMemberSignupTokens))
-		for id := range m.removedcreatedMemberSignupTokens {
+		ids := make([]ent.Value, 0, len(m.removedcreated_member_signup_tokens))
+		for id := range m.removedcreated_member_signup_tokens {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeIssuedInvoices:
-		ids := make([]ent.Value, 0, len(m.removedissuedInvoices))
-		for id := range m.removedissuedInvoices {
+		ids := make([]ent.Value, 0, len(m.removedissued_invoices))
+		for id := range m.removedissued_invoices {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeCreatedProjects:
-		ids := make([]ent.Value, 0, len(m.removedcreatedProjects))
-		for id := range m.removedcreatedProjects {
+		ids := make([]ent.Value, 0, len(m.removedcreated_projects))
+		for id := range m.removedcreated_projects {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeLeaderedProjects:
-		ids := make([]ent.Value, 0, len(m.removedleaderedProjects))
-		for id := range m.removedleaderedProjects {
+		ids := make([]ent.Value, 0, len(m.removedleadered_projects))
+		for id := range m.removedleadered_projects {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeAssignedProjectTasks:
-		ids := make([]ent.Value, 0, len(m.removedassignedProjectTasks))
-		for id := range m.removedassignedProjectTasks {
+		ids := make([]ent.Value, 0, len(m.removedassigned_project_tasks))
+		for id := range m.removedassigned_project_tasks {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeParticipatedProjectTasks:
-		ids := make([]ent.Value, 0, len(m.removedparticipatedProjectTasks))
-		for id := range m.removedparticipatedProjectTasks {
+		ids := make([]ent.Value, 0, len(m.removedparticipated_project_tasks))
+		for id := range m.removedparticipated_project_tasks {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeCreatedTasks:
-		ids := make([]ent.Value, 0, len(m.removedcreatedTasks))
-		for id := range m.removedcreatedTasks {
+		ids := make([]ent.Value, 0, len(m.removedcreated_tasks))
+		for id := range m.removedcreated_tasks {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31658,26 +31620,26 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 		}
 		return ids
 	case user.EdgeApprovedWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedapprovedWorkShifts))
-		for id := range m.removedapprovedWorkShifts {
+		ids := make([]ent.Value, 0, len(m.removedapproved_work_shifts))
+		for id := range m.removedapproved_work_shifts {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeWorkShifts:
-		ids := make([]ent.Value, 0, len(m.removedworkShifts))
-		for id := range m.removedworkShifts {
+		ids := make([]ent.Value, 0, len(m.removedwork_shifts))
+		for id := range m.removedwork_shifts {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeUploadedDocuments:
-		ids := make([]ent.Value, 0, len(m.removeduploadedDocuments))
-		for id := range m.removeduploadedDocuments {
+		ids := make([]ent.Value, 0, len(m.removeduploaded_documents))
+		for id := range m.removeduploaded_documents {
 			ids = append(ids, id)
 		}
 		return ids
 	case user.EdgeApprovedDocuments:
-		ids := make([]ent.Value, 0, len(m.removedapprovedDocuments))
-		for id := range m.removedapprovedDocuments {
+		ids := make([]ent.Value, 0, len(m.removedapproved_documents))
+		for id := range m.removedapproved_documents {
 			ids = append(ids, id)
 		}
 		return ids
@@ -31688,13 +31650,13 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 18)
-	if m.clearedaccountingEntries {
+	if m.clearedaccounting_entries {
 		edges = append(edges, user.EdgeAccountingEntries)
 	}
 	if m.clearedcompany {
 		edges = append(edges, user.EdgeCompany)
 	}
-	if m.clearedassignedRoles {
+	if m.clearedassigned_roles {
 		edges = append(edges, user.EdgeAssignedRoles)
 	}
 	if m.clearedsubordinates {
@@ -31703,43 +31665,43 @@ func (m *UserMutation) ClearedEdges() []string {
 	if m.clearedleader {
 		edges = append(edges, user.EdgeLeader)
 	}
-	if m.clearedcreatedMemberSignupTokens {
+	if m.clearedcreated_member_signup_tokens {
 		edges = append(edges, user.EdgeCreatedMemberSignupTokens)
 	}
 	if m.clearedemployee {
 		edges = append(edges, user.EdgeEmployee)
 	}
-	if m.clearedissuedInvoices {
+	if m.clearedissued_invoices {
 		edges = append(edges, user.EdgeIssuedInvoices)
 	}
-	if m.clearedcreatedProjects {
+	if m.clearedcreated_projects {
 		edges = append(edges, user.EdgeCreatedProjects)
 	}
-	if m.clearedleaderedProjects {
+	if m.clearedleadered_projects {
 		edges = append(edges, user.EdgeLeaderedProjects)
 	}
-	if m.clearedassignedProjectTasks {
+	if m.clearedassigned_project_tasks {
 		edges = append(edges, user.EdgeAssignedProjectTasks)
 	}
-	if m.clearedparticipatedProjectTasks {
+	if m.clearedparticipated_project_tasks {
 		edges = append(edges, user.EdgeParticipatedProjectTasks)
 	}
-	if m.clearedcreatedTasks {
+	if m.clearedcreated_tasks {
 		edges = append(edges, user.EdgeCreatedTasks)
 	}
 	if m.clearedtokens {
 		edges = append(edges, user.EdgeTokens)
 	}
-	if m.clearedapprovedWorkShifts {
+	if m.clearedapproved_work_shifts {
 		edges = append(edges, user.EdgeApprovedWorkShifts)
 	}
-	if m.clearedworkShifts {
+	if m.clearedwork_shifts {
 		edges = append(edges, user.EdgeWorkShifts)
 	}
-	if m.cleareduploadedDocuments {
+	if m.cleareduploaded_documents {
 		edges = append(edges, user.EdgeUploadedDocuments)
 	}
-	if m.clearedapprovedDocuments {
+	if m.clearedapproved_documents {
 		edges = append(edges, user.EdgeApprovedDocuments)
 	}
 	return edges
@@ -31750,41 +31712,41 @@ func (m *UserMutation) ClearedEdges() []string {
 func (m *UserMutation) EdgeCleared(name string) bool {
 	switch name {
 	case user.EdgeAccountingEntries:
-		return m.clearedaccountingEntries
+		return m.clearedaccounting_entries
 	case user.EdgeCompany:
 		return m.clearedcompany
 	case user.EdgeAssignedRoles:
-		return m.clearedassignedRoles
+		return m.clearedassigned_roles
 	case user.EdgeSubordinates:
 		return m.clearedsubordinates
 	case user.EdgeLeader:
 		return m.clearedleader
 	case user.EdgeCreatedMemberSignupTokens:
-		return m.clearedcreatedMemberSignupTokens
+		return m.clearedcreated_member_signup_tokens
 	case user.EdgeEmployee:
 		return m.clearedemployee
 	case user.EdgeIssuedInvoices:
-		return m.clearedissuedInvoices
+		return m.clearedissued_invoices
 	case user.EdgeCreatedProjects:
-		return m.clearedcreatedProjects
+		return m.clearedcreated_projects
 	case user.EdgeLeaderedProjects:
-		return m.clearedleaderedProjects
+		return m.clearedleadered_projects
 	case user.EdgeAssignedProjectTasks:
-		return m.clearedassignedProjectTasks
+		return m.clearedassigned_project_tasks
 	case user.EdgeParticipatedProjectTasks:
-		return m.clearedparticipatedProjectTasks
+		return m.clearedparticipated_project_tasks
 	case user.EdgeCreatedTasks:
-		return m.clearedcreatedTasks
+		return m.clearedcreated_tasks
 	case user.EdgeTokens:
 		return m.clearedtokens
 	case user.EdgeApprovedWorkShifts:
-		return m.clearedapprovedWorkShifts
+		return m.clearedapproved_work_shifts
 	case user.EdgeWorkShifts:
-		return m.clearedworkShifts
+		return m.clearedwork_shifts
 	case user.EdgeUploadedDocuments:
-		return m.cleareduploadedDocuments
+		return m.cleareduploaded_documents
 	case user.EdgeApprovedDocuments:
-		return m.clearedapprovedDocuments
+		return m.clearedapproved_documents
 	}
 	return false
 }
@@ -32374,36 +32336,36 @@ func (m *UserRoleMutation) ResetEdge(name string) error {
 // WorkshiftMutation represents an operation that mutates the Workshift nodes in the graph.
 type WorkshiftMutation struct {
 	config
-	op                 Op
-	typ                string
-	id                 *int
-	createdAt          *time.Time
-	updatedAt          *time.Time
-	deletedAt          *time.Time
-	approvedAt         *time.Time
-	clockIn            *time.Time
-	clockOut           *time.Time
-	clockInLocation    *string
-	clockOutLocation   *string
-	description        *string
-	note               *string
-	status             *workshift.Status
-	clearedFields      map[string]struct{}
-	company            *int
-	clearedcompany     bool
-	user               *int
-	cleareduser        bool
-	approvedBy         *int
-	clearedapprovedBy  bool
-	task               *int
-	clearedtask        bool
-	editRequest        *int
-	clearededitRequest bool
-	workShift          *int
-	clearedworkShift   bool
-	done               bool
-	oldValue           func(context.Context) (*Workshift, error)
-	predicates         []predicate.Workshift
+	op                  Op
+	typ                 string
+	id                  *int
+	created_at          *time.Time
+	updated_at          *time.Time
+	deleted_at          *time.Time
+	approved_at         *time.Time
+	clock_in            *time.Time
+	clock_out           *time.Time
+	clock_in_location   *string
+	clock_out_location  *string
+	description         *string
+	note                *string
+	status              *workshift.Status
+	clearedFields       map[string]struct{}
+	company             *int
+	clearedcompany      bool
+	user                *int
+	cleareduser         bool
+	approved_by         *int
+	clearedapproved_by  bool
+	task                *int
+	clearedtask         bool
+	edit_request        *int
+	clearededit_request bool
+	work_shift          *int
+	clearedwork_shift   bool
+	done                bool
+	oldValue            func(context.Context) (*Workshift, error)
+	predicates          []predicate.Workshift
 }
 
 var _ ent.Mutation = (*WorkshiftMutation)(nil)
@@ -32504,21 +32466,21 @@ func (m *WorkshiftMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (m *WorkshiftMutation) SetCreatedAt(t time.Time) {
-	m.createdAt = &t
+	m.created_at = &t
 }
 
-// CreatedAt returns the value of the "createdAt" field in the mutation.
+// CreatedAt returns the value of the "created_at" field in the mutation.
 func (m *WorkshiftMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.createdAt
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreatedAt returns the old "createdAt" field's value of the Workshift entity.
+// OldCreatedAt returns the old "created_at" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
@@ -32535,26 +32497,26 @@ func (m *WorkshiftMutation) OldCreatedAt(ctx context.Context) (v time.Time, err 
 	return oldValue.CreatedAt, nil
 }
 
-// ResetCreatedAt resets all changes to the "createdAt" field.
+// ResetCreatedAt resets all changes to the "created_at" field.
 func (m *WorkshiftMutation) ResetCreatedAt() {
-	m.createdAt = nil
+	m.created_at = nil
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (m *WorkshiftMutation) SetUpdatedAt(t time.Time) {
-	m.updatedAt = &t
+	m.updated_at = &t
 }
 
-// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
 func (m *WorkshiftMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updatedAt
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdatedAt returns the old "updatedAt" field's value of the Workshift entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
@@ -32571,26 +32533,26 @@ func (m *WorkshiftMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err 
 	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdatedAt resets all changes to the "updatedAt" field.
+// ResetUpdatedAt resets all changes to the "updated_at" field.
 func (m *WorkshiftMutation) ResetUpdatedAt() {
-	m.updatedAt = nil
+	m.updated_at = nil
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (m *WorkshiftMutation) SetDeletedAt(t time.Time) {
-	m.deletedAt = &t
+	m.deleted_at = &t
 }
 
-// DeletedAt returns the value of the "deletedAt" field in the mutation.
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
 func (m *WorkshiftMutation) DeletedAt() (r time.Time, exists bool) {
-	v := m.deletedAt
+	v := m.deleted_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDeletedAt returns the old "deletedAt" field's value of the Workshift entity.
+// OldDeletedAt returns the old "deleted_at" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
@@ -32607,39 +32569,39 @@ func (m *WorkshiftMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err
 	return oldValue.DeletedAt, nil
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (m *WorkshiftMutation) ClearDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	m.clearedFields[workshift.FieldDeletedAt] = struct{}{}
 }
 
-// DeletedAtCleared returns if the "deletedAt" field was cleared in this mutation.
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
 func (m *WorkshiftMutation) DeletedAtCleared() bool {
 	_, ok := m.clearedFields[workshift.FieldDeletedAt]
 	return ok
 }
 
-// ResetDeletedAt resets all changes to the "deletedAt" field.
+// ResetDeletedAt resets all changes to the "deleted_at" field.
 func (m *WorkshiftMutation) ResetDeletedAt() {
-	m.deletedAt = nil
+	m.deleted_at = nil
 	delete(m.clearedFields, workshift.FieldDeletedAt)
 }
 
-// SetApprovedAt sets the "approvedAt" field.
+// SetApprovedAt sets the "approved_at" field.
 func (m *WorkshiftMutation) SetApprovedAt(t time.Time) {
-	m.approvedAt = &t
+	m.approved_at = &t
 }
 
-// ApprovedAt returns the value of the "approvedAt" field in the mutation.
+// ApprovedAt returns the value of the "approved_at" field in the mutation.
 func (m *WorkshiftMutation) ApprovedAt() (r time.Time, exists bool) {
-	v := m.approvedAt
+	v := m.approved_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldApprovedAt returns the old "approvedAt" field's value of the Workshift entity.
+// OldApprovedAt returns the old "approved_at" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldApprovedAt(ctx context.Context) (v *time.Time, err error) {
@@ -32656,39 +32618,39 @@ func (m *WorkshiftMutation) OldApprovedAt(ctx context.Context) (v *time.Time, er
 	return oldValue.ApprovedAt, nil
 }
 
-// ClearApprovedAt clears the value of the "approvedAt" field.
+// ClearApprovedAt clears the value of the "approved_at" field.
 func (m *WorkshiftMutation) ClearApprovedAt() {
-	m.approvedAt = nil
+	m.approved_at = nil
 	m.clearedFields[workshift.FieldApprovedAt] = struct{}{}
 }
 
-// ApprovedAtCleared returns if the "approvedAt" field was cleared in this mutation.
+// ApprovedAtCleared returns if the "approved_at" field was cleared in this mutation.
 func (m *WorkshiftMutation) ApprovedAtCleared() bool {
 	_, ok := m.clearedFields[workshift.FieldApprovedAt]
 	return ok
 }
 
-// ResetApprovedAt resets all changes to the "approvedAt" field.
+// ResetApprovedAt resets all changes to the "approved_at" field.
 func (m *WorkshiftMutation) ResetApprovedAt() {
-	m.approvedAt = nil
+	m.approved_at = nil
 	delete(m.clearedFields, workshift.FieldApprovedAt)
 }
 
-// SetClockIn sets the "clockIn" field.
+// SetClockIn sets the "clock_in" field.
 func (m *WorkshiftMutation) SetClockIn(t time.Time) {
-	m.clockIn = &t
+	m.clock_in = &t
 }
 
-// ClockIn returns the value of the "clockIn" field in the mutation.
+// ClockIn returns the value of the "clock_in" field in the mutation.
 func (m *WorkshiftMutation) ClockIn() (r time.Time, exists bool) {
-	v := m.clockIn
+	v := m.clock_in
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldClockIn returns the old "clockIn" field's value of the Workshift entity.
+// OldClockIn returns the old "clock_in" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldClockIn(ctx context.Context) (v time.Time, err error) {
@@ -32705,26 +32667,26 @@ func (m *WorkshiftMutation) OldClockIn(ctx context.Context) (v time.Time, err er
 	return oldValue.ClockIn, nil
 }
 
-// ResetClockIn resets all changes to the "clockIn" field.
+// ResetClockIn resets all changes to the "clock_in" field.
 func (m *WorkshiftMutation) ResetClockIn() {
-	m.clockIn = nil
+	m.clock_in = nil
 }
 
-// SetClockOut sets the "clockOut" field.
+// SetClockOut sets the "clock_out" field.
 func (m *WorkshiftMutation) SetClockOut(t time.Time) {
-	m.clockOut = &t
+	m.clock_out = &t
 }
 
-// ClockOut returns the value of the "clockOut" field in the mutation.
+// ClockOut returns the value of the "clock_out" field in the mutation.
 func (m *WorkshiftMutation) ClockOut() (r time.Time, exists bool) {
-	v := m.clockOut
+	v := m.clock_out
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldClockOut returns the old "clockOut" field's value of the Workshift entity.
+// OldClockOut returns the old "clock_out" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldClockOut(ctx context.Context) (v *time.Time, err error) {
@@ -32741,39 +32703,39 @@ func (m *WorkshiftMutation) OldClockOut(ctx context.Context) (v *time.Time, err 
 	return oldValue.ClockOut, nil
 }
 
-// ClearClockOut clears the value of the "clockOut" field.
+// ClearClockOut clears the value of the "clock_out" field.
 func (m *WorkshiftMutation) ClearClockOut() {
-	m.clockOut = nil
+	m.clock_out = nil
 	m.clearedFields[workshift.FieldClockOut] = struct{}{}
 }
 
-// ClockOutCleared returns if the "clockOut" field was cleared in this mutation.
+// ClockOutCleared returns if the "clock_out" field was cleared in this mutation.
 func (m *WorkshiftMutation) ClockOutCleared() bool {
 	_, ok := m.clearedFields[workshift.FieldClockOut]
 	return ok
 }
 
-// ResetClockOut resets all changes to the "clockOut" field.
+// ResetClockOut resets all changes to the "clock_out" field.
 func (m *WorkshiftMutation) ResetClockOut() {
-	m.clockOut = nil
+	m.clock_out = nil
 	delete(m.clearedFields, workshift.FieldClockOut)
 }
 
-// SetClockInLocation sets the "clockInLocation" field.
+// SetClockInLocation sets the "clock_in_location" field.
 func (m *WorkshiftMutation) SetClockInLocation(s string) {
-	m.clockInLocation = &s
+	m.clock_in_location = &s
 }
 
-// ClockInLocation returns the value of the "clockInLocation" field in the mutation.
+// ClockInLocation returns the value of the "clock_in_location" field in the mutation.
 func (m *WorkshiftMutation) ClockInLocation() (r string, exists bool) {
-	v := m.clockInLocation
+	v := m.clock_in_location
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldClockInLocation returns the old "clockInLocation" field's value of the Workshift entity.
+// OldClockInLocation returns the old "clock_in_location" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldClockInLocation(ctx context.Context) (v string, err error) {
@@ -32790,26 +32752,26 @@ func (m *WorkshiftMutation) OldClockInLocation(ctx context.Context) (v string, e
 	return oldValue.ClockInLocation, nil
 }
 
-// ResetClockInLocation resets all changes to the "clockInLocation" field.
+// ResetClockInLocation resets all changes to the "clock_in_location" field.
 func (m *WorkshiftMutation) ResetClockInLocation() {
-	m.clockInLocation = nil
+	m.clock_in_location = nil
 }
 
-// SetClockOutLocation sets the "clockOutLocation" field.
+// SetClockOutLocation sets the "clock_out_location" field.
 func (m *WorkshiftMutation) SetClockOutLocation(s string) {
-	m.clockOutLocation = &s
+	m.clock_out_location = &s
 }
 
-// ClockOutLocation returns the value of the "clockOutLocation" field in the mutation.
+// ClockOutLocation returns the value of the "clock_out_location" field in the mutation.
 func (m *WorkshiftMutation) ClockOutLocation() (r string, exists bool) {
-	v := m.clockOutLocation
+	v := m.clock_out_location
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldClockOutLocation returns the old "clockOutLocation" field's value of the Workshift entity.
+// OldClockOutLocation returns the old "clock_out_location" field's value of the Workshift entity.
 // If the Workshift object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *WorkshiftMutation) OldClockOutLocation(ctx context.Context) (v string, err error) {
@@ -32826,21 +32788,21 @@ func (m *WorkshiftMutation) OldClockOutLocation(ctx context.Context) (v string, 
 	return oldValue.ClockOutLocation, nil
 }
 
-// ClearClockOutLocation clears the value of the "clockOutLocation" field.
+// ClearClockOutLocation clears the value of the "clock_out_location" field.
 func (m *WorkshiftMutation) ClearClockOutLocation() {
-	m.clockOutLocation = nil
+	m.clock_out_location = nil
 	m.clearedFields[workshift.FieldClockOutLocation] = struct{}{}
 }
 
-// ClockOutLocationCleared returns if the "clockOutLocation" field was cleared in this mutation.
+// ClockOutLocationCleared returns if the "clock_out_location" field was cleared in this mutation.
 func (m *WorkshiftMutation) ClockOutLocationCleared() bool {
 	_, ok := m.clearedFields[workshift.FieldClockOutLocation]
 	return ok
 }
 
-// ResetClockOutLocation resets all changes to the "clockOutLocation" field.
+// ResetClockOutLocation resets all changes to the "clock_out_location" field.
 func (m *WorkshiftMutation) ResetClockOutLocation() {
-	m.clockOutLocation = nil
+	m.clock_out_location = nil
 	delete(m.clearedFields, workshift.FieldClockOutLocation)
 }
 
@@ -33056,43 +33018,43 @@ func (m *WorkshiftMutation) ResetUser() {
 	m.cleareduser = false
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by id.
+// SetApprovedByID sets the "approved_by" edge to the User entity by id.
 func (m *WorkshiftMutation) SetApprovedByID(id int) {
-	m.approvedBy = &id
+	m.approved_by = &id
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (m *WorkshiftMutation) ClearApprovedBy() {
-	m.clearedapprovedBy = true
+	m.clearedapproved_by = true
 }
 
-// ApprovedByCleared reports if the "approvedBy" edge to the User entity was cleared.
+// ApprovedByCleared reports if the "approved_by" edge to the User entity was cleared.
 func (m *WorkshiftMutation) ApprovedByCleared() bool {
-	return m.clearedapprovedBy
+	return m.clearedapproved_by
 }
 
-// ApprovedByID returns the "approvedBy" edge ID in the mutation.
+// ApprovedByID returns the "approved_by" edge ID in the mutation.
 func (m *WorkshiftMutation) ApprovedByID() (id int, exists bool) {
-	if m.approvedBy != nil {
-		return *m.approvedBy, true
+	if m.approved_by != nil {
+		return *m.approved_by, true
 	}
 	return
 }
 
-// ApprovedByIDs returns the "approvedBy" edge IDs in the mutation.
+// ApprovedByIDs returns the "approved_by" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // ApprovedByID instead. It exists only for internal usage by the builders.
 func (m *WorkshiftMutation) ApprovedByIDs() (ids []int) {
-	if id := m.approvedBy; id != nil {
+	if id := m.approved_by; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetApprovedBy resets all changes to the "approvedBy" edge.
+// ResetApprovedBy resets all changes to the "approved_by" edge.
 func (m *WorkshiftMutation) ResetApprovedBy() {
-	m.approvedBy = nil
-	m.clearedapprovedBy = false
+	m.approved_by = nil
+	m.clearedapproved_by = false
 }
 
 // SetTaskID sets the "task" edge to the ProjectTask entity by id.
@@ -33134,82 +33096,82 @@ func (m *WorkshiftMutation) ResetTask() {
 	m.clearedtask = false
 }
 
-// SetEditRequestID sets the "editRequest" edge to the Workshift entity by id.
+// SetEditRequestID sets the "edit_request" edge to the Workshift entity by id.
 func (m *WorkshiftMutation) SetEditRequestID(id int) {
-	m.editRequest = &id
+	m.edit_request = &id
 }
 
-// ClearEditRequest clears the "editRequest" edge to the Workshift entity.
+// ClearEditRequest clears the "edit_request" edge to the Workshift entity.
 func (m *WorkshiftMutation) ClearEditRequest() {
-	m.clearededitRequest = true
+	m.clearededit_request = true
 }
 
-// EditRequestCleared reports if the "editRequest" edge to the Workshift entity was cleared.
+// EditRequestCleared reports if the "edit_request" edge to the Workshift entity was cleared.
 func (m *WorkshiftMutation) EditRequestCleared() bool {
-	return m.clearededitRequest
+	return m.clearededit_request
 }
 
-// EditRequestID returns the "editRequest" edge ID in the mutation.
+// EditRequestID returns the "edit_request" edge ID in the mutation.
 func (m *WorkshiftMutation) EditRequestID() (id int, exists bool) {
-	if m.editRequest != nil {
-		return *m.editRequest, true
+	if m.edit_request != nil {
+		return *m.edit_request, true
 	}
 	return
 }
 
-// EditRequestIDs returns the "editRequest" edge IDs in the mutation.
+// EditRequestIDs returns the "edit_request" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // EditRequestID instead. It exists only for internal usage by the builders.
 func (m *WorkshiftMutation) EditRequestIDs() (ids []int) {
-	if id := m.editRequest; id != nil {
+	if id := m.edit_request; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetEditRequest resets all changes to the "editRequest" edge.
+// ResetEditRequest resets all changes to the "edit_request" edge.
 func (m *WorkshiftMutation) ResetEditRequest() {
-	m.editRequest = nil
-	m.clearededitRequest = false
+	m.edit_request = nil
+	m.clearededit_request = false
 }
 
-// SetWorkShiftID sets the "workShift" edge to the Workshift entity by id.
+// SetWorkShiftID sets the "work_shift" edge to the Workshift entity by id.
 func (m *WorkshiftMutation) SetWorkShiftID(id int) {
-	m.workShift = &id
+	m.work_shift = &id
 }
 
-// ClearWorkShift clears the "workShift" edge to the Workshift entity.
+// ClearWorkShift clears the "work_shift" edge to the Workshift entity.
 func (m *WorkshiftMutation) ClearWorkShift() {
-	m.clearedworkShift = true
+	m.clearedwork_shift = true
 }
 
-// WorkShiftCleared reports if the "workShift" edge to the Workshift entity was cleared.
+// WorkShiftCleared reports if the "work_shift" edge to the Workshift entity was cleared.
 func (m *WorkshiftMutation) WorkShiftCleared() bool {
-	return m.clearedworkShift
+	return m.clearedwork_shift
 }
 
-// WorkShiftID returns the "workShift" edge ID in the mutation.
+// WorkShiftID returns the "work_shift" edge ID in the mutation.
 func (m *WorkshiftMutation) WorkShiftID() (id int, exists bool) {
-	if m.workShift != nil {
-		return *m.workShift, true
+	if m.work_shift != nil {
+		return *m.work_shift, true
 	}
 	return
 }
 
-// WorkShiftIDs returns the "workShift" edge IDs in the mutation.
+// WorkShiftIDs returns the "work_shift" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
 // WorkShiftID instead. It exists only for internal usage by the builders.
 func (m *WorkshiftMutation) WorkShiftIDs() (ids []int) {
-	if id := m.workShift; id != nil {
+	if id := m.work_shift; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetWorkShift resets all changes to the "workShift" edge.
+// ResetWorkShift resets all changes to the "work_shift" edge.
 func (m *WorkshiftMutation) ResetWorkShift() {
-	m.workShift = nil
-	m.clearedworkShift = false
+	m.work_shift = nil
+	m.clearedwork_shift = false
 }
 
 // Where appends a list predicates to the WorkshiftMutation builder.
@@ -33247,28 +33209,28 @@ func (m *WorkshiftMutation) Type() string {
 // AddedFields().
 func (m *WorkshiftMutation) Fields() []string {
 	fields := make([]string, 0, 11)
-	if m.createdAt != nil {
+	if m.created_at != nil {
 		fields = append(fields, workshift.FieldCreatedAt)
 	}
-	if m.updatedAt != nil {
+	if m.updated_at != nil {
 		fields = append(fields, workshift.FieldUpdatedAt)
 	}
-	if m.deletedAt != nil {
+	if m.deleted_at != nil {
 		fields = append(fields, workshift.FieldDeletedAt)
 	}
-	if m.approvedAt != nil {
+	if m.approved_at != nil {
 		fields = append(fields, workshift.FieldApprovedAt)
 	}
-	if m.clockIn != nil {
+	if m.clock_in != nil {
 		fields = append(fields, workshift.FieldClockIn)
 	}
-	if m.clockOut != nil {
+	if m.clock_out != nil {
 		fields = append(fields, workshift.FieldClockOut)
 	}
-	if m.clockInLocation != nil {
+	if m.clock_in_location != nil {
 		fields = append(fields, workshift.FieldClockInLocation)
 	}
-	if m.clockOutLocation != nil {
+	if m.clock_out_location != nil {
 		fields = append(fields, workshift.FieldClockOutLocation)
 	}
 	if m.description != nil {
@@ -33561,16 +33523,16 @@ func (m *WorkshiftMutation) AddedEdges() []string {
 	if m.user != nil {
 		edges = append(edges, workshift.EdgeUser)
 	}
-	if m.approvedBy != nil {
+	if m.approved_by != nil {
 		edges = append(edges, workshift.EdgeApprovedBy)
 	}
 	if m.task != nil {
 		edges = append(edges, workshift.EdgeTask)
 	}
-	if m.editRequest != nil {
+	if m.edit_request != nil {
 		edges = append(edges, workshift.EdgeEditRequest)
 	}
-	if m.workShift != nil {
+	if m.work_shift != nil {
 		edges = append(edges, workshift.EdgeWorkShift)
 	}
 	return edges
@@ -33589,7 +33551,7 @@ func (m *WorkshiftMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeApprovedBy:
-		if id := m.approvedBy; id != nil {
+		if id := m.approved_by; id != nil {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeTask:
@@ -33597,11 +33559,11 @@ func (m *WorkshiftMutation) AddedIDs(name string) []ent.Value {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeEditRequest:
-		if id := m.editRequest; id != nil {
+		if id := m.edit_request; id != nil {
 			return []ent.Value{*id}
 		}
 	case workshift.EdgeWorkShift:
-		if id := m.workShift; id != nil {
+		if id := m.work_shift; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -33629,16 +33591,16 @@ func (m *WorkshiftMutation) ClearedEdges() []string {
 	if m.cleareduser {
 		edges = append(edges, workshift.EdgeUser)
 	}
-	if m.clearedapprovedBy {
+	if m.clearedapproved_by {
 		edges = append(edges, workshift.EdgeApprovedBy)
 	}
 	if m.clearedtask {
 		edges = append(edges, workshift.EdgeTask)
 	}
-	if m.clearededitRequest {
+	if m.clearededit_request {
 		edges = append(edges, workshift.EdgeEditRequest)
 	}
-	if m.clearedworkShift {
+	if m.clearedwork_shift {
 		edges = append(edges, workshift.EdgeWorkShift)
 	}
 	return edges
@@ -33653,13 +33615,13 @@ func (m *WorkshiftMutation) EdgeCleared(name string) bool {
 	case workshift.EdgeUser:
 		return m.cleareduser
 	case workshift.EdgeApprovedBy:
-		return m.clearedapprovedBy
+		return m.clearedapproved_by
 	case workshift.EdgeTask:
 		return m.clearedtask
 	case workshift.EdgeEditRequest:
-		return m.clearededitRequest
+		return m.clearededit_request
 	case workshift.EdgeWorkShift:
-		return m.clearedworkShift
+		return m.clearedwork_shift
 	}
 	return false
 }

@@ -21,13 +21,13 @@ type TreasuryCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (tc *TreasuryCreate) SetCreatedAt(t time.Time) *TreasuryCreate {
 	tc.mutation.SetCreatedAt(t)
 	return tc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (tc *TreasuryCreate) SetNillableCreatedAt(t *time.Time) *TreasuryCreate {
 	if t != nil {
 		tc.SetCreatedAt(*t)
@@ -35,13 +35,13 @@ func (tc *TreasuryCreate) SetNillableCreatedAt(t *time.Time) *TreasuryCreate {
 	return tc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (tc *TreasuryCreate) SetUpdatedAt(t time.Time) *TreasuryCreate {
 	tc.mutation.SetUpdatedAt(t)
 	return tc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (tc *TreasuryCreate) SetNillableUpdatedAt(t *time.Time) *TreasuryCreate {
 	if t != nil {
 		tc.SetUpdatedAt(*t)
@@ -49,13 +49,13 @@ func (tc *TreasuryCreate) SetNillableUpdatedAt(t *time.Time) *TreasuryCreate {
 	return tc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (tc *TreasuryCreate) SetDeletedAt(t time.Time) *TreasuryCreate {
 	tc.mutation.SetDeletedAt(t)
 	return tc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (tc *TreasuryCreate) SetNillableDeletedAt(t *time.Time) *TreasuryCreate {
 	if t != nil {
 		tc.SetDeletedAt(*t)
@@ -136,10 +136,10 @@ func (tc *TreasuryCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (tc *TreasuryCreate) check() error {
 	if _, ok := tc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Treasury.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Treasury.created_at"`)}
 	}
 	if _, ok := tc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Treasury.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Treasury.updated_at"`)}
 	}
 	if _, ok := tc.mutation.Balance(); !ok {
 		return &ValidationError{Name: "balance", err: errors.New(`generated: missing required field "Treasury.balance"`)}

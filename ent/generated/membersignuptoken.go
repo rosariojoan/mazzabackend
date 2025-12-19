@@ -19,12 +19,12 @@ type MemberSignupToken struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Email holds the value of the "email" field.
@@ -37,12 +37,12 @@ type MemberSignupToken struct {
 	Role membersignuptoken.Role `json:"role,omitempty"`
 	// A description about the user and its role of this user
 	Note string `json:"note,omitempty"`
-	// NumberAccessed holds the value of the "numberAccessed" field.
-	NumberAccessed int `json:"numberAccessed,omitempty"`
-	// ExpiresAt holds the value of the "expiresAt" field.
-	ExpiresAt time.Time `json:"expiresAt,omitempty"`
-	// AlreadyUsed holds the value of the "alreadyUsed" field.
-	AlreadyUsed bool `json:"alreadyUsed,omitempty"`
+	// NumberAccessed holds the value of the "number_accessed" field.
+	NumberAccessed int `json:"number_accessed,omitempty"`
+	// ExpiresAt holds the value of the "expires_at" field.
+	ExpiresAt time.Time `json:"expires_at,omitempty"`
+	// AlreadyUsed holds the value of the "already_used" field.
+	AlreadyUsed bool `json:"already_used,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MemberSignupTokenQuery when eager-loading is set.
 	Edges                             MemberSignupTokenEdges `json:"edges"`
@@ -55,8 +55,8 @@ type MemberSignupToken struct {
 type MemberSignupTokenEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// CreatedBy holds the value of the createdBy edge.
-	CreatedBy *User `json:"createdBy,omitempty"`
+	// CreatedBy holds the value of the created_by edge.
+	CreatedBy *User `json:"created_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
@@ -83,7 +83,7 @@ func (e MemberSignupTokenEdges) CreatedByOrErr() (*User, error) {
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "createdBy"}
+	return nil, &NotLoadedError{edge: "created_by"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -126,19 +126,19 @@ func (mst *MemberSignupToken) assignValues(columns []string, values []any) error
 			mst.ID = int(value.Int64)
 		case membersignuptoken.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				mst.CreatedAt = value.Time
 			}
 		case membersignuptoken.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				mst.UpdatedAt = value.Time
 			}
 		case membersignuptoken.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				mst.DeletedAt = new(time.Time)
 				*mst.DeletedAt = value.Time
@@ -183,19 +183,19 @@ func (mst *MemberSignupToken) assignValues(columns []string, values []any) error
 			}
 		case membersignuptoken.FieldNumberAccessed:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field numberAccessed", values[i])
+				return fmt.Errorf("unexpected type %T for field number_accessed", values[i])
 			} else if value.Valid {
 				mst.NumberAccessed = int(value.Int64)
 			}
 		case membersignuptoken.FieldExpiresAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field expiresAt", values[i])
+				return fmt.Errorf("unexpected type %T for field expires_at", values[i])
 			} else if value.Valid {
 				mst.ExpiresAt = value.Time
 			}
 		case membersignuptoken.FieldAlreadyUsed:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field alreadyUsed", values[i])
+				return fmt.Errorf("unexpected type %T for field already_used", values[i])
 			} else if value.Valid {
 				mst.AlreadyUsed = value.Bool
 			}
@@ -231,7 +231,7 @@ func (mst *MemberSignupToken) QueryCompany() *CompanyQuery {
 	return NewMemberSignupTokenClient(mst.config).QueryCompany(mst)
 }
 
-// QueryCreatedBy queries the "createdBy" edge of the MemberSignupToken entity.
+// QueryCreatedBy queries the "created_by" edge of the MemberSignupToken entity.
 func (mst *MemberSignupToken) QueryCreatedBy() *UserQuery {
 	return NewMemberSignupTokenClient(mst.config).QueryCreatedBy(mst)
 }
@@ -259,14 +259,14 @@ func (mst *MemberSignupToken) String() string {
 	var builder strings.Builder
 	builder.WriteString("MemberSignupToken(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", mst.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(mst.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(mst.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := mst.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -292,13 +292,13 @@ func (mst *MemberSignupToken) String() string {
 	builder.WriteString("note=")
 	builder.WriteString(mst.Note)
 	builder.WriteString(", ")
-	builder.WriteString("numberAccessed=")
+	builder.WriteString("number_accessed=")
 	builder.WriteString(fmt.Sprintf("%v", mst.NumberAccessed))
 	builder.WriteString(", ")
-	builder.WriteString("expiresAt=")
+	builder.WriteString("expires_at=")
 	builder.WriteString(mst.ExpiresAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("alreadyUsed=")
+	builder.WriteString("already_used=")
 	builder.WriteString(fmt.Sprintf("%v", mst.AlreadyUsed))
 	builder.WriteByte(')')
 	return builder.String()

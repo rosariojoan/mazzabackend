@@ -18,12 +18,12 @@ type Supplier struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Address holds the value of the "address" field.
 	Address string `json:"address,omitempty"`
 	// City holds the value of the "city" field.
@@ -34,14 +34,14 @@ type Supplier struct {
 	Description string `json:"description,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
-	// IsDefault holds the value of the "isDefault" field.
-	IsDefault bool `json:"isDefault,omitempty"`
+	// IsDefault holds the value of the "is_default" field.
+	IsDefault bool `json:"is_default,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
-	// TaxId holds the value of the "taxId" field.
-	TaxId string `json:"taxId,omitempty"`
+	// TaxID holds the value of the "tax_id" field.
+	TaxID string `json:"tax_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SupplierQuery when eager-loading is set.
 	Edges             SupplierEdges `json:"edges"`
@@ -105,7 +105,7 @@ func (*Supplier) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case supplier.FieldID:
 			values[i] = new(sql.NullInt64)
-		case supplier.FieldAddress, supplier.FieldCity, supplier.FieldCountry, supplier.FieldDescription, supplier.FieldEmail, supplier.FieldName, supplier.FieldPhone, supplier.FieldTaxId:
+		case supplier.FieldAddress, supplier.FieldCity, supplier.FieldCountry, supplier.FieldDescription, supplier.FieldEmail, supplier.FieldName, supplier.FieldPhone, supplier.FieldTaxID:
 			values[i] = new(sql.NullString)
 		case supplier.FieldCreatedAt, supplier.FieldUpdatedAt, supplier.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -134,19 +134,19 @@ func (s *Supplier) assignValues(columns []string, values []any) error {
 			s.ID = int(value.Int64)
 		case supplier.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				s.CreatedAt = value.Time
 			}
 		case supplier.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				s.UpdatedAt = value.Time
 			}
 		case supplier.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				s.DeletedAt = new(time.Time)
 				*s.DeletedAt = value.Time
@@ -183,7 +183,7 @@ func (s *Supplier) assignValues(columns []string, values []any) error {
 			}
 		case supplier.FieldIsDefault:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isDefault", values[i])
+				return fmt.Errorf("unexpected type %T for field is_default", values[i])
 			} else if value.Valid {
 				s.IsDefault = value.Bool
 			}
@@ -199,11 +199,11 @@ func (s *Supplier) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.Phone = value.String
 			}
-		case supplier.FieldTaxId:
+		case supplier.FieldTaxID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field taxId", values[i])
+				return fmt.Errorf("unexpected type %T for field tax_id", values[i])
 			} else if value.Valid {
-				s.TaxId = value.String
+				s.TaxID = value.String
 			}
 		case supplier.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -263,14 +263,14 @@ func (s *Supplier) String() string {
 	var builder strings.Builder
 	builder.WriteString("Supplier(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", s.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(s.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(s.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := s.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -289,7 +289,7 @@ func (s *Supplier) String() string {
 	builder.WriteString("email=")
 	builder.WriteString(s.Email)
 	builder.WriteString(", ")
-	builder.WriteString("isDefault=")
+	builder.WriteString("is_default=")
 	builder.WriteString(fmt.Sprintf("%v", s.IsDefault))
 	builder.WriteString(", ")
 	builder.WriteString("name=")
@@ -298,8 +298,8 @@ func (s *Supplier) String() string {
 	builder.WriteString("phone=")
 	builder.WriteString(s.Phone)
 	builder.WriteString(", ")
-	builder.WriteString("taxId=")
-	builder.WriteString(s.TaxId)
+	builder.WriteString("tax_id=")
+	builder.WriteString(s.TaxID)
 	builder.WriteByte(')')
 	return builder.String()
 }

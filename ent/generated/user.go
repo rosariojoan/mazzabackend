@@ -18,21 +18,21 @@ type User struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Current user device info
 	Device *string `json:"device,omitempty"`
-	// IsDemoUser holds the value of the "isDemoUser" field.
-	IsDemoUser *bool `json:"isDemoUser,omitempty"`
-	// FirebaseUID holds the value of the "firebaseUID" field.
+	// IsDemoUser holds the value of the "is_demo_user" field.
+	IsDemoUser *bool `json:"is_demo_user,omitempty"`
+	// FirebaseUID holds the value of the "firebase_UID" field.
 	FirebaseUID string `json:"-"`
-	// FcmToken holds the value of the "fcmToken" field.
+	// FcmToken holds the value of the "fcm_token" field.
 	FcmToken *string `json:"-"`
-	// ExpoPushToken holds the value of the "expoPushToken" field.
+	// ExpoPushToken holds the value of the "expo_push_token" field.
 	ExpoPushToken *string `json:"-"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
@@ -42,8 +42,8 @@ type User struct {
 	Address *string `json:"address,omitempty"`
 	// Avatar holds the value of the "avatar" field.
 	Avatar *string `json:"avatar,omitempty"`
-	// PhotoURL holds the value of the "photoURL" field.
-	PhotoURL *string `json:"photoURL,omitempty"`
+	// PhotoURL holds the value of the "photo_URL" field.
+	PhotoURL *string `json:"photo_URL,omitempty"`
 	// Department holds the value of the "department" field.
 	Department *string `json:"department,omitempty"`
 	// Phone holds the value of the "phone" field.
@@ -51,7 +51,7 @@ type User struct {
 	// Birthdate holds the value of the "birthdate" field.
 	Birthdate *time.Time `json:"birthdate,omitempty"`
 	// It can be the last time the user opened the app and synced with the backend.
-	LastLogin *time.Time `json:"lastLogin,omitempty"`
+	LastLogin *time.Time `json:"last_login,omitempty"`
 	// Gender holds the value of the "gender" field.
 	Gender user.Gender `json:"gender,omitempty"`
 	// Active holds the value of the "active" field.
@@ -65,42 +65,42 @@ type User struct {
 
 // UserEdges holds the relations/edges for other nodes in the graph.
 type UserEdges struct {
-	// AccountingEntries holds the value of the accountingEntries edge.
-	AccountingEntries []*AccountingEntry `json:"accountingEntries,omitempty"`
+	// AccountingEntries holds the value of the accounting_entries edge.
+	AccountingEntries []*AccountingEntry `json:"accounting_entries,omitempty"`
 	// Company holds the value of the company edge.
 	Company []*Company `json:"company,omitempty"`
 	// a user should be assigned to only one role in the company
-	AssignedRoles []*UserRole `json:"assignedRoles,omitempty"`
+	AssignedRoles []*UserRole `json:"assigned_roles,omitempty"`
 	// Subordinates holds the value of the subordinates edge.
 	Subordinates []*User `json:"subordinates,omitempty"`
 	// Leader holds the value of the leader edge.
 	Leader *User `json:"leader,omitempty"`
-	// CreatedMemberSignupTokens holds the value of the createdMemberSignupTokens edge.
-	CreatedMemberSignupTokens []*MemberSignupToken `json:"createdMemberSignupTokens,omitempty"`
+	// CreatedMemberSignupTokens holds the value of the created_member_signup_tokens edge.
+	CreatedMemberSignupTokens []*MemberSignupToken `json:"created_member_signup_tokens,omitempty"`
 	// Employee holds the value of the employee edge.
 	Employee *Employee `json:"employee,omitempty"`
-	// IssuedInvoices holds the value of the issuedInvoices edge.
-	IssuedInvoices []*Invoice `json:"issuedInvoices,omitempty"`
+	// IssuedInvoices holds the value of the issued_invoices edge.
+	IssuedInvoices []*Invoice `json:"issued_invoices,omitempty"`
 	// Represents the projects created by the user
-	CreatedProjects []*Project `json:"createdProjects,omitempty"`
+	CreatedProjects []*Project `json:"created_projects,omitempty"`
 	// Represents the projects leadered or supervised by the user
-	LeaderedProjects []*Project `json:"leaderedProjects,omitempty"`
+	LeaderedProjects []*Project `json:"leadered_projects,omitempty"`
 	// These are the project tasks assigned to the user and he is responsible for them
-	AssignedProjectTasks []*ProjectTask `json:"assignedProjectTasks,omitempty"`
+	AssignedProjectTasks []*ProjectTask `json:"assigned_project_tasks,omitempty"`
 	// These are the project tasks in which the user is a member. E.g. a meeting
-	ParticipatedProjectTasks []*ProjectTask `json:"participatedProjectTasks,omitempty"`
+	ParticipatedProjectTasks []*ProjectTask `json:"participated_project_tasks,omitempty"`
 	// Represents the tasks created by a user
-	CreatedTasks []*ProjectTask `json:"createdTasks,omitempty"`
+	CreatedTasks []*ProjectTask `json:"created_tasks,omitempty"`
 	// Tokens holds the value of the tokens edge.
 	Tokens []*Token `json:"tokens,omitempty"`
-	// ApprovedWorkShifts holds the value of the approvedWorkShifts edge.
-	ApprovedWorkShifts []*Workshift `json:"approvedWorkShifts,omitempty"`
-	// WorkShifts holds the value of the workShifts edge.
-	WorkShifts []*Workshift `json:"workShifts,omitempty"`
-	// UploadedDocuments holds the value of the uploadedDocuments edge.
-	UploadedDocuments []*CompanyDocument `json:"uploadedDocuments,omitempty"`
-	// ApprovedDocuments holds the value of the approvedDocuments edge.
-	ApprovedDocuments []*CompanyDocument `json:"approvedDocuments,omitempty"`
+	// ApprovedWorkShifts holds the value of the approved_work_shifts edge.
+	ApprovedWorkShifts []*Workshift `json:"approved_work_shifts,omitempty"`
+	// WorkShifts holds the value of the work_shifts edge.
+	WorkShifts []*Workshift `json:"work_shifts,omitempty"`
+	// UploadedDocuments holds the value of the uploaded_documents edge.
+	UploadedDocuments []*CompanyDocument `json:"uploaded_documents,omitempty"`
+	// ApprovedDocuments holds the value of the approved_documents edge.
+	ApprovedDocuments []*CompanyDocument `json:"approved_documents,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [18]bool
@@ -131,7 +131,7 @@ func (e UserEdges) AccountingEntriesOrErr() ([]*AccountingEntry, error) {
 	if e.loadedTypes[0] {
 		return e.AccountingEntries, nil
 	}
-	return nil, &NotLoadedError{edge: "accountingEntries"}
+	return nil, &NotLoadedError{edge: "accounting_entries"}
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -149,7 +149,7 @@ func (e UserEdges) AssignedRolesOrErr() ([]*UserRole, error) {
 	if e.loadedTypes[2] {
 		return e.AssignedRoles, nil
 	}
-	return nil, &NotLoadedError{edge: "assignedRoles"}
+	return nil, &NotLoadedError{edge: "assigned_roles"}
 }
 
 // SubordinatesOrErr returns the Subordinates value or an error if the edge
@@ -178,7 +178,7 @@ func (e UserEdges) CreatedMemberSignupTokensOrErr() ([]*MemberSignupToken, error
 	if e.loadedTypes[5] {
 		return e.CreatedMemberSignupTokens, nil
 	}
-	return nil, &NotLoadedError{edge: "createdMemberSignupTokens"}
+	return nil, &NotLoadedError{edge: "created_member_signup_tokens"}
 }
 
 // EmployeeOrErr returns the Employee value or an error if the edge
@@ -198,7 +198,7 @@ func (e UserEdges) IssuedInvoicesOrErr() ([]*Invoice, error) {
 	if e.loadedTypes[7] {
 		return e.IssuedInvoices, nil
 	}
-	return nil, &NotLoadedError{edge: "issuedInvoices"}
+	return nil, &NotLoadedError{edge: "issued_invoices"}
 }
 
 // CreatedProjectsOrErr returns the CreatedProjects value or an error if the edge
@@ -207,7 +207,7 @@ func (e UserEdges) CreatedProjectsOrErr() ([]*Project, error) {
 	if e.loadedTypes[8] {
 		return e.CreatedProjects, nil
 	}
-	return nil, &NotLoadedError{edge: "createdProjects"}
+	return nil, &NotLoadedError{edge: "created_projects"}
 }
 
 // LeaderedProjectsOrErr returns the LeaderedProjects value or an error if the edge
@@ -216,7 +216,7 @@ func (e UserEdges) LeaderedProjectsOrErr() ([]*Project, error) {
 	if e.loadedTypes[9] {
 		return e.LeaderedProjects, nil
 	}
-	return nil, &NotLoadedError{edge: "leaderedProjects"}
+	return nil, &NotLoadedError{edge: "leadered_projects"}
 }
 
 // AssignedProjectTasksOrErr returns the AssignedProjectTasks value or an error if the edge
@@ -225,7 +225,7 @@ func (e UserEdges) AssignedProjectTasksOrErr() ([]*ProjectTask, error) {
 	if e.loadedTypes[10] {
 		return e.AssignedProjectTasks, nil
 	}
-	return nil, &NotLoadedError{edge: "assignedProjectTasks"}
+	return nil, &NotLoadedError{edge: "assigned_project_tasks"}
 }
 
 // ParticipatedProjectTasksOrErr returns the ParticipatedProjectTasks value or an error if the edge
@@ -234,7 +234,7 @@ func (e UserEdges) ParticipatedProjectTasksOrErr() ([]*ProjectTask, error) {
 	if e.loadedTypes[11] {
 		return e.ParticipatedProjectTasks, nil
 	}
-	return nil, &NotLoadedError{edge: "participatedProjectTasks"}
+	return nil, &NotLoadedError{edge: "participated_project_tasks"}
 }
 
 // CreatedTasksOrErr returns the CreatedTasks value or an error if the edge
@@ -243,7 +243,7 @@ func (e UserEdges) CreatedTasksOrErr() ([]*ProjectTask, error) {
 	if e.loadedTypes[12] {
 		return e.CreatedTasks, nil
 	}
-	return nil, &NotLoadedError{edge: "createdTasks"}
+	return nil, &NotLoadedError{edge: "created_tasks"}
 }
 
 // TokensOrErr returns the Tokens value or an error if the edge
@@ -261,7 +261,7 @@ func (e UserEdges) ApprovedWorkShiftsOrErr() ([]*Workshift, error) {
 	if e.loadedTypes[14] {
 		return e.ApprovedWorkShifts, nil
 	}
-	return nil, &NotLoadedError{edge: "approvedWorkShifts"}
+	return nil, &NotLoadedError{edge: "approved_work_shifts"}
 }
 
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
@@ -270,7 +270,7 @@ func (e UserEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 	if e.loadedTypes[15] {
 		return e.WorkShifts, nil
 	}
-	return nil, &NotLoadedError{edge: "workShifts"}
+	return nil, &NotLoadedError{edge: "work_shifts"}
 }
 
 // UploadedDocumentsOrErr returns the UploadedDocuments value or an error if the edge
@@ -279,7 +279,7 @@ func (e UserEdges) UploadedDocumentsOrErr() ([]*CompanyDocument, error) {
 	if e.loadedTypes[16] {
 		return e.UploadedDocuments, nil
 	}
-	return nil, &NotLoadedError{edge: "uploadedDocuments"}
+	return nil, &NotLoadedError{edge: "uploaded_documents"}
 }
 
 // ApprovedDocumentsOrErr returns the ApprovedDocuments value or an error if the edge
@@ -288,7 +288,7 @@ func (e UserEdges) ApprovedDocumentsOrErr() ([]*CompanyDocument, error) {
 	if e.loadedTypes[17] {
 		return e.ApprovedDocuments, nil
 	}
-	return nil, &NotLoadedError{edge: "approvedDocuments"}
+	return nil, &NotLoadedError{edge: "approved_documents"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -329,19 +329,19 @@ func (u *User) assignValues(columns []string, values []any) error {
 			u.ID = int(value.Int64)
 		case user.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				u.CreatedAt = value.Time
 			}
 		case user.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				u.UpdatedAt = value.Time
 			}
 		case user.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				u.DeletedAt = new(time.Time)
 				*u.DeletedAt = value.Time
@@ -355,27 +355,27 @@ func (u *User) assignValues(columns []string, values []any) error {
 			}
 		case user.FieldIsDemoUser:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isDemoUser", values[i])
+				return fmt.Errorf("unexpected type %T for field is_demo_user", values[i])
 			} else if value.Valid {
 				u.IsDemoUser = new(bool)
 				*u.IsDemoUser = value.Bool
 			}
 		case user.FieldFirebaseUID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field firebaseUID", values[i])
+				return fmt.Errorf("unexpected type %T for field firebase_UID", values[i])
 			} else if value.Valid {
 				u.FirebaseUID = value.String
 			}
 		case user.FieldFcmToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field fcmToken", values[i])
+				return fmt.Errorf("unexpected type %T for field fcm_token", values[i])
 			} else if value.Valid {
 				u.FcmToken = new(string)
 				*u.FcmToken = value.String
 			}
 		case user.FieldExpoPushToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field expoPushToken", values[i])
+				return fmt.Errorf("unexpected type %T for field expo_push_token", values[i])
 			} else if value.Valid {
 				u.ExpoPushToken = new(string)
 				*u.ExpoPushToken = value.String
@@ -408,7 +408,7 @@ func (u *User) assignValues(columns []string, values []any) error {
 			}
 		case user.FieldPhotoURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field photoURL", values[i])
+				return fmt.Errorf("unexpected type %T for field photo_URL", values[i])
 			} else if value.Valid {
 				u.PhotoURL = new(string)
 				*u.PhotoURL = value.String
@@ -436,7 +436,7 @@ func (u *User) assignValues(columns []string, values []any) error {
 			}
 		case user.FieldLastLogin:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field lastLogin", values[i])
+				return fmt.Errorf("unexpected type %T for field last_login", values[i])
 			} else if value.Valid {
 				u.LastLogin = new(time.Time)
 				*u.LastLogin = value.Time
@@ -473,7 +473,7 @@ func (u *User) Value(name string) (ent.Value, error) {
 	return u.selectValues.Get(name)
 }
 
-// QueryAccountingEntries queries the "accountingEntries" edge of the User entity.
+// QueryAccountingEntries queries the "accounting_entries" edge of the User entity.
 func (u *User) QueryAccountingEntries() *AccountingEntryQuery {
 	return NewUserClient(u.config).QueryAccountingEntries(u)
 }
@@ -483,7 +483,7 @@ func (u *User) QueryCompany() *CompanyQuery {
 	return NewUserClient(u.config).QueryCompany(u)
 }
 
-// QueryAssignedRoles queries the "assignedRoles" edge of the User entity.
+// QueryAssignedRoles queries the "assigned_roles" edge of the User entity.
 func (u *User) QueryAssignedRoles() *UserRoleQuery {
 	return NewUserClient(u.config).QueryAssignedRoles(u)
 }
@@ -498,7 +498,7 @@ func (u *User) QueryLeader() *UserQuery {
 	return NewUserClient(u.config).QueryLeader(u)
 }
 
-// QueryCreatedMemberSignupTokens queries the "createdMemberSignupTokens" edge of the User entity.
+// QueryCreatedMemberSignupTokens queries the "created_member_signup_tokens" edge of the User entity.
 func (u *User) QueryCreatedMemberSignupTokens() *MemberSignupTokenQuery {
 	return NewUserClient(u.config).QueryCreatedMemberSignupTokens(u)
 }
@@ -508,32 +508,32 @@ func (u *User) QueryEmployee() *EmployeeQuery {
 	return NewUserClient(u.config).QueryEmployee(u)
 }
 
-// QueryIssuedInvoices queries the "issuedInvoices" edge of the User entity.
+// QueryIssuedInvoices queries the "issued_invoices" edge of the User entity.
 func (u *User) QueryIssuedInvoices() *InvoiceQuery {
 	return NewUserClient(u.config).QueryIssuedInvoices(u)
 }
 
-// QueryCreatedProjects queries the "createdProjects" edge of the User entity.
+// QueryCreatedProjects queries the "created_projects" edge of the User entity.
 func (u *User) QueryCreatedProjects() *ProjectQuery {
 	return NewUserClient(u.config).QueryCreatedProjects(u)
 }
 
-// QueryLeaderedProjects queries the "leaderedProjects" edge of the User entity.
+// QueryLeaderedProjects queries the "leadered_projects" edge of the User entity.
 func (u *User) QueryLeaderedProjects() *ProjectQuery {
 	return NewUserClient(u.config).QueryLeaderedProjects(u)
 }
 
-// QueryAssignedProjectTasks queries the "assignedProjectTasks" edge of the User entity.
+// QueryAssignedProjectTasks queries the "assigned_project_tasks" edge of the User entity.
 func (u *User) QueryAssignedProjectTasks() *ProjectTaskQuery {
 	return NewUserClient(u.config).QueryAssignedProjectTasks(u)
 }
 
-// QueryParticipatedProjectTasks queries the "participatedProjectTasks" edge of the User entity.
+// QueryParticipatedProjectTasks queries the "participated_project_tasks" edge of the User entity.
 func (u *User) QueryParticipatedProjectTasks() *ProjectTaskQuery {
 	return NewUserClient(u.config).QueryParticipatedProjectTasks(u)
 }
 
-// QueryCreatedTasks queries the "createdTasks" edge of the User entity.
+// QueryCreatedTasks queries the "created_tasks" edge of the User entity.
 func (u *User) QueryCreatedTasks() *ProjectTaskQuery {
 	return NewUserClient(u.config).QueryCreatedTasks(u)
 }
@@ -543,22 +543,22 @@ func (u *User) QueryTokens() *TokenQuery {
 	return NewUserClient(u.config).QueryTokens(u)
 }
 
-// QueryApprovedWorkShifts queries the "approvedWorkShifts" edge of the User entity.
+// QueryApprovedWorkShifts queries the "approved_work_shifts" edge of the User entity.
 func (u *User) QueryApprovedWorkShifts() *WorkshiftQuery {
 	return NewUserClient(u.config).QueryApprovedWorkShifts(u)
 }
 
-// QueryWorkShifts queries the "workShifts" edge of the User entity.
+// QueryWorkShifts queries the "work_shifts" edge of the User entity.
 func (u *User) QueryWorkShifts() *WorkshiftQuery {
 	return NewUserClient(u.config).QueryWorkShifts(u)
 }
 
-// QueryUploadedDocuments queries the "uploadedDocuments" edge of the User entity.
+// QueryUploadedDocuments queries the "uploaded_documents" edge of the User entity.
 func (u *User) QueryUploadedDocuments() *CompanyDocumentQuery {
 	return NewUserClient(u.config).QueryUploadedDocuments(u)
 }
 
-// QueryApprovedDocuments queries the "approvedDocuments" edge of the User entity.
+// QueryApprovedDocuments queries the "approved_documents" edge of the User entity.
 func (u *User) QueryApprovedDocuments() *CompanyDocumentQuery {
 	return NewUserClient(u.config).QueryApprovedDocuments(u)
 }
@@ -586,14 +586,14 @@ func (u *User) String() string {
 	var builder strings.Builder
 	builder.WriteString("User(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", u.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(u.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(u.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := u.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -603,15 +603,15 @@ func (u *User) String() string {
 	}
 	builder.WriteString(", ")
 	if v := u.IsDemoUser; v != nil {
-		builder.WriteString("isDemoUser=")
+		builder.WriteString("is_demo_user=")
 		builder.WriteString(fmt.Sprintf("%v", *v))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("firebaseUID=<sensitive>")
+	builder.WriteString("firebase_UID=<sensitive>")
 	builder.WriteString(", ")
-	builder.WriteString("fcmToken=<sensitive>")
+	builder.WriteString("fcm_token=<sensitive>")
 	builder.WriteString(", ")
-	builder.WriteString("expoPushToken=<sensitive>")
+	builder.WriteString("expo_push_token=<sensitive>")
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
@@ -630,7 +630,7 @@ func (u *User) String() string {
 	}
 	builder.WriteString(", ")
 	if v := u.PhotoURL; v != nil {
-		builder.WriteString("photoURL=")
+		builder.WriteString("photo_URL=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -650,7 +650,7 @@ func (u *User) String() string {
 	}
 	builder.WriteString(", ")
 	if v := u.LastLogin; v != nil {
-		builder.WriteString("lastLogin=")
+		builder.WriteString("last_login=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")

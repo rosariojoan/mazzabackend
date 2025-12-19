@@ -302,7 +302,7 @@ func (pq *PayableQuery) WithCompany(opts ...func(*CompanyQuery)) *PayableQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -325,7 +325,7 @@ func (pq *PayableQuery) GroupBy(field string, fields ...string) *PayableGroupBy 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Payable.Query().

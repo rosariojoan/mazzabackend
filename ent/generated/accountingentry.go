@@ -20,12 +20,12 @@ type AccountingEntry struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Number holds the value of the "number" field.
 	Number int `json:"number,omitempty"`
 	// Group holds the value of the "group" field.
@@ -40,16 +40,16 @@ type AccountingEntry struct {
 	Amount float64 `json:"amount,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
-	// AccountType holds the value of the "accountType" field.
-	AccountType accountingentry.AccountType `json:"accountType,omitempty"`
+	// AccountType holds the value of the "account_type" field.
+	AccountType accountingentry.AccountType `json:"account_type,omitempty"`
 	// Category holds the value of the "category" field.
 	Category string `json:"category,omitempty"`
 	// Main holds the value of the "main" field.
 	Main string `json:"main,omitempty"`
-	// IsDebit holds the value of the "isDebit" field.
-	IsDebit bool `json:"isDebit,omitempty"`
-	// IsReversal holds the value of the "isReversal" field.
-	IsReversal bool `json:"isReversal,omitempty"`
+	// IsDebit holds the value of the "is_debit" field.
+	IsDebit bool `json:"is_debit,omitempty"`
+	// IsReversal holds the value of the "is_reversal" field.
+	IsReversal bool `json:"is_reversal,omitempty"`
 	// Reversed holds the value of the "reversed" field.
 	Reversed bool `json:"reversed,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -166,19 +166,19 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			ae.ID = int(value.Int64)
 		case accountingentry.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				ae.CreatedAt = value.Time
 			}
 		case accountingentry.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				ae.UpdatedAt = value.Time
 			}
 		case accountingentry.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				ae.DeletedAt = new(time.Time)
 				*ae.DeletedAt = value.Time
@@ -227,7 +227,7 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			}
 		case accountingentry.FieldAccountType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field accountType", values[i])
+				return fmt.Errorf("unexpected type %T for field account_type", values[i])
 			} else if value.Valid {
 				ae.AccountType = accountingentry.AccountType(value.String)
 			}
@@ -245,13 +245,13 @@ func (ae *AccountingEntry) assignValues(columns []string, values []any) error {
 			}
 		case accountingentry.FieldIsDebit:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isDebit", values[i])
+				return fmt.Errorf("unexpected type %T for field is_debit", values[i])
 			} else if value.Valid {
 				ae.IsDebit = value.Bool
 			}
 		case accountingentry.FieldIsReversal:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field isReversal", values[i])
+				return fmt.Errorf("unexpected type %T for field is_reversal", values[i])
 			} else if value.Valid {
 				ae.IsReversal = value.Bool
 			}
@@ -338,14 +338,14 @@ func (ae *AccountingEntry) String() string {
 	var builder strings.Builder
 	builder.WriteString("AccountingEntry(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ae.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(ae.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(ae.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := ae.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -370,7 +370,7 @@ func (ae *AccountingEntry) String() string {
 	builder.WriteString("description=")
 	builder.WriteString(ae.Description)
 	builder.WriteString(", ")
-	builder.WriteString("accountType=")
+	builder.WriteString("account_type=")
 	builder.WriteString(fmt.Sprintf("%v", ae.AccountType))
 	builder.WriteString(", ")
 	builder.WriteString("category=")
@@ -379,10 +379,10 @@ func (ae *AccountingEntry) String() string {
 	builder.WriteString("main=")
 	builder.WriteString(ae.Main)
 	builder.WriteString(", ")
-	builder.WriteString("isDebit=")
+	builder.WriteString("is_debit=")
 	builder.WriteString(fmt.Sprintf("%v", ae.IsDebit))
 	builder.WriteString(", ")
-	builder.WriteString("isReversal=")
+	builder.WriteString("is_reversal=")
 	builder.WriteString(fmt.Sprintf("%v", ae.IsReversal))
 	builder.WriteString(", ")
 	builder.WriteString("reversed=")

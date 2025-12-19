@@ -340,7 +340,7 @@ func (iq *InventoryQuery) WithMovements(opts ...func(*InventoryMovementQuery)) *
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -363,7 +363,7 @@ func (iq *InventoryQuery) GroupBy(field string, fields ...string) *InventoryGrou
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Inventory.Query().

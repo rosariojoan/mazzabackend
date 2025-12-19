@@ -41,13 +41,13 @@ type CompanyCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (cc *CompanyCreate) SetCreatedAt(t time.Time) *CompanyCreate {
 	cc.mutation.SetCreatedAt(t)
 	return cc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableCreatedAt(t *time.Time) *CompanyCreate {
 	if t != nil {
 		cc.SetCreatedAt(*t)
@@ -55,13 +55,13 @@ func (cc *CompanyCreate) SetNillableCreatedAt(t *time.Time) *CompanyCreate {
 	return cc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cc *CompanyCreate) SetUpdatedAt(t time.Time) *CompanyCreate {
 	cc.mutation.SetUpdatedAt(t)
 	return cc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableUpdatedAt(t *time.Time) *CompanyCreate {
 	if t != nil {
 		cc.SetUpdatedAt(*t)
@@ -69,13 +69,13 @@ func (cc *CompanyCreate) SetNillableUpdatedAt(t *time.Time) *CompanyCreate {
 	return cc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cc *CompanyCreate) SetDeletedAt(t time.Time) *CompanyCreate {
 	cc.mutation.SetDeletedAt(t)
 	return cc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableDeletedAt(t *time.Time) *CompanyCreate {
 	if t != nil {
 		cc.SetDeletedAt(*t)
@@ -97,13 +97,13 @@ func (cc *CompanyCreate) SetNillableAddress(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetBaseCurrency sets the "baseCurrency" field.
+// SetBaseCurrency sets the "base_currency" field.
 func (cc *CompanyCreate) SetBaseCurrency(s string) *CompanyCreate {
 	cc.mutation.SetBaseCurrency(s)
 	return cc
 }
 
-// SetNillableBaseCurrency sets the "baseCurrency" field if the given value is not nil.
+// SetNillableBaseCurrency sets the "base_currency" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableBaseCurrency(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetBaseCurrency(*s)
@@ -111,13 +111,13 @@ func (cc *CompanyCreate) SetNillableBaseCurrency(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetCeoName sets the "ceoName" field.
+// SetCeoName sets the "ceo_name" field.
 func (cc *CompanyCreate) SetCeoName(s string) *CompanyCreate {
 	cc.mutation.SetCeoName(s)
 	return cc
 }
 
-// SetNillableCeoName sets the "ceoName" field if the given value is not nil.
+// SetNillableCeoName sets the "ceo_name" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableCeoName(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetCeoName(*s)
@@ -137,7 +137,7 @@ func (cc *CompanyCreate) SetCountry(s string) *CompanyCreate {
 	return cc
 }
 
-// SetEstablishedAt sets the "establishedAt" field.
+// SetEstablishedAt sets the "established_at" field.
 func (cc *CompanyCreate) SetEstablishedAt(t time.Time) *CompanyCreate {
 	cc.mutation.SetEstablishedAt(t)
 	return cc
@@ -185,13 +185,13 @@ func (cc *CompanyCreate) SetNillableIndustry(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetLastEntryDate sets the "lastEntryDate" field.
+// SetLastEntryDate sets the "last_entry_date" field.
 func (cc *CompanyCreate) SetLastEntryDate(t time.Time) *CompanyCreate {
 	cc.mutation.SetLastEntryDate(t)
 	return cc
 }
 
-// SetNillableLastEntryDate sets the "lastEntryDate" field if the given value is not nil.
+// SetNillableLastEntryDate sets the "last_entry_date" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableLastEntryDate(t *time.Time) *CompanyCreate {
 	if t != nil {
 		cc.SetLastEntryDate(*t)
@@ -199,13 +199,13 @@ func (cc *CompanyCreate) SetNillableLastEntryDate(t *time.Time) *CompanyCreate {
 	return cc
 }
 
-// SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
+// SetLastInvoiceNumber sets the "last_invoice_number" field.
 func (cc *CompanyCreate) SetLastInvoiceNumber(i int32) *CompanyCreate {
 	cc.mutation.SetLastInvoiceNumber(i)
 	return cc
 }
 
-// SetNillableLastInvoiceNumber sets the "lastInvoiceNumber" field if the given value is not nil.
+// SetNillableLastInvoiceNumber sets the "last_invoice_number" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableLastInvoiceNumber(i *int32) *CompanyCreate {
 	if i != nil {
 		cc.SetLastInvoiceNumber(*i)
@@ -213,13 +213,13 @@ func (cc *CompanyCreate) SetNillableLastInvoiceNumber(i *int32) *CompanyCreate {
 	return cc
 }
 
-// SetLogoURL sets the "logoURL" field.
+// SetLogoURL sets the "logo_URL" field.
 func (cc *CompanyCreate) SetLogoURL(s string) *CompanyCreate {
 	cc.mutation.SetLogoURL(s)
 	return cc
 }
 
-// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+// SetNillableLogoURL sets the "logo_URL" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableLogoURL(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetLogoURL(*s)
@@ -227,13 +227,13 @@ func (cc *CompanyCreate) SetNillableLogoURL(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetLogoStorageURI sets the "logoStorageURI" field.
+// SetLogoStorageURI sets the "logo_storage_URI" field.
 func (cc *CompanyCreate) SetLogoStorageURI(s string) *CompanyCreate {
 	cc.mutation.SetLogoStorageURI(s)
 	return cc
 }
 
-// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+// SetNillableLogoStorageURI sets the "logo_storage_URI" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableLogoStorageURI(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetLogoStorageURI(*s)
@@ -247,16 +247,16 @@ func (cc *CompanyCreate) SetName(s string) *CompanyCreate {
 	return cc
 }
 
-// SetNumberOfEmployees sets the "numberOfEmployees" field.
-func (cc *CompanyCreate) SetNumberOfEmployees(i int32) *CompanyCreate {
-	cc.mutation.SetNumberOfEmployees(i)
+// SetNumberEmployees sets the "number_employees" field.
+func (cc *CompanyCreate) SetNumberEmployees(i int32) *CompanyCreate {
+	cc.mutation.SetNumberEmployees(i)
 	return cc
 }
 
-// SetNillableNumberOfEmployees sets the "numberOfEmployees" field if the given value is not nil.
-func (cc *CompanyCreate) SetNillableNumberOfEmployees(i *int32) *CompanyCreate {
+// SetNillableNumberEmployees sets the "number_employees" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableNumberEmployees(i *int32) *CompanyCreate {
 	if i != nil {
-		cc.SetNumberOfEmployees(*i)
+		cc.SetNumberEmployees(*i)
 	}
 	return cc
 }
@@ -275,27 +275,27 @@ func (cc *CompanyCreate) SetNillablePhone(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetTaxId sets the "taxId" field.
-func (cc *CompanyCreate) SetTaxId(s string) *CompanyCreate {
-	cc.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (cc *CompanyCreate) SetTaxID(s string) *CompanyCreate {
+	cc.mutation.SetTaxID(s)
 	return cc
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (cc *CompanyCreate) SetNillableTaxId(s *string) *CompanyCreate {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableTaxID(s *string) *CompanyCreate {
 	if s != nil {
-		cc.SetTaxId(*s)
+		cc.SetTaxID(*s)
 	}
 	return cc
 }
 
-// SetVatRate sets the "vatRate" field.
+// SetVatRate sets the "vat_rate" field.
 func (cc *CompanyCreate) SetVatRate(f float64) *CompanyCreate {
 	cc.mutation.SetVatRate(f)
 	return cc
 }
 
-// SetNillableVatRate sets the "vatRate" field if the given value is not nil.
+// SetNillableVatRate sets the "vat_rate" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableVatRate(f *float64) *CompanyCreate {
 	if f != nil {
 		cc.SetVatRate(*f)
@@ -317,13 +317,13 @@ func (cc *CompanyCreate) SetNillableWebsite(s *string) *CompanyCreate {
 	return cc
 }
 
-// SetIncompleteSetup sets the "incompleteSetup" field.
+// SetIncompleteSetup sets the "incomplete_setup" field.
 func (cc *CompanyCreate) SetIncompleteSetup(b bool) *CompanyCreate {
 	cc.mutation.SetIncompleteSetup(b)
 	return cc
 }
 
-// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+// SetNillableIncompleteSetup sets the "incomplete_setup" field if the given value is not nil.
 func (cc *CompanyCreate) SetNillableIncompleteSetup(b *bool) *CompanyCreate {
 	if b != nil {
 		cc.SetIncompleteSetup(*b)
@@ -331,13 +331,13 @@ func (cc *CompanyCreate) SetNillableIncompleteSetup(b *bool) *CompanyCreate {
 	return cc
 }
 
-// AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
+// AddAvailableRoleIDs adds the "available_roles" edge to the UserRole entity by IDs.
 func (cc *CompanyCreate) AddAvailableRoleIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddAvailableRoleIDs(ids...)
 	return cc
 }
 
-// AddAvailableRoles adds the "availableRoles" edges to the UserRole entity.
+// AddAvailableRoles adds the "available_roles" edges to the UserRole entity.
 func (cc *CompanyCreate) AddAvailableRoles(u ...*UserRole) *CompanyCreate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -346,13 +346,13 @@ func (cc *CompanyCreate) AddAvailableRoles(u ...*UserRole) *CompanyCreate {
 	return cc.AddAvailableRoleIDs(ids...)
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (cc *CompanyCreate) AddAccountingEntryIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddAccountingEntryIDs(ids...)
 	return cc
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (cc *CompanyCreate) AddAccountingEntries(a ...*AccountingEntry) *CompanyCreate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -436,13 +436,13 @@ func (cc *CompanyCreate) AddInventory(i ...*Inventory) *CompanyCreate {
 	return cc.AddInventoryIDs(ids...)
 }
 
-// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+// AddInventoryMovementIDs adds the "inventory_movements" edge to the InventoryMovement entity by IDs.
 func (cc *CompanyCreate) AddInventoryMovementIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddInventoryMovementIDs(ids...)
 	return cc
 }
 
-// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+// AddInventoryMovements adds the "inventory_movements" edges to the InventoryMovement entity.
 func (cc *CompanyCreate) AddInventoryMovements(i ...*InventoryMovement) *CompanyCreate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -496,13 +496,13 @@ func (cc *CompanyCreate) AddLoanSchedule(l ...*LoanSchedule) *CompanyCreate {
 	return cc.AddLoanScheduleIDs(ids...)
 }
 
-// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddMemberSignupTokenIDs adds the "member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (cc *CompanyCreate) AddMemberSignupTokenIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddMemberSignupTokenIDs(ids...)
 	return cc
 }
 
-// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+// AddMemberSignupTokens adds the "member_signup_tokens" edges to the MemberSignupToken entity.
 func (cc *CompanyCreate) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyCreate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -616,13 +616,13 @@ func (cc *CompanyCreate) AddTreasuries(t ...*Treasury) *CompanyCreate {
 	return cc.AddTreasuryIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (cc *CompanyCreate) AddWorkShiftIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddWorkShiftIDs(ids...)
 	return cc
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (cc *CompanyCreate) AddWorkShifts(w ...*Workshift) *CompanyCreate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -646,13 +646,13 @@ func (cc *CompanyCreate) AddUsers(u ...*User) *CompanyCreate {
 	return cc.AddUserIDs(ids...)
 }
 
-// AddDaughterCompanyIDs adds the "daughterCompanies" edge to the Company entity by IDs.
+// AddDaughterCompanyIDs adds the "daughter_companies" edge to the Company entity by IDs.
 func (cc *CompanyCreate) AddDaughterCompanyIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddDaughterCompanyIDs(ids...)
 	return cc
 }
 
-// AddDaughterCompanies adds the "daughterCompanies" edges to the Company entity.
+// AddDaughterCompanies adds the "daughter_companies" edges to the Company entity.
 func (cc *CompanyCreate) AddDaughterCompanies(c ...*Company) *CompanyCreate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -661,13 +661,13 @@ func (cc *CompanyCreate) AddDaughterCompanies(c ...*Company) *CompanyCreate {
 	return cc.AddDaughterCompanyIDs(ids...)
 }
 
-// SetParentCompanyID sets the "parentCompany" edge to the Company entity by ID.
+// SetParentCompanyID sets the "parent_company" edge to the Company entity by ID.
 func (cc *CompanyCreate) SetParentCompanyID(id int) *CompanyCreate {
 	cc.mutation.SetParentCompanyID(id)
 	return cc
 }
 
-// SetNillableParentCompanyID sets the "parentCompany" edge to the Company entity by ID if the given value is not nil.
+// SetNillableParentCompanyID sets the "parent_company" edge to the Company entity by ID if the given value is not nil.
 func (cc *CompanyCreate) SetNillableParentCompanyID(id *int) *CompanyCreate {
 	if id != nil {
 		cc = cc.SetParentCompanyID(*id)
@@ -675,7 +675,7 @@ func (cc *CompanyCreate) SetNillableParentCompanyID(id *int) *CompanyCreate {
 	return cc
 }
 
-// SetParentCompany sets the "parentCompany" edge to the Company entity.
+// SetParentCompany sets the "parent_company" edge to the Company entity.
 func (cc *CompanyCreate) SetParentCompany(c *Company) *CompanyCreate {
 	return cc.SetParentCompanyID(c.ID)
 }
@@ -731,9 +731,9 @@ func (cc *CompanyCreate) defaults() {
 		v := company.DefaultLastInvoiceNumber
 		cc.mutation.SetLastInvoiceNumber(v)
 	}
-	if _, ok := cc.mutation.NumberOfEmployees(); !ok {
-		v := company.DefaultNumberOfEmployees
-		cc.mutation.SetNumberOfEmployees(v)
+	if _, ok := cc.mutation.NumberEmployees(); !ok {
+		v := company.DefaultNumberEmployees
+		cc.mutation.SetNumberEmployees(v)
 	}
 	if _, ok := cc.mutation.VatRate(); !ok {
 		v := company.DefaultVatRate
@@ -748,13 +748,13 @@ func (cc *CompanyCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (cc *CompanyCreate) check() error {
 	if _, ok := cc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Company.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Company.created_at"`)}
 	}
 	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Company.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Company.updated_at"`)}
 	}
 	if _, ok := cc.mutation.BaseCurrency(); !ok {
-		return &ValidationError{Name: "baseCurrency", err: errors.New(`generated: missing required field "Company.baseCurrency"`)}
+		return &ValidationError{Name: "base_currency", err: errors.New(`generated: missing required field "Company.base_currency"`)}
 	}
 	if _, ok := cc.mutation.City(); !ok {
 		return &ValidationError{Name: "city", err: errors.New(`generated: missing required field "Company.city"`)}
@@ -763,26 +763,26 @@ func (cc *CompanyCreate) check() error {
 		return &ValidationError{Name: "country", err: errors.New(`generated: missing required field "Company.country"`)}
 	}
 	if _, ok := cc.mutation.EstablishedAt(); !ok {
-		return &ValidationError{Name: "establishedAt", err: errors.New(`generated: missing required field "Company.establishedAt"`)}
+		return &ValidationError{Name: "established_at", err: errors.New(`generated: missing required field "Company.established_at"`)}
 	}
 	if v, ok := cc.mutation.LastInvoiceNumber(); ok {
 		if err := company.LastInvoiceNumberValidator(v); err != nil {
-			return &ValidationError{Name: "lastInvoiceNumber", err: fmt.Errorf(`generated: validator failed for field "Company.lastInvoiceNumber": %w`, err)}
+			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Company.name"`)}
 	}
-	if _, ok := cc.mutation.NumberOfEmployees(); !ok {
-		return &ValidationError{Name: "numberOfEmployees", err: errors.New(`generated: missing required field "Company.numberOfEmployees"`)}
+	if _, ok := cc.mutation.NumberEmployees(); !ok {
+		return &ValidationError{Name: "number_employees", err: errors.New(`generated: missing required field "Company.number_employees"`)}
 	}
-	if v, ok := cc.mutation.NumberOfEmployees(); ok {
-		if err := company.NumberOfEmployeesValidator(v); err != nil {
-			return &ValidationError{Name: "numberOfEmployees", err: fmt.Errorf(`generated: validator failed for field "Company.numberOfEmployees": %w`, err)}
+	if v, ok := cc.mutation.NumberEmployees(); ok {
+		if err := company.NumberEmployeesValidator(v); err != nil {
+			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
 		}
 	}
 	if _, ok := cc.mutation.VatRate(); !ok {
-		return &ValidationError{Name: "vatRate", err: errors.New(`generated: missing required field "Company.vatRate"`)}
+		return &ValidationError{Name: "vat_rate", err: errors.New(`generated: missing required field "Company.vat_rate"`)}
 	}
 	return nil
 }
@@ -878,17 +878,17 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := cc.mutation.NumberOfEmployees(); ok {
-		_spec.SetField(company.FieldNumberOfEmployees, field.TypeInt32, value)
-		_node.NumberOfEmployees = value
+	if value, ok := cc.mutation.NumberEmployees(); ok {
+		_spec.SetField(company.FieldNumberEmployees, field.TypeInt32, value)
+		_node.NumberEmployees = value
 	}
 	if value, ok := cc.mutation.Phone(); ok {
 		_spec.SetField(company.FieldPhone, field.TypeString, value)
 		_node.Phone = &value
 	}
-	if value, ok := cc.mutation.TaxId(); ok {
-		_spec.SetField(company.FieldTaxId, field.TypeString, value)
-		_node.TaxId = &value
+	if value, ok := cc.mutation.TaxID(); ok {
+		_spec.SetField(company.FieldTaxID, field.TypeString, value)
+		_node.TaxID = &value
 	}
 	if value, ok := cc.mutation.VatRate(); ok {
 		_spec.SetField(company.FieldVatRate, field.TypeFloat64, value)

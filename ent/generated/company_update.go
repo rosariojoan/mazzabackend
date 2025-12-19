@@ -50,19 +50,19 @@ func (cu *CompanyUpdate) Where(ps ...predicate.Company) *CompanyUpdate {
 	return cu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cu *CompanyUpdate) SetUpdatedAt(t time.Time) *CompanyUpdate {
 	cu.mutation.SetUpdatedAt(t)
 	return cu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cu *CompanyUpdate) SetDeletedAt(t time.Time) *CompanyUpdate {
 	cu.mutation.SetDeletedAt(t)
 	return cu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableDeletedAt(t *time.Time) *CompanyUpdate {
 	if t != nil {
 		cu.SetDeletedAt(*t)
@@ -70,7 +70,7 @@ func (cu *CompanyUpdate) SetNillableDeletedAt(t *time.Time) *CompanyUpdate {
 	return cu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (cu *CompanyUpdate) ClearDeletedAt() *CompanyUpdate {
 	cu.mutation.ClearDeletedAt()
 	return cu
@@ -96,13 +96,13 @@ func (cu *CompanyUpdate) ClearAddress() *CompanyUpdate {
 	return cu
 }
 
-// SetBaseCurrency sets the "baseCurrency" field.
+// SetBaseCurrency sets the "base_currency" field.
 func (cu *CompanyUpdate) SetBaseCurrency(s string) *CompanyUpdate {
 	cu.mutation.SetBaseCurrency(s)
 	return cu
 }
 
-// SetNillableBaseCurrency sets the "baseCurrency" field if the given value is not nil.
+// SetNillableBaseCurrency sets the "base_currency" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableBaseCurrency(s *string) *CompanyUpdate {
 	if s != nil {
 		cu.SetBaseCurrency(*s)
@@ -110,13 +110,13 @@ func (cu *CompanyUpdate) SetNillableBaseCurrency(s *string) *CompanyUpdate {
 	return cu
 }
 
-// SetCeoName sets the "ceoName" field.
+// SetCeoName sets the "ceo_name" field.
 func (cu *CompanyUpdate) SetCeoName(s string) *CompanyUpdate {
 	cu.mutation.SetCeoName(s)
 	return cu
 }
 
-// SetNillableCeoName sets the "ceoName" field if the given value is not nil.
+// SetNillableCeoName sets the "ceo_name" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableCeoName(s *string) *CompanyUpdate {
 	if s != nil {
 		cu.SetCeoName(*s)
@@ -124,7 +124,7 @@ func (cu *CompanyUpdate) SetNillableCeoName(s *string) *CompanyUpdate {
 	return cu
 }
 
-// ClearCeoName clears the value of the "ceoName" field.
+// ClearCeoName clears the value of the "ceo_name" field.
 func (cu *CompanyUpdate) ClearCeoName() *CompanyUpdate {
 	cu.mutation.ClearCeoName()
 	return cu
@@ -158,13 +158,13 @@ func (cu *CompanyUpdate) SetNillableCountry(s *string) *CompanyUpdate {
 	return cu
 }
 
-// SetEstablishedAt sets the "establishedAt" field.
+// SetEstablishedAt sets the "established_at" field.
 func (cu *CompanyUpdate) SetEstablishedAt(t time.Time) *CompanyUpdate {
 	cu.mutation.SetEstablishedAt(t)
 	return cu
 }
 
-// SetNillableEstablishedAt sets the "establishedAt" field if the given value is not nil.
+// SetNillableEstablishedAt sets the "established_at" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableEstablishedAt(t *time.Time) *CompanyUpdate {
 	if t != nil {
 		cu.SetEstablishedAt(*t)
@@ -232,13 +232,13 @@ func (cu *CompanyUpdate) ClearIndustry() *CompanyUpdate {
 	return cu
 }
 
-// SetLastEntryDate sets the "lastEntryDate" field.
+// SetLastEntryDate sets the "last_entry_date" field.
 func (cu *CompanyUpdate) SetLastEntryDate(t time.Time) *CompanyUpdate {
 	cu.mutation.SetLastEntryDate(t)
 	return cu
 }
 
-// SetNillableLastEntryDate sets the "lastEntryDate" field if the given value is not nil.
+// SetNillableLastEntryDate sets the "last_entry_date" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableLastEntryDate(t *time.Time) *CompanyUpdate {
 	if t != nil {
 		cu.SetLastEntryDate(*t)
@@ -246,20 +246,20 @@ func (cu *CompanyUpdate) SetNillableLastEntryDate(t *time.Time) *CompanyUpdate {
 	return cu
 }
 
-// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+// ClearLastEntryDate clears the value of the "last_entry_date" field.
 func (cu *CompanyUpdate) ClearLastEntryDate() *CompanyUpdate {
 	cu.mutation.ClearLastEntryDate()
 	return cu
 }
 
-// SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
+// SetLastInvoiceNumber sets the "last_invoice_number" field.
 func (cu *CompanyUpdate) SetLastInvoiceNumber(i int32) *CompanyUpdate {
 	cu.mutation.ResetLastInvoiceNumber()
 	cu.mutation.SetLastInvoiceNumber(i)
 	return cu
 }
 
-// SetNillableLastInvoiceNumber sets the "lastInvoiceNumber" field if the given value is not nil.
+// SetNillableLastInvoiceNumber sets the "last_invoice_number" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableLastInvoiceNumber(i *int32) *CompanyUpdate {
 	if i != nil {
 		cu.SetLastInvoiceNumber(*i)
@@ -267,25 +267,25 @@ func (cu *CompanyUpdate) SetNillableLastInvoiceNumber(i *int32) *CompanyUpdate {
 	return cu
 }
 
-// AddLastInvoiceNumber adds i to the "lastInvoiceNumber" field.
+// AddLastInvoiceNumber adds i to the "last_invoice_number" field.
 func (cu *CompanyUpdate) AddLastInvoiceNumber(i int32) *CompanyUpdate {
 	cu.mutation.AddLastInvoiceNumber(i)
 	return cu
 }
 
-// ClearLastInvoiceNumber clears the value of the "lastInvoiceNumber" field.
+// ClearLastInvoiceNumber clears the value of the "last_invoice_number" field.
 func (cu *CompanyUpdate) ClearLastInvoiceNumber() *CompanyUpdate {
 	cu.mutation.ClearLastInvoiceNumber()
 	return cu
 }
 
-// SetLogoURL sets the "logoURL" field.
+// SetLogoURL sets the "logo_URL" field.
 func (cu *CompanyUpdate) SetLogoURL(s string) *CompanyUpdate {
 	cu.mutation.SetLogoURL(s)
 	return cu
 }
 
-// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+// SetNillableLogoURL sets the "logo_URL" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableLogoURL(s *string) *CompanyUpdate {
 	if s != nil {
 		cu.SetLogoURL(*s)
@@ -293,19 +293,19 @@ func (cu *CompanyUpdate) SetNillableLogoURL(s *string) *CompanyUpdate {
 	return cu
 }
 
-// ClearLogoURL clears the value of the "logoURL" field.
+// ClearLogoURL clears the value of the "logo_URL" field.
 func (cu *CompanyUpdate) ClearLogoURL() *CompanyUpdate {
 	cu.mutation.ClearLogoURL()
 	return cu
 }
 
-// SetLogoStorageURI sets the "logoStorageURI" field.
+// SetLogoStorageURI sets the "logo_storage_URI" field.
 func (cu *CompanyUpdate) SetLogoStorageURI(s string) *CompanyUpdate {
 	cu.mutation.SetLogoStorageURI(s)
 	return cu
 }
 
-// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+// SetNillableLogoStorageURI sets the "logo_storage_URI" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableLogoStorageURI(s *string) *CompanyUpdate {
 	if s != nil {
 		cu.SetLogoStorageURI(*s)
@@ -313,7 +313,7 @@ func (cu *CompanyUpdate) SetNillableLogoStorageURI(s *string) *CompanyUpdate {
 	return cu
 }
 
-// ClearLogoStorageURI clears the value of the "logoStorageURI" field.
+// ClearLogoStorageURI clears the value of the "logo_storage_URI" field.
 func (cu *CompanyUpdate) ClearLogoStorageURI() *CompanyUpdate {
 	cu.mutation.ClearLogoStorageURI()
 	return cu
@@ -333,24 +333,24 @@ func (cu *CompanyUpdate) SetNillableName(s *string) *CompanyUpdate {
 	return cu
 }
 
-// SetNumberOfEmployees sets the "numberOfEmployees" field.
-func (cu *CompanyUpdate) SetNumberOfEmployees(i int32) *CompanyUpdate {
-	cu.mutation.ResetNumberOfEmployees()
-	cu.mutation.SetNumberOfEmployees(i)
+// SetNumberEmployees sets the "number_employees" field.
+func (cu *CompanyUpdate) SetNumberEmployees(i int32) *CompanyUpdate {
+	cu.mutation.ResetNumberEmployees()
+	cu.mutation.SetNumberEmployees(i)
 	return cu
 }
 
-// SetNillableNumberOfEmployees sets the "numberOfEmployees" field if the given value is not nil.
-func (cu *CompanyUpdate) SetNillableNumberOfEmployees(i *int32) *CompanyUpdate {
+// SetNillableNumberEmployees sets the "number_employees" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableNumberEmployees(i *int32) *CompanyUpdate {
 	if i != nil {
-		cu.SetNumberOfEmployees(*i)
+		cu.SetNumberEmployees(*i)
 	}
 	return cu
 }
 
-// AddNumberOfEmployees adds i to the "numberOfEmployees" field.
-func (cu *CompanyUpdate) AddNumberOfEmployees(i int32) *CompanyUpdate {
-	cu.mutation.AddNumberOfEmployees(i)
+// AddNumberEmployees adds i to the "number_employees" field.
+func (cu *CompanyUpdate) AddNumberEmployees(i int32) *CompanyUpdate {
+	cu.mutation.AddNumberEmployees(i)
 	return cu
 }
 
@@ -374,34 +374,34 @@ func (cu *CompanyUpdate) ClearPhone() *CompanyUpdate {
 	return cu
 }
 
-// SetTaxId sets the "taxId" field.
-func (cu *CompanyUpdate) SetTaxId(s string) *CompanyUpdate {
-	cu.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (cu *CompanyUpdate) SetTaxID(s string) *CompanyUpdate {
+	cu.mutation.SetTaxID(s)
 	return cu
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (cu *CompanyUpdate) SetNillableTaxId(s *string) *CompanyUpdate {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableTaxID(s *string) *CompanyUpdate {
 	if s != nil {
-		cu.SetTaxId(*s)
+		cu.SetTaxID(*s)
 	}
 	return cu
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (cu *CompanyUpdate) ClearTaxId() *CompanyUpdate {
-	cu.mutation.ClearTaxId()
+// ClearTaxID clears the value of the "tax_id" field.
+func (cu *CompanyUpdate) ClearTaxID() *CompanyUpdate {
+	cu.mutation.ClearTaxID()
 	return cu
 }
 
-// SetVatRate sets the "vatRate" field.
+// SetVatRate sets the "vat_rate" field.
 func (cu *CompanyUpdate) SetVatRate(f float64) *CompanyUpdate {
 	cu.mutation.ResetVatRate()
 	cu.mutation.SetVatRate(f)
 	return cu
 }
 
-// SetNillableVatRate sets the "vatRate" field if the given value is not nil.
+// SetNillableVatRate sets the "vat_rate" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableVatRate(f *float64) *CompanyUpdate {
 	if f != nil {
 		cu.SetVatRate(*f)
@@ -409,7 +409,7 @@ func (cu *CompanyUpdate) SetNillableVatRate(f *float64) *CompanyUpdate {
 	return cu
 }
 
-// AddVatRate adds f to the "vatRate" field.
+// AddVatRate adds f to the "vat_rate" field.
 func (cu *CompanyUpdate) AddVatRate(f float64) *CompanyUpdate {
 	cu.mutation.AddVatRate(f)
 	return cu
@@ -435,13 +435,13 @@ func (cu *CompanyUpdate) ClearWebsite() *CompanyUpdate {
 	return cu
 }
 
-// SetIncompleteSetup sets the "incompleteSetup" field.
+// SetIncompleteSetup sets the "incomplete_setup" field.
 func (cu *CompanyUpdate) SetIncompleteSetup(b bool) *CompanyUpdate {
 	cu.mutation.SetIncompleteSetup(b)
 	return cu
 }
 
-// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+// SetNillableIncompleteSetup sets the "incomplete_setup" field if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableIncompleteSetup(b *bool) *CompanyUpdate {
 	if b != nil {
 		cu.SetIncompleteSetup(*b)
@@ -449,19 +449,19 @@ func (cu *CompanyUpdate) SetNillableIncompleteSetup(b *bool) *CompanyUpdate {
 	return cu
 }
 
-// ClearIncompleteSetup clears the value of the "incompleteSetup" field.
+// ClearIncompleteSetup clears the value of the "incomplete_setup" field.
 func (cu *CompanyUpdate) ClearIncompleteSetup() *CompanyUpdate {
 	cu.mutation.ClearIncompleteSetup()
 	return cu
 }
 
-// AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
+// AddAvailableRoleIDs adds the "available_roles" edge to the UserRole entity by IDs.
 func (cu *CompanyUpdate) AddAvailableRoleIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddAvailableRoleIDs(ids...)
 	return cu
 }
 
-// AddAvailableRoles adds the "availableRoles" edges to the UserRole entity.
+// AddAvailableRoles adds the "available_roles" edges to the UserRole entity.
 func (cu *CompanyUpdate) AddAvailableRoles(u ...*UserRole) *CompanyUpdate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -470,13 +470,13 @@ func (cu *CompanyUpdate) AddAvailableRoles(u ...*UserRole) *CompanyUpdate {
 	return cu.AddAvailableRoleIDs(ids...)
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (cu *CompanyUpdate) AddAccountingEntryIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddAccountingEntryIDs(ids...)
 	return cu
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (cu *CompanyUpdate) AddAccountingEntries(a ...*AccountingEntry) *CompanyUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -560,13 +560,13 @@ func (cu *CompanyUpdate) AddInventory(i ...*Inventory) *CompanyUpdate {
 	return cu.AddInventoryIDs(ids...)
 }
 
-// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+// AddInventoryMovementIDs adds the "inventory_movements" edge to the InventoryMovement entity by IDs.
 func (cu *CompanyUpdate) AddInventoryMovementIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddInventoryMovementIDs(ids...)
 	return cu
 }
 
-// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+// AddInventoryMovements adds the "inventory_movements" edges to the InventoryMovement entity.
 func (cu *CompanyUpdate) AddInventoryMovements(i ...*InventoryMovement) *CompanyUpdate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -620,13 +620,13 @@ func (cu *CompanyUpdate) AddLoanSchedule(l ...*LoanSchedule) *CompanyUpdate {
 	return cu.AddLoanScheduleIDs(ids...)
 }
 
-// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddMemberSignupTokenIDs adds the "member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (cu *CompanyUpdate) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddMemberSignupTokenIDs(ids...)
 	return cu
 }
 
-// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+// AddMemberSignupTokens adds the "member_signup_tokens" edges to the MemberSignupToken entity.
 func (cu *CompanyUpdate) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -740,13 +740,13 @@ func (cu *CompanyUpdate) AddTreasuries(t ...*Treasury) *CompanyUpdate {
 	return cu.AddTreasuryIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (cu *CompanyUpdate) AddWorkShiftIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddWorkShiftIDs(ids...)
 	return cu
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (cu *CompanyUpdate) AddWorkShifts(w ...*Workshift) *CompanyUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -770,13 +770,13 @@ func (cu *CompanyUpdate) AddUsers(u ...*User) *CompanyUpdate {
 	return cu.AddUserIDs(ids...)
 }
 
-// AddDaughterCompanyIDs adds the "daughterCompanies" edge to the Company entity by IDs.
+// AddDaughterCompanyIDs adds the "daughter_companies" edge to the Company entity by IDs.
 func (cu *CompanyUpdate) AddDaughterCompanyIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.AddDaughterCompanyIDs(ids...)
 	return cu
 }
 
-// AddDaughterCompanies adds the "daughterCompanies" edges to the Company entity.
+// AddDaughterCompanies adds the "daughter_companies" edges to the Company entity.
 func (cu *CompanyUpdate) AddDaughterCompanies(c ...*Company) *CompanyUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -785,13 +785,13 @@ func (cu *CompanyUpdate) AddDaughterCompanies(c ...*Company) *CompanyUpdate {
 	return cu.AddDaughterCompanyIDs(ids...)
 }
 
-// SetParentCompanyID sets the "parentCompany" edge to the Company entity by ID.
+// SetParentCompanyID sets the "parent_company" edge to the Company entity by ID.
 func (cu *CompanyUpdate) SetParentCompanyID(id int) *CompanyUpdate {
 	cu.mutation.SetParentCompanyID(id)
 	return cu
 }
 
-// SetNillableParentCompanyID sets the "parentCompany" edge to the Company entity by ID if the given value is not nil.
+// SetNillableParentCompanyID sets the "parent_company" edge to the Company entity by ID if the given value is not nil.
 func (cu *CompanyUpdate) SetNillableParentCompanyID(id *int) *CompanyUpdate {
 	if id != nil {
 		cu = cu.SetParentCompanyID(*id)
@@ -799,7 +799,7 @@ func (cu *CompanyUpdate) SetNillableParentCompanyID(id *int) *CompanyUpdate {
 	return cu
 }
 
-// SetParentCompany sets the "parentCompany" edge to the Company entity.
+// SetParentCompany sets the "parent_company" edge to the Company entity.
 func (cu *CompanyUpdate) SetParentCompany(c *Company) *CompanyUpdate {
 	return cu.SetParentCompanyID(c.ID)
 }
@@ -809,19 +809,19 @@ func (cu *CompanyUpdate) Mutation() *CompanyMutation {
 	return cu.mutation
 }
 
-// ClearAvailableRoles clears all "availableRoles" edges to the UserRole entity.
+// ClearAvailableRoles clears all "available_roles" edges to the UserRole entity.
 func (cu *CompanyUpdate) ClearAvailableRoles() *CompanyUpdate {
 	cu.mutation.ClearAvailableRoles()
 	return cu
 }
 
-// RemoveAvailableRoleIDs removes the "availableRoles" edge to UserRole entities by IDs.
+// RemoveAvailableRoleIDs removes the "available_roles" edge to UserRole entities by IDs.
 func (cu *CompanyUpdate) RemoveAvailableRoleIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveAvailableRoleIDs(ids...)
 	return cu
 }
 
-// RemoveAvailableRoles removes "availableRoles" edges to UserRole entities.
+// RemoveAvailableRoles removes "available_roles" edges to UserRole entities.
 func (cu *CompanyUpdate) RemoveAvailableRoles(u ...*UserRole) *CompanyUpdate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -830,19 +830,19 @@ func (cu *CompanyUpdate) RemoveAvailableRoles(u ...*UserRole) *CompanyUpdate {
 	return cu.RemoveAvailableRoleIDs(ids...)
 }
 
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+// ClearAccountingEntries clears all "accounting_entries" edges to the AccountingEntry entity.
 func (cu *CompanyUpdate) ClearAccountingEntries() *CompanyUpdate {
 	cu.mutation.ClearAccountingEntries()
 	return cu
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to AccountingEntry entities by IDs.
 func (cu *CompanyUpdate) RemoveAccountingEntryIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveAccountingEntryIDs(ids...)
 	return cu
 }
 
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+// RemoveAccountingEntries removes "accounting_entries" edges to AccountingEntry entities.
 func (cu *CompanyUpdate) RemoveAccountingEntries(a ...*AccountingEntry) *CompanyUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -956,19 +956,19 @@ func (cu *CompanyUpdate) RemoveInventory(i ...*Inventory) *CompanyUpdate {
 	return cu.RemoveInventoryIDs(ids...)
 }
 
-// ClearInventoryMovements clears all "inventoryMovements" edges to the InventoryMovement entity.
+// ClearInventoryMovements clears all "inventory_movements" edges to the InventoryMovement entity.
 func (cu *CompanyUpdate) ClearInventoryMovements() *CompanyUpdate {
 	cu.mutation.ClearInventoryMovements()
 	return cu
 }
 
-// RemoveInventoryMovementIDs removes the "inventoryMovements" edge to InventoryMovement entities by IDs.
+// RemoveInventoryMovementIDs removes the "inventory_movements" edge to InventoryMovement entities by IDs.
 func (cu *CompanyUpdate) RemoveInventoryMovementIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveInventoryMovementIDs(ids...)
 	return cu
 }
 
-// RemoveInventoryMovements removes "inventoryMovements" edges to InventoryMovement entities.
+// RemoveInventoryMovements removes "inventory_movements" edges to InventoryMovement entities.
 func (cu *CompanyUpdate) RemoveInventoryMovements(i ...*InventoryMovement) *CompanyUpdate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -1040,19 +1040,19 @@ func (cu *CompanyUpdate) RemoveLoanSchedule(l ...*LoanSchedule) *CompanyUpdate {
 	return cu.RemoveLoanScheduleIDs(ids...)
 }
 
-// ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
+// ClearMemberSignupTokens clears all "member_signup_tokens" edges to the MemberSignupToken entity.
 func (cu *CompanyUpdate) ClearMemberSignupTokens() *CompanyUpdate {
 	cu.mutation.ClearMemberSignupTokens()
 	return cu
 }
 
-// RemoveMemberSignupTokenIDs removes the "memberSignupTokens" edge to MemberSignupToken entities by IDs.
+// RemoveMemberSignupTokenIDs removes the "member_signup_tokens" edge to MemberSignupToken entities by IDs.
 func (cu *CompanyUpdate) RemoveMemberSignupTokenIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveMemberSignupTokenIDs(ids...)
 	return cu
 }
 
-// RemoveMemberSignupTokens removes "memberSignupTokens" edges to MemberSignupToken entities.
+// RemoveMemberSignupTokens removes "member_signup_tokens" edges to MemberSignupToken entities.
 func (cu *CompanyUpdate) RemoveMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -1208,19 +1208,19 @@ func (cu *CompanyUpdate) RemoveTreasuries(t ...*Treasury) *CompanyUpdate {
 	return cu.RemoveTreasuryIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (cu *CompanyUpdate) ClearWorkShifts() *CompanyUpdate {
 	cu.mutation.ClearWorkShifts()
 	return cu
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (cu *CompanyUpdate) RemoveWorkShiftIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveWorkShiftIDs(ids...)
 	return cu
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (cu *CompanyUpdate) RemoveWorkShifts(w ...*Workshift) *CompanyUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -1250,19 +1250,19 @@ func (cu *CompanyUpdate) RemoveUsers(u ...*User) *CompanyUpdate {
 	return cu.RemoveUserIDs(ids...)
 }
 
-// ClearDaughterCompanies clears all "daughterCompanies" edges to the Company entity.
+// ClearDaughterCompanies clears all "daughter_companies" edges to the Company entity.
 func (cu *CompanyUpdate) ClearDaughterCompanies() *CompanyUpdate {
 	cu.mutation.ClearDaughterCompanies()
 	return cu
 }
 
-// RemoveDaughterCompanyIDs removes the "daughterCompanies" edge to Company entities by IDs.
+// RemoveDaughterCompanyIDs removes the "daughter_companies" edge to Company entities by IDs.
 func (cu *CompanyUpdate) RemoveDaughterCompanyIDs(ids ...int) *CompanyUpdate {
 	cu.mutation.RemoveDaughterCompanyIDs(ids...)
 	return cu
 }
 
-// RemoveDaughterCompanies removes "daughterCompanies" edges to Company entities.
+// RemoveDaughterCompanies removes "daughter_companies" edges to Company entities.
 func (cu *CompanyUpdate) RemoveDaughterCompanies(c ...*Company) *CompanyUpdate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -1271,7 +1271,7 @@ func (cu *CompanyUpdate) RemoveDaughterCompanies(c ...*Company) *CompanyUpdate {
 	return cu.RemoveDaughterCompanyIDs(ids...)
 }
 
-// ClearParentCompany clears the "parentCompany" edge to the Company entity.
+// ClearParentCompany clears the "parent_company" edge to the Company entity.
 func (cu *CompanyUpdate) ClearParentCompany() *CompanyUpdate {
 	cu.mutation.ClearParentCompany()
 	return cu
@@ -1317,12 +1317,12 @@ func (cu *CompanyUpdate) defaults() {
 func (cu *CompanyUpdate) check() error {
 	if v, ok := cu.mutation.LastInvoiceNumber(); ok {
 		if err := company.LastInvoiceNumberValidator(v); err != nil {
-			return &ValidationError{Name: "lastInvoiceNumber", err: fmt.Errorf(`generated: validator failed for field "Company.lastInvoiceNumber": %w`, err)}
+			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
-	if v, ok := cu.mutation.NumberOfEmployees(); ok {
-		if err := company.NumberOfEmployeesValidator(v); err != nil {
-			return &ValidationError{Name: "numberOfEmployees", err: fmt.Errorf(`generated: validator failed for field "Company.numberOfEmployees": %w`, err)}
+	if v, ok := cu.mutation.NumberEmployees(); ok {
+		if err := company.NumberEmployeesValidator(v); err != nil {
+			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
 		}
 	}
 	return nil
@@ -1427,11 +1427,11 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.Name(); ok {
 		_spec.SetField(company.FieldName, field.TypeString, value)
 	}
-	if value, ok := cu.mutation.NumberOfEmployees(); ok {
-		_spec.SetField(company.FieldNumberOfEmployees, field.TypeInt32, value)
+	if value, ok := cu.mutation.NumberEmployees(); ok {
+		_spec.SetField(company.FieldNumberEmployees, field.TypeInt32, value)
 	}
-	if value, ok := cu.mutation.AddedNumberOfEmployees(); ok {
-		_spec.AddField(company.FieldNumberOfEmployees, field.TypeInt32, value)
+	if value, ok := cu.mutation.AddedNumberEmployees(); ok {
+		_spec.AddField(company.FieldNumberEmployees, field.TypeInt32, value)
 	}
 	if value, ok := cu.mutation.Phone(); ok {
 		_spec.SetField(company.FieldPhone, field.TypeString, value)
@@ -1439,11 +1439,11 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
 	}
-	if value, ok := cu.mutation.TaxId(); ok {
-		_spec.SetField(company.FieldTaxId, field.TypeString, value)
+	if value, ok := cu.mutation.TaxID(); ok {
+		_spec.SetField(company.FieldTaxID, field.TypeString, value)
 	}
-	if cu.mutation.TaxIdCleared() {
-		_spec.ClearField(company.FieldTaxId, field.TypeString)
+	if cu.mutation.TaxIDCleared() {
+		_spec.ClearField(company.FieldTaxID, field.TypeString)
 	}
 	if value, ok := cu.mutation.VatRate(); ok {
 		_spec.SetField(company.FieldVatRate, field.TypeFloat64, value)
@@ -2504,19 +2504,19 @@ type CompanyUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cuo *CompanyUpdateOne) SetUpdatedAt(t time.Time) *CompanyUpdateOne {
 	cuo.mutation.SetUpdatedAt(t)
 	return cuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cuo *CompanyUpdateOne) SetDeletedAt(t time.Time) *CompanyUpdateOne {
 	cuo.mutation.SetDeletedAt(t)
 	return cuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableDeletedAt(t *time.Time) *CompanyUpdateOne {
 	if t != nil {
 		cuo.SetDeletedAt(*t)
@@ -2524,7 +2524,7 @@ func (cuo *CompanyUpdateOne) SetNillableDeletedAt(t *time.Time) *CompanyUpdateOn
 	return cuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (cuo *CompanyUpdateOne) ClearDeletedAt() *CompanyUpdateOne {
 	cuo.mutation.ClearDeletedAt()
 	return cuo
@@ -2550,13 +2550,13 @@ func (cuo *CompanyUpdateOne) ClearAddress() *CompanyUpdateOne {
 	return cuo
 }
 
-// SetBaseCurrency sets the "baseCurrency" field.
+// SetBaseCurrency sets the "base_currency" field.
 func (cuo *CompanyUpdateOne) SetBaseCurrency(s string) *CompanyUpdateOne {
 	cuo.mutation.SetBaseCurrency(s)
 	return cuo
 }
 
-// SetNillableBaseCurrency sets the "baseCurrency" field if the given value is not nil.
+// SetNillableBaseCurrency sets the "base_currency" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableBaseCurrency(s *string) *CompanyUpdateOne {
 	if s != nil {
 		cuo.SetBaseCurrency(*s)
@@ -2564,13 +2564,13 @@ func (cuo *CompanyUpdateOne) SetNillableBaseCurrency(s *string) *CompanyUpdateOn
 	return cuo
 }
 
-// SetCeoName sets the "ceoName" field.
+// SetCeoName sets the "ceo_name" field.
 func (cuo *CompanyUpdateOne) SetCeoName(s string) *CompanyUpdateOne {
 	cuo.mutation.SetCeoName(s)
 	return cuo
 }
 
-// SetNillableCeoName sets the "ceoName" field if the given value is not nil.
+// SetNillableCeoName sets the "ceo_name" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableCeoName(s *string) *CompanyUpdateOne {
 	if s != nil {
 		cuo.SetCeoName(*s)
@@ -2578,7 +2578,7 @@ func (cuo *CompanyUpdateOne) SetNillableCeoName(s *string) *CompanyUpdateOne {
 	return cuo
 }
 
-// ClearCeoName clears the value of the "ceoName" field.
+// ClearCeoName clears the value of the "ceo_name" field.
 func (cuo *CompanyUpdateOne) ClearCeoName() *CompanyUpdateOne {
 	cuo.mutation.ClearCeoName()
 	return cuo
@@ -2612,13 +2612,13 @@ func (cuo *CompanyUpdateOne) SetNillableCountry(s *string) *CompanyUpdateOne {
 	return cuo
 }
 
-// SetEstablishedAt sets the "establishedAt" field.
+// SetEstablishedAt sets the "established_at" field.
 func (cuo *CompanyUpdateOne) SetEstablishedAt(t time.Time) *CompanyUpdateOne {
 	cuo.mutation.SetEstablishedAt(t)
 	return cuo
 }
 
-// SetNillableEstablishedAt sets the "establishedAt" field if the given value is not nil.
+// SetNillableEstablishedAt sets the "established_at" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableEstablishedAt(t *time.Time) *CompanyUpdateOne {
 	if t != nil {
 		cuo.SetEstablishedAt(*t)
@@ -2686,13 +2686,13 @@ func (cuo *CompanyUpdateOne) ClearIndustry() *CompanyUpdateOne {
 	return cuo
 }
 
-// SetLastEntryDate sets the "lastEntryDate" field.
+// SetLastEntryDate sets the "last_entry_date" field.
 func (cuo *CompanyUpdateOne) SetLastEntryDate(t time.Time) *CompanyUpdateOne {
 	cuo.mutation.SetLastEntryDate(t)
 	return cuo
 }
 
-// SetNillableLastEntryDate sets the "lastEntryDate" field if the given value is not nil.
+// SetNillableLastEntryDate sets the "last_entry_date" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableLastEntryDate(t *time.Time) *CompanyUpdateOne {
 	if t != nil {
 		cuo.SetLastEntryDate(*t)
@@ -2700,20 +2700,20 @@ func (cuo *CompanyUpdateOne) SetNillableLastEntryDate(t *time.Time) *CompanyUpda
 	return cuo
 }
 
-// ClearLastEntryDate clears the value of the "lastEntryDate" field.
+// ClearLastEntryDate clears the value of the "last_entry_date" field.
 func (cuo *CompanyUpdateOne) ClearLastEntryDate() *CompanyUpdateOne {
 	cuo.mutation.ClearLastEntryDate()
 	return cuo
 }
 
-// SetLastInvoiceNumber sets the "lastInvoiceNumber" field.
+// SetLastInvoiceNumber sets the "last_invoice_number" field.
 func (cuo *CompanyUpdateOne) SetLastInvoiceNumber(i int32) *CompanyUpdateOne {
 	cuo.mutation.ResetLastInvoiceNumber()
 	cuo.mutation.SetLastInvoiceNumber(i)
 	return cuo
 }
 
-// SetNillableLastInvoiceNumber sets the "lastInvoiceNumber" field if the given value is not nil.
+// SetNillableLastInvoiceNumber sets the "last_invoice_number" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableLastInvoiceNumber(i *int32) *CompanyUpdateOne {
 	if i != nil {
 		cuo.SetLastInvoiceNumber(*i)
@@ -2721,25 +2721,25 @@ func (cuo *CompanyUpdateOne) SetNillableLastInvoiceNumber(i *int32) *CompanyUpda
 	return cuo
 }
 
-// AddLastInvoiceNumber adds i to the "lastInvoiceNumber" field.
+// AddLastInvoiceNumber adds i to the "last_invoice_number" field.
 func (cuo *CompanyUpdateOne) AddLastInvoiceNumber(i int32) *CompanyUpdateOne {
 	cuo.mutation.AddLastInvoiceNumber(i)
 	return cuo
 }
 
-// ClearLastInvoiceNumber clears the value of the "lastInvoiceNumber" field.
+// ClearLastInvoiceNumber clears the value of the "last_invoice_number" field.
 func (cuo *CompanyUpdateOne) ClearLastInvoiceNumber() *CompanyUpdateOne {
 	cuo.mutation.ClearLastInvoiceNumber()
 	return cuo
 }
 
-// SetLogoURL sets the "logoURL" field.
+// SetLogoURL sets the "logo_URL" field.
 func (cuo *CompanyUpdateOne) SetLogoURL(s string) *CompanyUpdateOne {
 	cuo.mutation.SetLogoURL(s)
 	return cuo
 }
 
-// SetNillableLogoURL sets the "logoURL" field if the given value is not nil.
+// SetNillableLogoURL sets the "logo_URL" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableLogoURL(s *string) *CompanyUpdateOne {
 	if s != nil {
 		cuo.SetLogoURL(*s)
@@ -2747,19 +2747,19 @@ func (cuo *CompanyUpdateOne) SetNillableLogoURL(s *string) *CompanyUpdateOne {
 	return cuo
 }
 
-// ClearLogoURL clears the value of the "logoURL" field.
+// ClearLogoURL clears the value of the "logo_URL" field.
 func (cuo *CompanyUpdateOne) ClearLogoURL() *CompanyUpdateOne {
 	cuo.mutation.ClearLogoURL()
 	return cuo
 }
 
-// SetLogoStorageURI sets the "logoStorageURI" field.
+// SetLogoStorageURI sets the "logo_storage_URI" field.
 func (cuo *CompanyUpdateOne) SetLogoStorageURI(s string) *CompanyUpdateOne {
 	cuo.mutation.SetLogoStorageURI(s)
 	return cuo
 }
 
-// SetNillableLogoStorageURI sets the "logoStorageURI" field if the given value is not nil.
+// SetNillableLogoStorageURI sets the "logo_storage_URI" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableLogoStorageURI(s *string) *CompanyUpdateOne {
 	if s != nil {
 		cuo.SetLogoStorageURI(*s)
@@ -2767,7 +2767,7 @@ func (cuo *CompanyUpdateOne) SetNillableLogoStorageURI(s *string) *CompanyUpdate
 	return cuo
 }
 
-// ClearLogoStorageURI clears the value of the "logoStorageURI" field.
+// ClearLogoStorageURI clears the value of the "logo_storage_URI" field.
 func (cuo *CompanyUpdateOne) ClearLogoStorageURI() *CompanyUpdateOne {
 	cuo.mutation.ClearLogoStorageURI()
 	return cuo
@@ -2787,24 +2787,24 @@ func (cuo *CompanyUpdateOne) SetNillableName(s *string) *CompanyUpdateOne {
 	return cuo
 }
 
-// SetNumberOfEmployees sets the "numberOfEmployees" field.
-func (cuo *CompanyUpdateOne) SetNumberOfEmployees(i int32) *CompanyUpdateOne {
-	cuo.mutation.ResetNumberOfEmployees()
-	cuo.mutation.SetNumberOfEmployees(i)
+// SetNumberEmployees sets the "number_employees" field.
+func (cuo *CompanyUpdateOne) SetNumberEmployees(i int32) *CompanyUpdateOne {
+	cuo.mutation.ResetNumberEmployees()
+	cuo.mutation.SetNumberEmployees(i)
 	return cuo
 }
 
-// SetNillableNumberOfEmployees sets the "numberOfEmployees" field if the given value is not nil.
-func (cuo *CompanyUpdateOne) SetNillableNumberOfEmployees(i *int32) *CompanyUpdateOne {
+// SetNillableNumberEmployees sets the "number_employees" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableNumberEmployees(i *int32) *CompanyUpdateOne {
 	if i != nil {
-		cuo.SetNumberOfEmployees(*i)
+		cuo.SetNumberEmployees(*i)
 	}
 	return cuo
 }
 
-// AddNumberOfEmployees adds i to the "numberOfEmployees" field.
-func (cuo *CompanyUpdateOne) AddNumberOfEmployees(i int32) *CompanyUpdateOne {
-	cuo.mutation.AddNumberOfEmployees(i)
+// AddNumberEmployees adds i to the "number_employees" field.
+func (cuo *CompanyUpdateOne) AddNumberEmployees(i int32) *CompanyUpdateOne {
+	cuo.mutation.AddNumberEmployees(i)
 	return cuo
 }
 
@@ -2828,34 +2828,34 @@ func (cuo *CompanyUpdateOne) ClearPhone() *CompanyUpdateOne {
 	return cuo
 }
 
-// SetTaxId sets the "taxId" field.
-func (cuo *CompanyUpdateOne) SetTaxId(s string) *CompanyUpdateOne {
-	cuo.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (cuo *CompanyUpdateOne) SetTaxID(s string) *CompanyUpdateOne {
+	cuo.mutation.SetTaxID(s)
 	return cuo
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (cuo *CompanyUpdateOne) SetNillableTaxId(s *string) *CompanyUpdateOne {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableTaxID(s *string) *CompanyUpdateOne {
 	if s != nil {
-		cuo.SetTaxId(*s)
+		cuo.SetTaxID(*s)
 	}
 	return cuo
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (cuo *CompanyUpdateOne) ClearTaxId() *CompanyUpdateOne {
-	cuo.mutation.ClearTaxId()
+// ClearTaxID clears the value of the "tax_id" field.
+func (cuo *CompanyUpdateOne) ClearTaxID() *CompanyUpdateOne {
+	cuo.mutation.ClearTaxID()
 	return cuo
 }
 
-// SetVatRate sets the "vatRate" field.
+// SetVatRate sets the "vat_rate" field.
 func (cuo *CompanyUpdateOne) SetVatRate(f float64) *CompanyUpdateOne {
 	cuo.mutation.ResetVatRate()
 	cuo.mutation.SetVatRate(f)
 	return cuo
 }
 
-// SetNillableVatRate sets the "vatRate" field if the given value is not nil.
+// SetNillableVatRate sets the "vat_rate" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableVatRate(f *float64) *CompanyUpdateOne {
 	if f != nil {
 		cuo.SetVatRate(*f)
@@ -2863,7 +2863,7 @@ func (cuo *CompanyUpdateOne) SetNillableVatRate(f *float64) *CompanyUpdateOne {
 	return cuo
 }
 
-// AddVatRate adds f to the "vatRate" field.
+// AddVatRate adds f to the "vat_rate" field.
 func (cuo *CompanyUpdateOne) AddVatRate(f float64) *CompanyUpdateOne {
 	cuo.mutation.AddVatRate(f)
 	return cuo
@@ -2889,13 +2889,13 @@ func (cuo *CompanyUpdateOne) ClearWebsite() *CompanyUpdateOne {
 	return cuo
 }
 
-// SetIncompleteSetup sets the "incompleteSetup" field.
+// SetIncompleteSetup sets the "incomplete_setup" field.
 func (cuo *CompanyUpdateOne) SetIncompleteSetup(b bool) *CompanyUpdateOne {
 	cuo.mutation.SetIncompleteSetup(b)
 	return cuo
 }
 
-// SetNillableIncompleteSetup sets the "incompleteSetup" field if the given value is not nil.
+// SetNillableIncompleteSetup sets the "incomplete_setup" field if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableIncompleteSetup(b *bool) *CompanyUpdateOne {
 	if b != nil {
 		cuo.SetIncompleteSetup(*b)
@@ -2903,19 +2903,19 @@ func (cuo *CompanyUpdateOne) SetNillableIncompleteSetup(b *bool) *CompanyUpdateO
 	return cuo
 }
 
-// ClearIncompleteSetup clears the value of the "incompleteSetup" field.
+// ClearIncompleteSetup clears the value of the "incomplete_setup" field.
 func (cuo *CompanyUpdateOne) ClearIncompleteSetup() *CompanyUpdateOne {
 	cuo.mutation.ClearIncompleteSetup()
 	return cuo
 }
 
-// AddAvailableRoleIDs adds the "availableRoles" edge to the UserRole entity by IDs.
+// AddAvailableRoleIDs adds the "available_roles" edge to the UserRole entity by IDs.
 func (cuo *CompanyUpdateOne) AddAvailableRoleIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddAvailableRoleIDs(ids...)
 	return cuo
 }
 
-// AddAvailableRoles adds the "availableRoles" edges to the UserRole entity.
+// AddAvailableRoles adds the "available_roles" edges to the UserRole entity.
 func (cuo *CompanyUpdateOne) AddAvailableRoles(u ...*UserRole) *CompanyUpdateOne {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -2924,13 +2924,13 @@ func (cuo *CompanyUpdateOne) AddAvailableRoles(u ...*UserRole) *CompanyUpdateOne
 	return cuo.AddAvailableRoleIDs(ids...)
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (cuo *CompanyUpdateOne) AddAccountingEntryIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddAccountingEntryIDs(ids...)
 	return cuo
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (cuo *CompanyUpdateOne) AddAccountingEntries(a ...*AccountingEntry) *CompanyUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -3014,13 +3014,13 @@ func (cuo *CompanyUpdateOne) AddInventory(i ...*Inventory) *CompanyUpdateOne {
 	return cuo.AddInventoryIDs(ids...)
 }
 
-// AddInventoryMovementIDs adds the "inventoryMovements" edge to the InventoryMovement entity by IDs.
+// AddInventoryMovementIDs adds the "inventory_movements" edge to the InventoryMovement entity by IDs.
 func (cuo *CompanyUpdateOne) AddInventoryMovementIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddInventoryMovementIDs(ids...)
 	return cuo
 }
 
-// AddInventoryMovements adds the "inventoryMovements" edges to the InventoryMovement entity.
+// AddInventoryMovements adds the "inventory_movements" edges to the InventoryMovement entity.
 func (cuo *CompanyUpdateOne) AddInventoryMovements(i ...*InventoryMovement) *CompanyUpdateOne {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -3074,13 +3074,13 @@ func (cuo *CompanyUpdateOne) AddLoanSchedule(l ...*LoanSchedule) *CompanyUpdateO
 	return cuo.AddLoanScheduleIDs(ids...)
 }
 
-// AddMemberSignupTokenIDs adds the "memberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddMemberSignupTokenIDs adds the "member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (cuo *CompanyUpdateOne) AddMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddMemberSignupTokenIDs(ids...)
 	return cuo
 }
 
-// AddMemberSignupTokens adds the "memberSignupTokens" edges to the MemberSignupToken entity.
+// AddMemberSignupTokens adds the "member_signup_tokens" edges to the MemberSignupToken entity.
 func (cuo *CompanyUpdateOne) AddMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdateOne {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -3194,13 +3194,13 @@ func (cuo *CompanyUpdateOne) AddTreasuries(t ...*Treasury) *CompanyUpdateOne {
 	return cuo.AddTreasuryIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (cuo *CompanyUpdateOne) AddWorkShiftIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddWorkShiftIDs(ids...)
 	return cuo
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (cuo *CompanyUpdateOne) AddWorkShifts(w ...*Workshift) *CompanyUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -3224,13 +3224,13 @@ func (cuo *CompanyUpdateOne) AddUsers(u ...*User) *CompanyUpdateOne {
 	return cuo.AddUserIDs(ids...)
 }
 
-// AddDaughterCompanyIDs adds the "daughterCompanies" edge to the Company entity by IDs.
+// AddDaughterCompanyIDs adds the "daughter_companies" edge to the Company entity by IDs.
 func (cuo *CompanyUpdateOne) AddDaughterCompanyIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.AddDaughterCompanyIDs(ids...)
 	return cuo
 }
 
-// AddDaughterCompanies adds the "daughterCompanies" edges to the Company entity.
+// AddDaughterCompanies adds the "daughter_companies" edges to the Company entity.
 func (cuo *CompanyUpdateOne) AddDaughterCompanies(c ...*Company) *CompanyUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -3239,13 +3239,13 @@ func (cuo *CompanyUpdateOne) AddDaughterCompanies(c ...*Company) *CompanyUpdateO
 	return cuo.AddDaughterCompanyIDs(ids...)
 }
 
-// SetParentCompanyID sets the "parentCompany" edge to the Company entity by ID.
+// SetParentCompanyID sets the "parent_company" edge to the Company entity by ID.
 func (cuo *CompanyUpdateOne) SetParentCompanyID(id int) *CompanyUpdateOne {
 	cuo.mutation.SetParentCompanyID(id)
 	return cuo
 }
 
-// SetNillableParentCompanyID sets the "parentCompany" edge to the Company entity by ID if the given value is not nil.
+// SetNillableParentCompanyID sets the "parent_company" edge to the Company entity by ID if the given value is not nil.
 func (cuo *CompanyUpdateOne) SetNillableParentCompanyID(id *int) *CompanyUpdateOne {
 	if id != nil {
 		cuo = cuo.SetParentCompanyID(*id)
@@ -3253,7 +3253,7 @@ func (cuo *CompanyUpdateOne) SetNillableParentCompanyID(id *int) *CompanyUpdateO
 	return cuo
 }
 
-// SetParentCompany sets the "parentCompany" edge to the Company entity.
+// SetParentCompany sets the "parent_company" edge to the Company entity.
 func (cuo *CompanyUpdateOne) SetParentCompany(c *Company) *CompanyUpdateOne {
 	return cuo.SetParentCompanyID(c.ID)
 }
@@ -3263,19 +3263,19 @@ func (cuo *CompanyUpdateOne) Mutation() *CompanyMutation {
 	return cuo.mutation
 }
 
-// ClearAvailableRoles clears all "availableRoles" edges to the UserRole entity.
+// ClearAvailableRoles clears all "available_roles" edges to the UserRole entity.
 func (cuo *CompanyUpdateOne) ClearAvailableRoles() *CompanyUpdateOne {
 	cuo.mutation.ClearAvailableRoles()
 	return cuo
 }
 
-// RemoveAvailableRoleIDs removes the "availableRoles" edge to UserRole entities by IDs.
+// RemoveAvailableRoleIDs removes the "available_roles" edge to UserRole entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveAvailableRoleIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveAvailableRoleIDs(ids...)
 	return cuo
 }
 
-// RemoveAvailableRoles removes "availableRoles" edges to UserRole entities.
+// RemoveAvailableRoles removes "available_roles" edges to UserRole entities.
 func (cuo *CompanyUpdateOne) RemoveAvailableRoles(u ...*UserRole) *CompanyUpdateOne {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -3284,19 +3284,19 @@ func (cuo *CompanyUpdateOne) RemoveAvailableRoles(u ...*UserRole) *CompanyUpdate
 	return cuo.RemoveAvailableRoleIDs(ids...)
 }
 
-// ClearAccountingEntries clears all "accountingEntries" edges to the AccountingEntry entity.
+// ClearAccountingEntries clears all "accounting_entries" edges to the AccountingEntry entity.
 func (cuo *CompanyUpdateOne) ClearAccountingEntries() *CompanyUpdateOne {
 	cuo.mutation.ClearAccountingEntries()
 	return cuo
 }
 
-// RemoveAccountingEntryIDs removes the "accountingEntries" edge to AccountingEntry entities by IDs.
+// RemoveAccountingEntryIDs removes the "accounting_entries" edge to AccountingEntry entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveAccountingEntryIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveAccountingEntryIDs(ids...)
 	return cuo
 }
 
-// RemoveAccountingEntries removes "accountingEntries" edges to AccountingEntry entities.
+// RemoveAccountingEntries removes "accounting_entries" edges to AccountingEntry entities.
 func (cuo *CompanyUpdateOne) RemoveAccountingEntries(a ...*AccountingEntry) *CompanyUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -3410,19 +3410,19 @@ func (cuo *CompanyUpdateOne) RemoveInventory(i ...*Inventory) *CompanyUpdateOne 
 	return cuo.RemoveInventoryIDs(ids...)
 }
 
-// ClearInventoryMovements clears all "inventoryMovements" edges to the InventoryMovement entity.
+// ClearInventoryMovements clears all "inventory_movements" edges to the InventoryMovement entity.
 func (cuo *CompanyUpdateOne) ClearInventoryMovements() *CompanyUpdateOne {
 	cuo.mutation.ClearInventoryMovements()
 	return cuo
 }
 
-// RemoveInventoryMovementIDs removes the "inventoryMovements" edge to InventoryMovement entities by IDs.
+// RemoveInventoryMovementIDs removes the "inventory_movements" edge to InventoryMovement entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveInventoryMovementIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveInventoryMovementIDs(ids...)
 	return cuo
 }
 
-// RemoveInventoryMovements removes "inventoryMovements" edges to InventoryMovement entities.
+// RemoveInventoryMovements removes "inventory_movements" edges to InventoryMovement entities.
 func (cuo *CompanyUpdateOne) RemoveInventoryMovements(i ...*InventoryMovement) *CompanyUpdateOne {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -3494,19 +3494,19 @@ func (cuo *CompanyUpdateOne) RemoveLoanSchedule(l ...*LoanSchedule) *CompanyUpda
 	return cuo.RemoveLoanScheduleIDs(ids...)
 }
 
-// ClearMemberSignupTokens clears all "memberSignupTokens" edges to the MemberSignupToken entity.
+// ClearMemberSignupTokens clears all "member_signup_tokens" edges to the MemberSignupToken entity.
 func (cuo *CompanyUpdateOne) ClearMemberSignupTokens() *CompanyUpdateOne {
 	cuo.mutation.ClearMemberSignupTokens()
 	return cuo
 }
 
-// RemoveMemberSignupTokenIDs removes the "memberSignupTokens" edge to MemberSignupToken entities by IDs.
+// RemoveMemberSignupTokenIDs removes the "member_signup_tokens" edge to MemberSignupToken entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveMemberSignupTokenIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveMemberSignupTokenIDs(ids...)
 	return cuo
 }
 
-// RemoveMemberSignupTokens removes "memberSignupTokens" edges to MemberSignupToken entities.
+// RemoveMemberSignupTokens removes "member_signup_tokens" edges to MemberSignupToken entities.
 func (cuo *CompanyUpdateOne) RemoveMemberSignupTokens(m ...*MemberSignupToken) *CompanyUpdateOne {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -3662,19 +3662,19 @@ func (cuo *CompanyUpdateOne) RemoveTreasuries(t ...*Treasury) *CompanyUpdateOne 
 	return cuo.RemoveTreasuryIDs(ids...)
 }
 
-// ClearWorkShifts clears all "workShifts" edges to the Workshift entity.
+// ClearWorkShifts clears all "work_shifts" edges to the Workshift entity.
 func (cuo *CompanyUpdateOne) ClearWorkShifts() *CompanyUpdateOne {
 	cuo.mutation.ClearWorkShifts()
 	return cuo
 }
 
-// RemoveWorkShiftIDs removes the "workShifts" edge to Workshift entities by IDs.
+// RemoveWorkShiftIDs removes the "work_shifts" edge to Workshift entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveWorkShiftIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveWorkShiftIDs(ids...)
 	return cuo
 }
 
-// RemoveWorkShifts removes "workShifts" edges to Workshift entities.
+// RemoveWorkShifts removes "work_shifts" edges to Workshift entities.
 func (cuo *CompanyUpdateOne) RemoveWorkShifts(w ...*Workshift) *CompanyUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -3704,19 +3704,19 @@ func (cuo *CompanyUpdateOne) RemoveUsers(u ...*User) *CompanyUpdateOne {
 	return cuo.RemoveUserIDs(ids...)
 }
 
-// ClearDaughterCompanies clears all "daughterCompanies" edges to the Company entity.
+// ClearDaughterCompanies clears all "daughter_companies" edges to the Company entity.
 func (cuo *CompanyUpdateOne) ClearDaughterCompanies() *CompanyUpdateOne {
 	cuo.mutation.ClearDaughterCompanies()
 	return cuo
 }
 
-// RemoveDaughterCompanyIDs removes the "daughterCompanies" edge to Company entities by IDs.
+// RemoveDaughterCompanyIDs removes the "daughter_companies" edge to Company entities by IDs.
 func (cuo *CompanyUpdateOne) RemoveDaughterCompanyIDs(ids ...int) *CompanyUpdateOne {
 	cuo.mutation.RemoveDaughterCompanyIDs(ids...)
 	return cuo
 }
 
-// RemoveDaughterCompanies removes "daughterCompanies" edges to Company entities.
+// RemoveDaughterCompanies removes "daughter_companies" edges to Company entities.
 func (cuo *CompanyUpdateOne) RemoveDaughterCompanies(c ...*Company) *CompanyUpdateOne {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -3725,7 +3725,7 @@ func (cuo *CompanyUpdateOne) RemoveDaughterCompanies(c ...*Company) *CompanyUpda
 	return cuo.RemoveDaughterCompanyIDs(ids...)
 }
 
-// ClearParentCompany clears the "parentCompany" edge to the Company entity.
+// ClearParentCompany clears the "parent_company" edge to the Company entity.
 func (cuo *CompanyUpdateOne) ClearParentCompany() *CompanyUpdateOne {
 	cuo.mutation.ClearParentCompany()
 	return cuo
@@ -3784,12 +3784,12 @@ func (cuo *CompanyUpdateOne) defaults() {
 func (cuo *CompanyUpdateOne) check() error {
 	if v, ok := cuo.mutation.LastInvoiceNumber(); ok {
 		if err := company.LastInvoiceNumberValidator(v); err != nil {
-			return &ValidationError{Name: "lastInvoiceNumber", err: fmt.Errorf(`generated: validator failed for field "Company.lastInvoiceNumber": %w`, err)}
+			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
-	if v, ok := cuo.mutation.NumberOfEmployees(); ok {
-		if err := company.NumberOfEmployeesValidator(v); err != nil {
-			return &ValidationError{Name: "numberOfEmployees", err: fmt.Errorf(`generated: validator failed for field "Company.numberOfEmployees": %w`, err)}
+	if v, ok := cuo.mutation.NumberEmployees(); ok {
+		if err := company.NumberEmployeesValidator(v); err != nil {
+			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
 		}
 	}
 	return nil
@@ -3911,11 +3911,11 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if value, ok := cuo.mutation.Name(); ok {
 		_spec.SetField(company.FieldName, field.TypeString, value)
 	}
-	if value, ok := cuo.mutation.NumberOfEmployees(); ok {
-		_spec.SetField(company.FieldNumberOfEmployees, field.TypeInt32, value)
+	if value, ok := cuo.mutation.NumberEmployees(); ok {
+		_spec.SetField(company.FieldNumberEmployees, field.TypeInt32, value)
 	}
-	if value, ok := cuo.mutation.AddedNumberOfEmployees(); ok {
-		_spec.AddField(company.FieldNumberOfEmployees, field.TypeInt32, value)
+	if value, ok := cuo.mutation.AddedNumberEmployees(); ok {
+		_spec.AddField(company.FieldNumberEmployees, field.TypeInt32, value)
 	}
 	if value, ok := cuo.mutation.Phone(); ok {
 		_spec.SetField(company.FieldPhone, field.TypeString, value)
@@ -3923,11 +3923,11 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if cuo.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
 	}
-	if value, ok := cuo.mutation.TaxId(); ok {
-		_spec.SetField(company.FieldTaxId, field.TypeString, value)
+	if value, ok := cuo.mutation.TaxID(); ok {
+		_spec.SetField(company.FieldTaxID, field.TypeString, value)
 	}
-	if cuo.mutation.TaxIdCleared() {
-		_spec.ClearField(company.FieldTaxId, field.TypeString)
+	if cuo.mutation.TaxIDCleared() {
+		_spec.ClearField(company.FieldTaxID, field.TypeString)
 	}
 	if value, ok := cuo.mutation.VatRate(); ok {
 		_spec.SetField(company.FieldVatRate, field.TypeFloat64, value)

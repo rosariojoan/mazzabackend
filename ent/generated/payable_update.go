@@ -30,19 +30,19 @@ func (pu *PayableUpdate) Where(ps ...predicate.Payable) *PayableUpdate {
 	return pu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pu *PayableUpdate) SetUpdatedAt(t time.Time) *PayableUpdate {
 	pu.mutation.SetUpdatedAt(t)
 	return pu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pu *PayableUpdate) SetDeletedAt(t time.Time) *PayableUpdate {
 	pu.mutation.SetDeletedAt(t)
 	return pu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableDeletedAt(t *time.Time) *PayableUpdate {
 	if t != nil {
 		pu.SetDeletedAt(*t)
@@ -50,20 +50,20 @@ func (pu *PayableUpdate) SetNillableDeletedAt(t *time.Time) *PayableUpdate {
 	return pu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (pu *PayableUpdate) ClearDeletedAt() *PayableUpdate {
 	pu.mutation.ClearDeletedAt()
 	return pu
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (pu *PayableUpdate) SetEntryGroup(i int) *PayableUpdate {
 	pu.mutation.ResetEntryGroup()
 	pu.mutation.SetEntryGroup(i)
 	return pu
 }
 
-// SetNillableEntryGroup sets the "entryGroup" field if the given value is not nil.
+// SetNillableEntryGroup sets the "entry_group" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableEntryGroup(i *int) *PayableUpdate {
 	if i != nil {
 		pu.SetEntryGroup(*i)
@@ -71,7 +71,7 @@ func (pu *PayableUpdate) SetNillableEntryGroup(i *int) *PayableUpdate {
 	return pu
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (pu *PayableUpdate) AddEntryGroup(i int) *PayableUpdate {
 	pu.mutation.AddEntryGroup(i)
 	return pu
@@ -105,14 +105,14 @@ func (pu *PayableUpdate) SetNillableName(s *string) *PayableUpdate {
 	return pu
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (pu *PayableUpdate) SetAmountInDefault(f float64) *PayableUpdate {
 	pu.mutation.ResetAmountInDefault()
 	pu.mutation.SetAmountInDefault(f)
 	return pu
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableAmountInDefault(f *float64) *PayableUpdate {
 	if f != nil {
 		pu.SetAmountInDefault(*f)
@@ -120,20 +120,20 @@ func (pu *PayableUpdate) SetNillableAmountInDefault(f *float64) *PayableUpdate {
 	return pu
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (pu *PayableUpdate) AddAmountInDefault(f float64) *PayableUpdate {
 	pu.mutation.AddAmountInDefault(f)
 	return pu
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (pu *PayableUpdate) SetOutstandingBalance(f float64) *PayableUpdate {
 	pu.mutation.ResetOutstandingBalance()
 	pu.mutation.SetOutstandingBalance(f)
 	return pu
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableOutstandingBalance(f *float64) *PayableUpdate {
 	if f != nil {
 		pu.SetOutstandingBalance(*f)
@@ -141,20 +141,20 @@ func (pu *PayableUpdate) SetNillableOutstandingBalance(f *float64) *PayableUpdat
 	return pu
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (pu *PayableUpdate) AddOutstandingBalance(f float64) *PayableUpdate {
 	pu.mutation.AddOutstandingBalance(f)
 	return pu
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (pu *PayableUpdate) SetTotalTransaction(f float64) *PayableUpdate {
 	pu.mutation.ResetTotalTransaction()
 	pu.mutation.SetTotalTransaction(f)
 	return pu
 }
 
-// SetNillableTotalTransaction sets the "totalTransaction" field if the given value is not nil.
+// SetNillableTotalTransaction sets the "total_transaction" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableTotalTransaction(f *float64) *PayableUpdate {
 	if f != nil {
 		pu.SetTotalTransaction(*f)
@@ -162,19 +162,19 @@ func (pu *PayableUpdate) SetNillableTotalTransaction(f *float64) *PayableUpdate 
 	return pu
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (pu *PayableUpdate) AddTotalTransaction(f float64) *PayableUpdate {
 	pu.mutation.AddTotalTransaction(f)
 	return pu
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (pu *PayableUpdate) SetDueDate(t time.Time) *PayableUpdate {
 	pu.mutation.SetDueDate(t)
 	return pu
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (pu *PayableUpdate) SetNillableDueDate(t *time.Time) *PayableUpdate {
 	if t != nil {
 		pu.SetDueDate(*t)
@@ -266,22 +266,22 @@ func (pu *PayableUpdate) defaults() {
 func (pu *PayableUpdate) check() error {
 	if v, ok := pu.mutation.EntryGroup(); ok {
 		if err := payable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Payable.entry_group": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.AmountInDefault(); ok {
 		if err := payable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Payable.amount_in_default": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.OutstandingBalance(); ok {
 		if err := payable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.TotalTransaction(); ok {
 		if err := payable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Payable.total_transaction": %w`, err)}
 		}
 	}
 	if v, ok := pu.mutation.Status(); ok {
@@ -406,19 +406,19 @@ type PayableUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (puo *PayableUpdateOne) SetUpdatedAt(t time.Time) *PayableUpdateOne {
 	puo.mutation.SetUpdatedAt(t)
 	return puo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (puo *PayableUpdateOne) SetDeletedAt(t time.Time) *PayableUpdateOne {
 	puo.mutation.SetDeletedAt(t)
 	return puo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableDeletedAt(t *time.Time) *PayableUpdateOne {
 	if t != nil {
 		puo.SetDeletedAt(*t)
@@ -426,20 +426,20 @@ func (puo *PayableUpdateOne) SetNillableDeletedAt(t *time.Time) *PayableUpdateOn
 	return puo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (puo *PayableUpdateOne) ClearDeletedAt() *PayableUpdateOne {
 	puo.mutation.ClearDeletedAt()
 	return puo
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (puo *PayableUpdateOne) SetEntryGroup(i int) *PayableUpdateOne {
 	puo.mutation.ResetEntryGroup()
 	puo.mutation.SetEntryGroup(i)
 	return puo
 }
 
-// SetNillableEntryGroup sets the "entryGroup" field if the given value is not nil.
+// SetNillableEntryGroup sets the "entry_group" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableEntryGroup(i *int) *PayableUpdateOne {
 	if i != nil {
 		puo.SetEntryGroup(*i)
@@ -447,7 +447,7 @@ func (puo *PayableUpdateOne) SetNillableEntryGroup(i *int) *PayableUpdateOne {
 	return puo
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (puo *PayableUpdateOne) AddEntryGroup(i int) *PayableUpdateOne {
 	puo.mutation.AddEntryGroup(i)
 	return puo
@@ -481,14 +481,14 @@ func (puo *PayableUpdateOne) SetNillableName(s *string) *PayableUpdateOne {
 	return puo
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (puo *PayableUpdateOne) SetAmountInDefault(f float64) *PayableUpdateOne {
 	puo.mutation.ResetAmountInDefault()
 	puo.mutation.SetAmountInDefault(f)
 	return puo
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableAmountInDefault(f *float64) *PayableUpdateOne {
 	if f != nil {
 		puo.SetAmountInDefault(*f)
@@ -496,20 +496,20 @@ func (puo *PayableUpdateOne) SetNillableAmountInDefault(f *float64) *PayableUpda
 	return puo
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (puo *PayableUpdateOne) AddAmountInDefault(f float64) *PayableUpdateOne {
 	puo.mutation.AddAmountInDefault(f)
 	return puo
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (puo *PayableUpdateOne) SetOutstandingBalance(f float64) *PayableUpdateOne {
 	puo.mutation.ResetOutstandingBalance()
 	puo.mutation.SetOutstandingBalance(f)
 	return puo
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableOutstandingBalance(f *float64) *PayableUpdateOne {
 	if f != nil {
 		puo.SetOutstandingBalance(*f)
@@ -517,20 +517,20 @@ func (puo *PayableUpdateOne) SetNillableOutstandingBalance(f *float64) *PayableU
 	return puo
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (puo *PayableUpdateOne) AddOutstandingBalance(f float64) *PayableUpdateOne {
 	puo.mutation.AddOutstandingBalance(f)
 	return puo
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (puo *PayableUpdateOne) SetTotalTransaction(f float64) *PayableUpdateOne {
 	puo.mutation.ResetTotalTransaction()
 	puo.mutation.SetTotalTransaction(f)
 	return puo
 }
 
-// SetNillableTotalTransaction sets the "totalTransaction" field if the given value is not nil.
+// SetNillableTotalTransaction sets the "total_transaction" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableTotalTransaction(f *float64) *PayableUpdateOne {
 	if f != nil {
 		puo.SetTotalTransaction(*f)
@@ -538,19 +538,19 @@ func (puo *PayableUpdateOne) SetNillableTotalTransaction(f *float64) *PayableUpd
 	return puo
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (puo *PayableUpdateOne) AddTotalTransaction(f float64) *PayableUpdateOne {
 	puo.mutation.AddTotalTransaction(f)
 	return puo
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (puo *PayableUpdateOne) SetDueDate(t time.Time) *PayableUpdateOne {
 	puo.mutation.SetDueDate(t)
 	return puo
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (puo *PayableUpdateOne) SetNillableDueDate(t *time.Time) *PayableUpdateOne {
 	if t != nil {
 		puo.SetDueDate(*t)
@@ -655,22 +655,22 @@ func (puo *PayableUpdateOne) defaults() {
 func (puo *PayableUpdateOne) check() error {
 	if v, ok := puo.mutation.EntryGroup(); ok {
 		if err := payable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Payable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Payable.entry_group": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.AmountInDefault(); ok {
 		if err := payable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Payable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Payable.amount_in_default": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.OutstandingBalance(); ok {
 		if err := payable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Payable.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.TotalTransaction(); ok {
 		if err := payable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Payable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Payable.total_transaction": %w`, err)}
 		}
 	}
 	if v, ok := puo.mutation.Status(); ok {

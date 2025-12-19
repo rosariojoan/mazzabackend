@@ -19,24 +19,24 @@ type Project struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
-	// PlannedStartDate holds the value of the "plannedStartDate" field.
-	PlannedStartDate time.Time `json:"plannedStartDate,omitempty" plannedStartDate`
-	// ActualStartDate holds the value of the "actualStartDate" field.
-	ActualStartDate *time.Time `json:"actualStartDate,omitempty" actualStartDate`
-	// PlannedEndDate holds the value of the "plannedEndDate" field.
-	PlannedEndDate time.Time `json:"plannedEndDate,omitempty" plannedEndDate`
-	// ActualEndDate holds the value of the "actualEndDate" field.
-	ActualEndDate *time.Time `json:"actualEndDate,omitempty" actualEndDate`
+	// PlannedStartDate holds the value of the "planned_start_date" field.
+	PlannedStartDate time.Time `json:"planned_start_date,omitempty"`
+	// ActualStartDate holds the value of the "actual_start_date" field.
+	ActualStartDate *time.Time `json:"actual_start_date,omitempty"`
+	// PlannedEndDate holds the value of the "planned_end_date" field.
+	PlannedEndDate time.Time `json:"planned_end_date,omitempty"`
+	// ActualEndDate holds the value of the "actual_end_date" field.
+	ActualEndDate *time.Time `json:"actual_end_date,omitempty"`
 	// Progress holds the value of the "progress" field.
 	Progress float64 `json:"progress,omitempty"`
 	// Status holds the value of the "status" field.
@@ -54,8 +54,8 @@ type Project struct {
 type ProjectEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// CreatedBy holds the value of the createdBy edge.
-	CreatedBy *User `json:"createdBy,omitempty"`
+	// CreatedBy holds the value of the created_by edge.
+	CreatedBy *User `json:"created_by,omitempty"`
 	// Leader holds the value of the leader edge.
 	Leader *User `json:"leader,omitempty"`
 	// Tasks holds the value of the tasks edge.
@@ -91,7 +91,7 @@ func (e ProjectEdges) CreatedByOrErr() (*User, error) {
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "createdBy"}
+	return nil, &NotLoadedError{edge: "created_by"}
 }
 
 // LeaderOrErr returns the Leader value or an error if the edge
@@ -165,19 +165,19 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			pr.ID = int(value.Int64)
 		case project.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				pr.CreatedAt = value.Time
 			}
 		case project.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pr.UpdatedAt = value.Time
 			}
 		case project.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pr.DeletedAt = new(time.Time)
 				*pr.DeletedAt = value.Time
@@ -196,26 +196,26 @@ func (pr *Project) assignValues(columns []string, values []any) error {
 			}
 		case project.FieldPlannedStartDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field plannedStartDate", values[i])
+				return fmt.Errorf("unexpected type %T for field planned_start_date", values[i])
 			} else if value.Valid {
 				pr.PlannedStartDate = value.Time
 			}
 		case project.FieldActualStartDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field actualStartDate", values[i])
+				return fmt.Errorf("unexpected type %T for field actual_start_date", values[i])
 			} else if value.Valid {
 				pr.ActualStartDate = new(time.Time)
 				*pr.ActualStartDate = value.Time
 			}
 		case project.FieldPlannedEndDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field plannedEndDate", values[i])
+				return fmt.Errorf("unexpected type %T for field planned_end_date", values[i])
 			} else if value.Valid {
 				pr.PlannedEndDate = value.Time
 			}
 		case project.FieldActualEndDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field actualEndDate", values[i])
+				return fmt.Errorf("unexpected type %T for field actual_end_date", values[i])
 			} else if value.Valid {
 				pr.ActualEndDate = new(time.Time)
 				*pr.ActualEndDate = value.Time
@@ -271,7 +271,7 @@ func (pr *Project) QueryCompany() *CompanyQuery {
 	return NewProjectClient(pr.config).QueryCompany(pr)
 }
 
-// QueryCreatedBy queries the "createdBy" edge of the Project entity.
+// QueryCreatedBy queries the "created_by" edge of the Project entity.
 func (pr *Project) QueryCreatedBy() *UserQuery {
 	return NewProjectClient(pr.config).QueryCreatedBy(pr)
 }
@@ -314,14 +314,14 @@ func (pr *Project) String() string {
 	var builder strings.Builder
 	builder.WriteString("Project(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", pr.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(pr.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(pr.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := pr.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -331,19 +331,19 @@ func (pr *Project) String() string {
 	builder.WriteString("description=")
 	builder.WriteString(pr.Description)
 	builder.WriteString(", ")
-	builder.WriteString("plannedStartDate=")
+	builder.WriteString("planned_start_date=")
 	builder.WriteString(pr.PlannedStartDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := pr.ActualStartDate; v != nil {
-		builder.WriteString("actualStartDate=")
+		builder.WriteString("actual_start_date=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("plannedEndDate=")
+	builder.WriteString("planned_end_date=")
 	builder.WriteString(pr.PlannedEndDate.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := pr.ActualEndDate; v != nil {
-		builder.WriteString("actualEndDate=")
+		builder.WriteString("actual_end_date=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")

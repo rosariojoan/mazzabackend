@@ -302,7 +302,7 @@ func (fq *FileQuery) WithCompany(opts ...func(*CompanyQuery)) *FileQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -325,7 +325,7 @@ func (fq *FileQuery) GroupBy(field string, fields ...string) *FileGroupBy {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.File.Query().

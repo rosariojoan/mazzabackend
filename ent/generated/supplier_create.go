@@ -23,13 +23,13 @@ type SupplierCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (sc *SupplierCreate) SetCreatedAt(t time.Time) *SupplierCreate {
 	sc.mutation.SetCreatedAt(t)
 	return sc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (sc *SupplierCreate) SetNillableCreatedAt(t *time.Time) *SupplierCreate {
 	if t != nil {
 		sc.SetCreatedAt(*t)
@@ -37,13 +37,13 @@ func (sc *SupplierCreate) SetNillableCreatedAt(t *time.Time) *SupplierCreate {
 	return sc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (sc *SupplierCreate) SetUpdatedAt(t time.Time) *SupplierCreate {
 	sc.mutation.SetUpdatedAt(t)
 	return sc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (sc *SupplierCreate) SetNillableUpdatedAt(t *time.Time) *SupplierCreate {
 	if t != nil {
 		sc.SetUpdatedAt(*t)
@@ -51,13 +51,13 @@ func (sc *SupplierCreate) SetNillableUpdatedAt(t *time.Time) *SupplierCreate {
 	return sc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (sc *SupplierCreate) SetDeletedAt(t time.Time) *SupplierCreate {
 	sc.mutation.SetDeletedAt(t)
 	return sc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (sc *SupplierCreate) SetNillableDeletedAt(t *time.Time) *SupplierCreate {
 	if t != nil {
 		sc.SetDeletedAt(*t)
@@ -135,13 +135,13 @@ func (sc *SupplierCreate) SetNillableEmail(s *string) *SupplierCreate {
 	return sc
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (sc *SupplierCreate) SetIsDefault(b bool) *SupplierCreate {
 	sc.mutation.SetIsDefault(b)
 	return sc
 }
 
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
+// SetNillableIsDefault sets the "is_default" field if the given value is not nil.
 func (sc *SupplierCreate) SetNillableIsDefault(b *bool) *SupplierCreate {
 	if b != nil {
 		sc.SetIsDefault(*b)
@@ -169,16 +169,16 @@ func (sc *SupplierCreate) SetNillablePhone(s *string) *SupplierCreate {
 	return sc
 }
 
-// SetTaxId sets the "taxId" field.
-func (sc *SupplierCreate) SetTaxId(s string) *SupplierCreate {
-	sc.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (sc *SupplierCreate) SetTaxID(s string) *SupplierCreate {
+	sc.mutation.SetTaxID(s)
 	return sc
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (sc *SupplierCreate) SetNillableTaxId(s *string) *SupplierCreate {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (sc *SupplierCreate) SetNillableTaxID(s *string) *SupplierCreate {
 	if s != nil {
-		sc.SetTaxId(*s)
+		sc.SetTaxID(*s)
 	}
 	return sc
 }
@@ -303,19 +303,19 @@ func (sc *SupplierCreate) defaults() {
 		v := supplier.DefaultPhone
 		sc.mutation.SetPhone(v)
 	}
-	if _, ok := sc.mutation.TaxId(); !ok {
-		v := supplier.DefaultTaxId
-		sc.mutation.SetTaxId(v)
+	if _, ok := sc.mutation.TaxID(); !ok {
+		v := supplier.DefaultTaxID
+		sc.mutation.SetTaxID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *SupplierCreate) check() error {
 	if _, ok := sc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Supplier.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Supplier.created_at"`)}
 	}
 	if _, ok := sc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Supplier.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Supplier.updated_at"`)}
 	}
 	if _, ok := sc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Supplier.name"`)}
@@ -395,9 +395,9 @@ func (sc *SupplierCreate) createSpec() (*Supplier, *sqlgraph.CreateSpec) {
 		_spec.SetField(supplier.FieldPhone, field.TypeString, value)
 		_node.Phone = value
 	}
-	if value, ok := sc.mutation.TaxId(); ok {
-		_spec.SetField(supplier.FieldTaxId, field.TypeString, value)
-		_node.TaxId = value
+	if value, ok := sc.mutation.TaxID(); ok {
+		_spec.SetField(supplier.FieldTaxID, field.TypeString, value)
+		_node.TaxID = value
 	}
 	if nodes := sc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

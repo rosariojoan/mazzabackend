@@ -22,13 +22,13 @@ type LoanScheduleCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (lsc *LoanScheduleCreate) SetCreatedAt(t time.Time) *LoanScheduleCreate {
 	lsc.mutation.SetCreatedAt(t)
 	return lsc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (lsc *LoanScheduleCreate) SetNillableCreatedAt(t *time.Time) *LoanScheduleCreate {
 	if t != nil {
 		lsc.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (lsc *LoanScheduleCreate) SetNillableCreatedAt(t *time.Time) *LoanScheduleC
 	return lsc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (lsc *LoanScheduleCreate) SetUpdatedAt(t time.Time) *LoanScheduleCreate {
 	lsc.mutation.SetUpdatedAt(t)
 	return lsc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (lsc *LoanScheduleCreate) SetNillableUpdatedAt(t *time.Time) *LoanScheduleCreate {
 	if t != nil {
 		lsc.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (lsc *LoanScheduleCreate) SetNillableUpdatedAt(t *time.Time) *LoanScheduleC
 	return lsc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (lsc *LoanScheduleCreate) SetDeletedAt(t time.Time) *LoanScheduleCreate {
 	lsc.mutation.SetDeletedAt(t)
 	return lsc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (lsc *LoanScheduleCreate) SetNillableDeletedAt(t *time.Time) *LoanScheduleCreate {
 	if t != nil {
 		lsc.SetDeletedAt(*t)
@@ -232,10 +232,10 @@ func (lsc *LoanScheduleCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (lsc *LoanScheduleCreate) check() error {
 	if _, ok := lsc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "LoanSchedule.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "LoanSchedule.created_at"`)}
 	}
 	if _, ok := lsc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "LoanSchedule.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "LoanSchedule.updated_at"`)}
 	}
 	if _, ok := lsc.mutation.Amount(); !ok {
 		return &ValidationError{Name: "amount", err: errors.New(`generated: missing required field "LoanSchedule.amount"`)}

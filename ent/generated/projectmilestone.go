@@ -20,8 +20,8 @@ type ProjectMilestone struct {
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// DueDate holds the value of the "dueDate" field.
-	DueDate time.Time `json:"dueDate,omitempty"`
+	// DueDate holds the value of the "due_date" field.
+	DueDate time.Time `json:"due_date,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProjectMilestoneQuery when eager-loading is set.
 	Edges              ProjectMilestoneEdges `json:"edges"`
@@ -93,7 +93,7 @@ func (pm *ProjectMilestone) assignValues(columns []string, values []any) error {
 			}
 		case projectmilestone.FieldDueDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field dueDate", values[i])
+				return fmt.Errorf("unexpected type %T for field due_date", values[i])
 			} else if value.Valid {
 				pm.DueDate = value.Time
 			}
@@ -148,7 +148,7 @@ func (pm *ProjectMilestone) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(pm.Name)
 	builder.WriteString(", ")
-	builder.WriteString("dueDate=")
+	builder.WriteString("due_date=")
 	builder.WriteString(pm.DueDate.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()

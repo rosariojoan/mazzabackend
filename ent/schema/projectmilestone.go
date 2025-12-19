@@ -18,7 +18,7 @@ type ProjectMilestone struct {
 func (ProjectMilestone) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
-		field.Time("dueDate"),
+		field.Time("due_date"),
 	}
 }
 

@@ -39,7 +39,7 @@ var (
 		PrimaryKey: []*schema.Column{AccountingEntriesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "accounting_entries_companies_accountingEntries",
+				Symbol:     "accounting_entries_companies_accounting_entries",
 				Columns:    []*schema.Column{AccountingEntriesColumns[17]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
@@ -51,7 +51,7 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "accounting_entries_users_accountingEntries",
+				Symbol:     "accounting_entries_users_accounting_entries",
 				Columns:    []*schema.Column{AccountingEntriesColumns[19]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -95,7 +95,7 @@ var (
 		{Name: "logo_url", Type: field.TypeString, Nullable: true},
 		{Name: "logo_storage_uri", Type: field.TypeString, Nullable: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "number_of_employees", Type: field.TypeInt32, Default: 0},
+		{Name: "number_employees", Type: field.TypeInt32, Default: 0},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
 		{Name: "tax_id", Type: field.TypeString, Nullable: true},
 		{Name: "vat_rate", Type: field.TypeFloat64, Default: 0.16},
@@ -110,7 +110,7 @@ var (
 		PrimaryKey: []*schema.Column{CompaniesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "companies_companies_daughterCompanies",
+				Symbol:     "companies_companies_daughter_companies",
 				Columns:    []*schema.Column{CompaniesColumns[24]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -158,13 +158,13 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "company_documents_users_uploadedDocuments",
+				Symbol:     "company_documents_users_uploaded_documents",
 				Columns:    []*schema.Column{CompanyDocumentsColumns[16]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "company_documents_users_approvedDocuments",
+				Symbol:     "company_documents_users_approved_documents",
 				Columns:    []*schema.Column{CompanyDocumentsColumns[17]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -344,7 +344,7 @@ var (
 		PrimaryKey: []*schema.Column{InventoryMovementsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "inventory_movements_companies_inventoryMovements",
+				Symbol:     "inventory_movements_companies_inventory_movements",
 				Columns:    []*schema.Column{InventoryMovementsColumns[11]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
@@ -419,7 +419,7 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "invoices_users_issuedInvoices",
+				Symbol:     "invoices_users_issued_invoices",
 				Columns:    []*schema.Column{InvoicesColumns[39]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -552,13 +552,13 @@ var (
 		PrimaryKey: []*schema.Column{MemberSignupTokensColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "member_signup_tokens_companies_memberSignupTokens",
+				Symbol:     "member_signup_tokens_companies_member_signup_tokens",
 				Columns:    []*schema.Column{MemberSignupTokensColumns[13]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "member_signup_tokens_users_createdMemberSignupTokens",
+				Symbol:     "member_signup_tokens_users_created_member_signup_tokens",
 				Columns:    []*schema.Column{MemberSignupTokensColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -656,13 +656,13 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "projects_users_createdProjects",
+				Symbol:     "projects_users_created_projects",
 				Columns:    []*schema.Column{ProjectsColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "projects_users_leaderedProjects",
+				Symbol:     "projects_users_leadered_projects",
 				Columns:    []*schema.Column{ProjectsColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -707,16 +707,16 @@ var (
 	// ProjectTasksColumns holds the columns for the "project_tasks" table.
 	ProjectTasksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "created_at", Type: field.TypeTime, Nullable: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 		{Name: "assignee_name", Type: field.TypeString},
-		{Name: "location", Type: field.TypeString, Nullable: true},
-		{Name: "due_date", Type: field.TypeTime},
-		{Name: "planned_start_date", Type: field.TypeTime},
-		{Name: "actual_start_date", Type: field.TypeTime, Nullable: true},
-		{Name: "planned_end_date", Type: field.TypeTime, Nullable: true},
-		{Name: "actual_end_date", Type: field.TypeTime, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "due_date", Type: field.TypeTime},
+		{Name: "end_date", Type: field.TypeTime, Nullable: true},
+		{Name: "location", Type: field.TypeString, Nullable: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "start_date", Type: field.TypeTime},
 		{Name: "status", Type: field.TypeEnum, Enums: []string{"pending", "inProgress", "completed"}},
 		{Name: "project_tasks", Type: field.TypeInt},
 		{Name: "user_assigned_project_tasks", Type: field.TypeInt, Nullable: true},
@@ -735,13 +735,13 @@ var (
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "project_tasks_users_assignedProjectTasks",
+				Symbol:     "project_tasks_users_assigned_project_tasks",
 				Columns:    []*schema.Column{ProjectTasksColumns[13]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "project_tasks_users_createdTasks",
+				Symbol:     "project_tasks_users_created_tasks",
 				Columns:    []*schema.Column{ProjectTasksColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -751,7 +751,7 @@ var (
 			{
 				Name:    "projecttask_name_project_tasks",
 				Unique:  true,
-				Columns: []*schema.Column{ProjectTasksColumns[2], ProjectTasksColumns[12]},
+				Columns: []*schema.Column{ProjectTasksColumns[9], ProjectTasksColumns[12]},
 			},
 		},
 	}
@@ -942,13 +942,13 @@ var (
 		PrimaryKey: []*schema.Column{UserRolesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "user_roles_companies_availableRoles",
+				Symbol:     "user_roles_companies_available_roles",
 				Columns:    []*schema.Column{UserRolesColumns[3]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "user_roles_users_assignedRoles",
+				Symbol:     "user_roles_users_assigned_roles",
 				Columns:    []*schema.Column{UserRolesColumns[4]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
@@ -982,31 +982,31 @@ var (
 		PrimaryKey: []*schema.Column{WorkshiftsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "workshifts_companies_workShifts",
+				Symbol:     "workshifts_companies_work_shifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[12]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "workshifts_project_tasks_workShifts",
+				Symbol:     "workshifts_project_tasks_work_shifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[13]},
 				RefColumns: []*schema.Column{ProjectTasksColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "workshifts_users_approvedWorkShifts",
+				Symbol:     "workshifts_users_approved_work_shifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[14]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "workshifts_users_workShifts",
+				Symbol:     "workshifts_users_work_shifts",
 				Columns:    []*schema.Column{WorkshiftsColumns[15]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:     "workshifts_workshifts_editRequest",
+				Symbol:     "workshifts_workshifts_edit_request",
 				Columns:    []*schema.Column{WorkshiftsColumns[16]},
 				RefColumns: []*schema.Column{WorkshiftsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -1063,25 +1063,25 @@ var (
 			},
 		},
 	}
-	// UserParticipatedProjectTasksColumns holds the columns for the "user_participatedProjectTasks" table.
+	// UserParticipatedProjectTasksColumns holds the columns for the "user_participated_project_tasks" table.
 	UserParticipatedProjectTasksColumns = []*schema.Column{
 		{Name: "user_id", Type: field.TypeInt},
 		{Name: "project_task_id", Type: field.TypeInt},
 	}
-	// UserParticipatedProjectTasksTable holds the schema information for the "user_participatedProjectTasks" table.
+	// UserParticipatedProjectTasksTable holds the schema information for the "user_participated_project_tasks" table.
 	UserParticipatedProjectTasksTable = &schema.Table{
-		Name:       "user_participatedProjectTasks",
+		Name:       "user_participated_project_tasks",
 		Columns:    UserParticipatedProjectTasksColumns,
 		PrimaryKey: []*schema.Column{UserParticipatedProjectTasksColumns[0], UserParticipatedProjectTasksColumns[1]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "user_participatedProjectTasks_user_id",
+				Symbol:     "user_participated_project_tasks_user_id",
 				Columns:    []*schema.Column{UserParticipatedProjectTasksColumns[0]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "user_participatedProjectTasks_project_task_id",
+				Symbol:     "user_participated_project_tasks_project_task_id",
 				Columns:    []*schema.Column{UserParticipatedProjectTasksColumns[1]},
 				RefColumns: []*schema.Column{ProjectTasksColumns[0]},
 				OnDelete:   schema.Cascade,

@@ -17,11 +17,11 @@ const (
 	Label = "inventory"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
@@ -31,9 +31,9 @@ const (
 	FieldQuantity = "quantity"
 	// FieldUnit holds the string denoting the unit field in the database.
 	FieldUnit = "unit"
-	// FieldMinimumLevel holds the string denoting the minimumlevel field in the database.
+	// FieldMinimumLevel holds the string denoting the minimum_level field in the database.
 	FieldMinimumLevel = "minimum_level"
-	// FieldCurrentValue holds the string denoting the currentvalue field in the database.
+	// FieldCurrentValue holds the string denoting the current_value field in the database.
 	FieldCurrentValue = "current_value"
 	// FieldNotes holds the string denoting the notes field in the database.
 	FieldNotes = "notes"
@@ -96,19 +96,19 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// QuantityValidator is a validator for the "quantity" field. It is called by the builders before save.
 	QuantityValidator func(float64) error
-	// MinimumLevelValidator is a validator for the "minimumLevel" field. It is called by the builders before save.
+	// MinimumLevelValidator is a validator for the "minimum_level" field. It is called by the builders before save.
 	MinimumLevelValidator func(float64) error
-	// CurrentValueValidator is a validator for the "currentValue" field. It is called by the builders before save.
+	// CurrentValueValidator is a validator for the "current_value" field. It is called by the builders before save.
 	CurrentValueValidator func(float64) error
 	// NotesValidator is a validator for the "notes" field. It is called by the builders before save.
 	NotesValidator func(string) error
@@ -149,17 +149,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -184,12 +184,12 @@ func ByUnit(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUnit, opts...).ToFunc()
 }
 
-// ByMinimumLevel orders the results by the minimumLevel field.
+// ByMinimumLevel orders the results by the minimum_level field.
 func ByMinimumLevel(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMinimumLevel, opts...).ToFunc()
 }
 
-// ByCurrentValue orders the results by the currentValue field.
+// ByCurrentValue orders the results by the current_value field.
 func ByCurrentValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCurrentValue, opts...).ToFunc()
 }

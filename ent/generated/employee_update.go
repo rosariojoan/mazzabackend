@@ -31,19 +31,19 @@ func (eu *EmployeeUpdate) Where(ps ...predicate.Employee) *EmployeeUpdate {
 	return eu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (eu *EmployeeUpdate) SetUpdatedAt(t time.Time) *EmployeeUpdate {
 	eu.mutation.SetUpdatedAt(t)
 	return eu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (eu *EmployeeUpdate) SetDeletedAt(t time.Time) *EmployeeUpdate {
 	eu.mutation.SetDeletedAt(t)
 	return eu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (eu *EmployeeUpdate) SetNillableDeletedAt(t *time.Time) *EmployeeUpdate {
 	if t != nil {
 		eu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (eu *EmployeeUpdate) SetNillableDeletedAt(t *time.Time) *EmployeeUpdate {
 	return eu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (eu *EmployeeUpdate) ClearDeletedAt() *EmployeeUpdate {
 	eu.mutation.ClearDeletedAt()
 	return eu
@@ -199,13 +199,13 @@ func (eu *EmployeeUpdate) ClearAvatar() *EmployeeUpdate {
 	return eu
 }
 
-// SetHireDate sets the "hireDate" field.
+// SetHireDate sets the "hire_date" field.
 func (eu *EmployeeUpdate) SetHireDate(t time.Time) *EmployeeUpdate {
 	eu.mutation.SetHireDate(t)
 	return eu
 }
 
-// SetNillableHireDate sets the "hireDate" field if the given value is not nil.
+// SetNillableHireDate sets the "hire_date" field if the given value is not nil.
 func (eu *EmployeeUpdate) SetNillableHireDate(t *time.Time) *EmployeeUpdate {
 	if t != nil {
 		eu.SetHireDate(*t)
@@ -213,14 +213,14 @@ func (eu *EmployeeUpdate) SetNillableHireDate(t *time.Time) *EmployeeUpdate {
 	return eu
 }
 
-// SetMonthlySalary sets the "monthlySalary" field.
+// SetMonthlySalary sets the "monthly_salary" field.
 func (eu *EmployeeUpdate) SetMonthlySalary(i int) *EmployeeUpdate {
 	eu.mutation.ResetMonthlySalary()
 	eu.mutation.SetMonthlySalary(i)
 	return eu
 }
 
-// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+// SetNillableMonthlySalary sets the "monthly_salary" field if the given value is not nil.
 func (eu *EmployeeUpdate) SetNillableMonthlySalary(i *int) *EmployeeUpdate {
 	if i != nil {
 		eu.SetMonthlySalary(*i)
@@ -228,7 +228,7 @@ func (eu *EmployeeUpdate) SetNillableMonthlySalary(i *int) *EmployeeUpdate {
 	return eu
 }
 
-// AddMonthlySalary adds i to the "monthlySalary" field.
+// AddMonthlySalary adds i to the "monthly_salary" field.
 func (eu *EmployeeUpdate) AddMonthlySalary(i int) *EmployeeUpdate {
 	eu.mutation.AddMonthlySalary(i)
 	return eu
@@ -254,14 +254,14 @@ func (eu *EmployeeUpdate) ClearStatus() *EmployeeUpdate {
 	return eu
 }
 
-// SetPerformaceScore sets the "performaceScore" field.
+// SetPerformaceScore sets the "performace_score" field.
 func (eu *EmployeeUpdate) SetPerformaceScore(f float64) *EmployeeUpdate {
 	eu.mutation.ResetPerformaceScore()
 	eu.mutation.SetPerformaceScore(f)
 	return eu
 }
 
-// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+// SetNillablePerformaceScore sets the "performace_score" field if the given value is not nil.
 func (eu *EmployeeUpdate) SetNillablePerformaceScore(f *float64) *EmployeeUpdate {
 	if f != nil {
 		eu.SetPerformaceScore(*f)
@@ -269,13 +269,13 @@ func (eu *EmployeeUpdate) SetNillablePerformaceScore(f *float64) *EmployeeUpdate
 	return eu
 }
 
-// AddPerformaceScore adds f to the "performaceScore" field.
+// AddPerformaceScore adds f to the "performace_score" field.
 func (eu *EmployeeUpdate) AddPerformaceScore(f float64) *EmployeeUpdate {
 	eu.mutation.AddPerformaceScore(f)
 	return eu
 }
 
-// ClearPerformaceScore clears the value of the "performaceScore" field.
+// ClearPerformaceScore clears the value of the "performace_score" field.
 func (eu *EmployeeUpdate) ClearPerformaceScore() *EmployeeUpdate {
 	eu.mutation.ClearPerformaceScore()
 	return eu
@@ -447,7 +447,7 @@ func (eu *EmployeeUpdate) check() error {
 	}
 	if v, ok := eu.mutation.MonthlySalary(); ok {
 		if err := employee.MonthlySalaryValidator(v); err != nil {
-			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+			return &ValidationError{Name: "monthly_salary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthly_salary": %w`, err)}
 		}
 	}
 	if v, ok := eu.mutation.Status(); ok {
@@ -457,7 +457,7 @@ func (eu *EmployeeUpdate) check() error {
 	}
 	if v, ok := eu.mutation.PerformaceScore(); ok {
 		if err := employee.PerformaceScoreValidator(v); err != nil {
-			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+			return &ValidationError{Name: "performace_score", err: fmt.Errorf(`generated: validator failed for field "Employee.performace_score": %w`, err)}
 		}
 	}
 	return nil
@@ -707,19 +707,19 @@ type EmployeeUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (euo *EmployeeUpdateOne) SetUpdatedAt(t time.Time) *EmployeeUpdateOne {
 	euo.mutation.SetUpdatedAt(t)
 	return euo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (euo *EmployeeUpdateOne) SetDeletedAt(t time.Time) *EmployeeUpdateOne {
 	euo.mutation.SetDeletedAt(t)
 	return euo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (euo *EmployeeUpdateOne) SetNillableDeletedAt(t *time.Time) *EmployeeUpdateOne {
 	if t != nil {
 		euo.SetDeletedAt(*t)
@@ -727,7 +727,7 @@ func (euo *EmployeeUpdateOne) SetNillableDeletedAt(t *time.Time) *EmployeeUpdate
 	return euo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (euo *EmployeeUpdateOne) ClearDeletedAt() *EmployeeUpdateOne {
 	euo.mutation.ClearDeletedAt()
 	return euo
@@ -875,13 +875,13 @@ func (euo *EmployeeUpdateOne) ClearAvatar() *EmployeeUpdateOne {
 	return euo
 }
 
-// SetHireDate sets the "hireDate" field.
+// SetHireDate sets the "hire_date" field.
 func (euo *EmployeeUpdateOne) SetHireDate(t time.Time) *EmployeeUpdateOne {
 	euo.mutation.SetHireDate(t)
 	return euo
 }
 
-// SetNillableHireDate sets the "hireDate" field if the given value is not nil.
+// SetNillableHireDate sets the "hire_date" field if the given value is not nil.
 func (euo *EmployeeUpdateOne) SetNillableHireDate(t *time.Time) *EmployeeUpdateOne {
 	if t != nil {
 		euo.SetHireDate(*t)
@@ -889,14 +889,14 @@ func (euo *EmployeeUpdateOne) SetNillableHireDate(t *time.Time) *EmployeeUpdateO
 	return euo
 }
 
-// SetMonthlySalary sets the "monthlySalary" field.
+// SetMonthlySalary sets the "monthly_salary" field.
 func (euo *EmployeeUpdateOne) SetMonthlySalary(i int) *EmployeeUpdateOne {
 	euo.mutation.ResetMonthlySalary()
 	euo.mutation.SetMonthlySalary(i)
 	return euo
 }
 
-// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+// SetNillableMonthlySalary sets the "monthly_salary" field if the given value is not nil.
 func (euo *EmployeeUpdateOne) SetNillableMonthlySalary(i *int) *EmployeeUpdateOne {
 	if i != nil {
 		euo.SetMonthlySalary(*i)
@@ -904,7 +904,7 @@ func (euo *EmployeeUpdateOne) SetNillableMonthlySalary(i *int) *EmployeeUpdateOn
 	return euo
 }
 
-// AddMonthlySalary adds i to the "monthlySalary" field.
+// AddMonthlySalary adds i to the "monthly_salary" field.
 func (euo *EmployeeUpdateOne) AddMonthlySalary(i int) *EmployeeUpdateOne {
 	euo.mutation.AddMonthlySalary(i)
 	return euo
@@ -930,14 +930,14 @@ func (euo *EmployeeUpdateOne) ClearStatus() *EmployeeUpdateOne {
 	return euo
 }
 
-// SetPerformaceScore sets the "performaceScore" field.
+// SetPerformaceScore sets the "performace_score" field.
 func (euo *EmployeeUpdateOne) SetPerformaceScore(f float64) *EmployeeUpdateOne {
 	euo.mutation.ResetPerformaceScore()
 	euo.mutation.SetPerformaceScore(f)
 	return euo
 }
 
-// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+// SetNillablePerformaceScore sets the "performace_score" field if the given value is not nil.
 func (euo *EmployeeUpdateOne) SetNillablePerformaceScore(f *float64) *EmployeeUpdateOne {
 	if f != nil {
 		euo.SetPerformaceScore(*f)
@@ -945,13 +945,13 @@ func (euo *EmployeeUpdateOne) SetNillablePerformaceScore(f *float64) *EmployeeUp
 	return euo
 }
 
-// AddPerformaceScore adds f to the "performaceScore" field.
+// AddPerformaceScore adds f to the "performace_score" field.
 func (euo *EmployeeUpdateOne) AddPerformaceScore(f float64) *EmployeeUpdateOne {
 	euo.mutation.AddPerformaceScore(f)
 	return euo
 }
 
-// ClearPerformaceScore clears the value of the "performaceScore" field.
+// ClearPerformaceScore clears the value of the "performace_score" field.
 func (euo *EmployeeUpdateOne) ClearPerformaceScore() *EmployeeUpdateOne {
 	euo.mutation.ClearPerformaceScore()
 	return euo
@@ -1136,7 +1136,7 @@ func (euo *EmployeeUpdateOne) check() error {
 	}
 	if v, ok := euo.mutation.MonthlySalary(); ok {
 		if err := employee.MonthlySalaryValidator(v); err != nil {
-			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+			return &ValidationError{Name: "monthly_salary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthly_salary": %w`, err)}
 		}
 	}
 	if v, ok := euo.mutation.Status(); ok {
@@ -1146,7 +1146,7 @@ func (euo *EmployeeUpdateOne) check() error {
 	}
 	if v, ok := euo.mutation.PerformaceScore(); ok {
 		if err := employee.PerformaceScoreValidator(v); err != nil {
-			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+			return &ValidationError{Name: "performace_score", err: fmt.Errorf(`generated: validator failed for field "Employee.performace_score": %w`, err)}
 		}
 	}
 	return nil

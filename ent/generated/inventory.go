@@ -18,12 +18,12 @@ type Inventory struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Category holds the value of the "category" field.
@@ -32,10 +32,10 @@ type Inventory struct {
 	Quantity float64 `json:"quantity,omitempty"`
 	// Unit of measurement. E.g. litre, unit, gram
 	Unit string `json:"unit,omitempty"`
-	// MinimumLevel holds the value of the "minimumLevel" field.
-	MinimumLevel float64 `json:"minimumLevel,omitempty"`
-	// CurrentValue holds the value of the "currentValue" field.
-	CurrentValue float64 `json:"currentValue,omitempty"`
+	// MinimumLevel holds the value of the "minimum_level" field.
+	MinimumLevel float64 `json:"minimum_level,omitempty"`
+	// CurrentValue holds the value of the "current_value" field.
+	CurrentValue float64 `json:"current_value,omitempty"`
 	// Notes holds the value of the "notes" field.
 	Notes string `json:"notes,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -118,19 +118,19 @@ func (i *Inventory) assignValues(columns []string, values []any) error {
 			i.ID = int(value.Int64)
 		case inventory.FieldCreatedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[j])
+				return fmt.Errorf("unexpected type %T for field created_at", values[j])
 			} else if value.Valid {
 				i.CreatedAt = value.Time
 			}
 		case inventory.FieldUpdatedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[j])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[j])
 			} else if value.Valid {
 				i.UpdatedAt = value.Time
 			}
 		case inventory.FieldDeletedAt:
 			if value, ok := values[j].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[j])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[j])
 			} else if value.Valid {
 				i.DeletedAt = new(time.Time)
 				*i.DeletedAt = value.Time
@@ -161,13 +161,13 @@ func (i *Inventory) assignValues(columns []string, values []any) error {
 			}
 		case inventory.FieldMinimumLevel:
 			if value, ok := values[j].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field minimumLevel", values[j])
+				return fmt.Errorf("unexpected type %T for field minimum_level", values[j])
 			} else if value.Valid {
 				i.MinimumLevel = value.Float64
 			}
 		case inventory.FieldCurrentValue:
 			if value, ok := values[j].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field currentValue", values[j])
+				return fmt.Errorf("unexpected type %T for field current_value", values[j])
 			} else if value.Valid {
 				i.CurrentValue = value.Float64
 			}
@@ -230,14 +230,14 @@ func (i *Inventory) String() string {
 	var builder strings.Builder
 	builder.WriteString("Inventory(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", i.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(i.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(i.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := i.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -253,10 +253,10 @@ func (i *Inventory) String() string {
 	builder.WriteString("unit=")
 	builder.WriteString(i.Unit)
 	builder.WriteString(", ")
-	builder.WriteString("minimumLevel=")
+	builder.WriteString("minimum_level=")
 	builder.WriteString(fmt.Sprintf("%v", i.MinimumLevel))
 	builder.WriteString(", ")
-	builder.WriteString("currentValue=")
+	builder.WriteString("current_value=")
 	builder.WriteString(fmt.Sprintf("%v", i.CurrentValue))
 	builder.WriteString(", ")
 	builder.WriteString("notes=")

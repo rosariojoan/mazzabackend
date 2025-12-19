@@ -91,7 +91,7 @@ func getMaroto(details *details) core.Maroto {
 	mrt := maroto.New(cfg)
 	doc := maroto.NewMetricsDecorator(mrt)
 
-	err := doc.RegisterHeader(getPageHeader(details.Company.Name, *details.Company.TaxId))
+	err := doc.RegisterHeader(getPageHeader(details.Company.Name, *details.Company.TaxID))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -137,7 +137,7 @@ func getPageFooter() core.Row {
 }
 
 func getCompanyDetails(company *ent.Company) core.Row {
-	taxID := fmt.Sprint("NUIT: ", company.TaxId)
+	taxID := fmt.Sprint("NUIT: ", company.TaxID)
 	city := fmt.Sprint(company.City, ", ", company.Country)
 	phone := fmt.Sprint("Tel: ", utils.GetValue(company.Phone, "--"))
 	email := fmt.Sprint("Email: ", utils.GetValue(company.Email, "--"))

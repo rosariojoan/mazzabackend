@@ -17,21 +17,21 @@ const (
 	Label = "user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
-	// FieldIsDemoUser holds the string denoting the isdemouser field in the database.
+	// FieldIsDemoUser holds the string denoting the is_demo_user field in the database.
 	FieldIsDemoUser = "is_demo_user"
-	// FieldFirebaseUID holds the string denoting the firebaseuid field in the database.
+	// FieldFirebaseUID holds the string denoting the firebase_uid field in the database.
 	FieldFirebaseUID = "firebase_uid"
-	// FieldFcmToken holds the string denoting the fcmtoken field in the database.
+	// FieldFcmToken holds the string denoting the fcm_token field in the database.
 	FieldFcmToken = "fcm_token"
-	// FieldExpoPushToken holds the string denoting the expopushtoken field in the database.
+	// FieldExpoPushToken holds the string denoting the expo_push_token field in the database.
 	FieldExpoPushToken = "expo_push_token"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
@@ -41,7 +41,7 @@ const (
 	FieldAddress = "address"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
-	// FieldPhotoURL holds the string denoting the photourl field in the database.
+	// FieldPhotoURL holds the string denoting the photo_url field in the database.
 	FieldPhotoURL = "photo_url"
 	// FieldDepartment holds the string denoting the department field in the database.
 	FieldDepartment = "department"
@@ -49,68 +49,68 @@ const (
 	FieldPhone = "phone"
 	// FieldBirthdate holds the string denoting the birthdate field in the database.
 	FieldBirthdate = "birthdate"
-	// FieldLastLogin holds the string denoting the lastlogin field in the database.
+	// FieldLastLogin holds the string denoting the last_login field in the database.
 	FieldLastLogin = "last_login"
 	// FieldGender holds the string denoting the gender field in the database.
 	FieldGender = "gender"
 	// FieldActive holds the string denoting the active field in the database.
 	FieldActive = "active"
-	// EdgeAccountingEntries holds the string denoting the accountingentries edge name in mutations.
-	EdgeAccountingEntries = "accountingEntries"
+	// EdgeAccountingEntries holds the string denoting the accounting_entries edge name in mutations.
+	EdgeAccountingEntries = "accounting_entries"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
-	// EdgeAssignedRoles holds the string denoting the assignedroles edge name in mutations.
-	EdgeAssignedRoles = "assignedRoles"
+	// EdgeAssignedRoles holds the string denoting the assigned_roles edge name in mutations.
+	EdgeAssignedRoles = "assigned_roles"
 	// EdgeSubordinates holds the string denoting the subordinates edge name in mutations.
 	EdgeSubordinates = "subordinates"
 	// EdgeLeader holds the string denoting the leader edge name in mutations.
 	EdgeLeader = "leader"
-	// EdgeCreatedMemberSignupTokens holds the string denoting the createdmembersignuptokens edge name in mutations.
-	EdgeCreatedMemberSignupTokens = "createdMemberSignupTokens"
+	// EdgeCreatedMemberSignupTokens holds the string denoting the created_member_signup_tokens edge name in mutations.
+	EdgeCreatedMemberSignupTokens = "created_member_signup_tokens"
 	// EdgeEmployee holds the string denoting the employee edge name in mutations.
 	EdgeEmployee = "employee"
-	// EdgeIssuedInvoices holds the string denoting the issuedinvoices edge name in mutations.
-	EdgeIssuedInvoices = "issuedInvoices"
-	// EdgeCreatedProjects holds the string denoting the createdprojects edge name in mutations.
-	EdgeCreatedProjects = "createdProjects"
-	// EdgeLeaderedProjects holds the string denoting the leaderedprojects edge name in mutations.
-	EdgeLeaderedProjects = "leaderedProjects"
-	// EdgeAssignedProjectTasks holds the string denoting the assignedprojecttasks edge name in mutations.
-	EdgeAssignedProjectTasks = "assignedProjectTasks"
-	// EdgeParticipatedProjectTasks holds the string denoting the participatedprojecttasks edge name in mutations.
-	EdgeParticipatedProjectTasks = "participatedProjectTasks"
-	// EdgeCreatedTasks holds the string denoting the createdtasks edge name in mutations.
-	EdgeCreatedTasks = "createdTasks"
+	// EdgeIssuedInvoices holds the string denoting the issued_invoices edge name in mutations.
+	EdgeIssuedInvoices = "issued_invoices"
+	// EdgeCreatedProjects holds the string denoting the created_projects edge name in mutations.
+	EdgeCreatedProjects = "created_projects"
+	// EdgeLeaderedProjects holds the string denoting the leadered_projects edge name in mutations.
+	EdgeLeaderedProjects = "leadered_projects"
+	// EdgeAssignedProjectTasks holds the string denoting the assigned_project_tasks edge name in mutations.
+	EdgeAssignedProjectTasks = "assigned_project_tasks"
+	// EdgeParticipatedProjectTasks holds the string denoting the participated_project_tasks edge name in mutations.
+	EdgeParticipatedProjectTasks = "participated_project_tasks"
+	// EdgeCreatedTasks holds the string denoting the created_tasks edge name in mutations.
+	EdgeCreatedTasks = "created_tasks"
 	// EdgeTokens holds the string denoting the tokens edge name in mutations.
 	EdgeTokens = "tokens"
-	// EdgeApprovedWorkShifts holds the string denoting the approvedworkshifts edge name in mutations.
-	EdgeApprovedWorkShifts = "approvedWorkShifts"
-	// EdgeWorkShifts holds the string denoting the workshifts edge name in mutations.
-	EdgeWorkShifts = "workShifts"
-	// EdgeUploadedDocuments holds the string denoting the uploadeddocuments edge name in mutations.
-	EdgeUploadedDocuments = "uploadedDocuments"
-	// EdgeApprovedDocuments holds the string denoting the approveddocuments edge name in mutations.
-	EdgeApprovedDocuments = "approvedDocuments"
+	// EdgeApprovedWorkShifts holds the string denoting the approved_work_shifts edge name in mutations.
+	EdgeApprovedWorkShifts = "approved_work_shifts"
+	// EdgeWorkShifts holds the string denoting the work_shifts edge name in mutations.
+	EdgeWorkShifts = "work_shifts"
+	// EdgeUploadedDocuments holds the string denoting the uploaded_documents edge name in mutations.
+	EdgeUploadedDocuments = "uploaded_documents"
+	// EdgeApprovedDocuments holds the string denoting the approved_documents edge name in mutations.
+	EdgeApprovedDocuments = "approved_documents"
 	// Table holds the table name of the user in the database.
 	Table = "users"
-	// AccountingEntriesTable is the table that holds the accountingEntries relation/edge.
+	// AccountingEntriesTable is the table that holds the accounting_entries relation/edge.
 	AccountingEntriesTable = "accounting_entries"
 	// AccountingEntriesInverseTable is the table name for the AccountingEntry entity.
 	// It exists in this package in order to avoid circular dependency with the "accountingentry" package.
 	AccountingEntriesInverseTable = "accounting_entries"
-	// AccountingEntriesColumn is the table column denoting the accountingEntries relation/edge.
+	// AccountingEntriesColumn is the table column denoting the accounting_entries relation/edge.
 	AccountingEntriesColumn = "user_accounting_entries"
 	// CompanyTable is the table that holds the company relation/edge. The primary key declared below.
 	CompanyTable = "company_users"
 	// CompanyInverseTable is the table name for the Company entity.
 	// It exists in this package in order to avoid circular dependency with the "company" package.
 	CompanyInverseTable = "companies"
-	// AssignedRolesTable is the table that holds the assignedRoles relation/edge.
+	// AssignedRolesTable is the table that holds the assigned_roles relation/edge.
 	AssignedRolesTable = "user_roles"
 	// AssignedRolesInverseTable is the table name for the UserRole entity.
 	// It exists in this package in order to avoid circular dependency with the "userrole" package.
 	AssignedRolesInverseTable = "user_roles"
-	// AssignedRolesColumn is the table column denoting the assignedRoles relation/edge.
+	// AssignedRolesColumn is the table column denoting the assigned_roles relation/edge.
 	AssignedRolesColumn = "user_assigned_roles"
 	// SubordinatesTable is the table that holds the subordinates relation/edge.
 	SubordinatesTable = "users"
@@ -120,12 +120,12 @@ const (
 	LeaderTable = "users"
 	// LeaderColumn is the table column denoting the leader relation/edge.
 	LeaderColumn = "user_subordinates"
-	// CreatedMemberSignupTokensTable is the table that holds the createdMemberSignupTokens relation/edge.
+	// CreatedMemberSignupTokensTable is the table that holds the created_member_signup_tokens relation/edge.
 	CreatedMemberSignupTokensTable = "member_signup_tokens"
 	// CreatedMemberSignupTokensInverseTable is the table name for the MemberSignupToken entity.
 	// It exists in this package in order to avoid circular dependency with the "membersignuptoken" package.
 	CreatedMemberSignupTokensInverseTable = "member_signup_tokens"
-	// CreatedMemberSignupTokensColumn is the table column denoting the createdMemberSignupTokens relation/edge.
+	// CreatedMemberSignupTokensColumn is the table column denoting the created_member_signup_tokens relation/edge.
 	CreatedMemberSignupTokensColumn = "user_created_member_signup_tokens"
 	// EmployeeTable is the table that holds the employee relation/edge.
 	EmployeeTable = "employees"
@@ -134,45 +134,45 @@ const (
 	EmployeeInverseTable = "employees"
 	// EmployeeColumn is the table column denoting the employee relation/edge.
 	EmployeeColumn = "user_employee"
-	// IssuedInvoicesTable is the table that holds the issuedInvoices relation/edge.
+	// IssuedInvoicesTable is the table that holds the issued_invoices relation/edge.
 	IssuedInvoicesTable = "invoices"
 	// IssuedInvoicesInverseTable is the table name for the Invoice entity.
 	// It exists in this package in order to avoid circular dependency with the "invoice" package.
 	IssuedInvoicesInverseTable = "invoices"
-	// IssuedInvoicesColumn is the table column denoting the issuedInvoices relation/edge.
+	// IssuedInvoicesColumn is the table column denoting the issued_invoices relation/edge.
 	IssuedInvoicesColumn = "user_issued_invoices"
-	// CreatedProjectsTable is the table that holds the createdProjects relation/edge.
+	// CreatedProjectsTable is the table that holds the created_projects relation/edge.
 	CreatedProjectsTable = "projects"
 	// CreatedProjectsInverseTable is the table name for the Project entity.
 	// It exists in this package in order to avoid circular dependency with the "project" package.
 	CreatedProjectsInverseTable = "projects"
-	// CreatedProjectsColumn is the table column denoting the createdProjects relation/edge.
+	// CreatedProjectsColumn is the table column denoting the created_projects relation/edge.
 	CreatedProjectsColumn = "user_created_projects"
-	// LeaderedProjectsTable is the table that holds the leaderedProjects relation/edge.
+	// LeaderedProjectsTable is the table that holds the leadered_projects relation/edge.
 	LeaderedProjectsTable = "projects"
 	// LeaderedProjectsInverseTable is the table name for the Project entity.
 	// It exists in this package in order to avoid circular dependency with the "project" package.
 	LeaderedProjectsInverseTable = "projects"
-	// LeaderedProjectsColumn is the table column denoting the leaderedProjects relation/edge.
+	// LeaderedProjectsColumn is the table column denoting the leadered_projects relation/edge.
 	LeaderedProjectsColumn = "user_leadered_projects"
-	// AssignedProjectTasksTable is the table that holds the assignedProjectTasks relation/edge.
+	// AssignedProjectTasksTable is the table that holds the assigned_project_tasks relation/edge.
 	AssignedProjectTasksTable = "project_tasks"
 	// AssignedProjectTasksInverseTable is the table name for the ProjectTask entity.
 	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
 	AssignedProjectTasksInverseTable = "project_tasks"
-	// AssignedProjectTasksColumn is the table column denoting the assignedProjectTasks relation/edge.
+	// AssignedProjectTasksColumn is the table column denoting the assigned_project_tasks relation/edge.
 	AssignedProjectTasksColumn = "user_assigned_project_tasks"
-	// ParticipatedProjectTasksTable is the table that holds the participatedProjectTasks relation/edge. The primary key declared below.
-	ParticipatedProjectTasksTable = "user_participatedProjectTasks"
+	// ParticipatedProjectTasksTable is the table that holds the participated_project_tasks relation/edge. The primary key declared below.
+	ParticipatedProjectTasksTable = "user_participated_project_tasks"
 	// ParticipatedProjectTasksInverseTable is the table name for the ProjectTask entity.
 	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
 	ParticipatedProjectTasksInverseTable = "project_tasks"
-	// CreatedTasksTable is the table that holds the createdTasks relation/edge.
+	// CreatedTasksTable is the table that holds the created_tasks relation/edge.
 	CreatedTasksTable = "project_tasks"
 	// CreatedTasksInverseTable is the table name for the ProjectTask entity.
 	// It exists in this package in order to avoid circular dependency with the "projecttask" package.
 	CreatedTasksInverseTable = "project_tasks"
-	// CreatedTasksColumn is the table column denoting the createdTasks relation/edge.
+	// CreatedTasksColumn is the table column denoting the created_tasks relation/edge.
 	CreatedTasksColumn = "user_created_tasks"
 	// TokensTable is the table that holds the tokens relation/edge.
 	TokensTable = "tokens"
@@ -181,33 +181,33 @@ const (
 	TokensInverseTable = "tokens"
 	// TokensColumn is the table column denoting the tokens relation/edge.
 	TokensColumn = "user_tokens"
-	// ApprovedWorkShiftsTable is the table that holds the approvedWorkShifts relation/edge.
+	// ApprovedWorkShiftsTable is the table that holds the approved_work_shifts relation/edge.
 	ApprovedWorkShiftsTable = "workshifts"
 	// ApprovedWorkShiftsInverseTable is the table name for the Workshift entity.
 	// It exists in this package in order to avoid circular dependency with the "workshift" package.
 	ApprovedWorkShiftsInverseTable = "workshifts"
-	// ApprovedWorkShiftsColumn is the table column denoting the approvedWorkShifts relation/edge.
+	// ApprovedWorkShiftsColumn is the table column denoting the approved_work_shifts relation/edge.
 	ApprovedWorkShiftsColumn = "user_approved_work_shifts"
-	// WorkShiftsTable is the table that holds the workShifts relation/edge.
+	// WorkShiftsTable is the table that holds the work_shifts relation/edge.
 	WorkShiftsTable = "workshifts"
 	// WorkShiftsInverseTable is the table name for the Workshift entity.
 	// It exists in this package in order to avoid circular dependency with the "workshift" package.
 	WorkShiftsInverseTable = "workshifts"
-	// WorkShiftsColumn is the table column denoting the workShifts relation/edge.
+	// WorkShiftsColumn is the table column denoting the work_shifts relation/edge.
 	WorkShiftsColumn = "user_work_shifts"
-	// UploadedDocumentsTable is the table that holds the uploadedDocuments relation/edge.
+	// UploadedDocumentsTable is the table that holds the uploaded_documents relation/edge.
 	UploadedDocumentsTable = "company_documents"
 	// UploadedDocumentsInverseTable is the table name for the CompanyDocument entity.
 	// It exists in this package in order to avoid circular dependency with the "companydocument" package.
 	UploadedDocumentsInverseTable = "company_documents"
-	// UploadedDocumentsColumn is the table column denoting the uploadedDocuments relation/edge.
+	// UploadedDocumentsColumn is the table column denoting the uploaded_documents relation/edge.
 	UploadedDocumentsColumn = "user_uploaded_documents"
-	// ApprovedDocumentsTable is the table that holds the approvedDocuments relation/edge.
+	// ApprovedDocumentsTable is the table that holds the approved_documents relation/edge.
 	ApprovedDocumentsTable = "company_documents"
 	// ApprovedDocumentsInverseTable is the table name for the CompanyDocument entity.
 	// It exists in this package in order to avoid circular dependency with the "companydocument" package.
 	ApprovedDocumentsInverseTable = "company_documents"
-	// ApprovedDocumentsColumn is the table column denoting the approvedDocuments relation/edge.
+	// ApprovedDocumentsColumn is the table column denoting the approved_documents relation/edge.
 	ApprovedDocumentsColumn = "user_approved_documents"
 )
 
@@ -246,7 +246,7 @@ var (
 	// primary key for the company relation (M2M).
 	CompanyPrimaryKey = []string{"company_id", "user_id"}
 	// ParticipatedProjectTasksPrimaryKey and ParticipatedProjectTasksColumn2 are the table columns denoting the
-	// primary key for the participatedProjectTasks relation (M2M).
+	// primary key for the participated_project_tasks relation (M2M).
 	ParticipatedProjectTasksPrimaryKey = []string{"user_id", "project_task_id"}
 )
 
@@ -266,15 +266,15 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultIsDemoUser holds the default value on creation for the "isDemoUser" field.
+	// DefaultIsDemoUser holds the default value on creation for the "is_demo_user" field.
 	DefaultIsDemoUser bool
-	// FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
+	// FirebaseUIDValidator is a validator for the "firebase_UID" field. It is called by the builders before save.
 	FirebaseUIDValidator func(string) error
 	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	EmailValidator func(string) error
@@ -313,17 +313,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -333,22 +333,22 @@ func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDevice, opts...).ToFunc()
 }
 
-// ByIsDemoUser orders the results by the isDemoUser field.
+// ByIsDemoUser orders the results by the is_demo_user field.
 func ByIsDemoUser(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsDemoUser, opts...).ToFunc()
 }
 
-// ByFirebaseUID orders the results by the firebaseUID field.
+// ByFirebaseUID orders the results by the firebase_UID field.
 func ByFirebaseUID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFirebaseUID, opts...).ToFunc()
 }
 
-// ByFcmToken orders the results by the fcmToken field.
+// ByFcmToken orders the results by the fcm_token field.
 func ByFcmToken(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldFcmToken, opts...).ToFunc()
 }
 
-// ByExpoPushToken orders the results by the expoPushToken field.
+// ByExpoPushToken orders the results by the expo_push_token field.
 func ByExpoPushToken(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldExpoPushToken, opts...).ToFunc()
 }
@@ -373,7 +373,7 @@ func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
 }
 
-// ByPhotoURL orders the results by the photoURL field.
+// ByPhotoURL orders the results by the photo_URL field.
 func ByPhotoURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhotoURL, opts...).ToFunc()
 }
@@ -393,7 +393,7 @@ func ByBirthdate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBirthdate, opts...).ToFunc()
 }
 
-// ByLastLogin orders the results by the lastLogin field.
+// ByLastLogin orders the results by the last_login field.
 func ByLastLogin(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastLogin, opts...).ToFunc()
 }
@@ -408,14 +408,14 @@ func ByActive(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldActive, opts...).ToFunc()
 }
 
-// ByAccountingEntriesCount orders the results by accountingEntries count.
+// ByAccountingEntriesCount orders the results by accounting_entries count.
 func ByAccountingEntriesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newAccountingEntriesStep(), opts...)
 	}
 }
 
-// ByAccountingEntries orders the results by accountingEntries terms.
+// ByAccountingEntries orders the results by accounting_entries terms.
 func ByAccountingEntries(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newAccountingEntriesStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -436,14 +436,14 @@ func ByCompany(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByAssignedRolesCount orders the results by assignedRoles count.
+// ByAssignedRolesCount orders the results by assigned_roles count.
 func ByAssignedRolesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newAssignedRolesStep(), opts...)
 	}
 }
 
-// ByAssignedRoles orders the results by assignedRoles terms.
+// ByAssignedRoles orders the results by assigned_roles terms.
 func ByAssignedRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newAssignedRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -471,14 +471,14 @@ func ByLeaderField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByCreatedMemberSignupTokensCount orders the results by createdMemberSignupTokens count.
+// ByCreatedMemberSignupTokensCount orders the results by created_member_signup_tokens count.
 func ByCreatedMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newCreatedMemberSignupTokensStep(), opts...)
 	}
 }
 
-// ByCreatedMemberSignupTokens orders the results by createdMemberSignupTokens terms.
+// ByCreatedMemberSignupTokens orders the results by created_member_signup_tokens terms.
 func ByCreatedMemberSignupTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedMemberSignupTokensStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -492,84 +492,84 @@ func ByEmployeeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByIssuedInvoicesCount orders the results by issuedInvoices count.
+// ByIssuedInvoicesCount orders the results by issued_invoices count.
 func ByIssuedInvoicesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newIssuedInvoicesStep(), opts...)
 	}
 }
 
-// ByIssuedInvoices orders the results by issuedInvoices terms.
+// ByIssuedInvoices orders the results by issued_invoices terms.
 func ByIssuedInvoices(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newIssuedInvoicesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByCreatedProjectsCount orders the results by createdProjects count.
+// ByCreatedProjectsCount orders the results by created_projects count.
 func ByCreatedProjectsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newCreatedProjectsStep(), opts...)
 	}
 }
 
-// ByCreatedProjects orders the results by createdProjects terms.
+// ByCreatedProjects orders the results by created_projects terms.
 func ByCreatedProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByLeaderedProjectsCount orders the results by leaderedProjects count.
+// ByLeaderedProjectsCount orders the results by leadered_projects count.
 func ByLeaderedProjectsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newLeaderedProjectsStep(), opts...)
 	}
 }
 
-// ByLeaderedProjects orders the results by leaderedProjects terms.
+// ByLeaderedProjects orders the results by leadered_projects terms.
 func ByLeaderedProjects(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newLeaderedProjectsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByAssignedProjectTasksCount orders the results by assignedProjectTasks count.
+// ByAssignedProjectTasksCount orders the results by assigned_project_tasks count.
 func ByAssignedProjectTasksCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newAssignedProjectTasksStep(), opts...)
 	}
 }
 
-// ByAssignedProjectTasks orders the results by assignedProjectTasks terms.
+// ByAssignedProjectTasks orders the results by assigned_project_tasks terms.
 func ByAssignedProjectTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newAssignedProjectTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByParticipatedProjectTasksCount orders the results by participatedProjectTasks count.
+// ByParticipatedProjectTasksCount orders the results by participated_project_tasks count.
 func ByParticipatedProjectTasksCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newParticipatedProjectTasksStep(), opts...)
 	}
 }
 
-// ByParticipatedProjectTasks orders the results by participatedProjectTasks terms.
+// ByParticipatedProjectTasks orders the results by participated_project_tasks terms.
 func ByParticipatedProjectTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newParticipatedProjectTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByCreatedTasksCount orders the results by createdTasks count.
+// ByCreatedTasksCount orders the results by created_tasks count.
 func ByCreatedTasksCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newCreatedTasksStep(), opts...)
 	}
 }
 
-// ByCreatedTasks orders the results by createdTasks terms.
+// ByCreatedTasks orders the results by created_tasks terms.
 func ByCreatedTasks(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newCreatedTasksStep(), append([]sql.OrderTerm{term}, terms...)...)
@@ -590,56 +590,56 @@ func ByTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByApprovedWorkShiftsCount orders the results by approvedWorkShifts count.
+// ByApprovedWorkShiftsCount orders the results by approved_work_shifts count.
 func ByApprovedWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newApprovedWorkShiftsStep(), opts...)
 	}
 }
 
-// ByApprovedWorkShifts orders the results by approvedWorkShifts terms.
+// ByApprovedWorkShifts orders the results by approved_work_shifts terms.
 func ByApprovedWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newApprovedWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByWorkShiftsCount orders the results by workShifts count.
+// ByWorkShiftsCount orders the results by work_shifts count.
 func ByWorkShiftsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newWorkShiftsStep(), opts...)
 	}
 }
 
-// ByWorkShifts orders the results by workShifts terms.
+// ByWorkShifts orders the results by work_shifts terms.
 func ByWorkShifts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newWorkShiftsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByUploadedDocumentsCount orders the results by uploadedDocuments count.
+// ByUploadedDocumentsCount orders the results by uploaded_documents count.
 func ByUploadedDocumentsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newUploadedDocumentsStep(), opts...)
 	}
 }
 
-// ByUploadedDocuments orders the results by uploadedDocuments terms.
+// ByUploadedDocuments orders the results by uploaded_documents terms.
 func ByUploadedDocuments(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newUploadedDocumentsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
-// ByApprovedDocumentsCount orders the results by approvedDocuments count.
+// ByApprovedDocumentsCount orders the results by approved_documents count.
 func ByApprovedDocumentsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborsCount(s, newApprovedDocumentsStep(), opts...)
 	}
 }
 
-// ByApprovedDocuments orders the results by approvedDocuments terms.
+// ByApprovedDocuments orders the results by approved_documents terms.
 func ByApprovedDocuments(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newApprovedDocumentsStep(), append([]sql.OrderTerm{term}, terms...)...)

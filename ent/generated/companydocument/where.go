@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -90,7 +90,7 @@ func Size(v int) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldSize, v))
 }
 
-// FileType applies equality check predicate on the "fileType" field. It's identical to FileTypeEQ.
+// FileType applies equality check predicate on the "file_type" field. It's identical to FileTypeEQ.
 func FileType(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldFileType, v))
 }
@@ -100,7 +100,7 @@ func URL(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldURL, v))
 }
 
-// StorageURI applies equality check predicate on the "storageURI" field. It's identical to StorageURIEQ.
+// StorageURI applies equality check predicate on the "storage_URI" field. It's identical to StorageURIEQ.
 func StorageURI(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldStorageURI, v))
 }
@@ -110,137 +110,137 @@ func Thumbnail(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldThumbnail, v))
 }
 
-// ExpiryDate applies equality check predicate on the "expiryDate" field. It's identical to ExpiryDateEQ.
+// ExpiryDate applies equality check predicate on the "expiry_date" field. It's identical to ExpiryDateEQ.
 func ExpiryDate(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldExpiryDate, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -500,67 +500,67 @@ func SizeLTE(v int) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldSize, v))
 }
 
-// FileTypeEQ applies the EQ predicate on the "fileType" field.
+// FileTypeEQ applies the EQ predicate on the "file_type" field.
 func FileTypeEQ(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldFileType, v))
 }
 
-// FileTypeNEQ applies the NEQ predicate on the "fileType" field.
+// FileTypeNEQ applies the NEQ predicate on the "file_type" field.
 func FileTypeNEQ(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldFileType, v))
 }
 
-// FileTypeIn applies the In predicate on the "fileType" field.
+// FileTypeIn applies the In predicate on the "file_type" field.
 func FileTypeIn(vs ...string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldFileType, vs...))
 }
 
-// FileTypeNotIn applies the NotIn predicate on the "fileType" field.
+// FileTypeNotIn applies the NotIn predicate on the "file_type" field.
 func FileTypeNotIn(vs ...string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldFileType, vs...))
 }
 
-// FileTypeGT applies the GT predicate on the "fileType" field.
+// FileTypeGT applies the GT predicate on the "file_type" field.
 func FileTypeGT(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldFileType, v))
 }
 
-// FileTypeGTE applies the GTE predicate on the "fileType" field.
+// FileTypeGTE applies the GTE predicate on the "file_type" field.
 func FileTypeGTE(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldFileType, v))
 }
 
-// FileTypeLT applies the LT predicate on the "fileType" field.
+// FileTypeLT applies the LT predicate on the "file_type" field.
 func FileTypeLT(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldFileType, v))
 }
 
-// FileTypeLTE applies the LTE predicate on the "fileType" field.
+// FileTypeLTE applies the LTE predicate on the "file_type" field.
 func FileTypeLTE(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldFileType, v))
 }
 
-// FileTypeContains applies the Contains predicate on the "fileType" field.
+// FileTypeContains applies the Contains predicate on the "file_type" field.
 func FileTypeContains(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContains(FieldFileType, v))
 }
 
-// FileTypeHasPrefix applies the HasPrefix predicate on the "fileType" field.
+// FileTypeHasPrefix applies the HasPrefix predicate on the "file_type" field.
 func FileTypeHasPrefix(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldHasPrefix(FieldFileType, v))
 }
 
-// FileTypeHasSuffix applies the HasSuffix predicate on the "fileType" field.
+// FileTypeHasSuffix applies the HasSuffix predicate on the "file_type" field.
 func FileTypeHasSuffix(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldHasSuffix(FieldFileType, v))
 }
 
-// FileTypeEqualFold applies the EqualFold predicate on the "fileType" field.
+// FileTypeEqualFold applies the EqualFold predicate on the "file_type" field.
 func FileTypeEqualFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEqualFold(FieldFileType, v))
 }
 
-// FileTypeContainsFold applies the ContainsFold predicate on the "fileType" field.
+// FileTypeContainsFold applies the ContainsFold predicate on the "file_type" field.
 func FileTypeContainsFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContainsFold(FieldFileType, v))
 }
@@ -650,67 +650,67 @@ func URLContainsFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContainsFold(FieldURL, v))
 }
 
-// StorageURIEQ applies the EQ predicate on the "storageURI" field.
+// StorageURIEQ applies the EQ predicate on the "storage_URI" field.
 func StorageURIEQ(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldStorageURI, v))
 }
 
-// StorageURINEQ applies the NEQ predicate on the "storageURI" field.
+// StorageURINEQ applies the NEQ predicate on the "storage_URI" field.
 func StorageURINEQ(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldStorageURI, v))
 }
 
-// StorageURIIn applies the In predicate on the "storageURI" field.
+// StorageURIIn applies the In predicate on the "storage_URI" field.
 func StorageURIIn(vs ...string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldStorageURI, vs...))
 }
 
-// StorageURINotIn applies the NotIn predicate on the "storageURI" field.
+// StorageURINotIn applies the NotIn predicate on the "storage_URI" field.
 func StorageURINotIn(vs ...string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldStorageURI, vs...))
 }
 
-// StorageURIGT applies the GT predicate on the "storageURI" field.
+// StorageURIGT applies the GT predicate on the "storage_URI" field.
 func StorageURIGT(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldStorageURI, v))
 }
 
-// StorageURIGTE applies the GTE predicate on the "storageURI" field.
+// StorageURIGTE applies the GTE predicate on the "storage_URI" field.
 func StorageURIGTE(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldStorageURI, v))
 }
 
-// StorageURILT applies the LT predicate on the "storageURI" field.
+// StorageURILT applies the LT predicate on the "storage_URI" field.
 func StorageURILT(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldStorageURI, v))
 }
 
-// StorageURILTE applies the LTE predicate on the "storageURI" field.
+// StorageURILTE applies the LTE predicate on the "storage_URI" field.
 func StorageURILTE(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldStorageURI, v))
 }
 
-// StorageURIContains applies the Contains predicate on the "storageURI" field.
+// StorageURIContains applies the Contains predicate on the "storage_URI" field.
 func StorageURIContains(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContains(FieldStorageURI, v))
 }
 
-// StorageURIHasPrefix applies the HasPrefix predicate on the "storageURI" field.
+// StorageURIHasPrefix applies the HasPrefix predicate on the "storage_URI" field.
 func StorageURIHasPrefix(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldHasPrefix(FieldStorageURI, v))
 }
 
-// StorageURIHasSuffix applies the HasSuffix predicate on the "storageURI" field.
+// StorageURIHasSuffix applies the HasSuffix predicate on the "storage_URI" field.
 func StorageURIHasSuffix(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldHasSuffix(FieldStorageURI, v))
 }
 
-// StorageURIEqualFold applies the EqualFold predicate on the "storageURI" field.
+// StorageURIEqualFold applies the EqualFold predicate on the "storage_URI" field.
 func StorageURIEqualFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEqualFold(FieldStorageURI, v))
 }
 
-// StorageURIContainsFold applies the ContainsFold predicate on the "storageURI" field.
+// StorageURIContainsFold applies the ContainsFold predicate on the "storage_URI" field.
 func StorageURIContainsFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContainsFold(FieldStorageURI, v))
 }
@@ -790,42 +790,42 @@ func ThumbnailContainsFold(v string) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldContainsFold(FieldThumbnail, v))
 }
 
-// ExpiryDateEQ applies the EQ predicate on the "expiryDate" field.
+// ExpiryDateEQ applies the EQ predicate on the "expiry_date" field.
 func ExpiryDateEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldEQ(FieldExpiryDate, v))
 }
 
-// ExpiryDateNEQ applies the NEQ predicate on the "expiryDate" field.
+// ExpiryDateNEQ applies the NEQ predicate on the "expiry_date" field.
 func ExpiryDateNEQ(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNEQ(FieldExpiryDate, v))
 }
 
-// ExpiryDateIn applies the In predicate on the "expiryDate" field.
+// ExpiryDateIn applies the In predicate on the "expiry_date" field.
 func ExpiryDateIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldIn(FieldExpiryDate, vs...))
 }
 
-// ExpiryDateNotIn applies the NotIn predicate on the "expiryDate" field.
+// ExpiryDateNotIn applies the NotIn predicate on the "expiry_date" field.
 func ExpiryDateNotIn(vs ...time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldNotIn(FieldExpiryDate, vs...))
 }
 
-// ExpiryDateGT applies the GT predicate on the "expiryDate" field.
+// ExpiryDateGT applies the GT predicate on the "expiry_date" field.
 func ExpiryDateGT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGT(FieldExpiryDate, v))
 }
 
-// ExpiryDateGTE applies the GTE predicate on the "expiryDate" field.
+// ExpiryDateGTE applies the GTE predicate on the "expiry_date" field.
 func ExpiryDateGTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldGTE(FieldExpiryDate, v))
 }
 
-// ExpiryDateLT applies the LT predicate on the "expiryDate" field.
+// ExpiryDateLT applies the LT predicate on the "expiry_date" field.
 func ExpiryDateLT(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLT(FieldExpiryDate, v))
 }
 
-// ExpiryDateLTE applies the LTE predicate on the "expiryDate" field.
+// ExpiryDateLTE applies the LTE predicate on the "expiry_date" field.
 func ExpiryDateLTE(v time.Time) predicate.CompanyDocument {
 	return predicate.CompanyDocument(sql.FieldLTE(FieldExpiryDate, v))
 }
@@ -853,7 +853,7 @@ func HasCompanyWith(preds ...predicate.Company) predicate.CompanyDocument {
 	})
 }
 
-// HasUploadedBy applies the HasEdge predicate on the "uploadedBy" edge.
+// HasUploadedBy applies the HasEdge predicate on the "uploaded_by" edge.
 func HasUploadedBy() predicate.CompanyDocument {
 	return predicate.CompanyDocument(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -864,7 +864,7 @@ func HasUploadedBy() predicate.CompanyDocument {
 	})
 }
 
-// HasUploadedByWith applies the HasEdge predicate on the "uploadedBy" edge with a given conditions (other predicates).
+// HasUploadedByWith applies the HasEdge predicate on the "uploaded_by" edge with a given conditions (other predicates).
 func HasUploadedByWith(preds ...predicate.User) predicate.CompanyDocument {
 	return predicate.CompanyDocument(func(s *sql.Selector) {
 		step := newUploadedByStep()
@@ -876,7 +876,7 @@ func HasUploadedByWith(preds ...predicate.User) predicate.CompanyDocument {
 	})
 }
 
-// HasApprovedBy applies the HasEdge predicate on the "approvedBy" edge.
+// HasApprovedBy applies the HasEdge predicate on the "approved_by" edge.
 func HasApprovedBy() predicate.CompanyDocument {
 	return predicate.CompanyDocument(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -887,7 +887,7 @@ func HasApprovedBy() predicate.CompanyDocument {
 	})
 }
 
-// HasApprovedByWith applies the HasEdge predicate on the "approvedBy" edge with a given conditions (other predicates).
+// HasApprovedByWith applies the HasEdge predicate on the "approved_by" edge with a given conditions (other predicates).
 func HasApprovedByWith(preds ...predicate.User) predicate.CompanyDocument {
 	return predicate.CompanyDocument(func(s *sql.Selector) {
 		step := newApprovedByStep()

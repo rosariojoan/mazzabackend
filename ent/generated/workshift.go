@@ -20,22 +20,22 @@ type Workshift struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// time that this shift was approved by the supervisor
-	ApprovedAt *time.Time `json:"approvedAt,omitempty"`
-	// ClockIn holds the value of the "clockIn" field.
-	ClockIn time.Time `json:"clockIn,omitempty"`
-	// ClockOut holds the value of the "clockOut" field.
-	ClockOut *time.Time `json:"clockOut,omitempty"`
+	ApprovedAt *time.Time `json:"approved_at,omitempty"`
+	// ClockIn holds the value of the "clock_in" field.
+	ClockIn time.Time `json:"clock_in,omitempty"`
+	// ClockOut holds the value of the "clock_out" field.
+	ClockOut *time.Time `json:"clock_out,omitempty"`
 	// it expects a serialized json like: {latitude: float, longitude: float, description: string}
-	ClockInLocation string `json:"clockInLocation,omitempty"`
+	ClockInLocation string `json:"clock_in_location,omitempty"`
 	// it expects a serialized json like: {latitude: float, longitude: float, description: string}
-	ClockOutLocation string `json:"clockOutLocation,omitempty"`
+	ClockOutLocation string `json:"clock_out_location,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// this is only used when the current item is a shift edit request
@@ -59,14 +59,14 @@ type WorkshiftEdges struct {
 	Company *Company `json:"company,omitempty"`
 	// User holds the value of the user edge.
 	User *User `json:"user,omitempty"`
-	// ApprovedBy holds the value of the approvedBy edge.
-	ApprovedBy *User `json:"approvedBy,omitempty"`
+	// ApprovedBy holds the value of the approved_by edge.
+	ApprovedBy *User `json:"approved_by,omitempty"`
 	// Task holds the value of the task edge.
 	Task *ProjectTask `json:"task,omitempty"`
-	// EditRequest holds the value of the editRequest edge.
-	EditRequest *Workshift `json:"editRequest,omitempty"`
-	// WorkShift holds the value of the workShift edge.
-	WorkShift *Workshift `json:"workShift,omitempty"`
+	// EditRequest holds the value of the edit_request edge.
+	EditRequest *Workshift `json:"edit_request,omitempty"`
+	// WorkShift holds the value of the work_shift edge.
+	WorkShift *Workshift `json:"work_shift,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [6]bool
@@ -104,7 +104,7 @@ func (e WorkshiftEdges) ApprovedByOrErr() (*User, error) {
 	} else if e.loadedTypes[2] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "approvedBy"}
+	return nil, &NotLoadedError{edge: "approved_by"}
 }
 
 // TaskOrErr returns the Task value or an error if the edge
@@ -126,7 +126,7 @@ func (e WorkshiftEdges) EditRequestOrErr() (*Workshift, error) {
 	} else if e.loadedTypes[4] {
 		return nil, &NotFoundError{label: workshift.Label}
 	}
-	return nil, &NotLoadedError{edge: "editRequest"}
+	return nil, &NotLoadedError{edge: "edit_request"}
 }
 
 // WorkShiftOrErr returns the WorkShift value or an error if the edge
@@ -137,7 +137,7 @@ func (e WorkshiftEdges) WorkShiftOrErr() (*Workshift, error) {
 	} else if e.loadedTypes[5] {
 		return nil, &NotFoundError{label: workshift.Label}
 	}
-	return nil, &NotLoadedError{edge: "workShift"}
+	return nil, &NotLoadedError{edge: "work_shift"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -184,52 +184,52 @@ func (w *Workshift) assignValues(columns []string, values []any) error {
 			w.ID = int(value.Int64)
 		case workshift.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				w.CreatedAt = value.Time
 			}
 		case workshift.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				w.UpdatedAt = value.Time
 			}
 		case workshift.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				w.DeletedAt = new(time.Time)
 				*w.DeletedAt = value.Time
 			}
 		case workshift.FieldApprovedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field approvedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field approved_at", values[i])
 			} else if value.Valid {
 				w.ApprovedAt = new(time.Time)
 				*w.ApprovedAt = value.Time
 			}
 		case workshift.FieldClockIn:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field clockIn", values[i])
+				return fmt.Errorf("unexpected type %T for field clock_in", values[i])
 			} else if value.Valid {
 				w.ClockIn = value.Time
 			}
 		case workshift.FieldClockOut:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field clockOut", values[i])
+				return fmt.Errorf("unexpected type %T for field clock_out", values[i])
 			} else if value.Valid {
 				w.ClockOut = new(time.Time)
 				*w.ClockOut = value.Time
 			}
 		case workshift.FieldClockInLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field clockInLocation", values[i])
+				return fmt.Errorf("unexpected type %T for field clock_in_location", values[i])
 			} else if value.Valid {
 				w.ClockInLocation = value.String
 			}
 		case workshift.FieldClockOutLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field clockOutLocation", values[i])
+				return fmt.Errorf("unexpected type %T for field clock_out_location", values[i])
 			} else if value.Valid {
 				w.ClockOutLocation = value.String
 			}
@@ -309,7 +309,7 @@ func (w *Workshift) QueryUser() *UserQuery {
 	return NewWorkshiftClient(w.config).QueryUser(w)
 }
 
-// QueryApprovedBy queries the "approvedBy" edge of the Workshift entity.
+// QueryApprovedBy queries the "approved_by" edge of the Workshift entity.
 func (w *Workshift) QueryApprovedBy() *UserQuery {
 	return NewWorkshiftClient(w.config).QueryApprovedBy(w)
 }
@@ -319,12 +319,12 @@ func (w *Workshift) QueryTask() *ProjectTaskQuery {
 	return NewWorkshiftClient(w.config).QueryTask(w)
 }
 
-// QueryEditRequest queries the "editRequest" edge of the Workshift entity.
+// QueryEditRequest queries the "edit_request" edge of the Workshift entity.
 func (w *Workshift) QueryEditRequest() *WorkshiftQuery {
 	return NewWorkshiftClient(w.config).QueryEditRequest(w)
 }
 
-// QueryWorkShift queries the "workShift" edge of the Workshift entity.
+// QueryWorkShift queries the "work_shift" edge of the Workshift entity.
 func (w *Workshift) QueryWorkShift() *WorkshiftQuery {
 	return NewWorkshiftClient(w.config).QueryWorkShift(w)
 }
@@ -352,34 +352,34 @@ func (w *Workshift) String() string {
 	var builder strings.Builder
 	builder.WriteString("Workshift(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", w.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(w.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(w.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := w.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
 	if v := w.ApprovedAt; v != nil {
-		builder.WriteString("approvedAt=")
+		builder.WriteString("approved_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("clockIn=")
+	builder.WriteString("clock_in=")
 	builder.WriteString(w.ClockIn.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := w.ClockOut; v != nil {
-		builder.WriteString("clockOut=")
+		builder.WriteString("clock_out=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
-	builder.WriteString("clockInLocation=")
+	builder.WriteString("clock_in_location=")
 	builder.WriteString(w.ClockInLocation)
 	builder.WriteString(", ")
-	builder.WriteString("clockOutLocation=")
+	builder.WriteString("clock_out_location=")
 	builder.WriteString(w.ClockOutLocation)
 	builder.WriteString(", ")
 	builder.WriteString("description=")

@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -95,7 +95,7 @@ func Email(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldEmail, v))
 }
 
-// IsDefault applies equality check predicate on the "isDefault" field. It's identical to IsDefaultEQ.
+// IsDefault applies equality check predicate on the "is_default" field. It's identical to IsDefaultEQ.
 func IsDefault(v bool) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldIsDefault, v))
 }
@@ -110,137 +110,137 @@ func Phone(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldPhone, v))
 }
 
-// TaxId applies equality check predicate on the "taxId" field. It's identical to TaxIdEQ.
-func TaxId(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldTaxId, v))
+// TaxID applies equality check predicate on the "tax_id" field. It's identical to TaxIDEQ.
+func TaxID(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldTaxID, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Customer {
 	return predicate.Customer(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Customer {
 	return predicate.Customer(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Customer {
 	return predicate.Customer(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -620,22 +620,22 @@ func EmailContainsFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldEmail, v))
 }
 
-// IsDefaultEQ applies the EQ predicate on the "isDefault" field.
+// IsDefaultEQ applies the EQ predicate on the "is_default" field.
 func IsDefaultEQ(v bool) predicate.Customer {
 	return predicate.Customer(sql.FieldEQ(FieldIsDefault, v))
 }
 
-// IsDefaultNEQ applies the NEQ predicate on the "isDefault" field.
+// IsDefaultNEQ applies the NEQ predicate on the "is_default" field.
 func IsDefaultNEQ(v bool) predicate.Customer {
 	return predicate.Customer(sql.FieldNEQ(FieldIsDefault, v))
 }
 
-// IsDefaultIsNil applies the IsNil predicate on the "isDefault" field.
+// IsDefaultIsNil applies the IsNil predicate on the "is_default" field.
 func IsDefaultIsNil() predicate.Customer {
 	return predicate.Customer(sql.FieldIsNull(FieldIsDefault))
 }
 
-// IsDefaultNotNil applies the NotNil predicate on the "isDefault" field.
+// IsDefaultNotNil applies the NotNil predicate on the "is_default" field.
 func IsDefaultNotNil() predicate.Customer {
 	return predicate.Customer(sql.FieldNotNull(FieldIsDefault))
 }
@@ -780,79 +780,79 @@ func PhoneContainsFold(v string) predicate.Customer {
 	return predicate.Customer(sql.FieldContainsFold(FieldPhone, v))
 }
 
-// TaxIdEQ applies the EQ predicate on the "taxId" field.
-func TaxIdEQ(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldEQ(FieldTaxId, v))
+// TaxIDEQ applies the EQ predicate on the "tax_id" field.
+func TaxIDEQ(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldEQ(FieldTaxID, v))
 }
 
-// TaxIdNEQ applies the NEQ predicate on the "taxId" field.
-func TaxIdNEQ(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldNEQ(FieldTaxId, v))
+// TaxIDNEQ applies the NEQ predicate on the "tax_id" field.
+func TaxIDNEQ(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldNEQ(FieldTaxID, v))
 }
 
-// TaxIdIn applies the In predicate on the "taxId" field.
-func TaxIdIn(vs ...string) predicate.Customer {
-	return predicate.Customer(sql.FieldIn(FieldTaxId, vs...))
+// TaxIDIn applies the In predicate on the "tax_id" field.
+func TaxIDIn(vs ...string) predicate.Customer {
+	return predicate.Customer(sql.FieldIn(FieldTaxID, vs...))
 }
 
-// TaxIdNotIn applies the NotIn predicate on the "taxId" field.
-func TaxIdNotIn(vs ...string) predicate.Customer {
-	return predicate.Customer(sql.FieldNotIn(FieldTaxId, vs...))
+// TaxIDNotIn applies the NotIn predicate on the "tax_id" field.
+func TaxIDNotIn(vs ...string) predicate.Customer {
+	return predicate.Customer(sql.FieldNotIn(FieldTaxID, vs...))
 }
 
-// TaxIdGT applies the GT predicate on the "taxId" field.
-func TaxIdGT(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldGT(FieldTaxId, v))
+// TaxIDGT applies the GT predicate on the "tax_id" field.
+func TaxIDGT(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldGT(FieldTaxID, v))
 }
 
-// TaxIdGTE applies the GTE predicate on the "taxId" field.
-func TaxIdGTE(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldGTE(FieldTaxId, v))
+// TaxIDGTE applies the GTE predicate on the "tax_id" field.
+func TaxIDGTE(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldGTE(FieldTaxID, v))
 }
 
-// TaxIdLT applies the LT predicate on the "taxId" field.
-func TaxIdLT(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldLT(FieldTaxId, v))
+// TaxIDLT applies the LT predicate on the "tax_id" field.
+func TaxIDLT(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldLT(FieldTaxID, v))
 }
 
-// TaxIdLTE applies the LTE predicate on the "taxId" field.
-func TaxIdLTE(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldLTE(FieldTaxId, v))
+// TaxIDLTE applies the LTE predicate on the "tax_id" field.
+func TaxIDLTE(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldLTE(FieldTaxID, v))
 }
 
-// TaxIdContains applies the Contains predicate on the "taxId" field.
-func TaxIdContains(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldContains(FieldTaxId, v))
+// TaxIDContains applies the Contains predicate on the "tax_id" field.
+func TaxIDContains(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldContains(FieldTaxID, v))
 }
 
-// TaxIdHasPrefix applies the HasPrefix predicate on the "taxId" field.
-func TaxIdHasPrefix(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldHasPrefix(FieldTaxId, v))
+// TaxIDHasPrefix applies the HasPrefix predicate on the "tax_id" field.
+func TaxIDHasPrefix(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldHasPrefix(FieldTaxID, v))
 }
 
-// TaxIdHasSuffix applies the HasSuffix predicate on the "taxId" field.
-func TaxIdHasSuffix(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldHasSuffix(FieldTaxId, v))
+// TaxIDHasSuffix applies the HasSuffix predicate on the "tax_id" field.
+func TaxIDHasSuffix(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldHasSuffix(FieldTaxID, v))
 }
 
-// TaxIdIsNil applies the IsNil predicate on the "taxId" field.
-func TaxIdIsNil() predicate.Customer {
-	return predicate.Customer(sql.FieldIsNull(FieldTaxId))
+// TaxIDIsNil applies the IsNil predicate on the "tax_id" field.
+func TaxIDIsNil() predicate.Customer {
+	return predicate.Customer(sql.FieldIsNull(FieldTaxID))
 }
 
-// TaxIdNotNil applies the NotNil predicate on the "taxId" field.
-func TaxIdNotNil() predicate.Customer {
-	return predicate.Customer(sql.FieldNotNull(FieldTaxId))
+// TaxIDNotNil applies the NotNil predicate on the "tax_id" field.
+func TaxIDNotNil() predicate.Customer {
+	return predicate.Customer(sql.FieldNotNull(FieldTaxID))
 }
 
-// TaxIdEqualFold applies the EqualFold predicate on the "taxId" field.
-func TaxIdEqualFold(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldEqualFold(FieldTaxId, v))
+// TaxIDEqualFold applies the EqualFold predicate on the "tax_id" field.
+func TaxIDEqualFold(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldEqualFold(FieldTaxID, v))
 }
 
-// TaxIdContainsFold applies the ContainsFold predicate on the "taxId" field.
-func TaxIdContainsFold(v string) predicate.Customer {
-	return predicate.Customer(sql.FieldContainsFold(FieldTaxId, v))
+// TaxIDContainsFold applies the ContainsFold predicate on the "tax_id" field.
+func TaxIDContainsFold(v string) predicate.Customer {
+	return predicate.Customer(sql.FieldContainsFold(FieldTaxID, v))
 }
 
 // HasCompany applies the HasEdge predicate on the "company" edge.

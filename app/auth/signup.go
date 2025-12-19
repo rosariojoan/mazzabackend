@@ -65,13 +65,16 @@ func Signup(ctx *gin.Context) {
 	stringValue := "--"
 
 	_, err = newCompany.Update().AddUsers(
-		tx.User.Create().SetInput(body.UserInput).SetActive(userIsActive).AddCompanyIDs(newCompany.ID).AddAssignedRoles(
-			tx.UserRole.Create().SetInput(ent.CreateUserRoleInput{
-				Role:      userRole,
-				Notes:     body.UserRoleNotes,
-				CompanyID: &newCompany.ID,
-			}).SaveX(ctx),
-		).SetEmployee(
+		tx.User.Create().SetInput(body.UserInput).
+			SetActive(userIsActive).
+			AddCompanyIDs(newCompany.ID).
+			AddAssignedRoles(
+				tx.UserRole.Create().SetInput(ent.CreateUserRoleInput{
+					Role:      userRole,
+					Notes:     body.UserRoleNotes,
+					CompanyID: &newCompany.ID,
+				}).SaveX(ctx),
+			).SetEmployee(
 			tx.Employee.Create().SetInput(ent.CreateEmployeeInput{
 				Name:       body.UserInput.Name,
 				Gender:     employee.GenderMale,
@@ -92,7 +95,7 @@ func Signup(ctx *gin.Context) {
 			Description: &customerDescription,
 			Name:        "clientes diversos",
 			Phone:       &stringValue,
-			TaxId:       &stringValue,
+			TaxID:       &stringValue,
 		}).SetIsDefault(true).SaveX(ctx),
 	).AddSuppliers(
 		tx.Supplier.Create().SetInput(ent.CreateSupplierInput{
@@ -102,7 +105,7 @@ func Signup(ctx *gin.Context) {
 			Description: &supplierDescription,
 			Name:        "fornecedores diversos",
 			Phone:       &stringValue,
-			TaxId:       &stringValue,
+			TaxID:       &stringValue,
 		}).SetIsDefault(true).SaveX(ctx),
 	).AddTreasuries(
 		tx.Treasury.Create().SetInput(ent.CreateTreasuryInput{

@@ -18,21 +18,21 @@ const (
 	Label = "workshift"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldApprovedAt holds the string denoting the approvedat field in the database.
+	// FieldApprovedAt holds the string denoting the approved_at field in the database.
 	FieldApprovedAt = "approved_at"
-	// FieldClockIn holds the string denoting the clockin field in the database.
+	// FieldClockIn holds the string denoting the clock_in field in the database.
 	FieldClockIn = "clock_in"
-	// FieldClockOut holds the string denoting the clockout field in the database.
+	// FieldClockOut holds the string denoting the clock_out field in the database.
 	FieldClockOut = "clock_out"
-	// FieldClockInLocation holds the string denoting the clockinlocation field in the database.
+	// FieldClockInLocation holds the string denoting the clock_in_location field in the database.
 	FieldClockInLocation = "clock_in_location"
-	// FieldClockOutLocation holds the string denoting the clockoutlocation field in the database.
+	// FieldClockOutLocation holds the string denoting the clock_out_location field in the database.
 	FieldClockOutLocation = "clock_out_location"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
@@ -44,14 +44,14 @@ const (
 	EdgeCompany = "company"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
-	// EdgeApprovedBy holds the string denoting the approvedby edge name in mutations.
-	EdgeApprovedBy = "approvedBy"
+	// EdgeApprovedBy holds the string denoting the approved_by edge name in mutations.
+	EdgeApprovedBy = "approved_by"
 	// EdgeTask holds the string denoting the task edge name in mutations.
 	EdgeTask = "task"
-	// EdgeEditRequest holds the string denoting the editrequest edge name in mutations.
-	EdgeEditRequest = "editRequest"
-	// EdgeWorkShift holds the string denoting the workshift edge name in mutations.
-	EdgeWorkShift = "workShift"
+	// EdgeEditRequest holds the string denoting the edit_request edge name in mutations.
+	EdgeEditRequest = "edit_request"
+	// EdgeWorkShift holds the string denoting the work_shift edge name in mutations.
+	EdgeWorkShift = "work_shift"
 	// Table holds the table name of the workshift in the database.
 	Table = "workshifts"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -68,12 +68,12 @@ const (
 	UserInverseTable = "users"
 	// UserColumn is the table column denoting the user relation/edge.
 	UserColumn = "user_work_shifts"
-	// ApprovedByTable is the table that holds the approvedBy relation/edge.
+	// ApprovedByTable is the table that holds the approved_by relation/edge.
 	ApprovedByTable = "workshifts"
 	// ApprovedByInverseTable is the table name for the User entity.
 	// It exists in this package in order to avoid circular dependency with the "user" package.
 	ApprovedByInverseTable = "users"
-	// ApprovedByColumn is the table column denoting the approvedBy relation/edge.
+	// ApprovedByColumn is the table column denoting the approved_by relation/edge.
 	ApprovedByColumn = "user_approved_work_shifts"
 	// TaskTable is the table that holds the task relation/edge.
 	TaskTable = "workshifts"
@@ -82,13 +82,13 @@ const (
 	TaskInverseTable = "project_tasks"
 	// TaskColumn is the table column denoting the task relation/edge.
 	TaskColumn = "project_task_work_shifts"
-	// EditRequestTable is the table that holds the editRequest relation/edge.
+	// EditRequestTable is the table that holds the edit_request relation/edge.
 	EditRequestTable = "workshifts"
-	// EditRequestColumn is the table column denoting the editRequest relation/edge.
+	// EditRequestColumn is the table column denoting the edit_request relation/edge.
 	EditRequestColumn = "workshift_edit_request"
-	// WorkShiftTable is the table that holds the workShift relation/edge.
+	// WorkShiftTable is the table that holds the work_shift relation/edge.
 	WorkShiftTable = "workshifts"
-	// WorkShiftColumn is the table column denoting the workShift relation/edge.
+	// WorkShiftColumn is the table column denoting the work_shift relation/edge.
 	WorkShiftColumn = "workshift_edit_request"
 )
 
@@ -140,13 +140,13 @@ func ValidColumn(column string) bool {
 //	import _ "mazza/ent/generated/runtime"
 var (
 	Hooks [2]ent.Hook
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultClockIn holds the default value on creation for the "clockIn" field.
+	// DefaultClockIn holds the default value on creation for the "clock_in" field.
 	DefaultClockIn func() time.Time
 )
 
@@ -184,42 +184,42 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByApprovedAt orders the results by the approvedAt field.
+// ByApprovedAt orders the results by the approved_at field.
 func ByApprovedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldApprovedAt, opts...).ToFunc()
 }
 
-// ByClockIn orders the results by the clockIn field.
+// ByClockIn orders the results by the clock_in field.
 func ByClockIn(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldClockIn, opts...).ToFunc()
 }
 
-// ByClockOut orders the results by the clockOut field.
+// ByClockOut orders the results by the clock_out field.
 func ByClockOut(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldClockOut, opts...).ToFunc()
 }
 
-// ByClockInLocation orders the results by the clockInLocation field.
+// ByClockInLocation orders the results by the clock_in_location field.
 func ByClockInLocation(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldClockInLocation, opts...).ToFunc()
 }
 
-// ByClockOutLocation orders the results by the clockOutLocation field.
+// ByClockOutLocation orders the results by the clock_out_location field.
 func ByClockOutLocation(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldClockOutLocation, opts...).ToFunc()
 }
@@ -253,7 +253,7 @@ func ByUserField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByApprovedByField orders the results by approvedBy field.
+// ByApprovedByField orders the results by approved_by field.
 func ByApprovedByField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newApprovedByStep(), sql.OrderByField(field, opts...))
@@ -267,14 +267,14 @@ func ByTaskField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByEditRequestField orders the results by editRequest field.
+// ByEditRequestField orders the results by edit_request field.
 func ByEditRequestField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newEditRequestStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByWorkShiftField orders the results by workShift field.
+// ByWorkShiftField orders the results by work_shift field.
 func ByWorkShiftField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newWorkShiftStep(), sql.OrderByField(field, opts...))

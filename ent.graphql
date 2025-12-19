@@ -2,9 +2,9 @@ directive @goField(forceResolver: Boolean, name: String) on FIELD_DEFINITION | I
 directive @goModel(model: String, models: [String!]) on OBJECT | INPUT_OBJECT | SCALAR | ENUM | INTERFACE | UNION
 type AccountingEntry implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   number: Int!
   group: Int!
   date: Time!
@@ -12,11 +12,11 @@ type AccountingEntry implements Node {
   label: String!
   amount: Float!
   description: String!
-  accounttype: AccountingEntryAccountType! @goField(name: "AccountType", forceResolver: false)
+  accountType: AccountingEntryAccountType!
   category: String!
   main: String!
-  isdebit: Boolean! @goField(name: "IsDebit", forceResolver: false)
-  isreversal: Boolean! @goField(name: "IsReversal", forceResolver: false)
+  isDebit: Boolean!
+  isReversal: Boolean!
   reversed: Boolean!
   company: Company
   user: User
@@ -24,7 +24,7 @@ type AccountingEntry implements Node {
   loanschedules: [LoanSchedule!] @goField(name: "LoanSchedules", forceResolver: false)
 }
 """
-AccountingEntryAccountType is enum for the field accountType
+AccountingEntryAccountType is enum for the field account_type
 """
 enum AccountingEntryAccountType @goModel(model: "mazza/ent/generated/accountingentry.AccountType") {
   ASSET
@@ -119,40 +119,40 @@ input AccountingEntryWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   number field predicates
   """
@@ -246,12 +246,12 @@ input AccountingEntryWhereInput {
   descriptionEqualFold: String
   descriptionContainsFold: String
   """
-  accountType field predicates
+  account_type field predicates
   """
-  accounttype: AccountingEntryAccountType
-  accounttypeNEQ: AccountingEntryAccountType
-  accounttypeIn: [AccountingEntryAccountType!]
-  accounttypeNotIn: [AccountingEntryAccountType!]
+  accountType: AccountingEntryAccountType
+  accountTypeNEQ: AccountingEntryAccountType
+  accountTypeIn: [AccountingEntryAccountType!]
+  accountTypeNotIn: [AccountingEntryAccountType!]
   """
   category field predicates
   """
@@ -285,15 +285,15 @@ input AccountingEntryWhereInput {
   mainEqualFold: String
   mainContainsFold: String
   """
-  isDebit field predicates
+  is_debit field predicates
   """
-  isdebit: Boolean
-  isdebitNEQ: Boolean
+  isDebit: Boolean
+  isDebitNEQ: Boolean
   """
-  isReversal field predicates
+  is_reversal field predicates
   """
-  isreversal: Boolean
-  isreversalNEQ: Boolean
+  isReversal: Boolean
+  isReversalNEQ: Boolean
   """
   reversed field predicates
   """
@@ -345,40 +345,40 @@ input CalendarWhereInput {
 }
 type Company implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   address: String
-  basecurrency: String! @goField(name: "BaseCurrency", forceResolver: false)
-  ceoname: String @goField(name: "CeoName", forceResolver: false)
+  baseCurrency: String!
+  ceoName: String
   city: String!
   country: String!
-  establishedat: Time! @goField(name: "EstablishedAt", forceResolver: false)
+  establishedAt: Time!
   description: String
   email: String
   industry: String
-  lastentrydate: Time @goField(name: "LastEntryDate", forceResolver: false)
-  lastinvoicenumber: Int @goField(name: "LastInvoiceNumber", forceResolver: false)
-  logourl: String @goField(name: "LogoURL", forceResolver: false)
+  lastEntryDate: Time
+  lastInvoiceNumber: Int
+  logoURL: String
   name: String!
-  numberofemployees: Int! @goField(name: "NumberOfEmployees", forceResolver: false)
+  numberEmployees: Int!
   phone: String
-  taxid: String @goField(name: "TaxId", forceResolver: false)
-  vatrate: Float! @goField(name: "VatRate", forceResolver: false)
+  taxID: String
+  vatRate: Float!
   website: String
-  incompletesetup: Boolean @goField(name: "IncompleteSetup", forceResolver: false)
-  availableroles: [UserRole!] @goField(name: "AvailableRoles", forceResolver: false)
-  accountingentries: [AccountingEntry!] @goField(name: "AccountingEntries", forceResolver: false)
+  incompleteSetup: Boolean
+  availableRoles: [UserRole!]
+  accountingEntries: [AccountingEntry!]
   customers: [Customer!]
   documents: [CompanyDocument!]
   employees: [Employee!]
   files: [File!]
   inventory: [Inventory!]
-  inventorymovements: [InventoryMovement!] @goField(name: "InventoryMovements", forceResolver: false)
+  inventoryMovements: [InventoryMovement!]
   invoices: [Invoice!]
   loans: [Loan!]
   loanSchedule: [LoanSchedule!]
-  membersignuptokens: [MemberSignupToken!] @goField(name: "MemberSignupTokens", forceResolver: false)
+  memberSignupTokens: [MemberSignupToken!]
   products: [Product!]
   projects: [Project!]
   payables: [Payable!]
@@ -386,16 +386,16 @@ type Company implements Node {
   suppliers: [Supplier!]
   tokens: [Token!]
   treasuries: [Treasury!]
-  workshifts: [Workshift!] @goField(name: "WorkShifts", forceResolver: false)
+  workShifts: [Workshift!]
   users: [User!]
-  daughtercompanies: [Company!] @goField(name: "DaughterCompanies", forceResolver: false)
-  parentcompany: Company @goField(name: "ParentCompany", forceResolver: false)
+  daughterCompanies: [Company!]
+  parentCompany: Company
 }
 type CompanyDocument implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   filename: String!
   title: String!
   keywords: String!
@@ -407,14 +407,14 @@ type CompanyDocument implements Node {
   """
   mimetype e.g. application/pdf
   """
-  filetype: String! @goField(name: "FileType", forceResolver: false)
+  fileType: String!
   status: CompanyDocumentStatus!
   url: String!
   thumbnail: String
-  expirydate: Time! @goField(name: "ExpiryDate", forceResolver: false)
+  expiryDate: Time!
   company: Company!
-  uploadedby: User @goField(name: "UploadedBy", forceResolver: false)
-  approvedby: User @goField(name: "ApprovedBy", forceResolver: false)
+  uploadedBy: User
+  approvedBy: User
 }
 """
 CompanyDocumentCategory is enum for the field category
@@ -508,40 +508,40 @@ input CompanyDocumentWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   filename field predicates
   """
@@ -609,21 +609,21 @@ input CompanyDocumentWhereInput {
   sizeLT: Int
   sizeLTE: Int
   """
-  fileType field predicates
+  file_type field predicates
   """
-  filetype: String
-  filetypeNEQ: String
-  filetypeIn: [String!]
-  filetypeNotIn: [String!]
-  filetypeGT: String
-  filetypeGTE: String
-  filetypeLT: String
-  filetypeLTE: String
-  filetypeContains: String
-  filetypeHasPrefix: String
-  filetypeHasSuffix: String
-  filetypeEqualFold: String
-  filetypeContainsFold: String
+  fileType: String
+  fileTypeNEQ: String
+  fileTypeIn: [String!]
+  fileTypeNotIn: [String!]
+  fileTypeGT: String
+  fileTypeGTE: String
+  fileTypeLT: String
+  fileTypeLTE: String
+  fileTypeContains: String
+  fileTypeHasPrefix: String
+  fileTypeHasSuffix: String
+  fileTypeEqualFold: String
+  fileTypeContainsFold: String
   """
   status field predicates
   """
@@ -666,28 +666,28 @@ input CompanyDocumentWhereInput {
   thumbnailEqualFold: String
   thumbnailContainsFold: String
   """
-  expiryDate field predicates
+  expiry_date field predicates
   """
-  expirydate: Time
-  expirydateNEQ: Time
-  expirydateIn: [Time!]
-  expirydateNotIn: [Time!]
-  expirydateGT: Time
-  expirydateGTE: Time
-  expirydateLT: Time
-  expirydateLTE: Time
+  expiryDate: Time
+  expiryDateNEQ: Time
+  expiryDateIn: [Time!]
+  expiryDateNotIn: [Time!]
+  expiryDateGT: Time
+  expiryDateGTE: Time
+  expiryDateLT: Time
+  expiryDateLTE: Time
   """
   company edge predicates
   """
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
   """
-  uploadedBy edge predicates
+  uploaded_by edge predicates
   """
   hasUploadedBy: Boolean
   hasUploadedByWith: [UserWhereInput!]
   """
-  approvedBy edge predicates
+  approved_by edge predicates
   """
   hasApprovedBy: Boolean
   hasApprovedByWith: [UserWhereInput!]
@@ -736,40 +736,40 @@ input CompanyWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   address field predicates
   """
@@ -789,39 +789,39 @@ input CompanyWhereInput {
   addressEqualFold: String
   addressContainsFold: String
   """
-  baseCurrency field predicates
+  base_currency field predicates
   """
-  basecurrency: String
-  basecurrencyNEQ: String
-  basecurrencyIn: [String!]
-  basecurrencyNotIn: [String!]
-  basecurrencyGT: String
-  basecurrencyGTE: String
-  basecurrencyLT: String
-  basecurrencyLTE: String
-  basecurrencyContains: String
-  basecurrencyHasPrefix: String
-  basecurrencyHasSuffix: String
-  basecurrencyEqualFold: String
-  basecurrencyContainsFold: String
+  baseCurrency: String
+  baseCurrencyNEQ: String
+  baseCurrencyIn: [String!]
+  baseCurrencyNotIn: [String!]
+  baseCurrencyGT: String
+  baseCurrencyGTE: String
+  baseCurrencyLT: String
+  baseCurrencyLTE: String
+  baseCurrencyContains: String
+  baseCurrencyHasPrefix: String
+  baseCurrencyHasSuffix: String
+  baseCurrencyEqualFold: String
+  baseCurrencyContainsFold: String
   """
-  ceoName field predicates
+  ceo_name field predicates
   """
-  ceoname: String
-  ceonameNEQ: String
-  ceonameIn: [String!]
-  ceonameNotIn: [String!]
-  ceonameGT: String
-  ceonameGTE: String
-  ceonameLT: String
-  ceonameLTE: String
-  ceonameContains: String
-  ceonameHasPrefix: String
-  ceonameHasSuffix: String
-  ceonameIsNil: Boolean
-  ceonameNotNil: Boolean
-  ceonameEqualFold: String
-  ceonameContainsFold: String
+  ceoName: String
+  ceoNameNEQ: String
+  ceoNameIn: [String!]
+  ceoNameNotIn: [String!]
+  ceoNameGT: String
+  ceoNameGTE: String
+  ceoNameLT: String
+  ceoNameLTE: String
+  ceoNameContains: String
+  ceoNameHasPrefix: String
+  ceoNameHasSuffix: String
+  ceoNameIsNil: Boolean
+  ceoNameNotNil: Boolean
+  ceoNameEqualFold: String
+  ceoNameContainsFold: String
   """
   city field predicates
   """
@@ -855,16 +855,16 @@ input CompanyWhereInput {
   countryEqualFold: String
   countryContainsFold: String
   """
-  establishedAt field predicates
+  established_at field predicates
   """
-  establishedat: Time
-  establishedatNEQ: Time
-  establishedatIn: [Time!]
-  establishedatNotIn: [Time!]
-  establishedatGT: Time
-  establishedatGTE: Time
-  establishedatLT: Time
-  establishedatLTE: Time
+  establishedAt: Time
+  establishedAtNEQ: Time
+  establishedAtIn: [Time!]
+  establishedAtNotIn: [Time!]
+  establishedAtGT: Time
+  establishedAtGTE: Time
+  establishedAtLT: Time
+  establishedAtLTE: Time
   """
   description field predicates
   """
@@ -920,49 +920,49 @@ input CompanyWhereInput {
   industryEqualFold: String
   industryContainsFold: String
   """
-  lastEntryDate field predicates
+  last_entry_date field predicates
   """
-  lastentrydate: Time
-  lastentrydateNEQ: Time
-  lastentrydateIn: [Time!]
-  lastentrydateNotIn: [Time!]
-  lastentrydateGT: Time
-  lastentrydateGTE: Time
-  lastentrydateLT: Time
-  lastentrydateLTE: Time
-  lastentrydateIsNil: Boolean
-  lastentrydateNotNil: Boolean
+  lastEntryDate: Time
+  lastEntryDateNEQ: Time
+  lastEntryDateIn: [Time!]
+  lastEntryDateNotIn: [Time!]
+  lastEntryDateGT: Time
+  lastEntryDateGTE: Time
+  lastEntryDateLT: Time
+  lastEntryDateLTE: Time
+  lastEntryDateIsNil: Boolean
+  lastEntryDateNotNil: Boolean
   """
-  lastInvoiceNumber field predicates
+  last_invoice_number field predicates
   """
-  lastinvoicenumber: Int
-  lastinvoicenumberNEQ: Int
-  lastinvoicenumberIn: [Int!]
-  lastinvoicenumberNotIn: [Int!]
-  lastinvoicenumberGT: Int
-  lastinvoicenumberGTE: Int
-  lastinvoicenumberLT: Int
-  lastinvoicenumberLTE: Int
-  lastinvoicenumberIsNil: Boolean
-  lastinvoicenumberNotNil: Boolean
+  lastInvoiceNumber: Int
+  lastInvoiceNumberNEQ: Int
+  lastInvoiceNumberIn: [Int!]
+  lastInvoiceNumberNotIn: [Int!]
+  lastInvoiceNumberGT: Int
+  lastInvoiceNumberGTE: Int
+  lastInvoiceNumberLT: Int
+  lastInvoiceNumberLTE: Int
+  lastInvoiceNumberIsNil: Boolean
+  lastInvoiceNumberNotNil: Boolean
   """
-  logoURL field predicates
+  logo_URL field predicates
   """
-  logourl: String
-  logourlNEQ: String
-  logourlIn: [String!]
-  logourlNotIn: [String!]
-  logourlGT: String
-  logourlGTE: String
-  logourlLT: String
-  logourlLTE: String
-  logourlContains: String
-  logourlHasPrefix: String
-  logourlHasSuffix: String
-  logourlIsNil: Boolean
-  logourlNotNil: Boolean
-  logourlEqualFold: String
-  logourlContainsFold: String
+  logoURL: String
+  logoURLNEQ: String
+  logoURLIn: [String!]
+  logoURLNotIn: [String!]
+  logoURLGT: String
+  logoURLGTE: String
+  logoURLLT: String
+  logoURLLTE: String
+  logoURLContains: String
+  logoURLHasPrefix: String
+  logoURLHasSuffix: String
+  logoURLIsNil: Boolean
+  logoURLNotNil: Boolean
+  logoURLEqualFold: String
+  logoURLContainsFold: String
   """
   name field predicates
   """
@@ -980,16 +980,16 @@ input CompanyWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  numberOfEmployees field predicates
+  number_employees field predicates
   """
-  numberofemployees: Int
-  numberofemployeesNEQ: Int
-  numberofemployeesIn: [Int!]
-  numberofemployeesNotIn: [Int!]
-  numberofemployeesGT: Int
-  numberofemployeesGTE: Int
-  numberofemployeesLT: Int
-  numberofemployeesLTE: Int
+  numberEmployees: Int
+  numberEmployeesNEQ: Int
+  numberEmployeesIn: [Int!]
+  numberEmployeesNotIn: [Int!]
+  numberEmployeesGT: Int
+  numberEmployeesGTE: Int
+  numberEmployeesLT: Int
+  numberEmployeesLTE: Int
   """
   phone field predicates
   """
@@ -1009,34 +1009,34 @@ input CompanyWhereInput {
   phoneEqualFold: String
   phoneContainsFold: String
   """
-  taxId field predicates
+  tax_id field predicates
   """
-  taxid: String
-  taxidNEQ: String
-  taxidIn: [String!]
-  taxidNotIn: [String!]
-  taxidGT: String
-  taxidGTE: String
-  taxidLT: String
-  taxidLTE: String
-  taxidContains: String
-  taxidHasPrefix: String
-  taxidHasSuffix: String
-  taxidIsNil: Boolean
-  taxidNotNil: Boolean
-  taxidEqualFold: String
-  taxidContainsFold: String
+  taxID: String
+  taxIDNEQ: String
+  taxIDIn: [String!]
+  taxIDNotIn: [String!]
+  taxIDGT: String
+  taxIDGTE: String
+  taxIDLT: String
+  taxIDLTE: String
+  taxIDContains: String
+  taxIDHasPrefix: String
+  taxIDHasSuffix: String
+  taxIDIsNil: Boolean
+  taxIDNotNil: Boolean
+  taxIDEqualFold: String
+  taxIDContainsFold: String
   """
-  vatRate field predicates
+  vat_rate field predicates
   """
-  vatrate: Float
-  vatrateNEQ: Float
-  vatrateIn: [Float!]
-  vatrateNotIn: [Float!]
-  vatrateGT: Float
-  vatrateGTE: Float
-  vatrateLT: Float
-  vatrateLTE: Float
+  vatRate: Float
+  vatRateNEQ: Float
+  vatRateIn: [Float!]
+  vatRateNotIn: [Float!]
+  vatRateGT: Float
+  vatRateGTE: Float
+  vatRateLT: Float
+  vatRateLTE: Float
   """
   website field predicates
   """
@@ -1056,19 +1056,19 @@ input CompanyWhereInput {
   websiteEqualFold: String
   websiteContainsFold: String
   """
-  incompleteSetup field predicates
+  incomplete_setup field predicates
   """
-  incompletesetup: Boolean
-  incompletesetupNEQ: Boolean
-  incompletesetupIsNil: Boolean
-  incompletesetupNotNil: Boolean
+  incompleteSetup: Boolean
+  incompleteSetupNEQ: Boolean
+  incompleteSetupIsNil: Boolean
+  incompleteSetupNotNil: Boolean
   """
-  availableRoles edge predicates
+  available_roles edge predicates
   """
   hasAvailableRoles: Boolean
   hasAvailableRolesWith: [UserRoleWhereInput!]
   """
-  accountingEntries edge predicates
+  accounting_entries edge predicates
   """
   hasAccountingEntries: Boolean
   hasAccountingEntriesWith: [AccountingEntryWhereInput!]
@@ -1098,7 +1098,7 @@ input CompanyWhereInput {
   hasInventory: Boolean
   hasInventoryWith: [InventoryWhereInput!]
   """
-  inventoryMovements edge predicates
+  inventory_movements edge predicates
   """
   hasInventoryMovements: Boolean
   hasInventoryMovementsWith: [InventoryMovementWhereInput!]
@@ -1118,7 +1118,7 @@ input CompanyWhereInput {
   hasLoanSchedule: Boolean
   hasLoanScheduleWith: [LoanScheduleWhereInput!]
   """
-  memberSignupTokens edge predicates
+  member_signup_tokens edge predicates
   """
   hasMemberSignupTokens: Boolean
   hasMemberSignupTokensWith: [MemberSignupTokenWhereInput!]
@@ -1158,7 +1158,7 @@ input CompanyWhereInput {
   hasTreasuries: Boolean
   hasTreasuriesWith: [TreasuryWhereInput!]
   """
-  workShifts edge predicates
+  work_shifts edge predicates
   """
   hasWorkShifts: Boolean
   hasWorkShiftsWith: [WorkshiftWhereInput!]
@@ -1168,12 +1168,12 @@ input CompanyWhereInput {
   hasUsers: Boolean
   hasUsersWith: [UserWhereInput!]
   """
-  daughterCompanies edge predicates
+  daughter_companies edge predicates
   """
   hasDaughterCompanies: Boolean
   hasDaughterCompaniesWith: [CompanyWhereInput!]
   """
-  parentCompany edge predicates
+  parent_company edge predicates
   """
   hasParentCompany: Boolean
   hasParentCompanyWith: [CompanyWhereInput!]
@@ -1190,11 +1190,11 @@ input CreateAccountingEntryInput {
   label: String!
   amount: Float!
   description: String!
-  accounttype: AccountingEntryAccountType!
+  accountType: AccountingEntryAccountType!
   category: String
   main: String
-  isdebit: Boolean!
-  isreversal: Boolean
+  isDebit: Boolean!
+  isReversal: Boolean
   reversed: Boolean
   companyID: ID
   userID: ID
@@ -1217,14 +1217,14 @@ input CreateCompanyDocumentInput {
   """
   mimetype e.g. application/pdf
   """
-  filetype: String!
+  fileType: String!
   url: String!
   """
   Firebase cloud storage URI. Not exposed to the client
   """
-  storageuri: String!
+  storageURI: String!
   thumbnail: String
-  expirydate: Time!
+  expiryDate: Time!
 }
 """
 CreateCompanyInput is used for create Company object.
@@ -1232,35 +1232,35 @@ Input was generated by ent.
 """
 input CreateCompanyInput {
   address: String
-  basecurrency: String
-  ceoname: String
+  baseCurrency: String
+  ceoName: String
   city: String!
   country: String!
-  establishedat: Time!
+  establishedAt: Time!
   description: String
   email: String
   industry: String
-  lastentrydate: Time
-  lastinvoicenumber: Int
+  lastEntryDate: Time
+  lastInvoiceNumber: Int
   name: String!
-  numberofemployees: Int
+  numberEmployees: Int
   phone: String
-  taxid: String
-  vatrate: Float
+  taxID: String
+  vatRate: Float
   website: String
-  incompletesetup: Boolean
-  availableroleIDs: [ID!]
-  accountingentryIDs: [ID!]
+  incompleteSetup: Boolean
+  availableRoleIDs: [ID!]
+  accountingEntryIDs: [ID!]
   customerIDs: [ID!]
   documentIDs: [ID!]
   employeeIDs: [ID!]
   fileIDs: [ID!]
   inventoryIDs: [ID!]
-  inventorymovementIDs: [ID!]
+  inventoryMovementIDs: [ID!]
   invoiceIDs: [ID!]
   loanIDs: [ID!]
   loanScheduleIDs: [ID!]
-  membersignuptokenIDs: [ID!]
+  memberSignupTokenIDs: [ID!]
   productIDs: [ID!]
   projectIDs: [ID!]
   payableIDs: [ID!]
@@ -1268,10 +1268,10 @@ input CreateCompanyInput {
   supplierIDs: [ID!]
   tokenIDs: [ID!]
   treasuryIDs: [ID!]
-  workshiftIDs: [ID!]
+  workShiftIDs: [ID!]
   userIDs: [ID!]
-  daughtercompanyIDs: [ID!]
-  parentcompanyID: ID
+  daughterCompanyIDs: [ID!]
+  parentCompanyID: ID
 }
 """
 CreateCustomerInput is used for create Customer object.
@@ -1285,7 +1285,7 @@ input CreateCustomerInput {
   email: String
   name: String!
   phone: String
-  taxid: String
+  taxID: String
 }
 """
 CreateEmployeeInput is used for create Employee object.
@@ -1300,10 +1300,10 @@ input CreateEmployeeInput {
   email: String
   phone: String
   avatar: String
-  hiredate: Time!
-  monthlysalary: Int
+  hireDate: Time!
+  monthlySalary: Int
   status: EmployeeStatus
-  performacescore: Float
+  performaceScore: Float
   companyID: ID
   userID: ID
   subordinateIDs: [ID!]
@@ -1337,8 +1337,8 @@ input CreateInventoryInput {
   Unit of measurement. E.g. litre, unit, gram
   """
   unit: String!
-  minimumlevel: Float!
-  currentvalue: Float!
+  minimumLevel: Float!
+  currentValue: Float!
   notes: String!
 }
 """
@@ -1360,24 +1360,24 @@ CreateInvoiceInput is used for create Invoice object.
 Input was generated by ent.
 """
 input CreateInvoiceInput {
-  companylogo: String
-  companyname: String!
-  companytaxid: String
-  companyaddress: String!
-  companycity: String!
-  companyemail: String
-  companyphone: String
+  companyLogo: String
+  companyName: String!
+  companyTaxID: String
+  companyAddress: String!
+  companyCity: String!
+  companyEmail: String
+  companyPhone: String
   number: String
-  issuedate: Time!
-  duedate: Time!
-  paidat: Time
+  issueDate: Time!
+  dueDate: Time!
+  paidAt: Time
   status: InvoiceStatus
-  customername: String
-  customertaxid: String
-  customeraddress: String
-  customercity: String
-  customeremail: String
-  customerphone: String
+  customerName: String
+  customerTaxID: String
+  customerAddress: String
+  customerCity: String
+  customerEmail: String
+  customerPhone: String
   """
   stringified JSON of product rows
   """
@@ -1386,12 +1386,12 @@ input CreateInvoiceInput {
   tax: Float!
   total: Float!
   notes: String
-  paymentmethod: String
-  bankname: String
-  bankagency: String
-  bankaccountnumber: String
-  bankaccountname: String
-  storageuri: String
+  paymentMethod: String
+  bankName: String
+  bankAgency: String
+  bankAccountNumber: String
+  bankAccountName: String
+  storageURI: String
   url: String
   filename: String
   """
@@ -1479,13 +1479,13 @@ CreatePayableInput is used for create Payable object.
 Input was generated by ent.
 """
 input CreatePayableInput {
-  entrygroup: Int!
+  entryGroup: Int!
   date: Time!
   name: String
-  amountindefault: Float
-  outstandingbalance: Float!
-  totaltransaction: Float!
-  duedate: Time!
+  amountInDefault: Float
+  outstandingBalance: Float!
+  totalTransaction: Float!
+  dueDate: Time!
   status: PayableStatus!
   companyID: ID
 }
@@ -1504,14 +1504,14 @@ Input was generated by ent.
 input CreateProjectInput {
   name: String!
   description: String!
-  plannedstartdate: Time!
-  actualstartdate: Time
-  plannedenddate: Time!
-  actualenddate: Time
+  plannedStartDate: Time!
+  actualStartDate: Time
+  plannedEndDate: Time!
+  actualEndDate: Time
   progress: Float
   status: ProjectStatus
   companyID: ID
-  createdbyID: ID
+  createdByID: ID
   leaderID: ID
   taskIDs: [ID!]
   milestoneIDs: [ID!]
@@ -1522,7 +1522,7 @@ Input was generated by ent.
 """
 input CreateProjectMilestoneInput {
   name: String!
-  duedate: Time!
+  dueDate: Time!
   projectID: ID!
 }
 """
@@ -1530,38 +1530,35 @@ CreateProjectTaskInput is used for create ProjectTask object.
 Input was generated by ent.
 """
 input CreateProjectTaskInput {
-  createdat: Time
-  name: String!
-  assigneename: String!
+  assigneeName: String!
+  description: String
+  dueDate: Time!
+  endDate: Time
   """
   Where is task will be executed
   """
   location: String
-  duedate: Time!
-  plannedstartdate: Time!
-  actualstartdate: Time
-  plannedenddate: Time
-  actualenddate: Time
-  description: String
+  name: String!
+  startDate: Time!
   status: ProjectTaskStatus!
   projectID: ID!
   assigneeID: ID
   participantIDs: [ID!]
-  createdbyID: ID
-  workshiftIDs: [ID!]
+  createdByID: ID
+  workShiftIDs: [ID!]
 }
 """
 CreateReceivableInput is used for create Receivable object.
 Input was generated by ent.
 """
 input CreateReceivableInput {
-  entrygroup: Int!
+  entryGroup: Int!
   date: Time!
   name: String
-  amountindefault: Float
-  outstandingbalance: Float!
-  totaltransaction: Float!
-  duedate: Time!
+  amountInDefault: Float
+  outstandingBalance: Float!
+  totalTransaction: Float!
+  dueDate: Time!
   status: ReceivableStatus!
   companyID: ID
   invoiceID: ID
@@ -1578,7 +1575,7 @@ input CreateSupplierInput {
   email: String
   name: String!
   phone: String
-  taxid: String
+  taxID: String
   companyID: ID
   payableIDs: [ID!]
 }
@@ -1610,35 +1607,35 @@ input CreateUserInput {
   Current user device info
   """
   device: String
-  firebaseuid: String!
-  fcmtoken: String
-  expopushtoken: String
+  firebaseUID: String!
+  fcmToken: String
+  expoPushToken: String
   email: String!
   name: String!
   address: String
   avatar: String
-  photourl: String
+  photoURL: String
   department: String
   phone: String
   birthdate: Time
   gender: UserGender!
-  accountingentryIDs: [ID!]
-  assignedroleIDs: [ID!]
+  accountingEntryIDs: [ID!]
+  assignedRoleIDs: [ID!]
   subordinateIDs: [ID!]
   leaderID: ID
-  createdmembersignuptokenIDs: [ID!]
+  createdMemberSignupTokenIDs: [ID!]
   employeeID: ID
-  issuedinvoiceIDs: [ID!]
-  createdprojectIDs: [ID!]
-  leaderedprojectIDs: [ID!]
-  assignedprojecttaskIDs: [ID!]
-  participatedprojecttaskIDs: [ID!]
-  createdtaskIDs: [ID!]
+  issuedInvoiceIDs: [ID!]
+  createdProjectIDs: [ID!]
+  leaderedProjectIDs: [ID!]
+  assignedProjectTaskIDs: [ID!]
+  participatedProjectTaskIDs: [ID!]
+  createdTaskIDs: [ID!]
   tokenIDs: [ID!]
-  approvedworkshiftIDs: [ID!]
-  workshiftIDs: [ID!]
-  uploadeddocumentIDs: [ID!]
-  approveddocumentIDs: [ID!]
+  approvedWorkShiftIDs: [ID!]
+  workShiftIDs: [ID!]
+  uploadedDocumentIDs: [ID!]
+  approvedDocumentIDs: [ID!]
 }
 """
 CreateUserRoleInput is used for create UserRole object.
@@ -1661,17 +1658,17 @@ input CreateWorkshiftInput {
   """
   time that this shift was approved by the supervisor
   """
-  approvedat: Time
-  clockin: Time
-  clockout: Time
+  approvedAt: Time
+  clockIn: Time
+  clockOut: Time
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockinlocation: String!
+  clockInLocation: String!
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockoutlocation: String
+  clockOutLocation: String
   description: String
   """
   this is only used when the current item is a shift edit request
@@ -1680,10 +1677,10 @@ input CreateWorkshiftInput {
   status: WorkshiftStatus
   companyID: ID
   userID: ID
-  approvedbyID: ID
+  approvedByID: ID
   taskID: ID
-  editrequestID: ID
-  workshiftID: ID
+  editRequestID: ID
+  workShiftID: ID
 }
 """
 Define a Relay Cursor type:
@@ -1692,18 +1689,18 @@ https://relay.dev/graphql/connections.htm#sec-Cursor
 scalar Cursor
 type Customer implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   address: String
   city: String
   country: String
   description: String
   email: String
-  isdefault: Boolean @goField(name: "IsDefault", forceResolver: false)
+  isDefault: Boolean
   name: String!
   phone: String
-  taxid: String @goField(name: "TaxId", forceResolver: false)
+  taxID: String
   company: Company
   loans: [Loan!]
   receivables: [Receivable!]
@@ -1751,40 +1748,40 @@ input CustomerWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   address field predicates
   """
@@ -1876,12 +1873,12 @@ input CustomerWhereInput {
   emailEqualFold: String
   emailContainsFold: String
   """
-  isDefault field predicates
+  is_default field predicates
   """
-  isdefault: Boolean
-  isdefaultNEQ: Boolean
-  isdefaultIsNil: Boolean
-  isdefaultNotNil: Boolean
+  isDefault: Boolean
+  isDefaultNEQ: Boolean
+  isDefaultIsNil: Boolean
+  isDefaultNotNil: Boolean
   """
   name field predicates
   """
@@ -1917,23 +1914,23 @@ input CustomerWhereInput {
   phoneEqualFold: String
   phoneContainsFold: String
   """
-  taxId field predicates
+  tax_id field predicates
   """
-  taxid: String
-  taxidNEQ: String
-  taxidIn: [String!]
-  taxidNotIn: [String!]
-  taxidGT: String
-  taxidGTE: String
-  taxidLT: String
-  taxidLTE: String
-  taxidContains: String
-  taxidHasPrefix: String
-  taxidHasSuffix: String
-  taxidIsNil: Boolean
-  taxidNotNil: Boolean
-  taxidEqualFold: String
-  taxidContainsFold: String
+  taxID: String
+  taxIDNEQ: String
+  taxIDIn: [String!]
+  taxIDNotIn: [String!]
+  taxIDGT: String
+  taxIDGTE: String
+  taxIDLT: String
+  taxIDLTE: String
+  taxIDContains: String
+  taxIDHasPrefix: String
+  taxIDHasSuffix: String
+  taxIDIsNil: Boolean
+  taxIDNotNil: Boolean
+  taxIDEqualFold: String
+  taxIDContainsFold: String
   """
   company edge predicates
   """
@@ -1957,9 +1954,9 @@ input CustomerWhereInput {
 }
 type Employee implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   name: String!
   birthdate: Time
   gender: EmployeeGender!
@@ -1968,10 +1965,10 @@ type Employee implements Node {
   email: String
   phone: String
   avatar: String
-  hiredate: Time! @goField(name: "HireDate", forceResolver: false)
-  monthlysalary: Int! @goField(name: "MonthlySalary", forceResolver: false)
+  hireDate: Time!
+  monthlySalary: Int!
   status: EmployeeStatus
-  performacescore: Float @goField(name: "PerformaceScore", forceResolver: false)
+  performaceScore: Float
   company: Company
   user: User
   subordinates: [Employee!]
@@ -2033,40 +2030,40 @@ input EmployeeWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   name field predicates
   """
@@ -2192,27 +2189,27 @@ input EmployeeWhereInput {
   avatarEqualFold: String
   avatarContainsFold: String
   """
-  hireDate field predicates
+  hire_date field predicates
   """
-  hiredate: Time
-  hiredateNEQ: Time
-  hiredateIn: [Time!]
-  hiredateNotIn: [Time!]
-  hiredateGT: Time
-  hiredateGTE: Time
-  hiredateLT: Time
-  hiredateLTE: Time
+  hireDate: Time
+  hireDateNEQ: Time
+  hireDateIn: [Time!]
+  hireDateNotIn: [Time!]
+  hireDateGT: Time
+  hireDateGTE: Time
+  hireDateLT: Time
+  hireDateLTE: Time
   """
-  monthlySalary field predicates
+  monthly_salary field predicates
   """
-  monthlysalary: Int
-  monthlysalaryNEQ: Int
-  monthlysalaryIn: [Int!]
-  monthlysalaryNotIn: [Int!]
-  monthlysalaryGT: Int
-  monthlysalaryGTE: Int
-  monthlysalaryLT: Int
-  monthlysalaryLTE: Int
+  monthlySalary: Int
+  monthlySalaryNEQ: Int
+  monthlySalaryIn: [Int!]
+  monthlySalaryNotIn: [Int!]
+  monthlySalaryGT: Int
+  monthlySalaryGTE: Int
+  monthlySalaryLT: Int
+  monthlySalaryLTE: Int
   """
   status field predicates
   """
@@ -2223,18 +2220,18 @@ input EmployeeWhereInput {
   statusIsNil: Boolean
   statusNotNil: Boolean
   """
-  performaceScore field predicates
+  performace_score field predicates
   """
-  performacescore: Float
-  performacescoreNEQ: Float
-  performacescoreIn: [Float!]
-  performacescoreNotIn: [Float!]
-  performacescoreGT: Float
-  performacescoreGTE: Float
-  performacescoreLT: Float
-  performacescoreLTE: Float
-  performacescoreIsNil: Boolean
-  performacescoreNotNil: Boolean
+  performaceScore: Float
+  performaceScoreNEQ: Float
+  performaceScoreIn: [Float!]
+  performaceScoreNotIn: [Float!]
+  performaceScoreGT: Float
+  performaceScoreGTE: Float
+  performaceScoreLT: Float
+  performaceScoreLTE: Float
+  performaceScoreIsNil: Boolean
+  performaceScoreNotNil: Boolean
   """
   company edge predicates
   """
@@ -2258,9 +2255,9 @@ input EmployeeWhereInput {
 }
 type File implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   category: FileCategory!
   extension: String!
   size: String!
@@ -2346,40 +2343,40 @@ input FileWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   category field predicates
   """
@@ -2459,9 +2456,9 @@ input FileWhereInput {
 }
 type Inventory implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   name: String!
   category: InventoryCategory!
   quantity: Float!
@@ -2469,8 +2466,8 @@ type Inventory implements Node {
   Unit of measurement. E.g. litre, unit, gram
   """
   unit: String!
-  minimumlevel: Float! @goField(name: "MinimumLevel", forceResolver: false)
-  currentvalue: Float! @goField(name: "CurrentValue", forceResolver: false)
+  minimumLevel: Float!
+  currentValue: Float!
   notes: String!
   company: Company!
   movements: [InventoryMovement!]
@@ -2518,9 +2515,9 @@ type InventoryEdge {
 }
 type InventoryMovement implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   category: InventoryMovementCategory!
   quantity: Float!
   value: Float!
@@ -2610,40 +2607,40 @@ input InventoryMovementWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   category field predicates
   """
@@ -2789,40 +2786,40 @@ input InventoryWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   name field predicates
   """
@@ -2874,27 +2871,27 @@ input InventoryWhereInput {
   unitEqualFold: String
   unitContainsFold: String
   """
-  minimumLevel field predicates
+  minimum_level field predicates
   """
-  minimumlevel: Float
-  minimumlevelNEQ: Float
-  minimumlevelIn: [Float!]
-  minimumlevelNotIn: [Float!]
-  minimumlevelGT: Float
-  minimumlevelGTE: Float
-  minimumlevelLT: Float
-  minimumlevelLTE: Float
+  minimumLevel: Float
+  minimumLevelNEQ: Float
+  minimumLevelIn: [Float!]
+  minimumLevelNotIn: [Float!]
+  minimumLevelGT: Float
+  minimumLevelGTE: Float
+  minimumLevelLT: Float
+  minimumLevelLTE: Float
   """
-  currentValue field predicates
+  current_value field predicates
   """
-  currentvalue: Float
-  currentvalueNEQ: Float
-  currentvalueIn: [Float!]
-  currentvalueNotIn: [Float!]
-  currentvalueGT: Float
-  currentvalueGTE: Float
-  currentvalueLT: Float
-  currentvalueLTE: Float
+  currentValue: Float
+  currentValueNEQ: Float
+  currentValueIn: [Float!]
+  currentValueNotIn: [Float!]
+  currentValueGT: Float
+  currentValueGTE: Float
+  currentValueLT: Float
+  currentValueLTE: Float
   """
   notes field predicates
   """
@@ -2924,27 +2921,27 @@ input InventoryWhereInput {
 }
 type Invoice implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
-  companylogo: String @goField(name: "CompanyLogo", forceResolver: false)
-  companyname: String! @goField(name: "CompanyName", forceResolver: false)
-  companytaxid: String @goField(name: "CompanyTaxID", forceResolver: false)
-  companyaddress: String! @goField(name: "CompanyAddress", forceResolver: false)
-  companycity: String! @goField(name: "CompanyCity", forceResolver: false)
-  companyemail: String @goField(name: "CompanyEmail", forceResolver: false)
-  companyphone: String @goField(name: "CompanyPhone", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  companyLogo: String
+  companyName: String!
+  companyTaxID: String
+  companyAddress: String!
+  companyCity: String!
+  companyEmail: String
+  companyPhone: String
   number: String
-  issuedate: Time! @goField(name: "IssueDate", forceResolver: false)
-  duedate: Time! @goField(name: "DueDate", forceResolver: false)
-  paidat: Time @goField(name: "PaidAt", forceResolver: false)
+  issueDate: Time!
+  dueDate: Time!
+  paidAt: Time
   status: InvoiceStatus!
-  customername: String @goField(name: "CustomerName", forceResolver: false)
-  customertaxid: String @goField(name: "CustomerTaxID", forceResolver: false)
-  customeraddress: String @goField(name: "CustomerAddress", forceResolver: false)
-  customercity: String @goField(name: "CustomerCity", forceResolver: false)
-  customeremail: String @goField(name: "CustomerEmail", forceResolver: false)
-  customerphone: String @goField(name: "CustomerPhone", forceResolver: false)
+  customerName: String
+  customerTaxID: String
+  customerAddress: String
+  customerCity: String
+  customerEmail: String
+  customerPhone: String
   """
   stringified JSON of product rows
   """
@@ -2953,11 +2950,11 @@ type Invoice implements Node {
   tax: Float!
   total: Float!
   notes: String
-  paymentmethod: String @goField(name: "PaymentMethod", forceResolver: false)
-  bankname: String @goField(name: "BankName", forceResolver: false)
-  bankagency: String @goField(name: "BankAgency", forceResolver: false)
-  bankaccountnumber: String @goField(name: "BankAccountNumber", forceResolver: false)
-  bankaccountname: String @goField(name: "BankAccountName", forceResolver: false)
+  paymentMethod: String
+  bankName: String
+  bankAgency: String
+  bankAccountNumber: String
+  bankAccountName: String
   url: String
   filename: String
   """
@@ -2966,7 +2963,7 @@ type Invoice implements Node {
   size: Float
   keywords: String!
   company: Company!
-  issuedby: User @goField(name: "IssuedBy", forceResolver: false)
+  issuedBy: User
   client: Customer
   receivable: Receivable
 }
@@ -3056,160 +3053,160 @@ input InvoiceWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
-  companyLogo field predicates
+  company_logo field predicates
   """
-  companylogo: String
-  companylogoNEQ: String
-  companylogoIn: [String!]
-  companylogoNotIn: [String!]
-  companylogoGT: String
-  companylogoGTE: String
-  companylogoLT: String
-  companylogoLTE: String
-  companylogoContains: String
-  companylogoHasPrefix: String
-  companylogoHasSuffix: String
-  companylogoIsNil: Boolean
-  companylogoNotNil: Boolean
-  companylogoEqualFold: String
-  companylogoContainsFold: String
+  companyLogo: String
+  companyLogoNEQ: String
+  companyLogoIn: [String!]
+  companyLogoNotIn: [String!]
+  companyLogoGT: String
+  companyLogoGTE: String
+  companyLogoLT: String
+  companyLogoLTE: String
+  companyLogoContains: String
+  companyLogoHasPrefix: String
+  companyLogoHasSuffix: String
+  companyLogoIsNil: Boolean
+  companyLogoNotNil: Boolean
+  companyLogoEqualFold: String
+  companyLogoContainsFold: String
   """
-  companyName field predicates
+  company_name field predicates
   """
-  companyname: String
-  companynameNEQ: String
-  companynameIn: [String!]
-  companynameNotIn: [String!]
-  companynameGT: String
-  companynameGTE: String
-  companynameLT: String
-  companynameLTE: String
-  companynameContains: String
-  companynameHasPrefix: String
-  companynameHasSuffix: String
-  companynameEqualFold: String
-  companynameContainsFold: String
+  companyName: String
+  companyNameNEQ: String
+  companyNameIn: [String!]
+  companyNameNotIn: [String!]
+  companyNameGT: String
+  companyNameGTE: String
+  companyNameLT: String
+  companyNameLTE: String
+  companyNameContains: String
+  companyNameHasPrefix: String
+  companyNameHasSuffix: String
+  companyNameEqualFold: String
+  companyNameContainsFold: String
   """
-  companyTaxID field predicates
+  company_tax_id field predicates
   """
-  companytaxid: String
-  companytaxidNEQ: String
-  companytaxidIn: [String!]
-  companytaxidNotIn: [String!]
-  companytaxidGT: String
-  companytaxidGTE: String
-  companytaxidLT: String
-  companytaxidLTE: String
-  companytaxidContains: String
-  companytaxidHasPrefix: String
-  companytaxidHasSuffix: String
-  companytaxidIsNil: Boolean
-  companytaxidNotNil: Boolean
-  companytaxidEqualFold: String
-  companytaxidContainsFold: String
+  companyTaxID: String
+  companyTaxIDNEQ: String
+  companyTaxIDIn: [String!]
+  companyTaxIDNotIn: [String!]
+  companyTaxIDGT: String
+  companyTaxIDGTE: String
+  companyTaxIDLT: String
+  companyTaxIDLTE: String
+  companyTaxIDContains: String
+  companyTaxIDHasPrefix: String
+  companyTaxIDHasSuffix: String
+  companyTaxIDIsNil: Boolean
+  companyTaxIDNotNil: Boolean
+  companyTaxIDEqualFold: String
+  companyTaxIDContainsFold: String
   """
-  companyAddress field predicates
+  company_address field predicates
   """
-  companyaddress: String
-  companyaddressNEQ: String
-  companyaddressIn: [String!]
-  companyaddressNotIn: [String!]
-  companyaddressGT: String
-  companyaddressGTE: String
-  companyaddressLT: String
-  companyaddressLTE: String
-  companyaddressContains: String
-  companyaddressHasPrefix: String
-  companyaddressHasSuffix: String
-  companyaddressEqualFold: String
-  companyaddressContainsFold: String
+  companyAddress: String
+  companyAddressNEQ: String
+  companyAddressIn: [String!]
+  companyAddressNotIn: [String!]
+  companyAddressGT: String
+  companyAddressGTE: String
+  companyAddressLT: String
+  companyAddressLTE: String
+  companyAddressContains: String
+  companyAddressHasPrefix: String
+  companyAddressHasSuffix: String
+  companyAddressEqualFold: String
+  companyAddressContainsFold: String
   """
-  companyCity field predicates
+  company_city field predicates
   """
-  companycity: String
-  companycityNEQ: String
-  companycityIn: [String!]
-  companycityNotIn: [String!]
-  companycityGT: String
-  companycityGTE: String
-  companycityLT: String
-  companycityLTE: String
-  companycityContains: String
-  companycityHasPrefix: String
-  companycityHasSuffix: String
-  companycityEqualFold: String
-  companycityContainsFold: String
+  companyCity: String
+  companyCityNEQ: String
+  companyCityIn: [String!]
+  companyCityNotIn: [String!]
+  companyCityGT: String
+  companyCityGTE: String
+  companyCityLT: String
+  companyCityLTE: String
+  companyCityContains: String
+  companyCityHasPrefix: String
+  companyCityHasSuffix: String
+  companyCityEqualFold: String
+  companyCityContainsFold: String
   """
-  companyEmail field predicates
+  company_email field predicates
   """
-  companyemail: String
-  companyemailNEQ: String
-  companyemailIn: [String!]
-  companyemailNotIn: [String!]
-  companyemailGT: String
-  companyemailGTE: String
-  companyemailLT: String
-  companyemailLTE: String
-  companyemailContains: String
-  companyemailHasPrefix: String
-  companyemailHasSuffix: String
-  companyemailIsNil: Boolean
-  companyemailNotNil: Boolean
-  companyemailEqualFold: String
-  companyemailContainsFold: String
+  companyEmail: String
+  companyEmailNEQ: String
+  companyEmailIn: [String!]
+  companyEmailNotIn: [String!]
+  companyEmailGT: String
+  companyEmailGTE: String
+  companyEmailLT: String
+  companyEmailLTE: String
+  companyEmailContains: String
+  companyEmailHasPrefix: String
+  companyEmailHasSuffix: String
+  companyEmailIsNil: Boolean
+  companyEmailNotNil: Boolean
+  companyEmailEqualFold: String
+  companyEmailContainsFold: String
   """
-  companyPhone field predicates
+  company_phone field predicates
   """
-  companyphone: String
-  companyphoneNEQ: String
-  companyphoneIn: [String!]
-  companyphoneNotIn: [String!]
-  companyphoneGT: String
-  companyphoneGTE: String
-  companyphoneLT: String
-  companyphoneLTE: String
-  companyphoneContains: String
-  companyphoneHasPrefix: String
-  companyphoneHasSuffix: String
-  companyphoneIsNil: Boolean
-  companyphoneNotNil: Boolean
-  companyphoneEqualFold: String
-  companyphoneContainsFold: String
+  companyPhone: String
+  companyPhoneNEQ: String
+  companyPhoneIn: [String!]
+  companyPhoneNotIn: [String!]
+  companyPhoneGT: String
+  companyPhoneGTE: String
+  companyPhoneLT: String
+  companyPhoneLTE: String
+  companyPhoneContains: String
+  companyPhoneHasPrefix: String
+  companyPhoneHasSuffix: String
+  companyPhoneIsNil: Boolean
+  companyPhoneNotNil: Boolean
+  companyPhoneEqualFold: String
+  companyPhoneContainsFold: String
   """
   number field predicates
   """
@@ -3229,40 +3226,40 @@ input InvoiceWhereInput {
   numberEqualFold: String
   numberContainsFold: String
   """
-  issueDate field predicates
+  issue_date field predicates
   """
-  issuedate: Time
-  issuedateNEQ: Time
-  issuedateIn: [Time!]
-  issuedateNotIn: [Time!]
-  issuedateGT: Time
-  issuedateGTE: Time
-  issuedateLT: Time
-  issuedateLTE: Time
+  issueDate: Time
+  issueDateNEQ: Time
+  issueDateIn: [Time!]
+  issueDateNotIn: [Time!]
+  issueDateGT: Time
+  issueDateGTE: Time
+  issueDateLT: Time
+  issueDateLTE: Time
   """
-  dueDate field predicates
+  due_date field predicates
   """
-  duedate: Time
-  duedateNEQ: Time
-  duedateIn: [Time!]
-  duedateNotIn: [Time!]
-  duedateGT: Time
-  duedateGTE: Time
-  duedateLT: Time
-  duedateLTE: Time
+  dueDate: Time
+  dueDateNEQ: Time
+  dueDateIn: [Time!]
+  dueDateNotIn: [Time!]
+  dueDateGT: Time
+  dueDateGTE: Time
+  dueDateLT: Time
+  dueDateLTE: Time
   """
-  paidAt field predicates
+  paid_at field predicates
   """
-  paidat: Time
-  paidatNEQ: Time
-  paidatIn: [Time!]
-  paidatNotIn: [Time!]
-  paidatGT: Time
-  paidatGTE: Time
-  paidatLT: Time
-  paidatLTE: Time
-  paidatIsNil: Boolean
-  paidatNotNil: Boolean
+  paidAt: Time
+  paidAtNEQ: Time
+  paidAtIn: [Time!]
+  paidAtNotIn: [Time!]
+  paidAtGT: Time
+  paidAtGTE: Time
+  paidAtLT: Time
+  paidAtLTE: Time
+  paidAtIsNil: Boolean
+  paidAtNotNil: Boolean
   """
   status field predicates
   """
@@ -3271,113 +3268,113 @@ input InvoiceWhereInput {
   statusIn: [InvoiceStatus!]
   statusNotIn: [InvoiceStatus!]
   """
-  customerName field predicates
+  customer_name field predicates
   """
-  customername: String
-  customernameNEQ: String
-  customernameIn: [String!]
-  customernameNotIn: [String!]
-  customernameGT: String
-  customernameGTE: String
-  customernameLT: String
-  customernameLTE: String
-  customernameContains: String
-  customernameHasPrefix: String
-  customernameHasSuffix: String
-  customernameIsNil: Boolean
-  customernameNotNil: Boolean
-  customernameEqualFold: String
-  customernameContainsFold: String
+  customerName: String
+  customerNameNEQ: String
+  customerNameIn: [String!]
+  customerNameNotIn: [String!]
+  customerNameGT: String
+  customerNameGTE: String
+  customerNameLT: String
+  customerNameLTE: String
+  customerNameContains: String
+  customerNameHasPrefix: String
+  customerNameHasSuffix: String
+  customerNameIsNil: Boolean
+  customerNameNotNil: Boolean
+  customerNameEqualFold: String
+  customerNameContainsFold: String
   """
-  customerTaxID field predicates
+  customer_tax_id field predicates
   """
-  customertaxid: String
-  customertaxidNEQ: String
-  customertaxidIn: [String!]
-  customertaxidNotIn: [String!]
-  customertaxidGT: String
-  customertaxidGTE: String
-  customertaxidLT: String
-  customertaxidLTE: String
-  customertaxidContains: String
-  customertaxidHasPrefix: String
-  customertaxidHasSuffix: String
-  customertaxidIsNil: Boolean
-  customertaxidNotNil: Boolean
-  customertaxidEqualFold: String
-  customertaxidContainsFold: String
+  customerTaxID: String
+  customerTaxIDNEQ: String
+  customerTaxIDIn: [String!]
+  customerTaxIDNotIn: [String!]
+  customerTaxIDGT: String
+  customerTaxIDGTE: String
+  customerTaxIDLT: String
+  customerTaxIDLTE: String
+  customerTaxIDContains: String
+  customerTaxIDHasPrefix: String
+  customerTaxIDHasSuffix: String
+  customerTaxIDIsNil: Boolean
+  customerTaxIDNotNil: Boolean
+  customerTaxIDEqualFold: String
+  customerTaxIDContainsFold: String
   """
-  customerAddress field predicates
+  customer_address field predicates
   """
-  customeraddress: String
-  customeraddressNEQ: String
-  customeraddressIn: [String!]
-  customeraddressNotIn: [String!]
-  customeraddressGT: String
-  customeraddressGTE: String
-  customeraddressLT: String
-  customeraddressLTE: String
-  customeraddressContains: String
-  customeraddressHasPrefix: String
-  customeraddressHasSuffix: String
-  customeraddressIsNil: Boolean
-  customeraddressNotNil: Boolean
-  customeraddressEqualFold: String
-  customeraddressContainsFold: String
+  customerAddress: String
+  customerAddressNEQ: String
+  customerAddressIn: [String!]
+  customerAddressNotIn: [String!]
+  customerAddressGT: String
+  customerAddressGTE: String
+  customerAddressLT: String
+  customerAddressLTE: String
+  customerAddressContains: String
+  customerAddressHasPrefix: String
+  customerAddressHasSuffix: String
+  customerAddressIsNil: Boolean
+  customerAddressNotNil: Boolean
+  customerAddressEqualFold: String
+  customerAddressContainsFold: String
   """
-  customerCity field predicates
+  customer_city field predicates
   """
-  customercity: String
-  customercityNEQ: String
-  customercityIn: [String!]
-  customercityNotIn: [String!]
-  customercityGT: String
-  customercityGTE: String
-  customercityLT: String
-  customercityLTE: String
-  customercityContains: String
-  customercityHasPrefix: String
-  customercityHasSuffix: String
-  customercityIsNil: Boolean
-  customercityNotNil: Boolean
-  customercityEqualFold: String
-  customercityContainsFold: String
+  customerCity: String
+  customerCityNEQ: String
+  customerCityIn: [String!]
+  customerCityNotIn: [String!]
+  customerCityGT: String
+  customerCityGTE: String
+  customerCityLT: String
+  customerCityLTE: String
+  customerCityContains: String
+  customerCityHasPrefix: String
+  customerCityHasSuffix: String
+  customerCityIsNil: Boolean
+  customerCityNotNil: Boolean
+  customerCityEqualFold: String
+  customerCityContainsFold: String
   """
-  customerEmail field predicates
+  customer_email field predicates
   """
-  customeremail: String
-  customeremailNEQ: String
-  customeremailIn: [String!]
-  customeremailNotIn: [String!]
-  customeremailGT: String
-  customeremailGTE: String
-  customeremailLT: String
-  customeremailLTE: String
-  customeremailContains: String
-  customeremailHasPrefix: String
-  customeremailHasSuffix: String
-  customeremailIsNil: Boolean
-  customeremailNotNil: Boolean
-  customeremailEqualFold: String
-  customeremailContainsFold: String
+  customerEmail: String
+  customerEmailNEQ: String
+  customerEmailIn: [String!]
+  customerEmailNotIn: [String!]
+  customerEmailGT: String
+  customerEmailGTE: String
+  customerEmailLT: String
+  customerEmailLTE: String
+  customerEmailContains: String
+  customerEmailHasPrefix: String
+  customerEmailHasSuffix: String
+  customerEmailIsNil: Boolean
+  customerEmailNotNil: Boolean
+  customerEmailEqualFold: String
+  customerEmailContainsFold: String
   """
-  customerPhone field predicates
+  customer_phone field predicates
   """
-  customerphone: String
-  customerphoneNEQ: String
-  customerphoneIn: [String!]
-  customerphoneNotIn: [String!]
-  customerphoneGT: String
-  customerphoneGTE: String
-  customerphoneLT: String
-  customerphoneLTE: String
-  customerphoneContains: String
-  customerphoneHasPrefix: String
-  customerphoneHasSuffix: String
-  customerphoneIsNil: Boolean
-  customerphoneNotNil: Boolean
-  customerphoneEqualFold: String
-  customerphoneContainsFold: String
+  customerPhone: String
+  customerPhoneNEQ: String
+  customerPhoneIn: [String!]
+  customerPhoneNotIn: [String!]
+  customerPhoneGT: String
+  customerPhoneGTE: String
+  customerPhoneLT: String
+  customerPhoneLTE: String
+  customerPhoneContains: String
+  customerPhoneHasPrefix: String
+  customerPhoneHasSuffix: String
+  customerPhoneIsNil: Boolean
+  customerPhoneNotNil: Boolean
+  customerPhoneEqualFold: String
+  customerPhoneContainsFold: String
   """
   items field predicates
   """
@@ -3446,95 +3443,95 @@ input InvoiceWhereInput {
   notesEqualFold: String
   notesContainsFold: String
   """
-  paymentMethod field predicates
+  payment_method field predicates
   """
-  paymentmethod: String
-  paymentmethodNEQ: String
-  paymentmethodIn: [String!]
-  paymentmethodNotIn: [String!]
-  paymentmethodGT: String
-  paymentmethodGTE: String
-  paymentmethodLT: String
-  paymentmethodLTE: String
-  paymentmethodContains: String
-  paymentmethodHasPrefix: String
-  paymentmethodHasSuffix: String
-  paymentmethodIsNil: Boolean
-  paymentmethodNotNil: Boolean
-  paymentmethodEqualFold: String
-  paymentmethodContainsFold: String
+  paymentMethod: String
+  paymentMethodNEQ: String
+  paymentMethodIn: [String!]
+  paymentMethodNotIn: [String!]
+  paymentMethodGT: String
+  paymentMethodGTE: String
+  paymentMethodLT: String
+  paymentMethodLTE: String
+  paymentMethodContains: String
+  paymentMethodHasPrefix: String
+  paymentMethodHasSuffix: String
+  paymentMethodIsNil: Boolean
+  paymentMethodNotNil: Boolean
+  paymentMethodEqualFold: String
+  paymentMethodContainsFold: String
   """
-  bankName field predicates
+  bank_name field predicates
   """
-  bankname: String
-  banknameNEQ: String
-  banknameIn: [String!]
-  banknameNotIn: [String!]
-  banknameGT: String
-  banknameGTE: String
-  banknameLT: String
-  banknameLTE: String
-  banknameContains: String
-  banknameHasPrefix: String
-  banknameHasSuffix: String
-  banknameIsNil: Boolean
-  banknameNotNil: Boolean
-  banknameEqualFold: String
-  banknameContainsFold: String
+  bankName: String
+  bankNameNEQ: String
+  bankNameIn: [String!]
+  bankNameNotIn: [String!]
+  bankNameGT: String
+  bankNameGTE: String
+  bankNameLT: String
+  bankNameLTE: String
+  bankNameContains: String
+  bankNameHasPrefix: String
+  bankNameHasSuffix: String
+  bankNameIsNil: Boolean
+  bankNameNotNil: Boolean
+  bankNameEqualFold: String
+  bankNameContainsFold: String
   """
-  bankAgency field predicates
+  bank_agency field predicates
   """
-  bankagency: String
-  bankagencyNEQ: String
-  bankagencyIn: [String!]
-  bankagencyNotIn: [String!]
-  bankagencyGT: String
-  bankagencyGTE: String
-  bankagencyLT: String
-  bankagencyLTE: String
-  bankagencyContains: String
-  bankagencyHasPrefix: String
-  bankagencyHasSuffix: String
-  bankagencyIsNil: Boolean
-  bankagencyNotNil: Boolean
-  bankagencyEqualFold: String
-  bankagencyContainsFold: String
+  bankAgency: String
+  bankAgencyNEQ: String
+  bankAgencyIn: [String!]
+  bankAgencyNotIn: [String!]
+  bankAgencyGT: String
+  bankAgencyGTE: String
+  bankAgencyLT: String
+  bankAgencyLTE: String
+  bankAgencyContains: String
+  bankAgencyHasPrefix: String
+  bankAgencyHasSuffix: String
+  bankAgencyIsNil: Boolean
+  bankAgencyNotNil: Boolean
+  bankAgencyEqualFold: String
+  bankAgencyContainsFold: String
   """
-  bankAccountNumber field predicates
+  bank_account_number field predicates
   """
-  bankaccountnumber: String
-  bankaccountnumberNEQ: String
-  bankaccountnumberIn: [String!]
-  bankaccountnumberNotIn: [String!]
-  bankaccountnumberGT: String
-  bankaccountnumberGTE: String
-  bankaccountnumberLT: String
-  bankaccountnumberLTE: String
-  bankaccountnumberContains: String
-  bankaccountnumberHasPrefix: String
-  bankaccountnumberHasSuffix: String
-  bankaccountnumberIsNil: Boolean
-  bankaccountnumberNotNil: Boolean
-  bankaccountnumberEqualFold: String
-  bankaccountnumberContainsFold: String
+  bankAccountNumber: String
+  bankAccountNumberNEQ: String
+  bankAccountNumberIn: [String!]
+  bankAccountNumberNotIn: [String!]
+  bankAccountNumberGT: String
+  bankAccountNumberGTE: String
+  bankAccountNumberLT: String
+  bankAccountNumberLTE: String
+  bankAccountNumberContains: String
+  bankAccountNumberHasPrefix: String
+  bankAccountNumberHasSuffix: String
+  bankAccountNumberIsNil: Boolean
+  bankAccountNumberNotNil: Boolean
+  bankAccountNumberEqualFold: String
+  bankAccountNumberContainsFold: String
   """
-  bankAccountName field predicates
+  bank_account_name field predicates
   """
-  bankaccountname: String
-  bankaccountnameNEQ: String
-  bankaccountnameIn: [String!]
-  bankaccountnameNotIn: [String!]
-  bankaccountnameGT: String
-  bankaccountnameGTE: String
-  bankaccountnameLT: String
-  bankaccountnameLTE: String
-  bankaccountnameContains: String
-  bankaccountnameHasPrefix: String
-  bankaccountnameHasSuffix: String
-  bankaccountnameIsNil: Boolean
-  bankaccountnameNotNil: Boolean
-  bankaccountnameEqualFold: String
-  bankaccountnameContainsFold: String
+  bankAccountName: String
+  bankAccountNameNEQ: String
+  bankAccountNameIn: [String!]
+  bankAccountNameNotIn: [String!]
+  bankAccountNameGT: String
+  bankAccountNameGTE: String
+  bankAccountNameLT: String
+  bankAccountNameLTE: String
+  bankAccountNameContains: String
+  bankAccountNameHasPrefix: String
+  bankAccountNameHasSuffix: String
+  bankAccountNameIsNil: Boolean
+  bankAccountNameNotNil: Boolean
+  bankAccountNameEqualFold: String
+  bankAccountNameContainsFold: String
   """
   URL field predicates
   """
@@ -3606,7 +3603,7 @@ input InvoiceWhereInput {
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
   """
-  issuedBy edge predicates
+  issued_by edge predicates
   """
   hasIssuedBy: Boolean
   hasIssuedByWith: [UserWhereInput!]
@@ -3623,9 +3620,9 @@ input InvoiceWhereInput {
 }
 type Loan implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   """
   True if the company is the lender
   """
@@ -3753,9 +3750,9 @@ enum LoanPaymentType @goModel(model: "mazza/ent/generated/loan.PaymentType") {
 }
 type LoanSchedule implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   amount: Float!
   amountPaid: Float!
   """
@@ -3850,40 +3847,40 @@ input LoanScheduleWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   amount field predicates
   """
@@ -4021,40 +4018,40 @@ input LoanWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   is_lending field predicates
   """
@@ -4271,9 +4268,9 @@ input LoanWhereInput {
 }
 type MemberSignupToken implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   name: String!
   email: String
   token: String!
@@ -4286,11 +4283,11 @@ type MemberSignupToken implements Node {
   A description about the user and its role of this user
   """
   note: String!
-  numberaccessed: Int! @goField(name: "NumberAccessed", forceResolver: false)
-  expiresat: Time! @goField(name: "ExpiresAt", forceResolver: false)
-  alreadyused: Boolean! @goField(name: "AlreadyUsed", forceResolver: false)
+  numberAccessed: Int!
+  expiresAt: Time!
+  alreadyUsed: Boolean!
   company: Company!
-  createdby: User @goField(name: "CreatedBy", forceResolver: false)
+  createdBy: User
 }
 """
 A connection to a list of items.
@@ -4372,40 +4369,40 @@ input MemberSignupTokenWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   name field predicates
   """
@@ -4496,39 +4493,39 @@ input MemberSignupTokenWhereInput {
   noteEqualFold: String
   noteContainsFold: String
   """
-  numberAccessed field predicates
+  number_accessed field predicates
   """
-  numberaccessed: Int
-  numberaccessedNEQ: Int
-  numberaccessedIn: [Int!]
-  numberaccessedNotIn: [Int!]
-  numberaccessedGT: Int
-  numberaccessedGTE: Int
-  numberaccessedLT: Int
-  numberaccessedLTE: Int
+  numberAccessed: Int
+  numberAccessedNEQ: Int
+  numberAccessedIn: [Int!]
+  numberAccessedNotIn: [Int!]
+  numberAccessedGT: Int
+  numberAccessedGTE: Int
+  numberAccessedLT: Int
+  numberAccessedLTE: Int
   """
-  expiresAt field predicates
+  expires_at field predicates
   """
-  expiresat: Time
-  expiresatNEQ: Time
-  expiresatIn: [Time!]
-  expiresatNotIn: [Time!]
-  expiresatGT: Time
-  expiresatGTE: Time
-  expiresatLT: Time
-  expiresatLTE: Time
+  expiresAt: Time
+  expiresAtNEQ: Time
+  expiresAtIn: [Time!]
+  expiresAtNotIn: [Time!]
+  expiresAtGT: Time
+  expiresAtGTE: Time
+  expiresAtLT: Time
+  expiresAtLTE: Time
   """
-  alreadyUsed field predicates
+  already_used field predicates
   """
-  alreadyused: Boolean
-  alreadyusedNEQ: Boolean
+  alreadyUsed: Boolean
+  alreadyUsedNEQ: Boolean
   """
   company edge predicates
   """
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
   """
-  createdBy edge predicates
+  created_by edge predicates
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
@@ -4580,16 +4577,16 @@ type PageInfo {
 }
 type Payable implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
-  entrygroup: Int! @goField(name: "EntryGroup", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  entryGroup: Int!
   date: Time!
   name: String!
-  amountindefault: Float! @goField(name: "AmountInDefault", forceResolver: false)
-  outstandingbalance: Float! @goField(name: "OutstandingBalance", forceResolver: false)
-  totaltransaction: Float! @goField(name: "TotalTransaction", forceResolver: false)
-  duedate: Time! @goField(name: "DueDate", forceResolver: false)
+  amountInDefault: Float!
+  outstandingBalance: Float!
+  totalTransaction: Float!
+  dueDate: Time!
   status: PayableStatus!
   company: Company
 }
@@ -4678,51 +4675,51 @@ input PayableWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
-  entryGroup field predicates
+  entry_group field predicates
   """
-  entrygroup: Int
-  entrygroupNEQ: Int
-  entrygroupIn: [Int!]
-  entrygroupNotIn: [Int!]
-  entrygroupGT: Int
-  entrygroupGTE: Int
-  entrygroupLT: Int
-  entrygroupLTE: Int
+  entryGroup: Int
+  entryGroupNEQ: Int
+  entryGroupIn: [Int!]
+  entryGroupNotIn: [Int!]
+  entryGroupGT: Int
+  entryGroupGTE: Int
+  entryGroupLT: Int
+  entryGroupLTE: Int
   """
   date field predicates
   """
@@ -4751,49 +4748,49 @@ input PayableWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  amountInDefault field predicates
+  amount_in_default field predicates
   """
-  amountindefault: Float
-  amountindefaultNEQ: Float
-  amountindefaultIn: [Float!]
-  amountindefaultNotIn: [Float!]
-  amountindefaultGT: Float
-  amountindefaultGTE: Float
-  amountindefaultLT: Float
-  amountindefaultLTE: Float
+  amountInDefault: Float
+  amountInDefaultNEQ: Float
+  amountInDefaultIn: [Float!]
+  amountInDefaultNotIn: [Float!]
+  amountInDefaultGT: Float
+  amountInDefaultGTE: Float
+  amountInDefaultLT: Float
+  amountInDefaultLTE: Float
   """
-  outstandingBalance field predicates
+  outstanding_balance field predicates
   """
-  outstandingbalance: Float
-  outstandingbalanceNEQ: Float
-  outstandingbalanceIn: [Float!]
-  outstandingbalanceNotIn: [Float!]
-  outstandingbalanceGT: Float
-  outstandingbalanceGTE: Float
-  outstandingbalanceLT: Float
-  outstandingbalanceLTE: Float
+  outstandingBalance: Float
+  outstandingBalanceNEQ: Float
+  outstandingBalanceIn: [Float!]
+  outstandingBalanceNotIn: [Float!]
+  outstandingBalanceGT: Float
+  outstandingBalanceGTE: Float
+  outstandingBalanceLT: Float
+  outstandingBalanceLTE: Float
   """
-  totalTransaction field predicates
+  total_transaction field predicates
   """
-  totaltransaction: Float
-  totaltransactionNEQ: Float
-  totaltransactionIn: [Float!]
-  totaltransactionNotIn: [Float!]
-  totaltransactionGT: Float
-  totaltransactionGTE: Float
-  totaltransactionLT: Float
-  totaltransactionLTE: Float
+  totalTransaction: Float
+  totalTransactionNEQ: Float
+  totalTransactionIn: [Float!]
+  totalTransactionNotIn: [Float!]
+  totalTransactionGT: Float
+  totalTransactionGTE: Float
+  totalTransactionLT: Float
+  totalTransactionLTE: Float
   """
-  dueDate field predicates
+  due_date field predicates
   """
-  duedate: Time
-  duedateNEQ: Time
-  duedateIn: [Time!]
-  duedateNotIn: [Time!]
-  duedateGT: Time
-  duedateGTE: Time
-  duedateLT: Time
-  duedateLTE: Time
+  dueDate: Time
+  dueDateNEQ: Time
+  dueDateIn: [Time!]
+  dueDateNotIn: [Time!]
+  dueDateGT: Time
+  dueDateGTE: Time
+  dueDateLT: Time
+  dueDateLTE: Time
   """
   status field predicates
   """
@@ -4809,9 +4806,9 @@ input PayableWhereInput {
 }
 type Product implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   stock: Int!
   company: Company
 }
@@ -4855,40 +4852,40 @@ input ProductWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   stock field predicates
   """
@@ -4908,19 +4905,19 @@ input ProductWhereInput {
 }
 type Project implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   name: String!
   description: String!
-  plannedstartdate: Time! @goField(name: "PlannedStartDate", forceResolver: false)
-  actualstartdate: Time @goField(name: "ActualStartDate", forceResolver: false)
-  plannedenddate: Time! @goField(name: "PlannedEndDate", forceResolver: false)
-  actualenddate: Time @goField(name: "ActualEndDate", forceResolver: false)
+  plannedStartDate: Time!
+  actualStartDate: Time
+  plannedEndDate: Time!
+  actualEndDate: Time
   progress: Float!
   status: ProjectStatus!
   company: Company
-  createdby: User @goField(name: "CreatedBy", forceResolver: false)
+  createdBy: User
   leader: User
   tasks: [ProjectTask!]
   milestones: [ProjectMilestone!]
@@ -4958,7 +4955,7 @@ type ProjectEdge {
 type ProjectMilestone implements Node {
   id: ID!
   name: String!
-  duedate: Time! @goField(name: "DueDate", forceResolver: false)
+  dueDate: Time!
   project: Project!
 }
 """
@@ -4997,16 +4994,16 @@ input ProjectMilestoneWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  dueDate field predicates
+  due_date field predicates
   """
-  duedate: Time
-  duedateNEQ: Time
-  duedateIn: [Time!]
-  duedateNotIn: [Time!]
-  duedateGT: Time
-  duedateGTE: Time
-  duedateLT: Time
-  duedateLTE: Time
+  dueDate: Time
+  dueDateNEQ: Time
+  dueDateIn: [Time!]
+  dueDateNotIn: [Time!]
+  dueDateGT: Time
+  dueDateGTE: Time
+  dueDateLT: Time
+  dueDateLTE: Time
   """
   project edge predicates
   """
@@ -5050,25 +5047,25 @@ enum ProjectStatus @goModel(model: "mazza/ent/generated/project.Status") {
 }
 type ProjectTask implements Node {
   id: ID!
-  createdat: Time @goField(name: "CreatedAt", forceResolver: false)
-  name: String!
-  assigneename: String! @goField(name: "AssigneeName", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  assigneeName: String!
+  description: String
+  dueDate: Time!
+  endDate: Time
   """
   Where is task will be executed
   """
   location: String
-  duedate: Time! @goField(name: "DueDate", forceResolver: false)
-  plannedstartdate: Time! @goField(name: "PlannedStartDate", forceResolver: false)
-  actualstartdate: Time @goField(name: "ActualStartDate", forceResolver: false)
-  plannedenddate: Time @goField(name: "PlannedEndDate", forceResolver: false)
-  actualenddate: Time @goField(name: "ActualEndDate", forceResolver: false)
-  description: String
+  name: String!
+  startDate: Time!
   status: ProjectTaskStatus!
   project: Project!
   assignee: User
   participants: [User!]
-  createdby: User @goField(name: "CreatedBy", forceResolver: false)
-  workshifts: [Workshift!] @goField(name: "WorkShifts", forceResolver: false)
+  createdBy: User
+  workShifts: [Workshift!]
 }
 """
 A connection to a list of items.
@@ -5117,11 +5114,11 @@ input ProjectTaskOrder {
 Properties by which ProjectTask connections can be ordered.
 """
 enum ProjectTaskOrderField {
+  CREATED_AT
+  UPDATED_AT
   DUE_DATE
-  PLANNED_START_DATE
-  ACTUAL_START_DATE
-  PLANNED_END_DATE
-  ACTUAL_END_DATE
+  END_DATE
+  START_DATE
   STATUS
 }
 """
@@ -5152,50 +5149,98 @@ input ProjectTaskWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
-  createdatIsNil: Boolean
-  createdatNotNil: Boolean
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  name field predicates
+  updated_at field predicates
   """
-  name: String
-  nameNEQ: String
-  nameIn: [String!]
-  nameNotIn: [String!]
-  nameGT: String
-  nameGTE: String
-  nameLT: String
-  nameLTE: String
-  nameContains: String
-  nameHasPrefix: String
-  nameHasSuffix: String
-  nameEqualFold: String
-  nameContainsFold: String
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  assigneeName field predicates
+  deleted_at field predicates
   """
-  assigneename: String
-  assigneenameNEQ: String
-  assigneenameIn: [String!]
-  assigneenameNotIn: [String!]
-  assigneenameGT: String
-  assigneenameGTE: String
-  assigneenameLT: String
-  assigneenameLTE: String
-  assigneenameContains: String
-  assigneenameHasPrefix: String
-  assigneenameHasSuffix: String
-  assigneenameEqualFold: String
-  assigneenameContainsFold: String
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
+  """
+  assignee_name field predicates
+  """
+  assigneeName: String
+  assigneeNameNEQ: String
+  assigneeNameIn: [String!]
+  assigneeNameNotIn: [String!]
+  assigneeNameGT: String
+  assigneeNameGTE: String
+  assigneeNameLT: String
+  assigneeNameLTE: String
+  assigneeNameContains: String
+  assigneeNameHasPrefix: String
+  assigneeNameHasSuffix: String
+  assigneeNameEqualFold: String
+  assigneeNameContainsFold: String
+  """
+  description field predicates
+  """
+  description: String
+  descriptionNEQ: String
+  descriptionIn: [String!]
+  descriptionNotIn: [String!]
+  descriptionGT: String
+  descriptionGTE: String
+  descriptionLT: String
+  descriptionLTE: String
+  descriptionContains: String
+  descriptionHasPrefix: String
+  descriptionHasSuffix: String
+  descriptionIsNil: Boolean
+  descriptionNotNil: Boolean
+  descriptionEqualFold: String
+  descriptionContainsFold: String
+  """
+  due_date field predicates
+  """
+  dueDate: Time
+  dueDateNEQ: Time
+  dueDateIn: [Time!]
+  dueDateNotIn: [Time!]
+  dueDateGT: Time
+  dueDateGTE: Time
+  dueDateLT: Time
+  dueDateLTE: Time
+  """
+  end_date field predicates
+  """
+  endDate: Time
+  endDateNEQ: Time
+  endDateIn: [Time!]
+  endDateNotIn: [Time!]
+  endDateGT: Time
+  endDateGTE: Time
+  endDateLT: Time
+  endDateLTE: Time
+  endDateIsNil: Boolean
+  endDateNotNil: Boolean
   """
   location field predicates
   """
@@ -5215,84 +5260,32 @@ input ProjectTaskWhereInput {
   locationEqualFold: String
   locationContainsFold: String
   """
-  dueDate field predicates
+  name field predicates
   """
-  duedate: Time
-  duedateNEQ: Time
-  duedateIn: [Time!]
-  duedateNotIn: [Time!]
-  duedateGT: Time
-  duedateGTE: Time
-  duedateLT: Time
-  duedateLTE: Time
+  name: String
+  nameNEQ: String
+  nameIn: [String!]
+  nameNotIn: [String!]
+  nameGT: String
+  nameGTE: String
+  nameLT: String
+  nameLTE: String
+  nameContains: String
+  nameHasPrefix: String
+  nameHasSuffix: String
+  nameEqualFold: String
+  nameContainsFold: String
   """
-  plannedStartDate field predicates
+  start_date field predicates
   """
-  plannedstartdate: Time
-  plannedstartdateNEQ: Time
-  plannedstartdateIn: [Time!]
-  plannedstartdateNotIn: [Time!]
-  plannedstartdateGT: Time
-  plannedstartdateGTE: Time
-  plannedstartdateLT: Time
-  plannedstartdateLTE: Time
-  """
-  actualStartDate field predicates
-  """
-  actualstartdate: Time
-  actualstartdateNEQ: Time
-  actualstartdateIn: [Time!]
-  actualstartdateNotIn: [Time!]
-  actualstartdateGT: Time
-  actualstartdateGTE: Time
-  actualstartdateLT: Time
-  actualstartdateLTE: Time
-  actualstartdateIsNil: Boolean
-  actualstartdateNotNil: Boolean
-  """
-  plannedEndDate field predicates
-  """
-  plannedenddate: Time
-  plannedenddateNEQ: Time
-  plannedenddateIn: [Time!]
-  plannedenddateNotIn: [Time!]
-  plannedenddateGT: Time
-  plannedenddateGTE: Time
-  plannedenddateLT: Time
-  plannedenddateLTE: Time
-  plannedenddateIsNil: Boolean
-  plannedenddateNotNil: Boolean
-  """
-  actualEndDate field predicates
-  """
-  actualenddate: Time
-  actualenddateNEQ: Time
-  actualenddateIn: [Time!]
-  actualenddateNotIn: [Time!]
-  actualenddateGT: Time
-  actualenddateGTE: Time
-  actualenddateLT: Time
-  actualenddateLTE: Time
-  actualenddateIsNil: Boolean
-  actualenddateNotNil: Boolean
-  """
-  description field predicates
-  """
-  description: String
-  descriptionNEQ: String
-  descriptionIn: [String!]
-  descriptionNotIn: [String!]
-  descriptionGT: String
-  descriptionGTE: String
-  descriptionLT: String
-  descriptionLTE: String
-  descriptionContains: String
-  descriptionHasPrefix: String
-  descriptionHasSuffix: String
-  descriptionIsNil: Boolean
-  descriptionNotNil: Boolean
-  descriptionEqualFold: String
-  descriptionContainsFold: String
+  startDate: Time
+  startDateNEQ: Time
+  startDateIn: [Time!]
+  startDateNotIn: [Time!]
+  startDateGT: Time
+  startDateGTE: Time
+  startDateLT: Time
+  startDateLTE: Time
   """
   status field predicates
   """
@@ -5316,12 +5309,12 @@ input ProjectTaskWhereInput {
   hasParticipants: Boolean
   hasParticipantsWith: [UserWhereInput!]
   """
-  createdBy edge predicates
+  created_by edge predicates
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
   """
-  workShifts edge predicates
+  work_shifts edge predicates
   """
   hasWorkShifts: Boolean
   hasWorkShiftsWith: [WorkshiftWhereInput!]
@@ -5346,40 +5339,40 @@ input ProjectWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   name field predicates
   """
@@ -5413,53 +5406,53 @@ input ProjectWhereInput {
   descriptionEqualFold: String
   descriptionContainsFold: String
   """
-  plannedStartDate field predicates
+  planned_start_date field predicates
   """
-  plannedstartdate: Time
-  plannedstartdateNEQ: Time
-  plannedstartdateIn: [Time!]
-  plannedstartdateNotIn: [Time!]
-  plannedstartdateGT: Time
-  plannedstartdateGTE: Time
-  plannedstartdateLT: Time
-  plannedstartdateLTE: Time
+  plannedStartDate: Time
+  plannedStartDateNEQ: Time
+  plannedStartDateIn: [Time!]
+  plannedStartDateNotIn: [Time!]
+  plannedStartDateGT: Time
+  plannedStartDateGTE: Time
+  plannedStartDateLT: Time
+  plannedStartDateLTE: Time
   """
-  actualStartDate field predicates
+  actual_start_date field predicates
   """
-  actualstartdate: Time
-  actualstartdateNEQ: Time
-  actualstartdateIn: [Time!]
-  actualstartdateNotIn: [Time!]
-  actualstartdateGT: Time
-  actualstartdateGTE: Time
-  actualstartdateLT: Time
-  actualstartdateLTE: Time
-  actualstartdateIsNil: Boolean
-  actualstartdateNotNil: Boolean
+  actualStartDate: Time
+  actualStartDateNEQ: Time
+  actualStartDateIn: [Time!]
+  actualStartDateNotIn: [Time!]
+  actualStartDateGT: Time
+  actualStartDateGTE: Time
+  actualStartDateLT: Time
+  actualStartDateLTE: Time
+  actualStartDateIsNil: Boolean
+  actualStartDateNotNil: Boolean
   """
-  plannedEndDate field predicates
+  planned_end_date field predicates
   """
-  plannedenddate: Time
-  plannedenddateNEQ: Time
-  plannedenddateIn: [Time!]
-  plannedenddateNotIn: [Time!]
-  plannedenddateGT: Time
-  plannedenddateGTE: Time
-  plannedenddateLT: Time
-  plannedenddateLTE: Time
+  plannedEndDate: Time
+  plannedEndDateNEQ: Time
+  plannedEndDateIn: [Time!]
+  plannedEndDateNotIn: [Time!]
+  plannedEndDateGT: Time
+  plannedEndDateGTE: Time
+  plannedEndDateLT: Time
+  plannedEndDateLTE: Time
   """
-  actualEndDate field predicates
+  actual_end_date field predicates
   """
-  actualenddate: Time
-  actualenddateNEQ: Time
-  actualenddateIn: [Time!]
-  actualenddateNotIn: [Time!]
-  actualenddateGT: Time
-  actualenddateGTE: Time
-  actualenddateLT: Time
-  actualenddateLTE: Time
-  actualenddateIsNil: Boolean
-  actualenddateNotNil: Boolean
+  actualEndDate: Time
+  actualEndDateNEQ: Time
+  actualEndDateIn: [Time!]
+  actualEndDateNotIn: [Time!]
+  actualEndDateGT: Time
+  actualEndDateGTE: Time
+  actualEndDateLT: Time
+  actualEndDateLTE: Time
+  actualEndDateIsNil: Boolean
+  actualEndDateNotNil: Boolean
   """
   progress field predicates
   """
@@ -5484,7 +5477,7 @@ input ProjectWhereInput {
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
   """
-  createdBy edge predicates
+  created_by edge predicates
   """
   hasCreatedBy: Boolean
   hasCreatedByWith: [UserWhereInput!]
@@ -5931,16 +5924,16 @@ type Query {
 }
 type Receivable implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
-  entrygroup: Int! @goField(name: "EntryGroup", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  entryGroup: Int!
   date: Time!
   name: String!
-  amountindefault: Float! @goField(name: "AmountInDefault", forceResolver: false)
-  outstandingbalance: Float! @goField(name: "OutstandingBalance", forceResolver: false)
-  totaltransaction: Float! @goField(name: "TotalTransaction", forceResolver: false)
-  duedate: Time! @goField(name: "DueDate", forceResolver: false)
+  amountInDefault: Float!
+  outstandingBalance: Float!
+  totalTransaction: Float!
+  dueDate: Time!
   status: ReceivableStatus!
   company: Company
   invoice: Invoice
@@ -6030,51 +6023,51 @@ input ReceivableWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
-  entryGroup field predicates
+  entry_group field predicates
   """
-  entrygroup: Int
-  entrygroupNEQ: Int
-  entrygroupIn: [Int!]
-  entrygroupNotIn: [Int!]
-  entrygroupGT: Int
-  entrygroupGTE: Int
-  entrygroupLT: Int
-  entrygroupLTE: Int
+  entryGroup: Int
+  entryGroupNEQ: Int
+  entryGroupIn: [Int!]
+  entryGroupNotIn: [Int!]
+  entryGroupGT: Int
+  entryGroupGTE: Int
+  entryGroupLT: Int
+  entryGroupLTE: Int
   """
   date field predicates
   """
@@ -6103,49 +6096,49 @@ input ReceivableWhereInput {
   nameEqualFold: String
   nameContainsFold: String
   """
-  amountInDefault field predicates
+  amount_in_default field predicates
   """
-  amountindefault: Float
-  amountindefaultNEQ: Float
-  amountindefaultIn: [Float!]
-  amountindefaultNotIn: [Float!]
-  amountindefaultGT: Float
-  amountindefaultGTE: Float
-  amountindefaultLT: Float
-  amountindefaultLTE: Float
+  amountInDefault: Float
+  amountInDefaultNEQ: Float
+  amountInDefaultIn: [Float!]
+  amountInDefaultNotIn: [Float!]
+  amountInDefaultGT: Float
+  amountInDefaultGTE: Float
+  amountInDefaultLT: Float
+  amountInDefaultLTE: Float
   """
-  outstandingBalance field predicates
+  outstanding_balance field predicates
   """
-  outstandingbalance: Float
-  outstandingbalanceNEQ: Float
-  outstandingbalanceIn: [Float!]
-  outstandingbalanceNotIn: [Float!]
-  outstandingbalanceGT: Float
-  outstandingbalanceGTE: Float
-  outstandingbalanceLT: Float
-  outstandingbalanceLTE: Float
+  outstandingBalance: Float
+  outstandingBalanceNEQ: Float
+  outstandingBalanceIn: [Float!]
+  outstandingBalanceNotIn: [Float!]
+  outstandingBalanceGT: Float
+  outstandingBalanceGTE: Float
+  outstandingBalanceLT: Float
+  outstandingBalanceLTE: Float
   """
-  totalTransaction field predicates
+  total_transaction field predicates
   """
-  totaltransaction: Float
-  totaltransactionNEQ: Float
-  totaltransactionIn: [Float!]
-  totaltransactionNotIn: [Float!]
-  totaltransactionGT: Float
-  totaltransactionGTE: Float
-  totaltransactionLT: Float
-  totaltransactionLTE: Float
+  totalTransaction: Float
+  totalTransactionNEQ: Float
+  totalTransactionIn: [Float!]
+  totalTransactionNotIn: [Float!]
+  totalTransactionGT: Float
+  totalTransactionGTE: Float
+  totalTransactionLT: Float
+  totalTransactionLTE: Float
   """
-  dueDate field predicates
+  due_date field predicates
   """
-  duedate: Time
-  duedateNEQ: Time
-  duedateIn: [Time!]
-  duedateNotIn: [Time!]
-  duedateGT: Time
-  duedateGTE: Time
-  duedateLT: Time
-  duedateLTE: Time
+  dueDate: Time
+  dueDateNEQ: Time
+  dueDateIn: [Time!]
+  dueDateNotIn: [Time!]
+  dueDateGT: Time
+  dueDateGTE: Time
+  dueDateLT: Time
+  dueDateLTE: Time
   """
   status field predicates
   """
@@ -6166,18 +6159,18 @@ input ReceivableWhereInput {
 }
 type Supplier implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   address: String
   city: String
   country: String
   description: String
   email: String
-  isdefault: Boolean @goField(name: "IsDefault", forceResolver: false)
+  isDefault: Boolean
   name: String!
   phone: String
-  taxid: String @goField(name: "TaxId", forceResolver: false)
+  taxID: String
   company: Company
   loans: [Loan!]
   payables: [Payable!]
@@ -6224,40 +6217,40 @@ input SupplierWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   address field predicates
   """
@@ -6349,12 +6342,12 @@ input SupplierWhereInput {
   emailEqualFold: String
   emailContainsFold: String
   """
-  isDefault field predicates
+  is_default field predicates
   """
-  isdefault: Boolean
-  isdefaultNEQ: Boolean
-  isdefaultIsNil: Boolean
-  isdefaultNotNil: Boolean
+  isDefault: Boolean
+  isDefaultNEQ: Boolean
+  isDefaultIsNil: Boolean
+  isDefaultNotNil: Boolean
   """
   name field predicates
   """
@@ -6390,23 +6383,23 @@ input SupplierWhereInput {
   phoneEqualFold: String
   phoneContainsFold: String
   """
-  taxId field predicates
+  tax_id field predicates
   """
-  taxid: String
-  taxidNEQ: String
-  taxidIn: [String!]
-  taxidNotIn: [String!]
-  taxidGT: String
-  taxidGTE: String
-  taxidLT: String
-  taxidLTE: String
-  taxidContains: String
-  taxidHasPrefix: String
-  taxidHasSuffix: String
-  taxidIsNil: Boolean
-  taxidNotNil: Boolean
-  taxidEqualFold: String
-  taxidContainsFold: String
+  taxID: String
+  taxIDNEQ: String
+  taxIDIn: [String!]
+  taxIDNotIn: [String!]
+  taxIDGT: String
+  taxIDGTE: String
+  taxIDLT: String
+  taxIDLTE: String
+  taxIDContains: String
+  taxIDHasPrefix: String
+  taxIDHasSuffix: String
+  taxIDIsNil: Boolean
+  taxIDNotNil: Boolean
+  taxIDEqualFold: String
+  taxIDContainsFold: String
   """
   company edge predicates
   """
@@ -6507,9 +6500,9 @@ input TokenWhereInput {
 }
 type Treasury implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   balance: Float!
   company: Company
 }
@@ -6553,40 +6546,40 @@ input TreasuryWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   balance field predicates
   """
@@ -6616,11 +6609,11 @@ input UpdateAccountingEntryInput {
   label: String
   amount: Float
   description: String
-  accounttype: AccountingEntryAccountType
+  accountType: AccountingEntryAccountType
   category: String
   main: String
-  isdebit: Boolean
-  isreversal: Boolean
+  isDebit: Boolean
+  isReversal: Boolean
   reversed: Boolean
   companyID: ID
   clearCompany: Boolean
@@ -6648,20 +6641,20 @@ input UpdateCompanyDocumentInput {
   """
   mimetype e.g. application/pdf
   """
-  filetype: String
+  fileType: String
   status: CompanyDocumentStatus
   url: String
   """
   Firebase cloud storage URI. Not exposed to the client
   """
-  storageuri: String
+  storageURI: String
   thumbnail: String
   clearThumbnail: Boolean
-  expirydate: Time
+  expiryDate: Time
   companyID: ID
-  uploadedbyID: ID
+  uploadedByID: ID
   clearUploadedBy: Boolean
-  approvedbyID: ID
+  approvedByID: ID
   clearApprovedBy: Boolean
 }
 """
@@ -6671,32 +6664,32 @@ Input was generated by ent.
 input UpdateCompanyInput {
   address: String
   clearAddress: Boolean
-  basecurrency: String
-  ceoname: String
+  baseCurrency: String
+  ceoName: String
   clearCeoName: Boolean
   city: String
   country: String
-  establishedat: Time
+  establishedAt: Time
   description: String
   clearDescription: Boolean
   email: String
   clearEmail: Boolean
   industry: String
   clearIndustry: Boolean
-  lastentrydate: Time
+  lastEntryDate: Time
   clearLastEntryDate: Boolean
-  lastinvoicenumber: Int
+  lastInvoiceNumber: Int
   clearLastInvoiceNumber: Boolean
   name: String
-  numberofemployees: Int
+  numberEmployees: Int
   phone: String
   clearPhone: Boolean
-  taxid: String
-  clearTaxId: Boolean
-  vatrate: Float
+  taxID: String
+  clearTaxID: Boolean
+  vatRate: Float
   website: String
   clearWebsite: Boolean
-  incompletesetup: Boolean
+  incompleteSetup: Boolean
   clearIncompleteSetup: Boolean
   addAvailableRoleIDs: [ID!]
   removeAvailableRoleIDs: [ID!]
@@ -6764,7 +6757,7 @@ input UpdateCompanyInput {
   addDaughterCompanyIDs: [ID!]
   removeDaughterCompanyIDs: [ID!]
   clearDaughterCompanies: Boolean
-  parentcompanyID: ID
+  parentCompanyID: ID
   clearParentCompany: Boolean
 }
 """
@@ -6785,8 +6778,8 @@ input UpdateCustomerInput {
   name: String
   phone: String
   clearPhone: Boolean
-  taxid: String
-  clearTaxId: Boolean
+  taxID: String
+  clearTaxID: Boolean
 }
 """
 UpdateEmployeeInput is used for update Employee object.
@@ -6806,11 +6799,11 @@ input UpdateEmployeeInput {
   clearPhone: Boolean
   avatar: String
   clearAvatar: Boolean
-  hiredate: Time
-  monthlysalary: Int
+  hireDate: Time
+  monthlySalary: Int
   status: EmployeeStatus
   clearStatus: Boolean
-  performacescore: Float
+  performaceScore: Float
   clearPerformaceScore: Boolean
   companyID: ID
   clearCompany: Boolean
@@ -6851,8 +6844,8 @@ input UpdateInventoryInput {
   Unit of measurement. E.g. litre, unit, gram
   """
   unit: String
-  minimumlevel: Float
-  currentvalue: Float
+  minimumLevel: Float
+  currentValue: Float
   notes: String
 }
 """
@@ -6875,35 +6868,35 @@ UpdateInvoiceInput is used for update Invoice object.
 Input was generated by ent.
 """
 input UpdateInvoiceInput {
-  companylogo: String
+  companyLogo: String
   clearCompanyLogo: Boolean
-  companyname: String
-  companytaxid: String
+  companyName: String
+  companyTaxID: String
   clearCompanyTaxID: Boolean
-  companyaddress: String
-  companycity: String
-  companyemail: String
+  companyAddress: String
+  companyCity: String
+  companyEmail: String
   clearCompanyEmail: Boolean
-  companyphone: String
+  companyPhone: String
   clearCompanyPhone: Boolean
   number: String
   clearNumber: Boolean
-  issuedate: Time
-  duedate: Time
-  paidat: Time
+  issueDate: Time
+  dueDate: Time
+  paidAt: Time
   clearPaidAt: Boolean
   status: InvoiceStatus
-  customername: String
+  customerName: String
   clearCustomerName: Boolean
-  customertaxid: String
+  customerTaxID: String
   clearCustomerTaxID: Boolean
-  customeraddress: String
+  customerAddress: String
   clearCustomerAddress: Boolean
-  customercity: String
+  customerCity: String
   clearCustomerCity: Boolean
-  customeremail: String
+  customerEmail: String
   clearCustomerEmail: Boolean
-  customerphone: String
+  customerPhone: String
   clearCustomerPhone: Boolean
   """
   stringified JSON of product rows
@@ -6914,17 +6907,17 @@ input UpdateInvoiceInput {
   total: Float
   notes: String
   clearNotes: Boolean
-  paymentmethod: String
+  paymentMethod: String
   clearPaymentMethod: Boolean
-  bankname: String
+  bankName: String
   clearBankName: Boolean
-  bankagency: String
+  bankAgency: String
   clearBankAgency: Boolean
-  bankaccountnumber: String
+  bankAccountNumber: String
   clearBankAccountNumber: Boolean
-  bankaccountname: String
+  bankAccountName: String
   clearBankAccountName: Boolean
-  storageuri: String
+  storageURI: String
   clearStorageURI: Boolean
   url: String
   clearURL: Boolean
@@ -7020,7 +7013,7 @@ input UpdateMemberSignupTokenInput {
   """
   note: String
   companyID: ID
-  createdbyID: ID
+  createdByID: ID
   clearCreatedBy: Boolean
 }
 """
@@ -7028,13 +7021,13 @@ UpdatePayableInput is used for update Payable object.
 Input was generated by ent.
 """
 input UpdatePayableInput {
-  entrygroup: Int
+  entryGroup: Int
   date: Time
   name: String
-  amountindefault: Float
-  outstandingbalance: Float
-  totaltransaction: Float
-  duedate: Time
+  amountInDefault: Float
+  outstandingBalance: Float
+  totalTransaction: Float
+  dueDate: Time
   status: PayableStatus
   companyID: ID
   clearCompany: Boolean
@@ -7055,17 +7048,17 @@ Input was generated by ent.
 input UpdateProjectInput {
   name: String
   description: String
-  plannedstartdate: Time
-  actualstartdate: Time
+  plannedStartDate: Time
+  actualStartDate: Time
   clearActualStartDate: Boolean
-  plannedenddate: Time
-  actualenddate: Time
+  plannedEndDate: Time
+  actualEndDate: Time
   clearActualEndDate: Boolean
   progress: Float
   status: ProjectStatus
   companyID: ID
   clearCompany: Boolean
-  createdbyID: ID
+  createdByID: ID
   clearCreatedBy: Boolean
   leaderID: ID
   clearLeader: Boolean
@@ -7082,7 +7075,7 @@ Input was generated by ent.
 """
 input UpdateProjectMilestoneInput {
   name: String
-  duedate: Time
+  dueDate: Time
   projectID: ID
 }
 """
@@ -7090,23 +7083,19 @@ UpdateProjectTaskInput is used for update ProjectTask object.
 Input was generated by ent.
 """
 input UpdateProjectTaskInput {
-  name: String
-  assigneename: String
+  assigneeName: String
+  description: String
+  clearDescription: Boolean
+  dueDate: Time
+  endDate: Time
+  clearEndDate: Boolean
   """
   Where is task will be executed
   """
   location: String
   clearLocation: Boolean
-  duedate: Time
-  plannedstartdate: Time
-  actualstartdate: Time
-  clearActualStartDate: Boolean
-  plannedenddate: Time
-  clearPlannedEndDate: Boolean
-  actualenddate: Time
-  clearActualEndDate: Boolean
-  description: String
-  clearDescription: Boolean
+  name: String
+  startDate: Time
   status: ProjectTaskStatus
   projectID: ID
   assigneeID: ID
@@ -7123,13 +7112,13 @@ UpdateReceivableInput is used for update Receivable object.
 Input was generated by ent.
 """
 input UpdateReceivableInput {
-  entrygroup: Int
+  entryGroup: Int
   date: Time
   name: String
-  amountindefault: Float
-  outstandingbalance: Float
-  totaltransaction: Float
-  duedate: Time
+  amountInDefault: Float
+  outstandingBalance: Float
+  totalTransaction: Float
+  dueDate: Time
   status: ReceivableStatus
   companyID: ID
   clearCompany: Boolean
@@ -7152,8 +7141,8 @@ input UpdateSupplierInput {
   name: String
   phone: String
   clearPhone: Boolean
-  taxid: String
-  clearTaxId: Boolean
+  taxID: String
+  clearTaxID: Boolean
   companyID: ID
   clearCompany: Boolean
   addPayableIDs: [ID!]
@@ -7192,17 +7181,17 @@ input UpdateUserInput {
   """
   device: String
   clearDevice: Boolean
-  firebaseuid: String
-  fcmtoken: String
+  firebaseUID: String
+  fcmToken: String
   clearFcmToken: Boolean
-  expopushtoken: String
+  expoPushToken: String
   clearExpoPushToken: Boolean
   name: String
   address: String
   clearAddress: Boolean
   avatar: String
   clearAvatar: Boolean
-  photourl: String
+  photoURL: String
   clearPhotoURL: Boolean
   department: String
   clearDepartment: Boolean
@@ -7284,19 +7273,19 @@ input UpdateWorkshiftInput {
   """
   time that this shift was approved by the supervisor
   """
-  approvedat: Time
+  approvedAt: Time
   clearApprovedAt: Boolean
-  clockin: Time
-  clockout: Time
+  clockIn: Time
+  clockOut: Time
   clearClockOut: Boolean
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockinlocation: String
+  clockInLocation: String
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockoutlocation: String
+  clockOutLocation: String
   clearClockOutLocation: Boolean
   description: String
   clearDescription: Boolean
@@ -7310,75 +7299,75 @@ input UpdateWorkshiftInput {
   clearCompany: Boolean
   userID: ID
   clearUser: Boolean
-  approvedbyID: ID
+  approvedByID: ID
   clearApprovedBy: Boolean
   taskID: ID
   clearTask: Boolean
-  editrequestID: ID
+  editRequestID: ID
   clearEditRequest: Boolean
-  workshiftID: ID
+  workShiftID: ID
   clearWorkShift: Boolean
 }
 type User implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   """
   Current user device info
   """
   device: String
-  isdemouser: Boolean @goField(name: "IsDemoUser", forceResolver: false)
+  isDemoUser: Boolean
   email: String!
   name: String!
   address: String
   avatar: String
-  photourl: String @goField(name: "PhotoURL", forceResolver: false)
+  photoURL: String
   department: String
   phone: String
   birthdate: Time
   """
   It can be the last time the user opened the app and synced with the backend.
   """
-  lastlogin: Time @goField(name: "LastLogin", forceResolver: false)
+  lastLogin: Time
   gender: UserGender!
   active: Boolean!
-  accountingentries: [AccountingEntry!] @goField(name: "AccountingEntries", forceResolver: false)
+  accountingEntries: [AccountingEntry!]
   company: [Company!]!
   """
   a user should be assigned to only one role in the company
   """
-  assignedroles: [UserRole!] @goField(name: "AssignedRoles", forceResolver: false)
+  assignedRoles: [UserRole!]
   subordinates: [User!]
   leader: User
-  createdmembersignuptokens: [MemberSignupToken!] @goField(name: "CreatedMemberSignupTokens", forceResolver: false)
+  createdMemberSignupTokens: [MemberSignupToken!]
   employee: Employee
-  issuedinvoices: [Invoice!] @goField(name: "IssuedInvoices", forceResolver: false)
+  issuedInvoices: [Invoice!]
   """
   Represents the projects created by the user
   """
-  createdprojects: [Project!] @goField(name: "CreatedProjects", forceResolver: false)
+  createdProjects: [Project!]
   """
   Represents the projects leadered or supervised by the user
   """
-  leaderedprojects: [Project!] @goField(name: "LeaderedProjects", forceResolver: false)
+  leaderedProjects: [Project!]
   """
   These are the project tasks assigned to the user and he is responsible for them
   """
-  assignedprojecttasks: [ProjectTask!] @goField(name: "AssignedProjectTasks", forceResolver: false)
+  assignedProjectTasks: [ProjectTask!]
   """
   These are the project tasks in which the user is a member. E.g. a meeting
   """
-  participatedprojecttasks: [ProjectTask!] @goField(name: "ParticipatedProjectTasks", forceResolver: false)
+  participatedProjectTasks: [ProjectTask!]
   """
   Represents the tasks created by a user
   """
-  createdtasks: [ProjectTask!] @goField(name: "CreatedTasks", forceResolver: false)
+  createdTasks: [ProjectTask!]
   tokens: [Token!]
-  approvedworkshifts: [Workshift!] @goField(name: "ApprovedWorkShifts", forceResolver: false)
-  workshifts: [Workshift!] @goField(name: "WorkShifts", forceResolver: false)
-  uploadeddocuments: [CompanyDocument!] @goField(name: "UploadedDocuments", forceResolver: false)
-  approveddocuments: [CompanyDocument!] @goField(name: "ApprovedDocuments", forceResolver: false)
+  approvedWorkShifts: [Workshift!]
+  workShifts: [Workshift!]
+  uploadedDocuments: [CompanyDocument!]
+  approvedDocuments: [CompanyDocument!]
 }
 """
 UserGender is enum for the field gender
@@ -7526,40 +7515,40 @@ input UserWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
   device field predicates
   """
@@ -7579,12 +7568,12 @@ input UserWhereInput {
   deviceEqualFold: String
   deviceContainsFold: String
   """
-  isDemoUser field predicates
+  is_demo_user field predicates
   """
-  isdemouser: Boolean
-  isdemouserNEQ: Boolean
-  isdemouserIsNil: Boolean
-  isdemouserNotNil: Boolean
+  isDemoUser: Boolean
+  isDemoUserNEQ: Boolean
+  isDemoUserIsNil: Boolean
+  isDemoUserNotNil: Boolean
   """
   email field predicates
   """
@@ -7654,23 +7643,23 @@ input UserWhereInput {
   avatarEqualFold: String
   avatarContainsFold: String
   """
-  photoURL field predicates
+  photo_URL field predicates
   """
-  photourl: String
-  photourlNEQ: String
-  photourlIn: [String!]
-  photourlNotIn: [String!]
-  photourlGT: String
-  photourlGTE: String
-  photourlLT: String
-  photourlLTE: String
-  photourlContains: String
-  photourlHasPrefix: String
-  photourlHasSuffix: String
-  photourlIsNil: Boolean
-  photourlNotNil: Boolean
-  photourlEqualFold: String
-  photourlContainsFold: String
+  photoURL: String
+  photoURLNEQ: String
+  photoURLIn: [String!]
+  photoURLNotIn: [String!]
+  photoURLGT: String
+  photoURLGTE: String
+  photoURLLT: String
+  photoURLLTE: String
+  photoURLContains: String
+  photoURLHasPrefix: String
+  photoURLHasSuffix: String
+  photoURLIsNil: Boolean
+  photoURLNotNil: Boolean
+  photoURLEqualFold: String
+  photoURLContainsFold: String
   """
   department field predicates
   """
@@ -7721,18 +7710,18 @@ input UserWhereInput {
   birthdateIsNil: Boolean
   birthdateNotNil: Boolean
   """
-  lastLogin field predicates
+  last_login field predicates
   """
-  lastlogin: Time
-  lastloginNEQ: Time
-  lastloginIn: [Time!]
-  lastloginNotIn: [Time!]
-  lastloginGT: Time
-  lastloginGTE: Time
-  lastloginLT: Time
-  lastloginLTE: Time
-  lastloginIsNil: Boolean
-  lastloginNotNil: Boolean
+  lastLogin: Time
+  lastLoginNEQ: Time
+  lastLoginIn: [Time!]
+  lastLoginNotIn: [Time!]
+  lastLoginGT: Time
+  lastLoginGTE: Time
+  lastLoginLT: Time
+  lastLoginLTE: Time
+  lastLoginIsNil: Boolean
+  lastLoginNotNil: Boolean
   """
   gender field predicates
   """
@@ -7746,7 +7735,7 @@ input UserWhereInput {
   active: Boolean
   activeNEQ: Boolean
   """
-  accountingEntries edge predicates
+  accounting_entries edge predicates
   """
   hasAccountingEntries: Boolean
   hasAccountingEntriesWith: [AccountingEntryWhereInput!]
@@ -7756,7 +7745,7 @@ input UserWhereInput {
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
   """
-  assignedRoles edge predicates
+  assigned_roles edge predicates
   """
   hasAssignedRoles: Boolean
   hasAssignedRolesWith: [UserRoleWhereInput!]
@@ -7771,7 +7760,7 @@ input UserWhereInput {
   hasLeader: Boolean
   hasLeaderWith: [UserWhereInput!]
   """
-  createdMemberSignupTokens edge predicates
+  created_member_signup_tokens edge predicates
   """
   hasCreatedMemberSignupTokens: Boolean
   hasCreatedMemberSignupTokensWith: [MemberSignupTokenWhereInput!]
@@ -7781,32 +7770,32 @@ input UserWhereInput {
   hasEmployee: Boolean
   hasEmployeeWith: [EmployeeWhereInput!]
   """
-  issuedInvoices edge predicates
+  issued_invoices edge predicates
   """
   hasIssuedInvoices: Boolean
   hasIssuedInvoicesWith: [InvoiceWhereInput!]
   """
-  createdProjects edge predicates
+  created_projects edge predicates
   """
   hasCreatedProjects: Boolean
   hasCreatedProjectsWith: [ProjectWhereInput!]
   """
-  leaderedProjects edge predicates
+  leadered_projects edge predicates
   """
   hasLeaderedProjects: Boolean
   hasLeaderedProjectsWith: [ProjectWhereInput!]
   """
-  assignedProjectTasks edge predicates
+  assigned_project_tasks edge predicates
   """
   hasAssignedProjectTasks: Boolean
   hasAssignedProjectTasksWith: [ProjectTaskWhereInput!]
   """
-  participatedProjectTasks edge predicates
+  participated_project_tasks edge predicates
   """
   hasParticipatedProjectTasks: Boolean
   hasParticipatedProjectTasksWith: [ProjectTaskWhereInput!]
   """
-  createdTasks edge predicates
+  created_tasks edge predicates
   """
   hasCreatedTasks: Boolean
   hasCreatedTasksWith: [ProjectTaskWhereInput!]
@@ -7816,45 +7805,45 @@ input UserWhereInput {
   hasTokens: Boolean
   hasTokensWith: [TokenWhereInput!]
   """
-  approvedWorkShifts edge predicates
+  approved_work_shifts edge predicates
   """
   hasApprovedWorkShifts: Boolean
   hasApprovedWorkShiftsWith: [WorkshiftWhereInput!]
   """
-  workShifts edge predicates
+  work_shifts edge predicates
   """
   hasWorkShifts: Boolean
   hasWorkShiftsWith: [WorkshiftWhereInput!]
   """
-  uploadedDocuments edge predicates
+  uploaded_documents edge predicates
   """
   hasUploadedDocuments: Boolean
   hasUploadedDocumentsWith: [CompanyDocumentWhereInput!]
   """
-  approvedDocuments edge predicates
+  approved_documents edge predicates
   """
   hasApprovedDocuments: Boolean
   hasApprovedDocumentsWith: [CompanyDocumentWhereInput!]
 }
 type Workshift implements Node {
   id: ID!
-  createdat: Time! @goField(name: "CreatedAt", forceResolver: false)
-  updatedat: Time! @goField(name: "UpdatedAt", forceResolver: false)
-  deletedat: Time @goField(name: "DeletedAt", forceResolver: false)
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
   """
   time that this shift was approved by the supervisor
   """
-  approvedat: Time @goField(name: "ApprovedAt", forceResolver: false)
-  clockin: Time! @goField(name: "ClockIn", forceResolver: false)
-  clockout: Time @goField(name: "ClockOut", forceResolver: false)
+  approvedAt: Time
+  clockIn: Time!
+  clockOut: Time
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockinlocation: String! @goField(name: "ClockInLocation", forceResolver: false)
+  clockInLocation: String!
   """
   it expects a serialized json like: {latitude: float, longitude: float, description: string}
   """
-  clockoutlocation: String @goField(name: "ClockOutLocation", forceResolver: false)
+  clockOutLocation: String
   description: String
   """
   this is only used when the current item is a shift edit request
@@ -7863,10 +7852,10 @@ type Workshift implements Node {
   status: WorkshiftStatus!
   company: Company
   user: User
-  approvedby: User @goField(name: "ApprovedBy", forceResolver: false)
+  approvedBy: User
   task: ProjectTask
-  editrequest: Workshift @goField(name: "EditRequest", forceResolver: false)
-  workshift: Workshift @goField(name: "WorkShift", forceResolver: false)
+  editRequest: Workshift
+  workShift: Workshift
 }
 """
 Ordering options for Workshift connections
@@ -7919,111 +7908,111 @@ input WorkshiftWhereInput {
   idLT: ID
   idLTE: ID
   """
-  createdAt field predicates
+  created_at field predicates
   """
-  createdat: Time
-  createdatNEQ: Time
-  createdatIn: [Time!]
-  createdatNotIn: [Time!]
-  createdatGT: Time
-  createdatGTE: Time
-  createdatLT: Time
-  createdatLTE: Time
+  createdAt: Time
+  createdAtNEQ: Time
+  createdAtIn: [Time!]
+  createdAtNotIn: [Time!]
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
   """
-  updatedAt field predicates
+  updated_at field predicates
   """
-  updatedat: Time
-  updatedatNEQ: Time
-  updatedatIn: [Time!]
-  updatedatNotIn: [Time!]
-  updatedatGT: Time
-  updatedatGTE: Time
-  updatedatLT: Time
-  updatedatLTE: Time
+  updatedAt: Time
+  updatedAtNEQ: Time
+  updatedAtIn: [Time!]
+  updatedAtNotIn: [Time!]
+  updatedAtGT: Time
+  updatedAtGTE: Time
+  updatedAtLT: Time
+  updatedAtLTE: Time
   """
-  deletedAt field predicates
+  deleted_at field predicates
   """
-  deletedat: Time
-  deletedatNEQ: Time
-  deletedatIn: [Time!]
-  deletedatNotIn: [Time!]
-  deletedatGT: Time
-  deletedatGTE: Time
-  deletedatLT: Time
-  deletedatLTE: Time
-  deletedatIsNil: Boolean
-  deletedatNotNil: Boolean
+  deletedAt: Time
+  deletedAtNEQ: Time
+  deletedAtIn: [Time!]
+  deletedAtNotIn: [Time!]
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
+  deletedAtIsNil: Boolean
+  deletedAtNotNil: Boolean
   """
-  approvedAt field predicates
+  approved_at field predicates
   """
-  approvedat: Time
-  approvedatNEQ: Time
-  approvedatIn: [Time!]
-  approvedatNotIn: [Time!]
-  approvedatGT: Time
-  approvedatGTE: Time
-  approvedatLT: Time
-  approvedatLTE: Time
-  approvedatIsNil: Boolean
-  approvedatNotNil: Boolean
+  approvedAt: Time
+  approvedAtNEQ: Time
+  approvedAtIn: [Time!]
+  approvedAtNotIn: [Time!]
+  approvedAtGT: Time
+  approvedAtGTE: Time
+  approvedAtLT: Time
+  approvedAtLTE: Time
+  approvedAtIsNil: Boolean
+  approvedAtNotNil: Boolean
   """
-  clockIn field predicates
+  clock_in field predicates
   """
-  clockin: Time
-  clockinNEQ: Time
-  clockinIn: [Time!]
-  clockinNotIn: [Time!]
-  clockinGT: Time
-  clockinGTE: Time
-  clockinLT: Time
-  clockinLTE: Time
+  clockIn: Time
+  clockInNEQ: Time
+  clockInIn: [Time!]
+  clockInNotIn: [Time!]
+  clockInGT: Time
+  clockInGTE: Time
+  clockInLT: Time
+  clockInLTE: Time
   """
-  clockOut field predicates
+  clock_out field predicates
   """
-  clockout: Time
-  clockoutNEQ: Time
-  clockoutIn: [Time!]
-  clockoutNotIn: [Time!]
-  clockoutGT: Time
-  clockoutGTE: Time
-  clockoutLT: Time
-  clockoutLTE: Time
-  clockoutIsNil: Boolean
-  clockoutNotNil: Boolean
+  clockOut: Time
+  clockOutNEQ: Time
+  clockOutIn: [Time!]
+  clockOutNotIn: [Time!]
+  clockOutGT: Time
+  clockOutGTE: Time
+  clockOutLT: Time
+  clockOutLTE: Time
+  clockOutIsNil: Boolean
+  clockOutNotNil: Boolean
   """
-  clockInLocation field predicates
+  clock_in_location field predicates
   """
-  clockinlocation: String
-  clockinlocationNEQ: String
-  clockinlocationIn: [String!]
-  clockinlocationNotIn: [String!]
-  clockinlocationGT: String
-  clockinlocationGTE: String
-  clockinlocationLT: String
-  clockinlocationLTE: String
-  clockinlocationContains: String
-  clockinlocationHasPrefix: String
-  clockinlocationHasSuffix: String
-  clockinlocationEqualFold: String
-  clockinlocationContainsFold: String
+  clockInLocation: String
+  clockInLocationNEQ: String
+  clockInLocationIn: [String!]
+  clockInLocationNotIn: [String!]
+  clockInLocationGT: String
+  clockInLocationGTE: String
+  clockInLocationLT: String
+  clockInLocationLTE: String
+  clockInLocationContains: String
+  clockInLocationHasPrefix: String
+  clockInLocationHasSuffix: String
+  clockInLocationEqualFold: String
+  clockInLocationContainsFold: String
   """
-  clockOutLocation field predicates
+  clock_out_location field predicates
   """
-  clockoutlocation: String
-  clockoutlocationNEQ: String
-  clockoutlocationIn: [String!]
-  clockoutlocationNotIn: [String!]
-  clockoutlocationGT: String
-  clockoutlocationGTE: String
-  clockoutlocationLT: String
-  clockoutlocationLTE: String
-  clockoutlocationContains: String
-  clockoutlocationHasPrefix: String
-  clockoutlocationHasSuffix: String
-  clockoutlocationIsNil: Boolean
-  clockoutlocationNotNil: Boolean
-  clockoutlocationEqualFold: String
-  clockoutlocationContainsFold: String
+  clockOutLocation: String
+  clockOutLocationNEQ: String
+  clockOutLocationIn: [String!]
+  clockOutLocationNotIn: [String!]
+  clockOutLocationGT: String
+  clockOutLocationGTE: String
+  clockOutLocationLT: String
+  clockOutLocationLTE: String
+  clockOutLocationContains: String
+  clockOutLocationHasPrefix: String
+  clockOutLocationHasSuffix: String
+  clockOutLocationIsNil: Boolean
+  clockOutLocationNotNil: Boolean
+  clockOutLocationEqualFold: String
+  clockOutLocationContainsFold: String
   """
   description field predicates
   """
@@ -8078,7 +8067,7 @@ input WorkshiftWhereInput {
   hasUser: Boolean
   hasUserWith: [UserWhereInput!]
   """
-  approvedBy edge predicates
+  approved_by edge predicates
   """
   hasApprovedBy: Boolean
   hasApprovedByWith: [UserWhereInput!]
@@ -8088,12 +8077,12 @@ input WorkshiftWhereInput {
   hasTask: Boolean
   hasTaskWith: [ProjectTaskWhereInput!]
   """
-  editRequest edge predicates
+  edit_request edge predicates
   """
   hasEditRequest: Boolean
   hasEditRequestWith: [WorkshiftWhereInput!]
   """
-  workShift edge predicates
+  work_shift edge predicates
   """
   hasWorkShift: Boolean
   hasWorkShiftWith: [WorkshiftWhereInput!]

@@ -24,13 +24,13 @@ type AccountingEntryCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (aec *AccountingEntryCreate) SetCreatedAt(t time.Time) *AccountingEntryCreate {
 	aec.mutation.SetCreatedAt(t)
 	return aec
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (aec *AccountingEntryCreate) SetNillableCreatedAt(t *time.Time) *AccountingEntryCreate {
 	if t != nil {
 		aec.SetCreatedAt(*t)
@@ -38,13 +38,13 @@ func (aec *AccountingEntryCreate) SetNillableCreatedAt(t *time.Time) *Accounting
 	return aec
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (aec *AccountingEntryCreate) SetUpdatedAt(t time.Time) *AccountingEntryCreate {
 	aec.mutation.SetUpdatedAt(t)
 	return aec
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (aec *AccountingEntryCreate) SetNillableUpdatedAt(t *time.Time) *AccountingEntryCreate {
 	if t != nil {
 		aec.SetUpdatedAt(*t)
@@ -52,13 +52,13 @@ func (aec *AccountingEntryCreate) SetNillableUpdatedAt(t *time.Time) *Accounting
 	return aec
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (aec *AccountingEntryCreate) SetDeletedAt(t time.Time) *AccountingEntryCreate {
 	aec.mutation.SetDeletedAt(t)
 	return aec
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (aec *AccountingEntryCreate) SetNillableDeletedAt(t *time.Time) *AccountingEntryCreate {
 	if t != nil {
 		aec.SetDeletedAt(*t)
@@ -116,7 +116,7 @@ func (aec *AccountingEntryCreate) SetDescription(s string) *AccountingEntryCreat
 	return aec
 }
 
-// SetAccountType sets the "accountType" field.
+// SetAccountType sets the "account_type" field.
 func (aec *AccountingEntryCreate) SetAccountType(at accountingentry.AccountType) *AccountingEntryCreate {
 	aec.mutation.SetAccountType(at)
 	return aec
@@ -150,19 +150,19 @@ func (aec *AccountingEntryCreate) SetNillableMain(s *string) *AccountingEntryCre
 	return aec
 }
 
-// SetIsDebit sets the "isDebit" field.
+// SetIsDebit sets the "is_debit" field.
 func (aec *AccountingEntryCreate) SetIsDebit(b bool) *AccountingEntryCreate {
 	aec.mutation.SetIsDebit(b)
 	return aec
 }
 
-// SetIsReversal sets the "isReversal" field.
+// SetIsReversal sets the "is_reversal" field.
 func (aec *AccountingEntryCreate) SetIsReversal(b bool) *AccountingEntryCreate {
 	aec.mutation.SetIsReversal(b)
 	return aec
 }
 
-// SetNillableIsReversal sets the "isReversal" field if the given value is not nil.
+// SetNillableIsReversal sets the "is_reversal" field if the given value is not nil.
 func (aec *AccountingEntryCreate) SetNillableIsReversal(b *bool) *AccountingEntryCreate {
 	if b != nil {
 		aec.SetIsReversal(*b)
@@ -324,10 +324,10 @@ func (aec *AccountingEntryCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (aec *AccountingEntryCreate) check() error {
 	if _, ok := aec.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "AccountingEntry.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "AccountingEntry.created_at"`)}
 	}
 	if _, ok := aec.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "AccountingEntry.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "AccountingEntry.updated_at"`)}
 	}
 	if _, ok := aec.mutation.Number(); !ok {
 		return &ValidationError{Name: "number", err: errors.New(`generated: missing required field "AccountingEntry.number"`)}
@@ -366,11 +366,11 @@ func (aec *AccountingEntryCreate) check() error {
 		return &ValidationError{Name: "description", err: errors.New(`generated: missing required field "AccountingEntry.description"`)}
 	}
 	if _, ok := aec.mutation.AccountType(); !ok {
-		return &ValidationError{Name: "accountType", err: errors.New(`generated: missing required field "AccountingEntry.accountType"`)}
+		return &ValidationError{Name: "account_type", err: errors.New(`generated: missing required field "AccountingEntry.account_type"`)}
 	}
 	if v, ok := aec.mutation.AccountType(); ok {
 		if err := accountingentry.AccountTypeValidator(v); err != nil {
-			return &ValidationError{Name: "accountType", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.accountType": %w`, err)}
+			return &ValidationError{Name: "account_type", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.account_type": %w`, err)}
 		}
 	}
 	if _, ok := aec.mutation.Category(); !ok {
@@ -380,10 +380,10 @@ func (aec *AccountingEntryCreate) check() error {
 		return &ValidationError{Name: "main", err: errors.New(`generated: missing required field "AccountingEntry.main"`)}
 	}
 	if _, ok := aec.mutation.IsDebit(); !ok {
-		return &ValidationError{Name: "isDebit", err: errors.New(`generated: missing required field "AccountingEntry.isDebit"`)}
+		return &ValidationError{Name: "is_debit", err: errors.New(`generated: missing required field "AccountingEntry.is_debit"`)}
 	}
 	if _, ok := aec.mutation.IsReversal(); !ok {
-		return &ValidationError{Name: "isReversal", err: errors.New(`generated: missing required field "AccountingEntry.isReversal"`)}
+		return &ValidationError{Name: "is_reversal", err: errors.New(`generated: missing required field "AccountingEntry.is_reversal"`)}
 	}
 	if _, ok := aec.mutation.Reversed(); !ok {
 		return &ValidationError{Name: "reversed", err: errors.New(`generated: missing required field "AccountingEntry.reversed"`)}

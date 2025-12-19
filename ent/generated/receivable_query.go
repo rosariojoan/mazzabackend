@@ -338,7 +338,7 @@ func (rq *ReceivableQuery) WithInvoice(opts ...func(*InvoiceQuery)) *ReceivableQ
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -361,7 +361,7 @@ func (rq *ReceivableQuery) GroupBy(field string, fields ...string) *ReceivableGr
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Receivable.Query().

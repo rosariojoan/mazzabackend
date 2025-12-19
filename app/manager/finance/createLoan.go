@@ -60,15 +60,37 @@ func CreateLoan(ctx context.Context, client *generated.Client, input model.Creat
 			}
 		}
 	} else if *input.LoanInput.IsLending {
-		_, err = tx.Customer.Create().
-			SetInput(*input.Borrower).
-			SetCompanyID(activeCompany.ID).
-			AddLoanIDs(newLoan.ID).
-			Save(ctx)
+		// Check if this client already exists
+		var taxId string
+		if input.Borrower.TaxID != nil {
+			taxId = *input.Borrower.TaxID
+		} else {
+			taxId = ""
+		}
+		clientID, err := tx.Customer.Query().Where(
+			customer.Name(input.Borrower.Name),
+			customer.HasCompanyWith(company.ID(activeCompany.ID)),
+			customer.TaxID(taxId),
+		).FirstID(ctx)
 		if err != nil {
-			_ = tx.Rollback()
-			fmt.Println(err)
-			return nil, fmt.Errorf("an error occurred")
+			_, err = tx.Customer.Create().
+				SetInput(*input.Borrower).
+				SetCompanyID(activeCompany.ID).
+				AddLoanIDs(newLoan.ID).
+				Save(ctx)
+			if err != nil {
+				_ = tx.Rollback()
+				return nil, fmt.Errorf("customer already")
+			}
+		} else {
+			input.LoanCounterpartyID = &clientID
+			_, err = tx.Customer.UpdateOneID(clientID).
+				AddLoanIDs(newLoan.ID).
+				Save(ctx)
+			if err != nil {
+				_ = tx.Rollback()
+				return nil, fmt.Errorf("customer already")
+			}
 		}
 	} else if input.LoanCounterpartyID != nil {
 		// Borrowing

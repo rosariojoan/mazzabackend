@@ -31,13 +31,13 @@ type UserCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (uc *UserCreate) SetCreatedAt(t time.Time) *UserCreate {
 	uc.mutation.SetCreatedAt(t)
 	return uc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (uc *UserCreate) SetNillableCreatedAt(t *time.Time) *UserCreate {
 	if t != nil {
 		uc.SetCreatedAt(*t)
@@ -45,13 +45,13 @@ func (uc *UserCreate) SetNillableCreatedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (uc *UserCreate) SetUpdatedAt(t time.Time) *UserCreate {
 	uc.mutation.SetUpdatedAt(t)
 	return uc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (uc *UserCreate) SetNillableUpdatedAt(t *time.Time) *UserCreate {
 	if t != nil {
 		uc.SetUpdatedAt(*t)
@@ -59,13 +59,13 @@ func (uc *UserCreate) SetNillableUpdatedAt(t *time.Time) *UserCreate {
 	return uc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (uc *UserCreate) SetDeletedAt(t time.Time) *UserCreate {
 	uc.mutation.SetDeletedAt(t)
 	return uc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (uc *UserCreate) SetNillableDeletedAt(t *time.Time) *UserCreate {
 	if t != nil {
 		uc.SetDeletedAt(*t)
@@ -87,13 +87,13 @@ func (uc *UserCreate) SetNillableDevice(s *string) *UserCreate {
 	return uc
 }
 
-// SetIsDemoUser sets the "isDemoUser" field.
+// SetIsDemoUser sets the "is_demo_user" field.
 func (uc *UserCreate) SetIsDemoUser(b bool) *UserCreate {
 	uc.mutation.SetIsDemoUser(b)
 	return uc
 }
 
-// SetNillableIsDemoUser sets the "isDemoUser" field if the given value is not nil.
+// SetNillableIsDemoUser sets the "is_demo_user" field if the given value is not nil.
 func (uc *UserCreate) SetNillableIsDemoUser(b *bool) *UserCreate {
 	if b != nil {
 		uc.SetIsDemoUser(*b)
@@ -101,19 +101,19 @@ func (uc *UserCreate) SetNillableIsDemoUser(b *bool) *UserCreate {
 	return uc
 }
 
-// SetFirebaseUID sets the "firebaseUID" field.
+// SetFirebaseUID sets the "firebase_UID" field.
 func (uc *UserCreate) SetFirebaseUID(s string) *UserCreate {
 	uc.mutation.SetFirebaseUID(s)
 	return uc
 }
 
-// SetFcmToken sets the "fcmToken" field.
+// SetFcmToken sets the "fcm_token" field.
 func (uc *UserCreate) SetFcmToken(s string) *UserCreate {
 	uc.mutation.SetFcmToken(s)
 	return uc
 }
 
-// SetNillableFcmToken sets the "fcmToken" field if the given value is not nil.
+// SetNillableFcmToken sets the "fcm_token" field if the given value is not nil.
 func (uc *UserCreate) SetNillableFcmToken(s *string) *UserCreate {
 	if s != nil {
 		uc.SetFcmToken(*s)
@@ -121,13 +121,13 @@ func (uc *UserCreate) SetNillableFcmToken(s *string) *UserCreate {
 	return uc
 }
 
-// SetExpoPushToken sets the "expoPushToken" field.
+// SetExpoPushToken sets the "expo_push_token" field.
 func (uc *UserCreate) SetExpoPushToken(s string) *UserCreate {
 	uc.mutation.SetExpoPushToken(s)
 	return uc
 }
 
-// SetNillableExpoPushToken sets the "expoPushToken" field if the given value is not nil.
+// SetNillableExpoPushToken sets the "expo_push_token" field if the given value is not nil.
 func (uc *UserCreate) SetNillableExpoPushToken(s *string) *UserCreate {
 	if s != nil {
 		uc.SetExpoPushToken(*s)
@@ -175,13 +175,13 @@ func (uc *UserCreate) SetNillableAvatar(s *string) *UserCreate {
 	return uc
 }
 
-// SetPhotoURL sets the "photoURL" field.
+// SetPhotoURL sets the "photo_URL" field.
 func (uc *UserCreate) SetPhotoURL(s string) *UserCreate {
 	uc.mutation.SetPhotoURL(s)
 	return uc
 }
 
-// SetNillablePhotoURL sets the "photoURL" field if the given value is not nil.
+// SetNillablePhotoURL sets the "photo_URL" field if the given value is not nil.
 func (uc *UserCreate) SetNillablePhotoURL(s *string) *UserCreate {
 	if s != nil {
 		uc.SetPhotoURL(*s)
@@ -231,13 +231,13 @@ func (uc *UserCreate) SetNillableBirthdate(t *time.Time) *UserCreate {
 	return uc
 }
 
-// SetLastLogin sets the "lastLogin" field.
+// SetLastLogin sets the "last_login" field.
 func (uc *UserCreate) SetLastLogin(t time.Time) *UserCreate {
 	uc.mutation.SetLastLogin(t)
 	return uc
 }
 
-// SetNillableLastLogin sets the "lastLogin" field if the given value is not nil.
+// SetNillableLastLogin sets the "last_login" field if the given value is not nil.
 func (uc *UserCreate) SetNillableLastLogin(t *time.Time) *UserCreate {
 	if t != nil {
 		uc.SetLastLogin(*t)
@@ -265,13 +265,13 @@ func (uc *UserCreate) SetNillableActive(b *bool) *UserCreate {
 	return uc
 }
 
-// AddAccountingEntryIDs adds the "accountingEntries" edge to the AccountingEntry entity by IDs.
+// AddAccountingEntryIDs adds the "accounting_entries" edge to the AccountingEntry entity by IDs.
 func (uc *UserCreate) AddAccountingEntryIDs(ids ...int) *UserCreate {
 	uc.mutation.AddAccountingEntryIDs(ids...)
 	return uc
 }
 
-// AddAccountingEntries adds the "accountingEntries" edges to the AccountingEntry entity.
+// AddAccountingEntries adds the "accounting_entries" edges to the AccountingEntry entity.
 func (uc *UserCreate) AddAccountingEntries(a ...*AccountingEntry) *UserCreate {
 	ids := make([]int, len(a))
 	for i := range a {
@@ -295,13 +295,13 @@ func (uc *UserCreate) AddCompany(c ...*Company) *UserCreate {
 	return uc.AddCompanyIDs(ids...)
 }
 
-// AddAssignedRoleIDs adds the "assignedRoles" edge to the UserRole entity by IDs.
+// AddAssignedRoleIDs adds the "assigned_roles" edge to the UserRole entity by IDs.
 func (uc *UserCreate) AddAssignedRoleIDs(ids ...int) *UserCreate {
 	uc.mutation.AddAssignedRoleIDs(ids...)
 	return uc
 }
 
-// AddAssignedRoles adds the "assignedRoles" edges to the UserRole entity.
+// AddAssignedRoles adds the "assigned_roles" edges to the UserRole entity.
 func (uc *UserCreate) AddAssignedRoles(u ...*UserRole) *UserCreate {
 	ids := make([]int, len(u))
 	for i := range u {
@@ -344,13 +344,13 @@ func (uc *UserCreate) SetLeader(u *User) *UserCreate {
 	return uc.SetLeaderID(u.ID)
 }
 
-// AddCreatedMemberSignupTokenIDs adds the "createdMemberSignupTokens" edge to the MemberSignupToken entity by IDs.
+// AddCreatedMemberSignupTokenIDs adds the "created_member_signup_tokens" edge to the MemberSignupToken entity by IDs.
 func (uc *UserCreate) AddCreatedMemberSignupTokenIDs(ids ...int) *UserCreate {
 	uc.mutation.AddCreatedMemberSignupTokenIDs(ids...)
 	return uc
 }
 
-// AddCreatedMemberSignupTokens adds the "createdMemberSignupTokens" edges to the MemberSignupToken entity.
+// AddCreatedMemberSignupTokens adds the "created_member_signup_tokens" edges to the MemberSignupToken entity.
 func (uc *UserCreate) AddCreatedMemberSignupTokens(m ...*MemberSignupToken) *UserCreate {
 	ids := make([]int, len(m))
 	for i := range m {
@@ -378,13 +378,13 @@ func (uc *UserCreate) SetEmployee(e *Employee) *UserCreate {
 	return uc.SetEmployeeID(e.ID)
 }
 
-// AddIssuedInvoiceIDs adds the "issuedInvoices" edge to the Invoice entity by IDs.
+// AddIssuedInvoiceIDs adds the "issued_invoices" edge to the Invoice entity by IDs.
 func (uc *UserCreate) AddIssuedInvoiceIDs(ids ...int) *UserCreate {
 	uc.mutation.AddIssuedInvoiceIDs(ids...)
 	return uc
 }
 
-// AddIssuedInvoices adds the "issuedInvoices" edges to the Invoice entity.
+// AddIssuedInvoices adds the "issued_invoices" edges to the Invoice entity.
 func (uc *UserCreate) AddIssuedInvoices(i ...*Invoice) *UserCreate {
 	ids := make([]int, len(i))
 	for j := range i {
@@ -393,13 +393,13 @@ func (uc *UserCreate) AddIssuedInvoices(i ...*Invoice) *UserCreate {
 	return uc.AddIssuedInvoiceIDs(ids...)
 }
 
-// AddCreatedProjectIDs adds the "createdProjects" edge to the Project entity by IDs.
+// AddCreatedProjectIDs adds the "created_projects" edge to the Project entity by IDs.
 func (uc *UserCreate) AddCreatedProjectIDs(ids ...int) *UserCreate {
 	uc.mutation.AddCreatedProjectIDs(ids...)
 	return uc
 }
 
-// AddCreatedProjects adds the "createdProjects" edges to the Project entity.
+// AddCreatedProjects adds the "created_projects" edges to the Project entity.
 func (uc *UserCreate) AddCreatedProjects(p ...*Project) *UserCreate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -408,13 +408,13 @@ func (uc *UserCreate) AddCreatedProjects(p ...*Project) *UserCreate {
 	return uc.AddCreatedProjectIDs(ids...)
 }
 
-// AddLeaderedProjectIDs adds the "leaderedProjects" edge to the Project entity by IDs.
+// AddLeaderedProjectIDs adds the "leadered_projects" edge to the Project entity by IDs.
 func (uc *UserCreate) AddLeaderedProjectIDs(ids ...int) *UserCreate {
 	uc.mutation.AddLeaderedProjectIDs(ids...)
 	return uc
 }
 
-// AddLeaderedProjects adds the "leaderedProjects" edges to the Project entity.
+// AddLeaderedProjects adds the "leadered_projects" edges to the Project entity.
 func (uc *UserCreate) AddLeaderedProjects(p ...*Project) *UserCreate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -423,13 +423,13 @@ func (uc *UserCreate) AddLeaderedProjects(p ...*Project) *UserCreate {
 	return uc.AddLeaderedProjectIDs(ids...)
 }
 
-// AddAssignedProjectTaskIDs adds the "assignedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddAssignedProjectTaskIDs adds the "assigned_project_tasks" edge to the ProjectTask entity by IDs.
 func (uc *UserCreate) AddAssignedProjectTaskIDs(ids ...int) *UserCreate {
 	uc.mutation.AddAssignedProjectTaskIDs(ids...)
 	return uc
 }
 
-// AddAssignedProjectTasks adds the "assignedProjectTasks" edges to the ProjectTask entity.
+// AddAssignedProjectTasks adds the "assigned_project_tasks" edges to the ProjectTask entity.
 func (uc *UserCreate) AddAssignedProjectTasks(p ...*ProjectTask) *UserCreate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -438,13 +438,13 @@ func (uc *UserCreate) AddAssignedProjectTasks(p ...*ProjectTask) *UserCreate {
 	return uc.AddAssignedProjectTaskIDs(ids...)
 }
 
-// AddParticipatedProjectTaskIDs adds the "participatedProjectTasks" edge to the ProjectTask entity by IDs.
+// AddParticipatedProjectTaskIDs adds the "participated_project_tasks" edge to the ProjectTask entity by IDs.
 func (uc *UserCreate) AddParticipatedProjectTaskIDs(ids ...int) *UserCreate {
 	uc.mutation.AddParticipatedProjectTaskIDs(ids...)
 	return uc
 }
 
-// AddParticipatedProjectTasks adds the "participatedProjectTasks" edges to the ProjectTask entity.
+// AddParticipatedProjectTasks adds the "participated_project_tasks" edges to the ProjectTask entity.
 func (uc *UserCreate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserCreate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -453,13 +453,13 @@ func (uc *UserCreate) AddParticipatedProjectTasks(p ...*ProjectTask) *UserCreate
 	return uc.AddParticipatedProjectTaskIDs(ids...)
 }
 
-// AddCreatedTaskIDs adds the "createdTasks" edge to the ProjectTask entity by IDs.
+// AddCreatedTaskIDs adds the "created_tasks" edge to the ProjectTask entity by IDs.
 func (uc *UserCreate) AddCreatedTaskIDs(ids ...int) *UserCreate {
 	uc.mutation.AddCreatedTaskIDs(ids...)
 	return uc
 }
 
-// AddCreatedTasks adds the "createdTasks" edges to the ProjectTask entity.
+// AddCreatedTasks adds the "created_tasks" edges to the ProjectTask entity.
 func (uc *UserCreate) AddCreatedTasks(p ...*ProjectTask) *UserCreate {
 	ids := make([]int, len(p))
 	for i := range p {
@@ -483,13 +483,13 @@ func (uc *UserCreate) AddTokens(t ...*Token) *UserCreate {
 	return uc.AddTokenIDs(ids...)
 }
 
-// AddApprovedWorkShiftIDs adds the "approvedWorkShifts" edge to the Workshift entity by IDs.
+// AddApprovedWorkShiftIDs adds the "approved_work_shifts" edge to the Workshift entity by IDs.
 func (uc *UserCreate) AddApprovedWorkShiftIDs(ids ...int) *UserCreate {
 	uc.mutation.AddApprovedWorkShiftIDs(ids...)
 	return uc
 }
 
-// AddApprovedWorkShifts adds the "approvedWorkShifts" edges to the Workshift entity.
+// AddApprovedWorkShifts adds the "approved_work_shifts" edges to the Workshift entity.
 func (uc *UserCreate) AddApprovedWorkShifts(w ...*Workshift) *UserCreate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -498,13 +498,13 @@ func (uc *UserCreate) AddApprovedWorkShifts(w ...*Workshift) *UserCreate {
 	return uc.AddApprovedWorkShiftIDs(ids...)
 }
 
-// AddWorkShiftIDs adds the "workShifts" edge to the Workshift entity by IDs.
+// AddWorkShiftIDs adds the "work_shifts" edge to the Workshift entity by IDs.
 func (uc *UserCreate) AddWorkShiftIDs(ids ...int) *UserCreate {
 	uc.mutation.AddWorkShiftIDs(ids...)
 	return uc
 }
 
-// AddWorkShifts adds the "workShifts" edges to the Workshift entity.
+// AddWorkShifts adds the "work_shifts" edges to the Workshift entity.
 func (uc *UserCreate) AddWorkShifts(w ...*Workshift) *UserCreate {
 	ids := make([]int, len(w))
 	for i := range w {
@@ -513,13 +513,13 @@ func (uc *UserCreate) AddWorkShifts(w ...*Workshift) *UserCreate {
 	return uc.AddWorkShiftIDs(ids...)
 }
 
-// AddUploadedDocumentIDs adds the "uploadedDocuments" edge to the CompanyDocument entity by IDs.
+// AddUploadedDocumentIDs adds the "uploaded_documents" edge to the CompanyDocument entity by IDs.
 func (uc *UserCreate) AddUploadedDocumentIDs(ids ...int) *UserCreate {
 	uc.mutation.AddUploadedDocumentIDs(ids...)
 	return uc
 }
 
-// AddUploadedDocuments adds the "uploadedDocuments" edges to the CompanyDocument entity.
+// AddUploadedDocuments adds the "uploaded_documents" edges to the CompanyDocument entity.
 func (uc *UserCreate) AddUploadedDocuments(c ...*CompanyDocument) *UserCreate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -528,13 +528,13 @@ func (uc *UserCreate) AddUploadedDocuments(c ...*CompanyDocument) *UserCreate {
 	return uc.AddUploadedDocumentIDs(ids...)
 }
 
-// AddApprovedDocumentIDs adds the "approvedDocuments" edge to the CompanyDocument entity by IDs.
+// AddApprovedDocumentIDs adds the "approved_documents" edge to the CompanyDocument entity by IDs.
 func (uc *UserCreate) AddApprovedDocumentIDs(ids ...int) *UserCreate {
 	uc.mutation.AddApprovedDocumentIDs(ids...)
 	return uc
 }
 
-// AddApprovedDocuments adds the "approvedDocuments" edges to the CompanyDocument entity.
+// AddApprovedDocuments adds the "approved_documents" edges to the CompanyDocument entity.
 func (uc *UserCreate) AddApprovedDocuments(c ...*CompanyDocument) *UserCreate {
 	ids := make([]int, len(c))
 	for i := range c {
@@ -599,17 +599,17 @@ func (uc *UserCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "User.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "User.created_at"`)}
 	}
 	if _, ok := uc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "User.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "User.updated_at"`)}
 	}
 	if _, ok := uc.mutation.FirebaseUID(); !ok {
-		return &ValidationError{Name: "firebaseUID", err: errors.New(`generated: missing required field "User.firebaseUID"`)}
+		return &ValidationError{Name: "firebase_UID", err: errors.New(`generated: missing required field "User.firebase_UID"`)}
 	}
 	if v, ok := uc.mutation.FirebaseUID(); ok {
 		if err := user.FirebaseUIDValidator(v); err != nil {
-			return &ValidationError{Name: "firebaseUID", err: fmt.Errorf(`generated: validator failed for field "User.firebaseUID": %w`, err)}
+			return &ValidationError{Name: "firebase_UID", err: fmt.Errorf(`generated: validator failed for field "User.firebase_UID": %w`, err)}
 		}
 	}
 	if _, ok := uc.mutation.Email(); !ok {

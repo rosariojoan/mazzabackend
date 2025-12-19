@@ -92,7 +92,7 @@ func (iq *InvoiceQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryIssuedBy chains the current query on the "issuedBy" edge.
+// QueryIssuedBy chains the current query on the "issued_by" edge.
 func (iq *InvoiceQuery) QueryIssuedBy() *UserQuery {
 	query := (&UserClient{config: iq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -373,7 +373,7 @@ func (iq *InvoiceQuery) WithCompany(opts ...func(*CompanyQuery)) *InvoiceQuery {
 }
 
 // WithIssuedBy tells the query-builder to eager-load the nodes that are connected to
-// the "issuedBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "issued_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (iq *InvoiceQuery) WithIssuedBy(opts ...func(*UserQuery)) *InvoiceQuery {
 	query := (&UserClient{config: iq.config}).Query()
 	for _, opt := range opts {
@@ -411,7 +411,7 @@ func (iq *InvoiceQuery) WithReceivable(opts ...func(*ReceivableQuery)) *InvoiceQ
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -434,7 +434,7 @@ func (iq *InvoiceQuery) GroupBy(field string, fields ...string) *InvoiceGroupBy 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Invoice.Query().

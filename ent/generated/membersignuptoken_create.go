@@ -22,13 +22,13 @@ type MemberSignupTokenCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (mstc *MemberSignupTokenCreate) SetCreatedAt(t time.Time) *MemberSignupTokenCreate {
 	mstc.mutation.SetCreatedAt(t)
 	return mstc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableCreatedAt(t *time.Time) *MemberSignupTokenCreate {
 	if t != nil {
 		mstc.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (mstc *MemberSignupTokenCreate) SetNillableCreatedAt(t *time.Time) *MemberS
 	return mstc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (mstc *MemberSignupTokenCreate) SetUpdatedAt(t time.Time) *MemberSignupTokenCreate {
 	mstc.mutation.SetUpdatedAt(t)
 	return mstc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableUpdatedAt(t *time.Time) *MemberSignupTokenCreate {
 	if t != nil {
 		mstc.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (mstc *MemberSignupTokenCreate) SetNillableUpdatedAt(t *time.Time) *MemberS
 	return mstc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (mstc *MemberSignupTokenCreate) SetDeletedAt(t time.Time) *MemberSignupTokenCreate {
 	mstc.mutation.SetDeletedAt(t)
 	return mstc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableDeletedAt(t *time.Time) *MemberSignupTokenCreate {
 	if t != nil {
 		mstc.SetDeletedAt(*t)
@@ -108,13 +108,13 @@ func (mstc *MemberSignupTokenCreate) SetNote(s string) *MemberSignupTokenCreate 
 	return mstc
 }
 
-// SetNumberAccessed sets the "numberAccessed" field.
+// SetNumberAccessed sets the "number_accessed" field.
 func (mstc *MemberSignupTokenCreate) SetNumberAccessed(i int) *MemberSignupTokenCreate {
 	mstc.mutation.SetNumberAccessed(i)
 	return mstc
 }
 
-// SetNillableNumberAccessed sets the "numberAccessed" field if the given value is not nil.
+// SetNillableNumberAccessed sets the "number_accessed" field if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableNumberAccessed(i *int) *MemberSignupTokenCreate {
 	if i != nil {
 		mstc.SetNumberAccessed(*i)
@@ -122,19 +122,19 @@ func (mstc *MemberSignupTokenCreate) SetNillableNumberAccessed(i *int) *MemberSi
 	return mstc
 }
 
-// SetExpiresAt sets the "expiresAt" field.
+// SetExpiresAt sets the "expires_at" field.
 func (mstc *MemberSignupTokenCreate) SetExpiresAt(t time.Time) *MemberSignupTokenCreate {
 	mstc.mutation.SetExpiresAt(t)
 	return mstc
 }
 
-// SetAlreadyUsed sets the "alreadyUsed" field.
+// SetAlreadyUsed sets the "already_used" field.
 func (mstc *MemberSignupTokenCreate) SetAlreadyUsed(b bool) *MemberSignupTokenCreate {
 	mstc.mutation.SetAlreadyUsed(b)
 	return mstc
 }
 
-// SetNillableAlreadyUsed sets the "alreadyUsed" field if the given value is not nil.
+// SetNillableAlreadyUsed sets the "already_used" field if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableAlreadyUsed(b *bool) *MemberSignupTokenCreate {
 	if b != nil {
 		mstc.SetAlreadyUsed(*b)
@@ -153,13 +153,13 @@ func (mstc *MemberSignupTokenCreate) SetCompany(c *Company) *MemberSignupTokenCr
 	return mstc.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (mstc *MemberSignupTokenCreate) SetCreatedByID(id int) *MemberSignupTokenCreate {
 	mstc.mutation.SetCreatedByID(id)
 	return mstc
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (mstc *MemberSignupTokenCreate) SetNillableCreatedByID(id *int) *MemberSignupTokenCreate {
 	if id != nil {
 		mstc = mstc.SetCreatedByID(*id)
@@ -167,7 +167,7 @@ func (mstc *MemberSignupTokenCreate) SetNillableCreatedByID(id *int) *MemberSign
 	return mstc
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (mstc *MemberSignupTokenCreate) SetCreatedBy(u *User) *MemberSignupTokenCreate {
 	return mstc.SetCreatedByID(u.ID)
 }
@@ -228,10 +228,10 @@ func (mstc *MemberSignupTokenCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (mstc *MemberSignupTokenCreate) check() error {
 	if _, ok := mstc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "MemberSignupToken.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "MemberSignupToken.created_at"`)}
 	}
 	if _, ok := mstc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "MemberSignupToken.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "MemberSignupToken.updated_at"`)}
 	}
 	if _, ok := mstc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "MemberSignupToken.name"`)}
@@ -264,18 +264,18 @@ func (mstc *MemberSignupTokenCreate) check() error {
 		return &ValidationError{Name: "note", err: errors.New(`generated: missing required field "MemberSignupToken.note"`)}
 	}
 	if _, ok := mstc.mutation.NumberAccessed(); !ok {
-		return &ValidationError{Name: "numberAccessed", err: errors.New(`generated: missing required field "MemberSignupToken.numberAccessed"`)}
+		return &ValidationError{Name: "number_accessed", err: errors.New(`generated: missing required field "MemberSignupToken.number_accessed"`)}
 	}
 	if v, ok := mstc.mutation.NumberAccessed(); ok {
 		if err := membersignuptoken.NumberAccessedValidator(v); err != nil {
-			return &ValidationError{Name: "numberAccessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.numberAccessed": %w`, err)}
+			return &ValidationError{Name: "number_accessed", err: fmt.Errorf(`generated: validator failed for field "MemberSignupToken.number_accessed": %w`, err)}
 		}
 	}
 	if _, ok := mstc.mutation.ExpiresAt(); !ok {
-		return &ValidationError{Name: "expiresAt", err: errors.New(`generated: missing required field "MemberSignupToken.expiresAt"`)}
+		return &ValidationError{Name: "expires_at", err: errors.New(`generated: missing required field "MemberSignupToken.expires_at"`)}
 	}
 	if _, ok := mstc.mutation.AlreadyUsed(); !ok {
-		return &ValidationError{Name: "alreadyUsed", err: errors.New(`generated: missing required field "MemberSignupToken.alreadyUsed"`)}
+		return &ValidationError{Name: "already_used", err: errors.New(`generated: missing required field "MemberSignupToken.already_used"`)}
 	}
 	if len(mstc.mutation.CompanyIDs()) == 0 {
 		return &ValidationError{Name: "company", err: errors.New(`generated: missing required edge "MemberSignupToken.company"`)}

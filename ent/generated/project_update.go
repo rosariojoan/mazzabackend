@@ -33,19 +33,19 @@ func (pu *ProjectUpdate) Where(ps ...predicate.Project) *ProjectUpdate {
 	return pu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pu *ProjectUpdate) SetUpdatedAt(t time.Time) *ProjectUpdate {
 	pu.mutation.SetUpdatedAt(t)
 	return pu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pu *ProjectUpdate) SetDeletedAt(t time.Time) *ProjectUpdate {
 	pu.mutation.SetDeletedAt(t)
 	return pu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillableDeletedAt(t *time.Time) *ProjectUpdate {
 	if t != nil {
 		pu.SetDeletedAt(*t)
@@ -53,7 +53,7 @@ func (pu *ProjectUpdate) SetNillableDeletedAt(t *time.Time) *ProjectUpdate {
 	return pu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (pu *ProjectUpdate) ClearDeletedAt() *ProjectUpdate {
 	pu.mutation.ClearDeletedAt()
 	return pu
@@ -87,13 +87,13 @@ func (pu *ProjectUpdate) SetNillableDescription(s *string) *ProjectUpdate {
 	return pu
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
+// SetPlannedStartDate sets the "planned_start_date" field.
 func (pu *ProjectUpdate) SetPlannedStartDate(t time.Time) *ProjectUpdate {
 	pu.mutation.SetPlannedStartDate(t)
 	return pu
 }
 
-// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
+// SetNillablePlannedStartDate sets the "planned_start_date" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillablePlannedStartDate(t *time.Time) *ProjectUpdate {
 	if t != nil {
 		pu.SetPlannedStartDate(*t)
@@ -101,13 +101,13 @@ func (pu *ProjectUpdate) SetNillablePlannedStartDate(t *time.Time) *ProjectUpdat
 	return pu
 }
 
-// SetActualStartDate sets the "actualStartDate" field.
+// SetActualStartDate sets the "actual_start_date" field.
 func (pu *ProjectUpdate) SetActualStartDate(t time.Time) *ProjectUpdate {
 	pu.mutation.SetActualStartDate(t)
 	return pu
 }
 
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+// SetNillableActualStartDate sets the "actual_start_date" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillableActualStartDate(t *time.Time) *ProjectUpdate {
 	if t != nil {
 		pu.SetActualStartDate(*t)
@@ -115,19 +115,19 @@ func (pu *ProjectUpdate) SetNillableActualStartDate(t *time.Time) *ProjectUpdate
 	return pu
 }
 
-// ClearActualStartDate clears the value of the "actualStartDate" field.
+// ClearActualStartDate clears the value of the "actual_start_date" field.
 func (pu *ProjectUpdate) ClearActualStartDate() *ProjectUpdate {
 	pu.mutation.ClearActualStartDate()
 	return pu
 }
 
-// SetPlannedEndDate sets the "plannedEndDate" field.
+// SetPlannedEndDate sets the "planned_end_date" field.
 func (pu *ProjectUpdate) SetPlannedEndDate(t time.Time) *ProjectUpdate {
 	pu.mutation.SetPlannedEndDate(t)
 	return pu
 }
 
-// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
+// SetNillablePlannedEndDate sets the "planned_end_date" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillablePlannedEndDate(t *time.Time) *ProjectUpdate {
 	if t != nil {
 		pu.SetPlannedEndDate(*t)
@@ -135,13 +135,13 @@ func (pu *ProjectUpdate) SetNillablePlannedEndDate(t *time.Time) *ProjectUpdate 
 	return pu
 }
 
-// SetActualEndDate sets the "actualEndDate" field.
+// SetActualEndDate sets the "actual_end_date" field.
 func (pu *ProjectUpdate) SetActualEndDate(t time.Time) *ProjectUpdate {
 	pu.mutation.SetActualEndDate(t)
 	return pu
 }
 
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+// SetNillableActualEndDate sets the "actual_end_date" field if the given value is not nil.
 func (pu *ProjectUpdate) SetNillableActualEndDate(t *time.Time) *ProjectUpdate {
 	if t != nil {
 		pu.SetActualEndDate(*t)
@@ -149,7 +149,7 @@ func (pu *ProjectUpdate) SetNillableActualEndDate(t *time.Time) *ProjectUpdate {
 	return pu
 }
 
-// ClearActualEndDate clears the value of the "actualEndDate" field.
+// ClearActualEndDate clears the value of the "actual_end_date" field.
 func (pu *ProjectUpdate) ClearActualEndDate() *ProjectUpdate {
 	pu.mutation.ClearActualEndDate()
 	return pu
@@ -209,13 +209,13 @@ func (pu *ProjectUpdate) SetCompany(c *Company) *ProjectUpdate {
 	return pu.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (pu *ProjectUpdate) SetCreatedByID(id int) *ProjectUpdate {
 	pu.mutation.SetCreatedByID(id)
 	return pu
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (pu *ProjectUpdate) SetNillableCreatedByID(id *int) *ProjectUpdate {
 	if id != nil {
 		pu = pu.SetCreatedByID(*id)
@@ -223,7 +223,7 @@ func (pu *ProjectUpdate) SetNillableCreatedByID(id *int) *ProjectUpdate {
 	return pu
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (pu *ProjectUpdate) SetCreatedBy(u *User) *ProjectUpdate {
 	return pu.SetCreatedByID(u.ID)
 }
@@ -288,7 +288,7 @@ func (pu *ProjectUpdate) ClearCompany() *ProjectUpdate {
 	return pu
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (pu *ProjectUpdate) ClearCreatedBy() *ProjectUpdate {
 	pu.mutation.ClearCreatedBy()
 	return pu
@@ -662,19 +662,19 @@ type ProjectUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (puo *ProjectUpdateOne) SetUpdatedAt(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetUpdatedAt(t)
 	return puo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (puo *ProjectUpdateOne) SetDeletedAt(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetDeletedAt(t)
 	return puo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillableDeletedAt(t *time.Time) *ProjectUpdateOne {
 	if t != nil {
 		puo.SetDeletedAt(*t)
@@ -682,7 +682,7 @@ func (puo *ProjectUpdateOne) SetNillableDeletedAt(t *time.Time) *ProjectUpdateOn
 	return puo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (puo *ProjectUpdateOne) ClearDeletedAt() *ProjectUpdateOne {
 	puo.mutation.ClearDeletedAt()
 	return puo
@@ -716,13 +716,13 @@ func (puo *ProjectUpdateOne) SetNillableDescription(s *string) *ProjectUpdateOne
 	return puo
 }
 
-// SetPlannedStartDate sets the "plannedStartDate" field.
+// SetPlannedStartDate sets the "planned_start_date" field.
 func (puo *ProjectUpdateOne) SetPlannedStartDate(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetPlannedStartDate(t)
 	return puo
 }
 
-// SetNillablePlannedStartDate sets the "plannedStartDate" field if the given value is not nil.
+// SetNillablePlannedStartDate sets the "planned_start_date" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillablePlannedStartDate(t *time.Time) *ProjectUpdateOne {
 	if t != nil {
 		puo.SetPlannedStartDate(*t)
@@ -730,13 +730,13 @@ func (puo *ProjectUpdateOne) SetNillablePlannedStartDate(t *time.Time) *ProjectU
 	return puo
 }
 
-// SetActualStartDate sets the "actualStartDate" field.
+// SetActualStartDate sets the "actual_start_date" field.
 func (puo *ProjectUpdateOne) SetActualStartDate(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetActualStartDate(t)
 	return puo
 }
 
-// SetNillableActualStartDate sets the "actualStartDate" field if the given value is not nil.
+// SetNillableActualStartDate sets the "actual_start_date" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillableActualStartDate(t *time.Time) *ProjectUpdateOne {
 	if t != nil {
 		puo.SetActualStartDate(*t)
@@ -744,19 +744,19 @@ func (puo *ProjectUpdateOne) SetNillableActualStartDate(t *time.Time) *ProjectUp
 	return puo
 }
 
-// ClearActualStartDate clears the value of the "actualStartDate" field.
+// ClearActualStartDate clears the value of the "actual_start_date" field.
 func (puo *ProjectUpdateOne) ClearActualStartDate() *ProjectUpdateOne {
 	puo.mutation.ClearActualStartDate()
 	return puo
 }
 
-// SetPlannedEndDate sets the "plannedEndDate" field.
+// SetPlannedEndDate sets the "planned_end_date" field.
 func (puo *ProjectUpdateOne) SetPlannedEndDate(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetPlannedEndDate(t)
 	return puo
 }
 
-// SetNillablePlannedEndDate sets the "plannedEndDate" field if the given value is not nil.
+// SetNillablePlannedEndDate sets the "planned_end_date" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillablePlannedEndDate(t *time.Time) *ProjectUpdateOne {
 	if t != nil {
 		puo.SetPlannedEndDate(*t)
@@ -764,13 +764,13 @@ func (puo *ProjectUpdateOne) SetNillablePlannedEndDate(t *time.Time) *ProjectUpd
 	return puo
 }
 
-// SetActualEndDate sets the "actualEndDate" field.
+// SetActualEndDate sets the "actual_end_date" field.
 func (puo *ProjectUpdateOne) SetActualEndDate(t time.Time) *ProjectUpdateOne {
 	puo.mutation.SetActualEndDate(t)
 	return puo
 }
 
-// SetNillableActualEndDate sets the "actualEndDate" field if the given value is not nil.
+// SetNillableActualEndDate sets the "actual_end_date" field if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillableActualEndDate(t *time.Time) *ProjectUpdateOne {
 	if t != nil {
 		puo.SetActualEndDate(*t)
@@ -778,7 +778,7 @@ func (puo *ProjectUpdateOne) SetNillableActualEndDate(t *time.Time) *ProjectUpda
 	return puo
 }
 
-// ClearActualEndDate clears the value of the "actualEndDate" field.
+// ClearActualEndDate clears the value of the "actual_end_date" field.
 func (puo *ProjectUpdateOne) ClearActualEndDate() *ProjectUpdateOne {
 	puo.mutation.ClearActualEndDate()
 	return puo
@@ -838,13 +838,13 @@ func (puo *ProjectUpdateOne) SetCompany(c *Company) *ProjectUpdateOne {
 	return puo.SetCompanyID(c.ID)
 }
 
-// SetCreatedByID sets the "createdBy" edge to the User entity by ID.
+// SetCreatedByID sets the "created_by" edge to the User entity by ID.
 func (puo *ProjectUpdateOne) SetCreatedByID(id int) *ProjectUpdateOne {
 	puo.mutation.SetCreatedByID(id)
 	return puo
 }
 
-// SetNillableCreatedByID sets the "createdBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableCreatedByID sets the "created_by" edge to the User entity by ID if the given value is not nil.
 func (puo *ProjectUpdateOne) SetNillableCreatedByID(id *int) *ProjectUpdateOne {
 	if id != nil {
 		puo = puo.SetCreatedByID(*id)
@@ -852,7 +852,7 @@ func (puo *ProjectUpdateOne) SetNillableCreatedByID(id *int) *ProjectUpdateOne {
 	return puo
 }
 
-// SetCreatedBy sets the "createdBy" edge to the User entity.
+// SetCreatedBy sets the "created_by" edge to the User entity.
 func (puo *ProjectUpdateOne) SetCreatedBy(u *User) *ProjectUpdateOne {
 	return puo.SetCreatedByID(u.ID)
 }
@@ -917,7 +917,7 @@ func (puo *ProjectUpdateOne) ClearCompany() *ProjectUpdateOne {
 	return puo
 }
 
-// ClearCreatedBy clears the "createdBy" edge to the User entity.
+// ClearCreatedBy clears the "created_by" edge to the User entity.
 func (puo *ProjectUpdateOne) ClearCreatedBy() *ProjectUpdateOne {
 	puo.mutation.ClearCreatedBy()
 	return puo

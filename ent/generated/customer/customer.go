@@ -14,11 +14,11 @@ const (
 	Label = "customer"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deletedat field in the database.
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
@@ -30,14 +30,14 @@ const (
 	FieldDescription = "description"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
-	// FieldIsDefault holds the string denoting the isdefault field in the database.
+	// FieldIsDefault holds the string denoting the is_default field in the database.
 	FieldIsDefault = "is_default"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
-	// FieldTaxId holds the string denoting the taxid field in the database.
-	FieldTaxId = "tax_id"
+	// FieldTaxID holds the string denoting the tax_id field in the database.
+	FieldTaxID = "tax_id"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
 	// EdgeLoans holds the string denoting the loans edge name in mutations.
@@ -92,7 +92,7 @@ var Columns = []string{
 	FieldIsDefault,
 	FieldName,
 	FieldPhone,
-	FieldTaxId,
+	FieldTaxID,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "customers"
@@ -117,11 +117,11 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultAddress holds the default value on creation for the "address" field.
 	DefaultAddress string
@@ -133,14 +133,14 @@ var (
 	DefaultDescription string
 	// DefaultEmail holds the default value on creation for the "email" field.
 	DefaultEmail string
-	// DefaultIsDefault holds the default value on creation for the "isDefault" field.
+	// DefaultIsDefault holds the default value on creation for the "is_default" field.
 	DefaultIsDefault bool
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// DefaultPhone holds the default value on creation for the "phone" field.
 	DefaultPhone string
-	// DefaultTaxId holds the default value on creation for the "taxId" field.
-	DefaultTaxId string
+	// DefaultTaxID holds the default value on creation for the "tax_id" field.
+	DefaultTaxID string
 )
 
 // OrderOption defines the ordering options for the Customer queries.
@@ -151,17 +151,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedAt orders the results by the createdAt field.
+// ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updatedAt field.
+// ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deletedAt field.
+// ByDeletedAt orders the results by the deleted_at field.
 func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
@@ -191,7 +191,7 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
-// ByIsDefault orders the results by the isDefault field.
+// ByIsDefault orders the results by the is_default field.
 func ByIsDefault(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsDefault, opts...).ToFunc()
 }
@@ -206,9 +206,9 @@ func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
 }
 
-// ByTaxId orders the results by the taxId field.
-func ByTaxId(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTaxId, opts...).ToFunc()
+// ByTaxID orders the results by the tax_id field.
+func ByTaxID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTaxID, opts...).ToFunc()
 }
 
 // ByCompanyField orders the results by company field.

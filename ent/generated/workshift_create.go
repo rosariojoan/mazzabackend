@@ -23,13 +23,13 @@ type WorkshiftCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (wc *WorkshiftCreate) SetCreatedAt(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetCreatedAt(t)
 	return wc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableCreatedAt(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetCreatedAt(*t)
@@ -37,13 +37,13 @@ func (wc *WorkshiftCreate) SetNillableCreatedAt(t *time.Time) *WorkshiftCreate {
 	return wc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (wc *WorkshiftCreate) SetUpdatedAt(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetUpdatedAt(t)
 	return wc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableUpdatedAt(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetUpdatedAt(*t)
@@ -51,13 +51,13 @@ func (wc *WorkshiftCreate) SetNillableUpdatedAt(t *time.Time) *WorkshiftCreate {
 	return wc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (wc *WorkshiftCreate) SetDeletedAt(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetDeletedAt(t)
 	return wc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableDeletedAt(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetDeletedAt(*t)
@@ -65,13 +65,13 @@ func (wc *WorkshiftCreate) SetNillableDeletedAt(t *time.Time) *WorkshiftCreate {
 	return wc
 }
 
-// SetApprovedAt sets the "approvedAt" field.
+// SetApprovedAt sets the "approved_at" field.
 func (wc *WorkshiftCreate) SetApprovedAt(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetApprovedAt(t)
 	return wc
 }
 
-// SetNillableApprovedAt sets the "approvedAt" field if the given value is not nil.
+// SetNillableApprovedAt sets the "approved_at" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableApprovedAt(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetApprovedAt(*t)
@@ -79,13 +79,13 @@ func (wc *WorkshiftCreate) SetNillableApprovedAt(t *time.Time) *WorkshiftCreate 
 	return wc
 }
 
-// SetClockIn sets the "clockIn" field.
+// SetClockIn sets the "clock_in" field.
 func (wc *WorkshiftCreate) SetClockIn(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetClockIn(t)
 	return wc
 }
 
-// SetNillableClockIn sets the "clockIn" field if the given value is not nil.
+// SetNillableClockIn sets the "clock_in" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableClockIn(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetClockIn(*t)
@@ -93,13 +93,13 @@ func (wc *WorkshiftCreate) SetNillableClockIn(t *time.Time) *WorkshiftCreate {
 	return wc
 }
 
-// SetClockOut sets the "clockOut" field.
+// SetClockOut sets the "clock_out" field.
 func (wc *WorkshiftCreate) SetClockOut(t time.Time) *WorkshiftCreate {
 	wc.mutation.SetClockOut(t)
 	return wc
 }
 
-// SetNillableClockOut sets the "clockOut" field if the given value is not nil.
+// SetNillableClockOut sets the "clock_out" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableClockOut(t *time.Time) *WorkshiftCreate {
 	if t != nil {
 		wc.SetClockOut(*t)
@@ -107,19 +107,19 @@ func (wc *WorkshiftCreate) SetNillableClockOut(t *time.Time) *WorkshiftCreate {
 	return wc
 }
 
-// SetClockInLocation sets the "clockInLocation" field.
+// SetClockInLocation sets the "clock_in_location" field.
 func (wc *WorkshiftCreate) SetClockInLocation(s string) *WorkshiftCreate {
 	wc.mutation.SetClockInLocation(s)
 	return wc
 }
 
-// SetClockOutLocation sets the "clockOutLocation" field.
+// SetClockOutLocation sets the "clock_out_location" field.
 func (wc *WorkshiftCreate) SetClockOutLocation(s string) *WorkshiftCreate {
 	wc.mutation.SetClockOutLocation(s)
 	return wc
 }
 
-// SetNillableClockOutLocation sets the "clockOutLocation" field if the given value is not nil.
+// SetNillableClockOutLocation sets the "clock_out_location" field if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableClockOutLocation(s *string) *WorkshiftCreate {
 	if s != nil {
 		wc.SetClockOutLocation(*s)
@@ -207,13 +207,13 @@ func (wc *WorkshiftCreate) SetUser(u *User) *WorkshiftCreate {
 	return wc.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (wc *WorkshiftCreate) SetApprovedByID(id int) *WorkshiftCreate {
 	wc.mutation.SetApprovedByID(id)
 	return wc
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableApprovedByID(id *int) *WorkshiftCreate {
 	if id != nil {
 		wc = wc.SetApprovedByID(*id)
@@ -221,7 +221,7 @@ func (wc *WorkshiftCreate) SetNillableApprovedByID(id *int) *WorkshiftCreate {
 	return wc
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (wc *WorkshiftCreate) SetApprovedBy(u *User) *WorkshiftCreate {
 	return wc.SetApprovedByID(u.ID)
 }
@@ -245,13 +245,13 @@ func (wc *WorkshiftCreate) SetTask(p *ProjectTask) *WorkshiftCreate {
 	return wc.SetTaskID(p.ID)
 }
 
-// SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
+// SetEditRequestID sets the "edit_request" edge to the Workshift entity by ID.
 func (wc *WorkshiftCreate) SetEditRequestID(id int) *WorkshiftCreate {
 	wc.mutation.SetEditRequestID(id)
 	return wc
 }
 
-// SetNillableEditRequestID sets the "editRequest" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableEditRequestID sets the "edit_request" edge to the Workshift entity by ID if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableEditRequestID(id *int) *WorkshiftCreate {
 	if id != nil {
 		wc = wc.SetEditRequestID(*id)
@@ -259,18 +259,18 @@ func (wc *WorkshiftCreate) SetNillableEditRequestID(id *int) *WorkshiftCreate {
 	return wc
 }
 
-// SetEditRequest sets the "editRequest" edge to the Workshift entity.
+// SetEditRequest sets the "edit_request" edge to the Workshift entity.
 func (wc *WorkshiftCreate) SetEditRequest(w *Workshift) *WorkshiftCreate {
 	return wc.SetEditRequestID(w.ID)
 }
 
-// SetWorkShiftID sets the "workShift" edge to the Workshift entity by ID.
+// SetWorkShiftID sets the "work_shift" edge to the Workshift entity by ID.
 func (wc *WorkshiftCreate) SetWorkShiftID(id int) *WorkshiftCreate {
 	wc.mutation.SetWorkShiftID(id)
 	return wc
 }
 
-// SetNillableWorkShiftID sets the "workShift" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableWorkShiftID sets the "work_shift" edge to the Workshift entity by ID if the given value is not nil.
 func (wc *WorkshiftCreate) SetNillableWorkShiftID(id *int) *WorkshiftCreate {
 	if id != nil {
 		wc = wc.SetWorkShiftID(*id)
@@ -278,7 +278,7 @@ func (wc *WorkshiftCreate) SetNillableWorkShiftID(id *int) *WorkshiftCreate {
 	return wc
 }
 
-// SetWorkShift sets the "workShift" edge to the Workshift entity.
+// SetWorkShift sets the "work_shift" edge to the Workshift entity.
 func (wc *WorkshiftCreate) SetWorkShift(w *Workshift) *WorkshiftCreate {
 	return wc.SetWorkShiftID(w.ID)
 }
@@ -351,16 +351,16 @@ func (wc *WorkshiftCreate) defaults() error {
 // check runs all checks and user-defined validators on the builder.
 func (wc *WorkshiftCreate) check() error {
 	if _, ok := wc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Workshift.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Workshift.created_at"`)}
 	}
 	if _, ok := wc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Workshift.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Workshift.updated_at"`)}
 	}
 	if _, ok := wc.mutation.ClockIn(); !ok {
-		return &ValidationError{Name: "clockIn", err: errors.New(`generated: missing required field "Workshift.clockIn"`)}
+		return &ValidationError{Name: "clock_in", err: errors.New(`generated: missing required field "Workshift.clock_in"`)}
 	}
 	if _, ok := wc.mutation.ClockInLocation(); !ok {
-		return &ValidationError{Name: "clockInLocation", err: errors.New(`generated: missing required field "Workshift.clockInLocation"`)}
+		return &ValidationError{Name: "clock_in_location", err: errors.New(`generated: missing required field "Workshift.clock_in_location"`)}
 	}
 	if _, ok := wc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Workshift.status"`)}

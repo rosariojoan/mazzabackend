@@ -21,13 +21,13 @@ type ProductCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (pc *ProductCreate) SetCreatedAt(t time.Time) *ProductCreate {
 	pc.mutation.SetCreatedAt(t)
 	return pc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (pc *ProductCreate) SetNillableCreatedAt(t *time.Time) *ProductCreate {
 	if t != nil {
 		pc.SetCreatedAt(*t)
@@ -35,13 +35,13 @@ func (pc *ProductCreate) SetNillableCreatedAt(t *time.Time) *ProductCreate {
 	return pc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (pc *ProductCreate) SetUpdatedAt(t time.Time) *ProductCreate {
 	pc.mutation.SetUpdatedAt(t)
 	return pc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (pc *ProductCreate) SetNillableUpdatedAt(t *time.Time) *ProductCreate {
 	if t != nil {
 		pc.SetUpdatedAt(*t)
@@ -49,13 +49,13 @@ func (pc *ProductCreate) SetNillableUpdatedAt(t *time.Time) *ProductCreate {
 	return pc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (pc *ProductCreate) SetDeletedAt(t time.Time) *ProductCreate {
 	pc.mutation.SetDeletedAt(t)
 	return pc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (pc *ProductCreate) SetNillableDeletedAt(t *time.Time) *ProductCreate {
 	if t != nil {
 		pc.SetDeletedAt(*t)
@@ -148,10 +148,10 @@ func (pc *ProductCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (pc *ProductCreate) check() error {
 	if _, ok := pc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Product.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Product.created_at"`)}
 	}
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Product.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Product.updated_at"`)}
 	}
 	if _, ok := pc.mutation.Stock(); !ok {
 		return &ValidationError{Name: "stock", err: errors.New(`generated: missing required field "Product.stock"`)}

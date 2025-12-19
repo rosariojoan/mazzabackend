@@ -83,11 +83,6 @@ extend type Query {
     groupBy: [PayablesGroupBy!]
   ): [PayableAggregationOutput!]!
 
-  aggregateLoans(
-    where: LoanWhereInput
-    groupBy: [LoansGroupBy!]
-  ): [LoanAggregationOutput!]!
-
   aggregateCash(input: AggregateCashInput!): CashAggregationOutput!
 
   accountsReceivableAging(name: String): [AgingBucket!]!

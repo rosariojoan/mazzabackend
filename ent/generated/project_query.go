@@ -95,7 +95,7 @@ func (pq *ProjectQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryCreatedBy chains the current query on the "createdBy" edge.
+// QueryCreatedBy chains the current query on the "created_by" edge.
 func (pq *ProjectQuery) QueryCreatedBy() *UserQuery {
 	query := (&UserClient{config: pq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -399,7 +399,7 @@ func (pq *ProjectQuery) WithCompany(opts ...func(*CompanyQuery)) *ProjectQuery {
 }
 
 // WithCreatedBy tells the query-builder to eager-load the nodes that are connected to
-// the "createdBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "created_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (pq *ProjectQuery) WithCreatedBy(opts ...func(*UserQuery)) *ProjectQuery {
 	query := (&UserClient{config: pq.config}).Query()
 	for _, opt := range opts {
@@ -448,7 +448,7 @@ func (pq *ProjectQuery) WithMilestones(opts ...func(*ProjectMilestoneQuery)) *Pr
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -471,7 +471,7 @@ func (pq *ProjectQuery) GroupBy(field string, fields ...string) *ProjectGroupBy 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Project.Query().

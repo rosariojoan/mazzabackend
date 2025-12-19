@@ -22,13 +22,13 @@ type ReceivableCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (rc *ReceivableCreate) SetCreatedAt(t time.Time) *ReceivableCreate {
 	rc.mutation.SetCreatedAt(t)
 	return rc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (rc *ReceivableCreate) SetNillableCreatedAt(t *time.Time) *ReceivableCreate {
 	if t != nil {
 		rc.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (rc *ReceivableCreate) SetNillableCreatedAt(t *time.Time) *ReceivableCreate
 	return rc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (rc *ReceivableCreate) SetUpdatedAt(t time.Time) *ReceivableCreate {
 	rc.mutation.SetUpdatedAt(t)
 	return rc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (rc *ReceivableCreate) SetNillableUpdatedAt(t *time.Time) *ReceivableCreate {
 	if t != nil {
 		rc.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (rc *ReceivableCreate) SetNillableUpdatedAt(t *time.Time) *ReceivableCreate
 	return rc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (rc *ReceivableCreate) SetDeletedAt(t time.Time) *ReceivableCreate {
 	rc.mutation.SetDeletedAt(t)
 	return rc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (rc *ReceivableCreate) SetNillableDeletedAt(t *time.Time) *ReceivableCreate {
 	if t != nil {
 		rc.SetDeletedAt(*t)
@@ -64,7 +64,7 @@ func (rc *ReceivableCreate) SetNillableDeletedAt(t *time.Time) *ReceivableCreate
 	return rc
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (rc *ReceivableCreate) SetEntryGroup(i int) *ReceivableCreate {
 	rc.mutation.SetEntryGroup(i)
 	return rc
@@ -90,13 +90,13 @@ func (rc *ReceivableCreate) SetNillableName(s *string) *ReceivableCreate {
 	return rc
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (rc *ReceivableCreate) SetAmountInDefault(f float64) *ReceivableCreate {
 	rc.mutation.SetAmountInDefault(f)
 	return rc
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (rc *ReceivableCreate) SetNillableAmountInDefault(f *float64) *ReceivableCreate {
 	if f != nil {
 		rc.SetAmountInDefault(*f)
@@ -104,19 +104,19 @@ func (rc *ReceivableCreate) SetNillableAmountInDefault(f *float64) *ReceivableCr
 	return rc
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (rc *ReceivableCreate) SetOutstandingBalance(f float64) *ReceivableCreate {
 	rc.mutation.SetOutstandingBalance(f)
 	return rc
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (rc *ReceivableCreate) SetTotalTransaction(f float64) *ReceivableCreate {
 	rc.mutation.SetTotalTransaction(f)
 	return rc
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (rc *ReceivableCreate) SetDueDate(t time.Time) *ReceivableCreate {
 	rc.mutation.SetDueDate(t)
 	return rc
@@ -222,17 +222,17 @@ func (rc *ReceivableCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (rc *ReceivableCreate) check() error {
 	if _, ok := rc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Receivable.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Receivable.created_at"`)}
 	}
 	if _, ok := rc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Receivable.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Receivable.updated_at"`)}
 	}
 	if _, ok := rc.mutation.EntryGroup(); !ok {
-		return &ValidationError{Name: "entryGroup", err: errors.New(`generated: missing required field "Receivable.entryGroup"`)}
+		return &ValidationError{Name: "entry_group", err: errors.New(`generated: missing required field "Receivable.entry_group"`)}
 	}
 	if v, ok := rc.mutation.EntryGroup(); ok {
 		if err := receivable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Receivable.entry_group": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.Date(); !ok {
@@ -242,31 +242,31 @@ func (rc *ReceivableCreate) check() error {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Receivable.name"`)}
 	}
 	if _, ok := rc.mutation.AmountInDefault(); !ok {
-		return &ValidationError{Name: "amountInDefault", err: errors.New(`generated: missing required field "Receivable.amountInDefault"`)}
+		return &ValidationError{Name: "amount_in_default", err: errors.New(`generated: missing required field "Receivable.amount_in_default"`)}
 	}
 	if v, ok := rc.mutation.AmountInDefault(); ok {
 		if err := receivable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Receivable.amount_in_default": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.OutstandingBalance(); !ok {
-		return &ValidationError{Name: "outstandingBalance", err: errors.New(`generated: missing required field "Receivable.outstandingBalance"`)}
+		return &ValidationError{Name: "outstanding_balance", err: errors.New(`generated: missing required field "Receivable.outstanding_balance"`)}
 	}
 	if v, ok := rc.mutation.OutstandingBalance(); ok {
 		if err := receivable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstanding_balance": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.TotalTransaction(); !ok {
-		return &ValidationError{Name: "totalTransaction", err: errors.New(`generated: missing required field "Receivable.totalTransaction"`)}
+		return &ValidationError{Name: "total_transaction", err: errors.New(`generated: missing required field "Receivable.total_transaction"`)}
 	}
 	if v, ok := rc.mutation.TotalTransaction(); ok {
 		if err := receivable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.total_transaction": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.DueDate(); !ok {
-		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Receivable.dueDate"`)}
+		return &ValidationError{Name: "due_date", err: errors.New(`generated: missing required field "Receivable.due_date"`)}
 	}
 	if _, ok := rc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Receivable.status"`)}

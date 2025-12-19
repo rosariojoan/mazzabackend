@@ -55,42 +55,42 @@ func IDLTE(id int) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// ApprovedAt applies equality check predicate on the "approvedAt" field. It's identical to ApprovedAtEQ.
+// ApprovedAt applies equality check predicate on the "approved_at" field. It's identical to ApprovedAtEQ.
 func ApprovedAt(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldApprovedAt, v))
 }
 
-// ClockIn applies equality check predicate on the "clockIn" field. It's identical to ClockInEQ.
+// ClockIn applies equality check predicate on the "clock_in" field. It's identical to ClockInEQ.
 func ClockIn(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockIn, v))
 }
 
-// ClockOut applies equality check predicate on the "clockOut" field. It's identical to ClockOutEQ.
+// ClockOut applies equality check predicate on the "clock_out" field. It's identical to ClockOutEQ.
 func ClockOut(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockOut, v))
 }
 
-// ClockInLocation applies equality check predicate on the "clockInLocation" field. It's identical to ClockInLocationEQ.
+// ClockInLocation applies equality check predicate on the "clock_in_location" field. It's identical to ClockInLocationEQ.
 func ClockInLocation(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockInLocation, v))
 }
 
-// ClockOutLocation applies equality check predicate on the "clockOutLocation" field. It's identical to ClockOutLocationEQ.
+// ClockOutLocation applies equality check predicate on the "clock_out_location" field. It's identical to ClockOutLocationEQ.
 func ClockOutLocation(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockOutLocation, v))
 }
@@ -105,412 +105,412 @@ func Note(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldNote, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// ApprovedAtEQ applies the EQ predicate on the "approvedAt" field.
+// ApprovedAtEQ applies the EQ predicate on the "approved_at" field.
 func ApprovedAtEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldApprovedAt, v))
 }
 
-// ApprovedAtNEQ applies the NEQ predicate on the "approvedAt" field.
+// ApprovedAtNEQ applies the NEQ predicate on the "approved_at" field.
 func ApprovedAtNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldApprovedAt, v))
 }
 
-// ApprovedAtIn applies the In predicate on the "approvedAt" field.
+// ApprovedAtIn applies the In predicate on the "approved_at" field.
 func ApprovedAtIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldApprovedAt, vs...))
 }
 
-// ApprovedAtNotIn applies the NotIn predicate on the "approvedAt" field.
+// ApprovedAtNotIn applies the NotIn predicate on the "approved_at" field.
 func ApprovedAtNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldApprovedAt, vs...))
 }
 
-// ApprovedAtGT applies the GT predicate on the "approvedAt" field.
+// ApprovedAtGT applies the GT predicate on the "approved_at" field.
 func ApprovedAtGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldApprovedAt, v))
 }
 
-// ApprovedAtGTE applies the GTE predicate on the "approvedAt" field.
+// ApprovedAtGTE applies the GTE predicate on the "approved_at" field.
 func ApprovedAtGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldApprovedAt, v))
 }
 
-// ApprovedAtLT applies the LT predicate on the "approvedAt" field.
+// ApprovedAtLT applies the LT predicate on the "approved_at" field.
 func ApprovedAtLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldApprovedAt, v))
 }
 
-// ApprovedAtLTE applies the LTE predicate on the "approvedAt" field.
+// ApprovedAtLTE applies the LTE predicate on the "approved_at" field.
 func ApprovedAtLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldApprovedAt, v))
 }
 
-// ApprovedAtIsNil applies the IsNil predicate on the "approvedAt" field.
+// ApprovedAtIsNil applies the IsNil predicate on the "approved_at" field.
 func ApprovedAtIsNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldIsNull(FieldApprovedAt))
 }
 
-// ApprovedAtNotNil applies the NotNil predicate on the "approvedAt" field.
+// ApprovedAtNotNil applies the NotNil predicate on the "approved_at" field.
 func ApprovedAtNotNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotNull(FieldApprovedAt))
 }
 
-// ClockInEQ applies the EQ predicate on the "clockIn" field.
+// ClockInEQ applies the EQ predicate on the "clock_in" field.
 func ClockInEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockIn, v))
 }
 
-// ClockInNEQ applies the NEQ predicate on the "clockIn" field.
+// ClockInNEQ applies the NEQ predicate on the "clock_in" field.
 func ClockInNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldClockIn, v))
 }
 
-// ClockInIn applies the In predicate on the "clockIn" field.
+// ClockInIn applies the In predicate on the "clock_in" field.
 func ClockInIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldClockIn, vs...))
 }
 
-// ClockInNotIn applies the NotIn predicate on the "clockIn" field.
+// ClockInNotIn applies the NotIn predicate on the "clock_in" field.
 func ClockInNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldClockIn, vs...))
 }
 
-// ClockInGT applies the GT predicate on the "clockIn" field.
+// ClockInGT applies the GT predicate on the "clock_in" field.
 func ClockInGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldClockIn, v))
 }
 
-// ClockInGTE applies the GTE predicate on the "clockIn" field.
+// ClockInGTE applies the GTE predicate on the "clock_in" field.
 func ClockInGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldClockIn, v))
 }
 
-// ClockInLT applies the LT predicate on the "clockIn" field.
+// ClockInLT applies the LT predicate on the "clock_in" field.
 func ClockInLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldClockIn, v))
 }
 
-// ClockInLTE applies the LTE predicate on the "clockIn" field.
+// ClockInLTE applies the LTE predicate on the "clock_in" field.
 func ClockInLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldClockIn, v))
 }
 
-// ClockOutEQ applies the EQ predicate on the "clockOut" field.
+// ClockOutEQ applies the EQ predicate on the "clock_out" field.
 func ClockOutEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockOut, v))
 }
 
-// ClockOutNEQ applies the NEQ predicate on the "clockOut" field.
+// ClockOutNEQ applies the NEQ predicate on the "clock_out" field.
 func ClockOutNEQ(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldClockOut, v))
 }
 
-// ClockOutIn applies the In predicate on the "clockOut" field.
+// ClockOutIn applies the In predicate on the "clock_out" field.
 func ClockOutIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldClockOut, vs...))
 }
 
-// ClockOutNotIn applies the NotIn predicate on the "clockOut" field.
+// ClockOutNotIn applies the NotIn predicate on the "clock_out" field.
 func ClockOutNotIn(vs ...time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldClockOut, vs...))
 }
 
-// ClockOutGT applies the GT predicate on the "clockOut" field.
+// ClockOutGT applies the GT predicate on the "clock_out" field.
 func ClockOutGT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldClockOut, v))
 }
 
-// ClockOutGTE applies the GTE predicate on the "clockOut" field.
+// ClockOutGTE applies the GTE predicate on the "clock_out" field.
 func ClockOutGTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldClockOut, v))
 }
 
-// ClockOutLT applies the LT predicate on the "clockOut" field.
+// ClockOutLT applies the LT predicate on the "clock_out" field.
 func ClockOutLT(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldClockOut, v))
 }
 
-// ClockOutLTE applies the LTE predicate on the "clockOut" field.
+// ClockOutLTE applies the LTE predicate on the "clock_out" field.
 func ClockOutLTE(v time.Time) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldClockOut, v))
 }
 
-// ClockOutIsNil applies the IsNil predicate on the "clockOut" field.
+// ClockOutIsNil applies the IsNil predicate on the "clock_out" field.
 func ClockOutIsNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldIsNull(FieldClockOut))
 }
 
-// ClockOutNotNil applies the NotNil predicate on the "clockOut" field.
+// ClockOutNotNil applies the NotNil predicate on the "clock_out" field.
 func ClockOutNotNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotNull(FieldClockOut))
 }
 
-// ClockInLocationEQ applies the EQ predicate on the "clockInLocation" field.
+// ClockInLocationEQ applies the EQ predicate on the "clock_in_location" field.
 func ClockInLocationEQ(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockInLocation, v))
 }
 
-// ClockInLocationNEQ applies the NEQ predicate on the "clockInLocation" field.
+// ClockInLocationNEQ applies the NEQ predicate on the "clock_in_location" field.
 func ClockInLocationNEQ(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldClockInLocation, v))
 }
 
-// ClockInLocationIn applies the In predicate on the "clockInLocation" field.
+// ClockInLocationIn applies the In predicate on the "clock_in_location" field.
 func ClockInLocationIn(vs ...string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldClockInLocation, vs...))
 }
 
-// ClockInLocationNotIn applies the NotIn predicate on the "clockInLocation" field.
+// ClockInLocationNotIn applies the NotIn predicate on the "clock_in_location" field.
 func ClockInLocationNotIn(vs ...string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldClockInLocation, vs...))
 }
 
-// ClockInLocationGT applies the GT predicate on the "clockInLocation" field.
+// ClockInLocationGT applies the GT predicate on the "clock_in_location" field.
 func ClockInLocationGT(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldClockInLocation, v))
 }
 
-// ClockInLocationGTE applies the GTE predicate on the "clockInLocation" field.
+// ClockInLocationGTE applies the GTE predicate on the "clock_in_location" field.
 func ClockInLocationGTE(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldClockInLocation, v))
 }
 
-// ClockInLocationLT applies the LT predicate on the "clockInLocation" field.
+// ClockInLocationLT applies the LT predicate on the "clock_in_location" field.
 func ClockInLocationLT(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldClockInLocation, v))
 }
 
-// ClockInLocationLTE applies the LTE predicate on the "clockInLocation" field.
+// ClockInLocationLTE applies the LTE predicate on the "clock_in_location" field.
 func ClockInLocationLTE(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldClockInLocation, v))
 }
 
-// ClockInLocationContains applies the Contains predicate on the "clockInLocation" field.
+// ClockInLocationContains applies the Contains predicate on the "clock_in_location" field.
 func ClockInLocationContains(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldContains(FieldClockInLocation, v))
 }
 
-// ClockInLocationHasPrefix applies the HasPrefix predicate on the "clockInLocation" field.
+// ClockInLocationHasPrefix applies the HasPrefix predicate on the "clock_in_location" field.
 func ClockInLocationHasPrefix(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldHasPrefix(FieldClockInLocation, v))
 }
 
-// ClockInLocationHasSuffix applies the HasSuffix predicate on the "clockInLocation" field.
+// ClockInLocationHasSuffix applies the HasSuffix predicate on the "clock_in_location" field.
 func ClockInLocationHasSuffix(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldHasSuffix(FieldClockInLocation, v))
 }
 
-// ClockInLocationEqualFold applies the EqualFold predicate on the "clockInLocation" field.
+// ClockInLocationEqualFold applies the EqualFold predicate on the "clock_in_location" field.
 func ClockInLocationEqualFold(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEqualFold(FieldClockInLocation, v))
 }
 
-// ClockInLocationContainsFold applies the ContainsFold predicate on the "clockInLocation" field.
+// ClockInLocationContainsFold applies the ContainsFold predicate on the "clock_in_location" field.
 func ClockInLocationContainsFold(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldContainsFold(FieldClockInLocation, v))
 }
 
-// ClockOutLocationEQ applies the EQ predicate on the "clockOutLocation" field.
+// ClockOutLocationEQ applies the EQ predicate on the "clock_out_location" field.
 func ClockOutLocationEQ(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEQ(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationNEQ applies the NEQ predicate on the "clockOutLocation" field.
+// ClockOutLocationNEQ applies the NEQ predicate on the "clock_out_location" field.
 func ClockOutLocationNEQ(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNEQ(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationIn applies the In predicate on the "clockOutLocation" field.
+// ClockOutLocationIn applies the In predicate on the "clock_out_location" field.
 func ClockOutLocationIn(vs ...string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldIn(FieldClockOutLocation, vs...))
 }
 
-// ClockOutLocationNotIn applies the NotIn predicate on the "clockOutLocation" field.
+// ClockOutLocationNotIn applies the NotIn predicate on the "clock_out_location" field.
 func ClockOutLocationNotIn(vs ...string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotIn(FieldClockOutLocation, vs...))
 }
 
-// ClockOutLocationGT applies the GT predicate on the "clockOutLocation" field.
+// ClockOutLocationGT applies the GT predicate on the "clock_out_location" field.
 func ClockOutLocationGT(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGT(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationGTE applies the GTE predicate on the "clockOutLocation" field.
+// ClockOutLocationGTE applies the GTE predicate on the "clock_out_location" field.
 func ClockOutLocationGTE(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldGTE(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationLT applies the LT predicate on the "clockOutLocation" field.
+// ClockOutLocationLT applies the LT predicate on the "clock_out_location" field.
 func ClockOutLocationLT(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLT(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationLTE applies the LTE predicate on the "clockOutLocation" field.
+// ClockOutLocationLTE applies the LTE predicate on the "clock_out_location" field.
 func ClockOutLocationLTE(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldLTE(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationContains applies the Contains predicate on the "clockOutLocation" field.
+// ClockOutLocationContains applies the Contains predicate on the "clock_out_location" field.
 func ClockOutLocationContains(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldContains(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationHasPrefix applies the HasPrefix predicate on the "clockOutLocation" field.
+// ClockOutLocationHasPrefix applies the HasPrefix predicate on the "clock_out_location" field.
 func ClockOutLocationHasPrefix(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldHasPrefix(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationHasSuffix applies the HasSuffix predicate on the "clockOutLocation" field.
+// ClockOutLocationHasSuffix applies the HasSuffix predicate on the "clock_out_location" field.
 func ClockOutLocationHasSuffix(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldHasSuffix(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationIsNil applies the IsNil predicate on the "clockOutLocation" field.
+// ClockOutLocationIsNil applies the IsNil predicate on the "clock_out_location" field.
 func ClockOutLocationIsNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldIsNull(FieldClockOutLocation))
 }
 
-// ClockOutLocationNotNil applies the NotNil predicate on the "clockOutLocation" field.
+// ClockOutLocationNotNil applies the NotNil predicate on the "clock_out_location" field.
 func ClockOutLocationNotNil() predicate.Workshift {
 	return predicate.Workshift(sql.FieldNotNull(FieldClockOutLocation))
 }
 
-// ClockOutLocationEqualFold applies the EqualFold predicate on the "clockOutLocation" field.
+// ClockOutLocationEqualFold applies the EqualFold predicate on the "clock_out_location" field.
 func ClockOutLocationEqualFold(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldEqualFold(FieldClockOutLocation, v))
 }
 
-// ClockOutLocationContainsFold applies the ContainsFold predicate on the "clockOutLocation" field.
+// ClockOutLocationContainsFold applies the ContainsFold predicate on the "clock_out_location" field.
 func ClockOutLocationContainsFold(v string) predicate.Workshift {
 	return predicate.Workshift(sql.FieldContainsFold(FieldClockOutLocation, v))
 }
@@ -731,7 +731,7 @@ func HasUserWith(preds ...predicate.User) predicate.Workshift {
 	})
 }
 
-// HasApprovedBy applies the HasEdge predicate on the "approvedBy" edge.
+// HasApprovedBy applies the HasEdge predicate on the "approved_by" edge.
 func HasApprovedBy() predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -742,7 +742,7 @@ func HasApprovedBy() predicate.Workshift {
 	})
 }
 
-// HasApprovedByWith applies the HasEdge predicate on the "approvedBy" edge with a given conditions (other predicates).
+// HasApprovedByWith applies the HasEdge predicate on the "approved_by" edge with a given conditions (other predicates).
 func HasApprovedByWith(preds ...predicate.User) predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := newApprovedByStep()
@@ -777,7 +777,7 @@ func HasTaskWith(preds ...predicate.ProjectTask) predicate.Workshift {
 	})
 }
 
-// HasEditRequest applies the HasEdge predicate on the "editRequest" edge.
+// HasEditRequest applies the HasEdge predicate on the "edit_request" edge.
 func HasEditRequest() predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -788,7 +788,7 @@ func HasEditRequest() predicate.Workshift {
 	})
 }
 
-// HasEditRequestWith applies the HasEdge predicate on the "editRequest" edge with a given conditions (other predicates).
+// HasEditRequestWith applies the HasEdge predicate on the "edit_request" edge with a given conditions (other predicates).
 func HasEditRequestWith(preds ...predicate.Workshift) predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := newEditRequestStep()
@@ -800,7 +800,7 @@ func HasEditRequestWith(preds ...predicate.Workshift) predicate.Workshift {
 	})
 }
 
-// HasWorkShift applies the HasEdge predicate on the "workShift" edge.
+// HasWorkShift applies the HasEdge predicate on the "work_shift" edge.
 func HasWorkShift() predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -811,7 +811,7 @@ func HasWorkShift() predicate.Workshift {
 	})
 }
 
-// HasWorkShiftWith applies the HasEdge predicate on the "workShift" edge with a given conditions (other predicates).
+// HasWorkShiftWith applies the HasEdge predicate on the "work_shift" edge with a given conditions (other predicates).
 func HasWorkShiftWith(preds ...predicate.Workshift) predicate.Workshift {
 	return predicate.Workshift(func(s *sql.Selector) {
 		step := newWorkShiftStep()

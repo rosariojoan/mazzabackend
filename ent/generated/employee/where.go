@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -105,147 +105,147 @@ func Avatar(v string) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldAvatar, v))
 }
 
-// HireDate applies equality check predicate on the "hireDate" field. It's identical to HireDateEQ.
+// HireDate applies equality check predicate on the "hire_date" field. It's identical to HireDateEQ.
 func HireDate(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldHireDate, v))
 }
 
-// MonthlySalary applies equality check predicate on the "monthlySalary" field. It's identical to MonthlySalaryEQ.
+// MonthlySalary applies equality check predicate on the "monthly_salary" field. It's identical to MonthlySalaryEQ.
 func MonthlySalary(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldMonthlySalary, v))
 }
 
-// PerformaceScore applies equality check predicate on the "performaceScore" field. It's identical to PerformaceScoreEQ.
+// PerformaceScore applies equality check predicate on the "performace_score" field. It's identical to PerformaceScoreEQ.
 func PerformaceScore(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldPerformaceScore, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Employee {
 	return predicate.Employee(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Employee {
 	return predicate.Employee(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -750,82 +750,82 @@ func AvatarContainsFold(v string) predicate.Employee {
 	return predicate.Employee(sql.FieldContainsFold(FieldAvatar, v))
 }
 
-// HireDateEQ applies the EQ predicate on the "hireDate" field.
+// HireDateEQ applies the EQ predicate on the "hire_date" field.
 func HireDateEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldHireDate, v))
 }
 
-// HireDateNEQ applies the NEQ predicate on the "hireDate" field.
+// HireDateNEQ applies the NEQ predicate on the "hire_date" field.
 func HireDateNEQ(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldHireDate, v))
 }
 
-// HireDateIn applies the In predicate on the "hireDate" field.
+// HireDateIn applies the In predicate on the "hire_date" field.
 func HireDateIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldHireDate, vs...))
 }
 
-// HireDateNotIn applies the NotIn predicate on the "hireDate" field.
+// HireDateNotIn applies the NotIn predicate on the "hire_date" field.
 func HireDateNotIn(vs ...time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldHireDate, vs...))
 }
 
-// HireDateGT applies the GT predicate on the "hireDate" field.
+// HireDateGT applies the GT predicate on the "hire_date" field.
 func HireDateGT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldHireDate, v))
 }
 
-// HireDateGTE applies the GTE predicate on the "hireDate" field.
+// HireDateGTE applies the GTE predicate on the "hire_date" field.
 func HireDateGTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldHireDate, v))
 }
 
-// HireDateLT applies the LT predicate on the "hireDate" field.
+// HireDateLT applies the LT predicate on the "hire_date" field.
 func HireDateLT(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldHireDate, v))
 }
 
-// HireDateLTE applies the LTE predicate on the "hireDate" field.
+// HireDateLTE applies the LTE predicate on the "hire_date" field.
 func HireDateLTE(v time.Time) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldHireDate, v))
 }
 
-// MonthlySalaryEQ applies the EQ predicate on the "monthlySalary" field.
+// MonthlySalaryEQ applies the EQ predicate on the "monthly_salary" field.
 func MonthlySalaryEQ(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldMonthlySalary, v))
 }
 
-// MonthlySalaryNEQ applies the NEQ predicate on the "monthlySalary" field.
+// MonthlySalaryNEQ applies the NEQ predicate on the "monthly_salary" field.
 func MonthlySalaryNEQ(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldMonthlySalary, v))
 }
 
-// MonthlySalaryIn applies the In predicate on the "monthlySalary" field.
+// MonthlySalaryIn applies the In predicate on the "monthly_salary" field.
 func MonthlySalaryIn(vs ...int) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldMonthlySalary, vs...))
 }
 
-// MonthlySalaryNotIn applies the NotIn predicate on the "monthlySalary" field.
+// MonthlySalaryNotIn applies the NotIn predicate on the "monthly_salary" field.
 func MonthlySalaryNotIn(vs ...int) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldMonthlySalary, vs...))
 }
 
-// MonthlySalaryGT applies the GT predicate on the "monthlySalary" field.
+// MonthlySalaryGT applies the GT predicate on the "monthly_salary" field.
 func MonthlySalaryGT(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldMonthlySalary, v))
 }
 
-// MonthlySalaryGTE applies the GTE predicate on the "monthlySalary" field.
+// MonthlySalaryGTE applies the GTE predicate on the "monthly_salary" field.
 func MonthlySalaryGTE(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldMonthlySalary, v))
 }
 
-// MonthlySalaryLT applies the LT predicate on the "monthlySalary" field.
+// MonthlySalaryLT applies the LT predicate on the "monthly_salary" field.
 func MonthlySalaryLT(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldMonthlySalary, v))
 }
 
-// MonthlySalaryLTE applies the LTE predicate on the "monthlySalary" field.
+// MonthlySalaryLTE applies the LTE predicate on the "monthly_salary" field.
 func MonthlySalaryLTE(v int) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldMonthlySalary, v))
 }
@@ -860,52 +860,52 @@ func StatusNotNil() predicate.Employee {
 	return predicate.Employee(sql.FieldNotNull(FieldStatus))
 }
 
-// PerformaceScoreEQ applies the EQ predicate on the "performaceScore" field.
+// PerformaceScoreEQ applies the EQ predicate on the "performace_score" field.
 func PerformaceScoreEQ(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldEQ(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreNEQ applies the NEQ predicate on the "performaceScore" field.
+// PerformaceScoreNEQ applies the NEQ predicate on the "performace_score" field.
 func PerformaceScoreNEQ(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldNEQ(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreIn applies the In predicate on the "performaceScore" field.
+// PerformaceScoreIn applies the In predicate on the "performace_score" field.
 func PerformaceScoreIn(vs ...float64) predicate.Employee {
 	return predicate.Employee(sql.FieldIn(FieldPerformaceScore, vs...))
 }
 
-// PerformaceScoreNotIn applies the NotIn predicate on the "performaceScore" field.
+// PerformaceScoreNotIn applies the NotIn predicate on the "performace_score" field.
 func PerformaceScoreNotIn(vs ...float64) predicate.Employee {
 	return predicate.Employee(sql.FieldNotIn(FieldPerformaceScore, vs...))
 }
 
-// PerformaceScoreGT applies the GT predicate on the "performaceScore" field.
+// PerformaceScoreGT applies the GT predicate on the "performace_score" field.
 func PerformaceScoreGT(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldGT(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreGTE applies the GTE predicate on the "performaceScore" field.
+// PerformaceScoreGTE applies the GTE predicate on the "performace_score" field.
 func PerformaceScoreGTE(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldGTE(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreLT applies the LT predicate on the "performaceScore" field.
+// PerformaceScoreLT applies the LT predicate on the "performace_score" field.
 func PerformaceScoreLT(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldLT(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreLTE applies the LTE predicate on the "performaceScore" field.
+// PerformaceScoreLTE applies the LTE predicate on the "performace_score" field.
 func PerformaceScoreLTE(v float64) predicate.Employee {
 	return predicate.Employee(sql.FieldLTE(FieldPerformaceScore, v))
 }
 
-// PerformaceScoreIsNil applies the IsNil predicate on the "performaceScore" field.
+// PerformaceScoreIsNil applies the IsNil predicate on the "performace_score" field.
 func PerformaceScoreIsNil() predicate.Employee {
 	return predicate.Employee(sql.FieldIsNull(FieldPerformaceScore))
 }
 
-// PerformaceScoreNotNil applies the NotNil predicate on the "performaceScore" field.
+// PerformaceScoreNotNil applies the NotNil predicate on the "performace_score" field.
 func PerformaceScoreNotNil() predicate.Employee {
 	return predicate.Employee(sql.FieldNotNull(FieldPerformaceScore))
 }

@@ -33,19 +33,19 @@ func (aeu *AccountingEntryUpdate) Where(ps ...predicate.AccountingEntry) *Accoun
 	return aeu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (aeu *AccountingEntryUpdate) SetUpdatedAt(t time.Time) *AccountingEntryUpdate {
 	aeu.mutation.SetUpdatedAt(t)
 	return aeu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (aeu *AccountingEntryUpdate) SetDeletedAt(t time.Time) *AccountingEntryUpdate {
 	aeu.mutation.SetDeletedAt(t)
 	return aeu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (aeu *AccountingEntryUpdate) SetNillableDeletedAt(t *time.Time) *AccountingEntryUpdate {
 	if t != nil {
 		aeu.SetDeletedAt(*t)
@@ -53,7 +53,7 @@ func (aeu *AccountingEntryUpdate) SetNillableDeletedAt(t *time.Time) *Accounting
 	return aeu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (aeu *AccountingEntryUpdate) ClearDeletedAt() *AccountingEntryUpdate {
 	aeu.mutation.ClearDeletedAt()
 	return aeu
@@ -178,13 +178,13 @@ func (aeu *AccountingEntryUpdate) SetNillableDescription(s *string) *AccountingE
 	return aeu
 }
 
-// SetAccountType sets the "accountType" field.
+// SetAccountType sets the "account_type" field.
 func (aeu *AccountingEntryUpdate) SetAccountType(at accountingentry.AccountType) *AccountingEntryUpdate {
 	aeu.mutation.SetAccountType(at)
 	return aeu
 }
 
-// SetNillableAccountType sets the "accountType" field if the given value is not nil.
+// SetNillableAccountType sets the "account_type" field if the given value is not nil.
 func (aeu *AccountingEntryUpdate) SetNillableAccountType(at *accountingentry.AccountType) *AccountingEntryUpdate {
 	if at != nil {
 		aeu.SetAccountType(*at)
@@ -220,13 +220,13 @@ func (aeu *AccountingEntryUpdate) SetNillableMain(s *string) *AccountingEntryUpd
 	return aeu
 }
 
-// SetIsDebit sets the "isDebit" field.
+// SetIsDebit sets the "is_debit" field.
 func (aeu *AccountingEntryUpdate) SetIsDebit(b bool) *AccountingEntryUpdate {
 	aeu.mutation.SetIsDebit(b)
 	return aeu
 }
 
-// SetNillableIsDebit sets the "isDebit" field if the given value is not nil.
+// SetNillableIsDebit sets the "is_debit" field if the given value is not nil.
 func (aeu *AccountingEntryUpdate) SetNillableIsDebit(b *bool) *AccountingEntryUpdate {
 	if b != nil {
 		aeu.SetIsDebit(*b)
@@ -234,13 +234,13 @@ func (aeu *AccountingEntryUpdate) SetNillableIsDebit(b *bool) *AccountingEntryUp
 	return aeu
 }
 
-// SetIsReversal sets the "isReversal" field.
+// SetIsReversal sets the "is_reversal" field.
 func (aeu *AccountingEntryUpdate) SetIsReversal(b bool) *AccountingEntryUpdate {
 	aeu.mutation.SetIsReversal(b)
 	return aeu
 }
 
-// SetNillableIsReversal sets the "isReversal" field if the given value is not nil.
+// SetNillableIsReversal sets the "is_reversal" field if the given value is not nil.
 func (aeu *AccountingEntryUpdate) SetNillableIsReversal(b *bool) *AccountingEntryUpdate {
 	if b != nil {
 		aeu.SetIsReversal(*b)
@@ -433,7 +433,7 @@ func (aeu *AccountingEntryUpdate) check() error {
 	}
 	if v, ok := aeu.mutation.AccountType(); ok {
 		if err := accountingentry.AccountTypeValidator(v); err != nil {
-			return &ValidationError{Name: "accountType", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.accountType": %w`, err)}
+			return &ValidationError{Name: "account_type", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.account_type": %w`, err)}
 		}
 	}
 	return nil
@@ -668,19 +668,19 @@ type AccountingEntryUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (aeuo *AccountingEntryUpdateOne) SetUpdatedAt(t time.Time) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetUpdatedAt(t)
 	return aeuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (aeuo *AccountingEntryUpdateOne) SetDeletedAt(t time.Time) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetDeletedAt(t)
 	return aeuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (aeuo *AccountingEntryUpdateOne) SetNillableDeletedAt(t *time.Time) *AccountingEntryUpdateOne {
 	if t != nil {
 		aeuo.SetDeletedAt(*t)
@@ -688,7 +688,7 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableDeletedAt(t *time.Time) *Accoun
 	return aeuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (aeuo *AccountingEntryUpdateOne) ClearDeletedAt() *AccountingEntryUpdateOne {
 	aeuo.mutation.ClearDeletedAt()
 	return aeuo
@@ -813,13 +813,13 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableDescription(s *string) *Account
 	return aeuo
 }
 
-// SetAccountType sets the "accountType" field.
+// SetAccountType sets the "account_type" field.
 func (aeuo *AccountingEntryUpdateOne) SetAccountType(at accountingentry.AccountType) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetAccountType(at)
 	return aeuo
 }
 
-// SetNillableAccountType sets the "accountType" field if the given value is not nil.
+// SetNillableAccountType sets the "account_type" field if the given value is not nil.
 func (aeuo *AccountingEntryUpdateOne) SetNillableAccountType(at *accountingentry.AccountType) *AccountingEntryUpdateOne {
 	if at != nil {
 		aeuo.SetAccountType(*at)
@@ -855,13 +855,13 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableMain(s *string) *AccountingEntr
 	return aeuo
 }
 
-// SetIsDebit sets the "isDebit" field.
+// SetIsDebit sets the "is_debit" field.
 func (aeuo *AccountingEntryUpdateOne) SetIsDebit(b bool) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetIsDebit(b)
 	return aeuo
 }
 
-// SetNillableIsDebit sets the "isDebit" field if the given value is not nil.
+// SetNillableIsDebit sets the "is_debit" field if the given value is not nil.
 func (aeuo *AccountingEntryUpdateOne) SetNillableIsDebit(b *bool) *AccountingEntryUpdateOne {
 	if b != nil {
 		aeuo.SetIsDebit(*b)
@@ -869,13 +869,13 @@ func (aeuo *AccountingEntryUpdateOne) SetNillableIsDebit(b *bool) *AccountingEnt
 	return aeuo
 }
 
-// SetIsReversal sets the "isReversal" field.
+// SetIsReversal sets the "is_reversal" field.
 func (aeuo *AccountingEntryUpdateOne) SetIsReversal(b bool) *AccountingEntryUpdateOne {
 	aeuo.mutation.SetIsReversal(b)
 	return aeuo
 }
 
-// SetNillableIsReversal sets the "isReversal" field if the given value is not nil.
+// SetNillableIsReversal sets the "is_reversal" field if the given value is not nil.
 func (aeuo *AccountingEntryUpdateOne) SetNillableIsReversal(b *bool) *AccountingEntryUpdateOne {
 	if b != nil {
 		aeuo.SetIsReversal(*b)
@@ -1081,7 +1081,7 @@ func (aeuo *AccountingEntryUpdateOne) check() error {
 	}
 	if v, ok := aeuo.mutation.AccountType(); ok {
 		if err := accountingentry.AccountTypeValidator(v); err != nil {
-			return &ValidationError{Name: "accountType", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.accountType": %w`, err)}
+			return &ValidationError{Name: "account_type", err: fmt.Errorf(`generated: validator failed for field "AccountingEntry.account_type": %w`, err)}
 		}
 	}
 	return nil

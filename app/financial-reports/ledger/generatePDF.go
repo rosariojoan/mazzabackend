@@ -100,7 +100,7 @@ func getMaroto(details *details) core.Maroto {
 	mrt := maroto.New(cfg)
 	doc := maroto.NewMetricsDecorator(mrt)
 
-	err := doc.RegisterHeader(getPageHeader(details.Company.Name, *details.Company.TaxId))
+	err := doc.RegisterHeader(getPageHeader(details.Company.Name, *details.Company.TaxID))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -127,8 +127,8 @@ func getMaroto(details *details) core.Maroto {
 	return doc
 }
 
-func getPageHeader(companyName string, taxId string) core.Row {
-	value := companyName + " | NUIT: " + taxId
+func getPageHeader(companyName string, taxID string) core.Row {
+	value := companyName + " | NUIT: " + taxID
 	return row.New(15).Add(
 		col.New(12).Add(text.New(value, props.Text{Top: 1, Size: 9, Align: align.Left})),
 	)
@@ -136,7 +136,7 @@ func getPageHeader(companyName string, taxId string) core.Row {
 
 func getPageFooter() core.Row {
 	year := strconv.Itoa(time.Now().Year())
-	link := "https://mazza.jp"
+	link := "https://web.mazza.app"
 	return row.New(20).Add(
 		col.New(12).Add(
 			text.New("Gerado por Mazza - © "+year, props.Text{Top: 13, Size: 8, Align: align.Left}),
@@ -146,7 +146,7 @@ func getPageFooter() core.Row {
 }
 
 func getCompanyDetails(company *ent.Company) core.Row {
-	taxID := fmt.Sprint("NUIT: ", company.TaxId)
+	taxID := fmt.Sprint("NUIT: ", company.TaxID)
 	city := fmt.Sprint(company.City, ", ", company.Country)
 	phone := fmt.Sprint("Tel: ", utils.GetValue(company.Phone, "--"))
 	email := fmt.Sprint("Email: ", utils.GetValue(company.Email, "--"))

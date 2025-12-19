@@ -21,13 +21,13 @@ type FileCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (fc *FileCreate) SetCreatedAt(t time.Time) *FileCreate {
 	fc.mutation.SetCreatedAt(t)
 	return fc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (fc *FileCreate) SetNillableCreatedAt(t *time.Time) *FileCreate {
 	if t != nil {
 		fc.SetCreatedAt(*t)
@@ -35,13 +35,13 @@ func (fc *FileCreate) SetNillableCreatedAt(t *time.Time) *FileCreate {
 	return fc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (fc *FileCreate) SetUpdatedAt(t time.Time) *FileCreate {
 	fc.mutation.SetUpdatedAt(t)
 	return fc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (fc *FileCreate) SetNillableUpdatedAt(t *time.Time) *FileCreate {
 	if t != nil {
 		fc.SetUpdatedAt(*t)
@@ -49,13 +49,13 @@ func (fc *FileCreate) SetNillableUpdatedAt(t *time.Time) *FileCreate {
 	return fc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (fc *FileCreate) SetDeletedAt(t time.Time) *FileCreate {
 	fc.mutation.SetDeletedAt(t)
 	return fc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (fc *FileCreate) SetNillableDeletedAt(t *time.Time) *FileCreate {
 	if t != nil {
 		fc.SetDeletedAt(*t)
@@ -166,10 +166,10 @@ func (fc *FileCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (fc *FileCreate) check() error {
 	if _, ok := fc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "File.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "File.created_at"`)}
 	}
 	if _, ok := fc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "File.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "File.updated_at"`)}
 	}
 	if _, ok := fc.mutation.Category(); !ok {
 		return &ValidationError{Name: "category", err: errors.New(`generated: missing required field "File.category"`)}

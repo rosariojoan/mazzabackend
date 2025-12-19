@@ -40,7 +40,7 @@ func (InventoryMovement) Fields() []ent.Field {
 // Edges of the InventoryMovement.
 func (InventoryMovement) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("inventoryMovements").Unique().Required().Annotations(
+		edge.From("company", Company.Type).Ref("inventory_movements").Unique().Required().Annotations(
 			entsql.OnDelete(entsql.Cascade),
 			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),

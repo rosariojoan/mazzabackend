@@ -340,7 +340,7 @@ func (lsq *LoanScheduleQuery) WithTransactionHistory(opts ...func(*AccountingEnt
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -363,7 +363,7 @@ func (lsq *LoanScheduleQuery) GroupBy(field string, fields ...string) *LoanSched
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.LoanSchedule.Query().

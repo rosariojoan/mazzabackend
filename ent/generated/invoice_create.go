@@ -24,13 +24,13 @@ type InvoiceCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (ic *InvoiceCreate) SetCreatedAt(t time.Time) *InvoiceCreate {
 	ic.mutation.SetCreatedAt(t)
 	return ic
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCreatedAt(t *time.Time) *InvoiceCreate {
 	if t != nil {
 		ic.SetCreatedAt(*t)
@@ -38,13 +38,13 @@ func (ic *InvoiceCreate) SetNillableCreatedAt(t *time.Time) *InvoiceCreate {
 	return ic
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (ic *InvoiceCreate) SetUpdatedAt(t time.Time) *InvoiceCreate {
 	ic.mutation.SetUpdatedAt(t)
 	return ic
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableUpdatedAt(t *time.Time) *InvoiceCreate {
 	if t != nil {
 		ic.SetUpdatedAt(*t)
@@ -52,13 +52,13 @@ func (ic *InvoiceCreate) SetNillableUpdatedAt(t *time.Time) *InvoiceCreate {
 	return ic
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (ic *InvoiceCreate) SetDeletedAt(t time.Time) *InvoiceCreate {
 	ic.mutation.SetDeletedAt(t)
 	return ic
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableDeletedAt(t *time.Time) *InvoiceCreate {
 	if t != nil {
 		ic.SetDeletedAt(*t)
@@ -66,13 +66,13 @@ func (ic *InvoiceCreate) SetNillableDeletedAt(t *time.Time) *InvoiceCreate {
 	return ic
 }
 
-// SetCompanyLogo sets the "companyLogo" field.
+// SetCompanyLogo sets the "company_logo" field.
 func (ic *InvoiceCreate) SetCompanyLogo(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyLogo(s)
 	return ic
 }
 
-// SetNillableCompanyLogo sets the "companyLogo" field if the given value is not nil.
+// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCompanyLogo(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCompanyLogo(*s)
@@ -80,19 +80,19 @@ func (ic *InvoiceCreate) SetNillableCompanyLogo(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCompanyName sets the "companyName" field.
+// SetCompanyName sets the "company_name" field.
 func (ic *InvoiceCreate) SetCompanyName(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyName(s)
 	return ic
 }
 
-// SetCompanyTaxID sets the "companyTaxID" field.
+// SetCompanyTaxID sets the "company_tax_id" field.
 func (ic *InvoiceCreate) SetCompanyTaxID(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyTaxID(s)
 	return ic
 }
 
-// SetNillableCompanyTaxID sets the "companyTaxID" field if the given value is not nil.
+// SetNillableCompanyTaxID sets the "company_tax_id" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCompanyTaxID(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCompanyTaxID(*s)
@@ -100,25 +100,25 @@ func (ic *InvoiceCreate) SetNillableCompanyTaxID(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCompanyAddress sets the "companyAddress" field.
+// SetCompanyAddress sets the "company_address" field.
 func (ic *InvoiceCreate) SetCompanyAddress(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyAddress(s)
 	return ic
 }
 
-// SetCompanyCity sets the "companyCity" field.
+// SetCompanyCity sets the "company_city" field.
 func (ic *InvoiceCreate) SetCompanyCity(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyCity(s)
 	return ic
 }
 
-// SetCompanyEmail sets the "companyEmail" field.
+// SetCompanyEmail sets the "company_email" field.
 func (ic *InvoiceCreate) SetCompanyEmail(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyEmail(s)
 	return ic
 }
 
-// SetNillableCompanyEmail sets the "companyEmail" field if the given value is not nil.
+// SetNillableCompanyEmail sets the "company_email" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCompanyEmail(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCompanyEmail(*s)
@@ -126,13 +126,13 @@ func (ic *InvoiceCreate) SetNillableCompanyEmail(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCompanyPhone sets the "companyPhone" field.
+// SetCompanyPhone sets the "company_phone" field.
 func (ic *InvoiceCreate) SetCompanyPhone(s string) *InvoiceCreate {
 	ic.mutation.SetCompanyPhone(s)
 	return ic
 }
 
-// SetNillableCompanyPhone sets the "companyPhone" field if the given value is not nil.
+// SetNillableCompanyPhone sets the "company_phone" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCompanyPhone(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCompanyPhone(*s)
@@ -154,25 +154,25 @@ func (ic *InvoiceCreate) SetNillableNumber(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetIssueDate sets the "issueDate" field.
+// SetIssueDate sets the "issue_date" field.
 func (ic *InvoiceCreate) SetIssueDate(t time.Time) *InvoiceCreate {
 	ic.mutation.SetIssueDate(t)
 	return ic
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (ic *InvoiceCreate) SetDueDate(t time.Time) *InvoiceCreate {
 	ic.mutation.SetDueDate(t)
 	return ic
 }
 
-// SetPaidAt sets the "paidAt" field.
+// SetPaidAt sets the "paid_at" field.
 func (ic *InvoiceCreate) SetPaidAt(t time.Time) *InvoiceCreate {
 	ic.mutation.SetPaidAt(t)
 	return ic
 }
 
-// SetNillablePaidAt sets the "paidAt" field if the given value is not nil.
+// SetNillablePaidAt sets the "paid_at" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillablePaidAt(t *time.Time) *InvoiceCreate {
 	if t != nil {
 		ic.SetPaidAt(*t)
@@ -194,13 +194,13 @@ func (ic *InvoiceCreate) SetNillableStatus(i *invoice.Status) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerName sets the "customerName" field.
+// SetCustomerName sets the "customer_name" field.
 func (ic *InvoiceCreate) SetCustomerName(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerName(s)
 	return ic
 }
 
-// SetNillableCustomerName sets the "customerName" field if the given value is not nil.
+// SetNillableCustomerName sets the "customer_name" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerName(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerName(*s)
@@ -208,13 +208,13 @@ func (ic *InvoiceCreate) SetNillableCustomerName(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerTaxID sets the "customerTaxID" field.
+// SetCustomerTaxID sets the "customer_tax_id" field.
 func (ic *InvoiceCreate) SetCustomerTaxID(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerTaxID(s)
 	return ic
 }
 
-// SetNillableCustomerTaxID sets the "customerTaxID" field if the given value is not nil.
+// SetNillableCustomerTaxID sets the "customer_tax_id" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerTaxID(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerTaxID(*s)
@@ -222,13 +222,13 @@ func (ic *InvoiceCreate) SetNillableCustomerTaxID(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerAddress sets the "customerAddress" field.
+// SetCustomerAddress sets the "customer_address" field.
 func (ic *InvoiceCreate) SetCustomerAddress(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerAddress(s)
 	return ic
 }
 
-// SetNillableCustomerAddress sets the "customerAddress" field if the given value is not nil.
+// SetNillableCustomerAddress sets the "customer_address" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerAddress(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerAddress(*s)
@@ -236,13 +236,13 @@ func (ic *InvoiceCreate) SetNillableCustomerAddress(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerCity sets the "customerCity" field.
+// SetCustomerCity sets the "customer_city" field.
 func (ic *InvoiceCreate) SetCustomerCity(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerCity(s)
 	return ic
 }
 
-// SetNillableCustomerCity sets the "customerCity" field if the given value is not nil.
+// SetNillableCustomerCity sets the "customer_city" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerCity(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerCity(*s)
@@ -250,13 +250,13 @@ func (ic *InvoiceCreate) SetNillableCustomerCity(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerEmail sets the "customerEmail" field.
+// SetCustomerEmail sets the "customer_email" field.
 func (ic *InvoiceCreate) SetCustomerEmail(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerEmail(s)
 	return ic
 }
 
-// SetNillableCustomerEmail sets the "customerEmail" field if the given value is not nil.
+// SetNillableCustomerEmail sets the "customer_email" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerEmail(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerEmail(*s)
@@ -264,13 +264,13 @@ func (ic *InvoiceCreate) SetNillableCustomerEmail(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetCustomerPhone sets the "customerPhone" field.
+// SetCustomerPhone sets the "customer_phone" field.
 func (ic *InvoiceCreate) SetCustomerPhone(s string) *InvoiceCreate {
 	ic.mutation.SetCustomerPhone(s)
 	return ic
 }
 
-// SetNillableCustomerPhone sets the "customerPhone" field if the given value is not nil.
+// SetNillableCustomerPhone sets the "customer_phone" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableCustomerPhone(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCustomerPhone(*s)
@@ -316,13 +316,13 @@ func (ic *InvoiceCreate) SetNillableNotes(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetPaymentMethod sets the "paymentMethod" field.
+// SetPaymentMethod sets the "payment_method" field.
 func (ic *InvoiceCreate) SetPaymentMethod(s string) *InvoiceCreate {
 	ic.mutation.SetPaymentMethod(s)
 	return ic
 }
 
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
+// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillablePaymentMethod(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetPaymentMethod(*s)
@@ -330,13 +330,13 @@ func (ic *InvoiceCreate) SetNillablePaymentMethod(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetBankName sets the "bankName" field.
+// SetBankName sets the "bank_name" field.
 func (ic *InvoiceCreate) SetBankName(s string) *InvoiceCreate {
 	ic.mutation.SetBankName(s)
 	return ic
 }
 
-// SetNillableBankName sets the "bankName" field if the given value is not nil.
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableBankName(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetBankName(*s)
@@ -344,13 +344,13 @@ func (ic *InvoiceCreate) SetNillableBankName(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetBankAgency sets the "bankAgency" field.
+// SetBankAgency sets the "bank_agency" field.
 func (ic *InvoiceCreate) SetBankAgency(s string) *InvoiceCreate {
 	ic.mutation.SetBankAgency(s)
 	return ic
 }
 
-// SetNillableBankAgency sets the "bankAgency" field if the given value is not nil.
+// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableBankAgency(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetBankAgency(*s)
@@ -358,13 +358,13 @@ func (ic *InvoiceCreate) SetNillableBankAgency(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetBankAccountNumber sets the "bankAccountNumber" field.
+// SetBankAccountNumber sets the "bank_account_number" field.
 func (ic *InvoiceCreate) SetBankAccountNumber(s string) *InvoiceCreate {
 	ic.mutation.SetBankAccountNumber(s)
 	return ic
 }
 
-// SetNillableBankAccountNumber sets the "bankAccountNumber" field if the given value is not nil.
+// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableBankAccountNumber(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetBankAccountNumber(*s)
@@ -372,13 +372,13 @@ func (ic *InvoiceCreate) SetNillableBankAccountNumber(s *string) *InvoiceCreate 
 	return ic
 }
 
-// SetBankAccountName sets the "bankAccountName" field.
+// SetBankAccountName sets the "bank_account_name" field.
 func (ic *InvoiceCreate) SetBankAccountName(s string) *InvoiceCreate {
 	ic.mutation.SetBankAccountName(s)
 	return ic
 }
 
-// SetNillableBankAccountName sets the "bankAccountName" field if the given value is not nil.
+// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableBankAccountName(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetBankAccountName(*s)
@@ -386,13 +386,13 @@ func (ic *InvoiceCreate) SetNillableBankAccountName(s *string) *InvoiceCreate {
 	return ic
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (ic *InvoiceCreate) SetStorageURI(s string) *InvoiceCreate {
 	ic.mutation.SetStorageURI(s)
 	return ic
 }
 
-// SetNillableStorageURI sets the "storageURI" field if the given value is not nil.
+// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableStorageURI(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetStorageURI(*s)
@@ -459,13 +459,13 @@ func (ic *InvoiceCreate) SetCompany(c *Company) *InvoiceCreate {
 	return ic.SetCompanyID(c.ID)
 }
 
-// SetIssuedByID sets the "issuedBy" edge to the User entity by ID.
+// SetIssuedByID sets the "issued_by" edge to the User entity by ID.
 func (ic *InvoiceCreate) SetIssuedByID(id int) *InvoiceCreate {
 	ic.mutation.SetIssuedByID(id)
 	return ic
 }
 
-// SetNillableIssuedByID sets the "issuedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableIssuedByID sets the "issued_by" edge to the User entity by ID if the given value is not nil.
 func (ic *InvoiceCreate) SetNillableIssuedByID(id *int) *InvoiceCreate {
 	if id != nil {
 		ic = ic.SetIssuedByID(*id)
@@ -473,7 +473,7 @@ func (ic *InvoiceCreate) SetNillableIssuedByID(id *int) *InvoiceCreate {
 	return ic
 }
 
-// SetIssuedBy sets the "issuedBy" edge to the User entity.
+// SetIssuedBy sets the "issued_by" edge to the User entity.
 func (ic *InvoiceCreate) SetIssuedBy(u *User) *InvoiceCreate {
 	return ic.SetIssuedByID(u.ID)
 }
@@ -572,25 +572,25 @@ func (ic *InvoiceCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ic *InvoiceCreate) check() error {
 	if _, ok := ic.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Invoice.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Invoice.created_at"`)}
 	}
 	if _, ok := ic.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Invoice.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Invoice.updated_at"`)}
 	}
 	if _, ok := ic.mutation.CompanyName(); !ok {
-		return &ValidationError{Name: "companyName", err: errors.New(`generated: missing required field "Invoice.companyName"`)}
+		return &ValidationError{Name: "company_name", err: errors.New(`generated: missing required field "Invoice.company_name"`)}
 	}
 	if _, ok := ic.mutation.CompanyAddress(); !ok {
-		return &ValidationError{Name: "companyAddress", err: errors.New(`generated: missing required field "Invoice.companyAddress"`)}
+		return &ValidationError{Name: "company_address", err: errors.New(`generated: missing required field "Invoice.company_address"`)}
 	}
 	if _, ok := ic.mutation.CompanyCity(); !ok {
-		return &ValidationError{Name: "companyCity", err: errors.New(`generated: missing required field "Invoice.companyCity"`)}
+		return &ValidationError{Name: "company_city", err: errors.New(`generated: missing required field "Invoice.company_city"`)}
 	}
 	if _, ok := ic.mutation.IssueDate(); !ok {
-		return &ValidationError{Name: "issueDate", err: errors.New(`generated: missing required field "Invoice.issueDate"`)}
+		return &ValidationError{Name: "issue_date", err: errors.New(`generated: missing required field "Invoice.issue_date"`)}
 	}
 	if _, ok := ic.mutation.DueDate(); !ok {
-		return &ValidationError{Name: "dueDate", err: errors.New(`generated: missing required field "Invoice.dueDate"`)}
+		return &ValidationError{Name: "due_date", err: errors.New(`generated: missing required field "Invoice.due_date"`)}
 	}
 	if _, ok := ic.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`generated: missing required field "Invoice.status"`)}

@@ -22,13 +22,13 @@ type EmployeeCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (ec *EmployeeCreate) SetCreatedAt(t time.Time) *EmployeeCreate {
 	ec.mutation.SetCreatedAt(t)
 	return ec
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (ec *EmployeeCreate) SetNillableCreatedAt(t *time.Time) *EmployeeCreate {
 	if t != nil {
 		ec.SetCreatedAt(*t)
@@ -36,13 +36,13 @@ func (ec *EmployeeCreate) SetNillableCreatedAt(t *time.Time) *EmployeeCreate {
 	return ec
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (ec *EmployeeCreate) SetUpdatedAt(t time.Time) *EmployeeCreate {
 	ec.mutation.SetUpdatedAt(t)
 	return ec
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (ec *EmployeeCreate) SetNillableUpdatedAt(t *time.Time) *EmployeeCreate {
 	if t != nil {
 		ec.SetUpdatedAt(*t)
@@ -50,13 +50,13 @@ func (ec *EmployeeCreate) SetNillableUpdatedAt(t *time.Time) *EmployeeCreate {
 	return ec
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (ec *EmployeeCreate) SetDeletedAt(t time.Time) *EmployeeCreate {
 	ec.mutation.SetDeletedAt(t)
 	return ec
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (ec *EmployeeCreate) SetNillableDeletedAt(t *time.Time) *EmployeeCreate {
 	if t != nil {
 		ec.SetDeletedAt(*t)
@@ -152,19 +152,19 @@ func (ec *EmployeeCreate) SetNillableAvatar(s *string) *EmployeeCreate {
 	return ec
 }
 
-// SetHireDate sets the "hireDate" field.
+// SetHireDate sets the "hire_date" field.
 func (ec *EmployeeCreate) SetHireDate(t time.Time) *EmployeeCreate {
 	ec.mutation.SetHireDate(t)
 	return ec
 }
 
-// SetMonthlySalary sets the "monthlySalary" field.
+// SetMonthlySalary sets the "monthly_salary" field.
 func (ec *EmployeeCreate) SetMonthlySalary(i int) *EmployeeCreate {
 	ec.mutation.SetMonthlySalary(i)
 	return ec
 }
 
-// SetNillableMonthlySalary sets the "monthlySalary" field if the given value is not nil.
+// SetNillableMonthlySalary sets the "monthly_salary" field if the given value is not nil.
 func (ec *EmployeeCreate) SetNillableMonthlySalary(i *int) *EmployeeCreate {
 	if i != nil {
 		ec.SetMonthlySalary(*i)
@@ -186,13 +186,13 @@ func (ec *EmployeeCreate) SetNillableStatus(e *employee.Status) *EmployeeCreate 
 	return ec
 }
 
-// SetPerformaceScore sets the "performaceScore" field.
+// SetPerformaceScore sets the "performace_score" field.
 func (ec *EmployeeCreate) SetPerformaceScore(f float64) *EmployeeCreate {
 	ec.mutation.SetPerformaceScore(f)
 	return ec
 }
 
-// SetNillablePerformaceScore sets the "performaceScore" field if the given value is not nil.
+// SetNillablePerformaceScore sets the "performace_score" field if the given value is not nil.
 func (ec *EmployeeCreate) SetNillablePerformaceScore(f *float64) *EmployeeCreate {
 	if f != nil {
 		ec.SetPerformaceScore(*f)
@@ -336,10 +336,10 @@ func (ec *EmployeeCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ec *EmployeeCreate) check() error {
 	if _, ok := ec.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Employee.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Employee.created_at"`)}
 	}
 	if _, ok := ec.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Employee.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Employee.updated_at"`)}
 	}
 	if _, ok := ec.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Employee.name"`)}
@@ -361,14 +361,14 @@ func (ec *EmployeeCreate) check() error {
 		return &ValidationError{Name: "position", err: errors.New(`generated: missing required field "Employee.position"`)}
 	}
 	if _, ok := ec.mutation.HireDate(); !ok {
-		return &ValidationError{Name: "hireDate", err: errors.New(`generated: missing required field "Employee.hireDate"`)}
+		return &ValidationError{Name: "hire_date", err: errors.New(`generated: missing required field "Employee.hire_date"`)}
 	}
 	if _, ok := ec.mutation.MonthlySalary(); !ok {
-		return &ValidationError{Name: "monthlySalary", err: errors.New(`generated: missing required field "Employee.monthlySalary"`)}
+		return &ValidationError{Name: "monthly_salary", err: errors.New(`generated: missing required field "Employee.monthly_salary"`)}
 	}
 	if v, ok := ec.mutation.MonthlySalary(); ok {
 		if err := employee.MonthlySalaryValidator(v); err != nil {
-			return &ValidationError{Name: "monthlySalary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthlySalary": %w`, err)}
+			return &ValidationError{Name: "monthly_salary", err: fmt.Errorf(`generated: validator failed for field "Employee.monthly_salary": %w`, err)}
 		}
 	}
 	if v, ok := ec.mutation.Status(); ok {
@@ -378,7 +378,7 @@ func (ec *EmployeeCreate) check() error {
 	}
 	if v, ok := ec.mutation.PerformaceScore(); ok {
 		if err := employee.PerformaceScoreValidator(v); err != nil {
-			return &ValidationError{Name: "performaceScore", err: fmt.Errorf(`generated: validator failed for field "Employee.performaceScore": %w`, err)}
+			return &ValidationError{Name: "performace_score", err: fmt.Errorf(`generated: validator failed for field "Employee.performace_score": %w`, err)}
 		}
 	}
 	return nil

@@ -40,15 +40,15 @@ func init() {
 	_ = accountingentryMixinFields0
 	accountingentryFields := schema.AccountingEntry{}.Fields()
 	_ = accountingentryFields
-	// accountingentryDescCreatedAt is the schema descriptor for createdAt field.
+	// accountingentryDescCreatedAt is the schema descriptor for created_at field.
 	accountingentryDescCreatedAt := accountingentryMixinFields0[0].Descriptor()
-	// accountingentry.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// accountingentry.DefaultCreatedAt holds the default value on creation for the created_at field.
 	accountingentry.DefaultCreatedAt = accountingentryDescCreatedAt.Default.(func() time.Time)
-	// accountingentryDescUpdatedAt is the schema descriptor for updatedAt field.
+	// accountingentryDescUpdatedAt is the schema descriptor for updated_at field.
 	accountingentryDescUpdatedAt := accountingentryMixinFields0[1].Descriptor()
-	// accountingentry.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// accountingentry.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	accountingentry.DefaultUpdatedAt = accountingentryDescUpdatedAt.Default.(func() time.Time)
-	// accountingentry.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// accountingentry.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	accountingentry.UpdateDefaultUpdatedAt = accountingentryDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// accountingentryDescNumber is the schema descriptor for number field.
 	accountingentryDescNumber := accountingentryFields[0].Descriptor()
@@ -74,9 +74,9 @@ func init() {
 	accountingentryDescMain := accountingentryFields[9].Descriptor()
 	// accountingentry.DefaultMain holds the default value on creation for the main field.
 	accountingentry.DefaultMain = accountingentryDescMain.Default.(string)
-	// accountingentryDescIsReversal is the schema descriptor for isReversal field.
+	// accountingentryDescIsReversal is the schema descriptor for is_reversal field.
 	accountingentryDescIsReversal := accountingentryFields[11].Descriptor()
-	// accountingentry.DefaultIsReversal holds the default value on creation for the isReversal field.
+	// accountingentry.DefaultIsReversal holds the default value on creation for the is_reversal field.
 	accountingentry.DefaultIsReversal = accountingentryDescIsReversal.Default.(bool)
 	// accountingentryDescReversed is the schema descriptor for reversed field.
 	accountingentryDescReversed := accountingentryFields[12].Descriptor()
@@ -87,54 +87,54 @@ func init() {
 	_ = companyMixinFields0
 	companyFields := schema.Company{}.Fields()
 	_ = companyFields
-	// companyDescCreatedAt is the schema descriptor for createdAt field.
+	// companyDescCreatedAt is the schema descriptor for created_at field.
 	companyDescCreatedAt := companyMixinFields0[0].Descriptor()
-	// company.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// company.DefaultCreatedAt holds the default value on creation for the created_at field.
 	company.DefaultCreatedAt = companyDescCreatedAt.Default.(func() time.Time)
-	// companyDescUpdatedAt is the schema descriptor for updatedAt field.
+	// companyDescUpdatedAt is the schema descriptor for updated_at field.
 	companyDescUpdatedAt := companyMixinFields0[1].Descriptor()
-	// company.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// company.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	company.DefaultUpdatedAt = companyDescUpdatedAt.Default.(func() time.Time)
-	// company.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// company.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	company.UpdateDefaultUpdatedAt = companyDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// companyDescBaseCurrency is the schema descriptor for baseCurrency field.
+	// companyDescBaseCurrency is the schema descriptor for base_currency field.
 	companyDescBaseCurrency := companyFields[1].Descriptor()
-	// company.DefaultBaseCurrency holds the default value on creation for the baseCurrency field.
+	// company.DefaultBaseCurrency holds the default value on creation for the base_currency field.
 	company.DefaultBaseCurrency = companyDescBaseCurrency.Default.(string)
-	// companyDescLastInvoiceNumber is the schema descriptor for lastInvoiceNumber field.
+	// companyDescLastInvoiceNumber is the schema descriptor for last_invoice_number field.
 	companyDescLastInvoiceNumber := companyFields[10].Descriptor()
-	// company.DefaultLastInvoiceNumber holds the default value on creation for the lastInvoiceNumber field.
+	// company.DefaultLastInvoiceNumber holds the default value on creation for the last_invoice_number field.
 	company.DefaultLastInvoiceNumber = companyDescLastInvoiceNumber.Default.(int32)
-	// company.LastInvoiceNumberValidator is a validator for the "lastInvoiceNumber" field. It is called by the builders before save.
+	// company.LastInvoiceNumberValidator is a validator for the "last_invoice_number" field. It is called by the builders before save.
 	company.LastInvoiceNumberValidator = companyDescLastInvoiceNumber.Validators[0].(func(int32) error)
-	// companyDescNumberOfEmployees is the schema descriptor for numberOfEmployees field.
-	companyDescNumberOfEmployees := companyFields[14].Descriptor()
-	// company.DefaultNumberOfEmployees holds the default value on creation for the numberOfEmployees field.
-	company.DefaultNumberOfEmployees = companyDescNumberOfEmployees.Default.(int32)
-	// company.NumberOfEmployeesValidator is a validator for the "numberOfEmployees" field. It is called by the builders before save.
-	company.NumberOfEmployeesValidator = companyDescNumberOfEmployees.Validators[0].(func(int32) error)
-	// companyDescVatRate is the schema descriptor for vatRate field.
+	// companyDescNumberEmployees is the schema descriptor for number_employees field.
+	companyDescNumberEmployees := companyFields[14].Descriptor()
+	// company.DefaultNumberEmployees holds the default value on creation for the number_employees field.
+	company.DefaultNumberEmployees = companyDescNumberEmployees.Default.(int32)
+	// company.NumberEmployeesValidator is a validator for the "number_employees" field. It is called by the builders before save.
+	company.NumberEmployeesValidator = companyDescNumberEmployees.Validators[0].(func(int32) error)
+	// companyDescVatRate is the schema descriptor for vat_rate field.
 	companyDescVatRate := companyFields[17].Descriptor()
-	// company.DefaultVatRate holds the default value on creation for the vatRate field.
+	// company.DefaultVatRate holds the default value on creation for the vat_rate field.
 	company.DefaultVatRate = companyDescVatRate.Default.(float64)
-	// companyDescIncompleteSetup is the schema descriptor for incompleteSetup field.
+	// companyDescIncompleteSetup is the schema descriptor for incomplete_setup field.
 	companyDescIncompleteSetup := companyFields[19].Descriptor()
-	// company.DefaultIncompleteSetup holds the default value on creation for the incompleteSetup field.
+	// company.DefaultIncompleteSetup holds the default value on creation for the incomplete_setup field.
 	company.DefaultIncompleteSetup = companyDescIncompleteSetup.Default.(bool)
 	companydocumentMixin := schema.CompanyDocument{}.Mixin()
 	companydocumentMixinFields0 := companydocumentMixin[0].Fields()
 	_ = companydocumentMixinFields0
 	companydocumentFields := schema.CompanyDocument{}.Fields()
 	_ = companydocumentFields
-	// companydocumentDescCreatedAt is the schema descriptor for createdAt field.
+	// companydocumentDescCreatedAt is the schema descriptor for created_at field.
 	companydocumentDescCreatedAt := companydocumentMixinFields0[0].Descriptor()
-	// companydocument.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// companydocument.DefaultCreatedAt holds the default value on creation for the created_at field.
 	companydocument.DefaultCreatedAt = companydocumentDescCreatedAt.Default.(func() time.Time)
-	// companydocumentDescUpdatedAt is the schema descriptor for updatedAt field.
+	// companydocumentDescUpdatedAt is the schema descriptor for updated_at field.
 	companydocumentDescUpdatedAt := companydocumentMixinFields0[1].Descriptor()
-	// companydocument.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// companydocument.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	companydocument.DefaultUpdatedAt = companydocumentDescUpdatedAt.Default.(func() time.Time)
-	// companydocument.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// companydocument.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	companydocument.UpdateDefaultUpdatedAt = companydocumentDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// companydocumentDescFilename is the schema descriptor for filename field.
 	companydocumentDescFilename := companydocumentFields[0].Descriptor()
@@ -156,24 +156,24 @@ func init() {
 	companydocumentDescURL := companydocumentFields[7].Descriptor()
 	// companydocument.URLValidator is a validator for the "url" field. It is called by the builders before save.
 	companydocument.URLValidator = companydocumentDescURL.Validators[0].(func(string) error)
-	// companydocumentDescStorageURI is the schema descriptor for storageURI field.
+	// companydocumentDescStorageURI is the schema descriptor for storage_URI field.
 	companydocumentDescStorageURI := companydocumentFields[8].Descriptor()
-	// companydocument.StorageURIValidator is a validator for the "storageURI" field. It is called by the builders before save.
+	// companydocument.StorageURIValidator is a validator for the "storage_URI" field. It is called by the builders before save.
 	companydocument.StorageURIValidator = companydocumentDescStorageURI.Validators[0].(func(string) error)
 	customerMixin := schema.Customer{}.Mixin()
 	customerMixinFields0 := customerMixin[0].Fields()
 	_ = customerMixinFields0
 	customerFields := schema.Customer{}.Fields()
 	_ = customerFields
-	// customerDescCreatedAt is the schema descriptor for createdAt field.
+	// customerDescCreatedAt is the schema descriptor for created_at field.
 	customerDescCreatedAt := customerMixinFields0[0].Descriptor()
-	// customer.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// customer.DefaultCreatedAt holds the default value on creation for the created_at field.
 	customer.DefaultCreatedAt = customerDescCreatedAt.Default.(func() time.Time)
-	// customerDescUpdatedAt is the schema descriptor for updatedAt field.
+	// customerDescUpdatedAt is the schema descriptor for updated_at field.
 	customerDescUpdatedAt := customerMixinFields0[1].Descriptor()
-	// customer.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// customer.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	customer.DefaultUpdatedAt = customerDescUpdatedAt.Default.(func() time.Time)
-	// customer.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// customer.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	customer.UpdateDefaultUpdatedAt = customerDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// customerDescAddress is the schema descriptor for address field.
 	customerDescAddress := customerFields[0].Descriptor()
@@ -195,9 +195,9 @@ func init() {
 	customerDescEmail := customerFields[4].Descriptor()
 	// customer.DefaultEmail holds the default value on creation for the email field.
 	customer.DefaultEmail = customerDescEmail.Default.(string)
-	// customerDescIsDefault is the schema descriptor for isDefault field.
+	// customerDescIsDefault is the schema descriptor for is_default field.
 	customerDescIsDefault := customerFields[5].Descriptor()
-	// customer.DefaultIsDefault holds the default value on creation for the isDefault field.
+	// customer.DefaultIsDefault holds the default value on creation for the is_default field.
 	customer.DefaultIsDefault = customerDescIsDefault.Default.(bool)
 	// customerDescName is the schema descriptor for name field.
 	customerDescName := customerFields[6].Descriptor()
@@ -207,24 +207,24 @@ func init() {
 	customerDescPhone := customerFields[7].Descriptor()
 	// customer.DefaultPhone holds the default value on creation for the phone field.
 	customer.DefaultPhone = customerDescPhone.Default.(string)
-	// customerDescTaxId is the schema descriptor for taxId field.
-	customerDescTaxId := customerFields[8].Descriptor()
-	// customer.DefaultTaxId holds the default value on creation for the taxId field.
-	customer.DefaultTaxId = customerDescTaxId.Default.(string)
+	// customerDescTaxID is the schema descriptor for tax_id field.
+	customerDescTaxID := customerFields[8].Descriptor()
+	// customer.DefaultTaxID holds the default value on creation for the tax_id field.
+	customer.DefaultTaxID = customerDescTaxID.Default.(string)
 	employeeMixin := schema.Employee{}.Mixin()
 	employeeMixinFields0 := employeeMixin[0].Fields()
 	_ = employeeMixinFields0
 	employeeFields := schema.Employee{}.Fields()
 	_ = employeeFields
-	// employeeDescCreatedAt is the schema descriptor for createdAt field.
+	// employeeDescCreatedAt is the schema descriptor for created_at field.
 	employeeDescCreatedAt := employeeMixinFields0[0].Descriptor()
-	// employee.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// employee.DefaultCreatedAt holds the default value on creation for the created_at field.
 	employee.DefaultCreatedAt = employeeDescCreatedAt.Default.(func() time.Time)
-	// employeeDescUpdatedAt is the schema descriptor for updatedAt field.
+	// employeeDescUpdatedAt is the schema descriptor for updated_at field.
 	employeeDescUpdatedAt := employeeMixinFields0[1].Descriptor()
-	// employee.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// employee.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	employee.DefaultUpdatedAt = employeeDescUpdatedAt.Default.(func() time.Time)
-	// employee.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// employee.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	employee.UpdateDefaultUpdatedAt = employeeDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// employeeDescName is the schema descriptor for name field.
 	employeeDescName := employeeFields[0].Descriptor()
@@ -234,26 +234,26 @@ func init() {
 	employeeDescDepartment := employeeFields[4].Descriptor()
 	// employee.DefaultDepartment holds the default value on creation for the department field.
 	employee.DefaultDepartment = employeeDescDepartment.Default.(string)
-	// employeeDescMonthlySalary is the schema descriptor for monthlySalary field.
+	// employeeDescMonthlySalary is the schema descriptor for monthly_salary field.
 	employeeDescMonthlySalary := employeeFields[9].Descriptor()
-	// employee.DefaultMonthlySalary holds the default value on creation for the monthlySalary field.
+	// employee.DefaultMonthlySalary holds the default value on creation for the monthly_salary field.
 	employee.DefaultMonthlySalary = employeeDescMonthlySalary.Default.(int)
-	// employee.MonthlySalaryValidator is a validator for the "monthlySalary" field. It is called by the builders before save.
+	// employee.MonthlySalaryValidator is a validator for the "monthly_salary" field. It is called by the builders before save.
 	employee.MonthlySalaryValidator = employeeDescMonthlySalary.Validators[0].(func(int) error)
-	// employeeDescPerformaceScore is the schema descriptor for performaceScore field.
+	// employeeDescPerformaceScore is the schema descriptor for performace_score field.
 	employeeDescPerformaceScore := employeeFields[11].Descriptor()
-	// employee.DefaultPerformaceScore holds the default value on creation for the performaceScore field.
+	// employee.DefaultPerformaceScore holds the default value on creation for the performace_score field.
 	employee.DefaultPerformaceScore = employeeDescPerformaceScore.Default.(float64)
-	// employee.PerformaceScoreValidator is a validator for the "performaceScore" field. It is called by the builders before save.
+	// employee.PerformaceScoreValidator is a validator for the "performace_score" field. It is called by the builders before save.
 	employee.PerformaceScoreValidator = func() func(float64) error {
 		validators := employeeDescPerformaceScore.Validators
 		fns := [...]func(float64) error{
 			validators[0].(func(float64) error),
 			validators[1].(func(float64) error),
 		}
-		return func(performaceScore float64) error {
+		return func(performace_score float64) error {
 			for _, fn := range fns {
-				if err := fn(performaceScore); err != nil {
+				if err := fn(performace_score); err != nil {
 					return err
 				}
 			}
@@ -265,15 +265,15 @@ func init() {
 	_ = fileMixinFields0
 	fileFields := schema.File{}.Fields()
 	_ = fileFields
-	// fileDescCreatedAt is the schema descriptor for createdAt field.
+	// fileDescCreatedAt is the schema descriptor for created_at field.
 	fileDescCreatedAt := fileMixinFields0[0].Descriptor()
-	// file.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// file.DefaultCreatedAt holds the default value on creation for the created_at field.
 	file.DefaultCreatedAt = fileDescCreatedAt.Default.(func() time.Time)
-	// fileDescUpdatedAt is the schema descriptor for updatedAt field.
+	// fileDescUpdatedAt is the schema descriptor for updated_at field.
 	fileDescUpdatedAt := fileMixinFields0[1].Descriptor()
-	// file.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// file.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	file.DefaultUpdatedAt = fileDescUpdatedAt.Default.(func() time.Time)
-	// file.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// file.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	file.UpdateDefaultUpdatedAt = fileDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// fileDescURI is the schema descriptor for uri field.
 	fileDescURI := fileFields[3].Descriptor()
@@ -284,15 +284,15 @@ func init() {
 	_ = inventoryMixinFields0
 	inventoryFields := schema.Inventory{}.Fields()
 	_ = inventoryFields
-	// inventoryDescCreatedAt is the schema descriptor for createdAt field.
+	// inventoryDescCreatedAt is the schema descriptor for created_at field.
 	inventoryDescCreatedAt := inventoryMixinFields0[0].Descriptor()
-	// inventory.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// inventory.DefaultCreatedAt holds the default value on creation for the created_at field.
 	inventory.DefaultCreatedAt = inventoryDescCreatedAt.Default.(func() time.Time)
-	// inventoryDescUpdatedAt is the schema descriptor for updatedAt field.
+	// inventoryDescUpdatedAt is the schema descriptor for updated_at field.
 	inventoryDescUpdatedAt := inventoryMixinFields0[1].Descriptor()
-	// inventory.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// inventory.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	inventory.DefaultUpdatedAt = inventoryDescUpdatedAt.Default.(func() time.Time)
-	// inventory.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// inventory.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	inventory.UpdateDefaultUpdatedAt = inventoryDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// inventoryDescName is the schema descriptor for name field.
 	inventoryDescName := inventoryFields[0].Descriptor()
@@ -302,13 +302,13 @@ func init() {
 	inventoryDescQuantity := inventoryFields[2].Descriptor()
 	// inventory.QuantityValidator is a validator for the "quantity" field. It is called by the builders before save.
 	inventory.QuantityValidator = inventoryDescQuantity.Validators[0].(func(float64) error)
-	// inventoryDescMinimumLevel is the schema descriptor for minimumLevel field.
+	// inventoryDescMinimumLevel is the schema descriptor for minimum_level field.
 	inventoryDescMinimumLevel := inventoryFields[4].Descriptor()
-	// inventory.MinimumLevelValidator is a validator for the "minimumLevel" field. It is called by the builders before save.
+	// inventory.MinimumLevelValidator is a validator for the "minimum_level" field. It is called by the builders before save.
 	inventory.MinimumLevelValidator = inventoryDescMinimumLevel.Validators[0].(func(float64) error)
-	// inventoryDescCurrentValue is the schema descriptor for currentValue field.
+	// inventoryDescCurrentValue is the schema descriptor for current_value field.
 	inventoryDescCurrentValue := inventoryFields[5].Descriptor()
-	// inventory.CurrentValueValidator is a validator for the "currentValue" field. It is called by the builders before save.
+	// inventory.CurrentValueValidator is a validator for the "current_value" field. It is called by the builders before save.
 	inventory.CurrentValueValidator = inventoryDescCurrentValue.Validators[0].(func(float64) error)
 	// inventoryDescNotes is the schema descriptor for notes field.
 	inventoryDescNotes := inventoryFields[6].Descriptor()
@@ -319,15 +319,15 @@ func init() {
 	_ = inventorymovementMixinFields0
 	inventorymovementFields := schema.InventoryMovement{}.Fields()
 	_ = inventorymovementFields
-	// inventorymovementDescCreatedAt is the schema descriptor for createdAt field.
+	// inventorymovementDescCreatedAt is the schema descriptor for created_at field.
 	inventorymovementDescCreatedAt := inventorymovementMixinFields0[0].Descriptor()
-	// inventorymovement.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// inventorymovement.DefaultCreatedAt holds the default value on creation for the created_at field.
 	inventorymovement.DefaultCreatedAt = inventorymovementDescCreatedAt.Default.(func() time.Time)
-	// inventorymovementDescUpdatedAt is the schema descriptor for updatedAt field.
+	// inventorymovementDescUpdatedAt is the schema descriptor for updated_at field.
 	inventorymovementDescUpdatedAt := inventorymovementMixinFields0[1].Descriptor()
-	// inventorymovement.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// inventorymovement.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	inventorymovement.DefaultUpdatedAt = inventorymovementDescUpdatedAt.Default.(func() time.Time)
-	// inventorymovement.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// inventorymovement.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	inventorymovement.UpdateDefaultUpdatedAt = inventorymovementDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// inventorymovementDescDate is the schema descriptor for date field.
 	inventorymovementDescDate := inventorymovementFields[3].Descriptor()
@@ -338,19 +338,19 @@ func init() {
 	_ = invoiceMixinFields0
 	invoiceFields := schema.Invoice{}.Fields()
 	_ = invoiceFields
-	// invoiceDescCreatedAt is the schema descriptor for createdAt field.
+	// invoiceDescCreatedAt is the schema descriptor for created_at field.
 	invoiceDescCreatedAt := invoiceMixinFields0[0].Descriptor()
-	// invoice.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// invoice.DefaultCreatedAt holds the default value on creation for the created_at field.
 	invoice.DefaultCreatedAt = invoiceDescCreatedAt.Default.(func() time.Time)
-	// invoiceDescUpdatedAt is the schema descriptor for updatedAt field.
+	// invoiceDescUpdatedAt is the schema descriptor for updated_at field.
 	invoiceDescUpdatedAt := invoiceMixinFields0[1].Descriptor()
-	// invoice.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// invoice.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	invoice.DefaultUpdatedAt = invoiceDescUpdatedAt.Default.(func() time.Time)
-	// invoice.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// invoice.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	invoice.UpdateDefaultUpdatedAt = invoiceDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// invoiceDescCustomerName is the schema descriptor for customerName field.
+	// invoiceDescCustomerName is the schema descriptor for customer_name field.
 	invoiceDescCustomerName := invoiceFields[12].Descriptor()
-	// invoice.DefaultCustomerName holds the default value on creation for the customerName field.
+	// invoice.DefaultCustomerName holds the default value on creation for the customer_name field.
 	invoice.DefaultCustomerName = invoiceDescCustomerName.Default.(string)
 	// invoiceDescItems is the schema descriptor for items field.
 	invoiceDescItems := invoiceFields[18].Descriptor()
@@ -395,15 +395,15 @@ func init() {
 	_ = loanMixinFields0
 	loanFields := schema.Loan{}.Fields()
 	_ = loanFields
-	// loanDescCreatedAt is the schema descriptor for createdAt field.
+	// loanDescCreatedAt is the schema descriptor for created_at field.
 	loanDescCreatedAt := loanMixinFields0[0].Descriptor()
-	// loan.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// loan.DefaultCreatedAt holds the default value on creation for the created_at field.
 	loan.DefaultCreatedAt = loanDescCreatedAt.Default.(func() time.Time)
-	// loanDescUpdatedAt is the schema descriptor for updatedAt field.
+	// loanDescUpdatedAt is the schema descriptor for updated_at field.
 	loanDescUpdatedAt := loanMixinFields0[1].Descriptor()
-	// loan.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// loan.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	loan.DefaultUpdatedAt = loanDescUpdatedAt.Default.(func() time.Time)
-	// loan.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// loan.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	loan.UpdateDefaultUpdatedAt = loanDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// loanDescIsLending is the schema descriptor for is_lending field.
 	loanDescIsLending := loanFields[0].Descriptor()
@@ -448,15 +448,15 @@ func init() {
 	_ = loanscheduleMixinFields0
 	loanscheduleFields := schema.LoanSchedule{}.Fields()
 	_ = loanscheduleFields
-	// loanscheduleDescCreatedAt is the schema descriptor for createdAt field.
+	// loanscheduleDescCreatedAt is the schema descriptor for created_at field.
 	loanscheduleDescCreatedAt := loanscheduleMixinFields0[0].Descriptor()
-	// loanschedule.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// loanschedule.DefaultCreatedAt holds the default value on creation for the created_at field.
 	loanschedule.DefaultCreatedAt = loanscheduleDescCreatedAt.Default.(func() time.Time)
-	// loanscheduleDescUpdatedAt is the schema descriptor for updatedAt field.
+	// loanscheduleDescUpdatedAt is the schema descriptor for updated_at field.
 	loanscheduleDescUpdatedAt := loanscheduleMixinFields0[1].Descriptor()
-	// loanschedule.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// loanschedule.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	loanschedule.DefaultUpdatedAt = loanscheduleDescUpdatedAt.Default.(func() time.Time)
-	// loanschedule.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// loanschedule.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	loanschedule.UpdateDefaultUpdatedAt = loanscheduleDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// loanscheduleDescAmount is the schema descriptor for amount field.
 	loanscheduleDescAmount := loanscheduleFields[0].Descriptor()
@@ -475,15 +475,15 @@ func init() {
 	_ = membersignuptokenMixinFields0
 	membersignuptokenFields := schema.MemberSignupToken{}.Fields()
 	_ = membersignuptokenFields
-	// membersignuptokenDescCreatedAt is the schema descriptor for createdAt field.
+	// membersignuptokenDescCreatedAt is the schema descriptor for created_at field.
 	membersignuptokenDescCreatedAt := membersignuptokenMixinFields0[0].Descriptor()
-	// membersignuptoken.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// membersignuptoken.DefaultCreatedAt holds the default value on creation for the created_at field.
 	membersignuptoken.DefaultCreatedAt = membersignuptokenDescCreatedAt.Default.(func() time.Time)
-	// membersignuptokenDescUpdatedAt is the schema descriptor for updatedAt field.
+	// membersignuptokenDescUpdatedAt is the schema descriptor for updated_at field.
 	membersignuptokenDescUpdatedAt := membersignuptokenMixinFields0[1].Descriptor()
-	// membersignuptoken.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// membersignuptoken.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	membersignuptoken.DefaultUpdatedAt = membersignuptokenDescUpdatedAt.Default.(func() time.Time)
-	// membersignuptoken.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// membersignuptoken.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	membersignuptoken.UpdateDefaultUpdatedAt = membersignuptokenDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// membersignuptokenDescName is the schema descriptor for name field.
 	membersignuptokenDescName := membersignuptokenFields[0].Descriptor()
@@ -493,67 +493,67 @@ func init() {
 	membersignuptokenDescToken := membersignuptokenFields[2].Descriptor()
 	// membersignuptoken.TokenValidator is a validator for the "token" field. It is called by the builders before save.
 	membersignuptoken.TokenValidator = membersignuptokenDescToken.Validators[0].(func(string) error)
-	// membersignuptokenDescNumberAccessed is the schema descriptor for numberAccessed field.
+	// membersignuptokenDescNumberAccessed is the schema descriptor for number_accessed field.
 	membersignuptokenDescNumberAccessed := membersignuptokenFields[6].Descriptor()
-	// membersignuptoken.DefaultNumberAccessed holds the default value on creation for the numberAccessed field.
+	// membersignuptoken.DefaultNumberAccessed holds the default value on creation for the number_accessed field.
 	membersignuptoken.DefaultNumberAccessed = membersignuptokenDescNumberAccessed.Default.(int)
-	// membersignuptoken.NumberAccessedValidator is a validator for the "numberAccessed" field. It is called by the builders before save.
+	// membersignuptoken.NumberAccessedValidator is a validator for the "number_accessed" field. It is called by the builders before save.
 	membersignuptoken.NumberAccessedValidator = membersignuptokenDescNumberAccessed.Validators[0].(func(int) error)
-	// membersignuptokenDescAlreadyUsed is the schema descriptor for alreadyUsed field.
+	// membersignuptokenDescAlreadyUsed is the schema descriptor for already_used field.
 	membersignuptokenDescAlreadyUsed := membersignuptokenFields[8].Descriptor()
-	// membersignuptoken.DefaultAlreadyUsed holds the default value on creation for the alreadyUsed field.
+	// membersignuptoken.DefaultAlreadyUsed holds the default value on creation for the already_used field.
 	membersignuptoken.DefaultAlreadyUsed = membersignuptokenDescAlreadyUsed.Default.(bool)
 	payableMixin := schema.Payable{}.Mixin()
 	payableMixinFields0 := payableMixin[0].Fields()
 	_ = payableMixinFields0
 	payableFields := schema.Payable{}.Fields()
 	_ = payableFields
-	// payableDescCreatedAt is the schema descriptor for createdAt field.
+	// payableDescCreatedAt is the schema descriptor for created_at field.
 	payableDescCreatedAt := payableMixinFields0[0].Descriptor()
-	// payable.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// payable.DefaultCreatedAt holds the default value on creation for the created_at field.
 	payable.DefaultCreatedAt = payableDescCreatedAt.Default.(func() time.Time)
-	// payableDescUpdatedAt is the schema descriptor for updatedAt field.
+	// payableDescUpdatedAt is the schema descriptor for updated_at field.
 	payableDescUpdatedAt := payableMixinFields0[1].Descriptor()
-	// payable.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// payable.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	payable.DefaultUpdatedAt = payableDescUpdatedAt.Default.(func() time.Time)
-	// payable.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// payable.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	payable.UpdateDefaultUpdatedAt = payableDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// payableDescEntryGroup is the schema descriptor for entryGroup field.
+	// payableDescEntryGroup is the schema descriptor for entry_group field.
 	payableDescEntryGroup := payableFields[0].Descriptor()
-	// payable.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
+	// payable.EntryGroupValidator is a validator for the "entry_group" field. It is called by the builders before save.
 	payable.EntryGroupValidator = payableDescEntryGroup.Validators[0].(func(int) error)
 	// payableDescName is the schema descriptor for name field.
 	payableDescName := payableFields[2].Descriptor()
 	// payable.DefaultName holds the default value on creation for the name field.
 	payable.DefaultName = payableDescName.Default.(string)
-	// payableDescAmountInDefault is the schema descriptor for amountInDefault field.
+	// payableDescAmountInDefault is the schema descriptor for amount_in_default field.
 	payableDescAmountInDefault := payableFields[3].Descriptor()
-	// payable.DefaultAmountInDefault holds the default value on creation for the amountInDefault field.
+	// payable.DefaultAmountInDefault holds the default value on creation for the amount_in_default field.
 	payable.DefaultAmountInDefault = payableDescAmountInDefault.Default.(float64)
-	// payable.AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	// payable.AmountInDefaultValidator is a validator for the "amount_in_default" field. It is called by the builders before save.
 	payable.AmountInDefaultValidator = payableDescAmountInDefault.Validators[0].(func(float64) error)
-	// payableDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	// payableDescOutstandingBalance is the schema descriptor for outstanding_balance field.
 	payableDescOutstandingBalance := payableFields[4].Descriptor()
-	// payable.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	// payable.OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	payable.OutstandingBalanceValidator = payableDescOutstandingBalance.Validators[0].(func(float64) error)
-	// payableDescTotalTransaction is the schema descriptor for totalTransaction field.
+	// payableDescTotalTransaction is the schema descriptor for total_transaction field.
 	payableDescTotalTransaction := payableFields[5].Descriptor()
-	// payable.TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	// payable.TotalTransactionValidator is a validator for the "total_transaction" field. It is called by the builders before save.
 	payable.TotalTransactionValidator = payableDescTotalTransaction.Validators[0].(func(float64) error)
 	productMixin := schema.Product{}.Mixin()
 	productMixinFields0 := productMixin[0].Fields()
 	_ = productMixinFields0
 	productFields := schema.Product{}.Fields()
 	_ = productFields
-	// productDescCreatedAt is the schema descriptor for createdAt field.
+	// productDescCreatedAt is the schema descriptor for created_at field.
 	productDescCreatedAt := productMixinFields0[0].Descriptor()
-	// product.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// product.DefaultCreatedAt holds the default value on creation for the created_at field.
 	product.DefaultCreatedAt = productDescCreatedAt.Default.(func() time.Time)
-	// productDescUpdatedAt is the schema descriptor for updatedAt field.
+	// productDescUpdatedAt is the schema descriptor for updated_at field.
 	productDescUpdatedAt := productMixinFields0[1].Descriptor()
-	// product.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// product.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	product.DefaultUpdatedAt = productDescUpdatedAt.Default.(func() time.Time)
-	// product.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// product.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	product.UpdateDefaultUpdatedAt = productDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// productDescStock is the schema descriptor for stock field.
 	productDescStock := productFields[0].Descriptor()
@@ -566,15 +566,15 @@ func init() {
 	_ = projectMixinFields0
 	projectFields := schema.Project{}.Fields()
 	_ = projectFields
-	// projectDescCreatedAt is the schema descriptor for createdAt field.
+	// projectDescCreatedAt is the schema descriptor for created_at field.
 	projectDescCreatedAt := projectMixinFields0[0].Descriptor()
-	// project.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// project.DefaultCreatedAt holds the default value on creation for the created_at field.
 	project.DefaultCreatedAt = projectDescCreatedAt.Default.(func() time.Time)
-	// projectDescUpdatedAt is the schema descriptor for updatedAt field.
+	// projectDescUpdatedAt is the schema descriptor for updated_at field.
 	projectDescUpdatedAt := projectMixinFields0[1].Descriptor()
-	// project.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// project.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	project.DefaultUpdatedAt = projectDescUpdatedAt.Default.(func() time.Time)
-	// project.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// project.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	project.UpdateDefaultUpdatedAt = projectDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// projectDescName is the schema descriptor for name field.
 	projectDescName := projectFields[0].Descriptor()
@@ -610,73 +610,82 @@ func init() {
 	projectmilestoneDescName := projectmilestoneFields[0].Descriptor()
 	// projectmilestone.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	projectmilestone.NameValidator = projectmilestoneDescName.Validators[0].(func(string) error)
+	projecttaskMixin := schema.ProjectTask{}.Mixin()
 	projecttaskHooks := schema.ProjectTask{}.Hooks()
 	projecttask.Hooks[0] = projecttaskHooks[0]
+	projecttaskMixinFields0 := projecttaskMixin[0].Fields()
+	_ = projecttaskMixinFields0
 	projecttaskFields := schema.ProjectTask{}.Fields()
 	_ = projecttaskFields
-	// projecttaskDescCreatedAt is the schema descriptor for createdAt field.
-	projecttaskDescCreatedAt := projecttaskFields[0].Descriptor()
-	// projecttask.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// projecttaskDescCreatedAt is the schema descriptor for created_at field.
+	projecttaskDescCreatedAt := projecttaskMixinFields0[0].Descriptor()
+	// projecttask.DefaultCreatedAt holds the default value on creation for the created_at field.
 	projecttask.DefaultCreatedAt = projecttaskDescCreatedAt.Default.(func() time.Time)
+	// projecttaskDescUpdatedAt is the schema descriptor for updated_at field.
+	projecttaskDescUpdatedAt := projecttaskMixinFields0[1].Descriptor()
+	// projecttask.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	projecttask.DefaultUpdatedAt = projecttaskDescUpdatedAt.Default.(func() time.Time)
+	// projecttask.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	projecttask.UpdateDefaultUpdatedAt = projecttaskDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// projecttaskDescAssigneeName is the schema descriptor for assignee_name field.
+	projecttaskDescAssigneeName := projecttaskFields[0].Descriptor()
+	// projecttask.AssigneeNameValidator is a validator for the "assignee_name" field. It is called by the builders before save.
+	projecttask.AssigneeNameValidator = projecttaskDescAssigneeName.Validators[0].(func(string) error)
 	// projecttaskDescName is the schema descriptor for name field.
-	projecttaskDescName := projecttaskFields[1].Descriptor()
+	projecttaskDescName := projecttaskFields[5].Descriptor()
 	// projecttask.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	projecttask.NameValidator = projecttaskDescName.Validators[0].(func(string) error)
-	// projecttaskDescAssigneeName is the schema descriptor for assigneeName field.
-	projecttaskDescAssigneeName := projecttaskFields[2].Descriptor()
-	// projecttask.AssigneeNameValidator is a validator for the "assigneeName" field. It is called by the builders before save.
-	projecttask.AssigneeNameValidator = projecttaskDescAssigneeName.Validators[0].(func(string) error)
 	receivableMixin := schema.Receivable{}.Mixin()
 	receivableMixinFields0 := receivableMixin[0].Fields()
 	_ = receivableMixinFields0
 	receivableFields := schema.Receivable{}.Fields()
 	_ = receivableFields
-	// receivableDescCreatedAt is the schema descriptor for createdAt field.
+	// receivableDescCreatedAt is the schema descriptor for created_at field.
 	receivableDescCreatedAt := receivableMixinFields0[0].Descriptor()
-	// receivable.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// receivable.DefaultCreatedAt holds the default value on creation for the created_at field.
 	receivable.DefaultCreatedAt = receivableDescCreatedAt.Default.(func() time.Time)
-	// receivableDescUpdatedAt is the schema descriptor for updatedAt field.
+	// receivableDescUpdatedAt is the schema descriptor for updated_at field.
 	receivableDescUpdatedAt := receivableMixinFields0[1].Descriptor()
-	// receivable.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// receivable.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	receivable.DefaultUpdatedAt = receivableDescUpdatedAt.Default.(func() time.Time)
-	// receivable.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// receivable.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	receivable.UpdateDefaultUpdatedAt = receivableDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// receivableDescEntryGroup is the schema descriptor for entryGroup field.
+	// receivableDescEntryGroup is the schema descriptor for entry_group field.
 	receivableDescEntryGroup := receivableFields[0].Descriptor()
-	// receivable.EntryGroupValidator is a validator for the "entryGroup" field. It is called by the builders before save.
+	// receivable.EntryGroupValidator is a validator for the "entry_group" field. It is called by the builders before save.
 	receivable.EntryGroupValidator = receivableDescEntryGroup.Validators[0].(func(int) error)
 	// receivableDescName is the schema descriptor for name field.
 	receivableDescName := receivableFields[2].Descriptor()
 	// receivable.DefaultName holds the default value on creation for the name field.
 	receivable.DefaultName = receivableDescName.Default.(string)
-	// receivableDescAmountInDefault is the schema descriptor for amountInDefault field.
+	// receivableDescAmountInDefault is the schema descriptor for amount_in_default field.
 	receivableDescAmountInDefault := receivableFields[3].Descriptor()
-	// receivable.DefaultAmountInDefault holds the default value on creation for the amountInDefault field.
+	// receivable.DefaultAmountInDefault holds the default value on creation for the amount_in_default field.
 	receivable.DefaultAmountInDefault = receivableDescAmountInDefault.Default.(float64)
-	// receivable.AmountInDefaultValidator is a validator for the "amountInDefault" field. It is called by the builders before save.
+	// receivable.AmountInDefaultValidator is a validator for the "amount_in_default" field. It is called by the builders before save.
 	receivable.AmountInDefaultValidator = receivableDescAmountInDefault.Validators[0].(func(float64) error)
-	// receivableDescOutstandingBalance is the schema descriptor for outstandingBalance field.
+	// receivableDescOutstandingBalance is the schema descriptor for outstanding_balance field.
 	receivableDescOutstandingBalance := receivableFields[4].Descriptor()
-	// receivable.OutstandingBalanceValidator is a validator for the "outstandingBalance" field. It is called by the builders before save.
+	// receivable.OutstandingBalanceValidator is a validator for the "outstanding_balance" field. It is called by the builders before save.
 	receivable.OutstandingBalanceValidator = receivableDescOutstandingBalance.Validators[0].(func(float64) error)
-	// receivableDescTotalTransaction is the schema descriptor for totalTransaction field.
+	// receivableDescTotalTransaction is the schema descriptor for total_transaction field.
 	receivableDescTotalTransaction := receivableFields[5].Descriptor()
-	// receivable.TotalTransactionValidator is a validator for the "totalTransaction" field. It is called by the builders before save.
+	// receivable.TotalTransactionValidator is a validator for the "total_transaction" field. It is called by the builders before save.
 	receivable.TotalTransactionValidator = receivableDescTotalTransaction.Validators[0].(func(float64) error)
 	supplierMixin := schema.Supplier{}.Mixin()
 	supplierMixinFields0 := supplierMixin[0].Fields()
 	_ = supplierMixinFields0
 	supplierFields := schema.Supplier{}.Fields()
 	_ = supplierFields
-	// supplierDescCreatedAt is the schema descriptor for createdAt field.
+	// supplierDescCreatedAt is the schema descriptor for created_at field.
 	supplierDescCreatedAt := supplierMixinFields0[0].Descriptor()
-	// supplier.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// supplier.DefaultCreatedAt holds the default value on creation for the created_at field.
 	supplier.DefaultCreatedAt = supplierDescCreatedAt.Default.(func() time.Time)
-	// supplierDescUpdatedAt is the schema descriptor for updatedAt field.
+	// supplierDescUpdatedAt is the schema descriptor for updated_at field.
 	supplierDescUpdatedAt := supplierMixinFields0[1].Descriptor()
-	// supplier.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// supplier.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	supplier.DefaultUpdatedAt = supplierDescUpdatedAt.Default.(func() time.Time)
-	// supplier.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// supplier.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	supplier.UpdateDefaultUpdatedAt = supplierDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// supplierDescAddress is the schema descriptor for address field.
 	supplierDescAddress := supplierFields[0].Descriptor()
@@ -698,9 +707,9 @@ func init() {
 	supplierDescEmail := supplierFields[4].Descriptor()
 	// supplier.DefaultEmail holds the default value on creation for the email field.
 	supplier.DefaultEmail = supplierDescEmail.Default.(string)
-	// supplierDescIsDefault is the schema descriptor for isDefault field.
+	// supplierDescIsDefault is the schema descriptor for is_default field.
 	supplierDescIsDefault := supplierFields[5].Descriptor()
-	// supplier.DefaultIsDefault holds the default value on creation for the isDefault field.
+	// supplier.DefaultIsDefault holds the default value on creation for the is_default field.
 	supplier.DefaultIsDefault = supplierDescIsDefault.Default.(bool)
 	// supplierDescName is the schema descriptor for name field.
 	supplierDescName := supplierFields[6].Descriptor()
@@ -710,10 +719,10 @@ func init() {
 	supplierDescPhone := supplierFields[7].Descriptor()
 	// supplier.DefaultPhone holds the default value on creation for the phone field.
 	supplier.DefaultPhone = supplierDescPhone.Default.(string)
-	// supplierDescTaxId is the schema descriptor for taxId field.
-	supplierDescTaxId := supplierFields[8].Descriptor()
-	// supplier.DefaultTaxId holds the default value on creation for the taxId field.
-	supplier.DefaultTaxId = supplierDescTaxId.Default.(string)
+	// supplierDescTaxID is the schema descriptor for tax_id field.
+	supplierDescTaxID := supplierFields[8].Descriptor()
+	// supplier.DefaultTaxID holds the default value on creation for the tax_id field.
+	supplier.DefaultTaxID = supplierDescTaxID.Default.(string)
 	tokenFields := schema.Token{}.Fields()
 	_ = tokenFields
 	// tokenDescToken is the schema descriptor for token field.
@@ -725,38 +734,38 @@ func init() {
 	_ = treasuryMixinFields0
 	treasuryFields := schema.Treasury{}.Fields()
 	_ = treasuryFields
-	// treasuryDescCreatedAt is the schema descriptor for createdAt field.
+	// treasuryDescCreatedAt is the schema descriptor for created_at field.
 	treasuryDescCreatedAt := treasuryMixinFields0[0].Descriptor()
-	// treasury.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// treasury.DefaultCreatedAt holds the default value on creation for the created_at field.
 	treasury.DefaultCreatedAt = treasuryDescCreatedAt.Default.(func() time.Time)
-	// treasuryDescUpdatedAt is the schema descriptor for updatedAt field.
+	// treasuryDescUpdatedAt is the schema descriptor for updated_at field.
 	treasuryDescUpdatedAt := treasuryMixinFields0[1].Descriptor()
-	// treasury.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// treasury.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	treasury.DefaultUpdatedAt = treasuryDescUpdatedAt.Default.(func() time.Time)
-	// treasury.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// treasury.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	treasury.UpdateDefaultUpdatedAt = treasuryDescUpdatedAt.UpdateDefault.(func() time.Time)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0
 	userFields := schema.User{}.Fields()
 	_ = userFields
-	// userDescCreatedAt is the schema descriptor for createdAt field.
+	// userDescCreatedAt is the schema descriptor for created_at field.
 	userDescCreatedAt := userMixinFields0[0].Descriptor()
-	// user.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
 	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
-	// userDescUpdatedAt is the schema descriptor for updatedAt field.
+	// userDescUpdatedAt is the schema descriptor for updated_at field.
 	userDescUpdatedAt := userMixinFields0[1].Descriptor()
-	// user.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
-	// user.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// userDescIsDemoUser is the schema descriptor for isDemoUser field.
+	// userDescIsDemoUser is the schema descriptor for is_demo_user field.
 	userDescIsDemoUser := userFields[1].Descriptor()
-	// user.DefaultIsDemoUser holds the default value on creation for the isDemoUser field.
+	// user.DefaultIsDemoUser holds the default value on creation for the is_demo_user field.
 	user.DefaultIsDemoUser = userDescIsDemoUser.Default.(bool)
-	// userDescFirebaseUID is the schema descriptor for firebaseUID field.
+	// userDescFirebaseUID is the schema descriptor for firebase_UID field.
 	userDescFirebaseUID := userFields[2].Descriptor()
-	// user.FirebaseUIDValidator is a validator for the "firebaseUID" field. It is called by the builders before save.
+	// user.FirebaseUIDValidator is a validator for the "firebase_UID" field. It is called by the builders before save.
 	user.FirebaseUIDValidator = userDescFirebaseUID.Validators[0].(func(string) error)
 	// userDescEmail is the schema descriptor for email field.
 	userDescEmail := userFields[5].Descriptor()
@@ -794,19 +803,19 @@ func init() {
 	_ = workshiftMixinFields0
 	workshiftFields := schema.Workshift{}.Fields()
 	_ = workshiftFields
-	// workshiftDescCreatedAt is the schema descriptor for createdAt field.
+	// workshiftDescCreatedAt is the schema descriptor for created_at field.
 	workshiftDescCreatedAt := workshiftMixinFields0[0].Descriptor()
-	// workshift.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	// workshift.DefaultCreatedAt holds the default value on creation for the created_at field.
 	workshift.DefaultCreatedAt = workshiftDescCreatedAt.Default.(func() time.Time)
-	// workshiftDescUpdatedAt is the schema descriptor for updatedAt field.
+	// workshiftDescUpdatedAt is the schema descriptor for updated_at field.
 	workshiftDescUpdatedAt := workshiftMixinFields0[1].Descriptor()
-	// workshift.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	// workshift.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	workshift.DefaultUpdatedAt = workshiftDescUpdatedAt.Default.(func() time.Time)
-	// workshift.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	// workshift.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	workshift.UpdateDefaultUpdatedAt = workshiftDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// workshiftDescClockIn is the schema descriptor for clockIn field.
+	// workshiftDescClockIn is the schema descriptor for clock_in field.
 	workshiftDescClockIn := workshiftFields[1].Descriptor()
-	// workshift.DefaultClockIn holds the default value on creation for the clockIn field.
+	// workshift.DefaultClockIn holds the default value on creation for the clock_in field.
 	workshift.DefaultClockIn = workshiftDescClockIn.Default.(func() time.Time)
 }
 

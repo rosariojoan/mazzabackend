@@ -38,11 +38,11 @@ func (Workshift) Mixin() []ent.Mixin {
 // Fields of the Workshift.
 func (Workshift) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("approvedAt").Nillable().Optional().Annotations(entgql.OrderField("APPROVED_AT")).Comment("time that this shift was approved by the supervisor"),
-		field.Time("clockIn").Default(time.Now).Annotations(entgql.OrderField("CLOCK_IN")),
-		field.Time("clockOut").Nillable().Optional().Annotations(entgql.OrderField("CLOCK_OUT")),
-		field.String("clockInLocation").Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
-		field.String("clockOutLocation").Optional().Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
+		field.Time("approved_at").Nillable().Optional().Annotations(entgql.OrderField("APPROVED_AT")).Comment("time that this shift was approved by the supervisor"),
+		field.Time("clock_in").Default(time.Now).Annotations(entgql.OrderField("CLOCK_IN")),
+		field.Time("clock_out").Nillable().Optional().Annotations(entgql.OrderField("CLOCK_OUT")),
+		field.String("clock_in_location").Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
+		field.String("clock_out_location").Optional().Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
 		field.String("description").Optional(),
 		field.String("note").Optional().Comment("this is only used when the current item is a shift edit request"),
 		field.Enum("status").Values("APPROVED", "PENDING").Default("PENDING").Annotations(entgql.OrderField("STATUS")),
@@ -52,12 +52,12 @@ func (Workshift) Fields() []ent.Field {
 // Edges of the Workshift.
 func (Workshift) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("workShifts").Unique(),
-		edge.From("user", User.Type).Ref("workShifts").Unique(),
-		edge.From("approvedBy", User.Type).Ref("approvedWorkShifts").Unique(),
-		edge.From("task", ProjectTask.Type).Ref("workShifts").Unique(),
-		edge.To("editRequest", Workshift.Type).Unique(),
-		edge.From("workShift", Workshift.Type).Ref("editRequest").Unique(),
+		edge.From("company", Company.Type).Ref("work_shifts").Unique(),
+		edge.From("user", User.Type).Ref("work_shifts").Unique(),
+		edge.From("approved_by", User.Type).Ref("approved_work_shifts").Unique(),
+		edge.From("task", ProjectTask.Type).Ref("work_shifts").Unique(),
+		edge.To("edit_request", Workshift.Type).Unique(),
+		edge.From("work_shift", Workshift.Type).Ref("edit_request").Unique(),
 	}
 }
 

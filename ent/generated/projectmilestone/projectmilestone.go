@@ -14,7 +14,7 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldDueDate holds the string denoting the duedate field in the database.
+	// FieldDueDate holds the string denoting the due_date field in the database.
 	FieldDueDate = "due_date"
 	// EdgeProject holds the string denoting the project edge name in mutations.
 	EdgeProject = "project"
@@ -75,7 +75,7 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
-// ByDueDate orders the results by the dueDate field.
+// ByDueDate orders the results by the due_date field.
 func ByDueDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDueDate, opts...).ToFunc()
 }

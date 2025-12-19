@@ -32,19 +32,19 @@ func (wu *WorkshiftUpdate) Where(ps ...predicate.Workshift) *WorkshiftUpdate {
 	return wu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (wu *WorkshiftUpdate) SetUpdatedAt(t time.Time) *WorkshiftUpdate {
 	wu.mutation.SetUpdatedAt(t)
 	return wu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (wu *WorkshiftUpdate) SetDeletedAt(t time.Time) *WorkshiftUpdate {
 	wu.mutation.SetDeletedAt(t)
 	return wu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableDeletedAt(t *time.Time) *WorkshiftUpdate {
 	if t != nil {
 		wu.SetDeletedAt(*t)
@@ -52,19 +52,19 @@ func (wu *WorkshiftUpdate) SetNillableDeletedAt(t *time.Time) *WorkshiftUpdate {
 	return wu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (wu *WorkshiftUpdate) ClearDeletedAt() *WorkshiftUpdate {
 	wu.mutation.ClearDeletedAt()
 	return wu
 }
 
-// SetApprovedAt sets the "approvedAt" field.
+// SetApprovedAt sets the "approved_at" field.
 func (wu *WorkshiftUpdate) SetApprovedAt(t time.Time) *WorkshiftUpdate {
 	wu.mutation.SetApprovedAt(t)
 	return wu
 }
 
-// SetNillableApprovedAt sets the "approvedAt" field if the given value is not nil.
+// SetNillableApprovedAt sets the "approved_at" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableApprovedAt(t *time.Time) *WorkshiftUpdate {
 	if t != nil {
 		wu.SetApprovedAt(*t)
@@ -72,19 +72,19 @@ func (wu *WorkshiftUpdate) SetNillableApprovedAt(t *time.Time) *WorkshiftUpdate 
 	return wu
 }
 
-// ClearApprovedAt clears the value of the "approvedAt" field.
+// ClearApprovedAt clears the value of the "approved_at" field.
 func (wu *WorkshiftUpdate) ClearApprovedAt() *WorkshiftUpdate {
 	wu.mutation.ClearApprovedAt()
 	return wu
 }
 
-// SetClockIn sets the "clockIn" field.
+// SetClockIn sets the "clock_in" field.
 func (wu *WorkshiftUpdate) SetClockIn(t time.Time) *WorkshiftUpdate {
 	wu.mutation.SetClockIn(t)
 	return wu
 }
 
-// SetNillableClockIn sets the "clockIn" field if the given value is not nil.
+// SetNillableClockIn sets the "clock_in" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableClockIn(t *time.Time) *WorkshiftUpdate {
 	if t != nil {
 		wu.SetClockIn(*t)
@@ -92,13 +92,13 @@ func (wu *WorkshiftUpdate) SetNillableClockIn(t *time.Time) *WorkshiftUpdate {
 	return wu
 }
 
-// SetClockOut sets the "clockOut" field.
+// SetClockOut sets the "clock_out" field.
 func (wu *WorkshiftUpdate) SetClockOut(t time.Time) *WorkshiftUpdate {
 	wu.mutation.SetClockOut(t)
 	return wu
 }
 
-// SetNillableClockOut sets the "clockOut" field if the given value is not nil.
+// SetNillableClockOut sets the "clock_out" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableClockOut(t *time.Time) *WorkshiftUpdate {
 	if t != nil {
 		wu.SetClockOut(*t)
@@ -106,19 +106,19 @@ func (wu *WorkshiftUpdate) SetNillableClockOut(t *time.Time) *WorkshiftUpdate {
 	return wu
 }
 
-// ClearClockOut clears the value of the "clockOut" field.
+// ClearClockOut clears the value of the "clock_out" field.
 func (wu *WorkshiftUpdate) ClearClockOut() *WorkshiftUpdate {
 	wu.mutation.ClearClockOut()
 	return wu
 }
 
-// SetClockInLocation sets the "clockInLocation" field.
+// SetClockInLocation sets the "clock_in_location" field.
 func (wu *WorkshiftUpdate) SetClockInLocation(s string) *WorkshiftUpdate {
 	wu.mutation.SetClockInLocation(s)
 	return wu
 }
 
-// SetNillableClockInLocation sets the "clockInLocation" field if the given value is not nil.
+// SetNillableClockInLocation sets the "clock_in_location" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableClockInLocation(s *string) *WorkshiftUpdate {
 	if s != nil {
 		wu.SetClockInLocation(*s)
@@ -126,13 +126,13 @@ func (wu *WorkshiftUpdate) SetNillableClockInLocation(s *string) *WorkshiftUpdat
 	return wu
 }
 
-// SetClockOutLocation sets the "clockOutLocation" field.
+// SetClockOutLocation sets the "clock_out_location" field.
 func (wu *WorkshiftUpdate) SetClockOutLocation(s string) *WorkshiftUpdate {
 	wu.mutation.SetClockOutLocation(s)
 	return wu
 }
 
-// SetNillableClockOutLocation sets the "clockOutLocation" field if the given value is not nil.
+// SetNillableClockOutLocation sets the "clock_out_location" field if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableClockOutLocation(s *string) *WorkshiftUpdate {
 	if s != nil {
 		wu.SetClockOutLocation(*s)
@@ -140,7 +140,7 @@ func (wu *WorkshiftUpdate) SetNillableClockOutLocation(s *string) *WorkshiftUpda
 	return wu
 }
 
-// ClearClockOutLocation clears the value of the "clockOutLocation" field.
+// ClearClockOutLocation clears the value of the "clock_out_location" field.
 func (wu *WorkshiftUpdate) ClearClockOutLocation() *WorkshiftUpdate {
 	wu.mutation.ClearClockOutLocation()
 	return wu
@@ -238,13 +238,13 @@ func (wu *WorkshiftUpdate) SetUser(u *User) *WorkshiftUpdate {
 	return wu.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (wu *WorkshiftUpdate) SetApprovedByID(id int) *WorkshiftUpdate {
 	wu.mutation.SetApprovedByID(id)
 	return wu
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableApprovedByID(id *int) *WorkshiftUpdate {
 	if id != nil {
 		wu = wu.SetApprovedByID(*id)
@@ -252,7 +252,7 @@ func (wu *WorkshiftUpdate) SetNillableApprovedByID(id *int) *WorkshiftUpdate {
 	return wu
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (wu *WorkshiftUpdate) SetApprovedBy(u *User) *WorkshiftUpdate {
 	return wu.SetApprovedByID(u.ID)
 }
@@ -276,13 +276,13 @@ func (wu *WorkshiftUpdate) SetTask(p *ProjectTask) *WorkshiftUpdate {
 	return wu.SetTaskID(p.ID)
 }
 
-// SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
+// SetEditRequestID sets the "edit_request" edge to the Workshift entity by ID.
 func (wu *WorkshiftUpdate) SetEditRequestID(id int) *WorkshiftUpdate {
 	wu.mutation.SetEditRequestID(id)
 	return wu
 }
 
-// SetNillableEditRequestID sets the "editRequest" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableEditRequestID sets the "edit_request" edge to the Workshift entity by ID if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableEditRequestID(id *int) *WorkshiftUpdate {
 	if id != nil {
 		wu = wu.SetEditRequestID(*id)
@@ -290,18 +290,18 @@ func (wu *WorkshiftUpdate) SetNillableEditRequestID(id *int) *WorkshiftUpdate {
 	return wu
 }
 
-// SetEditRequest sets the "editRequest" edge to the Workshift entity.
+// SetEditRequest sets the "edit_request" edge to the Workshift entity.
 func (wu *WorkshiftUpdate) SetEditRequest(w *Workshift) *WorkshiftUpdate {
 	return wu.SetEditRequestID(w.ID)
 }
 
-// SetWorkShiftID sets the "workShift" edge to the Workshift entity by ID.
+// SetWorkShiftID sets the "work_shift" edge to the Workshift entity by ID.
 func (wu *WorkshiftUpdate) SetWorkShiftID(id int) *WorkshiftUpdate {
 	wu.mutation.SetWorkShiftID(id)
 	return wu
 }
 
-// SetNillableWorkShiftID sets the "workShift" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableWorkShiftID sets the "work_shift" edge to the Workshift entity by ID if the given value is not nil.
 func (wu *WorkshiftUpdate) SetNillableWorkShiftID(id *int) *WorkshiftUpdate {
 	if id != nil {
 		wu = wu.SetWorkShiftID(*id)
@@ -309,7 +309,7 @@ func (wu *WorkshiftUpdate) SetNillableWorkShiftID(id *int) *WorkshiftUpdate {
 	return wu
 }
 
-// SetWorkShift sets the "workShift" edge to the Workshift entity.
+// SetWorkShift sets the "work_shift" edge to the Workshift entity.
 func (wu *WorkshiftUpdate) SetWorkShift(w *Workshift) *WorkshiftUpdate {
 	return wu.SetWorkShiftID(w.ID)
 }
@@ -331,7 +331,7 @@ func (wu *WorkshiftUpdate) ClearUser() *WorkshiftUpdate {
 	return wu
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (wu *WorkshiftUpdate) ClearApprovedBy() *WorkshiftUpdate {
 	wu.mutation.ClearApprovedBy()
 	return wu
@@ -343,13 +343,13 @@ func (wu *WorkshiftUpdate) ClearTask() *WorkshiftUpdate {
 	return wu
 }
 
-// ClearEditRequest clears the "editRequest" edge to the Workshift entity.
+// ClearEditRequest clears the "edit_request" edge to the Workshift entity.
 func (wu *WorkshiftUpdate) ClearEditRequest() *WorkshiftUpdate {
 	wu.mutation.ClearEditRequest()
 	return wu
 }
 
-// ClearWorkShift clears the "workShift" edge to the Workshift entity.
+// ClearWorkShift clears the "work_shift" edge to the Workshift entity.
 func (wu *WorkshiftUpdate) ClearWorkShift() *WorkshiftUpdate {
 	wu.mutation.ClearWorkShift()
 	return wu
@@ -669,19 +669,19 @@ type WorkshiftUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (wuo *WorkshiftUpdateOne) SetUpdatedAt(t time.Time) *WorkshiftUpdateOne {
 	wuo.mutation.SetUpdatedAt(t)
 	return wuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (wuo *WorkshiftUpdateOne) SetDeletedAt(t time.Time) *WorkshiftUpdateOne {
 	wuo.mutation.SetDeletedAt(t)
 	return wuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableDeletedAt(t *time.Time) *WorkshiftUpdateOne {
 	if t != nil {
 		wuo.SetDeletedAt(*t)
@@ -689,19 +689,19 @@ func (wuo *WorkshiftUpdateOne) SetNillableDeletedAt(t *time.Time) *WorkshiftUpda
 	return wuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (wuo *WorkshiftUpdateOne) ClearDeletedAt() *WorkshiftUpdateOne {
 	wuo.mutation.ClearDeletedAt()
 	return wuo
 }
 
-// SetApprovedAt sets the "approvedAt" field.
+// SetApprovedAt sets the "approved_at" field.
 func (wuo *WorkshiftUpdateOne) SetApprovedAt(t time.Time) *WorkshiftUpdateOne {
 	wuo.mutation.SetApprovedAt(t)
 	return wuo
 }
 
-// SetNillableApprovedAt sets the "approvedAt" field if the given value is not nil.
+// SetNillableApprovedAt sets the "approved_at" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableApprovedAt(t *time.Time) *WorkshiftUpdateOne {
 	if t != nil {
 		wuo.SetApprovedAt(*t)
@@ -709,19 +709,19 @@ func (wuo *WorkshiftUpdateOne) SetNillableApprovedAt(t *time.Time) *WorkshiftUpd
 	return wuo
 }
 
-// ClearApprovedAt clears the value of the "approvedAt" field.
+// ClearApprovedAt clears the value of the "approved_at" field.
 func (wuo *WorkshiftUpdateOne) ClearApprovedAt() *WorkshiftUpdateOne {
 	wuo.mutation.ClearApprovedAt()
 	return wuo
 }
 
-// SetClockIn sets the "clockIn" field.
+// SetClockIn sets the "clock_in" field.
 func (wuo *WorkshiftUpdateOne) SetClockIn(t time.Time) *WorkshiftUpdateOne {
 	wuo.mutation.SetClockIn(t)
 	return wuo
 }
 
-// SetNillableClockIn sets the "clockIn" field if the given value is not nil.
+// SetNillableClockIn sets the "clock_in" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableClockIn(t *time.Time) *WorkshiftUpdateOne {
 	if t != nil {
 		wuo.SetClockIn(*t)
@@ -729,13 +729,13 @@ func (wuo *WorkshiftUpdateOne) SetNillableClockIn(t *time.Time) *WorkshiftUpdate
 	return wuo
 }
 
-// SetClockOut sets the "clockOut" field.
+// SetClockOut sets the "clock_out" field.
 func (wuo *WorkshiftUpdateOne) SetClockOut(t time.Time) *WorkshiftUpdateOne {
 	wuo.mutation.SetClockOut(t)
 	return wuo
 }
 
-// SetNillableClockOut sets the "clockOut" field if the given value is not nil.
+// SetNillableClockOut sets the "clock_out" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableClockOut(t *time.Time) *WorkshiftUpdateOne {
 	if t != nil {
 		wuo.SetClockOut(*t)
@@ -743,19 +743,19 @@ func (wuo *WorkshiftUpdateOne) SetNillableClockOut(t *time.Time) *WorkshiftUpdat
 	return wuo
 }
 
-// ClearClockOut clears the value of the "clockOut" field.
+// ClearClockOut clears the value of the "clock_out" field.
 func (wuo *WorkshiftUpdateOne) ClearClockOut() *WorkshiftUpdateOne {
 	wuo.mutation.ClearClockOut()
 	return wuo
 }
 
-// SetClockInLocation sets the "clockInLocation" field.
+// SetClockInLocation sets the "clock_in_location" field.
 func (wuo *WorkshiftUpdateOne) SetClockInLocation(s string) *WorkshiftUpdateOne {
 	wuo.mutation.SetClockInLocation(s)
 	return wuo
 }
 
-// SetNillableClockInLocation sets the "clockInLocation" field if the given value is not nil.
+// SetNillableClockInLocation sets the "clock_in_location" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableClockInLocation(s *string) *WorkshiftUpdateOne {
 	if s != nil {
 		wuo.SetClockInLocation(*s)
@@ -763,13 +763,13 @@ func (wuo *WorkshiftUpdateOne) SetNillableClockInLocation(s *string) *WorkshiftU
 	return wuo
 }
 
-// SetClockOutLocation sets the "clockOutLocation" field.
+// SetClockOutLocation sets the "clock_out_location" field.
 func (wuo *WorkshiftUpdateOne) SetClockOutLocation(s string) *WorkshiftUpdateOne {
 	wuo.mutation.SetClockOutLocation(s)
 	return wuo
 }
 
-// SetNillableClockOutLocation sets the "clockOutLocation" field if the given value is not nil.
+// SetNillableClockOutLocation sets the "clock_out_location" field if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableClockOutLocation(s *string) *WorkshiftUpdateOne {
 	if s != nil {
 		wuo.SetClockOutLocation(*s)
@@ -777,7 +777,7 @@ func (wuo *WorkshiftUpdateOne) SetNillableClockOutLocation(s *string) *Workshift
 	return wuo
 }
 
-// ClearClockOutLocation clears the value of the "clockOutLocation" field.
+// ClearClockOutLocation clears the value of the "clock_out_location" field.
 func (wuo *WorkshiftUpdateOne) ClearClockOutLocation() *WorkshiftUpdateOne {
 	wuo.mutation.ClearClockOutLocation()
 	return wuo
@@ -875,13 +875,13 @@ func (wuo *WorkshiftUpdateOne) SetUser(u *User) *WorkshiftUpdateOne {
 	return wuo.SetUserID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (wuo *WorkshiftUpdateOne) SetApprovedByID(id int) *WorkshiftUpdateOne {
 	wuo.mutation.SetApprovedByID(id)
 	return wuo
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableApprovedByID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
 		wuo = wuo.SetApprovedByID(*id)
@@ -889,7 +889,7 @@ func (wuo *WorkshiftUpdateOne) SetNillableApprovedByID(id *int) *WorkshiftUpdate
 	return wuo
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (wuo *WorkshiftUpdateOne) SetApprovedBy(u *User) *WorkshiftUpdateOne {
 	return wuo.SetApprovedByID(u.ID)
 }
@@ -913,13 +913,13 @@ func (wuo *WorkshiftUpdateOne) SetTask(p *ProjectTask) *WorkshiftUpdateOne {
 	return wuo.SetTaskID(p.ID)
 }
 
-// SetEditRequestID sets the "editRequest" edge to the Workshift entity by ID.
+// SetEditRequestID sets the "edit_request" edge to the Workshift entity by ID.
 func (wuo *WorkshiftUpdateOne) SetEditRequestID(id int) *WorkshiftUpdateOne {
 	wuo.mutation.SetEditRequestID(id)
 	return wuo
 }
 
-// SetNillableEditRequestID sets the "editRequest" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableEditRequestID sets the "edit_request" edge to the Workshift entity by ID if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableEditRequestID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
 		wuo = wuo.SetEditRequestID(*id)
@@ -927,18 +927,18 @@ func (wuo *WorkshiftUpdateOne) SetNillableEditRequestID(id *int) *WorkshiftUpdat
 	return wuo
 }
 
-// SetEditRequest sets the "editRequest" edge to the Workshift entity.
+// SetEditRequest sets the "edit_request" edge to the Workshift entity.
 func (wuo *WorkshiftUpdateOne) SetEditRequest(w *Workshift) *WorkshiftUpdateOne {
 	return wuo.SetEditRequestID(w.ID)
 }
 
-// SetWorkShiftID sets the "workShift" edge to the Workshift entity by ID.
+// SetWorkShiftID sets the "work_shift" edge to the Workshift entity by ID.
 func (wuo *WorkshiftUpdateOne) SetWorkShiftID(id int) *WorkshiftUpdateOne {
 	wuo.mutation.SetWorkShiftID(id)
 	return wuo
 }
 
-// SetNillableWorkShiftID sets the "workShift" edge to the Workshift entity by ID if the given value is not nil.
+// SetNillableWorkShiftID sets the "work_shift" edge to the Workshift entity by ID if the given value is not nil.
 func (wuo *WorkshiftUpdateOne) SetNillableWorkShiftID(id *int) *WorkshiftUpdateOne {
 	if id != nil {
 		wuo = wuo.SetWorkShiftID(*id)
@@ -946,7 +946,7 @@ func (wuo *WorkshiftUpdateOne) SetNillableWorkShiftID(id *int) *WorkshiftUpdateO
 	return wuo
 }
 
-// SetWorkShift sets the "workShift" edge to the Workshift entity.
+// SetWorkShift sets the "work_shift" edge to the Workshift entity.
 func (wuo *WorkshiftUpdateOne) SetWorkShift(w *Workshift) *WorkshiftUpdateOne {
 	return wuo.SetWorkShiftID(w.ID)
 }
@@ -968,7 +968,7 @@ func (wuo *WorkshiftUpdateOne) ClearUser() *WorkshiftUpdateOne {
 	return wuo
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (wuo *WorkshiftUpdateOne) ClearApprovedBy() *WorkshiftUpdateOne {
 	wuo.mutation.ClearApprovedBy()
 	return wuo
@@ -980,13 +980,13 @@ func (wuo *WorkshiftUpdateOne) ClearTask() *WorkshiftUpdateOne {
 	return wuo
 }
 
-// ClearEditRequest clears the "editRequest" edge to the Workshift entity.
+// ClearEditRequest clears the "edit_request" edge to the Workshift entity.
 func (wuo *WorkshiftUpdateOne) ClearEditRequest() *WorkshiftUpdateOne {
 	wuo.mutation.ClearEditRequest()
 	return wuo
 }
 
-// ClearWorkShift clears the "workShift" edge to the Workshift entity.
+// ClearWorkShift clears the "work_shift" edge to the Workshift entity.
 func (wuo *WorkshiftUpdateOne) ClearWorkShift() *WorkshiftUpdateOne {
 	wuo.mutation.ClearWorkShift()
 	return wuo

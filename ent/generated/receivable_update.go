@@ -31,19 +31,19 @@ func (ru *ReceivableUpdate) Where(ps ...predicate.Receivable) *ReceivableUpdate 
 	return ru
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (ru *ReceivableUpdate) SetUpdatedAt(t time.Time) *ReceivableUpdate {
 	ru.mutation.SetUpdatedAt(t)
 	return ru
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (ru *ReceivableUpdate) SetDeletedAt(t time.Time) *ReceivableUpdate {
 	ru.mutation.SetDeletedAt(t)
 	return ru
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableDeletedAt(t *time.Time) *ReceivableUpdate {
 	if t != nil {
 		ru.SetDeletedAt(*t)
@@ -51,20 +51,20 @@ func (ru *ReceivableUpdate) SetNillableDeletedAt(t *time.Time) *ReceivableUpdate
 	return ru
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (ru *ReceivableUpdate) ClearDeletedAt() *ReceivableUpdate {
 	ru.mutation.ClearDeletedAt()
 	return ru
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (ru *ReceivableUpdate) SetEntryGroup(i int) *ReceivableUpdate {
 	ru.mutation.ResetEntryGroup()
 	ru.mutation.SetEntryGroup(i)
 	return ru
 }
 
-// SetNillableEntryGroup sets the "entryGroup" field if the given value is not nil.
+// SetNillableEntryGroup sets the "entry_group" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableEntryGroup(i *int) *ReceivableUpdate {
 	if i != nil {
 		ru.SetEntryGroup(*i)
@@ -72,7 +72,7 @@ func (ru *ReceivableUpdate) SetNillableEntryGroup(i *int) *ReceivableUpdate {
 	return ru
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (ru *ReceivableUpdate) AddEntryGroup(i int) *ReceivableUpdate {
 	ru.mutation.AddEntryGroup(i)
 	return ru
@@ -106,14 +106,14 @@ func (ru *ReceivableUpdate) SetNillableName(s *string) *ReceivableUpdate {
 	return ru
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (ru *ReceivableUpdate) SetAmountInDefault(f float64) *ReceivableUpdate {
 	ru.mutation.ResetAmountInDefault()
 	ru.mutation.SetAmountInDefault(f)
 	return ru
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableAmountInDefault(f *float64) *ReceivableUpdate {
 	if f != nil {
 		ru.SetAmountInDefault(*f)
@@ -121,20 +121,20 @@ func (ru *ReceivableUpdate) SetNillableAmountInDefault(f *float64) *ReceivableUp
 	return ru
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (ru *ReceivableUpdate) AddAmountInDefault(f float64) *ReceivableUpdate {
 	ru.mutation.AddAmountInDefault(f)
 	return ru
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (ru *ReceivableUpdate) SetOutstandingBalance(f float64) *ReceivableUpdate {
 	ru.mutation.ResetOutstandingBalance()
 	ru.mutation.SetOutstandingBalance(f)
 	return ru
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableOutstandingBalance(f *float64) *ReceivableUpdate {
 	if f != nil {
 		ru.SetOutstandingBalance(*f)
@@ -142,20 +142,20 @@ func (ru *ReceivableUpdate) SetNillableOutstandingBalance(f *float64) *Receivabl
 	return ru
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (ru *ReceivableUpdate) AddOutstandingBalance(f float64) *ReceivableUpdate {
 	ru.mutation.AddOutstandingBalance(f)
 	return ru
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (ru *ReceivableUpdate) SetTotalTransaction(f float64) *ReceivableUpdate {
 	ru.mutation.ResetTotalTransaction()
 	ru.mutation.SetTotalTransaction(f)
 	return ru
 }
 
-// SetNillableTotalTransaction sets the "totalTransaction" field if the given value is not nil.
+// SetNillableTotalTransaction sets the "total_transaction" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableTotalTransaction(f *float64) *ReceivableUpdate {
 	if f != nil {
 		ru.SetTotalTransaction(*f)
@@ -163,19 +163,19 @@ func (ru *ReceivableUpdate) SetNillableTotalTransaction(f *float64) *ReceivableU
 	return ru
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (ru *ReceivableUpdate) AddTotalTransaction(f float64) *ReceivableUpdate {
 	ru.mutation.AddTotalTransaction(f)
 	return ru
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (ru *ReceivableUpdate) SetDueDate(t time.Time) *ReceivableUpdate {
 	ru.mutation.SetDueDate(t)
 	return ru
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (ru *ReceivableUpdate) SetNillableDueDate(t *time.Time) *ReceivableUpdate {
 	if t != nil {
 		ru.SetDueDate(*t)
@@ -292,22 +292,22 @@ func (ru *ReceivableUpdate) defaults() {
 func (ru *ReceivableUpdate) check() error {
 	if v, ok := ru.mutation.EntryGroup(); ok {
 		if err := receivable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Receivable.entry_group": %w`, err)}
 		}
 	}
 	if v, ok := ru.mutation.AmountInDefault(); ok {
 		if err := receivable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Receivable.amount_in_default": %w`, err)}
 		}
 	}
 	if v, ok := ru.mutation.OutstandingBalance(); ok {
 		if err := receivable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := ru.mutation.TotalTransaction(); ok {
 		if err := receivable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.total_transaction": %w`, err)}
 		}
 	}
 	if v, ok := ru.mutation.Status(); ok {
@@ -461,19 +461,19 @@ type ReceivableUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (ruo *ReceivableUpdateOne) SetUpdatedAt(t time.Time) *ReceivableUpdateOne {
 	ruo.mutation.SetUpdatedAt(t)
 	return ruo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (ruo *ReceivableUpdateOne) SetDeletedAt(t time.Time) *ReceivableUpdateOne {
 	ruo.mutation.SetDeletedAt(t)
 	return ruo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableDeletedAt(t *time.Time) *ReceivableUpdateOne {
 	if t != nil {
 		ruo.SetDeletedAt(*t)
@@ -481,20 +481,20 @@ func (ruo *ReceivableUpdateOne) SetNillableDeletedAt(t *time.Time) *ReceivableUp
 	return ruo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (ruo *ReceivableUpdateOne) ClearDeletedAt() *ReceivableUpdateOne {
 	ruo.mutation.ClearDeletedAt()
 	return ruo
 }
 
-// SetEntryGroup sets the "entryGroup" field.
+// SetEntryGroup sets the "entry_group" field.
 func (ruo *ReceivableUpdateOne) SetEntryGroup(i int) *ReceivableUpdateOne {
 	ruo.mutation.ResetEntryGroup()
 	ruo.mutation.SetEntryGroup(i)
 	return ruo
 }
 
-// SetNillableEntryGroup sets the "entryGroup" field if the given value is not nil.
+// SetNillableEntryGroup sets the "entry_group" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableEntryGroup(i *int) *ReceivableUpdateOne {
 	if i != nil {
 		ruo.SetEntryGroup(*i)
@@ -502,7 +502,7 @@ func (ruo *ReceivableUpdateOne) SetNillableEntryGroup(i *int) *ReceivableUpdateO
 	return ruo
 }
 
-// AddEntryGroup adds i to the "entryGroup" field.
+// AddEntryGroup adds i to the "entry_group" field.
 func (ruo *ReceivableUpdateOne) AddEntryGroup(i int) *ReceivableUpdateOne {
 	ruo.mutation.AddEntryGroup(i)
 	return ruo
@@ -536,14 +536,14 @@ func (ruo *ReceivableUpdateOne) SetNillableName(s *string) *ReceivableUpdateOne 
 	return ruo
 }
 
-// SetAmountInDefault sets the "amountInDefault" field.
+// SetAmountInDefault sets the "amount_in_default" field.
 func (ruo *ReceivableUpdateOne) SetAmountInDefault(f float64) *ReceivableUpdateOne {
 	ruo.mutation.ResetAmountInDefault()
 	ruo.mutation.SetAmountInDefault(f)
 	return ruo
 }
 
-// SetNillableAmountInDefault sets the "amountInDefault" field if the given value is not nil.
+// SetNillableAmountInDefault sets the "amount_in_default" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableAmountInDefault(f *float64) *ReceivableUpdateOne {
 	if f != nil {
 		ruo.SetAmountInDefault(*f)
@@ -551,20 +551,20 @@ func (ruo *ReceivableUpdateOne) SetNillableAmountInDefault(f *float64) *Receivab
 	return ruo
 }
 
-// AddAmountInDefault adds f to the "amountInDefault" field.
+// AddAmountInDefault adds f to the "amount_in_default" field.
 func (ruo *ReceivableUpdateOne) AddAmountInDefault(f float64) *ReceivableUpdateOne {
 	ruo.mutation.AddAmountInDefault(f)
 	return ruo
 }
 
-// SetOutstandingBalance sets the "outstandingBalance" field.
+// SetOutstandingBalance sets the "outstanding_balance" field.
 func (ruo *ReceivableUpdateOne) SetOutstandingBalance(f float64) *ReceivableUpdateOne {
 	ruo.mutation.ResetOutstandingBalance()
 	ruo.mutation.SetOutstandingBalance(f)
 	return ruo
 }
 
-// SetNillableOutstandingBalance sets the "outstandingBalance" field if the given value is not nil.
+// SetNillableOutstandingBalance sets the "outstanding_balance" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableOutstandingBalance(f *float64) *ReceivableUpdateOne {
 	if f != nil {
 		ruo.SetOutstandingBalance(*f)
@@ -572,20 +572,20 @@ func (ruo *ReceivableUpdateOne) SetNillableOutstandingBalance(f *float64) *Recei
 	return ruo
 }
 
-// AddOutstandingBalance adds f to the "outstandingBalance" field.
+// AddOutstandingBalance adds f to the "outstanding_balance" field.
 func (ruo *ReceivableUpdateOne) AddOutstandingBalance(f float64) *ReceivableUpdateOne {
 	ruo.mutation.AddOutstandingBalance(f)
 	return ruo
 }
 
-// SetTotalTransaction sets the "totalTransaction" field.
+// SetTotalTransaction sets the "total_transaction" field.
 func (ruo *ReceivableUpdateOne) SetTotalTransaction(f float64) *ReceivableUpdateOne {
 	ruo.mutation.ResetTotalTransaction()
 	ruo.mutation.SetTotalTransaction(f)
 	return ruo
 }
 
-// SetNillableTotalTransaction sets the "totalTransaction" field if the given value is not nil.
+// SetNillableTotalTransaction sets the "total_transaction" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableTotalTransaction(f *float64) *ReceivableUpdateOne {
 	if f != nil {
 		ruo.SetTotalTransaction(*f)
@@ -593,19 +593,19 @@ func (ruo *ReceivableUpdateOne) SetNillableTotalTransaction(f *float64) *Receiva
 	return ruo
 }
 
-// AddTotalTransaction adds f to the "totalTransaction" field.
+// AddTotalTransaction adds f to the "total_transaction" field.
 func (ruo *ReceivableUpdateOne) AddTotalTransaction(f float64) *ReceivableUpdateOne {
 	ruo.mutation.AddTotalTransaction(f)
 	return ruo
 }
 
-// SetDueDate sets the "dueDate" field.
+// SetDueDate sets the "due_date" field.
 func (ruo *ReceivableUpdateOne) SetDueDate(t time.Time) *ReceivableUpdateOne {
 	ruo.mutation.SetDueDate(t)
 	return ruo
 }
 
-// SetNillableDueDate sets the "dueDate" field if the given value is not nil.
+// SetNillableDueDate sets the "due_date" field if the given value is not nil.
 func (ruo *ReceivableUpdateOne) SetNillableDueDate(t *time.Time) *ReceivableUpdateOne {
 	if t != nil {
 		ruo.SetDueDate(*t)
@@ -735,22 +735,22 @@ func (ruo *ReceivableUpdateOne) defaults() {
 func (ruo *ReceivableUpdateOne) check() error {
 	if v, ok := ruo.mutation.EntryGroup(); ok {
 		if err := receivable.EntryGroupValidator(v); err != nil {
-			return &ValidationError{Name: "entryGroup", err: fmt.Errorf(`generated: validator failed for field "Receivable.entryGroup": %w`, err)}
+			return &ValidationError{Name: "entry_group", err: fmt.Errorf(`generated: validator failed for field "Receivable.entry_group": %w`, err)}
 		}
 	}
 	if v, ok := ruo.mutation.AmountInDefault(); ok {
 		if err := receivable.AmountInDefaultValidator(v); err != nil {
-			return &ValidationError{Name: "amountInDefault", err: fmt.Errorf(`generated: validator failed for field "Receivable.amountInDefault": %w`, err)}
+			return &ValidationError{Name: "amount_in_default", err: fmt.Errorf(`generated: validator failed for field "Receivable.amount_in_default": %w`, err)}
 		}
 	}
 	if v, ok := ruo.mutation.OutstandingBalance(); ok {
 		if err := receivable.OutstandingBalanceValidator(v); err != nil {
-			return &ValidationError{Name: "outstandingBalance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstandingBalance": %w`, err)}
+			return &ValidationError{Name: "outstanding_balance", err: fmt.Errorf(`generated: validator failed for field "Receivable.outstanding_balance": %w`, err)}
 		}
 	}
 	if v, ok := ruo.mutation.TotalTransaction(); ok {
 		if err := receivable.TotalTransactionValidator(v); err != nil {
-			return &ValidationError{Name: "totalTransaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.totalTransaction": %w`, err)}
+			return &ValidationError{Name: "total_transaction", err: fmt.Errorf(`generated: validator failed for field "Receivable.total_transaction": %w`, err)}
 		}
 	}
 	if v, ok := ruo.mutation.Status(); ok {

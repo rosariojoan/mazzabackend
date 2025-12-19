@@ -412,7 +412,7 @@ func (aeq *AccountingEntryQuery) WithLoanSchedules(opts ...func(*LoanScheduleQue
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -435,7 +435,7 @@ func (aeq *AccountingEntryQuery) GroupBy(field string, fields ...string) *Accoun
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.AccountingEntry.Query().

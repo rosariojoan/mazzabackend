@@ -449,7 +449,7 @@ func (lq *LoanQuery) WithTransactionHistory(opts ...func(*AccountingEntryQuery))
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -472,7 +472,7 @@ func (lq *LoanQuery) GroupBy(field string, fields ...string) *LoanGroupBy {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Loan.Query().

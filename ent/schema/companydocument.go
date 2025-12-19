@@ -42,13 +42,13 @@ func (CompanyDocument) Fields() []ent.Field {
 		field.String("keywords").NotEmpty(),
 		field.Enum("category").Values(companyDocumentCategories...).Annotations(entgql.OrderField("CATEGORY")),
 		field.Int("size").Positive().Comment("File size in kilobyte"),
-		field.String("fileType").Nillable().Comment("mimetype e.g. application/pdf"),
+		field.String("file_type").Nillable().Comment("mimetype e.g. application/pdf"),
 		field.Enum("status").Values(companyDocumentStatus...).
 			Annotations(entgql.OrderField("STATUS"), entgql.Skip(entgql.SkipMutationCreateInput)),
 		field.String("url").NotEmpty(),
-		field.String("storageURI").NotEmpty().Sensitive().Comment("Firebase cloud storage URI. Not exposed to the client"),
+		field.String("storage_URI").NotEmpty().Sensitive().Comment("Firebase cloud storage URI. Not exposed to the client"),
 		field.String("thumbnail").Nillable().Optional(),
-		field.Time("expiryDate").Nillable().Annotations(entgql.OrderField("EXPIRY_DATE")),
+		field.Time("expiry_date").Nillable().Annotations(entgql.OrderField("EXPIRY_DATE")),
 	}
 }
 
@@ -57,9 +57,9 @@ func (CompanyDocument) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("company", Company.Type).Ref("documents").Unique().Required().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput)), // one company can upload multiple documents
-		edge.From("uploadedBy", User.Type).Ref("uploadedDocuments").Unique().
+		edge.From("uploaded_by", User.Type).Ref("uploaded_documents").Unique().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput)), // one user can upload multiple documents
-		edge.From("approvedBy", User.Type).Ref("approvedDocuments").Unique().
+		edge.From("approved_by", User.Type).Ref("approved_documents").Unique().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput)), // one user approve multiple documents
 	}
 }

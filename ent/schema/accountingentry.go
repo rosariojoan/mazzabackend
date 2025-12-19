@@ -62,11 +62,11 @@ func (AccountingEntry) Fields() []ent.Field {
 		field.String("label"),
 		field.Float("amount").Annotations(entgql.OrderField("AMOUNT")),
 		field.String("description").Annotations(entgql.OrderField("DESCRIPTION")),
-		field.Enum("accountType").Values(accountTypes...).Annotations(entgql.OrderField("ACCOUNTTYPE")),
+		field.Enum("account_type").Values(accountTypes...).Annotations(entgql.OrderField("ACCOUNTTYPE")),
 		field.String("category").Default("").Annotations(entgql.OrderField("CATEGORY")),
 		field.String("main").Default("").Annotations(entgql.OrderField("MAIN")),
-		field.Bool("isDebit").Annotations(entgql.OrderField("ISDEBIT")),
-		field.Bool("isReversal").Default(false),
+		field.Bool("is_debit").Annotations(entgql.OrderField("ISDEBIT")),
+		field.Bool("is_reversal").Default(false),
 		field.Bool("reversed").Default(false),
 	}
 }
@@ -81,8 +81,8 @@ func (AccountingEntry) Indexes() []ent.Index {
 // Edges of the AccountingEntry.
 func (AccountingEntry) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("accountingEntries").Unique(), // one company can have many accounting entries
-		edge.From("user", User.Type).Ref("accountingEntries").Unique(),
+		edge.From("company", Company.Type).Ref("accounting_entries").Unique(), // one company can have many accounting entries
+		edge.From("user", User.Type).Ref("accounting_entries").Unique(),
 		edge.From("loan", Loan.Type).Ref("transaction_history").Unique(),         // one user can have many accounting entries
 		edge.From("loanSchedules", LoanSchedule.Type).Ref("transaction_history"), // many-to-many
 	}

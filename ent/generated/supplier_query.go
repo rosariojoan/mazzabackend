@@ -377,7 +377,7 @@ func (sq *SupplierQuery) WithPayables(opts ...func(*PayableQuery)) *SupplierQuer
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -400,7 +400,7 @@ func (sq *SupplierQuery) GroupBy(field string, fields ...string) *SupplierGroupB
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Supplier.Query().

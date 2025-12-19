@@ -31,8 +31,8 @@ func (Worktag) Fields() []ent.Field {
 // Edges of the Worktag.
 func (Worktag) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("company", Company.Type).Ref("workTags").Unique(),
-		edge.From("workTasks", Worktask.Type).Ref("workTags"),
+		edge.From("company", Company.Type).Ref("work_tags").Unique(),
+		edge.From("work_tasks", Worktask.Type).Ref("work_tags"),
 	}
 }
 

@@ -31,19 +31,19 @@ func (lsu *LoanScheduleUpdate) Where(ps ...predicate.LoanSchedule) *LoanSchedule
 	return lsu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (lsu *LoanScheduleUpdate) SetUpdatedAt(t time.Time) *LoanScheduleUpdate {
 	lsu.mutation.SetUpdatedAt(t)
 	return lsu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (lsu *LoanScheduleUpdate) SetDeletedAt(t time.Time) *LoanScheduleUpdate {
 	lsu.mutation.SetDeletedAt(t)
 	return lsu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (lsu *LoanScheduleUpdate) SetNillableDeletedAt(t *time.Time) *LoanScheduleUpdate {
 	if t != nil {
 		lsu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (lsu *LoanScheduleUpdate) SetNillableDeletedAt(t *time.Time) *LoanScheduleU
 	return lsu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (lsu *LoanScheduleUpdate) ClearDeletedAt() *LoanScheduleUpdate {
 	lsu.mutation.ClearDeletedAt()
 	return lsu
@@ -528,19 +528,19 @@ type LoanScheduleUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (lsuo *LoanScheduleUpdateOne) SetUpdatedAt(t time.Time) *LoanScheduleUpdateOne {
 	lsuo.mutation.SetUpdatedAt(t)
 	return lsuo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (lsuo *LoanScheduleUpdateOne) SetDeletedAt(t time.Time) *LoanScheduleUpdateOne {
 	lsuo.mutation.SetDeletedAt(t)
 	return lsuo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (lsuo *LoanScheduleUpdateOne) SetNillableDeletedAt(t *time.Time) *LoanScheduleUpdateOne {
 	if t != nil {
 		lsuo.SetDeletedAt(*t)
@@ -548,7 +548,7 @@ func (lsuo *LoanScheduleUpdateOne) SetNillableDeletedAt(t *time.Time) *LoanSched
 	return lsuo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (lsuo *LoanScheduleUpdateOne) ClearDeletedAt() *LoanScheduleUpdateOne {
 	lsuo.mutation.ClearDeletedAt()
 	return lsuo

@@ -410,7 +410,7 @@ func (eq *EmployeeQuery) WithLeader(opts ...func(*EmployeeQuery)) *EmployeeQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -433,7 +433,7 @@ func (eq *EmployeeQuery) GroupBy(field string, fields ...string) *EmployeeGroupB
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Employee.Query().

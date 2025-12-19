@@ -51,37 +51,37 @@ type AccountingEntryWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "number" field predicates.
 	Number      *int  `json:"number,omitempty"`
@@ -168,11 +168,11 @@ type AccountingEntryWhereInput struct {
 	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
 	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
 
-	// "accountType" field predicates.
-	AccountType      *accountingentry.AccountType  `json:"accounttype,omitempty"`
-	AccountTypeNEQ   *accountingentry.AccountType  `json:"accounttypeNEQ,omitempty"`
-	AccountTypeIn    []accountingentry.AccountType `json:"accounttypeIn,omitempty"`
-	AccountTypeNotIn []accountingentry.AccountType `json:"accounttypeNotIn,omitempty"`
+	// "account_type" field predicates.
+	AccountType      *accountingentry.AccountType  `json:"accountType,omitempty"`
+	AccountTypeNEQ   *accountingentry.AccountType  `json:"accountTypeNEQ,omitempty"`
+	AccountTypeIn    []accountingentry.AccountType `json:"accountTypeIn,omitempty"`
+	AccountTypeNotIn []accountingentry.AccountType `json:"accountTypeNotIn,omitempty"`
 
 	// "category" field predicates.
 	Category             *string  `json:"category,omitempty"`
@@ -204,13 +204,13 @@ type AccountingEntryWhereInput struct {
 	MainEqualFold    *string  `json:"mainEqualFold,omitempty"`
 	MainContainsFold *string  `json:"mainContainsFold,omitempty"`
 
-	// "isDebit" field predicates.
-	IsDebit    *bool `json:"isdebit,omitempty"`
-	IsDebitNEQ *bool `json:"isdebitNEQ,omitempty"`
+	// "is_debit" field predicates.
+	IsDebit    *bool `json:"isDebit,omitempty"`
+	IsDebitNEQ *bool `json:"isDebitNEQ,omitempty"`
 
-	// "isReversal" field predicates.
-	IsReversal    *bool `json:"isreversal,omitempty"`
-	IsReversalNEQ *bool `json:"isreversalNEQ,omitempty"`
+	// "is_reversal" field predicates.
+	IsReversal    *bool `json:"isReversal,omitempty"`
+	IsReversalNEQ *bool `json:"isReversalNEQ,omitempty"`
 
 	// "reversed" field predicates.
 	Reversed    *bool `json:"reversed,omitempty"`
@@ -951,37 +951,37 @@ type CompanyWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "address" field predicates.
 	Address             *string  `json:"address,omitempty"`
@@ -1000,37 +1000,37 @@ type CompanyWhereInput struct {
 	AddressEqualFold    *string  `json:"addressEqualFold,omitempty"`
 	AddressContainsFold *string  `json:"addressContainsFold,omitempty"`
 
-	// "baseCurrency" field predicates.
-	BaseCurrency             *string  `json:"basecurrency,omitempty"`
-	BaseCurrencyNEQ          *string  `json:"basecurrencyNEQ,omitempty"`
-	BaseCurrencyIn           []string `json:"basecurrencyIn,omitempty"`
-	BaseCurrencyNotIn        []string `json:"basecurrencyNotIn,omitempty"`
-	BaseCurrencyGT           *string  `json:"basecurrencyGT,omitempty"`
-	BaseCurrencyGTE          *string  `json:"basecurrencyGTE,omitempty"`
-	BaseCurrencyLT           *string  `json:"basecurrencyLT,omitempty"`
-	BaseCurrencyLTE          *string  `json:"basecurrencyLTE,omitempty"`
-	BaseCurrencyContains     *string  `json:"basecurrencyContains,omitempty"`
-	BaseCurrencyHasPrefix    *string  `json:"basecurrencyHasPrefix,omitempty"`
-	BaseCurrencyHasSuffix    *string  `json:"basecurrencyHasSuffix,omitempty"`
-	BaseCurrencyEqualFold    *string  `json:"basecurrencyEqualFold,omitempty"`
-	BaseCurrencyContainsFold *string  `json:"basecurrencyContainsFold,omitempty"`
+	// "base_currency" field predicates.
+	BaseCurrency             *string  `json:"baseCurrency,omitempty"`
+	BaseCurrencyNEQ          *string  `json:"baseCurrencyNEQ,omitempty"`
+	BaseCurrencyIn           []string `json:"baseCurrencyIn,omitempty"`
+	BaseCurrencyNotIn        []string `json:"baseCurrencyNotIn,omitempty"`
+	BaseCurrencyGT           *string  `json:"baseCurrencyGT,omitempty"`
+	BaseCurrencyGTE          *string  `json:"baseCurrencyGTE,omitempty"`
+	BaseCurrencyLT           *string  `json:"baseCurrencyLT,omitempty"`
+	BaseCurrencyLTE          *string  `json:"baseCurrencyLTE,omitempty"`
+	BaseCurrencyContains     *string  `json:"baseCurrencyContains,omitempty"`
+	BaseCurrencyHasPrefix    *string  `json:"baseCurrencyHasPrefix,omitempty"`
+	BaseCurrencyHasSuffix    *string  `json:"baseCurrencyHasSuffix,omitempty"`
+	BaseCurrencyEqualFold    *string  `json:"baseCurrencyEqualFold,omitempty"`
+	BaseCurrencyContainsFold *string  `json:"baseCurrencyContainsFold,omitempty"`
 
-	// "ceoName" field predicates.
-	CeoName             *string  `json:"ceoname,omitempty"`
-	CeoNameNEQ          *string  `json:"ceonameNEQ,omitempty"`
-	CeoNameIn           []string `json:"ceonameIn,omitempty"`
-	CeoNameNotIn        []string `json:"ceonameNotIn,omitempty"`
-	CeoNameGT           *string  `json:"ceonameGT,omitempty"`
-	CeoNameGTE          *string  `json:"ceonameGTE,omitempty"`
-	CeoNameLT           *string  `json:"ceonameLT,omitempty"`
-	CeoNameLTE          *string  `json:"ceonameLTE,omitempty"`
-	CeoNameContains     *string  `json:"ceonameContains,omitempty"`
-	CeoNameHasPrefix    *string  `json:"ceonameHasPrefix,omitempty"`
-	CeoNameHasSuffix    *string  `json:"ceonameHasSuffix,omitempty"`
-	CeoNameIsNil        bool     `json:"ceonameIsNil,omitempty"`
-	CeoNameNotNil       bool     `json:"ceonameNotNil,omitempty"`
-	CeoNameEqualFold    *string  `json:"ceonameEqualFold,omitempty"`
-	CeoNameContainsFold *string  `json:"ceonameContainsFold,omitempty"`
+	// "ceo_name" field predicates.
+	CeoName             *string  `json:"ceoName,omitempty"`
+	CeoNameNEQ          *string  `json:"ceoNameNEQ,omitempty"`
+	CeoNameIn           []string `json:"ceoNameIn,omitempty"`
+	CeoNameNotIn        []string `json:"ceoNameNotIn,omitempty"`
+	CeoNameGT           *string  `json:"ceoNameGT,omitempty"`
+	CeoNameGTE          *string  `json:"ceoNameGTE,omitempty"`
+	CeoNameLT           *string  `json:"ceoNameLT,omitempty"`
+	CeoNameLTE          *string  `json:"ceoNameLTE,omitempty"`
+	CeoNameContains     *string  `json:"ceoNameContains,omitempty"`
+	CeoNameHasPrefix    *string  `json:"ceoNameHasPrefix,omitempty"`
+	CeoNameHasSuffix    *string  `json:"ceoNameHasSuffix,omitempty"`
+	CeoNameIsNil        bool     `json:"ceoNameIsNil,omitempty"`
+	CeoNameNotNil       bool     `json:"ceoNameNotNil,omitempty"`
+	CeoNameEqualFold    *string  `json:"ceoNameEqualFold,omitempty"`
+	CeoNameContainsFold *string  `json:"ceoNameContainsFold,omitempty"`
 
 	// "city" field predicates.
 	City             *string  `json:"city,omitempty"`
@@ -1062,15 +1062,15 @@ type CompanyWhereInput struct {
 	CountryEqualFold    *string  `json:"countryEqualFold,omitempty"`
 	CountryContainsFold *string  `json:"countryContainsFold,omitempty"`
 
-	// "establishedAt" field predicates.
-	EstablishedAt      *time.Time  `json:"establishedat,omitempty"`
-	EstablishedAtNEQ   *time.Time  `json:"establishedatNEQ,omitempty"`
-	EstablishedAtIn    []time.Time `json:"establishedatIn,omitempty"`
-	EstablishedAtNotIn []time.Time `json:"establishedatNotIn,omitempty"`
-	EstablishedAtGT    *time.Time  `json:"establishedatGT,omitempty"`
-	EstablishedAtGTE   *time.Time  `json:"establishedatGTE,omitempty"`
-	EstablishedAtLT    *time.Time  `json:"establishedatLT,omitempty"`
-	EstablishedAtLTE   *time.Time  `json:"establishedatLTE,omitempty"`
+	// "established_at" field predicates.
+	EstablishedAt      *time.Time  `json:"establishedAt,omitempty"`
+	EstablishedAtNEQ   *time.Time  `json:"establishedAtNEQ,omitempty"`
+	EstablishedAtIn    []time.Time `json:"establishedAtIn,omitempty"`
+	EstablishedAtNotIn []time.Time `json:"establishedAtNotIn,omitempty"`
+	EstablishedAtGT    *time.Time  `json:"establishedAtGT,omitempty"`
+	EstablishedAtGTE   *time.Time  `json:"establishedAtGTE,omitempty"`
+	EstablishedAtLT    *time.Time  `json:"establishedAtLT,omitempty"`
+	EstablishedAtLTE   *time.Time  `json:"establishedAtLTE,omitempty"`
 
 	// "description" field predicates.
 	Description             *string  `json:"description,omitempty"`
@@ -1123,63 +1123,63 @@ type CompanyWhereInput struct {
 	IndustryEqualFold    *string  `json:"industryEqualFold,omitempty"`
 	IndustryContainsFold *string  `json:"industryContainsFold,omitempty"`
 
-	// "lastEntryDate" field predicates.
-	LastEntryDate       *time.Time  `json:"lastentrydate,omitempty"`
-	LastEntryDateNEQ    *time.Time  `json:"lastentrydateNEQ,omitempty"`
-	LastEntryDateIn     []time.Time `json:"lastentrydateIn,omitempty"`
-	LastEntryDateNotIn  []time.Time `json:"lastentrydateNotIn,omitempty"`
-	LastEntryDateGT     *time.Time  `json:"lastentrydateGT,omitempty"`
-	LastEntryDateGTE    *time.Time  `json:"lastentrydateGTE,omitempty"`
-	LastEntryDateLT     *time.Time  `json:"lastentrydateLT,omitempty"`
-	LastEntryDateLTE    *time.Time  `json:"lastentrydateLTE,omitempty"`
-	LastEntryDateIsNil  bool        `json:"lastentrydateIsNil,omitempty"`
-	LastEntryDateNotNil bool        `json:"lastentrydateNotNil,omitempty"`
+	// "last_entry_date" field predicates.
+	LastEntryDate       *time.Time  `json:"lastEntryDate,omitempty"`
+	LastEntryDateNEQ    *time.Time  `json:"lastEntryDateNEQ,omitempty"`
+	LastEntryDateIn     []time.Time `json:"lastEntryDateIn,omitempty"`
+	LastEntryDateNotIn  []time.Time `json:"lastEntryDateNotIn,omitempty"`
+	LastEntryDateGT     *time.Time  `json:"lastEntryDateGT,omitempty"`
+	LastEntryDateGTE    *time.Time  `json:"lastEntryDateGTE,omitempty"`
+	LastEntryDateLT     *time.Time  `json:"lastEntryDateLT,omitempty"`
+	LastEntryDateLTE    *time.Time  `json:"lastEntryDateLTE,omitempty"`
+	LastEntryDateIsNil  bool        `json:"lastEntryDateIsNil,omitempty"`
+	LastEntryDateNotNil bool        `json:"lastEntryDateNotNil,omitempty"`
 
-	// "lastInvoiceNumber" field predicates.
-	LastInvoiceNumber       *int32  `json:"lastinvoicenumber,omitempty"`
-	LastInvoiceNumberNEQ    *int32  `json:"lastinvoicenumberNEQ,omitempty"`
-	LastInvoiceNumberIn     []int32 `json:"lastinvoicenumberIn,omitempty"`
-	LastInvoiceNumberNotIn  []int32 `json:"lastinvoicenumberNotIn,omitempty"`
-	LastInvoiceNumberGT     *int32  `json:"lastinvoicenumberGT,omitempty"`
-	LastInvoiceNumberGTE    *int32  `json:"lastinvoicenumberGTE,omitempty"`
-	LastInvoiceNumberLT     *int32  `json:"lastinvoicenumberLT,omitempty"`
-	LastInvoiceNumberLTE    *int32  `json:"lastinvoicenumberLTE,omitempty"`
-	LastInvoiceNumberIsNil  bool    `json:"lastinvoicenumberIsNil,omitempty"`
-	LastInvoiceNumberNotNil bool    `json:"lastinvoicenumberNotNil,omitempty"`
+	// "last_invoice_number" field predicates.
+	LastInvoiceNumber       *int32  `json:"lastInvoiceNumber,omitempty"`
+	LastInvoiceNumberNEQ    *int32  `json:"lastInvoiceNumberNEQ,omitempty"`
+	LastInvoiceNumberIn     []int32 `json:"lastInvoiceNumberIn,omitempty"`
+	LastInvoiceNumberNotIn  []int32 `json:"lastInvoiceNumberNotIn,omitempty"`
+	LastInvoiceNumberGT     *int32  `json:"lastInvoiceNumberGT,omitempty"`
+	LastInvoiceNumberGTE    *int32  `json:"lastInvoiceNumberGTE,omitempty"`
+	LastInvoiceNumberLT     *int32  `json:"lastInvoiceNumberLT,omitempty"`
+	LastInvoiceNumberLTE    *int32  `json:"lastInvoiceNumberLTE,omitempty"`
+	LastInvoiceNumberIsNil  bool    `json:"lastInvoiceNumberIsNil,omitempty"`
+	LastInvoiceNumberNotNil bool    `json:"lastInvoiceNumberNotNil,omitempty"`
 
-	// "logoURL" field predicates.
-	LogoURL             *string  `json:"logourl,omitempty"`
-	LogoURLNEQ          *string  `json:"logourlNEQ,omitempty"`
-	LogoURLIn           []string `json:"logourlIn,omitempty"`
-	LogoURLNotIn        []string `json:"logourlNotIn,omitempty"`
-	LogoURLGT           *string  `json:"logourlGT,omitempty"`
-	LogoURLGTE          *string  `json:"logourlGTE,omitempty"`
-	LogoURLLT           *string  `json:"logourlLT,omitempty"`
-	LogoURLLTE          *string  `json:"logourlLTE,omitempty"`
-	LogoURLContains     *string  `json:"logourlContains,omitempty"`
-	LogoURLHasPrefix    *string  `json:"logourlHasPrefix,omitempty"`
-	LogoURLHasSuffix    *string  `json:"logourlHasSuffix,omitempty"`
-	LogoURLIsNil        bool     `json:"logourlIsNil,omitempty"`
-	LogoURLNotNil       bool     `json:"logourlNotNil,omitempty"`
-	LogoURLEqualFold    *string  `json:"logourlEqualFold,omitempty"`
-	LogoURLContainsFold *string  `json:"logourlContainsFold,omitempty"`
+	// "logo_URL" field predicates.
+	LogoURL             *string  `json:"logoURL,omitempty"`
+	LogoURLNEQ          *string  `json:"logoURLNEQ,omitempty"`
+	LogoURLIn           []string `json:"logoURLIn,omitempty"`
+	LogoURLNotIn        []string `json:"logoURLNotIn,omitempty"`
+	LogoURLGT           *string  `json:"logoURLGT,omitempty"`
+	LogoURLGTE          *string  `json:"logoURLGTE,omitempty"`
+	LogoURLLT           *string  `json:"logoURLLT,omitempty"`
+	LogoURLLTE          *string  `json:"logoURLLTE,omitempty"`
+	LogoURLContains     *string  `json:"logoURLContains,omitempty"`
+	LogoURLHasPrefix    *string  `json:"logoURLHasPrefix,omitempty"`
+	LogoURLHasSuffix    *string  `json:"logoURLHasSuffix,omitempty"`
+	LogoURLIsNil        bool     `json:"logoURLIsNil,omitempty"`
+	LogoURLNotNil       bool     `json:"logoURLNotNil,omitempty"`
+	LogoURLEqualFold    *string  `json:"logoURLEqualFold,omitempty"`
+	LogoURLContainsFold *string  `json:"logoURLContainsFold,omitempty"`
 
-	// "logoStorageURI" field predicates.
-	LogoStorageURI             *string  `json:"logostorageuri,omitempty"`
-	LogoStorageURINEQ          *string  `json:"logostorageuriNEQ,omitempty"`
-	LogoStorageURIIn           []string `json:"logostorageuriIn,omitempty"`
-	LogoStorageURINotIn        []string `json:"logostorageuriNotIn,omitempty"`
-	LogoStorageURIGT           *string  `json:"logostorageuriGT,omitempty"`
-	LogoStorageURIGTE          *string  `json:"logostorageuriGTE,omitempty"`
-	LogoStorageURILT           *string  `json:"logostorageuriLT,omitempty"`
-	LogoStorageURILTE          *string  `json:"logostorageuriLTE,omitempty"`
-	LogoStorageURIContains     *string  `json:"logostorageuriContains,omitempty"`
-	LogoStorageURIHasPrefix    *string  `json:"logostorageuriHasPrefix,omitempty"`
-	LogoStorageURIHasSuffix    *string  `json:"logostorageuriHasSuffix,omitempty"`
-	LogoStorageURIIsNil        bool     `json:"logostorageuriIsNil,omitempty"`
-	LogoStorageURINotNil       bool     `json:"logostorageuriNotNil,omitempty"`
-	LogoStorageURIEqualFold    *string  `json:"logostorageuriEqualFold,omitempty"`
-	LogoStorageURIContainsFold *string  `json:"logostorageuriContainsFold,omitempty"`
+	// "logo_storage_URI" field predicates.
+	LogoStorageURI             *string  `json:"logoStorageURI,omitempty"`
+	LogoStorageURINEQ          *string  `json:"logoStorageURINEQ,omitempty"`
+	LogoStorageURIIn           []string `json:"logoStorageURIIn,omitempty"`
+	LogoStorageURINotIn        []string `json:"logoStorageURINotIn,omitempty"`
+	LogoStorageURIGT           *string  `json:"logoStorageURIGT,omitempty"`
+	LogoStorageURIGTE          *string  `json:"logoStorageURIGTE,omitempty"`
+	LogoStorageURILT           *string  `json:"logoStorageURILT,omitempty"`
+	LogoStorageURILTE          *string  `json:"logoStorageURILTE,omitempty"`
+	LogoStorageURIContains     *string  `json:"logoStorageURIContains,omitempty"`
+	LogoStorageURIHasPrefix    *string  `json:"logoStorageURIHasPrefix,omitempty"`
+	LogoStorageURIHasSuffix    *string  `json:"logoStorageURIHasSuffix,omitempty"`
+	LogoStorageURIIsNil        bool     `json:"logoStorageURIIsNil,omitempty"`
+	LogoStorageURINotNil       bool     `json:"logoStorageURINotNil,omitempty"`
+	LogoStorageURIEqualFold    *string  `json:"logoStorageURIEqualFold,omitempty"`
+	LogoStorageURIContainsFold *string  `json:"logoStorageURIContainsFold,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -1196,15 +1196,15 @@ type CompanyWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "numberOfEmployees" field predicates.
-	NumberOfEmployees      *int32  `json:"numberofemployees,omitempty"`
-	NumberOfEmployeesNEQ   *int32  `json:"numberofemployeesNEQ,omitempty"`
-	NumberOfEmployeesIn    []int32 `json:"numberofemployeesIn,omitempty"`
-	NumberOfEmployeesNotIn []int32 `json:"numberofemployeesNotIn,omitempty"`
-	NumberOfEmployeesGT    *int32  `json:"numberofemployeesGT,omitempty"`
-	NumberOfEmployeesGTE   *int32  `json:"numberofemployeesGTE,omitempty"`
-	NumberOfEmployeesLT    *int32  `json:"numberofemployeesLT,omitempty"`
-	NumberOfEmployeesLTE   *int32  `json:"numberofemployeesLTE,omitempty"`
+	// "number_employees" field predicates.
+	NumberEmployees      *int32  `json:"numberEmployees,omitempty"`
+	NumberEmployeesNEQ   *int32  `json:"numberEmployeesNEQ,omitempty"`
+	NumberEmployeesIn    []int32 `json:"numberEmployeesIn,omitempty"`
+	NumberEmployeesNotIn []int32 `json:"numberEmployeesNotIn,omitempty"`
+	NumberEmployeesGT    *int32  `json:"numberEmployeesGT,omitempty"`
+	NumberEmployeesGTE   *int32  `json:"numberEmployeesGTE,omitempty"`
+	NumberEmployeesLT    *int32  `json:"numberEmployeesLT,omitempty"`
+	NumberEmployeesLTE   *int32  `json:"numberEmployeesLTE,omitempty"`
 
 	// "phone" field predicates.
 	Phone             *string  `json:"phone,omitempty"`
@@ -1223,32 +1223,32 @@ type CompanyWhereInput struct {
 	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
 	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
-	// "taxId" field predicates.
-	TaxId             *string  `json:"taxid,omitempty"`
-	TaxIdNEQ          *string  `json:"taxidNEQ,omitempty"`
-	TaxIdIn           []string `json:"taxidIn,omitempty"`
-	TaxIdNotIn        []string `json:"taxidNotIn,omitempty"`
-	TaxIdGT           *string  `json:"taxidGT,omitempty"`
-	TaxIdGTE          *string  `json:"taxidGTE,omitempty"`
-	TaxIdLT           *string  `json:"taxidLT,omitempty"`
-	TaxIdLTE          *string  `json:"taxidLTE,omitempty"`
-	TaxIdContains     *string  `json:"taxidContains,omitempty"`
-	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
-	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
-	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
-	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
-	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
-	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
+	// "tax_id" field predicates.
+	TaxID             *string  `json:"taxID,omitempty"`
+	TaxIDNEQ          *string  `json:"taxIDNEQ,omitempty"`
+	TaxIDIn           []string `json:"taxIDIn,omitempty"`
+	TaxIDNotIn        []string `json:"taxIDNotIn,omitempty"`
+	TaxIDGT           *string  `json:"taxIDGT,omitempty"`
+	TaxIDGTE          *string  `json:"taxIDGTE,omitempty"`
+	TaxIDLT           *string  `json:"taxIDLT,omitempty"`
+	TaxIDLTE          *string  `json:"taxIDLTE,omitempty"`
+	TaxIDContains     *string  `json:"taxIDContains,omitempty"`
+	TaxIDHasPrefix    *string  `json:"taxIDHasPrefix,omitempty"`
+	TaxIDHasSuffix    *string  `json:"taxIDHasSuffix,omitempty"`
+	TaxIDIsNil        bool     `json:"taxIDIsNil,omitempty"`
+	TaxIDNotNil       bool     `json:"taxIDNotNil,omitempty"`
+	TaxIDEqualFold    *string  `json:"taxIDEqualFold,omitempty"`
+	TaxIDContainsFold *string  `json:"taxIDContainsFold,omitempty"`
 
-	// "vatRate" field predicates.
-	VatRate      *float64  `json:"vatrate,omitempty"`
-	VatRateNEQ   *float64  `json:"vatrateNEQ,omitempty"`
-	VatRateIn    []float64 `json:"vatrateIn,omitempty"`
-	VatRateNotIn []float64 `json:"vatrateNotIn,omitempty"`
-	VatRateGT    *float64  `json:"vatrateGT,omitempty"`
-	VatRateGTE   *float64  `json:"vatrateGTE,omitempty"`
-	VatRateLT    *float64  `json:"vatrateLT,omitempty"`
-	VatRateLTE   *float64  `json:"vatrateLTE,omitempty"`
+	// "vat_rate" field predicates.
+	VatRate      *float64  `json:"vatRate,omitempty"`
+	VatRateNEQ   *float64  `json:"vatRateNEQ,omitempty"`
+	VatRateIn    []float64 `json:"vatRateIn,omitempty"`
+	VatRateNotIn []float64 `json:"vatRateNotIn,omitempty"`
+	VatRateGT    *float64  `json:"vatRateGT,omitempty"`
+	VatRateGTE   *float64  `json:"vatRateGTE,omitempty"`
+	VatRateLT    *float64  `json:"vatRateLT,omitempty"`
+	VatRateLTE   *float64  `json:"vatRateLTE,omitempty"`
 
 	// "website" field predicates.
 	Website             *string  `json:"website,omitempty"`
@@ -1267,17 +1267,17 @@ type CompanyWhereInput struct {
 	WebsiteEqualFold    *string  `json:"websiteEqualFold,omitempty"`
 	WebsiteContainsFold *string  `json:"websiteContainsFold,omitempty"`
 
-	// "incompleteSetup" field predicates.
-	IncompleteSetup       *bool `json:"incompletesetup,omitempty"`
-	IncompleteSetupNEQ    *bool `json:"incompletesetupNEQ,omitempty"`
-	IncompleteSetupIsNil  bool  `json:"incompletesetupIsNil,omitempty"`
-	IncompleteSetupNotNil bool  `json:"incompletesetupNotNil,omitempty"`
+	// "incomplete_setup" field predicates.
+	IncompleteSetup       *bool `json:"incompleteSetup,omitempty"`
+	IncompleteSetupNEQ    *bool `json:"incompleteSetupNEQ,omitempty"`
+	IncompleteSetupIsNil  bool  `json:"incompleteSetupIsNil,omitempty"`
+	IncompleteSetupNotNil bool  `json:"incompleteSetupNotNil,omitempty"`
 
-	// "availableRoles" edge predicates.
+	// "available_roles" edge predicates.
 	HasAvailableRoles     *bool                 `json:"hasAvailableRoles,omitempty"`
 	HasAvailableRolesWith []*UserRoleWhereInput `json:"hasAvailableRolesWith,omitempty"`
 
-	// "accountingEntries" edge predicates.
+	// "accounting_entries" edge predicates.
 	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
 	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 
@@ -1301,7 +1301,7 @@ type CompanyWhereInput struct {
 	HasInventory     *bool                  `json:"hasInventory,omitempty"`
 	HasInventoryWith []*InventoryWhereInput `json:"hasInventoryWith,omitempty"`
 
-	// "inventoryMovements" edge predicates.
+	// "inventory_movements" edge predicates.
 	HasInventoryMovements     *bool                          `json:"hasInventoryMovements,omitempty"`
 	HasInventoryMovementsWith []*InventoryMovementWhereInput `json:"hasInventoryMovementsWith,omitempty"`
 
@@ -1317,7 +1317,7 @@ type CompanyWhereInput struct {
 	HasLoanSchedule     *bool                     `json:"hasLoanSchedule,omitempty"`
 	HasLoanScheduleWith []*LoanScheduleWhereInput `json:"hasLoanScheduleWith,omitempty"`
 
-	// "memberSignupTokens" edge predicates.
+	// "member_signup_tokens" edge predicates.
 	HasMemberSignupTokens     *bool                          `json:"hasMemberSignupTokens,omitempty"`
 	HasMemberSignupTokensWith []*MemberSignupTokenWhereInput `json:"hasMemberSignupTokensWith,omitempty"`
 
@@ -1349,7 +1349,7 @@ type CompanyWhereInput struct {
 	HasTreasuries     *bool                 `json:"hasTreasuries,omitempty"`
 	HasTreasuriesWith []*TreasuryWhereInput `json:"hasTreasuriesWith,omitempty"`
 
-	// "workShifts" edge predicates.
+	// "work_shifts" edge predicates.
 	HasWorkShifts     *bool                  `json:"hasWorkShifts,omitempty"`
 	HasWorkShiftsWith []*WorkshiftWhereInput `json:"hasWorkShiftsWith,omitempty"`
 
@@ -1357,11 +1357,11 @@ type CompanyWhereInput struct {
 	HasUsers     *bool             `json:"hasUsers,omitempty"`
 	HasUsersWith []*UserWhereInput `json:"hasUsersWith,omitempty"`
 
-	// "daughterCompanies" edge predicates.
+	// "daughter_companies" edge predicates.
 	HasDaughterCompanies     *bool                `json:"hasDaughterCompanies,omitempty"`
 	HasDaughterCompaniesWith []*CompanyWhereInput `json:"hasDaughterCompaniesWith,omitempty"`
 
-	// "parentCompany" edge predicates.
+	// "parent_company" edge predicates.
 	HasParentCompany     *bool                `json:"hasParentCompany,omitempty"`
 	HasParentCompanyWith []*CompanyWhereInput `json:"hasParentCompanyWith,omitempty"`
 }
@@ -2094,29 +2094,29 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 	if i.NameContainsFold != nil {
 		predicates = append(predicates, company.NameContainsFold(*i.NameContainsFold))
 	}
-	if i.NumberOfEmployees != nil {
-		predicates = append(predicates, company.NumberOfEmployeesEQ(*i.NumberOfEmployees))
+	if i.NumberEmployees != nil {
+		predicates = append(predicates, company.NumberEmployeesEQ(*i.NumberEmployees))
 	}
-	if i.NumberOfEmployeesNEQ != nil {
-		predicates = append(predicates, company.NumberOfEmployeesNEQ(*i.NumberOfEmployeesNEQ))
+	if i.NumberEmployeesNEQ != nil {
+		predicates = append(predicates, company.NumberEmployeesNEQ(*i.NumberEmployeesNEQ))
 	}
-	if len(i.NumberOfEmployeesIn) > 0 {
-		predicates = append(predicates, company.NumberOfEmployeesIn(i.NumberOfEmployeesIn...))
+	if len(i.NumberEmployeesIn) > 0 {
+		predicates = append(predicates, company.NumberEmployeesIn(i.NumberEmployeesIn...))
 	}
-	if len(i.NumberOfEmployeesNotIn) > 0 {
-		predicates = append(predicates, company.NumberOfEmployeesNotIn(i.NumberOfEmployeesNotIn...))
+	if len(i.NumberEmployeesNotIn) > 0 {
+		predicates = append(predicates, company.NumberEmployeesNotIn(i.NumberEmployeesNotIn...))
 	}
-	if i.NumberOfEmployeesGT != nil {
-		predicates = append(predicates, company.NumberOfEmployeesGT(*i.NumberOfEmployeesGT))
+	if i.NumberEmployeesGT != nil {
+		predicates = append(predicates, company.NumberEmployeesGT(*i.NumberEmployeesGT))
 	}
-	if i.NumberOfEmployeesGTE != nil {
-		predicates = append(predicates, company.NumberOfEmployeesGTE(*i.NumberOfEmployeesGTE))
+	if i.NumberEmployeesGTE != nil {
+		predicates = append(predicates, company.NumberEmployeesGTE(*i.NumberEmployeesGTE))
 	}
-	if i.NumberOfEmployeesLT != nil {
-		predicates = append(predicates, company.NumberOfEmployeesLT(*i.NumberOfEmployeesLT))
+	if i.NumberEmployeesLT != nil {
+		predicates = append(predicates, company.NumberEmployeesLT(*i.NumberEmployeesLT))
 	}
-	if i.NumberOfEmployeesLTE != nil {
-		predicates = append(predicates, company.NumberOfEmployeesLTE(*i.NumberOfEmployeesLTE))
+	if i.NumberEmployeesLTE != nil {
+		predicates = append(predicates, company.NumberEmployeesLTE(*i.NumberEmployeesLTE))
 	}
 	if i.Phone != nil {
 		predicates = append(predicates, company.PhoneEQ(*i.Phone))
@@ -2163,50 +2163,50 @@ func (i *CompanyWhereInput) P() (predicate.Company, error) {
 	if i.PhoneContainsFold != nil {
 		predicates = append(predicates, company.PhoneContainsFold(*i.PhoneContainsFold))
 	}
-	if i.TaxId != nil {
-		predicates = append(predicates, company.TaxIdEQ(*i.TaxId))
+	if i.TaxID != nil {
+		predicates = append(predicates, company.TaxIDEQ(*i.TaxID))
 	}
-	if i.TaxIdNEQ != nil {
-		predicates = append(predicates, company.TaxIdNEQ(*i.TaxIdNEQ))
+	if i.TaxIDNEQ != nil {
+		predicates = append(predicates, company.TaxIDNEQ(*i.TaxIDNEQ))
 	}
-	if len(i.TaxIdIn) > 0 {
-		predicates = append(predicates, company.TaxIdIn(i.TaxIdIn...))
+	if len(i.TaxIDIn) > 0 {
+		predicates = append(predicates, company.TaxIDIn(i.TaxIDIn...))
 	}
-	if len(i.TaxIdNotIn) > 0 {
-		predicates = append(predicates, company.TaxIdNotIn(i.TaxIdNotIn...))
+	if len(i.TaxIDNotIn) > 0 {
+		predicates = append(predicates, company.TaxIDNotIn(i.TaxIDNotIn...))
 	}
-	if i.TaxIdGT != nil {
-		predicates = append(predicates, company.TaxIdGT(*i.TaxIdGT))
+	if i.TaxIDGT != nil {
+		predicates = append(predicates, company.TaxIDGT(*i.TaxIDGT))
 	}
-	if i.TaxIdGTE != nil {
-		predicates = append(predicates, company.TaxIdGTE(*i.TaxIdGTE))
+	if i.TaxIDGTE != nil {
+		predicates = append(predicates, company.TaxIDGTE(*i.TaxIDGTE))
 	}
-	if i.TaxIdLT != nil {
-		predicates = append(predicates, company.TaxIdLT(*i.TaxIdLT))
+	if i.TaxIDLT != nil {
+		predicates = append(predicates, company.TaxIDLT(*i.TaxIDLT))
 	}
-	if i.TaxIdLTE != nil {
-		predicates = append(predicates, company.TaxIdLTE(*i.TaxIdLTE))
+	if i.TaxIDLTE != nil {
+		predicates = append(predicates, company.TaxIDLTE(*i.TaxIDLTE))
 	}
-	if i.TaxIdContains != nil {
-		predicates = append(predicates, company.TaxIdContains(*i.TaxIdContains))
+	if i.TaxIDContains != nil {
+		predicates = append(predicates, company.TaxIDContains(*i.TaxIDContains))
 	}
-	if i.TaxIdHasPrefix != nil {
-		predicates = append(predicates, company.TaxIdHasPrefix(*i.TaxIdHasPrefix))
+	if i.TaxIDHasPrefix != nil {
+		predicates = append(predicates, company.TaxIDHasPrefix(*i.TaxIDHasPrefix))
 	}
-	if i.TaxIdHasSuffix != nil {
-		predicates = append(predicates, company.TaxIdHasSuffix(*i.TaxIdHasSuffix))
+	if i.TaxIDHasSuffix != nil {
+		predicates = append(predicates, company.TaxIDHasSuffix(*i.TaxIDHasSuffix))
 	}
-	if i.TaxIdIsNil {
-		predicates = append(predicates, company.TaxIdIsNil())
+	if i.TaxIDIsNil {
+		predicates = append(predicates, company.TaxIDIsNil())
 	}
-	if i.TaxIdNotNil {
-		predicates = append(predicates, company.TaxIdNotNil())
+	if i.TaxIDNotNil {
+		predicates = append(predicates, company.TaxIDNotNil())
 	}
-	if i.TaxIdEqualFold != nil {
-		predicates = append(predicates, company.TaxIdEqualFold(*i.TaxIdEqualFold))
+	if i.TaxIDEqualFold != nil {
+		predicates = append(predicates, company.TaxIDEqualFold(*i.TaxIDEqualFold))
 	}
-	if i.TaxIdContainsFold != nil {
-		predicates = append(predicates, company.TaxIdContainsFold(*i.TaxIdContainsFold))
+	if i.TaxIDContainsFold != nil {
+		predicates = append(predicates, company.TaxIDContainsFold(*i.TaxIDContainsFold))
 	}
 	if i.VatRate != nil {
 		predicates = append(predicates, company.VatRateEQ(*i.VatRate))
@@ -2731,37 +2731,37 @@ type CompanyDocumentWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "filename" field predicates.
 	Filename             *string  `json:"filename,omitempty"`
@@ -2824,20 +2824,20 @@ type CompanyDocumentWhereInput struct {
 	SizeLT    *int  `json:"sizeLT,omitempty"`
 	SizeLTE   *int  `json:"sizeLTE,omitempty"`
 
-	// "fileType" field predicates.
-	FileType             *string  `json:"filetype,omitempty"`
-	FileTypeNEQ          *string  `json:"filetypeNEQ,omitempty"`
-	FileTypeIn           []string `json:"filetypeIn,omitempty"`
-	FileTypeNotIn        []string `json:"filetypeNotIn,omitempty"`
-	FileTypeGT           *string  `json:"filetypeGT,omitempty"`
-	FileTypeGTE          *string  `json:"filetypeGTE,omitempty"`
-	FileTypeLT           *string  `json:"filetypeLT,omitempty"`
-	FileTypeLTE          *string  `json:"filetypeLTE,omitempty"`
-	FileTypeContains     *string  `json:"filetypeContains,omitempty"`
-	FileTypeHasPrefix    *string  `json:"filetypeHasPrefix,omitempty"`
-	FileTypeHasSuffix    *string  `json:"filetypeHasSuffix,omitempty"`
-	FileTypeEqualFold    *string  `json:"filetypeEqualFold,omitempty"`
-	FileTypeContainsFold *string  `json:"filetypeContainsFold,omitempty"`
+	// "file_type" field predicates.
+	FileType             *string  `json:"fileType,omitempty"`
+	FileTypeNEQ          *string  `json:"fileTypeNEQ,omitempty"`
+	FileTypeIn           []string `json:"fileTypeIn,omitempty"`
+	FileTypeNotIn        []string `json:"fileTypeNotIn,omitempty"`
+	FileTypeGT           *string  `json:"fileTypeGT,omitempty"`
+	FileTypeGTE          *string  `json:"fileTypeGTE,omitempty"`
+	FileTypeLT           *string  `json:"fileTypeLT,omitempty"`
+	FileTypeLTE          *string  `json:"fileTypeLTE,omitempty"`
+	FileTypeContains     *string  `json:"fileTypeContains,omitempty"`
+	FileTypeHasPrefix    *string  `json:"fileTypeHasPrefix,omitempty"`
+	FileTypeHasSuffix    *string  `json:"fileTypeHasSuffix,omitempty"`
+	FileTypeEqualFold    *string  `json:"fileTypeEqualFold,omitempty"`
+	FileTypeContainsFold *string  `json:"fileTypeContainsFold,omitempty"`
 
 	// "status" field predicates.
 	Status      *companydocument.Status  `json:"status,omitempty"`
@@ -2860,20 +2860,20 @@ type CompanyDocumentWhereInput struct {
 	URLEqualFold    *string  `json:"urlEqualFold,omitempty"`
 	URLContainsFold *string  `json:"urlContainsFold,omitempty"`
 
-	// "storageURI" field predicates.
-	StorageURI             *string  `json:"storageuri,omitempty"`
-	StorageURINEQ          *string  `json:"storageuriNEQ,omitempty"`
-	StorageURIIn           []string `json:"storageuriIn,omitempty"`
-	StorageURINotIn        []string `json:"storageuriNotIn,omitempty"`
-	StorageURIGT           *string  `json:"storageuriGT,omitempty"`
-	StorageURIGTE          *string  `json:"storageuriGTE,omitempty"`
-	StorageURILT           *string  `json:"storageuriLT,omitempty"`
-	StorageURILTE          *string  `json:"storageuriLTE,omitempty"`
-	StorageURIContains     *string  `json:"storageuriContains,omitempty"`
-	StorageURIHasPrefix    *string  `json:"storageuriHasPrefix,omitempty"`
-	StorageURIHasSuffix    *string  `json:"storageuriHasSuffix,omitempty"`
-	StorageURIEqualFold    *string  `json:"storageuriEqualFold,omitempty"`
-	StorageURIContainsFold *string  `json:"storageuriContainsFold,omitempty"`
+	// "storage_URI" field predicates.
+	StorageURI             *string  `json:"storageURI,omitempty"`
+	StorageURINEQ          *string  `json:"storageURINEQ,omitempty"`
+	StorageURIIn           []string `json:"storageURIIn,omitempty"`
+	StorageURINotIn        []string `json:"storageURINotIn,omitempty"`
+	StorageURIGT           *string  `json:"storageURIGT,omitempty"`
+	StorageURIGTE          *string  `json:"storageURIGTE,omitempty"`
+	StorageURILT           *string  `json:"storageURILT,omitempty"`
+	StorageURILTE          *string  `json:"storageURILTE,omitempty"`
+	StorageURIContains     *string  `json:"storageURIContains,omitempty"`
+	StorageURIHasPrefix    *string  `json:"storageURIHasPrefix,omitempty"`
+	StorageURIHasSuffix    *string  `json:"storageURIHasSuffix,omitempty"`
+	StorageURIEqualFold    *string  `json:"storageURIEqualFold,omitempty"`
+	StorageURIContainsFold *string  `json:"storageURIContainsFold,omitempty"`
 
 	// "thumbnail" field predicates.
 	Thumbnail             *string  `json:"thumbnail,omitempty"`
@@ -2892,25 +2892,25 @@ type CompanyDocumentWhereInput struct {
 	ThumbnailEqualFold    *string  `json:"thumbnailEqualFold,omitempty"`
 	ThumbnailContainsFold *string  `json:"thumbnailContainsFold,omitempty"`
 
-	// "expiryDate" field predicates.
-	ExpiryDate      *time.Time  `json:"expirydate,omitempty"`
-	ExpiryDateNEQ   *time.Time  `json:"expirydateNEQ,omitempty"`
-	ExpiryDateIn    []time.Time `json:"expirydateIn,omitempty"`
-	ExpiryDateNotIn []time.Time `json:"expirydateNotIn,omitempty"`
-	ExpiryDateGT    *time.Time  `json:"expirydateGT,omitempty"`
-	ExpiryDateGTE   *time.Time  `json:"expirydateGTE,omitempty"`
-	ExpiryDateLT    *time.Time  `json:"expirydateLT,omitempty"`
-	ExpiryDateLTE   *time.Time  `json:"expirydateLTE,omitempty"`
+	// "expiry_date" field predicates.
+	ExpiryDate      *time.Time  `json:"expiryDate,omitempty"`
+	ExpiryDateNEQ   *time.Time  `json:"expiryDateNEQ,omitempty"`
+	ExpiryDateIn    []time.Time `json:"expiryDateIn,omitempty"`
+	ExpiryDateNotIn []time.Time `json:"expiryDateNotIn,omitempty"`
+	ExpiryDateGT    *time.Time  `json:"expiryDateGT,omitempty"`
+	ExpiryDateGTE   *time.Time  `json:"expiryDateGTE,omitempty"`
+	ExpiryDateLT    *time.Time  `json:"expiryDateLT,omitempty"`
+	ExpiryDateLTE   *time.Time  `json:"expiryDateLTE,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "uploadedBy" edge predicates.
+	// "uploaded_by" edge predicates.
 	HasUploadedBy     *bool             `json:"hasUploadedBy,omitempty"`
 	HasUploadedByWith []*UserWhereInput `json:"hasUploadedByWith,omitempty"`
 
-	// "approvedBy" edge predicates.
+	// "approved_by" edge predicates.
 	HasApprovedBy     *bool             `json:"hasApprovedBy,omitempty"`
 	HasApprovedByWith []*UserWhereInput `json:"hasApprovedByWith,omitempty"`
 }
@@ -3521,37 +3521,37 @@ type CustomerWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "address" field predicates.
 	Address             *string  `json:"address,omitempty"`
@@ -3638,11 +3638,11 @@ type CustomerWhereInput struct {
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
-	// "isDefault" field predicates.
-	IsDefault       *bool `json:"isdefault,omitempty"`
-	IsDefaultNEQ    *bool `json:"isdefaultNEQ,omitempty"`
-	IsDefaultIsNil  bool  `json:"isdefaultIsNil,omitempty"`
-	IsDefaultNotNil bool  `json:"isdefaultNotNil,omitempty"`
+	// "is_default" field predicates.
+	IsDefault       *bool `json:"isDefault,omitempty"`
+	IsDefaultNEQ    *bool `json:"isDefaultNEQ,omitempty"`
+	IsDefaultIsNil  bool  `json:"isDefaultIsNil,omitempty"`
+	IsDefaultNotNil bool  `json:"isDefaultNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -3676,22 +3676,22 @@ type CustomerWhereInput struct {
 	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
 	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
-	// "taxId" field predicates.
-	TaxId             *string  `json:"taxid,omitempty"`
-	TaxIdNEQ          *string  `json:"taxidNEQ,omitempty"`
-	TaxIdIn           []string `json:"taxidIn,omitempty"`
-	TaxIdNotIn        []string `json:"taxidNotIn,omitempty"`
-	TaxIdGT           *string  `json:"taxidGT,omitempty"`
-	TaxIdGTE          *string  `json:"taxidGTE,omitempty"`
-	TaxIdLT           *string  `json:"taxidLT,omitempty"`
-	TaxIdLTE          *string  `json:"taxidLTE,omitempty"`
-	TaxIdContains     *string  `json:"taxidContains,omitempty"`
-	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
-	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
-	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
-	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
-	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
-	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
+	// "tax_id" field predicates.
+	TaxID             *string  `json:"taxID,omitempty"`
+	TaxIDNEQ          *string  `json:"taxIDNEQ,omitempty"`
+	TaxIDIn           []string `json:"taxIDIn,omitempty"`
+	TaxIDNotIn        []string `json:"taxIDNotIn,omitempty"`
+	TaxIDGT           *string  `json:"taxIDGT,omitempty"`
+	TaxIDGTE          *string  `json:"taxIDGTE,omitempty"`
+	TaxIDLT           *string  `json:"taxIDLT,omitempty"`
+	TaxIDLTE          *string  `json:"taxIDLTE,omitempty"`
+	TaxIDContains     *string  `json:"taxIDContains,omitempty"`
+	TaxIDHasPrefix    *string  `json:"taxIDHasPrefix,omitempty"`
+	TaxIDHasSuffix    *string  `json:"taxIDHasSuffix,omitempty"`
+	TaxIDIsNil        bool     `json:"taxIDIsNil,omitempty"`
+	TaxIDNotNil       bool     `json:"taxIDNotNil,omitempty"`
+	TaxIDEqualFold    *string  `json:"taxIDEqualFold,omitempty"`
+	TaxIDContainsFold *string  `json:"taxIDContainsFold,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
@@ -4204,50 +4204,50 @@ func (i *CustomerWhereInput) P() (predicate.Customer, error) {
 	if i.PhoneContainsFold != nil {
 		predicates = append(predicates, customer.PhoneContainsFold(*i.PhoneContainsFold))
 	}
-	if i.TaxId != nil {
-		predicates = append(predicates, customer.TaxIdEQ(*i.TaxId))
+	if i.TaxID != nil {
+		predicates = append(predicates, customer.TaxIDEQ(*i.TaxID))
 	}
-	if i.TaxIdNEQ != nil {
-		predicates = append(predicates, customer.TaxIdNEQ(*i.TaxIdNEQ))
+	if i.TaxIDNEQ != nil {
+		predicates = append(predicates, customer.TaxIDNEQ(*i.TaxIDNEQ))
 	}
-	if len(i.TaxIdIn) > 0 {
-		predicates = append(predicates, customer.TaxIdIn(i.TaxIdIn...))
+	if len(i.TaxIDIn) > 0 {
+		predicates = append(predicates, customer.TaxIDIn(i.TaxIDIn...))
 	}
-	if len(i.TaxIdNotIn) > 0 {
-		predicates = append(predicates, customer.TaxIdNotIn(i.TaxIdNotIn...))
+	if len(i.TaxIDNotIn) > 0 {
+		predicates = append(predicates, customer.TaxIDNotIn(i.TaxIDNotIn...))
 	}
-	if i.TaxIdGT != nil {
-		predicates = append(predicates, customer.TaxIdGT(*i.TaxIdGT))
+	if i.TaxIDGT != nil {
+		predicates = append(predicates, customer.TaxIDGT(*i.TaxIDGT))
 	}
-	if i.TaxIdGTE != nil {
-		predicates = append(predicates, customer.TaxIdGTE(*i.TaxIdGTE))
+	if i.TaxIDGTE != nil {
+		predicates = append(predicates, customer.TaxIDGTE(*i.TaxIDGTE))
 	}
-	if i.TaxIdLT != nil {
-		predicates = append(predicates, customer.TaxIdLT(*i.TaxIdLT))
+	if i.TaxIDLT != nil {
+		predicates = append(predicates, customer.TaxIDLT(*i.TaxIDLT))
 	}
-	if i.TaxIdLTE != nil {
-		predicates = append(predicates, customer.TaxIdLTE(*i.TaxIdLTE))
+	if i.TaxIDLTE != nil {
+		predicates = append(predicates, customer.TaxIDLTE(*i.TaxIDLTE))
 	}
-	if i.TaxIdContains != nil {
-		predicates = append(predicates, customer.TaxIdContains(*i.TaxIdContains))
+	if i.TaxIDContains != nil {
+		predicates = append(predicates, customer.TaxIDContains(*i.TaxIDContains))
 	}
-	if i.TaxIdHasPrefix != nil {
-		predicates = append(predicates, customer.TaxIdHasPrefix(*i.TaxIdHasPrefix))
+	if i.TaxIDHasPrefix != nil {
+		predicates = append(predicates, customer.TaxIDHasPrefix(*i.TaxIDHasPrefix))
 	}
-	if i.TaxIdHasSuffix != nil {
-		predicates = append(predicates, customer.TaxIdHasSuffix(*i.TaxIdHasSuffix))
+	if i.TaxIDHasSuffix != nil {
+		predicates = append(predicates, customer.TaxIDHasSuffix(*i.TaxIDHasSuffix))
 	}
-	if i.TaxIdIsNil {
-		predicates = append(predicates, customer.TaxIdIsNil())
+	if i.TaxIDIsNil {
+		predicates = append(predicates, customer.TaxIDIsNil())
 	}
-	if i.TaxIdNotNil {
-		predicates = append(predicates, customer.TaxIdNotNil())
+	if i.TaxIDNotNil {
+		predicates = append(predicates, customer.TaxIDNotNil())
 	}
-	if i.TaxIdEqualFold != nil {
-		predicates = append(predicates, customer.TaxIdEqualFold(*i.TaxIdEqualFold))
+	if i.TaxIDEqualFold != nil {
+		predicates = append(predicates, customer.TaxIDEqualFold(*i.TaxIDEqualFold))
 	}
-	if i.TaxIdContainsFold != nil {
-		predicates = append(predicates, customer.TaxIdContainsFold(*i.TaxIdContainsFold))
+	if i.TaxIDContainsFold != nil {
+		predicates = append(predicates, customer.TaxIDContainsFold(*i.TaxIDContainsFold))
 	}
 
 	if i.HasCompany != nil {
@@ -4349,37 +4349,37 @@ type EmployeeWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -4497,25 +4497,25 @@ type EmployeeWhereInput struct {
 	AvatarEqualFold    *string  `json:"avatarEqualFold,omitempty"`
 	AvatarContainsFold *string  `json:"avatarContainsFold,omitempty"`
 
-	// "hireDate" field predicates.
-	HireDate      *time.Time  `json:"hiredate,omitempty"`
-	HireDateNEQ   *time.Time  `json:"hiredateNEQ,omitempty"`
-	HireDateIn    []time.Time `json:"hiredateIn,omitempty"`
-	HireDateNotIn []time.Time `json:"hiredateNotIn,omitempty"`
-	HireDateGT    *time.Time  `json:"hiredateGT,omitempty"`
-	HireDateGTE   *time.Time  `json:"hiredateGTE,omitempty"`
-	HireDateLT    *time.Time  `json:"hiredateLT,omitempty"`
-	HireDateLTE   *time.Time  `json:"hiredateLTE,omitempty"`
+	// "hire_date" field predicates.
+	HireDate      *time.Time  `json:"hireDate,omitempty"`
+	HireDateNEQ   *time.Time  `json:"hireDateNEQ,omitempty"`
+	HireDateIn    []time.Time `json:"hireDateIn,omitempty"`
+	HireDateNotIn []time.Time `json:"hireDateNotIn,omitempty"`
+	HireDateGT    *time.Time  `json:"hireDateGT,omitempty"`
+	HireDateGTE   *time.Time  `json:"hireDateGTE,omitempty"`
+	HireDateLT    *time.Time  `json:"hireDateLT,omitempty"`
+	HireDateLTE   *time.Time  `json:"hireDateLTE,omitempty"`
 
-	// "monthlySalary" field predicates.
-	MonthlySalary      *int  `json:"monthlysalary,omitempty"`
-	MonthlySalaryNEQ   *int  `json:"monthlysalaryNEQ,omitempty"`
-	MonthlySalaryIn    []int `json:"monthlysalaryIn,omitempty"`
-	MonthlySalaryNotIn []int `json:"monthlysalaryNotIn,omitempty"`
-	MonthlySalaryGT    *int  `json:"monthlysalaryGT,omitempty"`
-	MonthlySalaryGTE   *int  `json:"monthlysalaryGTE,omitempty"`
-	MonthlySalaryLT    *int  `json:"monthlysalaryLT,omitempty"`
-	MonthlySalaryLTE   *int  `json:"monthlysalaryLTE,omitempty"`
+	// "monthly_salary" field predicates.
+	MonthlySalary      *int  `json:"monthlySalary,omitempty"`
+	MonthlySalaryNEQ   *int  `json:"monthlySalaryNEQ,omitempty"`
+	MonthlySalaryIn    []int `json:"monthlySalaryIn,omitempty"`
+	MonthlySalaryNotIn []int `json:"monthlySalaryNotIn,omitempty"`
+	MonthlySalaryGT    *int  `json:"monthlySalaryGT,omitempty"`
+	MonthlySalaryGTE   *int  `json:"monthlySalaryGTE,omitempty"`
+	MonthlySalaryLT    *int  `json:"monthlySalaryLT,omitempty"`
+	MonthlySalaryLTE   *int  `json:"monthlySalaryLTE,omitempty"`
 
 	// "status" field predicates.
 	Status       *employee.Status  `json:"status,omitempty"`
@@ -4525,17 +4525,17 @@ type EmployeeWhereInput struct {
 	StatusIsNil  bool              `json:"statusIsNil,omitempty"`
 	StatusNotNil bool              `json:"statusNotNil,omitempty"`
 
-	// "performaceScore" field predicates.
-	PerformaceScore       *float64  `json:"performacescore,omitempty"`
-	PerformaceScoreNEQ    *float64  `json:"performacescoreNEQ,omitempty"`
-	PerformaceScoreIn     []float64 `json:"performacescoreIn,omitempty"`
-	PerformaceScoreNotIn  []float64 `json:"performacescoreNotIn,omitempty"`
-	PerformaceScoreGT     *float64  `json:"performacescoreGT,omitempty"`
-	PerformaceScoreGTE    *float64  `json:"performacescoreGTE,omitempty"`
-	PerformaceScoreLT     *float64  `json:"performacescoreLT,omitempty"`
-	PerformaceScoreLTE    *float64  `json:"performacescoreLTE,omitempty"`
-	PerformaceScoreIsNil  bool      `json:"performacescoreIsNil,omitempty"`
-	PerformaceScoreNotNil bool      `json:"performacescoreNotNil,omitempty"`
+	// "performace_score" field predicates.
+	PerformaceScore       *float64  `json:"performaceScore,omitempty"`
+	PerformaceScoreNEQ    *float64  `json:"performaceScoreNEQ,omitempty"`
+	PerformaceScoreIn     []float64 `json:"performaceScoreIn,omitempty"`
+	PerformaceScoreNotIn  []float64 `json:"performaceScoreNotIn,omitempty"`
+	PerformaceScoreGT     *float64  `json:"performaceScoreGT,omitempty"`
+	PerformaceScoreGTE    *float64  `json:"performaceScoreGTE,omitempty"`
+	PerformaceScoreLT     *float64  `json:"performaceScoreLT,omitempty"`
+	PerformaceScoreLTE    *float64  `json:"performaceScoreLTE,omitempty"`
+	PerformaceScoreIsNil  bool      `json:"performaceScoreIsNil,omitempty"`
+	PerformaceScoreNotNil bool      `json:"performaceScoreNotNil,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
@@ -5223,37 +5223,37 @@ type FileWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "category" field predicates.
 	Category      *file.Category  `json:"category,omitempty"`
@@ -5767,37 +5767,37 @@ type InventoryWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -5845,25 +5845,25 @@ type InventoryWhereInput struct {
 	UnitEqualFold    *string  `json:"unitEqualFold,omitempty"`
 	UnitContainsFold *string  `json:"unitContainsFold,omitempty"`
 
-	// "minimumLevel" field predicates.
-	MinimumLevel      *float64  `json:"minimumlevel,omitempty"`
-	MinimumLevelNEQ   *float64  `json:"minimumlevelNEQ,omitempty"`
-	MinimumLevelIn    []float64 `json:"minimumlevelIn,omitempty"`
-	MinimumLevelNotIn []float64 `json:"minimumlevelNotIn,omitempty"`
-	MinimumLevelGT    *float64  `json:"minimumlevelGT,omitempty"`
-	MinimumLevelGTE   *float64  `json:"minimumlevelGTE,omitempty"`
-	MinimumLevelLT    *float64  `json:"minimumlevelLT,omitempty"`
-	MinimumLevelLTE   *float64  `json:"minimumlevelLTE,omitempty"`
+	// "minimum_level" field predicates.
+	MinimumLevel      *float64  `json:"minimumLevel,omitempty"`
+	MinimumLevelNEQ   *float64  `json:"minimumLevelNEQ,omitempty"`
+	MinimumLevelIn    []float64 `json:"minimumLevelIn,omitempty"`
+	MinimumLevelNotIn []float64 `json:"minimumLevelNotIn,omitempty"`
+	MinimumLevelGT    *float64  `json:"minimumLevelGT,omitempty"`
+	MinimumLevelGTE   *float64  `json:"minimumLevelGTE,omitempty"`
+	MinimumLevelLT    *float64  `json:"minimumLevelLT,omitempty"`
+	MinimumLevelLTE   *float64  `json:"minimumLevelLTE,omitempty"`
 
-	// "currentValue" field predicates.
-	CurrentValue      *float64  `json:"currentvalue,omitempty"`
-	CurrentValueNEQ   *float64  `json:"currentvalueNEQ,omitempty"`
-	CurrentValueIn    []float64 `json:"currentvalueIn,omitempty"`
-	CurrentValueNotIn []float64 `json:"currentvalueNotIn,omitempty"`
-	CurrentValueGT    *float64  `json:"currentvalueGT,omitempty"`
-	CurrentValueGTE   *float64  `json:"currentvalueGTE,omitempty"`
-	CurrentValueLT    *float64  `json:"currentvalueLT,omitempty"`
-	CurrentValueLTE   *float64  `json:"currentvalueLTE,omitempty"`
+	// "current_value" field predicates.
+	CurrentValue      *float64  `json:"currentValue,omitempty"`
+	CurrentValueNEQ   *float64  `json:"currentValueNEQ,omitempty"`
+	CurrentValueIn    []float64 `json:"currentValueIn,omitempty"`
+	CurrentValueNotIn []float64 `json:"currentValueNotIn,omitempty"`
+	CurrentValueGT    *float64  `json:"currentValueGT,omitempty"`
+	CurrentValueGTE   *float64  `json:"currentValueGTE,omitempty"`
+	CurrentValueLT    *float64  `json:"currentValueLT,omitempty"`
+	CurrentValueLTE   *float64  `json:"currentValueLTE,omitempty"`
 
 	// "notes" field predicates.
 	Notes             *string  `json:"notes,omitempty"`
@@ -6327,37 +6327,37 @@ type InventoryMovementWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "category" field predicates.
 	Category      *inventorymovement.Category  `json:"category,omitempty"`
@@ -6903,150 +6903,150 @@ type InvoiceWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
-	// "companyLogo" field predicates.
-	CompanyLogo             *string  `json:"companylogo,omitempty"`
-	CompanyLogoNEQ          *string  `json:"companylogoNEQ,omitempty"`
-	CompanyLogoIn           []string `json:"companylogoIn,omitempty"`
-	CompanyLogoNotIn        []string `json:"companylogoNotIn,omitempty"`
-	CompanyLogoGT           *string  `json:"companylogoGT,omitempty"`
-	CompanyLogoGTE          *string  `json:"companylogoGTE,omitempty"`
-	CompanyLogoLT           *string  `json:"companylogoLT,omitempty"`
-	CompanyLogoLTE          *string  `json:"companylogoLTE,omitempty"`
-	CompanyLogoContains     *string  `json:"companylogoContains,omitempty"`
-	CompanyLogoHasPrefix    *string  `json:"companylogoHasPrefix,omitempty"`
-	CompanyLogoHasSuffix    *string  `json:"companylogoHasSuffix,omitempty"`
-	CompanyLogoIsNil        bool     `json:"companylogoIsNil,omitempty"`
-	CompanyLogoNotNil       bool     `json:"companylogoNotNil,omitempty"`
-	CompanyLogoEqualFold    *string  `json:"companylogoEqualFold,omitempty"`
-	CompanyLogoContainsFold *string  `json:"companylogoContainsFold,omitempty"`
+	// "company_logo" field predicates.
+	CompanyLogo             *string  `json:"companyLogo,omitempty"`
+	CompanyLogoNEQ          *string  `json:"companyLogoNEQ,omitempty"`
+	CompanyLogoIn           []string `json:"companyLogoIn,omitempty"`
+	CompanyLogoNotIn        []string `json:"companyLogoNotIn,omitempty"`
+	CompanyLogoGT           *string  `json:"companyLogoGT,omitempty"`
+	CompanyLogoGTE          *string  `json:"companyLogoGTE,omitempty"`
+	CompanyLogoLT           *string  `json:"companyLogoLT,omitempty"`
+	CompanyLogoLTE          *string  `json:"companyLogoLTE,omitempty"`
+	CompanyLogoContains     *string  `json:"companyLogoContains,omitempty"`
+	CompanyLogoHasPrefix    *string  `json:"companyLogoHasPrefix,omitempty"`
+	CompanyLogoHasSuffix    *string  `json:"companyLogoHasSuffix,omitempty"`
+	CompanyLogoIsNil        bool     `json:"companyLogoIsNil,omitempty"`
+	CompanyLogoNotNil       bool     `json:"companyLogoNotNil,omitempty"`
+	CompanyLogoEqualFold    *string  `json:"companyLogoEqualFold,omitempty"`
+	CompanyLogoContainsFold *string  `json:"companyLogoContainsFold,omitempty"`
 
-	// "companyName" field predicates.
-	CompanyName             *string  `json:"companyname,omitempty"`
-	CompanyNameNEQ          *string  `json:"companynameNEQ,omitempty"`
-	CompanyNameIn           []string `json:"companynameIn,omitempty"`
-	CompanyNameNotIn        []string `json:"companynameNotIn,omitempty"`
-	CompanyNameGT           *string  `json:"companynameGT,omitempty"`
-	CompanyNameGTE          *string  `json:"companynameGTE,omitempty"`
-	CompanyNameLT           *string  `json:"companynameLT,omitempty"`
-	CompanyNameLTE          *string  `json:"companynameLTE,omitempty"`
-	CompanyNameContains     *string  `json:"companynameContains,omitempty"`
-	CompanyNameHasPrefix    *string  `json:"companynameHasPrefix,omitempty"`
-	CompanyNameHasSuffix    *string  `json:"companynameHasSuffix,omitempty"`
-	CompanyNameEqualFold    *string  `json:"companynameEqualFold,omitempty"`
-	CompanyNameContainsFold *string  `json:"companynameContainsFold,omitempty"`
+	// "company_name" field predicates.
+	CompanyName             *string  `json:"companyName,omitempty"`
+	CompanyNameNEQ          *string  `json:"companyNameNEQ,omitempty"`
+	CompanyNameIn           []string `json:"companyNameIn,omitempty"`
+	CompanyNameNotIn        []string `json:"companyNameNotIn,omitempty"`
+	CompanyNameGT           *string  `json:"companyNameGT,omitempty"`
+	CompanyNameGTE          *string  `json:"companyNameGTE,omitempty"`
+	CompanyNameLT           *string  `json:"companyNameLT,omitempty"`
+	CompanyNameLTE          *string  `json:"companyNameLTE,omitempty"`
+	CompanyNameContains     *string  `json:"companyNameContains,omitempty"`
+	CompanyNameHasPrefix    *string  `json:"companyNameHasPrefix,omitempty"`
+	CompanyNameHasSuffix    *string  `json:"companyNameHasSuffix,omitempty"`
+	CompanyNameEqualFold    *string  `json:"companyNameEqualFold,omitempty"`
+	CompanyNameContainsFold *string  `json:"companyNameContainsFold,omitempty"`
 
-	// "companyTaxID" field predicates.
-	CompanyTaxID             *string  `json:"companytaxid,omitempty"`
-	CompanyTaxIDNEQ          *string  `json:"companytaxidNEQ,omitempty"`
-	CompanyTaxIDIn           []string `json:"companytaxidIn,omitempty"`
-	CompanyTaxIDNotIn        []string `json:"companytaxidNotIn,omitempty"`
-	CompanyTaxIDGT           *string  `json:"companytaxidGT,omitempty"`
-	CompanyTaxIDGTE          *string  `json:"companytaxidGTE,omitempty"`
-	CompanyTaxIDLT           *string  `json:"companytaxidLT,omitempty"`
-	CompanyTaxIDLTE          *string  `json:"companytaxidLTE,omitempty"`
-	CompanyTaxIDContains     *string  `json:"companytaxidContains,omitempty"`
-	CompanyTaxIDHasPrefix    *string  `json:"companytaxidHasPrefix,omitempty"`
-	CompanyTaxIDHasSuffix    *string  `json:"companytaxidHasSuffix,omitempty"`
-	CompanyTaxIDIsNil        bool     `json:"companytaxidIsNil,omitempty"`
-	CompanyTaxIDNotNil       bool     `json:"companytaxidNotNil,omitempty"`
-	CompanyTaxIDEqualFold    *string  `json:"companytaxidEqualFold,omitempty"`
-	CompanyTaxIDContainsFold *string  `json:"companytaxidContainsFold,omitempty"`
+	// "company_tax_id" field predicates.
+	CompanyTaxID             *string  `json:"companyTaxID,omitempty"`
+	CompanyTaxIDNEQ          *string  `json:"companyTaxIDNEQ,omitempty"`
+	CompanyTaxIDIn           []string `json:"companyTaxIDIn,omitempty"`
+	CompanyTaxIDNotIn        []string `json:"companyTaxIDNotIn,omitempty"`
+	CompanyTaxIDGT           *string  `json:"companyTaxIDGT,omitempty"`
+	CompanyTaxIDGTE          *string  `json:"companyTaxIDGTE,omitempty"`
+	CompanyTaxIDLT           *string  `json:"companyTaxIDLT,omitempty"`
+	CompanyTaxIDLTE          *string  `json:"companyTaxIDLTE,omitempty"`
+	CompanyTaxIDContains     *string  `json:"companyTaxIDContains,omitempty"`
+	CompanyTaxIDHasPrefix    *string  `json:"companyTaxIDHasPrefix,omitempty"`
+	CompanyTaxIDHasSuffix    *string  `json:"companyTaxIDHasSuffix,omitempty"`
+	CompanyTaxIDIsNil        bool     `json:"companyTaxIDIsNil,omitempty"`
+	CompanyTaxIDNotNil       bool     `json:"companyTaxIDNotNil,omitempty"`
+	CompanyTaxIDEqualFold    *string  `json:"companyTaxIDEqualFold,omitempty"`
+	CompanyTaxIDContainsFold *string  `json:"companyTaxIDContainsFold,omitempty"`
 
-	// "companyAddress" field predicates.
-	CompanyAddress             *string  `json:"companyaddress,omitempty"`
-	CompanyAddressNEQ          *string  `json:"companyaddressNEQ,omitempty"`
-	CompanyAddressIn           []string `json:"companyaddressIn,omitempty"`
-	CompanyAddressNotIn        []string `json:"companyaddressNotIn,omitempty"`
-	CompanyAddressGT           *string  `json:"companyaddressGT,omitempty"`
-	CompanyAddressGTE          *string  `json:"companyaddressGTE,omitempty"`
-	CompanyAddressLT           *string  `json:"companyaddressLT,omitempty"`
-	CompanyAddressLTE          *string  `json:"companyaddressLTE,omitempty"`
-	CompanyAddressContains     *string  `json:"companyaddressContains,omitempty"`
-	CompanyAddressHasPrefix    *string  `json:"companyaddressHasPrefix,omitempty"`
-	CompanyAddressHasSuffix    *string  `json:"companyaddressHasSuffix,omitempty"`
-	CompanyAddressEqualFold    *string  `json:"companyaddressEqualFold,omitempty"`
-	CompanyAddressContainsFold *string  `json:"companyaddressContainsFold,omitempty"`
+	// "company_address" field predicates.
+	CompanyAddress             *string  `json:"companyAddress,omitempty"`
+	CompanyAddressNEQ          *string  `json:"companyAddressNEQ,omitempty"`
+	CompanyAddressIn           []string `json:"companyAddressIn,omitempty"`
+	CompanyAddressNotIn        []string `json:"companyAddressNotIn,omitempty"`
+	CompanyAddressGT           *string  `json:"companyAddressGT,omitempty"`
+	CompanyAddressGTE          *string  `json:"companyAddressGTE,omitempty"`
+	CompanyAddressLT           *string  `json:"companyAddressLT,omitempty"`
+	CompanyAddressLTE          *string  `json:"companyAddressLTE,omitempty"`
+	CompanyAddressContains     *string  `json:"companyAddressContains,omitempty"`
+	CompanyAddressHasPrefix    *string  `json:"companyAddressHasPrefix,omitempty"`
+	CompanyAddressHasSuffix    *string  `json:"companyAddressHasSuffix,omitempty"`
+	CompanyAddressEqualFold    *string  `json:"companyAddressEqualFold,omitempty"`
+	CompanyAddressContainsFold *string  `json:"companyAddressContainsFold,omitempty"`
 
-	// "companyCity" field predicates.
-	CompanyCity             *string  `json:"companycity,omitempty"`
-	CompanyCityNEQ          *string  `json:"companycityNEQ,omitempty"`
-	CompanyCityIn           []string `json:"companycityIn,omitempty"`
-	CompanyCityNotIn        []string `json:"companycityNotIn,omitempty"`
-	CompanyCityGT           *string  `json:"companycityGT,omitempty"`
-	CompanyCityGTE          *string  `json:"companycityGTE,omitempty"`
-	CompanyCityLT           *string  `json:"companycityLT,omitempty"`
-	CompanyCityLTE          *string  `json:"companycityLTE,omitempty"`
-	CompanyCityContains     *string  `json:"companycityContains,omitempty"`
-	CompanyCityHasPrefix    *string  `json:"companycityHasPrefix,omitempty"`
-	CompanyCityHasSuffix    *string  `json:"companycityHasSuffix,omitempty"`
-	CompanyCityEqualFold    *string  `json:"companycityEqualFold,omitempty"`
-	CompanyCityContainsFold *string  `json:"companycityContainsFold,omitempty"`
+	// "company_city" field predicates.
+	CompanyCity             *string  `json:"companyCity,omitempty"`
+	CompanyCityNEQ          *string  `json:"companyCityNEQ,omitempty"`
+	CompanyCityIn           []string `json:"companyCityIn,omitempty"`
+	CompanyCityNotIn        []string `json:"companyCityNotIn,omitempty"`
+	CompanyCityGT           *string  `json:"companyCityGT,omitempty"`
+	CompanyCityGTE          *string  `json:"companyCityGTE,omitempty"`
+	CompanyCityLT           *string  `json:"companyCityLT,omitempty"`
+	CompanyCityLTE          *string  `json:"companyCityLTE,omitempty"`
+	CompanyCityContains     *string  `json:"companyCityContains,omitempty"`
+	CompanyCityHasPrefix    *string  `json:"companyCityHasPrefix,omitempty"`
+	CompanyCityHasSuffix    *string  `json:"companyCityHasSuffix,omitempty"`
+	CompanyCityEqualFold    *string  `json:"companyCityEqualFold,omitempty"`
+	CompanyCityContainsFold *string  `json:"companyCityContainsFold,omitempty"`
 
-	// "companyEmail" field predicates.
-	CompanyEmail             *string  `json:"companyemail,omitempty"`
-	CompanyEmailNEQ          *string  `json:"companyemailNEQ,omitempty"`
-	CompanyEmailIn           []string `json:"companyemailIn,omitempty"`
-	CompanyEmailNotIn        []string `json:"companyemailNotIn,omitempty"`
-	CompanyEmailGT           *string  `json:"companyemailGT,omitempty"`
-	CompanyEmailGTE          *string  `json:"companyemailGTE,omitempty"`
-	CompanyEmailLT           *string  `json:"companyemailLT,omitempty"`
-	CompanyEmailLTE          *string  `json:"companyemailLTE,omitempty"`
-	CompanyEmailContains     *string  `json:"companyemailContains,omitempty"`
-	CompanyEmailHasPrefix    *string  `json:"companyemailHasPrefix,omitempty"`
-	CompanyEmailHasSuffix    *string  `json:"companyemailHasSuffix,omitempty"`
-	CompanyEmailIsNil        bool     `json:"companyemailIsNil,omitempty"`
-	CompanyEmailNotNil       bool     `json:"companyemailNotNil,omitempty"`
-	CompanyEmailEqualFold    *string  `json:"companyemailEqualFold,omitempty"`
-	CompanyEmailContainsFold *string  `json:"companyemailContainsFold,omitempty"`
+	// "company_email" field predicates.
+	CompanyEmail             *string  `json:"companyEmail,omitempty"`
+	CompanyEmailNEQ          *string  `json:"companyEmailNEQ,omitempty"`
+	CompanyEmailIn           []string `json:"companyEmailIn,omitempty"`
+	CompanyEmailNotIn        []string `json:"companyEmailNotIn,omitempty"`
+	CompanyEmailGT           *string  `json:"companyEmailGT,omitempty"`
+	CompanyEmailGTE          *string  `json:"companyEmailGTE,omitempty"`
+	CompanyEmailLT           *string  `json:"companyEmailLT,omitempty"`
+	CompanyEmailLTE          *string  `json:"companyEmailLTE,omitempty"`
+	CompanyEmailContains     *string  `json:"companyEmailContains,omitempty"`
+	CompanyEmailHasPrefix    *string  `json:"companyEmailHasPrefix,omitempty"`
+	CompanyEmailHasSuffix    *string  `json:"companyEmailHasSuffix,omitempty"`
+	CompanyEmailIsNil        bool     `json:"companyEmailIsNil,omitempty"`
+	CompanyEmailNotNil       bool     `json:"companyEmailNotNil,omitempty"`
+	CompanyEmailEqualFold    *string  `json:"companyEmailEqualFold,omitempty"`
+	CompanyEmailContainsFold *string  `json:"companyEmailContainsFold,omitempty"`
 
-	// "companyPhone" field predicates.
-	CompanyPhone             *string  `json:"companyphone,omitempty"`
-	CompanyPhoneNEQ          *string  `json:"companyphoneNEQ,omitempty"`
-	CompanyPhoneIn           []string `json:"companyphoneIn,omitempty"`
-	CompanyPhoneNotIn        []string `json:"companyphoneNotIn,omitempty"`
-	CompanyPhoneGT           *string  `json:"companyphoneGT,omitempty"`
-	CompanyPhoneGTE          *string  `json:"companyphoneGTE,omitempty"`
-	CompanyPhoneLT           *string  `json:"companyphoneLT,omitempty"`
-	CompanyPhoneLTE          *string  `json:"companyphoneLTE,omitempty"`
-	CompanyPhoneContains     *string  `json:"companyphoneContains,omitempty"`
-	CompanyPhoneHasPrefix    *string  `json:"companyphoneHasPrefix,omitempty"`
-	CompanyPhoneHasSuffix    *string  `json:"companyphoneHasSuffix,omitempty"`
-	CompanyPhoneIsNil        bool     `json:"companyphoneIsNil,omitempty"`
-	CompanyPhoneNotNil       bool     `json:"companyphoneNotNil,omitempty"`
-	CompanyPhoneEqualFold    *string  `json:"companyphoneEqualFold,omitempty"`
-	CompanyPhoneContainsFold *string  `json:"companyphoneContainsFold,omitempty"`
+	// "company_phone" field predicates.
+	CompanyPhone             *string  `json:"companyPhone,omitempty"`
+	CompanyPhoneNEQ          *string  `json:"companyPhoneNEQ,omitempty"`
+	CompanyPhoneIn           []string `json:"companyPhoneIn,omitempty"`
+	CompanyPhoneNotIn        []string `json:"companyPhoneNotIn,omitempty"`
+	CompanyPhoneGT           *string  `json:"companyPhoneGT,omitempty"`
+	CompanyPhoneGTE          *string  `json:"companyPhoneGTE,omitempty"`
+	CompanyPhoneLT           *string  `json:"companyPhoneLT,omitempty"`
+	CompanyPhoneLTE          *string  `json:"companyPhoneLTE,omitempty"`
+	CompanyPhoneContains     *string  `json:"companyPhoneContains,omitempty"`
+	CompanyPhoneHasPrefix    *string  `json:"companyPhoneHasPrefix,omitempty"`
+	CompanyPhoneHasSuffix    *string  `json:"companyPhoneHasSuffix,omitempty"`
+	CompanyPhoneIsNil        bool     `json:"companyPhoneIsNil,omitempty"`
+	CompanyPhoneNotNil       bool     `json:"companyPhoneNotNil,omitempty"`
+	CompanyPhoneEqualFold    *string  `json:"companyPhoneEqualFold,omitempty"`
+	CompanyPhoneContainsFold *string  `json:"companyPhoneContainsFold,omitempty"`
 
 	// "number" field predicates.
 	Number             *string  `json:"number,omitempty"`
@@ -7065,37 +7065,37 @@ type InvoiceWhereInput struct {
 	NumberEqualFold    *string  `json:"numberEqualFold,omitempty"`
 	NumberContainsFold *string  `json:"numberContainsFold,omitempty"`
 
-	// "issueDate" field predicates.
-	IssueDate      *time.Time  `json:"issuedate,omitempty"`
-	IssueDateNEQ   *time.Time  `json:"issuedateNEQ,omitempty"`
-	IssueDateIn    []time.Time `json:"issuedateIn,omitempty"`
-	IssueDateNotIn []time.Time `json:"issuedateNotIn,omitempty"`
-	IssueDateGT    *time.Time  `json:"issuedateGT,omitempty"`
-	IssueDateGTE   *time.Time  `json:"issuedateGTE,omitempty"`
-	IssueDateLT    *time.Time  `json:"issuedateLT,omitempty"`
-	IssueDateLTE   *time.Time  `json:"issuedateLTE,omitempty"`
+	// "issue_date" field predicates.
+	IssueDate      *time.Time  `json:"issueDate,omitempty"`
+	IssueDateNEQ   *time.Time  `json:"issueDateNEQ,omitempty"`
+	IssueDateIn    []time.Time `json:"issueDateIn,omitempty"`
+	IssueDateNotIn []time.Time `json:"issueDateNotIn,omitempty"`
+	IssueDateGT    *time.Time  `json:"issueDateGT,omitempty"`
+	IssueDateGTE   *time.Time  `json:"issueDateGTE,omitempty"`
+	IssueDateLT    *time.Time  `json:"issueDateLT,omitempty"`
+	IssueDateLTE   *time.Time  `json:"issueDateLTE,omitempty"`
 
-	// "dueDate" field predicates.
-	DueDate      *time.Time  `json:"duedate,omitempty"`
-	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
-	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
-	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
-	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
-	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
-	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
-	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
+	// "due_date" field predicates.
+	DueDate      *time.Time  `json:"dueDate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"dueDateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"dueDateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"dueDateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"dueDateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"dueDateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"dueDateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"dueDateLTE,omitempty"`
 
-	// "paidAt" field predicates.
-	PaidAt       *time.Time  `json:"paidat,omitempty"`
-	PaidAtNEQ    *time.Time  `json:"paidatNEQ,omitempty"`
-	PaidAtIn     []time.Time `json:"paidatIn,omitempty"`
-	PaidAtNotIn  []time.Time `json:"paidatNotIn,omitempty"`
-	PaidAtGT     *time.Time  `json:"paidatGT,omitempty"`
-	PaidAtGTE    *time.Time  `json:"paidatGTE,omitempty"`
-	PaidAtLT     *time.Time  `json:"paidatLT,omitempty"`
-	PaidAtLTE    *time.Time  `json:"paidatLTE,omitempty"`
-	PaidAtIsNil  bool        `json:"paidatIsNil,omitempty"`
-	PaidAtNotNil bool        `json:"paidatNotNil,omitempty"`
+	// "paid_at" field predicates.
+	PaidAt       *time.Time  `json:"paidAt,omitempty"`
+	PaidAtNEQ    *time.Time  `json:"paidAtNEQ,omitempty"`
+	PaidAtIn     []time.Time `json:"paidAtIn,omitempty"`
+	PaidAtNotIn  []time.Time `json:"paidAtNotIn,omitempty"`
+	PaidAtGT     *time.Time  `json:"paidAtGT,omitempty"`
+	PaidAtGTE    *time.Time  `json:"paidAtGTE,omitempty"`
+	PaidAtLT     *time.Time  `json:"paidAtLT,omitempty"`
+	PaidAtLTE    *time.Time  `json:"paidAtLTE,omitempty"`
+	PaidAtIsNil  bool        `json:"paidAtIsNil,omitempty"`
+	PaidAtNotNil bool        `json:"paidAtNotNil,omitempty"`
 
 	// "status" field predicates.
 	Status      *invoice.Status  `json:"status,omitempty"`
@@ -7103,107 +7103,107 @@ type InvoiceWhereInput struct {
 	StatusIn    []invoice.Status `json:"statusIn,omitempty"`
 	StatusNotIn []invoice.Status `json:"statusNotIn,omitempty"`
 
-	// "customerName" field predicates.
-	CustomerName             *string  `json:"customername,omitempty"`
-	CustomerNameNEQ          *string  `json:"customernameNEQ,omitempty"`
-	CustomerNameIn           []string `json:"customernameIn,omitempty"`
-	CustomerNameNotIn        []string `json:"customernameNotIn,omitempty"`
-	CustomerNameGT           *string  `json:"customernameGT,omitempty"`
-	CustomerNameGTE          *string  `json:"customernameGTE,omitempty"`
-	CustomerNameLT           *string  `json:"customernameLT,omitempty"`
-	CustomerNameLTE          *string  `json:"customernameLTE,omitempty"`
-	CustomerNameContains     *string  `json:"customernameContains,omitempty"`
-	CustomerNameHasPrefix    *string  `json:"customernameHasPrefix,omitempty"`
-	CustomerNameHasSuffix    *string  `json:"customernameHasSuffix,omitempty"`
-	CustomerNameIsNil        bool     `json:"customernameIsNil,omitempty"`
-	CustomerNameNotNil       bool     `json:"customernameNotNil,omitempty"`
-	CustomerNameEqualFold    *string  `json:"customernameEqualFold,omitempty"`
-	CustomerNameContainsFold *string  `json:"customernameContainsFold,omitempty"`
+	// "customer_name" field predicates.
+	CustomerName             *string  `json:"customerName,omitempty"`
+	CustomerNameNEQ          *string  `json:"customerNameNEQ,omitempty"`
+	CustomerNameIn           []string `json:"customerNameIn,omitempty"`
+	CustomerNameNotIn        []string `json:"customerNameNotIn,omitempty"`
+	CustomerNameGT           *string  `json:"customerNameGT,omitempty"`
+	CustomerNameGTE          *string  `json:"customerNameGTE,omitempty"`
+	CustomerNameLT           *string  `json:"customerNameLT,omitempty"`
+	CustomerNameLTE          *string  `json:"customerNameLTE,omitempty"`
+	CustomerNameContains     *string  `json:"customerNameContains,omitempty"`
+	CustomerNameHasPrefix    *string  `json:"customerNameHasPrefix,omitempty"`
+	CustomerNameHasSuffix    *string  `json:"customerNameHasSuffix,omitempty"`
+	CustomerNameIsNil        bool     `json:"customerNameIsNil,omitempty"`
+	CustomerNameNotNil       bool     `json:"customerNameNotNil,omitempty"`
+	CustomerNameEqualFold    *string  `json:"customerNameEqualFold,omitempty"`
+	CustomerNameContainsFold *string  `json:"customerNameContainsFold,omitempty"`
 
-	// "customerTaxID" field predicates.
-	CustomerTaxID             *string  `json:"customertaxid,omitempty"`
-	CustomerTaxIDNEQ          *string  `json:"customertaxidNEQ,omitempty"`
-	CustomerTaxIDIn           []string `json:"customertaxidIn,omitempty"`
-	CustomerTaxIDNotIn        []string `json:"customertaxidNotIn,omitempty"`
-	CustomerTaxIDGT           *string  `json:"customertaxidGT,omitempty"`
-	CustomerTaxIDGTE          *string  `json:"customertaxidGTE,omitempty"`
-	CustomerTaxIDLT           *string  `json:"customertaxidLT,omitempty"`
-	CustomerTaxIDLTE          *string  `json:"customertaxidLTE,omitempty"`
-	CustomerTaxIDContains     *string  `json:"customertaxidContains,omitempty"`
-	CustomerTaxIDHasPrefix    *string  `json:"customertaxidHasPrefix,omitempty"`
-	CustomerTaxIDHasSuffix    *string  `json:"customertaxidHasSuffix,omitempty"`
-	CustomerTaxIDIsNil        bool     `json:"customertaxidIsNil,omitempty"`
-	CustomerTaxIDNotNil       bool     `json:"customertaxidNotNil,omitempty"`
-	CustomerTaxIDEqualFold    *string  `json:"customertaxidEqualFold,omitempty"`
-	CustomerTaxIDContainsFold *string  `json:"customertaxidContainsFold,omitempty"`
+	// "customer_tax_id" field predicates.
+	CustomerTaxID             *string  `json:"customerTaxID,omitempty"`
+	CustomerTaxIDNEQ          *string  `json:"customerTaxIDNEQ,omitempty"`
+	CustomerTaxIDIn           []string `json:"customerTaxIDIn,omitempty"`
+	CustomerTaxIDNotIn        []string `json:"customerTaxIDNotIn,omitempty"`
+	CustomerTaxIDGT           *string  `json:"customerTaxIDGT,omitempty"`
+	CustomerTaxIDGTE          *string  `json:"customerTaxIDGTE,omitempty"`
+	CustomerTaxIDLT           *string  `json:"customerTaxIDLT,omitempty"`
+	CustomerTaxIDLTE          *string  `json:"customerTaxIDLTE,omitempty"`
+	CustomerTaxIDContains     *string  `json:"customerTaxIDContains,omitempty"`
+	CustomerTaxIDHasPrefix    *string  `json:"customerTaxIDHasPrefix,omitempty"`
+	CustomerTaxIDHasSuffix    *string  `json:"customerTaxIDHasSuffix,omitempty"`
+	CustomerTaxIDIsNil        bool     `json:"customerTaxIDIsNil,omitempty"`
+	CustomerTaxIDNotNil       bool     `json:"customerTaxIDNotNil,omitempty"`
+	CustomerTaxIDEqualFold    *string  `json:"customerTaxIDEqualFold,omitempty"`
+	CustomerTaxIDContainsFold *string  `json:"customerTaxIDContainsFold,omitempty"`
 
-	// "customerAddress" field predicates.
-	CustomerAddress             *string  `json:"customeraddress,omitempty"`
-	CustomerAddressNEQ          *string  `json:"customeraddressNEQ,omitempty"`
-	CustomerAddressIn           []string `json:"customeraddressIn,omitempty"`
-	CustomerAddressNotIn        []string `json:"customeraddressNotIn,omitempty"`
-	CustomerAddressGT           *string  `json:"customeraddressGT,omitempty"`
-	CustomerAddressGTE          *string  `json:"customeraddressGTE,omitempty"`
-	CustomerAddressLT           *string  `json:"customeraddressLT,omitempty"`
-	CustomerAddressLTE          *string  `json:"customeraddressLTE,omitempty"`
-	CustomerAddressContains     *string  `json:"customeraddressContains,omitempty"`
-	CustomerAddressHasPrefix    *string  `json:"customeraddressHasPrefix,omitempty"`
-	CustomerAddressHasSuffix    *string  `json:"customeraddressHasSuffix,omitempty"`
-	CustomerAddressIsNil        bool     `json:"customeraddressIsNil,omitempty"`
-	CustomerAddressNotNil       bool     `json:"customeraddressNotNil,omitempty"`
-	CustomerAddressEqualFold    *string  `json:"customeraddressEqualFold,omitempty"`
-	CustomerAddressContainsFold *string  `json:"customeraddressContainsFold,omitempty"`
+	// "customer_address" field predicates.
+	CustomerAddress             *string  `json:"customerAddress,omitempty"`
+	CustomerAddressNEQ          *string  `json:"customerAddressNEQ,omitempty"`
+	CustomerAddressIn           []string `json:"customerAddressIn,omitempty"`
+	CustomerAddressNotIn        []string `json:"customerAddressNotIn,omitempty"`
+	CustomerAddressGT           *string  `json:"customerAddressGT,omitempty"`
+	CustomerAddressGTE          *string  `json:"customerAddressGTE,omitempty"`
+	CustomerAddressLT           *string  `json:"customerAddressLT,omitempty"`
+	CustomerAddressLTE          *string  `json:"customerAddressLTE,omitempty"`
+	CustomerAddressContains     *string  `json:"customerAddressContains,omitempty"`
+	CustomerAddressHasPrefix    *string  `json:"customerAddressHasPrefix,omitempty"`
+	CustomerAddressHasSuffix    *string  `json:"customerAddressHasSuffix,omitempty"`
+	CustomerAddressIsNil        bool     `json:"customerAddressIsNil,omitempty"`
+	CustomerAddressNotNil       bool     `json:"customerAddressNotNil,omitempty"`
+	CustomerAddressEqualFold    *string  `json:"customerAddressEqualFold,omitempty"`
+	CustomerAddressContainsFold *string  `json:"customerAddressContainsFold,omitempty"`
 
-	// "customerCity" field predicates.
-	CustomerCity             *string  `json:"customercity,omitempty"`
-	CustomerCityNEQ          *string  `json:"customercityNEQ,omitempty"`
-	CustomerCityIn           []string `json:"customercityIn,omitempty"`
-	CustomerCityNotIn        []string `json:"customercityNotIn,omitempty"`
-	CustomerCityGT           *string  `json:"customercityGT,omitempty"`
-	CustomerCityGTE          *string  `json:"customercityGTE,omitempty"`
-	CustomerCityLT           *string  `json:"customercityLT,omitempty"`
-	CustomerCityLTE          *string  `json:"customercityLTE,omitempty"`
-	CustomerCityContains     *string  `json:"customercityContains,omitempty"`
-	CustomerCityHasPrefix    *string  `json:"customercityHasPrefix,omitempty"`
-	CustomerCityHasSuffix    *string  `json:"customercityHasSuffix,omitempty"`
-	CustomerCityIsNil        bool     `json:"customercityIsNil,omitempty"`
-	CustomerCityNotNil       bool     `json:"customercityNotNil,omitempty"`
-	CustomerCityEqualFold    *string  `json:"customercityEqualFold,omitempty"`
-	CustomerCityContainsFold *string  `json:"customercityContainsFold,omitempty"`
+	// "customer_city" field predicates.
+	CustomerCity             *string  `json:"customerCity,omitempty"`
+	CustomerCityNEQ          *string  `json:"customerCityNEQ,omitempty"`
+	CustomerCityIn           []string `json:"customerCityIn,omitempty"`
+	CustomerCityNotIn        []string `json:"customerCityNotIn,omitempty"`
+	CustomerCityGT           *string  `json:"customerCityGT,omitempty"`
+	CustomerCityGTE          *string  `json:"customerCityGTE,omitempty"`
+	CustomerCityLT           *string  `json:"customerCityLT,omitempty"`
+	CustomerCityLTE          *string  `json:"customerCityLTE,omitempty"`
+	CustomerCityContains     *string  `json:"customerCityContains,omitempty"`
+	CustomerCityHasPrefix    *string  `json:"customerCityHasPrefix,omitempty"`
+	CustomerCityHasSuffix    *string  `json:"customerCityHasSuffix,omitempty"`
+	CustomerCityIsNil        bool     `json:"customerCityIsNil,omitempty"`
+	CustomerCityNotNil       bool     `json:"customerCityNotNil,omitempty"`
+	CustomerCityEqualFold    *string  `json:"customerCityEqualFold,omitempty"`
+	CustomerCityContainsFold *string  `json:"customerCityContainsFold,omitempty"`
 
-	// "customerEmail" field predicates.
-	CustomerEmail             *string  `json:"customeremail,omitempty"`
-	CustomerEmailNEQ          *string  `json:"customeremailNEQ,omitempty"`
-	CustomerEmailIn           []string `json:"customeremailIn,omitempty"`
-	CustomerEmailNotIn        []string `json:"customeremailNotIn,omitempty"`
-	CustomerEmailGT           *string  `json:"customeremailGT,omitempty"`
-	CustomerEmailGTE          *string  `json:"customeremailGTE,omitempty"`
-	CustomerEmailLT           *string  `json:"customeremailLT,omitempty"`
-	CustomerEmailLTE          *string  `json:"customeremailLTE,omitempty"`
-	CustomerEmailContains     *string  `json:"customeremailContains,omitempty"`
-	CustomerEmailHasPrefix    *string  `json:"customeremailHasPrefix,omitempty"`
-	CustomerEmailHasSuffix    *string  `json:"customeremailHasSuffix,omitempty"`
-	CustomerEmailIsNil        bool     `json:"customeremailIsNil,omitempty"`
-	CustomerEmailNotNil       bool     `json:"customeremailNotNil,omitempty"`
-	CustomerEmailEqualFold    *string  `json:"customeremailEqualFold,omitempty"`
-	CustomerEmailContainsFold *string  `json:"customeremailContainsFold,omitempty"`
+	// "customer_email" field predicates.
+	CustomerEmail             *string  `json:"customerEmail,omitempty"`
+	CustomerEmailNEQ          *string  `json:"customerEmailNEQ,omitempty"`
+	CustomerEmailIn           []string `json:"customerEmailIn,omitempty"`
+	CustomerEmailNotIn        []string `json:"customerEmailNotIn,omitempty"`
+	CustomerEmailGT           *string  `json:"customerEmailGT,omitempty"`
+	CustomerEmailGTE          *string  `json:"customerEmailGTE,omitempty"`
+	CustomerEmailLT           *string  `json:"customerEmailLT,omitempty"`
+	CustomerEmailLTE          *string  `json:"customerEmailLTE,omitempty"`
+	CustomerEmailContains     *string  `json:"customerEmailContains,omitempty"`
+	CustomerEmailHasPrefix    *string  `json:"customerEmailHasPrefix,omitempty"`
+	CustomerEmailHasSuffix    *string  `json:"customerEmailHasSuffix,omitempty"`
+	CustomerEmailIsNil        bool     `json:"customerEmailIsNil,omitempty"`
+	CustomerEmailNotNil       bool     `json:"customerEmailNotNil,omitempty"`
+	CustomerEmailEqualFold    *string  `json:"customerEmailEqualFold,omitempty"`
+	CustomerEmailContainsFold *string  `json:"customerEmailContainsFold,omitempty"`
 
-	// "customerPhone" field predicates.
-	CustomerPhone             *string  `json:"customerphone,omitempty"`
-	CustomerPhoneNEQ          *string  `json:"customerphoneNEQ,omitempty"`
-	CustomerPhoneIn           []string `json:"customerphoneIn,omitempty"`
-	CustomerPhoneNotIn        []string `json:"customerphoneNotIn,omitempty"`
-	CustomerPhoneGT           *string  `json:"customerphoneGT,omitempty"`
-	CustomerPhoneGTE          *string  `json:"customerphoneGTE,omitempty"`
-	CustomerPhoneLT           *string  `json:"customerphoneLT,omitempty"`
-	CustomerPhoneLTE          *string  `json:"customerphoneLTE,omitempty"`
-	CustomerPhoneContains     *string  `json:"customerphoneContains,omitempty"`
-	CustomerPhoneHasPrefix    *string  `json:"customerphoneHasPrefix,omitempty"`
-	CustomerPhoneHasSuffix    *string  `json:"customerphoneHasSuffix,omitempty"`
-	CustomerPhoneIsNil        bool     `json:"customerphoneIsNil,omitempty"`
-	CustomerPhoneNotNil       bool     `json:"customerphoneNotNil,omitempty"`
-	CustomerPhoneEqualFold    *string  `json:"customerphoneEqualFold,omitempty"`
-	CustomerPhoneContainsFold *string  `json:"customerphoneContainsFold,omitempty"`
+	// "customer_phone" field predicates.
+	CustomerPhone             *string  `json:"customerPhone,omitempty"`
+	CustomerPhoneNEQ          *string  `json:"customerPhoneNEQ,omitempty"`
+	CustomerPhoneIn           []string `json:"customerPhoneIn,omitempty"`
+	CustomerPhoneNotIn        []string `json:"customerPhoneNotIn,omitempty"`
+	CustomerPhoneGT           *string  `json:"customerPhoneGT,omitempty"`
+	CustomerPhoneGTE          *string  `json:"customerPhoneGTE,omitempty"`
+	CustomerPhoneLT           *string  `json:"customerPhoneLT,omitempty"`
+	CustomerPhoneLTE          *string  `json:"customerPhoneLTE,omitempty"`
+	CustomerPhoneContains     *string  `json:"customerPhoneContains,omitempty"`
+	CustomerPhoneHasPrefix    *string  `json:"customerPhoneHasPrefix,omitempty"`
+	CustomerPhoneHasSuffix    *string  `json:"customerPhoneHasSuffix,omitempty"`
+	CustomerPhoneIsNil        bool     `json:"customerPhoneIsNil,omitempty"`
+	CustomerPhoneNotNil       bool     `json:"customerPhoneNotNil,omitempty"`
+	CustomerPhoneEqualFold    *string  `json:"customerPhoneEqualFold,omitempty"`
+	CustomerPhoneContainsFold *string  `json:"customerPhoneContainsFold,omitempty"`
 
 	// "items" field predicates.
 	Items             *string  `json:"items,omitempty"`
@@ -7267,107 +7267,107 @@ type InvoiceWhereInput struct {
 	NotesEqualFold    *string  `json:"notesEqualFold,omitempty"`
 	NotesContainsFold *string  `json:"notesContainsFold,omitempty"`
 
-	// "paymentMethod" field predicates.
-	PaymentMethod             *string  `json:"paymentmethod,omitempty"`
-	PaymentMethodNEQ          *string  `json:"paymentmethodNEQ,omitempty"`
-	PaymentMethodIn           []string `json:"paymentmethodIn,omitempty"`
-	PaymentMethodNotIn        []string `json:"paymentmethodNotIn,omitempty"`
-	PaymentMethodGT           *string  `json:"paymentmethodGT,omitempty"`
-	PaymentMethodGTE          *string  `json:"paymentmethodGTE,omitempty"`
-	PaymentMethodLT           *string  `json:"paymentmethodLT,omitempty"`
-	PaymentMethodLTE          *string  `json:"paymentmethodLTE,omitempty"`
-	PaymentMethodContains     *string  `json:"paymentmethodContains,omitempty"`
-	PaymentMethodHasPrefix    *string  `json:"paymentmethodHasPrefix,omitempty"`
-	PaymentMethodHasSuffix    *string  `json:"paymentmethodHasSuffix,omitempty"`
-	PaymentMethodIsNil        bool     `json:"paymentmethodIsNil,omitempty"`
-	PaymentMethodNotNil       bool     `json:"paymentmethodNotNil,omitempty"`
-	PaymentMethodEqualFold    *string  `json:"paymentmethodEqualFold,omitempty"`
-	PaymentMethodContainsFold *string  `json:"paymentmethodContainsFold,omitempty"`
+	// "payment_method" field predicates.
+	PaymentMethod             *string  `json:"paymentMethod,omitempty"`
+	PaymentMethodNEQ          *string  `json:"paymentMethodNEQ,omitempty"`
+	PaymentMethodIn           []string `json:"paymentMethodIn,omitempty"`
+	PaymentMethodNotIn        []string `json:"paymentMethodNotIn,omitempty"`
+	PaymentMethodGT           *string  `json:"paymentMethodGT,omitempty"`
+	PaymentMethodGTE          *string  `json:"paymentMethodGTE,omitempty"`
+	PaymentMethodLT           *string  `json:"paymentMethodLT,omitempty"`
+	PaymentMethodLTE          *string  `json:"paymentMethodLTE,omitempty"`
+	PaymentMethodContains     *string  `json:"paymentMethodContains,omitempty"`
+	PaymentMethodHasPrefix    *string  `json:"paymentMethodHasPrefix,omitempty"`
+	PaymentMethodHasSuffix    *string  `json:"paymentMethodHasSuffix,omitempty"`
+	PaymentMethodIsNil        bool     `json:"paymentMethodIsNil,omitempty"`
+	PaymentMethodNotNil       bool     `json:"paymentMethodNotNil,omitempty"`
+	PaymentMethodEqualFold    *string  `json:"paymentMethodEqualFold,omitempty"`
+	PaymentMethodContainsFold *string  `json:"paymentMethodContainsFold,omitempty"`
 
-	// "bankName" field predicates.
-	BankName             *string  `json:"bankname,omitempty"`
-	BankNameNEQ          *string  `json:"banknameNEQ,omitempty"`
-	BankNameIn           []string `json:"banknameIn,omitempty"`
-	BankNameNotIn        []string `json:"banknameNotIn,omitempty"`
-	BankNameGT           *string  `json:"banknameGT,omitempty"`
-	BankNameGTE          *string  `json:"banknameGTE,omitempty"`
-	BankNameLT           *string  `json:"banknameLT,omitempty"`
-	BankNameLTE          *string  `json:"banknameLTE,omitempty"`
-	BankNameContains     *string  `json:"banknameContains,omitempty"`
-	BankNameHasPrefix    *string  `json:"banknameHasPrefix,omitempty"`
-	BankNameHasSuffix    *string  `json:"banknameHasSuffix,omitempty"`
-	BankNameIsNil        bool     `json:"banknameIsNil,omitempty"`
-	BankNameNotNil       bool     `json:"banknameNotNil,omitempty"`
-	BankNameEqualFold    *string  `json:"banknameEqualFold,omitempty"`
-	BankNameContainsFold *string  `json:"banknameContainsFold,omitempty"`
+	// "bank_name" field predicates.
+	BankName             *string  `json:"bankName,omitempty"`
+	BankNameNEQ          *string  `json:"bankNameNEQ,omitempty"`
+	BankNameIn           []string `json:"bankNameIn,omitempty"`
+	BankNameNotIn        []string `json:"bankNameNotIn,omitempty"`
+	BankNameGT           *string  `json:"bankNameGT,omitempty"`
+	BankNameGTE          *string  `json:"bankNameGTE,omitempty"`
+	BankNameLT           *string  `json:"bankNameLT,omitempty"`
+	BankNameLTE          *string  `json:"bankNameLTE,omitempty"`
+	BankNameContains     *string  `json:"bankNameContains,omitempty"`
+	BankNameHasPrefix    *string  `json:"bankNameHasPrefix,omitempty"`
+	BankNameHasSuffix    *string  `json:"bankNameHasSuffix,omitempty"`
+	BankNameIsNil        bool     `json:"bankNameIsNil,omitempty"`
+	BankNameNotNil       bool     `json:"bankNameNotNil,omitempty"`
+	BankNameEqualFold    *string  `json:"bankNameEqualFold,omitempty"`
+	BankNameContainsFold *string  `json:"bankNameContainsFold,omitempty"`
 
-	// "bankAgency" field predicates.
-	BankAgency             *string  `json:"bankagency,omitempty"`
-	BankAgencyNEQ          *string  `json:"bankagencyNEQ,omitempty"`
-	BankAgencyIn           []string `json:"bankagencyIn,omitempty"`
-	BankAgencyNotIn        []string `json:"bankagencyNotIn,omitempty"`
-	BankAgencyGT           *string  `json:"bankagencyGT,omitempty"`
-	BankAgencyGTE          *string  `json:"bankagencyGTE,omitempty"`
-	BankAgencyLT           *string  `json:"bankagencyLT,omitempty"`
-	BankAgencyLTE          *string  `json:"bankagencyLTE,omitempty"`
-	BankAgencyContains     *string  `json:"bankagencyContains,omitempty"`
-	BankAgencyHasPrefix    *string  `json:"bankagencyHasPrefix,omitempty"`
-	BankAgencyHasSuffix    *string  `json:"bankagencyHasSuffix,omitempty"`
-	BankAgencyIsNil        bool     `json:"bankagencyIsNil,omitempty"`
-	BankAgencyNotNil       bool     `json:"bankagencyNotNil,omitempty"`
-	BankAgencyEqualFold    *string  `json:"bankagencyEqualFold,omitempty"`
-	BankAgencyContainsFold *string  `json:"bankagencyContainsFold,omitempty"`
+	// "bank_agency" field predicates.
+	BankAgency             *string  `json:"bankAgency,omitempty"`
+	BankAgencyNEQ          *string  `json:"bankAgencyNEQ,omitempty"`
+	BankAgencyIn           []string `json:"bankAgencyIn,omitempty"`
+	BankAgencyNotIn        []string `json:"bankAgencyNotIn,omitempty"`
+	BankAgencyGT           *string  `json:"bankAgencyGT,omitempty"`
+	BankAgencyGTE          *string  `json:"bankAgencyGTE,omitempty"`
+	BankAgencyLT           *string  `json:"bankAgencyLT,omitempty"`
+	BankAgencyLTE          *string  `json:"bankAgencyLTE,omitempty"`
+	BankAgencyContains     *string  `json:"bankAgencyContains,omitempty"`
+	BankAgencyHasPrefix    *string  `json:"bankAgencyHasPrefix,omitempty"`
+	BankAgencyHasSuffix    *string  `json:"bankAgencyHasSuffix,omitempty"`
+	BankAgencyIsNil        bool     `json:"bankAgencyIsNil,omitempty"`
+	BankAgencyNotNil       bool     `json:"bankAgencyNotNil,omitempty"`
+	BankAgencyEqualFold    *string  `json:"bankAgencyEqualFold,omitempty"`
+	BankAgencyContainsFold *string  `json:"bankAgencyContainsFold,omitempty"`
 
-	// "bankAccountNumber" field predicates.
-	BankAccountNumber             *string  `json:"bankaccountnumber,omitempty"`
-	BankAccountNumberNEQ          *string  `json:"bankaccountnumberNEQ,omitempty"`
-	BankAccountNumberIn           []string `json:"bankaccountnumberIn,omitempty"`
-	BankAccountNumberNotIn        []string `json:"bankaccountnumberNotIn,omitempty"`
-	BankAccountNumberGT           *string  `json:"bankaccountnumberGT,omitempty"`
-	BankAccountNumberGTE          *string  `json:"bankaccountnumberGTE,omitempty"`
-	BankAccountNumberLT           *string  `json:"bankaccountnumberLT,omitempty"`
-	BankAccountNumberLTE          *string  `json:"bankaccountnumberLTE,omitempty"`
-	BankAccountNumberContains     *string  `json:"bankaccountnumberContains,omitempty"`
-	BankAccountNumberHasPrefix    *string  `json:"bankaccountnumberHasPrefix,omitempty"`
-	BankAccountNumberHasSuffix    *string  `json:"bankaccountnumberHasSuffix,omitempty"`
-	BankAccountNumberIsNil        bool     `json:"bankaccountnumberIsNil,omitempty"`
-	BankAccountNumberNotNil       bool     `json:"bankaccountnumberNotNil,omitempty"`
-	BankAccountNumberEqualFold    *string  `json:"bankaccountnumberEqualFold,omitempty"`
-	BankAccountNumberContainsFold *string  `json:"bankaccountnumberContainsFold,omitempty"`
+	// "bank_account_number" field predicates.
+	BankAccountNumber             *string  `json:"bankAccountNumber,omitempty"`
+	BankAccountNumberNEQ          *string  `json:"bankAccountNumberNEQ,omitempty"`
+	BankAccountNumberIn           []string `json:"bankAccountNumberIn,omitempty"`
+	BankAccountNumberNotIn        []string `json:"bankAccountNumberNotIn,omitempty"`
+	BankAccountNumberGT           *string  `json:"bankAccountNumberGT,omitempty"`
+	BankAccountNumberGTE          *string  `json:"bankAccountNumberGTE,omitempty"`
+	BankAccountNumberLT           *string  `json:"bankAccountNumberLT,omitempty"`
+	BankAccountNumberLTE          *string  `json:"bankAccountNumberLTE,omitempty"`
+	BankAccountNumberContains     *string  `json:"bankAccountNumberContains,omitempty"`
+	BankAccountNumberHasPrefix    *string  `json:"bankAccountNumberHasPrefix,omitempty"`
+	BankAccountNumberHasSuffix    *string  `json:"bankAccountNumberHasSuffix,omitempty"`
+	BankAccountNumberIsNil        bool     `json:"bankAccountNumberIsNil,omitempty"`
+	BankAccountNumberNotNil       bool     `json:"bankAccountNumberNotNil,omitempty"`
+	BankAccountNumberEqualFold    *string  `json:"bankAccountNumberEqualFold,omitempty"`
+	BankAccountNumberContainsFold *string  `json:"bankAccountNumberContainsFold,omitempty"`
 
-	// "bankAccountName" field predicates.
-	BankAccountName             *string  `json:"bankaccountname,omitempty"`
-	BankAccountNameNEQ          *string  `json:"bankaccountnameNEQ,omitempty"`
-	BankAccountNameIn           []string `json:"bankaccountnameIn,omitempty"`
-	BankAccountNameNotIn        []string `json:"bankaccountnameNotIn,omitempty"`
-	BankAccountNameGT           *string  `json:"bankaccountnameGT,omitempty"`
-	BankAccountNameGTE          *string  `json:"bankaccountnameGTE,omitempty"`
-	BankAccountNameLT           *string  `json:"bankaccountnameLT,omitempty"`
-	BankAccountNameLTE          *string  `json:"bankaccountnameLTE,omitempty"`
-	BankAccountNameContains     *string  `json:"bankaccountnameContains,omitempty"`
-	BankAccountNameHasPrefix    *string  `json:"bankaccountnameHasPrefix,omitempty"`
-	BankAccountNameHasSuffix    *string  `json:"bankaccountnameHasSuffix,omitempty"`
-	BankAccountNameIsNil        bool     `json:"bankaccountnameIsNil,omitempty"`
-	BankAccountNameNotNil       bool     `json:"bankaccountnameNotNil,omitempty"`
-	BankAccountNameEqualFold    *string  `json:"bankaccountnameEqualFold,omitempty"`
-	BankAccountNameContainsFold *string  `json:"bankaccountnameContainsFold,omitempty"`
+	// "bank_account_name" field predicates.
+	BankAccountName             *string  `json:"bankAccountName,omitempty"`
+	BankAccountNameNEQ          *string  `json:"bankAccountNameNEQ,omitempty"`
+	BankAccountNameIn           []string `json:"bankAccountNameIn,omitempty"`
+	BankAccountNameNotIn        []string `json:"bankAccountNameNotIn,omitempty"`
+	BankAccountNameGT           *string  `json:"bankAccountNameGT,omitempty"`
+	BankAccountNameGTE          *string  `json:"bankAccountNameGTE,omitempty"`
+	BankAccountNameLT           *string  `json:"bankAccountNameLT,omitempty"`
+	BankAccountNameLTE          *string  `json:"bankAccountNameLTE,omitempty"`
+	BankAccountNameContains     *string  `json:"bankAccountNameContains,omitempty"`
+	BankAccountNameHasPrefix    *string  `json:"bankAccountNameHasPrefix,omitempty"`
+	BankAccountNameHasSuffix    *string  `json:"bankAccountNameHasSuffix,omitempty"`
+	BankAccountNameIsNil        bool     `json:"bankAccountNameIsNil,omitempty"`
+	BankAccountNameNotNil       bool     `json:"bankAccountNameNotNil,omitempty"`
+	BankAccountNameEqualFold    *string  `json:"bankAccountNameEqualFold,omitempty"`
+	BankAccountNameContainsFold *string  `json:"bankAccountNameContainsFold,omitempty"`
 
-	// "storageURI" field predicates.
-	StorageURI             *string  `json:"storageuri,omitempty"`
-	StorageURINEQ          *string  `json:"storageuriNEQ,omitempty"`
-	StorageURIIn           []string `json:"storageuriIn,omitempty"`
-	StorageURINotIn        []string `json:"storageuriNotIn,omitempty"`
-	StorageURIGT           *string  `json:"storageuriGT,omitempty"`
-	StorageURIGTE          *string  `json:"storageuriGTE,omitempty"`
-	StorageURILT           *string  `json:"storageuriLT,omitempty"`
-	StorageURILTE          *string  `json:"storageuriLTE,omitempty"`
-	StorageURIContains     *string  `json:"storageuriContains,omitempty"`
-	StorageURIHasPrefix    *string  `json:"storageuriHasPrefix,omitempty"`
-	StorageURIHasSuffix    *string  `json:"storageuriHasSuffix,omitempty"`
-	StorageURIIsNil        bool     `json:"storageuriIsNil,omitempty"`
-	StorageURINotNil       bool     `json:"storageuriNotNil,omitempty"`
-	StorageURIEqualFold    *string  `json:"storageuriEqualFold,omitempty"`
-	StorageURIContainsFold *string  `json:"storageuriContainsFold,omitempty"`
+	// "storage_URI" field predicates.
+	StorageURI             *string  `json:"storageURI,omitempty"`
+	StorageURINEQ          *string  `json:"storageURINEQ,omitempty"`
+	StorageURIIn           []string `json:"storageURIIn,omitempty"`
+	StorageURINotIn        []string `json:"storageURINotIn,omitempty"`
+	StorageURIGT           *string  `json:"storageURIGT,omitempty"`
+	StorageURIGTE          *string  `json:"storageURIGTE,omitempty"`
+	StorageURILT           *string  `json:"storageURILT,omitempty"`
+	StorageURILTE          *string  `json:"storageURILTE,omitempty"`
+	StorageURIContains     *string  `json:"storageURIContains,omitempty"`
+	StorageURIHasPrefix    *string  `json:"storageURIHasPrefix,omitempty"`
+	StorageURIHasSuffix    *string  `json:"storageURIHasSuffix,omitempty"`
+	StorageURIIsNil        bool     `json:"storageURIIsNil,omitempty"`
+	StorageURINotNil       bool     `json:"storageURINotNil,omitempty"`
+	StorageURIEqualFold    *string  `json:"storageURIEqualFold,omitempty"`
+	StorageURIContainsFold *string  `json:"storageURIContainsFold,omitempty"`
 
 	// "URL" field predicates.
 	URL             *string  `json:"url,omitempty"`
@@ -7434,7 +7434,7 @@ type InvoiceWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "issuedBy" edge predicates.
+	// "issued_by" edge predicates.
 	HasIssuedBy     *bool             `json:"hasIssuedBy,omitempty"`
 	HasIssuedByWith []*UserWhereInput `json:"hasIssuedByWith,omitempty"`
 
@@ -9007,37 +9007,37 @@ type LoanWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "is_lending" field predicates.
 	IsLending    *bool `json:"isLending,omitempty"`
@@ -9933,37 +9933,37 @@ type LoanScheduleWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "amount" field predicates.
 	Amount      *float64  `json:"amount,omitempty"`
@@ -10517,37 +10517,37 @@ type MemberSignupTokenWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -10632,35 +10632,35 @@ type MemberSignupTokenWhereInput struct {
 	NoteEqualFold    *string  `json:"noteEqualFold,omitempty"`
 	NoteContainsFold *string  `json:"noteContainsFold,omitempty"`
 
-	// "numberAccessed" field predicates.
-	NumberAccessed      *int  `json:"numberaccessed,omitempty"`
-	NumberAccessedNEQ   *int  `json:"numberaccessedNEQ,omitempty"`
-	NumberAccessedIn    []int `json:"numberaccessedIn,omitempty"`
-	NumberAccessedNotIn []int `json:"numberaccessedNotIn,omitempty"`
-	NumberAccessedGT    *int  `json:"numberaccessedGT,omitempty"`
-	NumberAccessedGTE   *int  `json:"numberaccessedGTE,omitempty"`
-	NumberAccessedLT    *int  `json:"numberaccessedLT,omitempty"`
-	NumberAccessedLTE   *int  `json:"numberaccessedLTE,omitempty"`
+	// "number_accessed" field predicates.
+	NumberAccessed      *int  `json:"numberAccessed,omitempty"`
+	NumberAccessedNEQ   *int  `json:"numberAccessedNEQ,omitempty"`
+	NumberAccessedIn    []int `json:"numberAccessedIn,omitempty"`
+	NumberAccessedNotIn []int `json:"numberAccessedNotIn,omitempty"`
+	NumberAccessedGT    *int  `json:"numberAccessedGT,omitempty"`
+	NumberAccessedGTE   *int  `json:"numberAccessedGTE,omitempty"`
+	NumberAccessedLT    *int  `json:"numberAccessedLT,omitempty"`
+	NumberAccessedLTE   *int  `json:"numberAccessedLTE,omitempty"`
 
-	// "expiresAt" field predicates.
-	ExpiresAt      *time.Time  `json:"expiresat,omitempty"`
-	ExpiresAtNEQ   *time.Time  `json:"expiresatNEQ,omitempty"`
-	ExpiresAtIn    []time.Time `json:"expiresatIn,omitempty"`
-	ExpiresAtNotIn []time.Time `json:"expiresatNotIn,omitempty"`
-	ExpiresAtGT    *time.Time  `json:"expiresatGT,omitempty"`
-	ExpiresAtGTE   *time.Time  `json:"expiresatGTE,omitempty"`
-	ExpiresAtLT    *time.Time  `json:"expiresatLT,omitempty"`
-	ExpiresAtLTE   *time.Time  `json:"expiresatLTE,omitempty"`
+	// "expires_at" field predicates.
+	ExpiresAt      *time.Time  `json:"expiresAt,omitempty"`
+	ExpiresAtNEQ   *time.Time  `json:"expiresAtNEQ,omitempty"`
+	ExpiresAtIn    []time.Time `json:"expiresAtIn,omitempty"`
+	ExpiresAtNotIn []time.Time `json:"expiresAtNotIn,omitempty"`
+	ExpiresAtGT    *time.Time  `json:"expiresAtGT,omitempty"`
+	ExpiresAtGTE   *time.Time  `json:"expiresAtGTE,omitempty"`
+	ExpiresAtLT    *time.Time  `json:"expiresAtLT,omitempty"`
+	ExpiresAtLTE   *time.Time  `json:"expiresAtLTE,omitempty"`
 
-	// "alreadyUsed" field predicates.
-	AlreadyUsed    *bool `json:"alreadyused,omitempty"`
-	AlreadyUsedNEQ *bool `json:"alreadyusedNEQ,omitempty"`
+	// "already_used" field predicates.
+	AlreadyUsed    *bool `json:"alreadyUsed,omitempty"`
+	AlreadyUsedNEQ *bool `json:"alreadyUsedNEQ,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "createdBy" edge predicates.
+	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
 }
@@ -11169,47 +11169,47 @@ type PayableWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
-	// "entryGroup" field predicates.
-	EntryGroup      *int  `json:"entrygroup,omitempty"`
-	EntryGroupNEQ   *int  `json:"entrygroupNEQ,omitempty"`
-	EntryGroupIn    []int `json:"entrygroupIn,omitempty"`
-	EntryGroupNotIn []int `json:"entrygroupNotIn,omitempty"`
-	EntryGroupGT    *int  `json:"entrygroupGT,omitempty"`
-	EntryGroupGTE   *int  `json:"entrygroupGTE,omitempty"`
-	EntryGroupLT    *int  `json:"entrygroupLT,omitempty"`
-	EntryGroupLTE   *int  `json:"entrygroupLTE,omitempty"`
+	// "entry_group" field predicates.
+	EntryGroup      *int  `json:"entryGroup,omitempty"`
+	EntryGroupNEQ   *int  `json:"entryGroupNEQ,omitempty"`
+	EntryGroupIn    []int `json:"entryGroupIn,omitempty"`
+	EntryGroupNotIn []int `json:"entryGroupNotIn,omitempty"`
+	EntryGroupGT    *int  `json:"entryGroupGT,omitempty"`
+	EntryGroupGTE   *int  `json:"entryGroupGTE,omitempty"`
+	EntryGroupLT    *int  `json:"entryGroupLT,omitempty"`
+	EntryGroupLTE   *int  `json:"entryGroupLTE,omitempty"`
 
 	// "date" field predicates.
 	Date      *time.Time  `json:"date,omitempty"`
@@ -11236,45 +11236,45 @@ type PayableWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "amountInDefault" field predicates.
-	AmountInDefault      *float64  `json:"amountindefault,omitempty"`
-	AmountInDefaultNEQ   *float64  `json:"amountindefaultNEQ,omitempty"`
-	AmountInDefaultIn    []float64 `json:"amountindefaultIn,omitempty"`
-	AmountInDefaultNotIn []float64 `json:"amountindefaultNotIn,omitempty"`
-	AmountInDefaultGT    *float64  `json:"amountindefaultGT,omitempty"`
-	AmountInDefaultGTE   *float64  `json:"amountindefaultGTE,omitempty"`
-	AmountInDefaultLT    *float64  `json:"amountindefaultLT,omitempty"`
-	AmountInDefaultLTE   *float64  `json:"amountindefaultLTE,omitempty"`
+	// "amount_in_default" field predicates.
+	AmountInDefault      *float64  `json:"amountInDefault,omitempty"`
+	AmountInDefaultNEQ   *float64  `json:"amountInDefaultNEQ,omitempty"`
+	AmountInDefaultIn    []float64 `json:"amountInDefaultIn,omitempty"`
+	AmountInDefaultNotIn []float64 `json:"amountInDefaultNotIn,omitempty"`
+	AmountInDefaultGT    *float64  `json:"amountInDefaultGT,omitempty"`
+	AmountInDefaultGTE   *float64  `json:"amountInDefaultGTE,omitempty"`
+	AmountInDefaultLT    *float64  `json:"amountInDefaultLT,omitempty"`
+	AmountInDefaultLTE   *float64  `json:"amountInDefaultLTE,omitempty"`
 
-	// "outstandingBalance" field predicates.
-	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
-	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
-	OutstandingBalanceIn    []float64 `json:"outstandingbalanceIn,omitempty"`
-	OutstandingBalanceNotIn []float64 `json:"outstandingbalanceNotIn,omitempty"`
-	OutstandingBalanceGT    *float64  `json:"outstandingbalanceGT,omitempty"`
-	OutstandingBalanceGTE   *float64  `json:"outstandingbalanceGTE,omitempty"`
-	OutstandingBalanceLT    *float64  `json:"outstandingbalanceLT,omitempty"`
-	OutstandingBalanceLTE   *float64  `json:"outstandingbalanceLTE,omitempty"`
+	// "outstanding_balance" field predicates.
+	OutstandingBalance      *float64  `json:"outstandingBalance,omitempty"`
+	OutstandingBalanceNEQ   *float64  `json:"outstandingBalanceNEQ,omitempty"`
+	OutstandingBalanceIn    []float64 `json:"outstandingBalanceIn,omitempty"`
+	OutstandingBalanceNotIn []float64 `json:"outstandingBalanceNotIn,omitempty"`
+	OutstandingBalanceGT    *float64  `json:"outstandingBalanceGT,omitempty"`
+	OutstandingBalanceGTE   *float64  `json:"outstandingBalanceGTE,omitempty"`
+	OutstandingBalanceLT    *float64  `json:"outstandingBalanceLT,omitempty"`
+	OutstandingBalanceLTE   *float64  `json:"outstandingBalanceLTE,omitempty"`
 
-	// "totalTransaction" field predicates.
-	TotalTransaction      *float64  `json:"totaltransaction,omitempty"`
-	TotalTransactionNEQ   *float64  `json:"totaltransactionNEQ,omitempty"`
-	TotalTransactionIn    []float64 `json:"totaltransactionIn,omitempty"`
-	TotalTransactionNotIn []float64 `json:"totaltransactionNotIn,omitempty"`
-	TotalTransactionGT    *float64  `json:"totaltransactionGT,omitempty"`
-	TotalTransactionGTE   *float64  `json:"totaltransactionGTE,omitempty"`
-	TotalTransactionLT    *float64  `json:"totaltransactionLT,omitempty"`
-	TotalTransactionLTE   *float64  `json:"totaltransactionLTE,omitempty"`
+	// "total_transaction" field predicates.
+	TotalTransaction      *float64  `json:"totalTransaction,omitempty"`
+	TotalTransactionNEQ   *float64  `json:"totalTransactionNEQ,omitempty"`
+	TotalTransactionIn    []float64 `json:"totalTransactionIn,omitempty"`
+	TotalTransactionNotIn []float64 `json:"totalTransactionNotIn,omitempty"`
+	TotalTransactionGT    *float64  `json:"totalTransactionGT,omitempty"`
+	TotalTransactionGTE   *float64  `json:"totalTransactionGTE,omitempty"`
+	TotalTransactionLT    *float64  `json:"totalTransactionLT,omitempty"`
+	TotalTransactionLTE   *float64  `json:"totalTransactionLTE,omitempty"`
 
-	// "dueDate" field predicates.
-	DueDate      *time.Time  `json:"duedate,omitempty"`
-	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
-	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
-	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
-	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
-	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
-	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
-	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
+	// "due_date" field predicates.
+	DueDate      *time.Time  `json:"dueDate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"dueDateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"dueDateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"dueDateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"dueDateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"dueDateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"dueDateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"dueDateLTE,omitempty"`
 
 	// "status" field predicates.
 	Status      *payable.Status  `json:"status,omitempty"`
@@ -11701,37 +11701,37 @@ type ProductWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "stock" field predicates.
 	Stock      *int  `json:"stock,omitempty"`
@@ -11991,37 +11991,37 @@ type ProjectWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -12053,49 +12053,49 @@ type ProjectWhereInput struct {
 	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
 	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
 
-	// "plannedStartDate" field predicates.
-	PlannedStartDate      *time.Time  `json:"plannedstartdate,omitempty"`
-	PlannedStartDateNEQ   *time.Time  `json:"plannedstartdateNEQ,omitempty"`
-	PlannedStartDateIn    []time.Time `json:"plannedstartdateIn,omitempty"`
-	PlannedStartDateNotIn []time.Time `json:"plannedstartdateNotIn,omitempty"`
-	PlannedStartDateGT    *time.Time  `json:"plannedstartdateGT,omitempty"`
-	PlannedStartDateGTE   *time.Time  `json:"plannedstartdateGTE,omitempty"`
-	PlannedStartDateLT    *time.Time  `json:"plannedstartdateLT,omitempty"`
-	PlannedStartDateLTE   *time.Time  `json:"plannedstartdateLTE,omitempty"`
+	// "planned_start_date" field predicates.
+	PlannedStartDate      *time.Time  `json:"plannedStartDate,omitempty"`
+	PlannedStartDateNEQ   *time.Time  `json:"plannedStartDateNEQ,omitempty"`
+	PlannedStartDateIn    []time.Time `json:"plannedStartDateIn,omitempty"`
+	PlannedStartDateNotIn []time.Time `json:"plannedStartDateNotIn,omitempty"`
+	PlannedStartDateGT    *time.Time  `json:"plannedStartDateGT,omitempty"`
+	PlannedStartDateGTE   *time.Time  `json:"plannedStartDateGTE,omitempty"`
+	PlannedStartDateLT    *time.Time  `json:"plannedStartDateLT,omitempty"`
+	PlannedStartDateLTE   *time.Time  `json:"plannedStartDateLTE,omitempty"`
 
-	// "actualStartDate" field predicates.
-	ActualStartDate       *time.Time  `json:"actualstartdate,omitempty"`
-	ActualStartDateNEQ    *time.Time  `json:"actualstartdateNEQ,omitempty"`
-	ActualStartDateIn     []time.Time `json:"actualstartdateIn,omitempty"`
-	ActualStartDateNotIn  []time.Time `json:"actualstartdateNotIn,omitempty"`
-	ActualStartDateGT     *time.Time  `json:"actualstartdateGT,omitempty"`
-	ActualStartDateGTE    *time.Time  `json:"actualstartdateGTE,omitempty"`
-	ActualStartDateLT     *time.Time  `json:"actualstartdateLT,omitempty"`
-	ActualStartDateLTE    *time.Time  `json:"actualstartdateLTE,omitempty"`
-	ActualStartDateIsNil  bool        `json:"actualstartdateIsNil,omitempty"`
-	ActualStartDateNotNil bool        `json:"actualstartdateNotNil,omitempty"`
+	// "actual_start_date" field predicates.
+	ActualStartDate       *time.Time  `json:"actualStartDate,omitempty"`
+	ActualStartDateNEQ    *time.Time  `json:"actualStartDateNEQ,omitempty"`
+	ActualStartDateIn     []time.Time `json:"actualStartDateIn,omitempty"`
+	ActualStartDateNotIn  []time.Time `json:"actualStartDateNotIn,omitempty"`
+	ActualStartDateGT     *time.Time  `json:"actualStartDateGT,omitempty"`
+	ActualStartDateGTE    *time.Time  `json:"actualStartDateGTE,omitempty"`
+	ActualStartDateLT     *time.Time  `json:"actualStartDateLT,omitempty"`
+	ActualStartDateLTE    *time.Time  `json:"actualStartDateLTE,omitempty"`
+	ActualStartDateIsNil  bool        `json:"actualStartDateIsNil,omitempty"`
+	ActualStartDateNotNil bool        `json:"actualStartDateNotNil,omitempty"`
 
-	// "plannedEndDate" field predicates.
-	PlannedEndDate      *time.Time  `json:"plannedenddate,omitempty"`
-	PlannedEndDateNEQ   *time.Time  `json:"plannedenddateNEQ,omitempty"`
-	PlannedEndDateIn    []time.Time `json:"plannedenddateIn,omitempty"`
-	PlannedEndDateNotIn []time.Time `json:"plannedenddateNotIn,omitempty"`
-	PlannedEndDateGT    *time.Time  `json:"plannedenddateGT,omitempty"`
-	PlannedEndDateGTE   *time.Time  `json:"plannedenddateGTE,omitempty"`
-	PlannedEndDateLT    *time.Time  `json:"plannedenddateLT,omitempty"`
-	PlannedEndDateLTE   *time.Time  `json:"plannedenddateLTE,omitempty"`
+	// "planned_end_date" field predicates.
+	PlannedEndDate      *time.Time  `json:"plannedEndDate,omitempty"`
+	PlannedEndDateNEQ   *time.Time  `json:"plannedEndDateNEQ,omitempty"`
+	PlannedEndDateIn    []time.Time `json:"plannedEndDateIn,omitempty"`
+	PlannedEndDateNotIn []time.Time `json:"plannedEndDateNotIn,omitempty"`
+	PlannedEndDateGT    *time.Time  `json:"plannedEndDateGT,omitempty"`
+	PlannedEndDateGTE   *time.Time  `json:"plannedEndDateGTE,omitempty"`
+	PlannedEndDateLT    *time.Time  `json:"plannedEndDateLT,omitempty"`
+	PlannedEndDateLTE   *time.Time  `json:"plannedEndDateLTE,omitempty"`
 
-	// "actualEndDate" field predicates.
-	ActualEndDate       *time.Time  `json:"actualenddate,omitempty"`
-	ActualEndDateNEQ    *time.Time  `json:"actualenddateNEQ,omitempty"`
-	ActualEndDateIn     []time.Time `json:"actualenddateIn,omitempty"`
-	ActualEndDateNotIn  []time.Time `json:"actualenddateNotIn,omitempty"`
-	ActualEndDateGT     *time.Time  `json:"actualenddateGT,omitempty"`
-	ActualEndDateGTE    *time.Time  `json:"actualenddateGTE,omitempty"`
-	ActualEndDateLT     *time.Time  `json:"actualenddateLT,omitempty"`
-	ActualEndDateLTE    *time.Time  `json:"actualenddateLTE,omitempty"`
-	ActualEndDateIsNil  bool        `json:"actualenddateIsNil,omitempty"`
-	ActualEndDateNotNil bool        `json:"actualenddateNotNil,omitempty"`
+	// "actual_end_date" field predicates.
+	ActualEndDate       *time.Time  `json:"actualEndDate,omitempty"`
+	ActualEndDateNEQ    *time.Time  `json:"actualEndDateNEQ,omitempty"`
+	ActualEndDateIn     []time.Time `json:"actualEndDateIn,omitempty"`
+	ActualEndDateNotIn  []time.Time `json:"actualEndDateNotIn,omitempty"`
+	ActualEndDateGT     *time.Time  `json:"actualEndDateGT,omitempty"`
+	ActualEndDateGTE    *time.Time  `json:"actualEndDateGTE,omitempty"`
+	ActualEndDateLT     *time.Time  `json:"actualEndDateLT,omitempty"`
+	ActualEndDateLTE    *time.Time  `json:"actualEndDateLTE,omitempty"`
+	ActualEndDateIsNil  bool        `json:"actualEndDateIsNil,omitempty"`
+	ActualEndDateNotNil bool        `json:"actualEndDateNotNil,omitempty"`
 
 	// "progress" field predicates.
 	Progress      *float64  `json:"progress,omitempty"`
@@ -12117,7 +12117,7 @@ type ProjectWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "createdBy" edge predicates.
+	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
 
@@ -12662,15 +12662,15 @@ type ProjectMilestoneWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "dueDate" field predicates.
-	DueDate      *time.Time  `json:"duedate,omitempty"`
-	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
-	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
-	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
-	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
-	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
-	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
-	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
+	// "due_date" field predicates.
+	DueDate      *time.Time  `json:"dueDate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"dueDateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"dueDateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"dueDateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"dueDateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"dueDateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"dueDateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"dueDateLTE,omitempty"`
 
 	// "project" edge predicates.
 	HasProject     *bool                `json:"hasProject,omitempty"`
@@ -12881,47 +12881,91 @@ type ProjectTaskWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt       *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ    *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn     []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn  []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT     *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE    *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT     *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE    *time.Time  `json:"createdatLTE,omitempty"`
-	CreatedAtIsNil  bool        `json:"createdatIsNil,omitempty"`
-	CreatedAtNotNil bool        `json:"createdatNotNil,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "name" field predicates.
-	Name             *string  `json:"name,omitempty"`
-	NameNEQ          *string  `json:"nameNEQ,omitempty"`
-	NameIn           []string `json:"nameIn,omitempty"`
-	NameNotIn        []string `json:"nameNotIn,omitempty"`
-	NameGT           *string  `json:"nameGT,omitempty"`
-	NameGTE          *string  `json:"nameGTE,omitempty"`
-	NameLT           *string  `json:"nameLT,omitempty"`
-	NameLTE          *string  `json:"nameLTE,omitempty"`
-	NameContains     *string  `json:"nameContains,omitempty"`
-	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
-	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
-	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
-	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "assigneeName" field predicates.
-	AssigneeName             *string  `json:"assigneename,omitempty"`
-	AssigneeNameNEQ          *string  `json:"assigneenameNEQ,omitempty"`
-	AssigneeNameIn           []string `json:"assigneenameIn,omitempty"`
-	AssigneeNameNotIn        []string `json:"assigneenameNotIn,omitempty"`
-	AssigneeNameGT           *string  `json:"assigneenameGT,omitempty"`
-	AssigneeNameGTE          *string  `json:"assigneenameGTE,omitempty"`
-	AssigneeNameLT           *string  `json:"assigneenameLT,omitempty"`
-	AssigneeNameLTE          *string  `json:"assigneenameLTE,omitempty"`
-	AssigneeNameContains     *string  `json:"assigneenameContains,omitempty"`
-	AssigneeNameHasPrefix    *string  `json:"assigneenameHasPrefix,omitempty"`
-	AssigneeNameHasSuffix    *string  `json:"assigneenameHasSuffix,omitempty"`
-	AssigneeNameEqualFold    *string  `json:"assigneenameEqualFold,omitempty"`
-	AssigneeNameContainsFold *string  `json:"assigneenameContainsFold,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
+
+	// "assignee_name" field predicates.
+	AssigneeName             *string  `json:"assigneeName,omitempty"`
+	AssigneeNameNEQ          *string  `json:"assigneeNameNEQ,omitempty"`
+	AssigneeNameIn           []string `json:"assigneeNameIn,omitempty"`
+	AssigneeNameNotIn        []string `json:"assigneeNameNotIn,omitempty"`
+	AssigneeNameGT           *string  `json:"assigneeNameGT,omitempty"`
+	AssigneeNameGTE          *string  `json:"assigneeNameGTE,omitempty"`
+	AssigneeNameLT           *string  `json:"assigneeNameLT,omitempty"`
+	AssigneeNameLTE          *string  `json:"assigneeNameLTE,omitempty"`
+	AssigneeNameContains     *string  `json:"assigneeNameContains,omitempty"`
+	AssigneeNameHasPrefix    *string  `json:"assigneeNameHasPrefix,omitempty"`
+	AssigneeNameHasSuffix    *string  `json:"assigneeNameHasSuffix,omitempty"`
+	AssigneeNameEqualFold    *string  `json:"assigneeNameEqualFold,omitempty"`
+	AssigneeNameContainsFold *string  `json:"assigneeNameContainsFold,omitempty"`
+
+	// "description" field predicates.
+	Description             *string  `json:"description,omitempty"`
+	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
+	DescriptionIn           []string `json:"descriptionIn,omitempty"`
+	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
+	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
+	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
+	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
+	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
+	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
+	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
+	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
+	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
+	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
+	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
+	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
+
+	// "due_date" field predicates.
+	DueDate      *time.Time  `json:"dueDate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"dueDateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"dueDateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"dueDateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"dueDateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"dueDateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"dueDateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"dueDateLTE,omitempty"`
+
+	// "end_date" field predicates.
+	EndDate       *time.Time  `json:"endDate,omitempty"`
+	EndDateNEQ    *time.Time  `json:"endDateNEQ,omitempty"`
+	EndDateIn     []time.Time `json:"endDateIn,omitempty"`
+	EndDateNotIn  []time.Time `json:"endDateNotIn,omitempty"`
+	EndDateGT     *time.Time  `json:"endDateGT,omitempty"`
+	EndDateGTE    *time.Time  `json:"endDateGTE,omitempty"`
+	EndDateLT     *time.Time  `json:"endDateLT,omitempty"`
+	EndDateLTE    *time.Time  `json:"endDateLTE,omitempty"`
+	EndDateIsNil  bool        `json:"endDateIsNil,omitempty"`
+	EndDateNotNil bool        `json:"endDateNotNil,omitempty"`
 
 	// "location" field predicates.
 	Location             *string  `json:"location,omitempty"`
@@ -12940,78 +12984,30 @@ type ProjectTaskWhereInput struct {
 	LocationEqualFold    *string  `json:"locationEqualFold,omitempty"`
 	LocationContainsFold *string  `json:"locationContainsFold,omitempty"`
 
-	// "dueDate" field predicates.
-	DueDate      *time.Time  `json:"duedate,omitempty"`
-	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
-	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
-	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
-	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
-	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
-	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
-	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
+	// "name" field predicates.
+	Name             *string  `json:"name,omitempty"`
+	NameNEQ          *string  `json:"nameNEQ,omitempty"`
+	NameIn           []string `json:"nameIn,omitempty"`
+	NameNotIn        []string `json:"nameNotIn,omitempty"`
+	NameGT           *string  `json:"nameGT,omitempty"`
+	NameGTE          *string  `json:"nameGTE,omitempty"`
+	NameLT           *string  `json:"nameLT,omitempty"`
+	NameLTE          *string  `json:"nameLTE,omitempty"`
+	NameContains     *string  `json:"nameContains,omitempty"`
+	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
+	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
+	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
+	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "plannedStartDate" field predicates.
-	PlannedStartDate      *time.Time  `json:"plannedstartdate,omitempty"`
-	PlannedStartDateNEQ   *time.Time  `json:"plannedstartdateNEQ,omitempty"`
-	PlannedStartDateIn    []time.Time `json:"plannedstartdateIn,omitempty"`
-	PlannedStartDateNotIn []time.Time `json:"plannedstartdateNotIn,omitempty"`
-	PlannedStartDateGT    *time.Time  `json:"plannedstartdateGT,omitempty"`
-	PlannedStartDateGTE   *time.Time  `json:"plannedstartdateGTE,omitempty"`
-	PlannedStartDateLT    *time.Time  `json:"plannedstartdateLT,omitempty"`
-	PlannedStartDateLTE   *time.Time  `json:"plannedstartdateLTE,omitempty"`
-
-	// "actualStartDate" field predicates.
-	ActualStartDate       *time.Time  `json:"actualstartdate,omitempty"`
-	ActualStartDateNEQ    *time.Time  `json:"actualstartdateNEQ,omitempty"`
-	ActualStartDateIn     []time.Time `json:"actualstartdateIn,omitempty"`
-	ActualStartDateNotIn  []time.Time `json:"actualstartdateNotIn,omitempty"`
-	ActualStartDateGT     *time.Time  `json:"actualstartdateGT,omitempty"`
-	ActualStartDateGTE    *time.Time  `json:"actualstartdateGTE,omitempty"`
-	ActualStartDateLT     *time.Time  `json:"actualstartdateLT,omitempty"`
-	ActualStartDateLTE    *time.Time  `json:"actualstartdateLTE,omitempty"`
-	ActualStartDateIsNil  bool        `json:"actualstartdateIsNil,omitempty"`
-	ActualStartDateNotNil bool        `json:"actualstartdateNotNil,omitempty"`
-
-	// "plannedEndDate" field predicates.
-	PlannedEndDate       *time.Time  `json:"plannedenddate,omitempty"`
-	PlannedEndDateNEQ    *time.Time  `json:"plannedenddateNEQ,omitempty"`
-	PlannedEndDateIn     []time.Time `json:"plannedenddateIn,omitempty"`
-	PlannedEndDateNotIn  []time.Time `json:"plannedenddateNotIn,omitempty"`
-	PlannedEndDateGT     *time.Time  `json:"plannedenddateGT,omitempty"`
-	PlannedEndDateGTE    *time.Time  `json:"plannedenddateGTE,omitempty"`
-	PlannedEndDateLT     *time.Time  `json:"plannedenddateLT,omitempty"`
-	PlannedEndDateLTE    *time.Time  `json:"plannedenddateLTE,omitempty"`
-	PlannedEndDateIsNil  bool        `json:"plannedenddateIsNil,omitempty"`
-	PlannedEndDateNotNil bool        `json:"plannedenddateNotNil,omitempty"`
-
-	// "actualEndDate" field predicates.
-	ActualEndDate       *time.Time  `json:"actualenddate,omitempty"`
-	ActualEndDateNEQ    *time.Time  `json:"actualenddateNEQ,omitempty"`
-	ActualEndDateIn     []time.Time `json:"actualenddateIn,omitempty"`
-	ActualEndDateNotIn  []time.Time `json:"actualenddateNotIn,omitempty"`
-	ActualEndDateGT     *time.Time  `json:"actualenddateGT,omitempty"`
-	ActualEndDateGTE    *time.Time  `json:"actualenddateGTE,omitempty"`
-	ActualEndDateLT     *time.Time  `json:"actualenddateLT,omitempty"`
-	ActualEndDateLTE    *time.Time  `json:"actualenddateLTE,omitempty"`
-	ActualEndDateIsNil  bool        `json:"actualenddateIsNil,omitempty"`
-	ActualEndDateNotNil bool        `json:"actualenddateNotNil,omitempty"`
-
-	// "description" field predicates.
-	Description             *string  `json:"description,omitempty"`
-	DescriptionNEQ          *string  `json:"descriptionNEQ,omitempty"`
-	DescriptionIn           []string `json:"descriptionIn,omitempty"`
-	DescriptionNotIn        []string `json:"descriptionNotIn,omitempty"`
-	DescriptionGT           *string  `json:"descriptionGT,omitempty"`
-	DescriptionGTE          *string  `json:"descriptionGTE,omitempty"`
-	DescriptionLT           *string  `json:"descriptionLT,omitempty"`
-	DescriptionLTE          *string  `json:"descriptionLTE,omitempty"`
-	DescriptionContains     *string  `json:"descriptionContains,omitempty"`
-	DescriptionHasPrefix    *string  `json:"descriptionHasPrefix,omitempty"`
-	DescriptionHasSuffix    *string  `json:"descriptionHasSuffix,omitempty"`
-	DescriptionIsNil        bool     `json:"descriptionIsNil,omitempty"`
-	DescriptionNotNil       bool     `json:"descriptionNotNil,omitempty"`
-	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
-	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
+	// "start_date" field predicates.
+	StartDate      *time.Time  `json:"startDate,omitempty"`
+	StartDateNEQ   *time.Time  `json:"startDateNEQ,omitempty"`
+	StartDateIn    []time.Time `json:"startDateIn,omitempty"`
+	StartDateNotIn []time.Time `json:"startDateNotIn,omitempty"`
+	StartDateGT    *time.Time  `json:"startDateGT,omitempty"`
+	StartDateGTE   *time.Time  `json:"startDateGTE,omitempty"`
+	StartDateLT    *time.Time  `json:"startDateLT,omitempty"`
+	StartDateLTE   *time.Time  `json:"startDateLTE,omitempty"`
 
 	// "status" field predicates.
 	Status      *projecttask.Status  `json:"status,omitempty"`
@@ -13031,11 +13027,11 @@ type ProjectTaskWhereInput struct {
 	HasParticipants     *bool             `json:"hasParticipants,omitempty"`
 	HasParticipantsWith []*UserWhereInput `json:"hasParticipantsWith,omitempty"`
 
-	// "createdBy" edge predicates.
+	// "created_by" edge predicates.
 	HasCreatedBy     *bool             `json:"hasCreatedBy,omitempty"`
 	HasCreatedByWith []*UserWhereInput `json:"hasCreatedByWith,omitempty"`
 
-	// "workShifts" edge predicates.
+	// "work_shifts" edge predicates.
 	HasWorkShifts     *bool                  `json:"hasWorkShifts,omitempty"`
 	HasWorkShiftsWith []*WorkshiftWhereInput `json:"hasWorkShiftsWith,omitempty"`
 }
@@ -13159,50 +13155,59 @@ func (i *ProjectTaskWhereInput) P() (predicate.ProjectTask, error) {
 	if i.CreatedAtLTE != nil {
 		predicates = append(predicates, projecttask.CreatedAtLTE(*i.CreatedAtLTE))
 	}
-	if i.CreatedAtIsNil {
-		predicates = append(predicates, projecttask.CreatedAtIsNil())
+	if i.UpdatedAt != nil {
+		predicates = append(predicates, projecttask.UpdatedAtEQ(*i.UpdatedAt))
 	}
-	if i.CreatedAtNotNil {
-		predicates = append(predicates, projecttask.CreatedAtNotNil())
+	if i.UpdatedAtNEQ != nil {
+		predicates = append(predicates, projecttask.UpdatedAtNEQ(*i.UpdatedAtNEQ))
 	}
-	if i.Name != nil {
-		predicates = append(predicates, projecttask.NameEQ(*i.Name))
+	if len(i.UpdatedAtIn) > 0 {
+		predicates = append(predicates, projecttask.UpdatedAtIn(i.UpdatedAtIn...))
 	}
-	if i.NameNEQ != nil {
-		predicates = append(predicates, projecttask.NameNEQ(*i.NameNEQ))
+	if len(i.UpdatedAtNotIn) > 0 {
+		predicates = append(predicates, projecttask.UpdatedAtNotIn(i.UpdatedAtNotIn...))
 	}
-	if len(i.NameIn) > 0 {
-		predicates = append(predicates, projecttask.NameIn(i.NameIn...))
+	if i.UpdatedAtGT != nil {
+		predicates = append(predicates, projecttask.UpdatedAtGT(*i.UpdatedAtGT))
 	}
-	if len(i.NameNotIn) > 0 {
-		predicates = append(predicates, projecttask.NameNotIn(i.NameNotIn...))
+	if i.UpdatedAtGTE != nil {
+		predicates = append(predicates, projecttask.UpdatedAtGTE(*i.UpdatedAtGTE))
 	}
-	if i.NameGT != nil {
-		predicates = append(predicates, projecttask.NameGT(*i.NameGT))
+	if i.UpdatedAtLT != nil {
+		predicates = append(predicates, projecttask.UpdatedAtLT(*i.UpdatedAtLT))
 	}
-	if i.NameGTE != nil {
-		predicates = append(predicates, projecttask.NameGTE(*i.NameGTE))
+	if i.UpdatedAtLTE != nil {
+		predicates = append(predicates, projecttask.UpdatedAtLTE(*i.UpdatedAtLTE))
 	}
-	if i.NameLT != nil {
-		predicates = append(predicates, projecttask.NameLT(*i.NameLT))
+	if i.DeletedAt != nil {
+		predicates = append(predicates, projecttask.DeletedAtEQ(*i.DeletedAt))
 	}
-	if i.NameLTE != nil {
-		predicates = append(predicates, projecttask.NameLTE(*i.NameLTE))
+	if i.DeletedAtNEQ != nil {
+		predicates = append(predicates, projecttask.DeletedAtNEQ(*i.DeletedAtNEQ))
 	}
-	if i.NameContains != nil {
-		predicates = append(predicates, projecttask.NameContains(*i.NameContains))
+	if len(i.DeletedAtIn) > 0 {
+		predicates = append(predicates, projecttask.DeletedAtIn(i.DeletedAtIn...))
 	}
-	if i.NameHasPrefix != nil {
-		predicates = append(predicates, projecttask.NameHasPrefix(*i.NameHasPrefix))
+	if len(i.DeletedAtNotIn) > 0 {
+		predicates = append(predicates, projecttask.DeletedAtNotIn(i.DeletedAtNotIn...))
 	}
-	if i.NameHasSuffix != nil {
-		predicates = append(predicates, projecttask.NameHasSuffix(*i.NameHasSuffix))
+	if i.DeletedAtGT != nil {
+		predicates = append(predicates, projecttask.DeletedAtGT(*i.DeletedAtGT))
 	}
-	if i.NameEqualFold != nil {
-		predicates = append(predicates, projecttask.NameEqualFold(*i.NameEqualFold))
+	if i.DeletedAtGTE != nil {
+		predicates = append(predicates, projecttask.DeletedAtGTE(*i.DeletedAtGTE))
 	}
-	if i.NameContainsFold != nil {
-		predicates = append(predicates, projecttask.NameContainsFold(*i.NameContainsFold))
+	if i.DeletedAtLT != nil {
+		predicates = append(predicates, projecttask.DeletedAtLT(*i.DeletedAtLT))
+	}
+	if i.DeletedAtLTE != nil {
+		predicates = append(predicates, projecttask.DeletedAtLTE(*i.DeletedAtLTE))
+	}
+	if i.DeletedAtIsNil {
+		predicates = append(predicates, projecttask.DeletedAtIsNil())
+	}
+	if i.DeletedAtNotNil {
+		predicates = append(predicates, projecttask.DeletedAtNotNil())
 	}
 	if i.AssigneeName != nil {
 		predicates = append(predicates, projecttask.AssigneeNameEQ(*i.AssigneeName))
@@ -13242,6 +13247,105 @@ func (i *ProjectTaskWhereInput) P() (predicate.ProjectTask, error) {
 	}
 	if i.AssigneeNameContainsFold != nil {
 		predicates = append(predicates, projecttask.AssigneeNameContainsFold(*i.AssigneeNameContainsFold))
+	}
+	if i.Description != nil {
+		predicates = append(predicates, projecttask.DescriptionEQ(*i.Description))
+	}
+	if i.DescriptionNEQ != nil {
+		predicates = append(predicates, projecttask.DescriptionNEQ(*i.DescriptionNEQ))
+	}
+	if len(i.DescriptionIn) > 0 {
+		predicates = append(predicates, projecttask.DescriptionIn(i.DescriptionIn...))
+	}
+	if len(i.DescriptionNotIn) > 0 {
+		predicates = append(predicates, projecttask.DescriptionNotIn(i.DescriptionNotIn...))
+	}
+	if i.DescriptionGT != nil {
+		predicates = append(predicates, projecttask.DescriptionGT(*i.DescriptionGT))
+	}
+	if i.DescriptionGTE != nil {
+		predicates = append(predicates, projecttask.DescriptionGTE(*i.DescriptionGTE))
+	}
+	if i.DescriptionLT != nil {
+		predicates = append(predicates, projecttask.DescriptionLT(*i.DescriptionLT))
+	}
+	if i.DescriptionLTE != nil {
+		predicates = append(predicates, projecttask.DescriptionLTE(*i.DescriptionLTE))
+	}
+	if i.DescriptionContains != nil {
+		predicates = append(predicates, projecttask.DescriptionContains(*i.DescriptionContains))
+	}
+	if i.DescriptionHasPrefix != nil {
+		predicates = append(predicates, projecttask.DescriptionHasPrefix(*i.DescriptionHasPrefix))
+	}
+	if i.DescriptionHasSuffix != nil {
+		predicates = append(predicates, projecttask.DescriptionHasSuffix(*i.DescriptionHasSuffix))
+	}
+	if i.DescriptionIsNil {
+		predicates = append(predicates, projecttask.DescriptionIsNil())
+	}
+	if i.DescriptionNotNil {
+		predicates = append(predicates, projecttask.DescriptionNotNil())
+	}
+	if i.DescriptionEqualFold != nil {
+		predicates = append(predicates, projecttask.DescriptionEqualFold(*i.DescriptionEqualFold))
+	}
+	if i.DescriptionContainsFold != nil {
+		predicates = append(predicates, projecttask.DescriptionContainsFold(*i.DescriptionContainsFold))
+	}
+	if i.DueDate != nil {
+		predicates = append(predicates, projecttask.DueDateEQ(*i.DueDate))
+	}
+	if i.DueDateNEQ != nil {
+		predicates = append(predicates, projecttask.DueDateNEQ(*i.DueDateNEQ))
+	}
+	if len(i.DueDateIn) > 0 {
+		predicates = append(predicates, projecttask.DueDateIn(i.DueDateIn...))
+	}
+	if len(i.DueDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.DueDateNotIn(i.DueDateNotIn...))
+	}
+	if i.DueDateGT != nil {
+		predicates = append(predicates, projecttask.DueDateGT(*i.DueDateGT))
+	}
+	if i.DueDateGTE != nil {
+		predicates = append(predicates, projecttask.DueDateGTE(*i.DueDateGTE))
+	}
+	if i.DueDateLT != nil {
+		predicates = append(predicates, projecttask.DueDateLT(*i.DueDateLT))
+	}
+	if i.DueDateLTE != nil {
+		predicates = append(predicates, projecttask.DueDateLTE(*i.DueDateLTE))
+	}
+	if i.EndDate != nil {
+		predicates = append(predicates, projecttask.EndDateEQ(*i.EndDate))
+	}
+	if i.EndDateNEQ != nil {
+		predicates = append(predicates, projecttask.EndDateNEQ(*i.EndDateNEQ))
+	}
+	if len(i.EndDateIn) > 0 {
+		predicates = append(predicates, projecttask.EndDateIn(i.EndDateIn...))
+	}
+	if len(i.EndDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.EndDateNotIn(i.EndDateNotIn...))
+	}
+	if i.EndDateGT != nil {
+		predicates = append(predicates, projecttask.EndDateGT(*i.EndDateGT))
+	}
+	if i.EndDateGTE != nil {
+		predicates = append(predicates, projecttask.EndDateGTE(*i.EndDateGTE))
+	}
+	if i.EndDateLT != nil {
+		predicates = append(predicates, projecttask.EndDateLT(*i.EndDateLT))
+	}
+	if i.EndDateLTE != nil {
+		predicates = append(predicates, projecttask.EndDateLTE(*i.EndDateLTE))
+	}
+	if i.EndDateIsNil {
+		predicates = append(predicates, projecttask.EndDateIsNil())
+	}
+	if i.EndDateNotNil {
+		predicates = append(predicates, projecttask.EndDateNotNil())
 	}
 	if i.Location != nil {
 		predicates = append(predicates, projecttask.LocationEQ(*i.Location))
@@ -13288,188 +13392,68 @@ func (i *ProjectTaskWhereInput) P() (predicate.ProjectTask, error) {
 	if i.LocationContainsFold != nil {
 		predicates = append(predicates, projecttask.LocationContainsFold(*i.LocationContainsFold))
 	}
-	if i.DueDate != nil {
-		predicates = append(predicates, projecttask.DueDateEQ(*i.DueDate))
+	if i.Name != nil {
+		predicates = append(predicates, projecttask.NameEQ(*i.Name))
 	}
-	if i.DueDateNEQ != nil {
-		predicates = append(predicates, projecttask.DueDateNEQ(*i.DueDateNEQ))
+	if i.NameNEQ != nil {
+		predicates = append(predicates, projecttask.NameNEQ(*i.NameNEQ))
 	}
-	if len(i.DueDateIn) > 0 {
-		predicates = append(predicates, projecttask.DueDateIn(i.DueDateIn...))
+	if len(i.NameIn) > 0 {
+		predicates = append(predicates, projecttask.NameIn(i.NameIn...))
 	}
-	if len(i.DueDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.DueDateNotIn(i.DueDateNotIn...))
+	if len(i.NameNotIn) > 0 {
+		predicates = append(predicates, projecttask.NameNotIn(i.NameNotIn...))
 	}
-	if i.DueDateGT != nil {
-		predicates = append(predicates, projecttask.DueDateGT(*i.DueDateGT))
+	if i.NameGT != nil {
+		predicates = append(predicates, projecttask.NameGT(*i.NameGT))
 	}
-	if i.DueDateGTE != nil {
-		predicates = append(predicates, projecttask.DueDateGTE(*i.DueDateGTE))
+	if i.NameGTE != nil {
+		predicates = append(predicates, projecttask.NameGTE(*i.NameGTE))
 	}
-	if i.DueDateLT != nil {
-		predicates = append(predicates, projecttask.DueDateLT(*i.DueDateLT))
+	if i.NameLT != nil {
+		predicates = append(predicates, projecttask.NameLT(*i.NameLT))
 	}
-	if i.DueDateLTE != nil {
-		predicates = append(predicates, projecttask.DueDateLTE(*i.DueDateLTE))
+	if i.NameLTE != nil {
+		predicates = append(predicates, projecttask.NameLTE(*i.NameLTE))
 	}
-	if i.PlannedStartDate != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateEQ(*i.PlannedStartDate))
+	if i.NameContains != nil {
+		predicates = append(predicates, projecttask.NameContains(*i.NameContains))
 	}
-	if i.PlannedStartDateNEQ != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateNEQ(*i.PlannedStartDateNEQ))
+	if i.NameHasPrefix != nil {
+		predicates = append(predicates, projecttask.NameHasPrefix(*i.NameHasPrefix))
 	}
-	if len(i.PlannedStartDateIn) > 0 {
-		predicates = append(predicates, projecttask.PlannedStartDateIn(i.PlannedStartDateIn...))
+	if i.NameHasSuffix != nil {
+		predicates = append(predicates, projecttask.NameHasSuffix(*i.NameHasSuffix))
 	}
-	if len(i.PlannedStartDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.PlannedStartDateNotIn(i.PlannedStartDateNotIn...))
+	if i.NameEqualFold != nil {
+		predicates = append(predicates, projecttask.NameEqualFold(*i.NameEqualFold))
 	}
-	if i.PlannedStartDateGT != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateGT(*i.PlannedStartDateGT))
+	if i.NameContainsFold != nil {
+		predicates = append(predicates, projecttask.NameContainsFold(*i.NameContainsFold))
 	}
-	if i.PlannedStartDateGTE != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateGTE(*i.PlannedStartDateGTE))
+	if i.StartDate != nil {
+		predicates = append(predicates, projecttask.StartDateEQ(*i.StartDate))
 	}
-	if i.PlannedStartDateLT != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateLT(*i.PlannedStartDateLT))
+	if i.StartDateNEQ != nil {
+		predicates = append(predicates, projecttask.StartDateNEQ(*i.StartDateNEQ))
 	}
-	if i.PlannedStartDateLTE != nil {
-		predicates = append(predicates, projecttask.PlannedStartDateLTE(*i.PlannedStartDateLTE))
+	if len(i.StartDateIn) > 0 {
+		predicates = append(predicates, projecttask.StartDateIn(i.StartDateIn...))
 	}
-	if i.ActualStartDate != nil {
-		predicates = append(predicates, projecttask.ActualStartDateEQ(*i.ActualStartDate))
+	if len(i.StartDateNotIn) > 0 {
+		predicates = append(predicates, projecttask.StartDateNotIn(i.StartDateNotIn...))
 	}
-	if i.ActualStartDateNEQ != nil {
-		predicates = append(predicates, projecttask.ActualStartDateNEQ(*i.ActualStartDateNEQ))
+	if i.StartDateGT != nil {
+		predicates = append(predicates, projecttask.StartDateGT(*i.StartDateGT))
 	}
-	if len(i.ActualStartDateIn) > 0 {
-		predicates = append(predicates, projecttask.ActualStartDateIn(i.ActualStartDateIn...))
+	if i.StartDateGTE != nil {
+		predicates = append(predicates, projecttask.StartDateGTE(*i.StartDateGTE))
 	}
-	if len(i.ActualStartDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.ActualStartDateNotIn(i.ActualStartDateNotIn...))
+	if i.StartDateLT != nil {
+		predicates = append(predicates, projecttask.StartDateLT(*i.StartDateLT))
 	}
-	if i.ActualStartDateGT != nil {
-		predicates = append(predicates, projecttask.ActualStartDateGT(*i.ActualStartDateGT))
-	}
-	if i.ActualStartDateGTE != nil {
-		predicates = append(predicates, projecttask.ActualStartDateGTE(*i.ActualStartDateGTE))
-	}
-	if i.ActualStartDateLT != nil {
-		predicates = append(predicates, projecttask.ActualStartDateLT(*i.ActualStartDateLT))
-	}
-	if i.ActualStartDateLTE != nil {
-		predicates = append(predicates, projecttask.ActualStartDateLTE(*i.ActualStartDateLTE))
-	}
-	if i.ActualStartDateIsNil {
-		predicates = append(predicates, projecttask.ActualStartDateIsNil())
-	}
-	if i.ActualStartDateNotNil {
-		predicates = append(predicates, projecttask.ActualStartDateNotNil())
-	}
-	if i.PlannedEndDate != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateEQ(*i.PlannedEndDate))
-	}
-	if i.PlannedEndDateNEQ != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateNEQ(*i.PlannedEndDateNEQ))
-	}
-	if len(i.PlannedEndDateIn) > 0 {
-		predicates = append(predicates, projecttask.PlannedEndDateIn(i.PlannedEndDateIn...))
-	}
-	if len(i.PlannedEndDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.PlannedEndDateNotIn(i.PlannedEndDateNotIn...))
-	}
-	if i.PlannedEndDateGT != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateGT(*i.PlannedEndDateGT))
-	}
-	if i.PlannedEndDateGTE != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateGTE(*i.PlannedEndDateGTE))
-	}
-	if i.PlannedEndDateLT != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateLT(*i.PlannedEndDateLT))
-	}
-	if i.PlannedEndDateLTE != nil {
-		predicates = append(predicates, projecttask.PlannedEndDateLTE(*i.PlannedEndDateLTE))
-	}
-	if i.PlannedEndDateIsNil {
-		predicates = append(predicates, projecttask.PlannedEndDateIsNil())
-	}
-	if i.PlannedEndDateNotNil {
-		predicates = append(predicates, projecttask.PlannedEndDateNotNil())
-	}
-	if i.ActualEndDate != nil {
-		predicates = append(predicates, projecttask.ActualEndDateEQ(*i.ActualEndDate))
-	}
-	if i.ActualEndDateNEQ != nil {
-		predicates = append(predicates, projecttask.ActualEndDateNEQ(*i.ActualEndDateNEQ))
-	}
-	if len(i.ActualEndDateIn) > 0 {
-		predicates = append(predicates, projecttask.ActualEndDateIn(i.ActualEndDateIn...))
-	}
-	if len(i.ActualEndDateNotIn) > 0 {
-		predicates = append(predicates, projecttask.ActualEndDateNotIn(i.ActualEndDateNotIn...))
-	}
-	if i.ActualEndDateGT != nil {
-		predicates = append(predicates, projecttask.ActualEndDateGT(*i.ActualEndDateGT))
-	}
-	if i.ActualEndDateGTE != nil {
-		predicates = append(predicates, projecttask.ActualEndDateGTE(*i.ActualEndDateGTE))
-	}
-	if i.ActualEndDateLT != nil {
-		predicates = append(predicates, projecttask.ActualEndDateLT(*i.ActualEndDateLT))
-	}
-	if i.ActualEndDateLTE != nil {
-		predicates = append(predicates, projecttask.ActualEndDateLTE(*i.ActualEndDateLTE))
-	}
-	if i.ActualEndDateIsNil {
-		predicates = append(predicates, projecttask.ActualEndDateIsNil())
-	}
-	if i.ActualEndDateNotNil {
-		predicates = append(predicates, projecttask.ActualEndDateNotNil())
-	}
-	if i.Description != nil {
-		predicates = append(predicates, projecttask.DescriptionEQ(*i.Description))
-	}
-	if i.DescriptionNEQ != nil {
-		predicates = append(predicates, projecttask.DescriptionNEQ(*i.DescriptionNEQ))
-	}
-	if len(i.DescriptionIn) > 0 {
-		predicates = append(predicates, projecttask.DescriptionIn(i.DescriptionIn...))
-	}
-	if len(i.DescriptionNotIn) > 0 {
-		predicates = append(predicates, projecttask.DescriptionNotIn(i.DescriptionNotIn...))
-	}
-	if i.DescriptionGT != nil {
-		predicates = append(predicates, projecttask.DescriptionGT(*i.DescriptionGT))
-	}
-	if i.DescriptionGTE != nil {
-		predicates = append(predicates, projecttask.DescriptionGTE(*i.DescriptionGTE))
-	}
-	if i.DescriptionLT != nil {
-		predicates = append(predicates, projecttask.DescriptionLT(*i.DescriptionLT))
-	}
-	if i.DescriptionLTE != nil {
-		predicates = append(predicates, projecttask.DescriptionLTE(*i.DescriptionLTE))
-	}
-	if i.DescriptionContains != nil {
-		predicates = append(predicates, projecttask.DescriptionContains(*i.DescriptionContains))
-	}
-	if i.DescriptionHasPrefix != nil {
-		predicates = append(predicates, projecttask.DescriptionHasPrefix(*i.DescriptionHasPrefix))
-	}
-	if i.DescriptionHasSuffix != nil {
-		predicates = append(predicates, projecttask.DescriptionHasSuffix(*i.DescriptionHasSuffix))
-	}
-	if i.DescriptionIsNil {
-		predicates = append(predicates, projecttask.DescriptionIsNil())
-	}
-	if i.DescriptionNotNil {
-		predicates = append(predicates, projecttask.DescriptionNotNil())
-	}
-	if i.DescriptionEqualFold != nil {
-		predicates = append(predicates, projecttask.DescriptionEqualFold(*i.DescriptionEqualFold))
-	}
-	if i.DescriptionContainsFold != nil {
-		predicates = append(predicates, projecttask.DescriptionContainsFold(*i.DescriptionContainsFold))
+	if i.StartDateLTE != nil {
+		predicates = append(predicates, projecttask.StartDateLTE(*i.StartDateLTE))
 	}
 	if i.Status != nil {
 		predicates = append(predicates, projecttask.StatusEQ(*i.Status))
@@ -13601,47 +13585,47 @@ type ReceivableWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
-	// "entryGroup" field predicates.
-	EntryGroup      *int  `json:"entrygroup,omitempty"`
-	EntryGroupNEQ   *int  `json:"entrygroupNEQ,omitempty"`
-	EntryGroupIn    []int `json:"entrygroupIn,omitempty"`
-	EntryGroupNotIn []int `json:"entrygroupNotIn,omitempty"`
-	EntryGroupGT    *int  `json:"entrygroupGT,omitempty"`
-	EntryGroupGTE   *int  `json:"entrygroupGTE,omitempty"`
-	EntryGroupLT    *int  `json:"entrygroupLT,omitempty"`
-	EntryGroupLTE   *int  `json:"entrygroupLTE,omitempty"`
+	// "entry_group" field predicates.
+	EntryGroup      *int  `json:"entryGroup,omitempty"`
+	EntryGroupNEQ   *int  `json:"entryGroupNEQ,omitempty"`
+	EntryGroupIn    []int `json:"entryGroupIn,omitempty"`
+	EntryGroupNotIn []int `json:"entryGroupNotIn,omitempty"`
+	EntryGroupGT    *int  `json:"entryGroupGT,omitempty"`
+	EntryGroupGTE   *int  `json:"entryGroupGTE,omitempty"`
+	EntryGroupLT    *int  `json:"entryGroupLT,omitempty"`
+	EntryGroupLTE   *int  `json:"entryGroupLTE,omitempty"`
 
 	// "date" field predicates.
 	Date      *time.Time  `json:"date,omitempty"`
@@ -13668,45 +13652,45 @@ type ReceivableWhereInput struct {
 	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
 	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
 
-	// "amountInDefault" field predicates.
-	AmountInDefault      *float64  `json:"amountindefault,omitempty"`
-	AmountInDefaultNEQ   *float64  `json:"amountindefaultNEQ,omitempty"`
-	AmountInDefaultIn    []float64 `json:"amountindefaultIn,omitempty"`
-	AmountInDefaultNotIn []float64 `json:"amountindefaultNotIn,omitempty"`
-	AmountInDefaultGT    *float64  `json:"amountindefaultGT,omitempty"`
-	AmountInDefaultGTE   *float64  `json:"amountindefaultGTE,omitempty"`
-	AmountInDefaultLT    *float64  `json:"amountindefaultLT,omitempty"`
-	AmountInDefaultLTE   *float64  `json:"amountindefaultLTE,omitempty"`
+	// "amount_in_default" field predicates.
+	AmountInDefault      *float64  `json:"amountInDefault,omitempty"`
+	AmountInDefaultNEQ   *float64  `json:"amountInDefaultNEQ,omitempty"`
+	AmountInDefaultIn    []float64 `json:"amountInDefaultIn,omitempty"`
+	AmountInDefaultNotIn []float64 `json:"amountInDefaultNotIn,omitempty"`
+	AmountInDefaultGT    *float64  `json:"amountInDefaultGT,omitempty"`
+	AmountInDefaultGTE   *float64  `json:"amountInDefaultGTE,omitempty"`
+	AmountInDefaultLT    *float64  `json:"amountInDefaultLT,omitempty"`
+	AmountInDefaultLTE   *float64  `json:"amountInDefaultLTE,omitempty"`
 
-	// "outstandingBalance" field predicates.
-	OutstandingBalance      *float64  `json:"outstandingbalance,omitempty"`
-	OutstandingBalanceNEQ   *float64  `json:"outstandingbalanceNEQ,omitempty"`
-	OutstandingBalanceIn    []float64 `json:"outstandingbalanceIn,omitempty"`
-	OutstandingBalanceNotIn []float64 `json:"outstandingbalanceNotIn,omitempty"`
-	OutstandingBalanceGT    *float64  `json:"outstandingbalanceGT,omitempty"`
-	OutstandingBalanceGTE   *float64  `json:"outstandingbalanceGTE,omitempty"`
-	OutstandingBalanceLT    *float64  `json:"outstandingbalanceLT,omitempty"`
-	OutstandingBalanceLTE   *float64  `json:"outstandingbalanceLTE,omitempty"`
+	// "outstanding_balance" field predicates.
+	OutstandingBalance      *float64  `json:"outstandingBalance,omitempty"`
+	OutstandingBalanceNEQ   *float64  `json:"outstandingBalanceNEQ,omitempty"`
+	OutstandingBalanceIn    []float64 `json:"outstandingBalanceIn,omitempty"`
+	OutstandingBalanceNotIn []float64 `json:"outstandingBalanceNotIn,omitempty"`
+	OutstandingBalanceGT    *float64  `json:"outstandingBalanceGT,omitempty"`
+	OutstandingBalanceGTE   *float64  `json:"outstandingBalanceGTE,omitempty"`
+	OutstandingBalanceLT    *float64  `json:"outstandingBalanceLT,omitempty"`
+	OutstandingBalanceLTE   *float64  `json:"outstandingBalanceLTE,omitempty"`
 
-	// "totalTransaction" field predicates.
-	TotalTransaction      *float64  `json:"totaltransaction,omitempty"`
-	TotalTransactionNEQ   *float64  `json:"totaltransactionNEQ,omitempty"`
-	TotalTransactionIn    []float64 `json:"totaltransactionIn,omitempty"`
-	TotalTransactionNotIn []float64 `json:"totaltransactionNotIn,omitempty"`
-	TotalTransactionGT    *float64  `json:"totaltransactionGT,omitempty"`
-	TotalTransactionGTE   *float64  `json:"totaltransactionGTE,omitempty"`
-	TotalTransactionLT    *float64  `json:"totaltransactionLT,omitempty"`
-	TotalTransactionLTE   *float64  `json:"totaltransactionLTE,omitempty"`
+	// "total_transaction" field predicates.
+	TotalTransaction      *float64  `json:"totalTransaction,omitempty"`
+	TotalTransactionNEQ   *float64  `json:"totalTransactionNEQ,omitempty"`
+	TotalTransactionIn    []float64 `json:"totalTransactionIn,omitempty"`
+	TotalTransactionNotIn []float64 `json:"totalTransactionNotIn,omitempty"`
+	TotalTransactionGT    *float64  `json:"totalTransactionGT,omitempty"`
+	TotalTransactionGTE   *float64  `json:"totalTransactionGTE,omitempty"`
+	TotalTransactionLT    *float64  `json:"totalTransactionLT,omitempty"`
+	TotalTransactionLTE   *float64  `json:"totalTransactionLTE,omitempty"`
 
-	// "dueDate" field predicates.
-	DueDate      *time.Time  `json:"duedate,omitempty"`
-	DueDateNEQ   *time.Time  `json:"duedateNEQ,omitempty"`
-	DueDateIn    []time.Time `json:"duedateIn,omitempty"`
-	DueDateNotIn []time.Time `json:"duedateNotIn,omitempty"`
-	DueDateGT    *time.Time  `json:"duedateGT,omitempty"`
-	DueDateGTE   *time.Time  `json:"duedateGTE,omitempty"`
-	DueDateLT    *time.Time  `json:"duedateLT,omitempty"`
-	DueDateLTE   *time.Time  `json:"duedateLTE,omitempty"`
+	// "due_date" field predicates.
+	DueDate      *time.Time  `json:"dueDate,omitempty"`
+	DueDateNEQ   *time.Time  `json:"dueDateNEQ,omitempty"`
+	DueDateIn    []time.Time `json:"dueDateIn,omitempty"`
+	DueDateNotIn []time.Time `json:"dueDateNotIn,omitempty"`
+	DueDateGT    *time.Time  `json:"dueDateGT,omitempty"`
+	DueDateGTE   *time.Time  `json:"dueDateGTE,omitempty"`
+	DueDateLT    *time.Time  `json:"dueDateLT,omitempty"`
+	DueDateLTE   *time.Time  `json:"dueDateLTE,omitempty"`
 
 	// "status" field predicates.
 	Status      *receivable.Status  `json:"status,omitempty"`
@@ -14155,37 +14139,37 @@ type SupplierWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "address" field predicates.
 	Address             *string  `json:"address,omitempty"`
@@ -14272,11 +14256,11 @@ type SupplierWhereInput struct {
 	EmailEqualFold    *string  `json:"emailEqualFold,omitempty"`
 	EmailContainsFold *string  `json:"emailContainsFold,omitempty"`
 
-	// "isDefault" field predicates.
-	IsDefault       *bool `json:"isdefault,omitempty"`
-	IsDefaultNEQ    *bool `json:"isdefaultNEQ,omitempty"`
-	IsDefaultIsNil  bool  `json:"isdefaultIsNil,omitempty"`
-	IsDefaultNotNil bool  `json:"isdefaultNotNil,omitempty"`
+	// "is_default" field predicates.
+	IsDefault       *bool `json:"isDefault,omitempty"`
+	IsDefaultNEQ    *bool `json:"isDefaultNEQ,omitempty"`
+	IsDefaultIsNil  bool  `json:"isDefaultIsNil,omitempty"`
+	IsDefaultNotNil bool  `json:"isDefaultNotNil,omitempty"`
 
 	// "name" field predicates.
 	Name             *string  `json:"name,omitempty"`
@@ -14310,22 +14294,22 @@ type SupplierWhereInput struct {
 	PhoneEqualFold    *string  `json:"phoneEqualFold,omitempty"`
 	PhoneContainsFold *string  `json:"phoneContainsFold,omitempty"`
 
-	// "taxId" field predicates.
-	TaxId             *string  `json:"taxid,omitempty"`
-	TaxIdNEQ          *string  `json:"taxidNEQ,omitempty"`
-	TaxIdIn           []string `json:"taxidIn,omitempty"`
-	TaxIdNotIn        []string `json:"taxidNotIn,omitempty"`
-	TaxIdGT           *string  `json:"taxidGT,omitempty"`
-	TaxIdGTE          *string  `json:"taxidGTE,omitempty"`
-	TaxIdLT           *string  `json:"taxidLT,omitempty"`
-	TaxIdLTE          *string  `json:"taxidLTE,omitempty"`
-	TaxIdContains     *string  `json:"taxidContains,omitempty"`
-	TaxIdHasPrefix    *string  `json:"taxidHasPrefix,omitempty"`
-	TaxIdHasSuffix    *string  `json:"taxidHasSuffix,omitempty"`
-	TaxIdIsNil        bool     `json:"taxidIsNil,omitempty"`
-	TaxIdNotNil       bool     `json:"taxidNotNil,omitempty"`
-	TaxIdEqualFold    *string  `json:"taxidEqualFold,omitempty"`
-	TaxIdContainsFold *string  `json:"taxidContainsFold,omitempty"`
+	// "tax_id" field predicates.
+	TaxID             *string  `json:"taxID,omitempty"`
+	TaxIDNEQ          *string  `json:"taxIDNEQ,omitempty"`
+	TaxIDIn           []string `json:"taxIDIn,omitempty"`
+	TaxIDNotIn        []string `json:"taxIDNotIn,omitempty"`
+	TaxIDGT           *string  `json:"taxIDGT,omitempty"`
+	TaxIDGTE          *string  `json:"taxIDGTE,omitempty"`
+	TaxIDLT           *string  `json:"taxIDLT,omitempty"`
+	TaxIDLTE          *string  `json:"taxIDLTE,omitempty"`
+	TaxIDContains     *string  `json:"taxIDContains,omitempty"`
+	TaxIDHasPrefix    *string  `json:"taxIDHasPrefix,omitempty"`
+	TaxIDHasSuffix    *string  `json:"taxIDHasSuffix,omitempty"`
+	TaxIDIsNil        bool     `json:"taxIDIsNil,omitempty"`
+	TaxIDNotNil       bool     `json:"taxIDNotNil,omitempty"`
+	TaxIDEqualFold    *string  `json:"taxIDEqualFold,omitempty"`
+	TaxIDContainsFold *string  `json:"taxIDContainsFold,omitempty"`
 
 	// "company" edge predicates.
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
@@ -14834,50 +14818,50 @@ func (i *SupplierWhereInput) P() (predicate.Supplier, error) {
 	if i.PhoneContainsFold != nil {
 		predicates = append(predicates, supplier.PhoneContainsFold(*i.PhoneContainsFold))
 	}
-	if i.TaxId != nil {
-		predicates = append(predicates, supplier.TaxIdEQ(*i.TaxId))
+	if i.TaxID != nil {
+		predicates = append(predicates, supplier.TaxIDEQ(*i.TaxID))
 	}
-	if i.TaxIdNEQ != nil {
-		predicates = append(predicates, supplier.TaxIdNEQ(*i.TaxIdNEQ))
+	if i.TaxIDNEQ != nil {
+		predicates = append(predicates, supplier.TaxIDNEQ(*i.TaxIDNEQ))
 	}
-	if len(i.TaxIdIn) > 0 {
-		predicates = append(predicates, supplier.TaxIdIn(i.TaxIdIn...))
+	if len(i.TaxIDIn) > 0 {
+		predicates = append(predicates, supplier.TaxIDIn(i.TaxIDIn...))
 	}
-	if len(i.TaxIdNotIn) > 0 {
-		predicates = append(predicates, supplier.TaxIdNotIn(i.TaxIdNotIn...))
+	if len(i.TaxIDNotIn) > 0 {
+		predicates = append(predicates, supplier.TaxIDNotIn(i.TaxIDNotIn...))
 	}
-	if i.TaxIdGT != nil {
-		predicates = append(predicates, supplier.TaxIdGT(*i.TaxIdGT))
+	if i.TaxIDGT != nil {
+		predicates = append(predicates, supplier.TaxIDGT(*i.TaxIDGT))
 	}
-	if i.TaxIdGTE != nil {
-		predicates = append(predicates, supplier.TaxIdGTE(*i.TaxIdGTE))
+	if i.TaxIDGTE != nil {
+		predicates = append(predicates, supplier.TaxIDGTE(*i.TaxIDGTE))
 	}
-	if i.TaxIdLT != nil {
-		predicates = append(predicates, supplier.TaxIdLT(*i.TaxIdLT))
+	if i.TaxIDLT != nil {
+		predicates = append(predicates, supplier.TaxIDLT(*i.TaxIDLT))
 	}
-	if i.TaxIdLTE != nil {
-		predicates = append(predicates, supplier.TaxIdLTE(*i.TaxIdLTE))
+	if i.TaxIDLTE != nil {
+		predicates = append(predicates, supplier.TaxIDLTE(*i.TaxIDLTE))
 	}
-	if i.TaxIdContains != nil {
-		predicates = append(predicates, supplier.TaxIdContains(*i.TaxIdContains))
+	if i.TaxIDContains != nil {
+		predicates = append(predicates, supplier.TaxIDContains(*i.TaxIDContains))
 	}
-	if i.TaxIdHasPrefix != nil {
-		predicates = append(predicates, supplier.TaxIdHasPrefix(*i.TaxIdHasPrefix))
+	if i.TaxIDHasPrefix != nil {
+		predicates = append(predicates, supplier.TaxIDHasPrefix(*i.TaxIDHasPrefix))
 	}
-	if i.TaxIdHasSuffix != nil {
-		predicates = append(predicates, supplier.TaxIdHasSuffix(*i.TaxIdHasSuffix))
+	if i.TaxIDHasSuffix != nil {
+		predicates = append(predicates, supplier.TaxIDHasSuffix(*i.TaxIDHasSuffix))
 	}
-	if i.TaxIdIsNil {
-		predicates = append(predicates, supplier.TaxIdIsNil())
+	if i.TaxIDIsNil {
+		predicates = append(predicates, supplier.TaxIDIsNil())
 	}
-	if i.TaxIdNotNil {
-		predicates = append(predicates, supplier.TaxIdNotNil())
+	if i.TaxIDNotNil {
+		predicates = append(predicates, supplier.TaxIDNotNil())
 	}
-	if i.TaxIdEqualFold != nil {
-		predicates = append(predicates, supplier.TaxIdEqualFold(*i.TaxIdEqualFold))
+	if i.TaxIDEqualFold != nil {
+		predicates = append(predicates, supplier.TaxIDEqualFold(*i.TaxIDEqualFold))
 	}
-	if i.TaxIdContainsFold != nil {
-		predicates = append(predicates, supplier.TaxIdContainsFold(*i.TaxIdContainsFold))
+	if i.TaxIDContainsFold != nil {
+		predicates = append(predicates, supplier.TaxIDContainsFold(*i.TaxIDContainsFold))
 	}
 
 	if i.HasCompany != nil {
@@ -15235,37 +15219,37 @@ type TreasuryWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "balance" field predicates.
 	Balance      *float64  `json:"balance,omitempty"`
@@ -15525,37 +15509,37 @@ type UserWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
 	// "device" field predicates.
 	Device             *string  `json:"device,omitempty"`
@@ -15574,60 +15558,60 @@ type UserWhereInput struct {
 	DeviceEqualFold    *string  `json:"deviceEqualFold,omitempty"`
 	DeviceContainsFold *string  `json:"deviceContainsFold,omitempty"`
 
-	// "isDemoUser" field predicates.
-	IsDemoUser       *bool `json:"isdemouser,omitempty"`
-	IsDemoUserNEQ    *bool `json:"isdemouserNEQ,omitempty"`
-	IsDemoUserIsNil  bool  `json:"isdemouserIsNil,omitempty"`
-	IsDemoUserNotNil bool  `json:"isdemouserNotNil,omitempty"`
+	// "is_demo_user" field predicates.
+	IsDemoUser       *bool `json:"isDemoUser,omitempty"`
+	IsDemoUserNEQ    *bool `json:"isDemoUserNEQ,omitempty"`
+	IsDemoUserIsNil  bool  `json:"isDemoUserIsNil,omitempty"`
+	IsDemoUserNotNil bool  `json:"isDemoUserNotNil,omitempty"`
 
-	// "firebaseUID" field predicates.
-	FirebaseUID             *string  `json:"firebaseuid,omitempty"`
-	FirebaseUIDNEQ          *string  `json:"firebaseuidNEQ,omitempty"`
-	FirebaseUIDIn           []string `json:"firebaseuidIn,omitempty"`
-	FirebaseUIDNotIn        []string `json:"firebaseuidNotIn,omitempty"`
-	FirebaseUIDGT           *string  `json:"firebaseuidGT,omitempty"`
-	FirebaseUIDGTE          *string  `json:"firebaseuidGTE,omitempty"`
-	FirebaseUIDLT           *string  `json:"firebaseuidLT,omitempty"`
-	FirebaseUIDLTE          *string  `json:"firebaseuidLTE,omitempty"`
-	FirebaseUIDContains     *string  `json:"firebaseuidContains,omitempty"`
-	FirebaseUIDHasPrefix    *string  `json:"firebaseuidHasPrefix,omitempty"`
-	FirebaseUIDHasSuffix    *string  `json:"firebaseuidHasSuffix,omitempty"`
-	FirebaseUIDEqualFold    *string  `json:"firebaseuidEqualFold,omitempty"`
-	FirebaseUIDContainsFold *string  `json:"firebaseuidContainsFold,omitempty"`
+	// "firebase_UID" field predicates.
+	FirebaseUID             *string  `json:"firebaseUID,omitempty"`
+	FirebaseUIDNEQ          *string  `json:"firebaseUIDNEQ,omitempty"`
+	FirebaseUIDIn           []string `json:"firebaseUIDIn,omitempty"`
+	FirebaseUIDNotIn        []string `json:"firebaseUIDNotIn,omitempty"`
+	FirebaseUIDGT           *string  `json:"firebaseUIDGT,omitempty"`
+	FirebaseUIDGTE          *string  `json:"firebaseUIDGTE,omitempty"`
+	FirebaseUIDLT           *string  `json:"firebaseUIDLT,omitempty"`
+	FirebaseUIDLTE          *string  `json:"firebaseUIDLTE,omitempty"`
+	FirebaseUIDContains     *string  `json:"firebaseUIDContains,omitempty"`
+	FirebaseUIDHasPrefix    *string  `json:"firebaseUIDHasPrefix,omitempty"`
+	FirebaseUIDHasSuffix    *string  `json:"firebaseUIDHasSuffix,omitempty"`
+	FirebaseUIDEqualFold    *string  `json:"firebaseUIDEqualFold,omitempty"`
+	FirebaseUIDContainsFold *string  `json:"firebaseUIDContainsFold,omitempty"`
 
-	// "fcmToken" field predicates.
-	FcmToken             *string  `json:"fcmtoken,omitempty"`
-	FcmTokenNEQ          *string  `json:"fcmtokenNEQ,omitempty"`
-	FcmTokenIn           []string `json:"fcmtokenIn,omitempty"`
-	FcmTokenNotIn        []string `json:"fcmtokenNotIn,omitempty"`
-	FcmTokenGT           *string  `json:"fcmtokenGT,omitempty"`
-	FcmTokenGTE          *string  `json:"fcmtokenGTE,omitempty"`
-	FcmTokenLT           *string  `json:"fcmtokenLT,omitempty"`
-	FcmTokenLTE          *string  `json:"fcmtokenLTE,omitempty"`
-	FcmTokenContains     *string  `json:"fcmtokenContains,omitempty"`
-	FcmTokenHasPrefix    *string  `json:"fcmtokenHasPrefix,omitempty"`
-	FcmTokenHasSuffix    *string  `json:"fcmtokenHasSuffix,omitempty"`
-	FcmTokenIsNil        bool     `json:"fcmtokenIsNil,omitempty"`
-	FcmTokenNotNil       bool     `json:"fcmtokenNotNil,omitempty"`
-	FcmTokenEqualFold    *string  `json:"fcmtokenEqualFold,omitempty"`
-	FcmTokenContainsFold *string  `json:"fcmtokenContainsFold,omitempty"`
+	// "fcm_token" field predicates.
+	FcmToken             *string  `json:"fcmToken,omitempty"`
+	FcmTokenNEQ          *string  `json:"fcmTokenNEQ,omitempty"`
+	FcmTokenIn           []string `json:"fcmTokenIn,omitempty"`
+	FcmTokenNotIn        []string `json:"fcmTokenNotIn,omitempty"`
+	FcmTokenGT           *string  `json:"fcmTokenGT,omitempty"`
+	FcmTokenGTE          *string  `json:"fcmTokenGTE,omitempty"`
+	FcmTokenLT           *string  `json:"fcmTokenLT,omitempty"`
+	FcmTokenLTE          *string  `json:"fcmTokenLTE,omitempty"`
+	FcmTokenContains     *string  `json:"fcmTokenContains,omitempty"`
+	FcmTokenHasPrefix    *string  `json:"fcmTokenHasPrefix,omitempty"`
+	FcmTokenHasSuffix    *string  `json:"fcmTokenHasSuffix,omitempty"`
+	FcmTokenIsNil        bool     `json:"fcmTokenIsNil,omitempty"`
+	FcmTokenNotNil       bool     `json:"fcmTokenNotNil,omitempty"`
+	FcmTokenEqualFold    *string  `json:"fcmTokenEqualFold,omitempty"`
+	FcmTokenContainsFold *string  `json:"fcmTokenContainsFold,omitempty"`
 
-	// "expoPushToken" field predicates.
-	ExpoPushToken             *string  `json:"expopushtoken,omitempty"`
-	ExpoPushTokenNEQ          *string  `json:"expopushtokenNEQ,omitempty"`
-	ExpoPushTokenIn           []string `json:"expopushtokenIn,omitempty"`
-	ExpoPushTokenNotIn        []string `json:"expopushtokenNotIn,omitempty"`
-	ExpoPushTokenGT           *string  `json:"expopushtokenGT,omitempty"`
-	ExpoPushTokenGTE          *string  `json:"expopushtokenGTE,omitempty"`
-	ExpoPushTokenLT           *string  `json:"expopushtokenLT,omitempty"`
-	ExpoPushTokenLTE          *string  `json:"expopushtokenLTE,omitempty"`
-	ExpoPushTokenContains     *string  `json:"expopushtokenContains,omitempty"`
-	ExpoPushTokenHasPrefix    *string  `json:"expopushtokenHasPrefix,omitempty"`
-	ExpoPushTokenHasSuffix    *string  `json:"expopushtokenHasSuffix,omitempty"`
-	ExpoPushTokenIsNil        bool     `json:"expopushtokenIsNil,omitempty"`
-	ExpoPushTokenNotNil       bool     `json:"expopushtokenNotNil,omitempty"`
-	ExpoPushTokenEqualFold    *string  `json:"expopushtokenEqualFold,omitempty"`
-	ExpoPushTokenContainsFold *string  `json:"expopushtokenContainsFold,omitempty"`
+	// "expo_push_token" field predicates.
+	ExpoPushToken             *string  `json:"expoPushToken,omitempty"`
+	ExpoPushTokenNEQ          *string  `json:"expoPushTokenNEQ,omitempty"`
+	ExpoPushTokenIn           []string `json:"expoPushTokenIn,omitempty"`
+	ExpoPushTokenNotIn        []string `json:"expoPushTokenNotIn,omitempty"`
+	ExpoPushTokenGT           *string  `json:"expoPushTokenGT,omitempty"`
+	ExpoPushTokenGTE          *string  `json:"expoPushTokenGTE,omitempty"`
+	ExpoPushTokenLT           *string  `json:"expoPushTokenLT,omitempty"`
+	ExpoPushTokenLTE          *string  `json:"expoPushTokenLTE,omitempty"`
+	ExpoPushTokenContains     *string  `json:"expoPushTokenContains,omitempty"`
+	ExpoPushTokenHasPrefix    *string  `json:"expoPushTokenHasPrefix,omitempty"`
+	ExpoPushTokenHasSuffix    *string  `json:"expoPushTokenHasSuffix,omitempty"`
+	ExpoPushTokenIsNil        bool     `json:"expoPushTokenIsNil,omitempty"`
+	ExpoPushTokenNotNil       bool     `json:"expoPushTokenNotNil,omitempty"`
+	ExpoPushTokenEqualFold    *string  `json:"expoPushTokenEqualFold,omitempty"`
+	ExpoPushTokenContainsFold *string  `json:"expoPushTokenContainsFold,omitempty"`
 
 	// "email" field predicates.
 	Email             *string  `json:"email,omitempty"`
@@ -15693,22 +15677,22 @@ type UserWhereInput struct {
 	AvatarEqualFold    *string  `json:"avatarEqualFold,omitempty"`
 	AvatarContainsFold *string  `json:"avatarContainsFold,omitempty"`
 
-	// "photoURL" field predicates.
-	PhotoURL             *string  `json:"photourl,omitempty"`
-	PhotoURLNEQ          *string  `json:"photourlNEQ,omitempty"`
-	PhotoURLIn           []string `json:"photourlIn,omitempty"`
-	PhotoURLNotIn        []string `json:"photourlNotIn,omitempty"`
-	PhotoURLGT           *string  `json:"photourlGT,omitempty"`
-	PhotoURLGTE          *string  `json:"photourlGTE,omitempty"`
-	PhotoURLLT           *string  `json:"photourlLT,omitempty"`
-	PhotoURLLTE          *string  `json:"photourlLTE,omitempty"`
-	PhotoURLContains     *string  `json:"photourlContains,omitempty"`
-	PhotoURLHasPrefix    *string  `json:"photourlHasPrefix,omitempty"`
-	PhotoURLHasSuffix    *string  `json:"photourlHasSuffix,omitempty"`
-	PhotoURLIsNil        bool     `json:"photourlIsNil,omitempty"`
-	PhotoURLNotNil       bool     `json:"photourlNotNil,omitempty"`
-	PhotoURLEqualFold    *string  `json:"photourlEqualFold,omitempty"`
-	PhotoURLContainsFold *string  `json:"photourlContainsFold,omitempty"`
+	// "photo_URL" field predicates.
+	PhotoURL             *string  `json:"photoURL,omitempty"`
+	PhotoURLNEQ          *string  `json:"photoURLNEQ,omitempty"`
+	PhotoURLIn           []string `json:"photoURLIn,omitempty"`
+	PhotoURLNotIn        []string `json:"photoURLNotIn,omitempty"`
+	PhotoURLGT           *string  `json:"photoURLGT,omitempty"`
+	PhotoURLGTE          *string  `json:"photoURLGTE,omitempty"`
+	PhotoURLLT           *string  `json:"photoURLLT,omitempty"`
+	PhotoURLLTE          *string  `json:"photoURLLTE,omitempty"`
+	PhotoURLContains     *string  `json:"photoURLContains,omitempty"`
+	PhotoURLHasPrefix    *string  `json:"photoURLHasPrefix,omitempty"`
+	PhotoURLHasSuffix    *string  `json:"photoURLHasSuffix,omitempty"`
+	PhotoURLIsNil        bool     `json:"photoURLIsNil,omitempty"`
+	PhotoURLNotNil       bool     `json:"photoURLNotNil,omitempty"`
+	PhotoURLEqualFold    *string  `json:"photoURLEqualFold,omitempty"`
+	PhotoURLContainsFold *string  `json:"photoURLContainsFold,omitempty"`
 
 	// "department" field predicates.
 	Department             *string  `json:"department,omitempty"`
@@ -15756,17 +15740,17 @@ type UserWhereInput struct {
 	BirthdateIsNil  bool        `json:"birthdateIsNil,omitempty"`
 	BirthdateNotNil bool        `json:"birthdateNotNil,omitempty"`
 
-	// "lastLogin" field predicates.
-	LastLogin       *time.Time  `json:"lastlogin,omitempty"`
-	LastLoginNEQ    *time.Time  `json:"lastloginNEQ,omitempty"`
-	LastLoginIn     []time.Time `json:"lastloginIn,omitempty"`
-	LastLoginNotIn  []time.Time `json:"lastloginNotIn,omitempty"`
-	LastLoginGT     *time.Time  `json:"lastloginGT,omitempty"`
-	LastLoginGTE    *time.Time  `json:"lastloginGTE,omitempty"`
-	LastLoginLT     *time.Time  `json:"lastloginLT,omitempty"`
-	LastLoginLTE    *time.Time  `json:"lastloginLTE,omitempty"`
-	LastLoginIsNil  bool        `json:"lastloginIsNil,omitempty"`
-	LastLoginNotNil bool        `json:"lastloginNotNil,omitempty"`
+	// "last_login" field predicates.
+	LastLogin       *time.Time  `json:"lastLogin,omitempty"`
+	LastLoginNEQ    *time.Time  `json:"lastLoginNEQ,omitempty"`
+	LastLoginIn     []time.Time `json:"lastLoginIn,omitempty"`
+	LastLoginNotIn  []time.Time `json:"lastLoginNotIn,omitempty"`
+	LastLoginGT     *time.Time  `json:"lastLoginGT,omitempty"`
+	LastLoginGTE    *time.Time  `json:"lastLoginGTE,omitempty"`
+	LastLoginLT     *time.Time  `json:"lastLoginLT,omitempty"`
+	LastLoginLTE    *time.Time  `json:"lastLoginLTE,omitempty"`
+	LastLoginIsNil  bool        `json:"lastLoginIsNil,omitempty"`
+	LastLoginNotNil bool        `json:"lastLoginNotNil,omitempty"`
 
 	// "gender" field predicates.
 	Gender      *user.Gender  `json:"gender,omitempty"`
@@ -15778,7 +15762,7 @@ type UserWhereInput struct {
 	Active    *bool `json:"active,omitempty"`
 	ActiveNEQ *bool `json:"activeNEQ,omitempty"`
 
-	// "accountingEntries" edge predicates.
+	// "accounting_entries" edge predicates.
 	HasAccountingEntries     *bool                        `json:"hasAccountingEntries,omitempty"`
 	HasAccountingEntriesWith []*AccountingEntryWhereInput `json:"hasAccountingEntriesWith,omitempty"`
 
@@ -15786,7 +15770,7 @@ type UserWhereInput struct {
 	HasCompany     *bool                `json:"hasCompany,omitempty"`
 	HasCompanyWith []*CompanyWhereInput `json:"hasCompanyWith,omitempty"`
 
-	// "assignedRoles" edge predicates.
+	// "assigned_roles" edge predicates.
 	HasAssignedRoles     *bool                 `json:"hasAssignedRoles,omitempty"`
 	HasAssignedRolesWith []*UserRoleWhereInput `json:"hasAssignedRolesWith,omitempty"`
 
@@ -15798,7 +15782,7 @@ type UserWhereInput struct {
 	HasLeader     *bool             `json:"hasLeader,omitempty"`
 	HasLeaderWith []*UserWhereInput `json:"hasLeaderWith,omitempty"`
 
-	// "createdMemberSignupTokens" edge predicates.
+	// "created_member_signup_tokens" edge predicates.
 	HasCreatedMemberSignupTokens     *bool                          `json:"hasCreatedMemberSignupTokens,omitempty"`
 	HasCreatedMemberSignupTokensWith []*MemberSignupTokenWhereInput `json:"hasCreatedMemberSignupTokensWith,omitempty"`
 
@@ -15806,27 +15790,27 @@ type UserWhereInput struct {
 	HasEmployee     *bool                 `json:"hasEmployee,omitempty"`
 	HasEmployeeWith []*EmployeeWhereInput `json:"hasEmployeeWith,omitempty"`
 
-	// "issuedInvoices" edge predicates.
+	// "issued_invoices" edge predicates.
 	HasIssuedInvoices     *bool                `json:"hasIssuedInvoices,omitempty"`
 	HasIssuedInvoicesWith []*InvoiceWhereInput `json:"hasIssuedInvoicesWith,omitempty"`
 
-	// "createdProjects" edge predicates.
+	// "created_projects" edge predicates.
 	HasCreatedProjects     *bool                `json:"hasCreatedProjects,omitempty"`
 	HasCreatedProjectsWith []*ProjectWhereInput `json:"hasCreatedProjectsWith,omitempty"`
 
-	// "leaderedProjects" edge predicates.
+	// "leadered_projects" edge predicates.
 	HasLeaderedProjects     *bool                `json:"hasLeaderedProjects,omitempty"`
 	HasLeaderedProjectsWith []*ProjectWhereInput `json:"hasLeaderedProjectsWith,omitempty"`
 
-	// "assignedProjectTasks" edge predicates.
+	// "assigned_project_tasks" edge predicates.
 	HasAssignedProjectTasks     *bool                    `json:"hasAssignedProjectTasks,omitempty"`
 	HasAssignedProjectTasksWith []*ProjectTaskWhereInput `json:"hasAssignedProjectTasksWith,omitempty"`
 
-	// "participatedProjectTasks" edge predicates.
+	// "participated_project_tasks" edge predicates.
 	HasParticipatedProjectTasks     *bool                    `json:"hasParticipatedProjectTasks,omitempty"`
 	HasParticipatedProjectTasksWith []*ProjectTaskWhereInput `json:"hasParticipatedProjectTasksWith,omitempty"`
 
-	// "createdTasks" edge predicates.
+	// "created_tasks" edge predicates.
 	HasCreatedTasks     *bool                    `json:"hasCreatedTasks,omitempty"`
 	HasCreatedTasksWith []*ProjectTaskWhereInput `json:"hasCreatedTasksWith,omitempty"`
 
@@ -15834,19 +15818,19 @@ type UserWhereInput struct {
 	HasTokens     *bool              `json:"hasTokens,omitempty"`
 	HasTokensWith []*TokenWhereInput `json:"hasTokensWith,omitempty"`
 
-	// "approvedWorkShifts" edge predicates.
+	// "approved_work_shifts" edge predicates.
 	HasApprovedWorkShifts     *bool                  `json:"hasApprovedWorkShifts,omitempty"`
 	HasApprovedWorkShiftsWith []*WorkshiftWhereInput `json:"hasApprovedWorkShiftsWith,omitempty"`
 
-	// "workShifts" edge predicates.
+	// "work_shifts" edge predicates.
 	HasWorkShifts     *bool                  `json:"hasWorkShifts,omitempty"`
 	HasWorkShiftsWith []*WorkshiftWhereInput `json:"hasWorkShiftsWith,omitempty"`
 
-	// "uploadedDocuments" edge predicates.
+	// "uploaded_documents" edge predicates.
 	HasUploadedDocuments     *bool                        `json:"hasUploadedDocuments,omitempty"`
 	HasUploadedDocumentsWith []*CompanyDocumentWhereInput `json:"hasUploadedDocumentsWith,omitempty"`
 
-	// "approvedDocuments" edge predicates.
+	// "approved_documents" edge predicates.
 	HasApprovedDocuments     *bool                        `json:"hasApprovedDocuments,omitempty"`
 	HasApprovedDocumentsWith []*CompanyDocumentWhereInput `json:"hasApprovedDocumentsWith,omitempty"`
 }
@@ -17183,103 +17167,103 @@ type WorkshiftWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "createdAt" field predicates.
-	CreatedAt      *time.Time  `json:"createdat,omitempty"`
-	CreatedAtNEQ   *time.Time  `json:"createdatNEQ,omitempty"`
-	CreatedAtIn    []time.Time `json:"createdatIn,omitempty"`
-	CreatedAtNotIn []time.Time `json:"createdatNotIn,omitempty"`
-	CreatedAtGT    *time.Time  `json:"createdatGT,omitempty"`
-	CreatedAtGTE   *time.Time  `json:"createdatGTE,omitempty"`
-	CreatedAtLT    *time.Time  `json:"createdatLT,omitempty"`
-	CreatedAtLTE   *time.Time  `json:"createdatLTE,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
 
-	// "updatedAt" field predicates.
-	UpdatedAt      *time.Time  `json:"updatedat,omitempty"`
-	UpdatedAtNEQ   *time.Time  `json:"updatedatNEQ,omitempty"`
-	UpdatedAtIn    []time.Time `json:"updatedatIn,omitempty"`
-	UpdatedAtNotIn []time.Time `json:"updatedatNotIn,omitempty"`
-	UpdatedAtGT    *time.Time  `json:"updatedatGT,omitempty"`
-	UpdatedAtGTE   *time.Time  `json:"updatedatGTE,omitempty"`
-	UpdatedAtLT    *time.Time  `json:"updatedatLT,omitempty"`
-	UpdatedAtLTE   *time.Time  `json:"updatedatLTE,omitempty"`
+	// "updated_at" field predicates.
+	UpdatedAt      *time.Time  `json:"updatedAt,omitempty"`
+	UpdatedAtNEQ   *time.Time  `json:"updatedAtNEQ,omitempty"`
+	UpdatedAtIn    []time.Time `json:"updatedAtIn,omitempty"`
+	UpdatedAtNotIn []time.Time `json:"updatedAtNotIn,omitempty"`
+	UpdatedAtGT    *time.Time  `json:"updatedAtGT,omitempty"`
+	UpdatedAtGTE   *time.Time  `json:"updatedAtGTE,omitempty"`
+	UpdatedAtLT    *time.Time  `json:"updatedAtLT,omitempty"`
+	UpdatedAtLTE   *time.Time  `json:"updatedAtLTE,omitempty"`
 
-	// "deletedAt" field predicates.
-	DeletedAt       *time.Time  `json:"deletedat,omitempty"`
-	DeletedAtNEQ    *time.Time  `json:"deletedatNEQ,omitempty"`
-	DeletedAtIn     []time.Time `json:"deletedatIn,omitempty"`
-	DeletedAtNotIn  []time.Time `json:"deletedatNotIn,omitempty"`
-	DeletedAtGT     *time.Time  `json:"deletedatGT,omitempty"`
-	DeletedAtGTE    *time.Time  `json:"deletedatGTE,omitempty"`
-	DeletedAtLT     *time.Time  `json:"deletedatLT,omitempty"`
-	DeletedAtLTE    *time.Time  `json:"deletedatLTE,omitempty"`
-	DeletedAtIsNil  bool        `json:"deletedatIsNil,omitempty"`
-	DeletedAtNotNil bool        `json:"deletedatNotNil,omitempty"`
+	// "deleted_at" field predicates.
+	DeletedAt       *time.Time  `json:"deletedAt,omitempty"`
+	DeletedAtNEQ    *time.Time  `json:"deletedAtNEQ,omitempty"`
+	DeletedAtIn     []time.Time `json:"deletedAtIn,omitempty"`
+	DeletedAtNotIn  []time.Time `json:"deletedAtNotIn,omitempty"`
+	DeletedAtGT     *time.Time  `json:"deletedAtGT,omitempty"`
+	DeletedAtGTE    *time.Time  `json:"deletedAtGTE,omitempty"`
+	DeletedAtLT     *time.Time  `json:"deletedAtLT,omitempty"`
+	DeletedAtLTE    *time.Time  `json:"deletedAtLTE,omitempty"`
+	DeletedAtIsNil  bool        `json:"deletedAtIsNil,omitempty"`
+	DeletedAtNotNil bool        `json:"deletedAtNotNil,omitempty"`
 
-	// "approvedAt" field predicates.
-	ApprovedAt       *time.Time  `json:"approvedat,omitempty"`
-	ApprovedAtNEQ    *time.Time  `json:"approvedatNEQ,omitempty"`
-	ApprovedAtIn     []time.Time `json:"approvedatIn,omitempty"`
-	ApprovedAtNotIn  []time.Time `json:"approvedatNotIn,omitempty"`
-	ApprovedAtGT     *time.Time  `json:"approvedatGT,omitempty"`
-	ApprovedAtGTE    *time.Time  `json:"approvedatGTE,omitempty"`
-	ApprovedAtLT     *time.Time  `json:"approvedatLT,omitempty"`
-	ApprovedAtLTE    *time.Time  `json:"approvedatLTE,omitempty"`
-	ApprovedAtIsNil  bool        `json:"approvedatIsNil,omitempty"`
-	ApprovedAtNotNil bool        `json:"approvedatNotNil,omitempty"`
+	// "approved_at" field predicates.
+	ApprovedAt       *time.Time  `json:"approvedAt,omitempty"`
+	ApprovedAtNEQ    *time.Time  `json:"approvedAtNEQ,omitempty"`
+	ApprovedAtIn     []time.Time `json:"approvedAtIn,omitempty"`
+	ApprovedAtNotIn  []time.Time `json:"approvedAtNotIn,omitempty"`
+	ApprovedAtGT     *time.Time  `json:"approvedAtGT,omitempty"`
+	ApprovedAtGTE    *time.Time  `json:"approvedAtGTE,omitempty"`
+	ApprovedAtLT     *time.Time  `json:"approvedAtLT,omitempty"`
+	ApprovedAtLTE    *time.Time  `json:"approvedAtLTE,omitempty"`
+	ApprovedAtIsNil  bool        `json:"approvedAtIsNil,omitempty"`
+	ApprovedAtNotNil bool        `json:"approvedAtNotNil,omitempty"`
 
-	// "clockIn" field predicates.
-	ClockIn      *time.Time  `json:"clockin,omitempty"`
-	ClockInNEQ   *time.Time  `json:"clockinNEQ,omitempty"`
-	ClockInIn    []time.Time `json:"clockinIn,omitempty"`
-	ClockInNotIn []time.Time `json:"clockinNotIn,omitempty"`
-	ClockInGT    *time.Time  `json:"clockinGT,omitempty"`
-	ClockInGTE   *time.Time  `json:"clockinGTE,omitempty"`
-	ClockInLT    *time.Time  `json:"clockinLT,omitempty"`
-	ClockInLTE   *time.Time  `json:"clockinLTE,omitempty"`
+	// "clock_in" field predicates.
+	ClockIn      *time.Time  `json:"clockIn,omitempty"`
+	ClockInNEQ   *time.Time  `json:"clockInNEQ,omitempty"`
+	ClockInIn    []time.Time `json:"clockInIn,omitempty"`
+	ClockInNotIn []time.Time `json:"clockInNotIn,omitempty"`
+	ClockInGT    *time.Time  `json:"clockInGT,omitempty"`
+	ClockInGTE   *time.Time  `json:"clockInGTE,omitempty"`
+	ClockInLT    *time.Time  `json:"clockInLT,omitempty"`
+	ClockInLTE   *time.Time  `json:"clockInLTE,omitempty"`
 
-	// "clockOut" field predicates.
-	ClockOut       *time.Time  `json:"clockout,omitempty"`
-	ClockOutNEQ    *time.Time  `json:"clockoutNEQ,omitempty"`
-	ClockOutIn     []time.Time `json:"clockoutIn,omitempty"`
-	ClockOutNotIn  []time.Time `json:"clockoutNotIn,omitempty"`
-	ClockOutGT     *time.Time  `json:"clockoutGT,omitempty"`
-	ClockOutGTE    *time.Time  `json:"clockoutGTE,omitempty"`
-	ClockOutLT     *time.Time  `json:"clockoutLT,omitempty"`
-	ClockOutLTE    *time.Time  `json:"clockoutLTE,omitempty"`
-	ClockOutIsNil  bool        `json:"clockoutIsNil,omitempty"`
-	ClockOutNotNil bool        `json:"clockoutNotNil,omitempty"`
+	// "clock_out" field predicates.
+	ClockOut       *time.Time  `json:"clockOut,omitempty"`
+	ClockOutNEQ    *time.Time  `json:"clockOutNEQ,omitempty"`
+	ClockOutIn     []time.Time `json:"clockOutIn,omitempty"`
+	ClockOutNotIn  []time.Time `json:"clockOutNotIn,omitempty"`
+	ClockOutGT     *time.Time  `json:"clockOutGT,omitempty"`
+	ClockOutGTE    *time.Time  `json:"clockOutGTE,omitempty"`
+	ClockOutLT     *time.Time  `json:"clockOutLT,omitempty"`
+	ClockOutLTE    *time.Time  `json:"clockOutLTE,omitempty"`
+	ClockOutIsNil  bool        `json:"clockOutIsNil,omitempty"`
+	ClockOutNotNil bool        `json:"clockOutNotNil,omitempty"`
 
-	// "clockInLocation" field predicates.
-	ClockInLocation             *string  `json:"clockinlocation,omitempty"`
-	ClockInLocationNEQ          *string  `json:"clockinlocationNEQ,omitempty"`
-	ClockInLocationIn           []string `json:"clockinlocationIn,omitempty"`
-	ClockInLocationNotIn        []string `json:"clockinlocationNotIn,omitempty"`
-	ClockInLocationGT           *string  `json:"clockinlocationGT,omitempty"`
-	ClockInLocationGTE          *string  `json:"clockinlocationGTE,omitempty"`
-	ClockInLocationLT           *string  `json:"clockinlocationLT,omitempty"`
-	ClockInLocationLTE          *string  `json:"clockinlocationLTE,omitempty"`
-	ClockInLocationContains     *string  `json:"clockinlocationContains,omitempty"`
-	ClockInLocationHasPrefix    *string  `json:"clockinlocationHasPrefix,omitempty"`
-	ClockInLocationHasSuffix    *string  `json:"clockinlocationHasSuffix,omitempty"`
-	ClockInLocationEqualFold    *string  `json:"clockinlocationEqualFold,omitempty"`
-	ClockInLocationContainsFold *string  `json:"clockinlocationContainsFold,omitempty"`
+	// "clock_in_location" field predicates.
+	ClockInLocation             *string  `json:"clockInLocation,omitempty"`
+	ClockInLocationNEQ          *string  `json:"clockInLocationNEQ,omitempty"`
+	ClockInLocationIn           []string `json:"clockInLocationIn,omitempty"`
+	ClockInLocationNotIn        []string `json:"clockInLocationNotIn,omitempty"`
+	ClockInLocationGT           *string  `json:"clockInLocationGT,omitempty"`
+	ClockInLocationGTE          *string  `json:"clockInLocationGTE,omitempty"`
+	ClockInLocationLT           *string  `json:"clockInLocationLT,omitempty"`
+	ClockInLocationLTE          *string  `json:"clockInLocationLTE,omitempty"`
+	ClockInLocationContains     *string  `json:"clockInLocationContains,omitempty"`
+	ClockInLocationHasPrefix    *string  `json:"clockInLocationHasPrefix,omitempty"`
+	ClockInLocationHasSuffix    *string  `json:"clockInLocationHasSuffix,omitempty"`
+	ClockInLocationEqualFold    *string  `json:"clockInLocationEqualFold,omitempty"`
+	ClockInLocationContainsFold *string  `json:"clockInLocationContainsFold,omitempty"`
 
-	// "clockOutLocation" field predicates.
-	ClockOutLocation             *string  `json:"clockoutlocation,omitempty"`
-	ClockOutLocationNEQ          *string  `json:"clockoutlocationNEQ,omitempty"`
-	ClockOutLocationIn           []string `json:"clockoutlocationIn,omitempty"`
-	ClockOutLocationNotIn        []string `json:"clockoutlocationNotIn,omitempty"`
-	ClockOutLocationGT           *string  `json:"clockoutlocationGT,omitempty"`
-	ClockOutLocationGTE          *string  `json:"clockoutlocationGTE,omitempty"`
-	ClockOutLocationLT           *string  `json:"clockoutlocationLT,omitempty"`
-	ClockOutLocationLTE          *string  `json:"clockoutlocationLTE,omitempty"`
-	ClockOutLocationContains     *string  `json:"clockoutlocationContains,omitempty"`
-	ClockOutLocationHasPrefix    *string  `json:"clockoutlocationHasPrefix,omitempty"`
-	ClockOutLocationHasSuffix    *string  `json:"clockoutlocationHasSuffix,omitempty"`
-	ClockOutLocationIsNil        bool     `json:"clockoutlocationIsNil,omitempty"`
-	ClockOutLocationNotNil       bool     `json:"clockoutlocationNotNil,omitempty"`
-	ClockOutLocationEqualFold    *string  `json:"clockoutlocationEqualFold,omitempty"`
-	ClockOutLocationContainsFold *string  `json:"clockoutlocationContainsFold,omitempty"`
+	// "clock_out_location" field predicates.
+	ClockOutLocation             *string  `json:"clockOutLocation,omitempty"`
+	ClockOutLocationNEQ          *string  `json:"clockOutLocationNEQ,omitempty"`
+	ClockOutLocationIn           []string `json:"clockOutLocationIn,omitempty"`
+	ClockOutLocationNotIn        []string `json:"clockOutLocationNotIn,omitempty"`
+	ClockOutLocationGT           *string  `json:"clockOutLocationGT,omitempty"`
+	ClockOutLocationGTE          *string  `json:"clockOutLocationGTE,omitempty"`
+	ClockOutLocationLT           *string  `json:"clockOutLocationLT,omitempty"`
+	ClockOutLocationLTE          *string  `json:"clockOutLocationLTE,omitempty"`
+	ClockOutLocationContains     *string  `json:"clockOutLocationContains,omitempty"`
+	ClockOutLocationHasPrefix    *string  `json:"clockOutLocationHasPrefix,omitempty"`
+	ClockOutLocationHasSuffix    *string  `json:"clockOutLocationHasSuffix,omitempty"`
+	ClockOutLocationIsNil        bool     `json:"clockOutLocationIsNil,omitempty"`
+	ClockOutLocationNotNil       bool     `json:"clockOutLocationNotNil,omitempty"`
+	ClockOutLocationEqualFold    *string  `json:"clockOutLocationEqualFold,omitempty"`
+	ClockOutLocationContainsFold *string  `json:"clockOutLocationContainsFold,omitempty"`
 
 	// "description" field predicates.
 	Description             *string  `json:"description,omitempty"`
@@ -17329,7 +17313,7 @@ type WorkshiftWhereInput struct {
 	HasUser     *bool             `json:"hasUser,omitempty"`
 	HasUserWith []*UserWhereInput `json:"hasUserWith,omitempty"`
 
-	// "approvedBy" edge predicates.
+	// "approved_by" edge predicates.
 	HasApprovedBy     *bool             `json:"hasApprovedBy,omitempty"`
 	HasApprovedByWith []*UserWhereInput `json:"hasApprovedByWith,omitempty"`
 
@@ -17337,11 +17321,11 @@ type WorkshiftWhereInput struct {
 	HasTask     *bool                    `json:"hasTask,omitempty"`
 	HasTaskWith []*ProjectTaskWhereInput `json:"hasTaskWith,omitempty"`
 
-	// "editRequest" edge predicates.
+	// "edit_request" edge predicates.
 	HasEditRequest     *bool                  `json:"hasEditRequest,omitempty"`
 	HasEditRequestWith []*WorkshiftWhereInput `json:"hasEditRequestWith,omitempty"`
 
-	// "workShift" edge predicates.
+	// "work_shift" edge predicates.
 	HasWorkShift     *bool                  `json:"hasWorkShift,omitempty"`
 	HasWorkShiftWith []*WorkshiftWhereInput `json:"hasWorkShiftWith,omitempty"`
 }

@@ -22,13 +22,13 @@ func (Payable) Mixin() []ent.Mixin {
 // Fields of the Payable.
 func (Payable) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("entryGroup").Positive(),
+		field.Int("entry_group").Positive(),
 		field.Time("date").Annotations(entgql.OrderField("DATE")),
 		field.String("name").Default("Diversos"),
-		field.Float("amountInDefault").Min(0).Default(0).Annotations(entgql.OrderField("AMOUNT_IN_DEFAULT")),
-		field.Float("outstandingBalance").Min(0).Annotations(entgql.OrderField("OUTSTANDING_BALANCE")),
-		field.Float("totalTransaction").Min(0).Annotations(entgql.OrderField("TOTAL_TRANSACTION")),
-		field.Time("dueDate").Annotations(entgql.OrderField("DUEDATE")),
+		field.Float("amount_in_default").Min(0).Default(0).Annotations(entgql.OrderField("AMOUNT_IN_DEFAULT")),
+		field.Float("outstanding_balance").Min(0).Annotations(entgql.OrderField("OUTSTANDING_BALANCE")),
+		field.Float("total_transaction").Min(0).Annotations(entgql.OrderField("TOTAL_TRANSACTION")),
+		field.Time("due_date").Annotations(entgql.OrderField("DUEDATE")),
 		field.Enum("status").Values("paid", "pending", "overdue", "default").Annotations(entgql.OrderField("STATUS")),
 	}
 }

@@ -31,19 +31,19 @@ func (cdu *CompanyDocumentUpdate) Where(ps ...predicate.CompanyDocument) *Compan
 	return cdu
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cdu *CompanyDocumentUpdate) SetUpdatedAt(t time.Time) *CompanyDocumentUpdate {
 	cdu.mutation.SetUpdatedAt(t)
 	return cdu
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cdu *CompanyDocumentUpdate) SetDeletedAt(t time.Time) *CompanyDocumentUpdate {
 	cdu.mutation.SetDeletedAt(t)
 	return cdu
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableDeletedAt(t *time.Time) *CompanyDocumentUpdate {
 	if t != nil {
 		cdu.SetDeletedAt(*t)
@@ -51,7 +51,7 @@ func (cdu *CompanyDocumentUpdate) SetNillableDeletedAt(t *time.Time) *CompanyDoc
 	return cdu
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (cdu *CompanyDocumentUpdate) ClearDeletedAt() *CompanyDocumentUpdate {
 	cdu.mutation.ClearDeletedAt()
 	return cdu
@@ -134,13 +134,13 @@ func (cdu *CompanyDocumentUpdate) AddSize(i int) *CompanyDocumentUpdate {
 	return cdu
 }
 
-// SetFileType sets the "fileType" field.
+// SetFileType sets the "file_type" field.
 func (cdu *CompanyDocumentUpdate) SetFileType(s string) *CompanyDocumentUpdate {
 	cdu.mutation.SetFileType(s)
 	return cdu
 }
 
-// SetNillableFileType sets the "fileType" field if the given value is not nil.
+// SetNillableFileType sets the "file_type" field if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableFileType(s *string) *CompanyDocumentUpdate {
 	if s != nil {
 		cdu.SetFileType(*s)
@@ -176,13 +176,13 @@ func (cdu *CompanyDocumentUpdate) SetNillableURL(s *string) *CompanyDocumentUpda
 	return cdu
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (cdu *CompanyDocumentUpdate) SetStorageURI(s string) *CompanyDocumentUpdate {
 	cdu.mutation.SetStorageURI(s)
 	return cdu
 }
 
-// SetNillableStorageURI sets the "storageURI" field if the given value is not nil.
+// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableStorageURI(s *string) *CompanyDocumentUpdate {
 	if s != nil {
 		cdu.SetStorageURI(*s)
@@ -210,13 +210,13 @@ func (cdu *CompanyDocumentUpdate) ClearThumbnail() *CompanyDocumentUpdate {
 	return cdu
 }
 
-// SetExpiryDate sets the "expiryDate" field.
+// SetExpiryDate sets the "expiry_date" field.
 func (cdu *CompanyDocumentUpdate) SetExpiryDate(t time.Time) *CompanyDocumentUpdate {
 	cdu.mutation.SetExpiryDate(t)
 	return cdu
 }
 
-// SetNillableExpiryDate sets the "expiryDate" field if the given value is not nil.
+// SetNillableExpiryDate sets the "expiry_date" field if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableExpiryDate(t *time.Time) *CompanyDocumentUpdate {
 	if t != nil {
 		cdu.SetExpiryDate(*t)
@@ -235,13 +235,13 @@ func (cdu *CompanyDocumentUpdate) SetCompany(c *Company) *CompanyDocumentUpdate 
 	return cdu.SetCompanyID(c.ID)
 }
 
-// SetUploadedByID sets the "uploadedBy" edge to the User entity by ID.
+// SetUploadedByID sets the "uploaded_by" edge to the User entity by ID.
 func (cdu *CompanyDocumentUpdate) SetUploadedByID(id int) *CompanyDocumentUpdate {
 	cdu.mutation.SetUploadedByID(id)
 	return cdu
 }
 
-// SetNillableUploadedByID sets the "uploadedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableUploadedByID sets the "uploaded_by" edge to the User entity by ID if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableUploadedByID(id *int) *CompanyDocumentUpdate {
 	if id != nil {
 		cdu = cdu.SetUploadedByID(*id)
@@ -249,18 +249,18 @@ func (cdu *CompanyDocumentUpdate) SetNillableUploadedByID(id *int) *CompanyDocum
 	return cdu
 }
 
-// SetUploadedBy sets the "uploadedBy" edge to the User entity.
+// SetUploadedBy sets the "uploaded_by" edge to the User entity.
 func (cdu *CompanyDocumentUpdate) SetUploadedBy(u *User) *CompanyDocumentUpdate {
 	return cdu.SetUploadedByID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (cdu *CompanyDocumentUpdate) SetApprovedByID(id int) *CompanyDocumentUpdate {
 	cdu.mutation.SetApprovedByID(id)
 	return cdu
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (cdu *CompanyDocumentUpdate) SetNillableApprovedByID(id *int) *CompanyDocumentUpdate {
 	if id != nil {
 		cdu = cdu.SetApprovedByID(*id)
@@ -268,7 +268,7 @@ func (cdu *CompanyDocumentUpdate) SetNillableApprovedByID(id *int) *CompanyDocum
 	return cdu
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (cdu *CompanyDocumentUpdate) SetApprovedBy(u *User) *CompanyDocumentUpdate {
 	return cdu.SetApprovedByID(u.ID)
 }
@@ -284,13 +284,13 @@ func (cdu *CompanyDocumentUpdate) ClearCompany() *CompanyDocumentUpdate {
 	return cdu
 }
 
-// ClearUploadedBy clears the "uploadedBy" edge to the User entity.
+// ClearUploadedBy clears the "uploaded_by" edge to the User entity.
 func (cdu *CompanyDocumentUpdate) ClearUploadedBy() *CompanyDocumentUpdate {
 	cdu.mutation.ClearUploadedBy()
 	return cdu
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (cdu *CompanyDocumentUpdate) ClearApprovedBy() *CompanyDocumentUpdate {
 	cdu.mutation.ClearApprovedBy()
 	return cdu
@@ -371,7 +371,7 @@ func (cdu *CompanyDocumentUpdate) check() error {
 	}
 	if v, ok := cdu.mutation.StorageURI(); ok {
 		if err := companydocument.StorageURIValidator(v); err != nil {
-			return &ValidationError{Name: "storageURI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storageURI": %w`, err)}
+			return &ValidationError{Name: "storage_URI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storage_URI": %w`, err)}
 		}
 	}
 	if cdu.mutation.CompanyCleared() && len(cdu.mutation.CompanyIDs()) > 0 {
@@ -555,19 +555,19 @@ type CompanyDocumentUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cduo *CompanyDocumentUpdateOne) SetUpdatedAt(t time.Time) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetUpdatedAt(t)
 	return cduo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cduo *CompanyDocumentUpdateOne) SetDeletedAt(t time.Time) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetDeletedAt(t)
 	return cduo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableDeletedAt(t *time.Time) *CompanyDocumentUpdateOne {
 	if t != nil {
 		cduo.SetDeletedAt(*t)
@@ -575,7 +575,7 @@ func (cduo *CompanyDocumentUpdateOne) SetNillableDeletedAt(t *time.Time) *Compan
 	return cduo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (cduo *CompanyDocumentUpdateOne) ClearDeletedAt() *CompanyDocumentUpdateOne {
 	cduo.mutation.ClearDeletedAt()
 	return cduo
@@ -658,13 +658,13 @@ func (cduo *CompanyDocumentUpdateOne) AddSize(i int) *CompanyDocumentUpdateOne {
 	return cduo
 }
 
-// SetFileType sets the "fileType" field.
+// SetFileType sets the "file_type" field.
 func (cduo *CompanyDocumentUpdateOne) SetFileType(s string) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetFileType(s)
 	return cduo
 }
 
-// SetNillableFileType sets the "fileType" field if the given value is not nil.
+// SetNillableFileType sets the "file_type" field if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableFileType(s *string) *CompanyDocumentUpdateOne {
 	if s != nil {
 		cduo.SetFileType(*s)
@@ -700,13 +700,13 @@ func (cduo *CompanyDocumentUpdateOne) SetNillableURL(s *string) *CompanyDocument
 	return cduo
 }
 
-// SetStorageURI sets the "storageURI" field.
+// SetStorageURI sets the "storage_URI" field.
 func (cduo *CompanyDocumentUpdateOne) SetStorageURI(s string) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetStorageURI(s)
 	return cduo
 }
 
-// SetNillableStorageURI sets the "storageURI" field if the given value is not nil.
+// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableStorageURI(s *string) *CompanyDocumentUpdateOne {
 	if s != nil {
 		cduo.SetStorageURI(*s)
@@ -734,13 +734,13 @@ func (cduo *CompanyDocumentUpdateOne) ClearThumbnail() *CompanyDocumentUpdateOne
 	return cduo
 }
 
-// SetExpiryDate sets the "expiryDate" field.
+// SetExpiryDate sets the "expiry_date" field.
 func (cduo *CompanyDocumentUpdateOne) SetExpiryDate(t time.Time) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetExpiryDate(t)
 	return cduo
 }
 
-// SetNillableExpiryDate sets the "expiryDate" field if the given value is not nil.
+// SetNillableExpiryDate sets the "expiry_date" field if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableExpiryDate(t *time.Time) *CompanyDocumentUpdateOne {
 	if t != nil {
 		cduo.SetExpiryDate(*t)
@@ -759,13 +759,13 @@ func (cduo *CompanyDocumentUpdateOne) SetCompany(c *Company) *CompanyDocumentUpd
 	return cduo.SetCompanyID(c.ID)
 }
 
-// SetUploadedByID sets the "uploadedBy" edge to the User entity by ID.
+// SetUploadedByID sets the "uploaded_by" edge to the User entity by ID.
 func (cduo *CompanyDocumentUpdateOne) SetUploadedByID(id int) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetUploadedByID(id)
 	return cduo
 }
 
-// SetNillableUploadedByID sets the "uploadedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableUploadedByID sets the "uploaded_by" edge to the User entity by ID if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableUploadedByID(id *int) *CompanyDocumentUpdateOne {
 	if id != nil {
 		cduo = cduo.SetUploadedByID(*id)
@@ -773,18 +773,18 @@ func (cduo *CompanyDocumentUpdateOne) SetNillableUploadedByID(id *int) *CompanyD
 	return cduo
 }
 
-// SetUploadedBy sets the "uploadedBy" edge to the User entity.
+// SetUploadedBy sets the "uploaded_by" edge to the User entity.
 func (cduo *CompanyDocumentUpdateOne) SetUploadedBy(u *User) *CompanyDocumentUpdateOne {
 	return cduo.SetUploadedByID(u.ID)
 }
 
-// SetApprovedByID sets the "approvedBy" edge to the User entity by ID.
+// SetApprovedByID sets the "approved_by" edge to the User entity by ID.
 func (cduo *CompanyDocumentUpdateOne) SetApprovedByID(id int) *CompanyDocumentUpdateOne {
 	cduo.mutation.SetApprovedByID(id)
 	return cduo
 }
 
-// SetNillableApprovedByID sets the "approvedBy" edge to the User entity by ID if the given value is not nil.
+// SetNillableApprovedByID sets the "approved_by" edge to the User entity by ID if the given value is not nil.
 func (cduo *CompanyDocumentUpdateOne) SetNillableApprovedByID(id *int) *CompanyDocumentUpdateOne {
 	if id != nil {
 		cduo = cduo.SetApprovedByID(*id)
@@ -792,7 +792,7 @@ func (cduo *CompanyDocumentUpdateOne) SetNillableApprovedByID(id *int) *CompanyD
 	return cduo
 }
 
-// SetApprovedBy sets the "approvedBy" edge to the User entity.
+// SetApprovedBy sets the "approved_by" edge to the User entity.
 func (cduo *CompanyDocumentUpdateOne) SetApprovedBy(u *User) *CompanyDocumentUpdateOne {
 	return cduo.SetApprovedByID(u.ID)
 }
@@ -808,13 +808,13 @@ func (cduo *CompanyDocumentUpdateOne) ClearCompany() *CompanyDocumentUpdateOne {
 	return cduo
 }
 
-// ClearUploadedBy clears the "uploadedBy" edge to the User entity.
+// ClearUploadedBy clears the "uploaded_by" edge to the User entity.
 func (cduo *CompanyDocumentUpdateOne) ClearUploadedBy() *CompanyDocumentUpdateOne {
 	cduo.mutation.ClearUploadedBy()
 	return cduo
 }
 
-// ClearApprovedBy clears the "approvedBy" edge to the User entity.
+// ClearApprovedBy clears the "approved_by" edge to the User entity.
 func (cduo *CompanyDocumentUpdateOne) ClearApprovedBy() *CompanyDocumentUpdateOne {
 	cduo.mutation.ClearApprovedBy()
 	return cduo
@@ -908,7 +908,7 @@ func (cduo *CompanyDocumentUpdateOne) check() error {
 	}
 	if v, ok := cduo.mutation.StorageURI(); ok {
 		if err := companydocument.StorageURIValidator(v); err != nil {
-			return &ValidationError{Name: "storageURI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storageURI": %w`, err)}
+			return &ValidationError{Name: "storage_URI", err: fmt.Errorf(`generated: validator failed for field "CompanyDocument.storage_URI": %w`, err)}
 		}
 	}
 	if cduo.mutation.CompanyCleared() && len(cduo.mutation.CompanyIDs()) > 0 {

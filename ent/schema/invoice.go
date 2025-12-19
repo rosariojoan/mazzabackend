@@ -26,26 +26,26 @@ var invoiceStatus = []string{"DRAFT", "CANCELED", "PENDING", "PAID", "OVERDUE", 
 // Fields of the Invoice.
 func (Invoice) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("companyLogo").Nillable().Optional(),
-		field.String("companyName"),
-		field.String("companyTaxID").Nillable().Optional(),
-		field.String("companyAddress"),
-		field.String("companyCity"),
-		field.String("companyEmail").Nillable().Optional(),
-		field.String("companyPhone").Nillable().Optional(),
+		field.String("company_logo").Nillable().Optional(),
+		field.String("company_name"),
+		field.String("company_tax_id").Nillable().Optional(),
+		field.String("company_address"),
+		field.String("company_city"),
+		field.String("company_email").Nillable().Optional(),
+		field.String("company_phone").Nillable().Optional(),
 
 		field.String("number").Nillable().Optional(),
-		field.Time("issueDate").Annotations(entgql.OrderField("ISSUE_DATE")),
-		field.Time("dueDate").Annotations(entgql.OrderField("DUE_DATE")),
-		field.Time("paidAt").Nillable().Optional().Annotations(entgql.OrderField("PAID_AT")),
+		field.Time("issue_date").Annotations(entgql.OrderField("ISSUE_DATE")),
+		field.Time("due_date").Annotations(entgql.OrderField("DUE_DATE")),
+		field.Time("paid_at").Nillable().Optional().Annotations(entgql.OrderField("PAID_AT")),
 		field.Enum("status").Values(invoiceStatus...).Default("PAID").Annotations(entgql.OrderField("STATUS")),
 
-		field.String("customerName").Default("other").Optional(),
-		field.String("customerTaxID").Nillable().Optional(),
-		field.String("customerAddress").Nillable().Optional(),
-		field.String("customerCity").Nillable().Optional(),
-		field.String("customerEmail").Nillable().Optional(),
-		field.String("customerPhone").Nillable().Optional(),
+		field.String("customer_name").Default("other").Optional(),
+		field.String("customer_tax_id").Nillable().Optional(),
+		field.String("customer_address").Nillable().Optional(),
+		field.String("customer_city").Nillable().Optional(),
+		field.String("customer_email").Nillable().Optional(),
+		field.String("customer_phone").Nillable().Optional(),
 
 		field.String("items").NotEmpty().Comment("stringified JSON of product rows"),
 		field.Float("subtotal").Positive(),
@@ -53,23 +53,23 @@ func (Invoice) Fields() []ent.Field {
 		field.Float("total").Positive().Annotations(entgql.OrderField("TOTAL")),
 
 		field.String("notes").Nillable().Optional(),
-		field.String("paymentMethod").Nillable().Optional(),
-		field.String("bankName").Nillable().Optional(),
-		field.String("bankAgency").Nillable().Optional(),
-		field.String("bankAccountNumber").Nillable().Optional(),
-		field.String("bankAccountName").Nillable().Optional(),
-		
-		field.String("storageURI").Nillable().Sensitive().Optional().Annotations(
-			// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		field.String("payment_method").Nillable().Optional(),
+		field.String("bank_name").Nillable().Optional(),
+		field.String("bank_agency").Nillable().Optional(),
+		field.String("bank_account_number").Nillable().Optional(),
+		field.String("bank_account_name").Nillable().Optional(),
+
+		field.String("storage_URI").Nillable().Sensitive().Optional().Annotations(
+		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),
 		field.String("URL").Nillable().Optional().Annotations(
-			// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),
 		field.String("filename").Nillable().Optional().Annotations(
-			// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),
 		field.Float("size").Positive().Nillable().Optional().Annotations(
-			// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		).Comment("File size in KB"),
 		field.String("keywords").NotEmpty().MaxLen(255),
 	}
@@ -82,7 +82,7 @@ func (Invoice) Edges() []ent.Edge {
 			entsql.OnDelete(entsql.Cascade),
 			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),
-		edge.From("issuedBy", User.Type).Ref("issuedInvoices").Unique().Annotations(
+		edge.From("issued_by", User.Type).Ref("issued_invoices").Unique().Annotations(
 			entsql.OnDelete(entsql.SetNull),
 			entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
 		),

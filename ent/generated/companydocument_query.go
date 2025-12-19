@@ -88,7 +88,7 @@ func (cdq *CompanyDocumentQuery) QueryCompany() *CompanyQuery {
 	return query
 }
 
-// QueryUploadedBy chains the current query on the "uploadedBy" edge.
+// QueryUploadedBy chains the current query on the "uploaded_by" edge.
 func (cdq *CompanyDocumentQuery) QueryUploadedBy() *UserQuery {
 	query := (&UserClient{config: cdq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -110,7 +110,7 @@ func (cdq *CompanyDocumentQuery) QueryUploadedBy() *UserQuery {
 	return query
 }
 
-// QueryApprovedBy chains the current query on the "approvedBy" edge.
+// QueryApprovedBy chains the current query on the "approved_by" edge.
 func (cdq *CompanyDocumentQuery) QueryApprovedBy() *UserQuery {
 	query := (&UserClient{config: cdq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -346,7 +346,7 @@ func (cdq *CompanyDocumentQuery) WithCompany(opts ...func(*CompanyQuery)) *Compa
 }
 
 // WithUploadedBy tells the query-builder to eager-load the nodes that are connected to
-// the "uploadedBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "uploaded_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (cdq *CompanyDocumentQuery) WithUploadedBy(opts ...func(*UserQuery)) *CompanyDocumentQuery {
 	query := (&UserClient{config: cdq.config}).Query()
 	for _, opt := range opts {
@@ -357,7 +357,7 @@ func (cdq *CompanyDocumentQuery) WithUploadedBy(opts ...func(*UserQuery)) *Compa
 }
 
 // WithApprovedBy tells the query-builder to eager-load the nodes that are connected to
-// the "approvedBy" edge. The optional arguments are used to configure the query builder of the edge.
+// the "approved_by" edge. The optional arguments are used to configure the query builder of the edge.
 func (cdq *CompanyDocumentQuery) WithApprovedBy(opts ...func(*UserQuery)) *CompanyDocumentQuery {
 	query := (&UserClient{config: cdq.config}).Query()
 	for _, opt := range opts {
@@ -373,7 +373,7 @@ func (cdq *CompanyDocumentQuery) WithApprovedBy(opts ...func(*UserQuery)) *Compa
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -396,7 +396,7 @@ func (cdq *CompanyDocumentQuery) GroupBy(field string, fields ...string) *Compan
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.CompanyDocument.Query().

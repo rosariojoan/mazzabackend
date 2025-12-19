@@ -19,11 +19,11 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 		companyClient.AddProducts(defaultProduct)
 	}
 
-	stringValue := ""
+	emptryString := ""
 	defaultCustomer, err := client.Customer.Create().SetInput(ent.CreateCustomerInput{
 		Description: &descr,
 		Name:        "Clientes diversos",
-		TaxId:       &stringValue,
+		TaxID:       &emptryString,
 	}).SetIsDefault(true).Save(ctx)
 	if err == nil {
 		companyClient.AddCustomers(defaultCustomer)
@@ -32,7 +32,7 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	defaultSupplier, err := client.Supplier.Create().SetInput(ent.CreateSupplierInput{
 		Description: &descr,
 		Name:        "Fornecedores diversos",
-		TaxId:       &stringValue,
+		TaxID:       &emptryString,
 	}).SetIsDefault(true).Save(ctx)
 	if err == nil {
 		companyClient.AddSuppliers(defaultSupplier)

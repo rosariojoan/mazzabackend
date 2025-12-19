@@ -128,7 +128,7 @@ func (cq *CompanyQuery) Order(o ...company.OrderOption) *CompanyQuery {
 	return cq
 }
 
-// QueryAvailableRoles chains the current query on the "availableRoles" edge.
+// QueryAvailableRoles chains the current query on the "available_roles" edge.
 func (cq *CompanyQuery) QueryAvailableRoles() *UserRoleQuery {
 	query := (&UserRoleClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -150,7 +150,7 @@ func (cq *CompanyQuery) QueryAvailableRoles() *UserRoleQuery {
 	return query
 }
 
-// QueryAccountingEntries chains the current query on the "accountingEntries" edge.
+// QueryAccountingEntries chains the current query on the "accounting_entries" edge.
 func (cq *CompanyQuery) QueryAccountingEntries() *AccountingEntryQuery {
 	query := (&AccountingEntryClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -282,7 +282,7 @@ func (cq *CompanyQuery) QueryInventory() *InventoryQuery {
 	return query
 }
 
-// QueryInventoryMovements chains the current query on the "inventoryMovements" edge.
+// QueryInventoryMovements chains the current query on the "inventory_movements" edge.
 func (cq *CompanyQuery) QueryInventoryMovements() *InventoryMovementQuery {
 	query := (&InventoryMovementClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -370,7 +370,7 @@ func (cq *CompanyQuery) QueryLoanSchedule() *LoanScheduleQuery {
 	return query
 }
 
-// QueryMemberSignupTokens chains the current query on the "memberSignupTokens" edge.
+// QueryMemberSignupTokens chains the current query on the "member_signup_tokens" edge.
 func (cq *CompanyQuery) QueryMemberSignupTokens() *MemberSignupTokenQuery {
 	query := (&MemberSignupTokenClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -546,7 +546,7 @@ func (cq *CompanyQuery) QueryTreasuries() *TreasuryQuery {
 	return query
 }
 
-// QueryWorkShifts chains the current query on the "workShifts" edge.
+// QueryWorkShifts chains the current query on the "work_shifts" edge.
 func (cq *CompanyQuery) QueryWorkShifts() *WorkshiftQuery {
 	query := (&WorkshiftClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -590,7 +590,7 @@ func (cq *CompanyQuery) QueryUsers() *UserQuery {
 	return query
 }
 
-// QueryDaughterCompanies chains the current query on the "daughterCompanies" edge.
+// QueryDaughterCompanies chains the current query on the "daughter_companies" edge.
 func (cq *CompanyQuery) QueryDaughterCompanies() *CompanyQuery {
 	query := (&CompanyClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -612,7 +612,7 @@ func (cq *CompanyQuery) QueryDaughterCompanies() *CompanyQuery {
 	return query
 }
 
-// QueryParentCompany chains the current query on the "parentCompany" edge.
+// QueryParentCompany chains the current query on the "parent_company" edge.
 func (cq *CompanyQuery) QueryParentCompany() *CompanyQuery {
 	query := (&CompanyClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
@@ -857,7 +857,7 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 }
 
 // WithAvailableRoles tells the query-builder to eager-load the nodes that are connected to
-// the "availableRoles" edge. The optional arguments are used to configure the query builder of the edge.
+// the "available_roles" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithAvailableRoles(opts ...func(*UserRoleQuery)) *CompanyQuery {
 	query := (&UserRoleClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -868,7 +868,7 @@ func (cq *CompanyQuery) WithAvailableRoles(opts ...func(*UserRoleQuery)) *Compan
 }
 
 // WithAccountingEntries tells the query-builder to eager-load the nodes that are connected to
-// the "accountingEntries" edge. The optional arguments are used to configure the query builder of the edge.
+// the "accounting_entries" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithAccountingEntries(opts ...func(*AccountingEntryQuery)) *CompanyQuery {
 	query := (&AccountingEntryClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -934,7 +934,7 @@ func (cq *CompanyQuery) WithInventory(opts ...func(*InventoryQuery)) *CompanyQue
 }
 
 // WithInventoryMovements tells the query-builder to eager-load the nodes that are connected to
-// the "inventoryMovements" edge. The optional arguments are used to configure the query builder of the edge.
+// the "inventory_movements" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithInventoryMovements(opts ...func(*InventoryMovementQuery)) *CompanyQuery {
 	query := (&InventoryMovementClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -978,7 +978,7 @@ func (cq *CompanyQuery) WithLoanSchedule(opts ...func(*LoanScheduleQuery)) *Comp
 }
 
 // WithMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to
-// the "memberSignupTokens" edge. The optional arguments are used to configure the query builder of the edge.
+// the "member_signup_tokens" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithMemberSignupTokens(opts ...func(*MemberSignupTokenQuery)) *CompanyQuery {
 	query := (&MemberSignupTokenClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -1066,7 +1066,7 @@ func (cq *CompanyQuery) WithTreasuries(opts ...func(*TreasuryQuery)) *CompanyQue
 }
 
 // WithWorkShifts tells the query-builder to eager-load the nodes that are connected to
-// the "workShifts" edge. The optional arguments are used to configure the query builder of the edge.
+// the "work_shifts" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithWorkShifts(opts ...func(*WorkshiftQuery)) *CompanyQuery {
 	query := (&WorkshiftClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -1088,7 +1088,7 @@ func (cq *CompanyQuery) WithUsers(opts ...func(*UserQuery)) *CompanyQuery {
 }
 
 // WithDaughterCompanies tells the query-builder to eager-load the nodes that are connected to
-// the "daughterCompanies" edge. The optional arguments are used to configure the query builder of the edge.
+// the "daughter_companies" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithDaughterCompanies(opts ...func(*CompanyQuery)) *CompanyQuery {
 	query := (&CompanyClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -1099,7 +1099,7 @@ func (cq *CompanyQuery) WithDaughterCompanies(opts ...func(*CompanyQuery)) *Comp
 }
 
 // WithParentCompany tells the query-builder to eager-load the nodes that are connected to
-// the "parentCompany" edge. The optional arguments are used to configure the query builder of the edge.
+// the "parent_company" edge. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithParentCompany(opts ...func(*CompanyQuery)) *CompanyQuery {
 	query := (&CompanyClient{config: cq.config}).Query()
 	for _, opt := range opts {
@@ -1115,7 +1115,7 @@ func (cq *CompanyQuery) WithParentCompany(opts ...func(*CompanyQuery)) *CompanyQ
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -1138,7 +1138,7 @@ func (cq *CompanyQuery) GroupBy(field string, fields ...string) *CompanyGroupBy 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"createdAt,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.Company.Query().
@@ -2405,7 +2405,7 @@ func (cq *CompanyQuery) Modify(modifiers ...func(s *sql.Selector)) *CompanySelec
 	return cq.Select()
 }
 
-// WithNamedAvailableRoles tells the query-builder to eager-load the nodes that are connected to the "availableRoles"
+// WithNamedAvailableRoles tells the query-builder to eager-load the nodes that are connected to the "available_roles"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedAvailableRoles(name string, opts ...func(*UserRoleQuery)) *CompanyQuery {
 	query := (&UserRoleClient{config: cq.config}).Query()
@@ -2419,7 +2419,7 @@ func (cq *CompanyQuery) WithNamedAvailableRoles(name string, opts ...func(*UserR
 	return cq
 }
 
-// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accountingEntries"
+// WithNamedAccountingEntries tells the query-builder to eager-load the nodes that are connected to the "accounting_entries"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedAccountingEntries(name string, opts ...func(*AccountingEntryQuery)) *CompanyQuery {
 	query := (&AccountingEntryClient{config: cq.config}).Query()
@@ -2503,7 +2503,7 @@ func (cq *CompanyQuery) WithNamedInventory(name string, opts ...func(*InventoryQ
 	return cq
 }
 
-// WithNamedInventoryMovements tells the query-builder to eager-load the nodes that are connected to the "inventoryMovements"
+// WithNamedInventoryMovements tells the query-builder to eager-load the nodes that are connected to the "inventory_movements"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedInventoryMovements(name string, opts ...func(*InventoryMovementQuery)) *CompanyQuery {
 	query := (&InventoryMovementClient{config: cq.config}).Query()
@@ -2559,7 +2559,7 @@ func (cq *CompanyQuery) WithNamedLoanSchedule(name string, opts ...func(*LoanSch
 	return cq
 }
 
-// WithNamedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to the "memberSignupTokens"
+// WithNamedMemberSignupTokens tells the query-builder to eager-load the nodes that are connected to the "member_signup_tokens"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedMemberSignupTokens(name string, opts ...func(*MemberSignupTokenQuery)) *CompanyQuery {
 	query := (&MemberSignupTokenClient{config: cq.config}).Query()
@@ -2671,7 +2671,7 @@ func (cq *CompanyQuery) WithNamedTreasuries(name string, opts ...func(*TreasuryQ
 	return cq
 }
 
-// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "workShifts"
+// WithNamedWorkShifts tells the query-builder to eager-load the nodes that are connected to the "work_shifts"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedWorkShifts(name string, opts ...func(*WorkshiftQuery)) *CompanyQuery {
 	query := (&WorkshiftClient{config: cq.config}).Query()
@@ -2699,7 +2699,7 @@ func (cq *CompanyQuery) WithNamedUsers(name string, opts ...func(*UserQuery)) *C
 	return cq
 }
 
-// WithNamedDaughterCompanies tells the query-builder to eager-load the nodes that are connected to the "daughterCompanies"
+// WithNamedDaughterCompanies tells the query-builder to eager-load the nodes that are connected to the "daughter_companies"
 // edge with the given name. The optional arguments are used to configure the query builder of the edge.
 func (cq *CompanyQuery) WithNamedDaughterCompanies(name string, opts ...func(*CompanyQuery)) *CompanyQuery {
 	query := (&CompanyClient{config: cq.config}).Query()

@@ -32,19 +32,19 @@ func (su *SupplierUpdate) Where(ps ...predicate.Supplier) *SupplierUpdate {
 	return su
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (su *SupplierUpdate) SetUpdatedAt(t time.Time) *SupplierUpdate {
 	su.mutation.SetUpdatedAt(t)
 	return su
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (su *SupplierUpdate) SetDeletedAt(t time.Time) *SupplierUpdate {
 	su.mutation.SetDeletedAt(t)
 	return su
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (su *SupplierUpdate) SetNillableDeletedAt(t *time.Time) *SupplierUpdate {
 	if t != nil {
 		su.SetDeletedAt(*t)
@@ -52,7 +52,7 @@ func (su *SupplierUpdate) SetNillableDeletedAt(t *time.Time) *SupplierUpdate {
 	return su
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (su *SupplierUpdate) ClearDeletedAt() *SupplierUpdate {
 	su.mutation.ClearDeletedAt()
 	return su
@@ -158,13 +158,13 @@ func (su *SupplierUpdate) ClearEmail() *SupplierUpdate {
 	return su
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (su *SupplierUpdate) SetIsDefault(b bool) *SupplierUpdate {
 	su.mutation.SetIsDefault(b)
 	return su
 }
 
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
+// SetNillableIsDefault sets the "is_default" field if the given value is not nil.
 func (su *SupplierUpdate) SetNillableIsDefault(b *bool) *SupplierUpdate {
 	if b != nil {
 		su.SetIsDefault(*b)
@@ -172,7 +172,7 @@ func (su *SupplierUpdate) SetNillableIsDefault(b *bool) *SupplierUpdate {
 	return su
 }
 
-// ClearIsDefault clears the value of the "isDefault" field.
+// ClearIsDefault clears the value of the "is_default" field.
 func (su *SupplierUpdate) ClearIsDefault() *SupplierUpdate {
 	su.mutation.ClearIsDefault()
 	return su
@@ -212,23 +212,23 @@ func (su *SupplierUpdate) ClearPhone() *SupplierUpdate {
 	return su
 }
 
-// SetTaxId sets the "taxId" field.
-func (su *SupplierUpdate) SetTaxId(s string) *SupplierUpdate {
-	su.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (su *SupplierUpdate) SetTaxID(s string) *SupplierUpdate {
+	su.mutation.SetTaxID(s)
 	return su
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (su *SupplierUpdate) SetNillableTaxId(s *string) *SupplierUpdate {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (su *SupplierUpdate) SetNillableTaxID(s *string) *SupplierUpdate {
 	if s != nil {
-		su.SetTaxId(*s)
+		su.SetTaxID(*s)
 	}
 	return su
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (su *SupplierUpdate) ClearTaxId() *SupplierUpdate {
-	su.mutation.ClearTaxId()
+// ClearTaxID clears the value of the "tax_id" field.
+func (su *SupplierUpdate) ClearTaxID() *SupplierUpdate {
+	su.mutation.ClearTaxID()
 	return su
 }
 
@@ -452,11 +452,11 @@ func (su *SupplierUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if su.mutation.PhoneCleared() {
 		_spec.ClearField(supplier.FieldPhone, field.TypeString)
 	}
-	if value, ok := su.mutation.TaxId(); ok {
-		_spec.SetField(supplier.FieldTaxId, field.TypeString, value)
+	if value, ok := su.mutation.TaxID(); ok {
+		_spec.SetField(supplier.FieldTaxID, field.TypeString, value)
 	}
-	if su.mutation.TaxIdCleared() {
-		_spec.ClearField(supplier.FieldTaxId, field.TypeString)
+	if su.mutation.TaxIDCleared() {
+		_spec.ClearField(supplier.FieldTaxID, field.TypeString)
 	}
 	if su.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -599,19 +599,19 @@ type SupplierUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (suo *SupplierUpdateOne) SetUpdatedAt(t time.Time) *SupplierUpdateOne {
 	suo.mutation.SetUpdatedAt(t)
 	return suo
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (suo *SupplierUpdateOne) SetDeletedAt(t time.Time) *SupplierUpdateOne {
 	suo.mutation.SetDeletedAt(t)
 	return suo
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (suo *SupplierUpdateOne) SetNillableDeletedAt(t *time.Time) *SupplierUpdateOne {
 	if t != nil {
 		suo.SetDeletedAt(*t)
@@ -619,7 +619,7 @@ func (suo *SupplierUpdateOne) SetNillableDeletedAt(t *time.Time) *SupplierUpdate
 	return suo
 }
 
-// ClearDeletedAt clears the value of the "deletedAt" field.
+// ClearDeletedAt clears the value of the "deleted_at" field.
 func (suo *SupplierUpdateOne) ClearDeletedAt() *SupplierUpdateOne {
 	suo.mutation.ClearDeletedAt()
 	return suo
@@ -725,13 +725,13 @@ func (suo *SupplierUpdateOne) ClearEmail() *SupplierUpdateOne {
 	return suo
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (suo *SupplierUpdateOne) SetIsDefault(b bool) *SupplierUpdateOne {
 	suo.mutation.SetIsDefault(b)
 	return suo
 }
 
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
+// SetNillableIsDefault sets the "is_default" field if the given value is not nil.
 func (suo *SupplierUpdateOne) SetNillableIsDefault(b *bool) *SupplierUpdateOne {
 	if b != nil {
 		suo.SetIsDefault(*b)
@@ -739,7 +739,7 @@ func (suo *SupplierUpdateOne) SetNillableIsDefault(b *bool) *SupplierUpdateOne {
 	return suo
 }
 
-// ClearIsDefault clears the value of the "isDefault" field.
+// ClearIsDefault clears the value of the "is_default" field.
 func (suo *SupplierUpdateOne) ClearIsDefault() *SupplierUpdateOne {
 	suo.mutation.ClearIsDefault()
 	return suo
@@ -779,23 +779,23 @@ func (suo *SupplierUpdateOne) ClearPhone() *SupplierUpdateOne {
 	return suo
 }
 
-// SetTaxId sets the "taxId" field.
-func (suo *SupplierUpdateOne) SetTaxId(s string) *SupplierUpdateOne {
-	suo.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (suo *SupplierUpdateOne) SetTaxID(s string) *SupplierUpdateOne {
+	suo.mutation.SetTaxID(s)
 	return suo
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (suo *SupplierUpdateOne) SetNillableTaxId(s *string) *SupplierUpdateOne {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (suo *SupplierUpdateOne) SetNillableTaxID(s *string) *SupplierUpdateOne {
 	if s != nil {
-		suo.SetTaxId(*s)
+		suo.SetTaxID(*s)
 	}
 	return suo
 }
 
-// ClearTaxId clears the value of the "taxId" field.
-func (suo *SupplierUpdateOne) ClearTaxId() *SupplierUpdateOne {
-	suo.mutation.ClearTaxId()
+// ClearTaxID clears the value of the "tax_id" field.
+func (suo *SupplierUpdateOne) ClearTaxID() *SupplierUpdateOne {
+	suo.mutation.ClearTaxID()
 	return suo
 }
 
@@ -1049,11 +1049,11 @@ func (suo *SupplierUpdateOne) sqlSave(ctx context.Context) (_node *Supplier, err
 	if suo.mutation.PhoneCleared() {
 		_spec.ClearField(supplier.FieldPhone, field.TypeString)
 	}
-	if value, ok := suo.mutation.TaxId(); ok {
-		_spec.SetField(supplier.FieldTaxId, field.TypeString, value)
+	if value, ok := suo.mutation.TaxID(); ok {
+		_spec.SetField(supplier.FieldTaxID, field.TypeString, value)
 	}
-	if suo.mutation.TaxIdCleared() {
-		_spec.ClearField(supplier.FieldTaxId, field.TypeString)
+	if suo.mutation.TaxIDCleared() {
+		_spec.ClearField(supplier.FieldTaxID, field.TypeString)
 	}
 	if suo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{

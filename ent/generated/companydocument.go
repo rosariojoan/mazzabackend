@@ -19,12 +19,12 @@ type CompanyDocument struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// CreatedAt holds the value of the "createdAt" field.
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	// UpdatedAt holds the value of the "updatedAt" field.
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// DeletedAt holds the value of the "deletedAt" field.
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Filename holds the value of the "filename" field.
 	Filename string `json:"filename,omitempty"`
 	// Title holds the value of the "title" field.
@@ -36,7 +36,7 @@ type CompanyDocument struct {
 	// File size in kilobyte
 	Size int `json:"size,omitempty"`
 	// mimetype e.g. application/pdf
-	FileType *string `json:"fileType,omitempty"`
+	FileType *string `json:"file_type,omitempty"`
 	// Status holds the value of the "status" field.
 	Status companydocument.Status `json:"status,omitempty"`
 	// URL holds the value of the "url" field.
@@ -45,8 +45,8 @@ type CompanyDocument struct {
 	StorageURI string `json:"-"`
 	// Thumbnail holds the value of the "thumbnail" field.
 	Thumbnail *string `json:"thumbnail,omitempty"`
-	// ExpiryDate holds the value of the "expiryDate" field.
-	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+	// ExpiryDate holds the value of the "expiry_date" field.
+	ExpiryDate *time.Time `json:"expiry_date,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CompanyDocumentQuery when eager-loading is set.
 	Edges                   CompanyDocumentEdges `json:"edges"`
@@ -60,10 +60,10 @@ type CompanyDocument struct {
 type CompanyDocumentEdges struct {
 	// Company holds the value of the company edge.
 	Company *Company `json:"company,omitempty"`
-	// UploadedBy holds the value of the uploadedBy edge.
-	UploadedBy *User `json:"uploadedBy,omitempty"`
-	// ApprovedBy holds the value of the approvedBy edge.
-	ApprovedBy *User `json:"approvedBy,omitempty"`
+	// UploadedBy holds the value of the uploaded_by edge.
+	UploadedBy *User `json:"uploaded_by,omitempty"`
+	// ApprovedBy holds the value of the approved_by edge.
+	ApprovedBy *User `json:"approved_by,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [3]bool
@@ -90,7 +90,7 @@ func (e CompanyDocumentEdges) UploadedByOrErr() (*User, error) {
 	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "uploadedBy"}
+	return nil, &NotLoadedError{edge: "uploaded_by"}
 }
 
 // ApprovedByOrErr returns the ApprovedBy value or an error if the edge
@@ -101,7 +101,7 @@ func (e CompanyDocumentEdges) ApprovedByOrErr() (*User, error) {
 	} else if e.loadedTypes[2] {
 		return nil, &NotFoundError{label: user.Label}
 	}
-	return nil, &NotLoadedError{edge: "approvedBy"}
+	return nil, &NotLoadedError{edge: "approved_by"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -144,19 +144,19 @@ func (cd *CompanyDocument) assignValues(columns []string, values []any) error {
 			cd.ID = int(value.Int64)
 		case companydocument.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				cd.CreatedAt = value.Time
 			}
 		case companydocument.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				cd.UpdatedAt = value.Time
 			}
 		case companydocument.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field deletedAt", values[i])
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				cd.DeletedAt = new(time.Time)
 				*cd.DeletedAt = value.Time
@@ -193,7 +193,7 @@ func (cd *CompanyDocument) assignValues(columns []string, values []any) error {
 			}
 		case companydocument.FieldFileType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field fileType", values[i])
+				return fmt.Errorf("unexpected type %T for field file_type", values[i])
 			} else if value.Valid {
 				cd.FileType = new(string)
 				*cd.FileType = value.String
@@ -212,7 +212,7 @@ func (cd *CompanyDocument) assignValues(columns []string, values []any) error {
 			}
 		case companydocument.FieldStorageURI:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field storageURI", values[i])
+				return fmt.Errorf("unexpected type %T for field storage_URI", values[i])
 			} else if value.Valid {
 				cd.StorageURI = value.String
 			}
@@ -225,7 +225,7 @@ func (cd *CompanyDocument) assignValues(columns []string, values []any) error {
 			}
 		case companydocument.FieldExpiryDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field expiryDate", values[i])
+				return fmt.Errorf("unexpected type %T for field expiry_date", values[i])
 			} else if value.Valid {
 				cd.ExpiryDate = new(time.Time)
 				*cd.ExpiryDate = value.Time
@@ -269,12 +269,12 @@ func (cd *CompanyDocument) QueryCompany() *CompanyQuery {
 	return NewCompanyDocumentClient(cd.config).QueryCompany(cd)
 }
 
-// QueryUploadedBy queries the "uploadedBy" edge of the CompanyDocument entity.
+// QueryUploadedBy queries the "uploaded_by" edge of the CompanyDocument entity.
 func (cd *CompanyDocument) QueryUploadedBy() *UserQuery {
 	return NewCompanyDocumentClient(cd.config).QueryUploadedBy(cd)
 }
 
-// QueryApprovedBy queries the "approvedBy" edge of the CompanyDocument entity.
+// QueryApprovedBy queries the "approved_by" edge of the CompanyDocument entity.
 func (cd *CompanyDocument) QueryApprovedBy() *UserQuery {
 	return NewCompanyDocumentClient(cd.config).QueryApprovedBy(cd)
 }
@@ -302,14 +302,14 @@ func (cd *CompanyDocument) String() string {
 	var builder strings.Builder
 	builder.WriteString("CompanyDocument(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", cd.ID))
-	builder.WriteString("createdAt=")
+	builder.WriteString("created_at=")
 	builder.WriteString(cd.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updatedAt=")
+	builder.WriteString("updated_at=")
 	builder.WriteString(cd.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	if v := cd.DeletedAt; v != nil {
-		builder.WriteString("deletedAt=")
+		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")
@@ -329,7 +329,7 @@ func (cd *CompanyDocument) String() string {
 	builder.WriteString(fmt.Sprintf("%v", cd.Size))
 	builder.WriteString(", ")
 	if v := cd.FileType; v != nil {
-		builder.WriteString("fileType=")
+		builder.WriteString("file_type=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
@@ -339,7 +339,7 @@ func (cd *CompanyDocument) String() string {
 	builder.WriteString("url=")
 	builder.WriteString(cd.URL)
 	builder.WriteString(", ")
-	builder.WriteString("storageURI=<sensitive>")
+	builder.WriteString("storage_URI=<sensitive>")
 	builder.WriteString(", ")
 	if v := cd.Thumbnail; v != nil {
 		builder.WriteString("thumbnail=")
@@ -347,7 +347,7 @@ func (cd *CompanyDocument) String() string {
 	}
 	builder.WriteString(", ")
 	if v := cd.ExpiryDate; v != nil {
-		builder.WriteString("expiryDate=")
+		builder.WriteString("expiry_date=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteByte(')')

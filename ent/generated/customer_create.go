@@ -24,13 +24,13 @@ type CustomerCreate struct {
 	hooks    []Hook
 }
 
-// SetCreatedAt sets the "createdAt" field.
+// SetCreatedAt sets the "created_at" field.
 func (cc *CustomerCreate) SetCreatedAt(t time.Time) *CustomerCreate {
 	cc.mutation.SetCreatedAt(t)
 	return cc
 }
 
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
 func (cc *CustomerCreate) SetNillableCreatedAt(t *time.Time) *CustomerCreate {
 	if t != nil {
 		cc.SetCreatedAt(*t)
@@ -38,13 +38,13 @@ func (cc *CustomerCreate) SetNillableCreatedAt(t *time.Time) *CustomerCreate {
 	return cc
 }
 
-// SetUpdatedAt sets the "updatedAt" field.
+// SetUpdatedAt sets the "updated_at" field.
 func (cc *CustomerCreate) SetUpdatedAt(t time.Time) *CustomerCreate {
 	cc.mutation.SetUpdatedAt(t)
 	return cc
 }
 
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
 func (cc *CustomerCreate) SetNillableUpdatedAt(t *time.Time) *CustomerCreate {
 	if t != nil {
 		cc.SetUpdatedAt(*t)
@@ -52,13 +52,13 @@ func (cc *CustomerCreate) SetNillableUpdatedAt(t *time.Time) *CustomerCreate {
 	return cc
 }
 
-// SetDeletedAt sets the "deletedAt" field.
+// SetDeletedAt sets the "deleted_at" field.
 func (cc *CustomerCreate) SetDeletedAt(t time.Time) *CustomerCreate {
 	cc.mutation.SetDeletedAt(t)
 	return cc
 }
 
-// SetNillableDeletedAt sets the "deletedAt" field if the given value is not nil.
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
 func (cc *CustomerCreate) SetNillableDeletedAt(t *time.Time) *CustomerCreate {
 	if t != nil {
 		cc.SetDeletedAt(*t)
@@ -136,13 +136,13 @@ func (cc *CustomerCreate) SetNillableEmail(s *string) *CustomerCreate {
 	return cc
 }
 
-// SetIsDefault sets the "isDefault" field.
+// SetIsDefault sets the "is_default" field.
 func (cc *CustomerCreate) SetIsDefault(b bool) *CustomerCreate {
 	cc.mutation.SetIsDefault(b)
 	return cc
 }
 
-// SetNillableIsDefault sets the "isDefault" field if the given value is not nil.
+// SetNillableIsDefault sets the "is_default" field if the given value is not nil.
 func (cc *CustomerCreate) SetNillableIsDefault(b *bool) *CustomerCreate {
 	if b != nil {
 		cc.SetIsDefault(*b)
@@ -170,16 +170,16 @@ func (cc *CustomerCreate) SetNillablePhone(s *string) *CustomerCreate {
 	return cc
 }
 
-// SetTaxId sets the "taxId" field.
-func (cc *CustomerCreate) SetTaxId(s string) *CustomerCreate {
-	cc.mutation.SetTaxId(s)
+// SetTaxID sets the "tax_id" field.
+func (cc *CustomerCreate) SetTaxID(s string) *CustomerCreate {
+	cc.mutation.SetTaxID(s)
 	return cc
 }
 
-// SetNillableTaxId sets the "taxId" field if the given value is not nil.
-func (cc *CustomerCreate) SetNillableTaxId(s *string) *CustomerCreate {
+// SetNillableTaxID sets the "tax_id" field if the given value is not nil.
+func (cc *CustomerCreate) SetNillableTaxID(s *string) *CustomerCreate {
 	if s != nil {
-		cc.SetTaxId(*s)
+		cc.SetTaxID(*s)
 	}
 	return cc
 }
@@ -319,19 +319,19 @@ func (cc *CustomerCreate) defaults() {
 		v := customer.DefaultPhone
 		cc.mutation.SetPhone(v)
 	}
-	if _, ok := cc.mutation.TaxId(); !ok {
-		v := customer.DefaultTaxId
-		cc.mutation.SetTaxId(v)
+	if _, ok := cc.mutation.TaxID(); !ok {
+		v := customer.DefaultTaxID
+		cc.mutation.SetTaxID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (cc *CustomerCreate) check() error {
 	if _, ok := cc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "createdAt", err: errors.New(`generated: missing required field "Customer.createdAt"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Customer.created_at"`)}
 	}
 	if _, ok := cc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updatedAt", err: errors.New(`generated: missing required field "Customer.updatedAt"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Customer.updated_at"`)}
 	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Customer.name"`)}
@@ -411,9 +411,9 @@ func (cc *CustomerCreate) createSpec() (*Customer, *sqlgraph.CreateSpec) {
 		_spec.SetField(customer.FieldPhone, field.TypeString, value)
 		_node.Phone = value
 	}
-	if value, ok := cc.mutation.TaxId(); ok {
-		_spec.SetField(customer.FieldTaxId, field.TypeString, value)
-		_node.TaxId = value
+	if value, ok := cc.mutation.TaxID(); ok {
+		_spec.SetField(customer.FieldTaxID, field.TypeString, value)
+		_node.TaxID = value
 	}
 	if nodes := cc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

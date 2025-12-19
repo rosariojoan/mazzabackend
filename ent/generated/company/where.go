@@ -55,17 +55,17 @@ func IDLTE(id int) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldID, id))
 }
 
-// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
 func UpdatedAt(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deletedAt" field. It's identical to DeletedAtEQ.
+// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
 func DeletedAt(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldDeletedAt, v))
 }
@@ -75,12 +75,12 @@ func Address(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldAddress, v))
 }
 
-// BaseCurrency applies equality check predicate on the "baseCurrency" field. It's identical to BaseCurrencyEQ.
+// BaseCurrency applies equality check predicate on the "base_currency" field. It's identical to BaseCurrencyEQ.
 func BaseCurrency(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldBaseCurrency, v))
 }
 
-// CeoName applies equality check predicate on the "ceoName" field. It's identical to CeoNameEQ.
+// CeoName applies equality check predicate on the "ceo_name" field. It's identical to CeoNameEQ.
 func CeoName(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCeoName, v))
 }
@@ -95,7 +95,7 @@ func Country(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCountry, v))
 }
 
-// EstablishedAt applies equality check predicate on the "establishedAt" field. It's identical to EstablishedAtEQ.
+// EstablishedAt applies equality check predicate on the "established_at" field. It's identical to EstablishedAtEQ.
 func EstablishedAt(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldEstablishedAt, v))
 }
@@ -115,22 +115,22 @@ func Industry(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldIndustry, v))
 }
 
-// LastEntryDate applies equality check predicate on the "lastEntryDate" field. It's identical to LastEntryDateEQ.
+// LastEntryDate applies equality check predicate on the "last_entry_date" field. It's identical to LastEntryDateEQ.
 func LastEntryDate(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastEntryDate, v))
 }
 
-// LastInvoiceNumber applies equality check predicate on the "lastInvoiceNumber" field. It's identical to LastInvoiceNumberEQ.
+// LastInvoiceNumber applies equality check predicate on the "last_invoice_number" field. It's identical to LastInvoiceNumberEQ.
 func LastInvoiceNumber(v int32) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastInvoiceNumber, v))
 }
 
-// LogoURL applies equality check predicate on the "logoURL" field. It's identical to LogoURLEQ.
+// LogoURL applies equality check predicate on the "logo_URL" field. It's identical to LogoURLEQ.
 func LogoURL(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
 }
 
-// LogoStorageURI applies equality check predicate on the "logoStorageURI" field. It's identical to LogoStorageURIEQ.
+// LogoStorageURI applies equality check predicate on the "logo_storage_URI" field. It's identical to LogoStorageURIEQ.
 func LogoStorageURI(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoStorageURI, v))
 }
@@ -140,9 +140,9 @@ func Name(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldName, v))
 }
 
-// NumberOfEmployees applies equality check predicate on the "numberOfEmployees" field. It's identical to NumberOfEmployeesEQ.
-func NumberOfEmployees(v int32) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldNumberOfEmployees, v))
+// NumberEmployees applies equality check predicate on the "number_employees" field. It's identical to NumberEmployeesEQ.
+func NumberEmployees(v int32) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldNumberEmployees, v))
 }
 
 // Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
@@ -150,12 +150,12 @@ func Phone(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldPhone, v))
 }
 
-// TaxId applies equality check predicate on the "taxId" field. It's identical to TaxIdEQ.
-func TaxId(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldTaxId, v))
+// TaxID applies equality check predicate on the "tax_id" field. It's identical to TaxIDEQ.
+func TaxID(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldTaxID, v))
 }
 
-// VatRate applies equality check predicate on the "vatRate" field. It's identical to VatRateEQ.
+// VatRate applies equality check predicate on the "vat_rate" field. It's identical to VatRateEQ.
 func VatRate(v float64) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldVatRate, v))
 }
@@ -165,137 +165,137 @@ func Website(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldWebsite, v))
 }
 
-// IncompleteSetup applies equality check predicate on the "incompleteSetup" field. It's identical to IncompleteSetupEQ.
+// IncompleteSetup applies equality check predicate on the "incomplete_setup" field. It's identical to IncompleteSetupEQ.
 func IncompleteSetup(v bool) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldIncompleteSetup, v))
 }
 
-// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
 func CreatedAtNEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreatedAtIn applies the In predicate on the "createdAt" field.
+// CreatedAtIn applies the In predicate on the "created_at" field.
 func CreatedAtIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
 func CreatedAtNotIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreatedAtGT applies the GT predicate on the "createdAt" field.
+// CreatedAtGT applies the GT predicate on the "created_at" field.
 func CreatedAtGT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
 func CreatedAtGTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreatedAtLT applies the LT predicate on the "createdAt" field.
+// CreatedAtLT applies the LT predicate on the "created_at" field.
 func CreatedAtLT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
 func UpdatedAtEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
 func UpdatedAtNEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
 func UpdatedAtIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
 func UpdatedAtNotIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
 func UpdatedAtGT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
 func UpdatedAtGTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
 func UpdatedAtLT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deletedAt" field.
+// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
 func DeletedAtEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtNEQ applies the NEQ predicate on the "deletedAt" field.
+// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
 func DeletedAtNEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldDeletedAt, v))
 }
 
-// DeletedAtIn applies the In predicate on the "deletedAt" field.
+// DeletedAtIn applies the In predicate on the "deleted_at" field.
 func DeletedAtIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtNotIn applies the NotIn predicate on the "deletedAt" field.
+// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
 func DeletedAtNotIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldDeletedAt, vs...))
 }
 
-// DeletedAtGT applies the GT predicate on the "deletedAt" field.
+// DeletedAtGT applies the GT predicate on the "deleted_at" field.
 func DeletedAtGT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldDeletedAt, v))
 }
 
-// DeletedAtGTE applies the GTE predicate on the "deletedAt" field.
+// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
 func DeletedAtGTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldDeletedAt, v))
 }
 
-// DeletedAtLT applies the LT predicate on the "deletedAt" field.
+// DeletedAtLT applies the LT predicate on the "deleted_at" field.
 func DeletedAtLT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldDeletedAt, v))
 }
 
-// DeletedAtLTE applies the LTE predicate on the "deletedAt" field.
+// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
 func DeletedAtLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldDeletedAt, v))
 }
 
-// DeletedAtIsNil applies the IsNil predicate on the "deletedAt" field.
+// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
 func DeletedAtIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldDeletedAt))
 }
 
-// DeletedAtNotNil applies the NotNil predicate on the "deletedAt" field.
+// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
 func DeletedAtNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldDeletedAt))
 }
@@ -375,142 +375,142 @@ func AddressContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldAddress, v))
 }
 
-// BaseCurrencyEQ applies the EQ predicate on the "baseCurrency" field.
+// BaseCurrencyEQ applies the EQ predicate on the "base_currency" field.
 func BaseCurrencyEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyNEQ applies the NEQ predicate on the "baseCurrency" field.
+// BaseCurrencyNEQ applies the NEQ predicate on the "base_currency" field.
 func BaseCurrencyNEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyIn applies the In predicate on the "baseCurrency" field.
+// BaseCurrencyIn applies the In predicate on the "base_currency" field.
 func BaseCurrencyIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldBaseCurrency, vs...))
 }
 
-// BaseCurrencyNotIn applies the NotIn predicate on the "baseCurrency" field.
+// BaseCurrencyNotIn applies the NotIn predicate on the "base_currency" field.
 func BaseCurrencyNotIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldBaseCurrency, vs...))
 }
 
-// BaseCurrencyGT applies the GT predicate on the "baseCurrency" field.
+// BaseCurrencyGT applies the GT predicate on the "base_currency" field.
 func BaseCurrencyGT(v string) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyGTE applies the GTE predicate on the "baseCurrency" field.
+// BaseCurrencyGTE applies the GTE predicate on the "base_currency" field.
 func BaseCurrencyGTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyLT applies the LT predicate on the "baseCurrency" field.
+// BaseCurrencyLT applies the LT predicate on the "base_currency" field.
 func BaseCurrencyLT(v string) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyLTE applies the LTE predicate on the "baseCurrency" field.
+// BaseCurrencyLTE applies the LTE predicate on the "base_currency" field.
 func BaseCurrencyLTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyContains applies the Contains predicate on the "baseCurrency" field.
+// BaseCurrencyContains applies the Contains predicate on the "base_currency" field.
 func BaseCurrencyContains(v string) predicate.Company {
 	return predicate.Company(sql.FieldContains(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyHasPrefix applies the HasPrefix predicate on the "baseCurrency" field.
+// BaseCurrencyHasPrefix applies the HasPrefix predicate on the "base_currency" field.
 func BaseCurrencyHasPrefix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasPrefix(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyHasSuffix applies the HasSuffix predicate on the "baseCurrency" field.
+// BaseCurrencyHasSuffix applies the HasSuffix predicate on the "base_currency" field.
 func BaseCurrencyHasSuffix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasSuffix(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyEqualFold applies the EqualFold predicate on the "baseCurrency" field.
+// BaseCurrencyEqualFold applies the EqualFold predicate on the "base_currency" field.
 func BaseCurrencyEqualFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldEqualFold(FieldBaseCurrency, v))
 }
 
-// BaseCurrencyContainsFold applies the ContainsFold predicate on the "baseCurrency" field.
+// BaseCurrencyContainsFold applies the ContainsFold predicate on the "base_currency" field.
 func BaseCurrencyContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldBaseCurrency, v))
 }
 
-// CeoNameEQ applies the EQ predicate on the "ceoName" field.
+// CeoNameEQ applies the EQ predicate on the "ceo_name" field.
 func CeoNameEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCeoName, v))
 }
 
-// CeoNameNEQ applies the NEQ predicate on the "ceoName" field.
+// CeoNameNEQ applies the NEQ predicate on the "ceo_name" field.
 func CeoNameNEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldCeoName, v))
 }
 
-// CeoNameIn applies the In predicate on the "ceoName" field.
+// CeoNameIn applies the In predicate on the "ceo_name" field.
 func CeoNameIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldCeoName, vs...))
 }
 
-// CeoNameNotIn applies the NotIn predicate on the "ceoName" field.
+// CeoNameNotIn applies the NotIn predicate on the "ceo_name" field.
 func CeoNameNotIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldCeoName, vs...))
 }
 
-// CeoNameGT applies the GT predicate on the "ceoName" field.
+// CeoNameGT applies the GT predicate on the "ceo_name" field.
 func CeoNameGT(v string) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldCeoName, v))
 }
 
-// CeoNameGTE applies the GTE predicate on the "ceoName" field.
+// CeoNameGTE applies the GTE predicate on the "ceo_name" field.
 func CeoNameGTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldCeoName, v))
 }
 
-// CeoNameLT applies the LT predicate on the "ceoName" field.
+// CeoNameLT applies the LT predicate on the "ceo_name" field.
 func CeoNameLT(v string) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldCeoName, v))
 }
 
-// CeoNameLTE applies the LTE predicate on the "ceoName" field.
+// CeoNameLTE applies the LTE predicate on the "ceo_name" field.
 func CeoNameLTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldCeoName, v))
 }
 
-// CeoNameContains applies the Contains predicate on the "ceoName" field.
+// CeoNameContains applies the Contains predicate on the "ceo_name" field.
 func CeoNameContains(v string) predicate.Company {
 	return predicate.Company(sql.FieldContains(FieldCeoName, v))
 }
 
-// CeoNameHasPrefix applies the HasPrefix predicate on the "ceoName" field.
+// CeoNameHasPrefix applies the HasPrefix predicate on the "ceo_name" field.
 func CeoNameHasPrefix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasPrefix(FieldCeoName, v))
 }
 
-// CeoNameHasSuffix applies the HasSuffix predicate on the "ceoName" field.
+// CeoNameHasSuffix applies the HasSuffix predicate on the "ceo_name" field.
 func CeoNameHasSuffix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasSuffix(FieldCeoName, v))
 }
 
-// CeoNameIsNil applies the IsNil predicate on the "ceoName" field.
+// CeoNameIsNil applies the IsNil predicate on the "ceo_name" field.
 func CeoNameIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldCeoName))
 }
 
-// CeoNameNotNil applies the NotNil predicate on the "ceoName" field.
+// CeoNameNotNil applies the NotNil predicate on the "ceo_name" field.
 func CeoNameNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldCeoName))
 }
 
-// CeoNameEqualFold applies the EqualFold predicate on the "ceoName" field.
+// CeoNameEqualFold applies the EqualFold predicate on the "ceo_name" field.
 func CeoNameEqualFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldEqualFold(FieldCeoName, v))
 }
 
-// CeoNameContainsFold applies the ContainsFold predicate on the "ceoName" field.
+// CeoNameContainsFold applies the ContainsFold predicate on the "ceo_name" field.
 func CeoNameContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldCeoName, v))
 }
@@ -645,42 +645,42 @@ func CountryContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldCountry, v))
 }
 
-// EstablishedAtEQ applies the EQ predicate on the "establishedAt" field.
+// EstablishedAtEQ applies the EQ predicate on the "established_at" field.
 func EstablishedAtEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldEstablishedAt, v))
 }
 
-// EstablishedAtNEQ applies the NEQ predicate on the "establishedAt" field.
+// EstablishedAtNEQ applies the NEQ predicate on the "established_at" field.
 func EstablishedAtNEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldEstablishedAt, v))
 }
 
-// EstablishedAtIn applies the In predicate on the "establishedAt" field.
+// EstablishedAtIn applies the In predicate on the "established_at" field.
 func EstablishedAtIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldEstablishedAt, vs...))
 }
 
-// EstablishedAtNotIn applies the NotIn predicate on the "establishedAt" field.
+// EstablishedAtNotIn applies the NotIn predicate on the "established_at" field.
 func EstablishedAtNotIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldEstablishedAt, vs...))
 }
 
-// EstablishedAtGT applies the GT predicate on the "establishedAt" field.
+// EstablishedAtGT applies the GT predicate on the "established_at" field.
 func EstablishedAtGT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldEstablishedAt, v))
 }
 
-// EstablishedAtGTE applies the GTE predicate on the "establishedAt" field.
+// EstablishedAtGTE applies the GTE predicate on the "established_at" field.
 func EstablishedAtGTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldEstablishedAt, v))
 }
 
-// EstablishedAtLT applies the LT predicate on the "establishedAt" field.
+// EstablishedAtLT applies the LT predicate on the "established_at" field.
 func EstablishedAtLT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldEstablishedAt, v))
 }
 
-// EstablishedAtLTE applies the LTE predicate on the "establishedAt" field.
+// EstablishedAtLTE applies the LTE predicate on the "established_at" field.
 func EstablishedAtLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldEstablishedAt, v))
 }
@@ -910,252 +910,252 @@ func IndustryContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldIndustry, v))
 }
 
-// LastEntryDateEQ applies the EQ predicate on the "lastEntryDate" field.
+// LastEntryDateEQ applies the EQ predicate on the "last_entry_date" field.
 func LastEntryDateEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastEntryDate, v))
 }
 
-// LastEntryDateNEQ applies the NEQ predicate on the "lastEntryDate" field.
+// LastEntryDateNEQ applies the NEQ predicate on the "last_entry_date" field.
 func LastEntryDateNEQ(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldLastEntryDate, v))
 }
 
-// LastEntryDateIn applies the In predicate on the "lastEntryDate" field.
+// LastEntryDateIn applies the In predicate on the "last_entry_date" field.
 func LastEntryDateIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldLastEntryDate, vs...))
 }
 
-// LastEntryDateNotIn applies the NotIn predicate on the "lastEntryDate" field.
+// LastEntryDateNotIn applies the NotIn predicate on the "last_entry_date" field.
 func LastEntryDateNotIn(vs ...time.Time) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldLastEntryDate, vs...))
 }
 
-// LastEntryDateGT applies the GT predicate on the "lastEntryDate" field.
+// LastEntryDateGT applies the GT predicate on the "last_entry_date" field.
 func LastEntryDateGT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldLastEntryDate, v))
 }
 
-// LastEntryDateGTE applies the GTE predicate on the "lastEntryDate" field.
+// LastEntryDateGTE applies the GTE predicate on the "last_entry_date" field.
 func LastEntryDateGTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldLastEntryDate, v))
 }
 
-// LastEntryDateLT applies the LT predicate on the "lastEntryDate" field.
+// LastEntryDateLT applies the LT predicate on the "last_entry_date" field.
 func LastEntryDateLT(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldLastEntryDate, v))
 }
 
-// LastEntryDateLTE applies the LTE predicate on the "lastEntryDate" field.
+// LastEntryDateLTE applies the LTE predicate on the "last_entry_date" field.
 func LastEntryDateLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldLastEntryDate, v))
 }
 
-// LastEntryDateIsNil applies the IsNil predicate on the "lastEntryDate" field.
+// LastEntryDateIsNil applies the IsNil predicate on the "last_entry_date" field.
 func LastEntryDateIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldLastEntryDate))
 }
 
-// LastEntryDateNotNil applies the NotNil predicate on the "lastEntryDate" field.
+// LastEntryDateNotNil applies the NotNil predicate on the "last_entry_date" field.
 func LastEntryDateNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLastEntryDate))
 }
 
-// LastInvoiceNumberEQ applies the EQ predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberEQ applies the EQ predicate on the "last_invoice_number" field.
 func LastInvoiceNumberEQ(v int32) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberNEQ applies the NEQ predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberNEQ applies the NEQ predicate on the "last_invoice_number" field.
 func LastInvoiceNumberNEQ(v int32) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberIn applies the In predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberIn applies the In predicate on the "last_invoice_number" field.
 func LastInvoiceNumberIn(vs ...int32) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldLastInvoiceNumber, vs...))
 }
 
-// LastInvoiceNumberNotIn applies the NotIn predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberNotIn applies the NotIn predicate on the "last_invoice_number" field.
 func LastInvoiceNumberNotIn(vs ...int32) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldLastInvoiceNumber, vs...))
 }
 
-// LastInvoiceNumberGT applies the GT predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberGT applies the GT predicate on the "last_invoice_number" field.
 func LastInvoiceNumberGT(v int32) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberGTE applies the GTE predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberGTE applies the GTE predicate on the "last_invoice_number" field.
 func LastInvoiceNumberGTE(v int32) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberLT applies the LT predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberLT applies the LT predicate on the "last_invoice_number" field.
 func LastInvoiceNumberLT(v int32) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberLTE applies the LTE predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberLTE applies the LTE predicate on the "last_invoice_number" field.
 func LastInvoiceNumberLTE(v int32) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldLastInvoiceNumber, v))
 }
 
-// LastInvoiceNumberIsNil applies the IsNil predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberIsNil applies the IsNil predicate on the "last_invoice_number" field.
 func LastInvoiceNumberIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldLastInvoiceNumber))
 }
 
-// LastInvoiceNumberNotNil applies the NotNil predicate on the "lastInvoiceNumber" field.
+// LastInvoiceNumberNotNil applies the NotNil predicate on the "last_invoice_number" field.
 func LastInvoiceNumberNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLastInvoiceNumber))
 }
 
-// LogoURLEQ applies the EQ predicate on the "logoURL" field.
+// LogoURLEQ applies the EQ predicate on the "logo_URL" field.
 func LogoURLEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
 }
 
-// LogoURLNEQ applies the NEQ predicate on the "logoURL" field.
+// LogoURLNEQ applies the NEQ predicate on the "logo_URL" field.
 func LogoURLNEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldLogoURL, v))
 }
 
-// LogoURLIn applies the In predicate on the "logoURL" field.
+// LogoURLIn applies the In predicate on the "logo_URL" field.
 func LogoURLIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldLogoURL, vs...))
 }
 
-// LogoURLNotIn applies the NotIn predicate on the "logoURL" field.
+// LogoURLNotIn applies the NotIn predicate on the "logo_URL" field.
 func LogoURLNotIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldLogoURL, vs...))
 }
 
-// LogoURLGT applies the GT predicate on the "logoURL" field.
+// LogoURLGT applies the GT predicate on the "logo_URL" field.
 func LogoURLGT(v string) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldLogoURL, v))
 }
 
-// LogoURLGTE applies the GTE predicate on the "logoURL" field.
+// LogoURLGTE applies the GTE predicate on the "logo_URL" field.
 func LogoURLGTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldLogoURL, v))
 }
 
-// LogoURLLT applies the LT predicate on the "logoURL" field.
+// LogoURLLT applies the LT predicate on the "logo_URL" field.
 func LogoURLLT(v string) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldLogoURL, v))
 }
 
-// LogoURLLTE applies the LTE predicate on the "logoURL" field.
+// LogoURLLTE applies the LTE predicate on the "logo_URL" field.
 func LogoURLLTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldLogoURL, v))
 }
 
-// LogoURLContains applies the Contains predicate on the "logoURL" field.
+// LogoURLContains applies the Contains predicate on the "logo_URL" field.
 func LogoURLContains(v string) predicate.Company {
 	return predicate.Company(sql.FieldContains(FieldLogoURL, v))
 }
 
-// LogoURLHasPrefix applies the HasPrefix predicate on the "logoURL" field.
+// LogoURLHasPrefix applies the HasPrefix predicate on the "logo_URL" field.
 func LogoURLHasPrefix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasPrefix(FieldLogoURL, v))
 }
 
-// LogoURLHasSuffix applies the HasSuffix predicate on the "logoURL" field.
+// LogoURLHasSuffix applies the HasSuffix predicate on the "logo_URL" field.
 func LogoURLHasSuffix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasSuffix(FieldLogoURL, v))
 }
 
-// LogoURLIsNil applies the IsNil predicate on the "logoURL" field.
+// LogoURLIsNil applies the IsNil predicate on the "logo_URL" field.
 func LogoURLIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldLogoURL))
 }
 
-// LogoURLNotNil applies the NotNil predicate on the "logoURL" field.
+// LogoURLNotNil applies the NotNil predicate on the "logo_URL" field.
 func LogoURLNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLogoURL))
 }
 
-// LogoURLEqualFold applies the EqualFold predicate on the "logoURL" field.
+// LogoURLEqualFold applies the EqualFold predicate on the "logo_URL" field.
 func LogoURLEqualFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldEqualFold(FieldLogoURL, v))
 }
 
-// LogoURLContainsFold applies the ContainsFold predicate on the "logoURL" field.
+// LogoURLContainsFold applies the ContainsFold predicate on the "logo_URL" field.
 func LogoURLContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldLogoURL, v))
 }
 
-// LogoStorageURIEQ applies the EQ predicate on the "logoStorageURI" field.
+// LogoStorageURIEQ applies the EQ predicate on the "logo_storage_URI" field.
 func LogoStorageURIEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURINEQ applies the NEQ predicate on the "logoStorageURI" field.
+// LogoStorageURINEQ applies the NEQ predicate on the "logo_storage_URI" field.
 func LogoStorageURINEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIIn applies the In predicate on the "logoStorageURI" field.
+// LogoStorageURIIn applies the In predicate on the "logo_storage_URI" field.
 func LogoStorageURIIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldLogoStorageURI, vs...))
 }
 
-// LogoStorageURINotIn applies the NotIn predicate on the "logoStorageURI" field.
+// LogoStorageURINotIn applies the NotIn predicate on the "logo_storage_URI" field.
 func LogoStorageURINotIn(vs ...string) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldLogoStorageURI, vs...))
 }
 
-// LogoStorageURIGT applies the GT predicate on the "logoStorageURI" field.
+// LogoStorageURIGT applies the GT predicate on the "logo_storage_URI" field.
 func LogoStorageURIGT(v string) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIGTE applies the GTE predicate on the "logoStorageURI" field.
+// LogoStorageURIGTE applies the GTE predicate on the "logo_storage_URI" field.
 func LogoStorageURIGTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURILT applies the LT predicate on the "logoStorageURI" field.
+// LogoStorageURILT applies the LT predicate on the "logo_storage_URI" field.
 func LogoStorageURILT(v string) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURILTE applies the LTE predicate on the "logoStorageURI" field.
+// LogoStorageURILTE applies the LTE predicate on the "logo_storage_URI" field.
 func LogoStorageURILTE(v string) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIContains applies the Contains predicate on the "logoStorageURI" field.
+// LogoStorageURIContains applies the Contains predicate on the "logo_storage_URI" field.
 func LogoStorageURIContains(v string) predicate.Company {
 	return predicate.Company(sql.FieldContains(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIHasPrefix applies the HasPrefix predicate on the "logoStorageURI" field.
+// LogoStorageURIHasPrefix applies the HasPrefix predicate on the "logo_storage_URI" field.
 func LogoStorageURIHasPrefix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasPrefix(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIHasSuffix applies the HasSuffix predicate on the "logoStorageURI" field.
+// LogoStorageURIHasSuffix applies the HasSuffix predicate on the "logo_storage_URI" field.
 func LogoStorageURIHasSuffix(v string) predicate.Company {
 	return predicate.Company(sql.FieldHasSuffix(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIIsNil applies the IsNil predicate on the "logoStorageURI" field.
+// LogoStorageURIIsNil applies the IsNil predicate on the "logo_storage_URI" field.
 func LogoStorageURIIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldLogoStorageURI))
 }
 
-// LogoStorageURINotNil applies the NotNil predicate on the "logoStorageURI" field.
+// LogoStorageURINotNil applies the NotNil predicate on the "logo_storage_URI" field.
 func LogoStorageURINotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLogoStorageURI))
 }
 
-// LogoStorageURIEqualFold applies the EqualFold predicate on the "logoStorageURI" field.
+// LogoStorageURIEqualFold applies the EqualFold predicate on the "logo_storage_URI" field.
 func LogoStorageURIEqualFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldEqualFold(FieldLogoStorageURI, v))
 }
 
-// LogoStorageURIContainsFold applies the ContainsFold predicate on the "logoStorageURI" field.
+// LogoStorageURIContainsFold applies the ContainsFold predicate on the "logo_storage_URI" field.
 func LogoStorageURIContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldLogoStorageURI, v))
 }
@@ -1225,44 +1225,44 @@ func NameContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldName, v))
 }
 
-// NumberOfEmployeesEQ applies the EQ predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesEQ(v int32) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldNumberOfEmployees, v))
+// NumberEmployeesEQ applies the EQ predicate on the "number_employees" field.
+func NumberEmployeesEQ(v int32) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldNumberEmployees, v))
 }
 
-// NumberOfEmployeesNEQ applies the NEQ predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesNEQ(v int32) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldNumberOfEmployees, v))
+// NumberEmployeesNEQ applies the NEQ predicate on the "number_employees" field.
+func NumberEmployeesNEQ(v int32) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldNumberEmployees, v))
 }
 
-// NumberOfEmployeesIn applies the In predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesIn(vs ...int32) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldNumberOfEmployees, vs...))
+// NumberEmployeesIn applies the In predicate on the "number_employees" field.
+func NumberEmployeesIn(vs ...int32) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldNumberEmployees, vs...))
 }
 
-// NumberOfEmployeesNotIn applies the NotIn predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesNotIn(vs ...int32) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldNumberOfEmployees, vs...))
+// NumberEmployeesNotIn applies the NotIn predicate on the "number_employees" field.
+func NumberEmployeesNotIn(vs ...int32) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldNumberEmployees, vs...))
 }
 
-// NumberOfEmployeesGT applies the GT predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesGT(v int32) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldNumberOfEmployees, v))
+// NumberEmployeesGT applies the GT predicate on the "number_employees" field.
+func NumberEmployeesGT(v int32) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldNumberEmployees, v))
 }
 
-// NumberOfEmployeesGTE applies the GTE predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesGTE(v int32) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldNumberOfEmployees, v))
+// NumberEmployeesGTE applies the GTE predicate on the "number_employees" field.
+func NumberEmployeesGTE(v int32) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldNumberEmployees, v))
 }
 
-// NumberOfEmployeesLT applies the LT predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesLT(v int32) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldNumberOfEmployees, v))
+// NumberEmployeesLT applies the LT predicate on the "number_employees" field.
+func NumberEmployeesLT(v int32) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldNumberEmployees, v))
 }
 
-// NumberOfEmployeesLTE applies the LTE predicate on the "numberOfEmployees" field.
-func NumberOfEmployeesLTE(v int32) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldNumberOfEmployees, v))
+// NumberEmployeesLTE applies the LTE predicate on the "number_employees" field.
+func NumberEmployeesLTE(v int32) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldNumberEmployees, v))
 }
 
 // PhoneEQ applies the EQ predicate on the "phone" field.
@@ -1340,117 +1340,117 @@ func PhoneContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldPhone, v))
 }
 
-// TaxIdEQ applies the EQ predicate on the "taxId" field.
-func TaxIdEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldTaxId, v))
+// TaxIDEQ applies the EQ predicate on the "tax_id" field.
+func TaxIDEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldTaxID, v))
 }
 
-// TaxIdNEQ applies the NEQ predicate on the "taxId" field.
-func TaxIdNEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldTaxId, v))
+// TaxIDNEQ applies the NEQ predicate on the "tax_id" field.
+func TaxIDNEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldTaxID, v))
 }
 
-// TaxIdIn applies the In predicate on the "taxId" field.
-func TaxIdIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldTaxId, vs...))
+// TaxIDIn applies the In predicate on the "tax_id" field.
+func TaxIDIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldTaxID, vs...))
 }
 
-// TaxIdNotIn applies the NotIn predicate on the "taxId" field.
-func TaxIdNotIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldTaxId, vs...))
+// TaxIDNotIn applies the NotIn predicate on the "tax_id" field.
+func TaxIDNotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldTaxID, vs...))
 }
 
-// TaxIdGT applies the GT predicate on the "taxId" field.
-func TaxIdGT(v string) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldTaxId, v))
+// TaxIDGT applies the GT predicate on the "tax_id" field.
+func TaxIDGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldTaxID, v))
 }
 
-// TaxIdGTE applies the GTE predicate on the "taxId" field.
-func TaxIdGTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldTaxId, v))
+// TaxIDGTE applies the GTE predicate on the "tax_id" field.
+func TaxIDGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldTaxID, v))
 }
 
-// TaxIdLT applies the LT predicate on the "taxId" field.
-func TaxIdLT(v string) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldTaxId, v))
+// TaxIDLT applies the LT predicate on the "tax_id" field.
+func TaxIDLT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldTaxID, v))
 }
 
-// TaxIdLTE applies the LTE predicate on the "taxId" field.
-func TaxIdLTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldTaxId, v))
+// TaxIDLTE applies the LTE predicate on the "tax_id" field.
+func TaxIDLTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldTaxID, v))
 }
 
-// TaxIdContains applies the Contains predicate on the "taxId" field.
-func TaxIdContains(v string) predicate.Company {
-	return predicate.Company(sql.FieldContains(FieldTaxId, v))
+// TaxIDContains applies the Contains predicate on the "tax_id" field.
+func TaxIDContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldTaxID, v))
 }
 
-// TaxIdHasPrefix applies the HasPrefix predicate on the "taxId" field.
-func TaxIdHasPrefix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasPrefix(FieldTaxId, v))
+// TaxIDHasPrefix applies the HasPrefix predicate on the "tax_id" field.
+func TaxIDHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldTaxID, v))
 }
 
-// TaxIdHasSuffix applies the HasSuffix predicate on the "taxId" field.
-func TaxIdHasSuffix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasSuffix(FieldTaxId, v))
+// TaxIDHasSuffix applies the HasSuffix predicate on the "tax_id" field.
+func TaxIDHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldTaxID, v))
 }
 
-// TaxIdIsNil applies the IsNil predicate on the "taxId" field.
-func TaxIdIsNil() predicate.Company {
-	return predicate.Company(sql.FieldIsNull(FieldTaxId))
+// TaxIDIsNil applies the IsNil predicate on the "tax_id" field.
+func TaxIDIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldTaxID))
 }
 
-// TaxIdNotNil applies the NotNil predicate on the "taxId" field.
-func TaxIdNotNil() predicate.Company {
-	return predicate.Company(sql.FieldNotNull(FieldTaxId))
+// TaxIDNotNil applies the NotNil predicate on the "tax_id" field.
+func TaxIDNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldTaxID))
 }
 
-// TaxIdEqualFold applies the EqualFold predicate on the "taxId" field.
-func TaxIdEqualFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldEqualFold(FieldTaxId, v))
+// TaxIDEqualFold applies the EqualFold predicate on the "tax_id" field.
+func TaxIDEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldTaxID, v))
 }
 
-// TaxIdContainsFold applies the ContainsFold predicate on the "taxId" field.
-func TaxIdContainsFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldContainsFold(FieldTaxId, v))
+// TaxIDContainsFold applies the ContainsFold predicate on the "tax_id" field.
+func TaxIDContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldTaxID, v))
 }
 
-// VatRateEQ applies the EQ predicate on the "vatRate" field.
+// VatRateEQ applies the EQ predicate on the "vat_rate" field.
 func VatRateEQ(v float64) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldVatRate, v))
 }
 
-// VatRateNEQ applies the NEQ predicate on the "vatRate" field.
+// VatRateNEQ applies the NEQ predicate on the "vat_rate" field.
 func VatRateNEQ(v float64) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldVatRate, v))
 }
 
-// VatRateIn applies the In predicate on the "vatRate" field.
+// VatRateIn applies the In predicate on the "vat_rate" field.
 func VatRateIn(vs ...float64) predicate.Company {
 	return predicate.Company(sql.FieldIn(FieldVatRate, vs...))
 }
 
-// VatRateNotIn applies the NotIn predicate on the "vatRate" field.
+// VatRateNotIn applies the NotIn predicate on the "vat_rate" field.
 func VatRateNotIn(vs ...float64) predicate.Company {
 	return predicate.Company(sql.FieldNotIn(FieldVatRate, vs...))
 }
 
-// VatRateGT applies the GT predicate on the "vatRate" field.
+// VatRateGT applies the GT predicate on the "vat_rate" field.
 func VatRateGT(v float64) predicate.Company {
 	return predicate.Company(sql.FieldGT(FieldVatRate, v))
 }
 
-// VatRateGTE applies the GTE predicate on the "vatRate" field.
+// VatRateGTE applies the GTE predicate on the "vat_rate" field.
 func VatRateGTE(v float64) predicate.Company {
 	return predicate.Company(sql.FieldGTE(FieldVatRate, v))
 }
 
-// VatRateLT applies the LT predicate on the "vatRate" field.
+// VatRateLT applies the LT predicate on the "vat_rate" field.
 func VatRateLT(v float64) predicate.Company {
 	return predicate.Company(sql.FieldLT(FieldVatRate, v))
 }
 
-// VatRateLTE applies the LTE predicate on the "vatRate" field.
+// VatRateLTE applies the LTE predicate on the "vat_rate" field.
 func VatRateLTE(v float64) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldVatRate, v))
 }
@@ -1530,27 +1530,27 @@ func WebsiteContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldWebsite, v))
 }
 
-// IncompleteSetupEQ applies the EQ predicate on the "incompleteSetup" field.
+// IncompleteSetupEQ applies the EQ predicate on the "incomplete_setup" field.
 func IncompleteSetupEQ(v bool) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldIncompleteSetup, v))
 }
 
-// IncompleteSetupNEQ applies the NEQ predicate on the "incompleteSetup" field.
+// IncompleteSetupNEQ applies the NEQ predicate on the "incomplete_setup" field.
 func IncompleteSetupNEQ(v bool) predicate.Company {
 	return predicate.Company(sql.FieldNEQ(FieldIncompleteSetup, v))
 }
 
-// IncompleteSetupIsNil applies the IsNil predicate on the "incompleteSetup" field.
+// IncompleteSetupIsNil applies the IsNil predicate on the "incomplete_setup" field.
 func IncompleteSetupIsNil() predicate.Company {
 	return predicate.Company(sql.FieldIsNull(FieldIncompleteSetup))
 }
 
-// IncompleteSetupNotNil applies the NotNil predicate on the "incompleteSetup" field.
+// IncompleteSetupNotNil applies the NotNil predicate on the "incomplete_setup" field.
 func IncompleteSetupNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldIncompleteSetup))
 }
 
-// HasAvailableRoles applies the HasEdge predicate on the "availableRoles" edge.
+// HasAvailableRoles applies the HasEdge predicate on the "available_roles" edge.
 func HasAvailableRoles() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -1561,7 +1561,7 @@ func HasAvailableRoles() predicate.Company {
 	})
 }
 
-// HasAvailableRolesWith applies the HasEdge predicate on the "availableRoles" edge with a given conditions (other predicates).
+// HasAvailableRolesWith applies the HasEdge predicate on the "available_roles" edge with a given conditions (other predicates).
 func HasAvailableRolesWith(preds ...predicate.UserRole) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newAvailableRolesStep()
@@ -1573,7 +1573,7 @@ func HasAvailableRolesWith(preds ...predicate.UserRole) predicate.Company {
 	})
 }
 
-// HasAccountingEntries applies the HasEdge predicate on the "accountingEntries" edge.
+// HasAccountingEntries applies the HasEdge predicate on the "accounting_entries" edge.
 func HasAccountingEntries() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -1584,7 +1584,7 @@ func HasAccountingEntries() predicate.Company {
 	})
 }
 
-// HasAccountingEntriesWith applies the HasEdge predicate on the "accountingEntries" edge with a given conditions (other predicates).
+// HasAccountingEntriesWith applies the HasEdge predicate on the "accounting_entries" edge with a given conditions (other predicates).
 func HasAccountingEntriesWith(preds ...predicate.AccountingEntry) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newAccountingEntriesStep()
@@ -1711,7 +1711,7 @@ func HasInventoryWith(preds ...predicate.Inventory) predicate.Company {
 	})
 }
 
-// HasInventoryMovements applies the HasEdge predicate on the "inventoryMovements" edge.
+// HasInventoryMovements applies the HasEdge predicate on the "inventory_movements" edge.
 func HasInventoryMovements() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -1722,7 +1722,7 @@ func HasInventoryMovements() predicate.Company {
 	})
 }
 
-// HasInventoryMovementsWith applies the HasEdge predicate on the "inventoryMovements" edge with a given conditions (other predicates).
+// HasInventoryMovementsWith applies the HasEdge predicate on the "inventory_movements" edge with a given conditions (other predicates).
 func HasInventoryMovementsWith(preds ...predicate.InventoryMovement) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newInventoryMovementsStep()
@@ -1803,7 +1803,7 @@ func HasLoanScheduleWith(preds ...predicate.LoanSchedule) predicate.Company {
 	})
 }
 
-// HasMemberSignupTokens applies the HasEdge predicate on the "memberSignupTokens" edge.
+// HasMemberSignupTokens applies the HasEdge predicate on the "member_signup_tokens" edge.
 func HasMemberSignupTokens() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -1814,7 +1814,7 @@ func HasMemberSignupTokens() predicate.Company {
 	})
 }
 
-// HasMemberSignupTokensWith applies the HasEdge predicate on the "memberSignupTokens" edge with a given conditions (other predicates).
+// HasMemberSignupTokensWith applies the HasEdge predicate on the "member_signup_tokens" edge with a given conditions (other predicates).
 func HasMemberSignupTokensWith(preds ...predicate.MemberSignupToken) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newMemberSignupTokensStep()
@@ -1987,7 +1987,7 @@ func HasTreasuriesWith(preds ...predicate.Treasury) predicate.Company {
 	})
 }
 
-// HasWorkShifts applies the HasEdge predicate on the "workShifts" edge.
+// HasWorkShifts applies the HasEdge predicate on the "work_shifts" edge.
 func HasWorkShifts() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -1998,7 +1998,7 @@ func HasWorkShifts() predicate.Company {
 	})
 }
 
-// HasWorkShiftsWith applies the HasEdge predicate on the "workShifts" edge with a given conditions (other predicates).
+// HasWorkShiftsWith applies the HasEdge predicate on the "work_shifts" edge with a given conditions (other predicates).
 func HasWorkShiftsWith(preds ...predicate.Workshift) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newWorkShiftsStep()
@@ -2033,7 +2033,7 @@ func HasUsersWith(preds ...predicate.User) predicate.Company {
 	})
 }
 
-// HasDaughterCompanies applies the HasEdge predicate on the "daughterCompanies" edge.
+// HasDaughterCompanies applies the HasEdge predicate on the "daughter_companies" edge.
 func HasDaughterCompanies() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -2044,7 +2044,7 @@ func HasDaughterCompanies() predicate.Company {
 	})
 }
 
-// HasDaughterCompaniesWith applies the HasEdge predicate on the "daughterCompanies" edge with a given conditions (other predicates).
+// HasDaughterCompaniesWith applies the HasEdge predicate on the "daughter_companies" edge with a given conditions (other predicates).
 func HasDaughterCompaniesWith(preds ...predicate.Company) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newDaughterCompaniesStep()
@@ -2056,7 +2056,7 @@ func HasDaughterCompaniesWith(preds ...predicate.Company) predicate.Company {
 	})
 }
 
-// HasParentCompany applies the HasEdge predicate on the "parentCompany" edge.
+// HasParentCompany applies the HasEdge predicate on the "parent_company" edge.
 func HasParentCompany() predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
@@ -2067,7 +2067,7 @@ func HasParentCompany() predicate.Company {
 	})
 }
 
-// HasParentCompanyWith applies the HasEdge predicate on the "parentCompany" edge with a given conditions (other predicates).
+// HasParentCompanyWith applies the HasEdge predicate on the "parent_company" edge with a given conditions (other predicates).
 func HasParentCompanyWith(preds ...predicate.Company) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newParentCompanyStep()
