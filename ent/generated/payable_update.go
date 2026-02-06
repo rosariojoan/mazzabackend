@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mazza/ent/generated/company"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
 	"time"
@@ -196,34 +195,9 @@ func (pu *PayableUpdate) SetNillableStatus(pa *payable.Status) *PayableUpdate {
 	return pu
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by ID.
-func (pu *PayableUpdate) SetCompanyID(id int) *PayableUpdate {
-	pu.mutation.SetCompanyID(id)
-	return pu
-}
-
-// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
-func (pu *PayableUpdate) SetNillableCompanyID(id *int) *PayableUpdate {
-	if id != nil {
-		pu = pu.SetCompanyID(*id)
-	}
-	return pu
-}
-
-// SetCompany sets the "company" edge to the Company entity.
-func (pu *PayableUpdate) SetCompany(c *Company) *PayableUpdate {
-	return pu.SetCompanyID(c.ID)
-}
-
 // Mutation returns the PayableMutation object of the builder.
 func (pu *PayableUpdate) Mutation() *PayableMutation {
 	return pu.mutation
-}
-
-// ClearCompany clears the "company" edge to the Company entity.
-func (pu *PayableUpdate) ClearCompany() *PayableUpdate {
-	pu.mutation.ClearCompany()
-	return pu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -354,35 +328,6 @@ func (pu *PayableUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := pu.mutation.Status(); ok {
 		_spec.SetField(payable.FieldStatus, field.TypeEnum, value)
-	}
-	if pu.mutation.CompanyCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   payable.CompanyTable,
-			Columns: []string{payable.CompanyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := pu.mutation.CompanyIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   payable.CompanyTable,
-			Columns: []string{payable.CompanyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(pu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
@@ -572,34 +517,9 @@ func (puo *PayableUpdateOne) SetNillableStatus(pa *payable.Status) *PayableUpdat
 	return puo
 }
 
-// SetCompanyID sets the "company" edge to the Company entity by ID.
-func (puo *PayableUpdateOne) SetCompanyID(id int) *PayableUpdateOne {
-	puo.mutation.SetCompanyID(id)
-	return puo
-}
-
-// SetNillableCompanyID sets the "company" edge to the Company entity by ID if the given value is not nil.
-func (puo *PayableUpdateOne) SetNillableCompanyID(id *int) *PayableUpdateOne {
-	if id != nil {
-		puo = puo.SetCompanyID(*id)
-	}
-	return puo
-}
-
-// SetCompany sets the "company" edge to the Company entity.
-func (puo *PayableUpdateOne) SetCompany(c *Company) *PayableUpdateOne {
-	return puo.SetCompanyID(c.ID)
-}
-
 // Mutation returns the PayableMutation object of the builder.
 func (puo *PayableUpdateOne) Mutation() *PayableMutation {
 	return puo.mutation
-}
-
-// ClearCompany clears the "company" edge to the Company entity.
-func (puo *PayableUpdateOne) ClearCompany() *PayableUpdateOne {
-	puo.mutation.ClearCompany()
-	return puo
 }
 
 // Where appends a list predicates to the PayableUpdate builder.
@@ -760,35 +680,6 @@ func (puo *PayableUpdateOne) sqlSave(ctx context.Context) (_node *Payable, err e
 	}
 	if value, ok := puo.mutation.Status(); ok {
 		_spec.SetField(payable.FieldStatus, field.TypeEnum, value)
-	}
-	if puo.mutation.CompanyCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   payable.CompanyTable,
-			Columns: []string{payable.CompanyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := puo.mutation.CompanyIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   payable.CompanyTable,
-			Columns: []string{payable.CompanyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(company.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(puo.modifiers...)
 	_node = &Payable{config: puo.config}

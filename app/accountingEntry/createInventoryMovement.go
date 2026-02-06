@@ -18,7 +18,7 @@ func CreateInventoryMovement(ctx context.Context, tx *generated.Tx, input genera
 	var quantity float64
 	var value float64
 
-	if input.Category == inventorymovement.CategoryOUT {
+	if input.Category == inventorymovement.CategoryOutflow {
 		// Check if there is enough inventory for this movement
 		inventoryItem, err := tx.Inventory.Query().Where(
 			inventory.ID(input.InventoryID),

@@ -119,12 +119,12 @@ type Category string
 
 // Category values.
 const (
-	CategoryRAW_MATERIALS  Category = "RAW_MATERIALS"
-	CategoryFINISHED_GOODS Category = "FINISHED_GOODS"
-	CategoryMERCHANDISE    Category = "MERCHANDISE"
-	CategorySUPPLIES       Category = "SUPPLIES"
-	CategoryEQUIPMENT      Category = "EQUIPMENT"
-	CategoryOTHER          Category = "OTHER"
+	CategoryRawMaterial  Category = "rawMaterial"
+	CategoryFinishedGood Category = "finishedGood"
+	CategoryMerchandise  Category = "merchandise"
+	CategorySupplies     Category = "supplies"
+	CategoryEquipment    Category = "equipment"
+	CategoryOther        Category = "other"
 )
 
 func (c Category) String() string {
@@ -134,7 +134,7 @@ func (c Category) String() string {
 // CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
 func CategoryValidator(c Category) error {
 	switch c {
-	case CategoryRAW_MATERIALS, CategoryFINISHED_GOODS, CategoryMERCHANDISE, CategorySUPPLIES, CategoryEQUIPMENT, CategoryOTHER:
+	case CategoryRawMaterial, CategoryFinishedGood, CategoryMerchandise, CategorySupplies, CategoryEquipment, CategoryOther:
 		return nil
 	default:
 		return fmt.Errorf("inventory: invalid enum value for category field: %q", c)

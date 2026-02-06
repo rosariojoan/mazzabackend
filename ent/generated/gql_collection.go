@@ -17,7 +17,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -85,7 +84,7 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 				return err
 			}
 			ae.withLoan = query
-		case "loanschedules":
+		case "loanSchedule":
 			var (
 				alias = field.Alias
 				path  = append(path, alias)
@@ -94,7 +93,7 @@ func (ae *AccountingEntryQuery) collectField(ctx context.Context, opCtx *graphql
 			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
 				return err
 			}
-			ae.WithNamedLoanSchedules(alias, func(wq *LoanScheduleQuery) {
+			ae.WithNamedLoanSchedule(alias, func(wq *LoanScheduleQuery) {
 				*wq = *query
 			})
 		case "createdAt":
@@ -457,18 +456,6 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			c.WithNamedMemberSignupTokens(alias, func(wq *MemberSignupTokenQuery) {
 				*wq = *query
 			})
-		case "products":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&ProductClient{config: c.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			c.WithNamedProducts(alias, func(wq *ProductQuery) {
-				*wq = *query
-			})
 		case "projects":
 			var (
 				alias = field.Alias
@@ -657,6 +644,16 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, company.FieldLastInvoiceNumber)
 				fieldSeen[company.FieldLastInvoiceNumber] = struct{}{}
 			}
+		case "lastSalesQuotationNumber":
+			if _, ok := fieldSeen[company.FieldLastSalesQuotationNumber]; !ok {
+				selectedFields = append(selectedFields, company.FieldLastSalesQuotationNumber)
+				fieldSeen[company.FieldLastSalesQuotationNumber] = struct{}{}
+			}
+		case "invoicePrefix":
+			if _, ok := fieldSeen[company.FieldInvoicePrefix]; !ok {
+				selectedFields = append(selectedFields, company.FieldInvoicePrefix)
+				fieldSeen[company.FieldInvoicePrefix] = struct{}{}
+			}
 		case "logoURL":
 			if _, ok := fieldSeen[company.FieldLogoURL]; !ok {
 				selectedFields = append(selectedFields, company.FieldLogoURL)
@@ -676,6 +673,11 @@ func (c *CompanyQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			if _, ok := fieldSeen[company.FieldPhone]; !ok {
 				selectedFields = append(selectedFields, company.FieldPhone)
 				fieldSeen[company.FieldPhone] = struct{}{}
+			}
+		case "quotationPrefix":
+			if _, ok := fieldSeen[company.FieldQuotationPrefix]; !ok {
+				selectedFields = append(selectedFields, company.FieldQuotationPrefix)
+				fieldSeen[company.FieldQuotationPrefix] = struct{}{}
 			}
 		case "taxID":
 			if _, ok := fieldSeen[company.FieldTaxID]; !ok {
@@ -1874,10 +1876,10 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, invoice.FieldDeletedAt)
 				fieldSeen[invoice.FieldDeletedAt] = struct{}{}
 			}
-		case "companyLogo":
-			if _, ok := fieldSeen[invoice.FieldCompanyLogo]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldCompanyLogo)
-				fieldSeen[invoice.FieldCompanyLogo] = struct{}{}
+		case "isInvoice":
+			if _, ok := fieldSeen[invoice.FieldIsInvoice]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldIsInvoice)
+				fieldSeen[invoice.FieldIsInvoice] = struct{}{}
 			}
 		case "companyName":
 			if _, ok := fieldSeen[invoice.FieldCompanyName]; !ok {
@@ -1908,6 +1910,11 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 			if _, ok := fieldSeen[invoice.FieldCompanyPhone]; !ok {
 				selectedFields = append(selectedFields, invoice.FieldCompanyPhone)
 				fieldSeen[invoice.FieldCompanyPhone] = struct{}{}
+			}
+		case "currency":
+			if _, ok := fieldSeen[invoice.FieldCurrency]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldCurrency)
+				fieldSeen[invoice.FieldCurrency] = struct{}{}
 			}
 		case "number":
 			if _, ok := fieldSeen[invoice.FieldNumber]; !ok {
@@ -1984,50 +1991,10 @@ func (i *InvoiceQuery) collectField(ctx context.Context, opCtx *graphql.Operatio
 				selectedFields = append(selectedFields, invoice.FieldTotal)
 				fieldSeen[invoice.FieldTotal] = struct{}{}
 			}
-		case "notes":
-			if _, ok := fieldSeen[invoice.FieldNotes]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldNotes)
-				fieldSeen[invoice.FieldNotes] = struct{}{}
-			}
-		case "paymentMethod":
-			if _, ok := fieldSeen[invoice.FieldPaymentMethod]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldPaymentMethod)
-				fieldSeen[invoice.FieldPaymentMethod] = struct{}{}
-			}
-		case "bankName":
-			if _, ok := fieldSeen[invoice.FieldBankName]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldBankName)
-				fieldSeen[invoice.FieldBankName] = struct{}{}
-			}
-		case "bankAgency":
-			if _, ok := fieldSeen[invoice.FieldBankAgency]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldBankAgency)
-				fieldSeen[invoice.FieldBankAgency] = struct{}{}
-			}
-		case "bankAccountNumber":
-			if _, ok := fieldSeen[invoice.FieldBankAccountNumber]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldBankAccountNumber)
-				fieldSeen[invoice.FieldBankAccountNumber] = struct{}{}
-			}
-		case "bankAccountName":
-			if _, ok := fieldSeen[invoice.FieldBankAccountName]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldBankAccountName)
-				fieldSeen[invoice.FieldBankAccountName] = struct{}{}
-			}
-		case "url":
-			if _, ok := fieldSeen[invoice.FieldURL]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldURL)
-				fieldSeen[invoice.FieldURL] = struct{}{}
-			}
-		case "filename":
-			if _, ok := fieldSeen[invoice.FieldFilename]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldFilename)
-				fieldSeen[invoice.FieldFilename] = struct{}{}
-			}
-		case "size":
-			if _, ok := fieldSeen[invoice.FieldSize]; !ok {
-				selectedFields = append(selectedFields, invoice.FieldSize)
-				fieldSeen[invoice.FieldSize] = struct{}{}
+		case "terms":
+			if _, ok := fieldSeen[invoice.FieldTerms]; !ok {
+				selectedFields = append(selectedFields, invoice.FieldTerms)
+				fieldSeen[invoice.FieldTerms] = struct{}{}
 			}
 		case "keywords":
 			if _, ok := fieldSeen[invoice.FieldKeywords]; !ok {
@@ -2840,120 +2807,6 @@ func newPayablePaginateArgs(rv map[string]any) *payablePaginateArgs {
 	}
 	if v, ok := rv[whereField].(*PayableWhereInput); ok {
 		args.opts = append(args.opts, WithPayableFilter(v.Filter))
-	}
-	return args
-}
-
-// CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (pr *ProductQuery) CollectFields(ctx context.Context, satisfies ...string) (*ProductQuery, error) {
-	fc := graphql.GetFieldContext(ctx)
-	if fc == nil {
-		return pr, nil
-	}
-	if err := pr.collectField(ctx, graphql.GetOperationContext(ctx), fc.Field, nil, satisfies...); err != nil {
-		return nil, err
-	}
-	return pr, nil
-}
-
-func (pr *ProductQuery) collectField(ctx context.Context, opCtx *graphql.OperationContext, collected graphql.CollectedField, path []string, satisfies ...string) error {
-	path = append([]string(nil), path...)
-	var (
-		unknownSeen    bool
-		fieldSeen      = make(map[string]struct{}, len(product.Columns))
-		selectedFields = []string{product.FieldID}
-	)
-	for _, field := range graphql.CollectFields(opCtx, collected.Selections, satisfies) {
-		switch field.Name {
-		case "company":
-			var (
-				alias = field.Alias
-				path  = append(path, alias)
-				query = (&CompanyClient{config: pr.config}).Query()
-			)
-			if err := query.collectField(ctx, opCtx, field, path, satisfies...); err != nil {
-				return err
-			}
-			pr.withCompany = query
-		case "createdAt":
-			if _, ok := fieldSeen[product.FieldCreatedAt]; !ok {
-				selectedFields = append(selectedFields, product.FieldCreatedAt)
-				fieldSeen[product.FieldCreatedAt] = struct{}{}
-			}
-		case "updatedAt":
-			if _, ok := fieldSeen[product.FieldUpdatedAt]; !ok {
-				selectedFields = append(selectedFields, product.FieldUpdatedAt)
-				fieldSeen[product.FieldUpdatedAt] = struct{}{}
-			}
-		case "deletedAt":
-			if _, ok := fieldSeen[product.FieldDeletedAt]; !ok {
-				selectedFields = append(selectedFields, product.FieldDeletedAt)
-				fieldSeen[product.FieldDeletedAt] = struct{}{}
-			}
-		case "stock":
-			if _, ok := fieldSeen[product.FieldStock]; !ok {
-				selectedFields = append(selectedFields, product.FieldStock)
-				fieldSeen[product.FieldStock] = struct{}{}
-			}
-		case "id":
-		case "__typename":
-		default:
-			unknownSeen = true
-		}
-	}
-	if !unknownSeen {
-		pr.Select(selectedFields...)
-	}
-	return nil
-}
-
-type productPaginateArgs struct {
-	first, last   *int
-	after, before *Cursor
-	opts          []ProductPaginateOption
-}
-
-func newProductPaginateArgs(rv map[string]any) *productPaginateArgs {
-	args := &productPaginateArgs{}
-	if rv == nil {
-		return args
-	}
-	if v := rv[firstField]; v != nil {
-		args.first = v.(*int)
-	}
-	if v := rv[lastField]; v != nil {
-		args.last = v.(*int)
-	}
-	if v := rv[afterField]; v != nil {
-		args.after = v.(*Cursor)
-	}
-	if v := rv[beforeField]; v != nil {
-		args.before = v.(*Cursor)
-	}
-	if v, ok := rv[orderByField]; ok {
-		switch v := v.(type) {
-		case map[string]any:
-			var (
-				err1, err2 error
-				order      = &ProductOrder{Field: &ProductOrderField{}, Direction: entgql.OrderDirectionAsc}
-			)
-			if d, ok := v[directionField]; ok {
-				err1 = order.Direction.UnmarshalGQL(d)
-			}
-			if f, ok := v[fieldField]; ok {
-				err2 = order.Field.UnmarshalGQL(f)
-			}
-			if err1 == nil && err2 == nil {
-				args.opts = append(args.opts, WithProductOrder(order))
-			}
-		case *ProductOrder:
-			if v != nil {
-				args.opts = append(args.opts, WithProductOrder(v))
-			}
-		}
-	}
-	if v, ok := rv[whereField].(*ProductWhereInput); ok {
-		args.opts = append(args.opts, WithProductFilter(v.Filter))
 	}
 	return args
 }

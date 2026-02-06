@@ -111,7 +111,7 @@ type UpdateAccountingEntryInput struct {
 	UserID                *int
 	ClearLoan             bool
 	LoanID                *int
-	ClearLoanSchedules    bool
+	ClearLoanSchedule     bool
 	AddLoanScheduleIDs    []int
 	RemoveLoanScheduleIDs []int
 }
@@ -175,8 +175,8 @@ func (i *UpdateAccountingEntryInput) Mutate(m *AccountingEntryMutation) {
 	if v := i.LoanID; v != nil {
 		m.SetLoanID(*v)
 	}
-	if i.ClearLoanSchedules {
-		m.ClearLoanSchedules()
+	if i.ClearLoanSchedule {
+		m.ClearLoanSchedule()
 	}
 	if v := i.AddLoanScheduleIDs; len(v) > 0 {
 		m.AddLoanScheduleIDs(v...)
@@ -200,47 +200,49 @@ func (c *AccountingEntryUpdateOne) SetInput(i UpdateAccountingEntryInput) *Accou
 
 // CreateCompanyInput represents a mutation input for creating companies.
 type CreateCompanyInput struct {
-	Address              *string
-	BaseCurrency         *string
-	CeoName              *string
-	City                 string
-	Country              string
-	EstablishedAt        time.Time
-	Description          *string
-	Email                *string
-	Industry             *string
-	LastEntryDate        *time.Time
-	LastInvoiceNumber    *int32
-	Name                 string
-	NumberEmployees      *int32
-	Phone                *string
-	TaxID                *string
-	VatRate              *float64
-	Website              *string
-	IncompleteSetup      *bool
-	AvailableRoleIDs     []int
-	AccountingEntryIDs   []int
-	CustomerIDs          []int
-	DocumentIDs          []int
-	EmployeeIDs          []int
-	FileIDs              []int
-	InventoryIDs         []int
-	InventoryMovementIDs []int
-	InvoiceIDs           []int
-	LoanIDs              []int
-	LoanScheduleIDs      []int
-	MemberSignupTokenIDs []int
-	ProductIDs           []int
-	ProjectIDs           []int
-	PayableIDs           []int
-	ReceivableIDs        []int
-	SupplierIDs          []int
-	TokenIDs             []int
-	TreasuryIDs          []int
-	WorkShiftIDs         []int
-	UserIDs              []int
-	DaughterCompanyIDs   []int
-	ParentCompanyID      *int
+	Address                  *string
+	BaseCurrency             *string
+	CeoName                  *string
+	City                     string
+	Country                  string
+	EstablishedAt            time.Time
+	Description              *string
+	Email                    *string
+	Industry                 *string
+	LastEntryDate            *time.Time
+	LastInvoiceNumber        *int32
+	LastSalesQuotationNumber *int32
+	InvoicePrefix            *string
+	Name                     string
+	NumberEmployees          *int32
+	Phone                    *string
+	QuotationPrefix          *string
+	TaxID                    *string
+	VatRate                  *float64
+	Website                  *string
+	IncompleteSetup          *bool
+	AvailableRoleIDs         []int
+	AccountingEntryIDs       []int
+	CustomerIDs              []int
+	DocumentIDs              []int
+	EmployeeIDs              []int
+	FileIDs                  []int
+	InventoryIDs             []int
+	InventoryMovementIDs     []int
+	InvoiceIDs               []int
+	LoanIDs                  []int
+	LoanScheduleIDs          []int
+	MemberSignupTokenIDs     []int
+	ProjectIDs               []int
+	PayableIDs               []int
+	ReceivableIDs            []int
+	SupplierIDs              []int
+	TokenIDs                 []int
+	TreasuryIDs              []int
+	WorkShiftIDs             []int
+	UserIDs                  []int
+	DaughterCompanyIDs       []int
+	ParentCompanyID          *int
 }
 
 // Mutate applies the CreateCompanyInput on the CompanyMutation builder.
@@ -272,12 +274,21 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.LastInvoiceNumber; v != nil {
 		m.SetLastInvoiceNumber(*v)
 	}
+	if v := i.LastSalesQuotationNumber; v != nil {
+		m.SetLastSalesQuotationNumber(*v)
+	}
+	if v := i.InvoicePrefix; v != nil {
+		m.SetInvoicePrefix(*v)
+	}
 	m.SetName(i.Name)
 	if v := i.NumberEmployees; v != nil {
 		m.SetNumberEmployees(*v)
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if v := i.QuotationPrefix; v != nil {
+		m.SetQuotationPrefix(*v)
 	}
 	if v := i.TaxID; v != nil {
 		m.SetTaxID(*v)
@@ -327,9 +338,6 @@ func (i *CreateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.MemberSignupTokenIDs; len(v) > 0 {
 		m.AddMemberSignupTokenIDs(v...)
 	}
-	if v := i.ProductIDs; len(v) > 0 {
-		m.AddProductIDs(v...)
-	}
 	if v := i.ProjectIDs; len(v) > 0 {
 		m.AddProjectIDs(v...)
 	}
@@ -370,103 +378,104 @@ func (c *CompanyCreate) SetInput(i CreateCompanyInput) *CompanyCreate {
 
 // UpdateCompanyInput represents a mutation input for updating companies.
 type UpdateCompanyInput struct {
-	ClearAddress               bool
-	Address                    *string
-	BaseCurrency               *string
-	ClearCeoName               bool
-	CeoName                    *string
-	City                       *string
-	Country                    *string
-	EstablishedAt              *time.Time
-	ClearDescription           bool
-	Description                *string
-	ClearEmail                 bool
-	Email                      *string
-	ClearIndustry              bool
-	Industry                   *string
-	ClearLastEntryDate         bool
-	LastEntryDate              *time.Time
-	ClearLastInvoiceNumber     bool
-	LastInvoiceNumber          *int32
-	Name                       *string
-	NumberEmployees            *int32
-	ClearPhone                 bool
-	Phone                      *string
-	ClearTaxID                 bool
-	TaxID                      *string
-	VatRate                    *float64
-	ClearWebsite               bool
-	Website                    *string
-	ClearIncompleteSetup       bool
-	IncompleteSetup            *bool
-	ClearAvailableRoles        bool
-	AddAvailableRoleIDs        []int
-	RemoveAvailableRoleIDs     []int
-	ClearAccountingEntries     bool
-	AddAccountingEntryIDs      []int
-	RemoveAccountingEntryIDs   []int
-	ClearCustomers             bool
-	AddCustomerIDs             []int
-	RemoveCustomerIDs          []int
-	ClearDocuments             bool
-	AddDocumentIDs             []int
-	RemoveDocumentIDs          []int
-	ClearEmployees             bool
-	AddEmployeeIDs             []int
-	RemoveEmployeeIDs          []int
-	ClearFiles                 bool
-	AddFileIDs                 []int
-	RemoveFileIDs              []int
-	ClearInventory             bool
-	AddInventoryIDs            []int
-	RemoveInventoryIDs         []int
-	ClearInventoryMovements    bool
-	AddInventoryMovementIDs    []int
-	RemoveInventoryMovementIDs []int
-	ClearInvoices              bool
-	AddInvoiceIDs              []int
-	RemoveInvoiceIDs           []int
-	ClearLoans                 bool
-	AddLoanIDs                 []int
-	RemoveLoanIDs              []int
-	ClearLoanSchedule          bool
-	AddLoanScheduleIDs         []int
-	RemoveLoanScheduleIDs      []int
-	ClearMemberSignupTokens    bool
-	AddMemberSignupTokenIDs    []int
-	RemoveMemberSignupTokenIDs []int
-	ClearProducts              bool
-	AddProductIDs              []int
-	RemoveProductIDs           []int
-	ClearProjects              bool
-	AddProjectIDs              []int
-	RemoveProjectIDs           []int
-	ClearPayables              bool
-	AddPayableIDs              []int
-	RemovePayableIDs           []int
-	ClearReceivables           bool
-	AddReceivableIDs           []int
-	RemoveReceivableIDs        []int
-	ClearSuppliers             bool
-	AddSupplierIDs             []int
-	RemoveSupplierIDs          []int
-	ClearTokens                bool
-	AddTokenIDs                []int
-	RemoveTokenIDs             []int
-	ClearTreasuries            bool
-	AddTreasuryIDs             []int
-	RemoveTreasuryIDs          []int
-	ClearWorkShifts            bool
-	AddWorkShiftIDs            []int
-	RemoveWorkShiftIDs         []int
-	ClearUsers                 bool
-	AddUserIDs                 []int
-	RemoveUserIDs              []int
-	ClearDaughterCompanies     bool
-	AddDaughterCompanyIDs      []int
-	RemoveDaughterCompanyIDs   []int
-	ClearParentCompany         bool
-	ParentCompanyID            *int
+	ClearAddress                  bool
+	Address                       *string
+	BaseCurrency                  *string
+	ClearCeoName                  bool
+	CeoName                       *string
+	City                          *string
+	Country                       *string
+	EstablishedAt                 *time.Time
+	ClearDescription              bool
+	Description                   *string
+	ClearEmail                    bool
+	Email                         *string
+	ClearIndustry                 bool
+	Industry                      *string
+	ClearLastEntryDate            bool
+	LastEntryDate                 *time.Time
+	ClearLastInvoiceNumber        bool
+	LastInvoiceNumber             *int32
+	ClearLastSalesQuotationNumber bool
+	LastSalesQuotationNumber      *int32
+	InvoicePrefix                 *string
+	Name                          *string
+	NumberEmployees               *int32
+	ClearPhone                    bool
+	Phone                         *string
+	QuotationPrefix               *string
+	ClearTaxID                    bool
+	TaxID                         *string
+	VatRate                       *float64
+	ClearWebsite                  bool
+	Website                       *string
+	ClearIncompleteSetup          bool
+	IncompleteSetup               *bool
+	ClearAvailableRoles           bool
+	AddAvailableRoleIDs           []int
+	RemoveAvailableRoleIDs        []int
+	ClearAccountingEntries        bool
+	AddAccountingEntryIDs         []int
+	RemoveAccountingEntryIDs      []int
+	ClearCustomers                bool
+	AddCustomerIDs                []int
+	RemoveCustomerIDs             []int
+	ClearDocuments                bool
+	AddDocumentIDs                []int
+	RemoveDocumentIDs             []int
+	ClearEmployees                bool
+	AddEmployeeIDs                []int
+	RemoveEmployeeIDs             []int
+	ClearFiles                    bool
+	AddFileIDs                    []int
+	RemoveFileIDs                 []int
+	ClearInventory                bool
+	AddInventoryIDs               []int
+	RemoveInventoryIDs            []int
+	ClearInventoryMovements       bool
+	AddInventoryMovementIDs       []int
+	RemoveInventoryMovementIDs    []int
+	ClearInvoices                 bool
+	AddInvoiceIDs                 []int
+	RemoveInvoiceIDs              []int
+	ClearLoans                    bool
+	AddLoanIDs                    []int
+	RemoveLoanIDs                 []int
+	ClearLoanSchedule             bool
+	AddLoanScheduleIDs            []int
+	RemoveLoanScheduleIDs         []int
+	ClearMemberSignupTokens       bool
+	AddMemberSignupTokenIDs       []int
+	RemoveMemberSignupTokenIDs    []int
+	ClearProjects                 bool
+	AddProjectIDs                 []int
+	RemoveProjectIDs              []int
+	ClearPayables                 bool
+	AddPayableIDs                 []int
+	RemovePayableIDs              []int
+	ClearReceivables              bool
+	AddReceivableIDs              []int
+	RemoveReceivableIDs           []int
+	ClearSuppliers                bool
+	AddSupplierIDs                []int
+	RemoveSupplierIDs             []int
+	ClearTokens                   bool
+	AddTokenIDs                   []int
+	RemoveTokenIDs                []int
+	ClearTreasuries               bool
+	AddTreasuryIDs                []int
+	RemoveTreasuryIDs             []int
+	ClearWorkShifts               bool
+	AddWorkShiftIDs               []int
+	RemoveWorkShiftIDs            []int
+	ClearUsers                    bool
+	AddUserIDs                    []int
+	RemoveUserIDs                 []int
+	ClearDaughterCompanies        bool
+	AddDaughterCompanyIDs         []int
+	RemoveDaughterCompanyIDs      []int
+	ClearParentCompany            bool
+	ParentCompanyID               *int
 }
 
 // Mutate applies the UpdateCompanyInput on the CompanyMutation builder.
@@ -525,6 +534,15 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	if v := i.LastInvoiceNumber; v != nil {
 		m.SetLastInvoiceNumber(*v)
 	}
+	if i.ClearLastSalesQuotationNumber {
+		m.ClearLastSalesQuotationNumber()
+	}
+	if v := i.LastSalesQuotationNumber; v != nil {
+		m.SetLastSalesQuotationNumber(*v)
+	}
+	if v := i.InvoicePrefix; v != nil {
+		m.SetInvoicePrefix(*v)
+	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
@@ -536,6 +554,9 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.Phone; v != nil {
 		m.SetPhone(*v)
+	}
+	if v := i.QuotationPrefix; v != nil {
+		m.SetQuotationPrefix(*v)
 	}
 	if i.ClearTaxID {
 		m.ClearTaxID()
@@ -665,15 +686,6 @@ func (i *UpdateCompanyInput) Mutate(m *CompanyMutation) {
 	}
 	if v := i.RemoveMemberSignupTokenIDs; len(v) > 0 {
 		m.RemoveMemberSignupTokenIDs(v...)
-	}
-	if i.ClearProducts {
-		m.ClearProducts()
-	}
-	if v := i.AddProductIDs; len(v) > 0 {
-		m.AddProductIDs(v...)
-	}
-	if v := i.RemoveProductIDs; len(v) > 0 {
-		m.RemoveProductIDs(v...)
 	}
 	if i.ClearProjects {
 		m.ClearProjects()
@@ -1478,47 +1490,39 @@ func (c *InventoryMovementUpdateOne) SetInput(i UpdateInventoryMovementInput) *I
 
 // CreateInvoiceInput represents a mutation input for creating invoices.
 type CreateInvoiceInput struct {
-	CompanyLogo       *string
-	CompanyName       string
-	CompanyTaxID      *string
-	CompanyAddress    string
-	CompanyCity       string
-	CompanyEmail      *string
-	CompanyPhone      *string
-	Number            *string
-	IssueDate         time.Time
-	DueDate           time.Time
-	PaidAt            *time.Time
-	Status            *invoice.Status
-	CustomerName      *string
-	CustomerTaxID     *string
-	CustomerAddress   *string
-	CustomerCity      *string
-	CustomerEmail     *string
-	CustomerPhone     *string
-	Items             string
-	Subtotal          float64
-	Tax               float64
-	Total             float64
-	Notes             *string
-	PaymentMethod     *string
-	BankName          *string
-	BankAgency        *string
-	BankAccountNumber *string
-	BankAccountName   *string
-	StorageURI        *string
-	URL               *string
-	Filename          *string
-	Size              *float64
-	Keywords          string
-	ClientID          *int
-	ReceivableID      *int
+	IsInvoice       *bool
+	CompanyName     string
+	CompanyTaxID    *string
+	CompanyAddress  string
+	CompanyCity     string
+	CompanyEmail    *string
+	CompanyPhone    *string
+	Currency        string
+	Number          *string
+	IssueDate       time.Time
+	DueDate         time.Time
+	PaidAt          *time.Time
+	Status          *invoice.Status
+	CustomerName    *string
+	CustomerTaxID   *string
+	CustomerAddress *string
+	CustomerCity    *string
+	CustomerEmail   *string
+	CustomerPhone   *string
+	Items           string
+	Subtotal        float64
+	Tax             float64
+	Total           float64
+	Terms           *string
+	Keywords        string
+	ClientID        *int
+	ReceivableID    *int
 }
 
 // Mutate applies the CreateInvoiceInput on the InvoiceMutation builder.
 func (i *CreateInvoiceInput) Mutate(m *InvoiceMutation) {
-	if v := i.CompanyLogo; v != nil {
-		m.SetCompanyLogo(*v)
+	if v := i.IsInvoice; v != nil {
+		m.SetIsInvoice(*v)
 	}
 	m.SetCompanyName(i.CompanyName)
 	if v := i.CompanyTaxID; v != nil {
@@ -1532,6 +1536,7 @@ func (i *CreateInvoiceInput) Mutate(m *InvoiceMutation) {
 	if v := i.CompanyPhone; v != nil {
 		m.SetCompanyPhone(*v)
 	}
+	m.SetCurrency(i.Currency)
 	if v := i.Number; v != nil {
 		m.SetNumber(*v)
 	}
@@ -1565,35 +1570,8 @@ func (i *CreateInvoiceInput) Mutate(m *InvoiceMutation) {
 	m.SetSubtotal(i.Subtotal)
 	m.SetTax(i.Tax)
 	m.SetTotal(i.Total)
-	if v := i.Notes; v != nil {
-		m.SetNotes(*v)
-	}
-	if v := i.PaymentMethod; v != nil {
-		m.SetPaymentMethod(*v)
-	}
-	if v := i.BankName; v != nil {
-		m.SetBankName(*v)
-	}
-	if v := i.BankAgency; v != nil {
-		m.SetBankAgency(*v)
-	}
-	if v := i.BankAccountNumber; v != nil {
-		m.SetBankAccountNumber(*v)
-	}
-	if v := i.BankAccountName; v != nil {
-		m.SetBankAccountName(*v)
-	}
-	if v := i.StorageURI; v != nil {
-		m.SetStorageURI(*v)
-	}
-	if v := i.URL; v != nil {
-		m.SetURL(*v)
-	}
-	if v := i.Filename; v != nil {
-		m.SetFilename(*v)
-	}
-	if v := i.Size; v != nil {
-		m.SetSize(*v)
+	if v := i.Terms; v != nil {
+		m.SetTerms(*v)
 	}
 	m.SetKeywords(i.Keywords)
 	if v := i.ClientID; v != nil {
@@ -1612,70 +1590,49 @@ func (c *InvoiceCreate) SetInput(i CreateInvoiceInput) *InvoiceCreate {
 
 // UpdateInvoiceInput represents a mutation input for updating invoices.
 type UpdateInvoiceInput struct {
-	ClearCompanyLogo       bool
-	CompanyLogo            *string
-	CompanyName            *string
-	ClearCompanyTaxID      bool
-	CompanyTaxID           *string
-	CompanyAddress         *string
-	CompanyCity            *string
-	ClearCompanyEmail      bool
-	CompanyEmail           *string
-	ClearCompanyPhone      bool
-	CompanyPhone           *string
-	ClearNumber            bool
-	Number                 *string
-	IssueDate              *time.Time
-	DueDate                *time.Time
-	ClearPaidAt            bool
-	PaidAt                 *time.Time
-	Status                 *invoice.Status
-	ClearCustomerName      bool
-	CustomerName           *string
-	ClearCustomerTaxID     bool
-	CustomerTaxID          *string
-	ClearCustomerAddress   bool
-	CustomerAddress        *string
-	ClearCustomerCity      bool
-	CustomerCity           *string
-	ClearCustomerEmail     bool
-	CustomerEmail          *string
-	ClearCustomerPhone     bool
-	CustomerPhone          *string
-	Items                  *string
-	Subtotal               *float64
-	Tax                    *float64
-	Total                  *float64
-	ClearNotes             bool
-	Notes                  *string
-	ClearPaymentMethod     bool
-	PaymentMethod          *string
-	ClearBankName          bool
-	BankName               *string
-	ClearBankAgency        bool
-	BankAgency             *string
-	ClearBankAccountNumber bool
-	BankAccountNumber      *string
-	ClearBankAccountName   bool
-	BankAccountName        *string
-	ClearStorageURI        bool
-	StorageURI             *string
-	ClearURL               bool
-	URL                    *string
-	ClearFilename          bool
-	Filename               *string
-	ClearSize              bool
-	Size                   *float64
-	Keywords               *string
+	IsInvoice            *bool
+	CompanyName          *string
+	ClearCompanyTaxID    bool
+	CompanyTaxID         *string
+	CompanyAddress       *string
+	CompanyCity          *string
+	ClearCompanyEmail    bool
+	CompanyEmail         *string
+	ClearCompanyPhone    bool
+	CompanyPhone         *string
+	Currency             *string
+	ClearNumber          bool
+	Number               *string
+	IssueDate            *time.Time
+	DueDate              *time.Time
+	ClearPaidAt          bool
+	PaidAt               *time.Time
+	Status               *invoice.Status
+	ClearCustomerName    bool
+	CustomerName         *string
+	ClearCustomerTaxID   bool
+	CustomerTaxID        *string
+	ClearCustomerAddress bool
+	CustomerAddress      *string
+	ClearCustomerCity    bool
+	CustomerCity         *string
+	ClearCustomerEmail   bool
+	CustomerEmail        *string
+	ClearCustomerPhone   bool
+	CustomerPhone        *string
+	Items                *string
+	Subtotal             *float64
+	Tax                  *float64
+	Total                *float64
+	ClearTerms           bool
+	Terms                *string
+	Keywords             *string
 }
 
 // Mutate applies the UpdateInvoiceInput on the InvoiceMutation builder.
 func (i *UpdateInvoiceInput) Mutate(m *InvoiceMutation) {
-	if i.ClearCompanyLogo {
-		m.ClearCompanyLogo()
-	}
-	if v := i.CompanyLogo; v != nil {
-		m.SetCompanyLogo(*v)
+	if v := i.IsInvoice; v != nil {
+		m.SetIsInvoice(*v)
 	}
 	if v := i.CompanyName; v != nil {
 		m.SetCompanyName(*v)
@@ -1703,6 +1660,9 @@ func (i *UpdateInvoiceInput) Mutate(m *InvoiceMutation) {
 	}
 	if v := i.CompanyPhone; v != nil {
 		m.SetCompanyPhone(*v)
+	}
+	if v := i.Currency; v != nil {
+		m.SetCurrency(*v)
 	}
 	if i.ClearNumber {
 		m.ClearNumber()
@@ -1773,65 +1733,11 @@ func (i *UpdateInvoiceInput) Mutate(m *InvoiceMutation) {
 	if v := i.Total; v != nil {
 		m.SetTotal(*v)
 	}
-	if i.ClearNotes {
-		m.ClearNotes()
+	if i.ClearTerms {
+		m.ClearTerms()
 	}
-	if v := i.Notes; v != nil {
-		m.SetNotes(*v)
-	}
-	if i.ClearPaymentMethod {
-		m.ClearPaymentMethod()
-	}
-	if v := i.PaymentMethod; v != nil {
-		m.SetPaymentMethod(*v)
-	}
-	if i.ClearBankName {
-		m.ClearBankName()
-	}
-	if v := i.BankName; v != nil {
-		m.SetBankName(*v)
-	}
-	if i.ClearBankAgency {
-		m.ClearBankAgency()
-	}
-	if v := i.BankAgency; v != nil {
-		m.SetBankAgency(*v)
-	}
-	if i.ClearBankAccountNumber {
-		m.ClearBankAccountNumber()
-	}
-	if v := i.BankAccountNumber; v != nil {
-		m.SetBankAccountNumber(*v)
-	}
-	if i.ClearBankAccountName {
-		m.ClearBankAccountName()
-	}
-	if v := i.BankAccountName; v != nil {
-		m.SetBankAccountName(*v)
-	}
-	if i.ClearStorageURI {
-		m.ClearStorageURI()
-	}
-	if v := i.StorageURI; v != nil {
-		m.SetStorageURI(*v)
-	}
-	if i.ClearURL {
-		m.ClearURL()
-	}
-	if v := i.URL; v != nil {
-		m.SetURL(*v)
-	}
-	if i.ClearFilename {
-		m.ClearFilename()
-	}
-	if v := i.Filename; v != nil {
-		m.SetFilename(*v)
-	}
-	if i.ClearSize {
-		m.ClearSize()
-	}
-	if v := i.Size; v != nil {
-		m.SetSize(*v)
+	if v := i.Terms; v != nil {
+		m.SetTerms(*v)
 	}
 	if v := i.Keywords; v != nil {
 		m.SetKeywords(*v)
@@ -2302,49 +2208,17 @@ func (c *PayableCreate) SetInput(i CreatePayableInput) *PayableCreate {
 
 // UpdatePayableInput represents a mutation input for updating payables.
 type UpdatePayableInput struct {
-	EntryGroup         *int
-	Date               *time.Time
-	Name               *string
-	AmountInDefault    *float64
-	OutstandingBalance *float64
-	TotalTransaction   *float64
-	DueDate            *time.Time
-	Status             *payable.Status
-	ClearCompany       bool
-	CompanyID          *int
+	Name    *string
+	DueDate *time.Time
 }
 
 // Mutate applies the UpdatePayableInput on the PayableMutation builder.
 func (i *UpdatePayableInput) Mutate(m *PayableMutation) {
-	if v := i.EntryGroup; v != nil {
-		m.SetEntryGroup(*v)
-	}
-	if v := i.Date; v != nil {
-		m.SetDate(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if v := i.AmountInDefault; v != nil {
-		m.SetAmountInDefault(*v)
-	}
-	if v := i.OutstandingBalance; v != nil {
-		m.SetOutstandingBalance(*v)
-	}
-	if v := i.TotalTransaction; v != nil {
-		m.SetTotalTransaction(*v)
-	}
 	if v := i.DueDate; v != nil {
 		m.SetDueDate(*v)
-	}
-	if v := i.Status; v != nil {
-		m.SetStatus(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
 	}
 }
 
@@ -2356,60 +2230,6 @@ func (c *PayableUpdate) SetInput(i UpdatePayableInput) *PayableUpdate {
 
 // SetInput applies the change-set in the UpdatePayableInput on the PayableUpdateOne builder.
 func (c *PayableUpdateOne) SetInput(i UpdatePayableInput) *PayableUpdateOne {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// CreateProductInput represents a mutation input for creating products.
-type CreateProductInput struct {
-	Stock     *int
-	CompanyID *int
-}
-
-// Mutate applies the CreateProductInput on the ProductMutation builder.
-func (i *CreateProductInput) Mutate(m *ProductMutation) {
-	if v := i.Stock; v != nil {
-		m.SetStock(*v)
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-}
-
-// SetInput applies the change-set in the CreateProductInput on the ProductCreate builder.
-func (c *ProductCreate) SetInput(i CreateProductInput) *ProductCreate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// UpdateProductInput represents a mutation input for updating products.
-type UpdateProductInput struct {
-	Stock        *int
-	ClearCompany bool
-	CompanyID    *int
-}
-
-// Mutate applies the UpdateProductInput on the ProductMutation builder.
-func (i *UpdateProductInput) Mutate(m *ProductMutation) {
-	if v := i.Stock; v != nil {
-		m.SetStock(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
-	}
-}
-
-// SetInput applies the change-set in the UpdateProductInput on the ProductUpdate builder.
-func (c *ProductUpdate) SetInput(i UpdateProductInput) *ProductUpdate {
-	i.Mutate(c.Mutation())
-	return c
-}
-
-// SetInput applies the change-set in the UpdateProductInput on the ProductUpdateOne builder.
-func (c *ProductUpdateOne) SetInput(i UpdateProductInput) *ProductUpdateOne {
 	i.Mutate(c.Mutation())
 	return c
 }
@@ -2830,49 +2650,17 @@ func (c *ReceivableCreate) SetInput(i CreateReceivableInput) *ReceivableCreate {
 
 // UpdateReceivableInput represents a mutation input for updating receivables.
 type UpdateReceivableInput struct {
-	EntryGroup         *int
-	Date               *time.Time
-	Name               *string
-	AmountInDefault    *float64
-	OutstandingBalance *float64
-	TotalTransaction   *float64
-	DueDate            *time.Time
-	Status             *receivable.Status
-	ClearCompany       bool
-	CompanyID          *int
+	Name    *string
+	DueDate *time.Time
 }
 
 // Mutate applies the UpdateReceivableInput on the ReceivableMutation builder.
 func (i *UpdateReceivableInput) Mutate(m *ReceivableMutation) {
-	if v := i.EntryGroup; v != nil {
-		m.SetEntryGroup(*v)
-	}
-	if v := i.Date; v != nil {
-		m.SetDate(*v)
-	}
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
-	if v := i.AmountInDefault; v != nil {
-		m.SetAmountInDefault(*v)
-	}
-	if v := i.OutstandingBalance; v != nil {
-		m.SetOutstandingBalance(*v)
-	}
-	if v := i.TotalTransaction; v != nil {
-		m.SetTotalTransaction(*v)
-	}
 	if v := i.DueDate; v != nil {
 		m.SetDueDate(*v)
-	}
-	if v := i.Status; v != nil {
-		m.SetStatus(*v)
-	}
-	if i.ClearCompany {
-		m.ClearCompany()
-	}
-	if v := i.CompanyID; v != nil {
-		m.SetCompanyID(*v)
 	}
 }
 

@@ -25,7 +25,7 @@ func (Employee) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
 		field.Time("birthdate").Nillable().Optional(),
-		field.Enum("gender").Values("male", "female").Annotations(entgql.OrderField("GENDER")),
+		field.Enum("gender").Values("male", "female").Annotations(entgql.OrderField("gender")),
 		field.String("position"),
 		field.String("department").Optional().Default("geral"),
 		field.String("email").Nillable().Optional(),
@@ -33,7 +33,7 @@ func (Employee) Fields() []ent.Field {
 		field.String("avatar").Nillable().Optional(),
 		field.Time("hire_date"),
 		field.Int("monthly_salary").Min(0).Default(0),
-		field.Enum("status").Values("ACTIVE", "ON_LEAVE").Default("ACTIVE").Optional().Annotations(entgql.OrderField("STATUS")),
+		field.Enum("status").Values("active", "onLeave").Default("active").Optional().Annotations(entgql.OrderField("status")),
 		field.Float("performace_score").Min(0).Max(5).Default(0).Optional(),
 	}
 }

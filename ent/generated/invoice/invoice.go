@@ -23,8 +23,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldCompanyLogo holds the string denoting the company_logo field in the database.
-	FieldCompanyLogo = "company_logo"
+	// FieldIsInvoice holds the string denoting the is_invoice field in the database.
+	FieldIsInvoice = "is_invoice"
 	// FieldCompanyName holds the string denoting the company_name field in the database.
 	FieldCompanyName = "company_name"
 	// FieldCompanyTaxID holds the string denoting the company_tax_id field in the database.
@@ -37,6 +37,8 @@ const (
 	FieldCompanyEmail = "company_email"
 	// FieldCompanyPhone holds the string denoting the company_phone field in the database.
 	FieldCompanyPhone = "company_phone"
+	// FieldCurrency holds the string denoting the currency field in the database.
+	FieldCurrency = "currency"
 	// FieldNumber holds the string denoting the number field in the database.
 	FieldNumber = "number"
 	// FieldIssueDate holds the string denoting the issue_date field in the database.
@@ -67,26 +69,8 @@ const (
 	FieldTax = "tax"
 	// FieldTotal holds the string denoting the total field in the database.
 	FieldTotal = "total"
-	// FieldNotes holds the string denoting the notes field in the database.
-	FieldNotes = "notes"
-	// FieldPaymentMethod holds the string denoting the payment_method field in the database.
-	FieldPaymentMethod = "payment_method"
-	// FieldBankName holds the string denoting the bank_name field in the database.
-	FieldBankName = "bank_name"
-	// FieldBankAgency holds the string denoting the bank_agency field in the database.
-	FieldBankAgency = "bank_agency"
-	// FieldBankAccountNumber holds the string denoting the bank_account_number field in the database.
-	FieldBankAccountNumber = "bank_account_number"
-	// FieldBankAccountName holds the string denoting the bank_account_name field in the database.
-	FieldBankAccountName = "bank_account_name"
-	// FieldStorageURI holds the string denoting the storage_uri field in the database.
-	FieldStorageURI = "storage_uri"
-	// FieldURL holds the string denoting the url field in the database.
-	FieldURL = "url"
-	// FieldFilename holds the string denoting the filename field in the database.
-	FieldFilename = "filename"
-	// FieldSize holds the string denoting the size field in the database.
-	FieldSize = "size"
+	// FieldTerms holds the string denoting the terms field in the database.
+	FieldTerms = "terms"
 	// FieldKeywords holds the string denoting the keywords field in the database.
 	FieldKeywords = "keywords"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
@@ -135,13 +119,14 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldCompanyLogo,
+	FieldIsInvoice,
 	FieldCompanyName,
 	FieldCompanyTaxID,
 	FieldCompanyAddress,
 	FieldCompanyCity,
 	FieldCompanyEmail,
 	FieldCompanyPhone,
+	FieldCurrency,
 	FieldNumber,
 	FieldIssueDate,
 	FieldDueDate,
@@ -157,16 +142,7 @@ var Columns = []string{
 	FieldSubtotal,
 	FieldTax,
 	FieldTotal,
-	FieldNotes,
-	FieldPaymentMethod,
-	FieldBankName,
-	FieldBankAgency,
-	FieldBankAccountNumber,
-	FieldBankAccountName,
-	FieldStorageURI,
-	FieldURL,
-	FieldFilename,
-	FieldSize,
+	FieldTerms,
 	FieldKeywords,
 }
 
@@ -200,6 +176,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultIsInvoice holds the default value on creation for the "is_invoice" field.
+	DefaultIsInvoice bool
 	// DefaultCustomerName holds the default value on creation for the "customer_name" field.
 	DefaultCustomerName string
 	// ItemsValidator is a validator for the "items" field. It is called by the builders before save.
@@ -210,8 +188,6 @@ var (
 	TaxValidator func(float64) error
 	// TotalValidator is a validator for the "total" field. It is called by the builders before save.
 	TotalValidator func(float64) error
-	// SizeValidator is a validator for the "size" field. It is called by the builders before save.
-	SizeValidator func(float64) error
 	// KeywordsValidator is a validator for the "keywords" field. It is called by the builders before save.
 	KeywordsValidator func(string) error
 )
@@ -219,17 +195,17 @@ var (
 // Status defines the type for the "status" enum field.
 type Status string
 
-// StatusPAID is the default value of the Status enum.
-const DefaultStatus = StatusPAID
+// StatusPaid is the default value of the Status enum.
+const DefaultStatus = StatusPaid
 
 // Status values.
 const (
-	StatusDRAFT     Status = "DRAFT"
-	StatusCANCELED  Status = "CANCELED"
-	StatusPENDING   Status = "PENDING"
-	StatusPAID      Status = "PAID"
-	StatusOVERDUE   Status = "OVERDUE"
-	StatusDEFAULTED Status = "DEFAULTED"
+	StatusDraft     Status = "draft"
+	StatusCancelled Status = "cancelled"
+	StatusPending   Status = "pending"
+	StatusPaid      Status = "paid"
+	StatusOverdue   Status = "overdue"
+	StatusDefaulted Status = "defaulted"
 )
 
 func (s Status) String() string {
@@ -239,7 +215,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusDRAFT, StatusCANCELED, StatusPENDING, StatusPAID, StatusOVERDUE, StatusDEFAULTED:
+	case StatusDraft, StatusCancelled, StatusPending, StatusPaid, StatusOverdue, StatusDefaulted:
 		return nil
 	default:
 		return fmt.Errorf("invoice: invalid enum value for status field: %q", s)
@@ -269,9 +245,9 @@ func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
 }
 
-// ByCompanyLogo orders the results by the company_logo field.
-func ByCompanyLogo(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCompanyLogo, opts...).ToFunc()
+// ByIsInvoice orders the results by the is_invoice field.
+func ByIsInvoice(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsInvoice, opts...).ToFunc()
 }
 
 // ByCompanyName orders the results by the company_name field.
@@ -302,6 +278,11 @@ func ByCompanyEmail(opts ...sql.OrderTermOption) OrderOption {
 // ByCompanyPhone orders the results by the company_phone field.
 func ByCompanyPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCompanyPhone, opts...).ToFunc()
+}
+
+// ByCurrency orders the results by the currency field.
+func ByCurrency(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCurrency, opts...).ToFunc()
 }
 
 // ByNumber orders the results by the number field.
@@ -379,54 +360,9 @@ func ByTotal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTotal, opts...).ToFunc()
 }
 
-// ByNotes orders the results by the notes field.
-func ByNotes(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNotes, opts...).ToFunc()
-}
-
-// ByPaymentMethod orders the results by the payment_method field.
-func ByPaymentMethod(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPaymentMethod, opts...).ToFunc()
-}
-
-// ByBankName orders the results by the bank_name field.
-func ByBankName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBankName, opts...).ToFunc()
-}
-
-// ByBankAgency orders the results by the bank_agency field.
-func ByBankAgency(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBankAgency, opts...).ToFunc()
-}
-
-// ByBankAccountNumber orders the results by the bank_account_number field.
-func ByBankAccountNumber(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBankAccountNumber, opts...).ToFunc()
-}
-
-// ByBankAccountName orders the results by the bank_account_name field.
-func ByBankAccountName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBankAccountName, opts...).ToFunc()
-}
-
-// ByStorageURI orders the results by the storage_URI field.
-func ByStorageURI(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStorageURI, opts...).ToFunc()
-}
-
-// ByURL orders the results by the URL field.
-func ByURL(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldURL, opts...).ToFunc()
-}
-
-// ByFilename orders the results by the filename field.
-func ByFilename(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldFilename, opts...).ToFunc()
-}
-
-// BySize orders the results by the size field.
-func BySize(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSize, opts...).ToFunc()
+// ByTerms orders the results by the terms field.
+func ByTerms(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTerms, opts...).ToFunc()
 }
 
 // ByKeywords orders the results by the keywords field.

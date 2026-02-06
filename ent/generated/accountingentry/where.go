@@ -859,21 +859,21 @@ func HasLoanWith(preds ...predicate.Loan) predicate.AccountingEntry {
 	})
 }
 
-// HasLoanSchedules applies the HasEdge predicate on the "loanSchedules" edge.
-func HasLoanSchedules() predicate.AccountingEntry {
+// HasLoanSchedule applies the HasEdge predicate on the "loan_schedule" edge.
+func HasLoanSchedule() predicate.AccountingEntry {
 	return predicate.AccountingEntry(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, LoanSchedulesTable, LoanSchedulesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, LoanScheduleTable, LoanSchedulePrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasLoanSchedulesWith applies the HasEdge predicate on the "loanSchedules" edge with a given conditions (other predicates).
-func HasLoanSchedulesWith(preds ...predicate.LoanSchedule) predicate.AccountingEntry {
+// HasLoanScheduleWith applies the HasEdge predicate on the "loan_schedule" edge with a given conditions (other predicates).
+func HasLoanScheduleWith(preds ...predicate.LoanSchedule) predicate.AccountingEntry {
 	return predicate.AccountingEntry(func(s *sql.Selector) {
-		step := newLoanSchedulesStep()
+		step := newLoanScheduleStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

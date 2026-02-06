@@ -20,7 +20,6 @@ import (
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
@@ -279,6 +278,47 @@ func (cu *CompanyUpdate) ClearLastInvoiceNumber() *CompanyUpdate {
 	return cu
 }
 
+// SetLastSalesQuotationNumber sets the "last_sales_quotation_number" field.
+func (cu *CompanyUpdate) SetLastSalesQuotationNumber(i int32) *CompanyUpdate {
+	cu.mutation.ResetLastSalesQuotationNumber()
+	cu.mutation.SetLastSalesQuotationNumber(i)
+	return cu
+}
+
+// SetNillableLastSalesQuotationNumber sets the "last_sales_quotation_number" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableLastSalesQuotationNumber(i *int32) *CompanyUpdate {
+	if i != nil {
+		cu.SetLastSalesQuotationNumber(*i)
+	}
+	return cu
+}
+
+// AddLastSalesQuotationNumber adds i to the "last_sales_quotation_number" field.
+func (cu *CompanyUpdate) AddLastSalesQuotationNumber(i int32) *CompanyUpdate {
+	cu.mutation.AddLastSalesQuotationNumber(i)
+	return cu
+}
+
+// ClearLastSalesQuotationNumber clears the value of the "last_sales_quotation_number" field.
+func (cu *CompanyUpdate) ClearLastSalesQuotationNumber() *CompanyUpdate {
+	cu.mutation.ClearLastSalesQuotationNumber()
+	return cu
+}
+
+// SetInvoicePrefix sets the "invoice_prefix" field.
+func (cu *CompanyUpdate) SetInvoicePrefix(s string) *CompanyUpdate {
+	cu.mutation.SetInvoicePrefix(s)
+	return cu
+}
+
+// SetNillableInvoicePrefix sets the "invoice_prefix" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableInvoicePrefix(s *string) *CompanyUpdate {
+	if s != nil {
+		cu.SetInvoicePrefix(*s)
+	}
+	return cu
+}
+
 // SetLogoURL sets the "logo_URL" field.
 func (cu *CompanyUpdate) SetLogoURL(s string) *CompanyUpdate {
 	cu.mutation.SetLogoURL(s)
@@ -371,6 +411,20 @@ func (cu *CompanyUpdate) SetNillablePhone(s *string) *CompanyUpdate {
 // ClearPhone clears the value of the "phone" field.
 func (cu *CompanyUpdate) ClearPhone() *CompanyUpdate {
 	cu.mutation.ClearPhone()
+	return cu
+}
+
+// SetQuotationPrefix sets the "quotation_prefix" field.
+func (cu *CompanyUpdate) SetQuotationPrefix(s string) *CompanyUpdate {
+	cu.mutation.SetQuotationPrefix(s)
+	return cu
+}
+
+// SetNillableQuotationPrefix sets the "quotation_prefix" field if the given value is not nil.
+func (cu *CompanyUpdate) SetNillableQuotationPrefix(s *string) *CompanyUpdate {
+	if s != nil {
+		cu.SetQuotationPrefix(*s)
+	}
 	return cu
 }
 
@@ -633,21 +687,6 @@ func (cu *CompanyUpdate) AddMemberSignupTokens(m ...*MemberSignupToken) *Company
 		ids[i] = m[i].ID
 	}
 	return cu.AddMemberSignupTokenIDs(ids...)
-}
-
-// AddProductIDs adds the "products" edge to the Product entity by IDs.
-func (cu *CompanyUpdate) AddProductIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.AddProductIDs(ids...)
-	return cu
-}
-
-// AddProducts adds the "products" edges to the Product entity.
-func (cu *CompanyUpdate) AddProducts(p ...*Product) *CompanyUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return cu.AddProductIDs(ids...)
 }
 
 // AddProjectIDs adds the "projects" edge to the Project entity by IDs.
@@ -1061,27 +1100,6 @@ func (cu *CompanyUpdate) RemoveMemberSignupTokens(m ...*MemberSignupToken) *Comp
 	return cu.RemoveMemberSignupTokenIDs(ids...)
 }
 
-// ClearProducts clears all "products" edges to the Product entity.
-func (cu *CompanyUpdate) ClearProducts() *CompanyUpdate {
-	cu.mutation.ClearProducts()
-	return cu
-}
-
-// RemoveProductIDs removes the "products" edge to Product entities by IDs.
-func (cu *CompanyUpdate) RemoveProductIDs(ids ...int) *CompanyUpdate {
-	cu.mutation.RemoveProductIDs(ids...)
-	return cu
-}
-
-// RemoveProducts removes "products" edges to Product entities.
-func (cu *CompanyUpdate) RemoveProducts(p ...*Product) *CompanyUpdate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return cu.RemoveProductIDs(ids...)
-}
-
 // ClearProjects clears all "projects" edges to the Project entity.
 func (cu *CompanyUpdate) ClearProjects() *CompanyUpdate {
 	cu.mutation.ClearProjects()
@@ -1320,6 +1338,11 @@ func (cu *CompanyUpdate) check() error {
 			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
+	if v, ok := cu.mutation.LastSalesQuotationNumber(); ok {
+		if err := company.LastSalesQuotationNumberValidator(v); err != nil {
+			return &ValidationError{Name: "last_sales_quotation_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_sales_quotation_number": %w`, err)}
+		}
+	}
 	if v, ok := cu.mutation.NumberEmployees(); ok {
 		if err := company.NumberEmployeesValidator(v); err != nil {
 			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
@@ -1412,6 +1435,18 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if cu.mutation.LastInvoiceNumberCleared() {
 		_spec.ClearField(company.FieldLastInvoiceNumber, field.TypeInt32)
 	}
+	if value, ok := cu.mutation.LastSalesQuotationNumber(); ok {
+		_spec.SetField(company.FieldLastSalesQuotationNumber, field.TypeInt32, value)
+	}
+	if value, ok := cu.mutation.AddedLastSalesQuotationNumber(); ok {
+		_spec.AddField(company.FieldLastSalesQuotationNumber, field.TypeInt32, value)
+	}
+	if cu.mutation.LastSalesQuotationNumberCleared() {
+		_spec.ClearField(company.FieldLastSalesQuotationNumber, field.TypeInt32)
+	}
+	if value, ok := cu.mutation.InvoicePrefix(); ok {
+		_spec.SetField(company.FieldInvoicePrefix, field.TypeString, value)
+	}
 	if value, ok := cu.mutation.LogoURL(); ok {
 		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
 	}
@@ -1438,6 +1473,9 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if cu.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
+	}
+	if value, ok := cu.mutation.QuotationPrefix(); ok {
+		_spec.SetField(company.FieldQuotationPrefix, field.TypeString, value)
 	}
 	if value, ok := cu.mutation.TaxID(); ok {
 		_spec.SetField(company.FieldTaxID, field.TypeString, value)
@@ -1996,51 +2034,6 @@ func (cu *CompanyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.RemovedProductsIDs(); len(nodes) > 0 && !cu.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cu.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -2733,6 +2726,47 @@ func (cuo *CompanyUpdateOne) ClearLastInvoiceNumber() *CompanyUpdateOne {
 	return cuo
 }
 
+// SetLastSalesQuotationNumber sets the "last_sales_quotation_number" field.
+func (cuo *CompanyUpdateOne) SetLastSalesQuotationNumber(i int32) *CompanyUpdateOne {
+	cuo.mutation.ResetLastSalesQuotationNumber()
+	cuo.mutation.SetLastSalesQuotationNumber(i)
+	return cuo
+}
+
+// SetNillableLastSalesQuotationNumber sets the "last_sales_quotation_number" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableLastSalesQuotationNumber(i *int32) *CompanyUpdateOne {
+	if i != nil {
+		cuo.SetLastSalesQuotationNumber(*i)
+	}
+	return cuo
+}
+
+// AddLastSalesQuotationNumber adds i to the "last_sales_quotation_number" field.
+func (cuo *CompanyUpdateOne) AddLastSalesQuotationNumber(i int32) *CompanyUpdateOne {
+	cuo.mutation.AddLastSalesQuotationNumber(i)
+	return cuo
+}
+
+// ClearLastSalesQuotationNumber clears the value of the "last_sales_quotation_number" field.
+func (cuo *CompanyUpdateOne) ClearLastSalesQuotationNumber() *CompanyUpdateOne {
+	cuo.mutation.ClearLastSalesQuotationNumber()
+	return cuo
+}
+
+// SetInvoicePrefix sets the "invoice_prefix" field.
+func (cuo *CompanyUpdateOne) SetInvoicePrefix(s string) *CompanyUpdateOne {
+	cuo.mutation.SetInvoicePrefix(s)
+	return cuo
+}
+
+// SetNillableInvoicePrefix sets the "invoice_prefix" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableInvoicePrefix(s *string) *CompanyUpdateOne {
+	if s != nil {
+		cuo.SetInvoicePrefix(*s)
+	}
+	return cuo
+}
+
 // SetLogoURL sets the "logo_URL" field.
 func (cuo *CompanyUpdateOne) SetLogoURL(s string) *CompanyUpdateOne {
 	cuo.mutation.SetLogoURL(s)
@@ -2825,6 +2859,20 @@ func (cuo *CompanyUpdateOne) SetNillablePhone(s *string) *CompanyUpdateOne {
 // ClearPhone clears the value of the "phone" field.
 func (cuo *CompanyUpdateOne) ClearPhone() *CompanyUpdateOne {
 	cuo.mutation.ClearPhone()
+	return cuo
+}
+
+// SetQuotationPrefix sets the "quotation_prefix" field.
+func (cuo *CompanyUpdateOne) SetQuotationPrefix(s string) *CompanyUpdateOne {
+	cuo.mutation.SetQuotationPrefix(s)
+	return cuo
+}
+
+// SetNillableQuotationPrefix sets the "quotation_prefix" field if the given value is not nil.
+func (cuo *CompanyUpdateOne) SetNillableQuotationPrefix(s *string) *CompanyUpdateOne {
+	if s != nil {
+		cuo.SetQuotationPrefix(*s)
+	}
 	return cuo
 }
 
@@ -3087,21 +3135,6 @@ func (cuo *CompanyUpdateOne) AddMemberSignupTokens(m ...*MemberSignupToken) *Com
 		ids[i] = m[i].ID
 	}
 	return cuo.AddMemberSignupTokenIDs(ids...)
-}
-
-// AddProductIDs adds the "products" edge to the Product entity by IDs.
-func (cuo *CompanyUpdateOne) AddProductIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.AddProductIDs(ids...)
-	return cuo
-}
-
-// AddProducts adds the "products" edges to the Product entity.
-func (cuo *CompanyUpdateOne) AddProducts(p ...*Product) *CompanyUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return cuo.AddProductIDs(ids...)
 }
 
 // AddProjectIDs adds the "projects" edge to the Project entity by IDs.
@@ -3515,27 +3548,6 @@ func (cuo *CompanyUpdateOne) RemoveMemberSignupTokens(m ...*MemberSignupToken) *
 	return cuo.RemoveMemberSignupTokenIDs(ids...)
 }
 
-// ClearProducts clears all "products" edges to the Product entity.
-func (cuo *CompanyUpdateOne) ClearProducts() *CompanyUpdateOne {
-	cuo.mutation.ClearProducts()
-	return cuo
-}
-
-// RemoveProductIDs removes the "products" edge to Product entities by IDs.
-func (cuo *CompanyUpdateOne) RemoveProductIDs(ids ...int) *CompanyUpdateOne {
-	cuo.mutation.RemoveProductIDs(ids...)
-	return cuo
-}
-
-// RemoveProducts removes "products" edges to Product entities.
-func (cuo *CompanyUpdateOne) RemoveProducts(p ...*Product) *CompanyUpdateOne {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return cuo.RemoveProductIDs(ids...)
-}
-
 // ClearProjects clears all "projects" edges to the Project entity.
 func (cuo *CompanyUpdateOne) ClearProjects() *CompanyUpdateOne {
 	cuo.mutation.ClearProjects()
@@ -3787,6 +3799,11 @@ func (cuo *CompanyUpdateOne) check() error {
 			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
+	if v, ok := cuo.mutation.LastSalesQuotationNumber(); ok {
+		if err := company.LastSalesQuotationNumberValidator(v); err != nil {
+			return &ValidationError{Name: "last_sales_quotation_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_sales_quotation_number": %w`, err)}
+		}
+	}
 	if v, ok := cuo.mutation.NumberEmployees(); ok {
 		if err := company.NumberEmployeesValidator(v); err != nil {
 			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
@@ -3896,6 +3913,18 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	if cuo.mutation.LastInvoiceNumberCleared() {
 		_spec.ClearField(company.FieldLastInvoiceNumber, field.TypeInt32)
 	}
+	if value, ok := cuo.mutation.LastSalesQuotationNumber(); ok {
+		_spec.SetField(company.FieldLastSalesQuotationNumber, field.TypeInt32, value)
+	}
+	if value, ok := cuo.mutation.AddedLastSalesQuotationNumber(); ok {
+		_spec.AddField(company.FieldLastSalesQuotationNumber, field.TypeInt32, value)
+	}
+	if cuo.mutation.LastSalesQuotationNumberCleared() {
+		_spec.ClearField(company.FieldLastSalesQuotationNumber, field.TypeInt32)
+	}
+	if value, ok := cuo.mutation.InvoicePrefix(); ok {
+		_spec.SetField(company.FieldInvoicePrefix, field.TypeString, value)
+	}
 	if value, ok := cuo.mutation.LogoURL(); ok {
 		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
 	}
@@ -3922,6 +3951,9 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 	}
 	if cuo.mutation.PhoneCleared() {
 		_spec.ClearField(company.FieldPhone, field.TypeString)
+	}
+	if value, ok := cuo.mutation.QuotationPrefix(); ok {
+		_spec.SetField(company.FieldQuotationPrefix, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.TaxID(); ok {
 		_spec.SetField(company.FieldTaxID, field.TypeString, value)
@@ -4480,51 +4512,6 @@ func (cuo *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err e
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.RemovedProductsIDs(); len(nodes) > 0 && !cuo.mutation.ProductsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cuo.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

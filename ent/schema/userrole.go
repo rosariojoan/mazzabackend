@@ -14,17 +14,17 @@ type UserRole struct {
 }
 
 var userRoles = []string{
-	"SUPERUSER",
-	"ADMIN",
-	"ACCOUNTANT",
-	"AUDITOR",
-	"STAFF",
+	"superUser",
+	"admin",
+	"accountant",
+	"auditor",
+	"staff",
 }
 
 // Fields of the UserRole.
 func (UserRole) Fields() []ent.Field {
 	return []ent.Field{
-		field.Enum("role").Values(userRoles...).Annotations(entgql.OrderField("ROLES")),
+		field.Enum("role").Values(userRoles...).Annotations(entgql.OrderField("roles")),
 		field.String("notes").MaxLen(255).Nillable().Comment("Description about this role"),
 	}
 }

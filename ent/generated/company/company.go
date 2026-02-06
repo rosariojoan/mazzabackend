@@ -42,6 +42,10 @@ const (
 	FieldLastEntryDate = "last_entry_date"
 	// FieldLastInvoiceNumber holds the string denoting the last_invoice_number field in the database.
 	FieldLastInvoiceNumber = "last_invoice_number"
+	// FieldLastSalesQuotationNumber holds the string denoting the last_sales_quotation_number field in the database.
+	FieldLastSalesQuotationNumber = "last_sales_quotation_number"
+	// FieldInvoicePrefix holds the string denoting the invoice_prefix field in the database.
+	FieldInvoicePrefix = "invoice_prefix"
 	// FieldLogoURL holds the string denoting the logo_url field in the database.
 	FieldLogoURL = "logo_url"
 	// FieldLogoStorageURI holds the string denoting the logo_storage_uri field in the database.
@@ -52,6 +56,8 @@ const (
 	FieldNumberEmployees = "number_employees"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
+	// FieldQuotationPrefix holds the string denoting the quotation_prefix field in the database.
+	FieldQuotationPrefix = "quotation_prefix"
 	// FieldTaxID holds the string denoting the tax_id field in the database.
 	FieldTaxID = "tax_id"
 	// FieldVatRate holds the string denoting the vat_rate field in the database.
@@ -84,8 +90,6 @@ const (
 	EdgeLoanSchedule = "loan_schedule"
 	// EdgeMemberSignupTokens holds the string denoting the member_signup_tokens edge name in mutations.
 	EdgeMemberSignupTokens = "member_signup_tokens"
-	// EdgeProducts holds the string denoting the products edge name in mutations.
-	EdgeProducts = "products"
 	// EdgeProjects holds the string denoting the projects edge name in mutations.
 	EdgeProjects = "projects"
 	// EdgePayables holds the string denoting the payables edge name in mutations.
@@ -192,13 +196,6 @@ const (
 	MemberSignupTokensInverseTable = "member_signup_tokens"
 	// MemberSignupTokensColumn is the table column denoting the member_signup_tokens relation/edge.
 	MemberSignupTokensColumn = "company_member_signup_tokens"
-	// ProductsTable is the table that holds the products relation/edge.
-	ProductsTable = "products"
-	// ProductsInverseTable is the table name for the Product entity.
-	// It exists in this package in order to avoid circular dependency with the "product" package.
-	ProductsInverseTable = "products"
-	// ProductsColumn is the table column denoting the products relation/edge.
-	ProductsColumn = "company_products"
 	// ProjectsTable is the table that holds the projects relation/edge.
 	ProjectsTable = "projects"
 	// ProjectsInverseTable is the table name for the Project entity.
@@ -280,11 +277,14 @@ var Columns = []string{
 	FieldIndustry,
 	FieldLastEntryDate,
 	FieldLastInvoiceNumber,
+	FieldLastSalesQuotationNumber,
+	FieldInvoicePrefix,
 	FieldLogoURL,
 	FieldLogoStorageURI,
 	FieldName,
 	FieldNumberEmployees,
 	FieldPhone,
+	FieldQuotationPrefix,
 	FieldTaxID,
 	FieldVatRate,
 	FieldWebsite,
@@ -331,10 +331,18 @@ var (
 	DefaultLastInvoiceNumber int32
 	// LastInvoiceNumberValidator is a validator for the "last_invoice_number" field. It is called by the builders before save.
 	LastInvoiceNumberValidator func(int32) error
+	// DefaultLastSalesQuotationNumber holds the default value on creation for the "last_sales_quotation_number" field.
+	DefaultLastSalesQuotationNumber int32
+	// LastSalesQuotationNumberValidator is a validator for the "last_sales_quotation_number" field. It is called by the builders before save.
+	LastSalesQuotationNumberValidator func(int32) error
+	// DefaultInvoicePrefix holds the default value on creation for the "invoice_prefix" field.
+	DefaultInvoicePrefix string
 	// DefaultNumberEmployees holds the default value on creation for the "number_employees" field.
 	DefaultNumberEmployees int32
 	// NumberEmployeesValidator is a validator for the "number_employees" field. It is called by the builders before save.
 	NumberEmployeesValidator func(int32) error
+	// DefaultQuotationPrefix holds the default value on creation for the "quotation_prefix" field.
+	DefaultQuotationPrefix string
 	// DefaultVatRate holds the default value on creation for the "vat_rate" field.
 	DefaultVatRate float64
 	// DefaultIncompleteSetup holds the default value on creation for the "incomplete_setup" field.
@@ -419,6 +427,16 @@ func ByLastInvoiceNumber(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastInvoiceNumber, opts...).ToFunc()
 }
 
+// ByLastSalesQuotationNumber orders the results by the last_sales_quotation_number field.
+func ByLastSalesQuotationNumber(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastSalesQuotationNumber, opts...).ToFunc()
+}
+
+// ByInvoicePrefix orders the results by the invoice_prefix field.
+func ByInvoicePrefix(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldInvoicePrefix, opts...).ToFunc()
+}
+
 // ByLogoURL orders the results by the logo_URL field.
 func ByLogoURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLogoURL, opts...).ToFunc()
@@ -442,6 +460,11 @@ func ByNumberEmployees(opts ...sql.OrderTermOption) OrderOption {
 // ByPhone orders the results by the phone field.
 func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
+}
+
+// ByQuotationPrefix orders the results by the quotation_prefix field.
+func ByQuotationPrefix(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldQuotationPrefix, opts...).ToFunc()
 }
 
 // ByTaxID orders the results by the tax_id field.
@@ -629,20 +652,6 @@ func ByMemberSignupTokensCount(opts ...sql.OrderTermOption) OrderOption {
 func ByMemberSignupTokens(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newMemberSignupTokensStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
-// ByProductsCount orders the results by products count.
-func ByProductsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newProductsStep(), opts...)
-	}
-}
-
-// ByProducts orders the results by products terms.
-func ByProducts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newProductsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -860,13 +869,6 @@ func newMemberSignupTokensStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(MemberSignupTokensInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, MemberSignupTokensTable, MemberSignupTokensColumn),
-	)
-}
-func newProductsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(ProductsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
 	)
 }
 func newProjectsStep() *sqlgraph.Step {

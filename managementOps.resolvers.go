@@ -6,14 +6,70 @@ package mazza
 
 import (
 	"context"
+	"fmt"
 	"mazza/app/manager/cash"
 	"mazza/app/manager/clients"
 	"mazza/app/manager/suppliers"
 	"mazza/ent/generated"
+	"mazza/ent/generated/accountingentry"
+	"mazza/ent/generated/company"
 	"mazza/ent/generated/loan"
+	"mazza/ent/generated/payable"
+	"mazza/ent/generated/receivable"
 	"mazza/ent/utils"
 	"mazza/mazza/generated/model"
+	"time"
 )
+
+// UpdatePayable is the resolver for the updatePayable field.
+func (r *mutationResolver) UpdatePayable(ctx context.Context, id int, input generated.UpdatePayableInput) (*generated.Payable, error) {
+	_, activeCompany := utils.GetSession(&ctx)
+	item, err := r.client.Payable.Query().
+		Where(payable.ID(id), payable.HasCompanyWith(company.ID(activeCompany.ID))).
+		First(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("not found")
+	}
+
+	if item.Status == payable.StatusPaid {
+		return item, nil
+	}
+	status := item.Status
+	if input.DueDate.After(time.Now()) && item.Status == payable.StatusOverdue {
+		status = payable.StatusPending
+	}
+
+	item, err = r.client.Payable.UpdateOneID(id).
+		Where(payable.HasCompanyWith(company.ID(activeCompany.ID))).
+		SetInput(input).SetStatus(status).
+		Save(ctx)
+	return item, err
+}
+
+// UpdateReceivable is the resolver for the updateReceivable field.
+func (r *mutationResolver) UpdateReceivable(ctx context.Context, id int, input generated.UpdateReceivableInput) (*generated.Receivable, error) {
+	_, activeCompany := utils.GetSession(&ctx)
+	item, err := r.client.Receivable.Query().
+		Where(receivable.ID(id), receivable.HasCompanyWith(company.ID(activeCompany.ID))).
+		First(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("not found")
+	}
+
+	if item.Status == receivable.StatusPaid {
+		return item, nil
+	}
+	status := item.Status
+	if input.DueDate.After(time.Now()) && item.Status == receivable.StatusOverdue {
+		status = receivable.StatusPending
+	}
+
+	item, err = r.client.Receivable.UpdateOneID(id).
+		Where(receivable.HasCompanyWith(company.ID(activeCompany.ID))).
+		SetInput(input).SetStatus(status).
+		Save(ctx)
+	return item, err
+}
 
 // ClientList is the resolver for the clientList field.
 func (r *queryResolver) ClientList(ctx context.Context, top *int) ([]*model.ClientList, error) {
@@ -56,4 +112,36 @@ func (r *queryResolver) AccountsReceivableAging(ctx context.Context, name *strin
 // AccountsPayableAging is the resolver for the accountsPayableAging field.
 func (r *queryResolver) AccountsPayableAging(ctx context.Context, name *string) ([]*model.AgingBucket, error) {
 	return suppliers.AccountsPayableAging(ctx, r.client, name)
+}
+
+// CashBalance is the resolver for the cashBalance field.
+func (r *queryResolver) CashBalance(ctx context.Context) (float64, error) {
+	_, activeCompany := utils.GetSession(&ctx)
+
+	var data []struct {
+		IsDebit bool    `json:"is_debit"`
+		Sum     float64 `json:"sum"`
+	}
+
+	err := r.client.AccountingEntry.Query().
+		Where(
+			accountingentry.HasCompanyWith(company.ID(activeCompany.ID)),
+			accountingentry.Category("cash"),
+		).
+		GroupBy(accountingentry.FieldIsDebit).
+		Aggregate(generated.Sum(accountingentry.FieldAmount)).
+		Scan(ctx, &data)
+	if err != nil {
+		return 0, nil
+	}
+
+	var balance float64
+	for _, v := range data {
+		if v.IsDebit {
+			balance += v.Sum
+		} else {
+			balance -= v.Sum
+		}
+	}
+	return balance, nil
 }

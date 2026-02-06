@@ -48,9 +48,6 @@ type MemberSignupToken func(*sql.Selector)
 // Payable is the predicate function for payable builders.
 type Payable func(*sql.Selector)
 
-// Product is the predicate function for product builders.
-type Product func(*sql.Selector)
-
 // Project is the predicate function for project builders.
 type Project func(*sql.Selector)
 

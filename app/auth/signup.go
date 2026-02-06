@@ -10,6 +10,7 @@ import (
 	"mazza/app/utils"
 	ent "mazza/ent/generated"
 	"mazza/ent/generated/employee"
+	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/userrole"
 	"mazza/firebase"
 	"mazza/inits"
@@ -57,9 +58,9 @@ func Signup(ctx *gin.Context) {
 	}
 	// fmt.Println("\nnew comp ID:", newCompany.ID)
 	// body.User.CompanyIDs = append(body.User.CompanyIDs, newCompany.ID)
-	stock := 0
+	stock := 0.0
 	department := "geral"
-	userRole := userrole.RoleADMIN
+	userRole := userrole.RoleAdmin
 	userIsActive := true
 	phone := utils.GetValue(body.UserInput.Phone, "")
 	stringValue := "--"
@@ -84,10 +85,6 @@ func Signup(ctx *gin.Context) {
 				CompanyID:  &newCompany.ID,
 			}).SaveX(ctx),
 		).SaveX(ctx),
-	).AddProducts(
-		tx.Product.Create().SetInput(ent.CreateProductInput{
-			Stock: &stock,
-		}).SaveX(ctx),
 	).AddCustomers(
 		tx.Customer.Create().SetInput(ent.CreateCustomerInput{
 			Address:     &stringValue,
@@ -113,6 +110,22 @@ func Signup(ctx *gin.Context) {
 		}).SaveX(ctx),
 	).Save(ctx)
 
+	if err != nil {
+		fmt.Println("err:", err)
+		_ = tx.Rollback()
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ocorreu um erro ao registar usuário"})
+		return
+	}
+
+	_, err = tx.Inventory.Create().SetInput(ent.CreateInventoryInput{
+		Category:     inventory.CategoryMerchandise,
+		CurrentValue: 0,
+		MinimumLevel: 0,
+		Name:         "Miscellaneous",
+		Notes:        "--",
+		Quantity:     stock,
+		Unit:         "unit",
+	}).SetCompanyID(newCompany.ID).Save(ctx)
 	if err != nil {
 		fmt.Println("err:", err)
 		_ = tx.Rollback()

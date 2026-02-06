@@ -40,9 +40,11 @@ func CheckUser(ctx *gin.Context) {
 			}
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"data": gin.H{"email_already_taken": false}})
+		// ctx.JSON(http.StatusOK, gin.H{"data": gin.H{"email_already_taken": false}})
+		ctx.String(http.StatusOK, "email_available")
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"data": gin.H{"email_already_taken": true}})
+	ctx.String(http.StatusOK, "email_already_taken")
+	// ctx.JSON(http.StatusOK, gin.H{"data": gin.H{"email_already_taken": true}})
 }

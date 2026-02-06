@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	ent "mazza/ent/generated"
+	"mazza/ent/generated/inventory"
 )
 
 /* Prepare default items to be used during company creation */
@@ -10,13 +11,19 @@ func CreateDefaultItems(ctx context.Context, companyID int) error {
 	client := ent.FromContext(ctx)
 	companyClient := client.Company.UpdateOneID(companyID)
 	descr := "Gerado automaticamente"
-	stock := 0
+	stock := 0.0
 
-	defaultProduct, err := client.Product.Create().SetInput(ent.CreateProductInput{
-		Stock: &stock,
+	defaultProduct, err := client.Inventory.Create().SetInput(ent.CreateInventoryInput{
+		Category:     inventory.CategoryMerchandise,
+		CurrentValue: 0,
+		MinimumLevel: 0,
+		Name:         "Miscellaneous",
+		Notes:        "",
+		Quantity:     stock,
+		Unit:         "unit",
 	}).Save(ctx)
 	if err == nil {
-		companyClient.AddProducts(defaultProduct)
+		companyClient.AddInventory(defaultProduct)
 	}
 
 	emptryString := ""

@@ -93,13 +93,13 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 		currentCompany.ID,
 		startDate.Format(time.RFC3339), // Convert time to RFC3339 format which PostgreSQL accepts
 		endDate.Format(time.RFC3339),
-		accountingentry.AccountTypeREVENUE,
-		accountingentry.AccountTypeCONTRA_REVENUE,
-		accountingentry.AccountTypeEXPENSE,
-		accountingentry.AccountTypeCONTRA_EXPENSE,
-		accountingentry.AccountTypeTAX_EXPENSE,
-		accountingentry.AccountTypeINCOME,
-		accountingentry.AccountTypeDIVIDEND_EXPENSE,
+		accountingentry.AccountTypeRevenue,
+		accountingentry.AccountTypeContraRevenue,
+		accountingentry.AccountTypeExpense,
+		accountingentry.AccountTypeContraExpense,
+		accountingentry.AccountTypeTaxExpense,
+		accountingentry.AccountTypeIncome,
+		accountingentry.AccountTypeDividendExpense,
 	)
 
 	rows, err := client.QueryContext(ctx, sqlStr)
@@ -122,7 +122,7 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 	}
 
 	for _, entry := range scannedRows {
-		if entry.AccountType == accountingentry.AccountTypeREVENUE.String() {
+		if entry.AccountType == accountingentry.AccountTypeRevenue.String() {
 			result.Revenues = append(result.Revenues, &model.IncomeStatementRowItem{
 				Account:     entry.Account,
 				AccountType: entry.AccountType,
@@ -131,7 +131,7 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 				Value:       entry.Value,
 			})
 			result.NetRevenue += entry.Value
-		} else if entry.AccountType == accountingentry.AccountTypeCONTRA_REVENUE.String() {
+		} else if entry.AccountType == accountingentry.AccountTypeContraRevenue.String() {
 			result.Revenues = append(result.Revenues, &model.IncomeStatementRowItem{
 				Account:     entry.Account,
 				AccountType: entry.AccountType,
@@ -141,7 +141,7 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 			})
 			result.NetRevenue -= entry.Value
 
-		} else if entry.AccountType == accountingentry.AccountTypeEXPENSE.String() {
+		} else if entry.AccountType == accountingentry.AccountTypeExpense.String() {
 			result.Expenses = append(result.Expenses, &model.IncomeStatementRowItem{
 				Account:     entry.Account,
 				AccountType: entry.AccountType,
@@ -150,10 +150,10 @@ func GetIncomeStatement(client *ent.Client, ctx context.Context, user ent.User, 
 				Value:       entry.Value,
 			})
 			result.TotalExpenses += entry.Value
-		} else if entry.AccountType == accountingentry.AccountTypeCONTRA_EXPENSE.String() {
+		} else if entry.AccountType == accountingentry.AccountTypeContraExpense.String() {
 			result.TotalExpenses -= entry.Value
 
-		} else if entry.AccountType == accountingentry.AccountTypeTAX_EXPENSE.String() {
+		} else if entry.AccountType == accountingentry.AccountTypeTaxExpense.String() {
 			result.TaxExpense += entry.Value
 		}
 	}

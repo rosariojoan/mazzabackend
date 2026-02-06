@@ -13,7 +13,7 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/customer"
 	"mazza/ent/generated/employee"
-	"mazza/ent/generated/product"
+	"mazza/ent/generated/inventory"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -44,7 +44,7 @@ func (r *mutationResolver) Signup(ctx context.Context, input model.SignupInput) 
 		return nil, err
 	}
 
-	role, err := r.client.UserRole.Create().SetRole(userrole.RoleADMIN).Save(ctx)
+	role, err := r.client.UserRole.Create().SetRole(userrole.RoleAdmin).Save(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +158,8 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id int, input generat
 	_, err := activeUser.QueryAssignedRoles().Where(
 		userrole.HasCompanyWith(company.ID(activeCompany.ID)),
 		userrole.Or(
-			userrole.RoleEQ(userrole.RoleADMIN),
-			userrole.RoleEQ(userrole.RoleSUPERUSER),
+			userrole.RoleEQ(userrole.RoleAdmin),
+			userrole.RoleEQ(userrole.RoleSuperUser),
 		),
 	).Exist(ctx)
 	if err != nil {
@@ -252,41 +252,6 @@ func (r *mutationResolver) DeleteEmployee(ctx context.Context, id int) (bool, er
 
 	if err := generated.FromContext(ctx).Employee.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
 		return false, fmt.Errorf("")
-	}
-	return true, nil
-}
-
-// CreateProduct is the resolver for the createProduct field.
-func (r *mutationResolver) CreateProduct(ctx context.Context, input generated.CreateProductInput) (*generated.Product, error) {
-	_, currentCompany := utils.GetSession(&ctx)
-	product, err := r.client.Product.Create().SetInput(input).SetCompanyID(currentCompany.ID).Save(ctx)
-	if err != nil {
-		errStr := err.Error()
-		if strings.Contains(errStr, "unique") && strings.Contains(errStr, "product_name_company_products") {
-			return product, gqlerror.Errorf("name is not unique")
-		} else if strings.Contains(errStr, "unique") && strings.Contains(errStr, "product_sku_company_products") {
-			return product, gqlerror.Errorf("sku is not unique")
-		}
-		fmt.Println("err:", errStr)
-	}
-
-	return product, err
-}
-
-// UpdateProduct is the resolver for the updateProduct field.
-func (r *mutationResolver) UpdateProduct(ctx context.Context, id int, input generated.UpdateProductInput) (*generated.Product, error) {
-	companyQ := utils.CurrentCompanyQuery(&ctx)
-	filter := product.HasCompanyWith(companyQ)
-	return generated.FromContext(ctx).Product.UpdateOneID(id).Where(filter).SetInput(input).Save(ctx)
-}
-
-// DeleteProduct is the resolver for the deleteProduct field.
-func (r *mutationResolver) DeleteProduct(ctx context.Context, id int) (bool, error) {
-	companyQ := utils.CurrentCompanyQuery(&ctx)
-	filter := product.HasCompanyWith(companyQ)
-
-	if err := generated.FromContext(ctx).Product.DeleteOneID(id).Where(filter).Exec(ctx); err != nil {
-		return false, fmt.Errorf("there was an error deleting the product")
 	}
 	return true, nil
 }
@@ -462,7 +427,7 @@ func (r *mutationResolver) CreateWorkShift(ctx context.Context, input generated.
 	return r.client.Workshift.Create().SetInput(input).
 		SetCompanyID(currentCompany.ID).
 		SetUserID(currentUser.ID).
-		SetClockIn(clockIn).SetStatus(workshift.StatusPENDING).
+		SetClockIn(clockIn).SetStatus(workshift.StatusPending).
 		Save(ctx)
 }
 
@@ -526,20 +491,15 @@ func (r *queryResolver) Employees(ctx context.Context, where *generated.Employee
 	return query.All(ctx)
 }
 
-// Products is the resolver for the products field.
-func (r *queryResolver) Products(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error) {
-	filter := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	query, err := where.Filter(r.client.Product.Query().Where(filter))
-	if err != nil {
-		return nil, err
-	}
-	return query.All(ctx)
+// Inventory is the resolver for the inventory field.
+func (r *queryResolver) Inventory(ctx context.Context, where *generated.InventoryWhereInput) ([]*generated.Inventory, error) {
+	panic(fmt.Errorf("not implemented: Inventory - inventory"))
 }
 
 // LowStock is the resolver for the lowStock field.
-func (r *queryResolver) LowStock(ctx context.Context, where *generated.ProductWhereInput) ([]*generated.Product, error) {
-	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
+func (r *queryResolver) LowStock(ctx context.Context, where *generated.InventoryWhereInput) ([]*generated.Inventory, error) {
+	companyQ := inventory.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
+	query, err := where.Filter(r.client.Inventory.Query().Where(companyQ, inventory.QuantityLTE(0)))
 	if err != nil {
 		return nil, err
 	}
@@ -547,9 +507,9 @@ func (r *queryResolver) LowStock(ctx context.Context, where *generated.ProductWh
 }
 
 // NumberOfProducts is the resolver for the numberOfProducts field.
-func (r *queryResolver) NumberOfProducts(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
-	filter := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	query, err := where.Filter(r.client.Product.Query().Where(filter))
+func (r *queryResolver) NumberOfInventory(ctx context.Context, where *generated.InventoryWhereInput) (int, error) {
+	filter := inventory.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
+	query, err := where.Filter(r.client.Inventory.Query().Where(filter))
 	if err != nil {
 		return 0, err
 	}
@@ -557,9 +517,9 @@ func (r *queryResolver) NumberOfProducts(ctx context.Context, where *generated.P
 }
 
 // NumberOfLowStock is the resolver for the numberOfLowStock field.
-func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
-	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
+func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.InventoryWhereInput) (int, error) {
+	companyQ := inventory.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
+	query, err := where.Filter(r.client.Inventory.Query().Where(companyQ, inventory.QuantityLTE(0)))
 	if err != nil {
 		return 0, err
 	}
@@ -567,9 +527,9 @@ func (r *queryResolver) NumberOfLowStock(ctx context.Context, where *generated.P
 }
 
 // NumberOfOutOfStock is the resolver for the numberOfOutOfStock field.
-func (r *queryResolver) NumberOfOutOfStock(ctx context.Context, where *generated.ProductWhereInput) (int, error) {
-	companyQ := product.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
-	query, err := where.Filter(r.client.Product.Query().Where(companyQ, product.StockLTE(0)))
+func (r *queryResolver) NumberOfOutOfStock(ctx context.Context, where *generated.InventoryWhereInput) (int, error) {
+	companyQ := inventory.HasCompanyWith(utils.CurrentCompanyQuery(&ctx))
+	query, err := where.Filter(r.client.Inventory.Query().Where(companyQ, inventory.QuantityLTE(0)))
 	if err != nil {
 		return 0, err
 	}

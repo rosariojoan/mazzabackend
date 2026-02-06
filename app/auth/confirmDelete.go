@@ -44,7 +44,7 @@ func ConfirmDeleteUser(ctx *gin.Context) {
 		token.Token(input.Token),
 		token.HasUserWith(user.ID(userID)),
 		token.ExpiryGTE(time.Now()),
-		token.CategoryEQ(token.CategoryACCOUNT_DELETE),
+		token.CategoryEQ(token.CategoryAccountDelete),
 	).WithUser().First(ctx)
 	if err != nil {
 		fmt.Println("err 4:", err)

@@ -16,7 +16,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -107,18 +106,32 @@ func init() {
 	company.DefaultLastInvoiceNumber = companyDescLastInvoiceNumber.Default.(int32)
 	// company.LastInvoiceNumberValidator is a validator for the "last_invoice_number" field. It is called by the builders before save.
 	company.LastInvoiceNumberValidator = companyDescLastInvoiceNumber.Validators[0].(func(int32) error)
+	// companyDescLastSalesQuotationNumber is the schema descriptor for last_sales_quotation_number field.
+	companyDescLastSalesQuotationNumber := companyFields[11].Descriptor()
+	// company.DefaultLastSalesQuotationNumber holds the default value on creation for the last_sales_quotation_number field.
+	company.DefaultLastSalesQuotationNumber = companyDescLastSalesQuotationNumber.Default.(int32)
+	// company.LastSalesQuotationNumberValidator is a validator for the "last_sales_quotation_number" field. It is called by the builders before save.
+	company.LastSalesQuotationNumberValidator = companyDescLastSalesQuotationNumber.Validators[0].(func(int32) error)
+	// companyDescInvoicePrefix is the schema descriptor for invoice_prefix field.
+	companyDescInvoicePrefix := companyFields[12].Descriptor()
+	// company.DefaultInvoicePrefix holds the default value on creation for the invoice_prefix field.
+	company.DefaultInvoicePrefix = companyDescInvoicePrefix.Default.(string)
 	// companyDescNumberEmployees is the schema descriptor for number_employees field.
-	companyDescNumberEmployees := companyFields[14].Descriptor()
+	companyDescNumberEmployees := companyFields[16].Descriptor()
 	// company.DefaultNumberEmployees holds the default value on creation for the number_employees field.
 	company.DefaultNumberEmployees = companyDescNumberEmployees.Default.(int32)
 	// company.NumberEmployeesValidator is a validator for the "number_employees" field. It is called by the builders before save.
 	company.NumberEmployeesValidator = companyDescNumberEmployees.Validators[0].(func(int32) error)
+	// companyDescQuotationPrefix is the schema descriptor for quotation_prefix field.
+	companyDescQuotationPrefix := companyFields[18].Descriptor()
+	// company.DefaultQuotationPrefix holds the default value on creation for the quotation_prefix field.
+	company.DefaultQuotationPrefix = companyDescQuotationPrefix.Default.(string)
 	// companyDescVatRate is the schema descriptor for vat_rate field.
-	companyDescVatRate := companyFields[17].Descriptor()
+	companyDescVatRate := companyFields[20].Descriptor()
 	// company.DefaultVatRate holds the default value on creation for the vat_rate field.
 	company.DefaultVatRate = companyDescVatRate.Default.(float64)
 	// companyDescIncompleteSetup is the schema descriptor for incomplete_setup field.
-	companyDescIncompleteSetup := companyFields[19].Descriptor()
+	companyDescIncompleteSetup := companyFields[22].Descriptor()
 	// company.DefaultIncompleteSetup holds the default value on creation for the incomplete_setup field.
 	company.DefaultIncompleteSetup = companyDescIncompleteSetup.Default.(bool)
 	companydocumentMixin := schema.CompanyDocument{}.Mixin()
@@ -348,32 +361,32 @@ func init() {
 	invoice.DefaultUpdatedAt = invoiceDescUpdatedAt.Default.(func() time.Time)
 	// invoice.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	invoice.UpdateDefaultUpdatedAt = invoiceDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// invoiceDescIsInvoice is the schema descriptor for is_invoice field.
+	invoiceDescIsInvoice := invoiceFields[0].Descriptor()
+	// invoice.DefaultIsInvoice holds the default value on creation for the is_invoice field.
+	invoice.DefaultIsInvoice = invoiceDescIsInvoice.Default.(bool)
 	// invoiceDescCustomerName is the schema descriptor for customer_name field.
-	invoiceDescCustomerName := invoiceFields[12].Descriptor()
+	invoiceDescCustomerName := invoiceFields[13].Descriptor()
 	// invoice.DefaultCustomerName holds the default value on creation for the customer_name field.
 	invoice.DefaultCustomerName = invoiceDescCustomerName.Default.(string)
 	// invoiceDescItems is the schema descriptor for items field.
-	invoiceDescItems := invoiceFields[18].Descriptor()
+	invoiceDescItems := invoiceFields[19].Descriptor()
 	// invoice.ItemsValidator is a validator for the "items" field. It is called by the builders before save.
 	invoice.ItemsValidator = invoiceDescItems.Validators[0].(func(string) error)
 	// invoiceDescSubtotal is the schema descriptor for subtotal field.
-	invoiceDescSubtotal := invoiceFields[19].Descriptor()
+	invoiceDescSubtotal := invoiceFields[20].Descriptor()
 	// invoice.SubtotalValidator is a validator for the "subtotal" field. It is called by the builders before save.
 	invoice.SubtotalValidator = invoiceDescSubtotal.Validators[0].(func(float64) error)
 	// invoiceDescTax is the schema descriptor for tax field.
-	invoiceDescTax := invoiceFields[20].Descriptor()
+	invoiceDescTax := invoiceFields[21].Descriptor()
 	// invoice.TaxValidator is a validator for the "tax" field. It is called by the builders before save.
 	invoice.TaxValidator = invoiceDescTax.Validators[0].(func(float64) error)
 	// invoiceDescTotal is the schema descriptor for total field.
-	invoiceDescTotal := invoiceFields[21].Descriptor()
+	invoiceDescTotal := invoiceFields[22].Descriptor()
 	// invoice.TotalValidator is a validator for the "total" field. It is called by the builders before save.
 	invoice.TotalValidator = invoiceDescTotal.Validators[0].(func(float64) error)
-	// invoiceDescSize is the schema descriptor for size field.
-	invoiceDescSize := invoiceFields[31].Descriptor()
-	// invoice.SizeValidator is a validator for the "size" field. It is called by the builders before save.
-	invoice.SizeValidator = invoiceDescSize.Validators[0].(func(float64) error)
 	// invoiceDescKeywords is the schema descriptor for keywords field.
-	invoiceDescKeywords := invoiceFields[32].Descriptor()
+	invoiceDescKeywords := invoiceFields[24].Descriptor()
 	// invoice.KeywordsValidator is a validator for the "keywords" field. It is called by the builders before save.
 	invoice.KeywordsValidator = func() func(string) error {
 		validators := invoiceDescKeywords.Validators
@@ -540,27 +553,6 @@ func init() {
 	payableDescTotalTransaction := payableFields[5].Descriptor()
 	// payable.TotalTransactionValidator is a validator for the "total_transaction" field. It is called by the builders before save.
 	payable.TotalTransactionValidator = payableDescTotalTransaction.Validators[0].(func(float64) error)
-	productMixin := schema.Product{}.Mixin()
-	productMixinFields0 := productMixin[0].Fields()
-	_ = productMixinFields0
-	productFields := schema.Product{}.Fields()
-	_ = productFields
-	// productDescCreatedAt is the schema descriptor for created_at field.
-	productDescCreatedAt := productMixinFields0[0].Descriptor()
-	// product.DefaultCreatedAt holds the default value on creation for the created_at field.
-	product.DefaultCreatedAt = productDescCreatedAt.Default.(func() time.Time)
-	// productDescUpdatedAt is the schema descriptor for updated_at field.
-	productDescUpdatedAt := productMixinFields0[1].Descriptor()
-	// product.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	product.DefaultUpdatedAt = productDescUpdatedAt.Default.(func() time.Time)
-	// product.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	product.UpdateDefaultUpdatedAt = productDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// productDescStock is the schema descriptor for stock field.
-	productDescStock := productFields[0].Descriptor()
-	// product.DefaultStock holds the default value on creation for the stock field.
-	product.DefaultStock = productDescStock.Default.(int)
-	// product.StockValidator is a validator for the "stock" field. It is called by the builders before save.
-	product.StockValidator = productDescStock.Validators[0].(func(int) error)
 	projectMixin := schema.Project{}.Mixin()
 	projectMixinFields0 := projectMixin[0].Fields()
 	_ = projectMixinFields0

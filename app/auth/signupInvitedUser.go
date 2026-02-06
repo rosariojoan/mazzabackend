@@ -89,7 +89,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 	}
 
 	// If the user is not an auditor, create an employee record for him
-	if token.Role != membersignuptoken.Role(userrole.RoleAUDITOR) {
+	if token.Role != membersignuptoken.Role(userrole.RoleAuditor) {
 		newUser.Update().SetEmployee(
 			tx.Employee.Create().SetInput(ent.CreateEmployeeInput{
 				Name:       input.UserInput.Name,
@@ -138,7 +138,7 @@ func SignupInvitedUser(ctx *gin.Context) {
 			user.IDNEQ(newUser.ID),
 			user.ExpoPushTokenNotNil(),
 			user.HasAssignedRolesWith(
-				userrole.RoleEQ(userrole.RoleADMIN),
+				userrole.RoleEQ(userrole.RoleAdmin),
 				userrole.HasCompanyWith(company.ID(companyID)),
 			),
 		).All(ctx)

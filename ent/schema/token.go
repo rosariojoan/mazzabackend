@@ -17,7 +17,7 @@ type Token struct {
 func (Token) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("expiry"),
-		field.Enum("category").Values("ACCOUNT_DELETE"),
+		field.Enum("category").Values("accountDelete"),
 		field.String("token").NotEmpty(),
 	}
 }

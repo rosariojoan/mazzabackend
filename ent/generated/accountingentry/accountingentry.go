@@ -55,8 +55,8 @@ const (
 	EdgeUser = "user"
 	// EdgeLoan holds the string denoting the loan edge name in mutations.
 	EdgeLoan = "loan"
-	// EdgeLoanSchedules holds the string denoting the loanschedules edge name in mutations.
-	EdgeLoanSchedules = "loanSchedules"
+	// EdgeLoanSchedule holds the string denoting the loan_schedule edge name in mutations.
+	EdgeLoanSchedule = "loan_schedule"
 	// Table holds the table name of the accountingentry in the database.
 	Table = "accounting_entries"
 	// CompanyTable is the table that holds the company relation/edge.
@@ -80,11 +80,11 @@ const (
 	LoanInverseTable = "loans"
 	// LoanColumn is the table column denoting the loan relation/edge.
 	LoanColumn = "loan_transaction_history"
-	// LoanSchedulesTable is the table that holds the loanSchedules relation/edge. The primary key declared below.
-	LoanSchedulesTable = "loan_schedule_transaction_history"
-	// LoanSchedulesInverseTable is the table name for the LoanSchedule entity.
+	// LoanScheduleTable is the table that holds the loan_schedule relation/edge. The primary key declared below.
+	LoanScheduleTable = "loan_schedule_transaction_history"
+	// LoanScheduleInverseTable is the table name for the LoanSchedule entity.
 	// It exists in this package in order to avoid circular dependency with the "loanschedule" package.
-	LoanSchedulesInverseTable = "loan_schedules"
+	LoanScheduleInverseTable = "loan_schedules"
 )
 
 // Columns holds all SQL columns for accountingentry fields.
@@ -117,9 +117,9 @@ var ForeignKeys = []string{
 }
 
 var (
-	// LoanSchedulesPrimaryKey and LoanSchedulesColumn2 are the table columns denoting the
-	// primary key for the loanSchedules relation (M2M).
-	LoanSchedulesPrimaryKey = []string{"loan_schedule_id", "accounting_entry_id"}
+	// LoanSchedulePrimaryKey and LoanScheduleColumn2 are the table columns denoting the
+	// primary key for the loan_schedule relation (M2M).
+	LoanSchedulePrimaryKey = []string{"loan_schedule_id", "accounting_entry_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -167,18 +167,19 @@ type AccountType string
 
 // AccountType values.
 const (
-	AccountTypeASSET            AccountType = "ASSET"
-	AccountTypeLIABILITY        AccountType = "LIABILITY"
-	AccountTypeEQUITY           AccountType = "EQUITY"
-	AccountTypeREVENUE          AccountType = "REVENUE"
-	AccountTypeEXPENSE          AccountType = "EXPENSE"
-	AccountTypeTAX_EXPENSE      AccountType = "TAX_EXPENSE"
-	AccountTypeINCOME           AccountType = "INCOME"
-	AccountTypeDIVIDEND_EXPENSE AccountType = "DIVIDEND_EXPENSE"
-	AccountTypeCONTRA_ASSET     AccountType = "CONTRA_ASSET"
-	AccountTypeCONTRA_LIABILITY AccountType = "CONTRA_LIABILITY"
-	AccountTypeCONTRA_REVENUE   AccountType = "CONTRA_REVENUE"
-	AccountTypeCONTRA_EXPENSE   AccountType = "CONTRA_EXPENSE"
+	AccountTypeAsset           AccountType = "asset"
+	AccountTypeLiability       AccountType = "liability"
+	AccountTypeEquity          AccountType = "equity"
+	AccountTypeRevenue         AccountType = "revenue"
+	AccountTypeExpense         AccountType = "expense"
+	AccountTypeTaxExpense      AccountType = "taxExpense"
+	AccountTypeIncome          AccountType = "income"
+	AccountTypeDividendExpense AccountType = "dividendExpense"
+	AccountTypeContraAsset     AccountType = "contraAsset"
+	AccountTypeContraLiability AccountType = "contraLiability"
+	AccountTypeContraEquity    AccountType = "contraEquity"
+	AccountTypeContraRevenue   AccountType = "contraRevenue"
+	AccountTypeContraExpense   AccountType = "contraExpense"
 )
 
 func (at AccountType) String() string {
@@ -188,7 +189,7 @@ func (at AccountType) String() string {
 // AccountTypeValidator is a validator for the "account_type" field enum values. It is called by the builders before save.
 func AccountTypeValidator(at AccountType) error {
 	switch at {
-	case AccountTypeASSET, AccountTypeLIABILITY, AccountTypeEQUITY, AccountTypeREVENUE, AccountTypeEXPENSE, AccountTypeTAX_EXPENSE, AccountTypeINCOME, AccountTypeDIVIDEND_EXPENSE, AccountTypeCONTRA_ASSET, AccountTypeCONTRA_LIABILITY, AccountTypeCONTRA_REVENUE, AccountTypeCONTRA_EXPENSE:
+	case AccountTypeAsset, AccountTypeLiability, AccountTypeEquity, AccountTypeRevenue, AccountTypeExpense, AccountTypeTaxExpense, AccountTypeIncome, AccountTypeDividendExpense, AccountTypeContraAsset, AccountTypeContraLiability, AccountTypeContraEquity, AccountTypeContraRevenue, AccountTypeContraExpense:
 		return nil
 	default:
 		return fmt.Errorf("accountingentry: invalid enum value for account_type field: %q", at)
@@ -304,17 +305,17 @@ func ByLoanField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByLoanSchedulesCount orders the results by loanSchedules count.
-func ByLoanSchedulesCount(opts ...sql.OrderTermOption) OrderOption {
+// ByLoanScheduleCount orders the results by loan_schedule count.
+func ByLoanScheduleCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newLoanSchedulesStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newLoanScheduleStep(), opts...)
 	}
 }
 
-// ByLoanSchedules orders the results by loanSchedules terms.
-func ByLoanSchedules(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByLoanSchedule orders the results by loan_schedule terms.
+func ByLoanSchedule(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newLoanSchedulesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newLoanScheduleStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 func newCompanyStep() *sqlgraph.Step {
@@ -338,11 +339,11 @@ func newLoanStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, true, LoanTable, LoanColumn),
 	)
 }
-func newLoanSchedulesStep() *sqlgraph.Step {
+func newLoanScheduleStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(LoanSchedulesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, true, LoanSchedulesTable, LoanSchedulesPrimaryKey...),
+		sqlgraph.To(LoanScheduleInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, LoanScheduleTable, LoanSchedulePrimaryKey...),
 	)
 }
 

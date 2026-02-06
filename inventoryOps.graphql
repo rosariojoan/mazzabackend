@@ -2,7 +2,7 @@
 
 type InventoryCategoryCount {
   category: InventoryCategory!
-  count: Int!
+  count: Int! 
 }
 
 input InventoryMovementInputData {

@@ -59,23 +59,17 @@ func (iu *InvoiceUpdate) ClearDeletedAt() *InvoiceUpdate {
 	return iu
 }
 
-// SetCompanyLogo sets the "company_logo" field.
-func (iu *InvoiceUpdate) SetCompanyLogo(s string) *InvoiceUpdate {
-	iu.mutation.SetCompanyLogo(s)
+// SetIsInvoice sets the "is_invoice" field.
+func (iu *InvoiceUpdate) SetIsInvoice(b bool) *InvoiceUpdate {
+	iu.mutation.SetIsInvoice(b)
 	return iu
 }
 
-// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableCompanyLogo(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetCompanyLogo(*s)
+// SetNillableIsInvoice sets the "is_invoice" field if the given value is not nil.
+func (iu *InvoiceUpdate) SetNillableIsInvoice(b *bool) *InvoiceUpdate {
+	if b != nil {
+		iu.SetIsInvoice(*b)
 	}
-	return iu
-}
-
-// ClearCompanyLogo clears the value of the "company_logo" field.
-func (iu *InvoiceUpdate) ClearCompanyLogo() *InvoiceUpdate {
-	iu.mutation.ClearCompanyLogo()
 	return iu
 }
 
@@ -178,6 +172,20 @@ func (iu *InvoiceUpdate) SetNillableCompanyPhone(s *string) *InvoiceUpdate {
 // ClearCompanyPhone clears the value of the "company_phone" field.
 func (iu *InvoiceUpdate) ClearCompanyPhone() *InvoiceUpdate {
 	iu.mutation.ClearCompanyPhone()
+	return iu
+}
+
+// SetCurrency sets the "currency" field.
+func (iu *InvoiceUpdate) SetCurrency(s string) *InvoiceUpdate {
+	iu.mutation.SetCurrency(s)
+	return iu
+}
+
+// SetNillableCurrency sets the "currency" field if the given value is not nil.
+func (iu *InvoiceUpdate) SetNillableCurrency(s *string) *InvoiceUpdate {
+	if s != nil {
+		iu.SetCurrency(*s)
+	}
 	return iu
 }
 
@@ -460,210 +468,23 @@ func (iu *InvoiceUpdate) AddTotal(f float64) *InvoiceUpdate {
 	return iu
 }
 
-// SetNotes sets the "notes" field.
-func (iu *InvoiceUpdate) SetNotes(s string) *InvoiceUpdate {
-	iu.mutation.SetNotes(s)
+// SetTerms sets the "terms" field.
+func (iu *InvoiceUpdate) SetTerms(s string) *InvoiceUpdate {
+	iu.mutation.SetTerms(s)
 	return iu
 }
 
-// SetNillableNotes sets the "notes" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableNotes(s *string) *InvoiceUpdate {
+// SetNillableTerms sets the "terms" field if the given value is not nil.
+func (iu *InvoiceUpdate) SetNillableTerms(s *string) *InvoiceUpdate {
 	if s != nil {
-		iu.SetNotes(*s)
+		iu.SetTerms(*s)
 	}
 	return iu
 }
 
-// ClearNotes clears the value of the "notes" field.
-func (iu *InvoiceUpdate) ClearNotes() *InvoiceUpdate {
-	iu.mutation.ClearNotes()
-	return iu
-}
-
-// SetPaymentMethod sets the "payment_method" field.
-func (iu *InvoiceUpdate) SetPaymentMethod(s string) *InvoiceUpdate {
-	iu.mutation.SetPaymentMethod(s)
-	return iu
-}
-
-// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillablePaymentMethod(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetPaymentMethod(*s)
-	}
-	return iu
-}
-
-// ClearPaymentMethod clears the value of the "payment_method" field.
-func (iu *InvoiceUpdate) ClearPaymentMethod() *InvoiceUpdate {
-	iu.mutation.ClearPaymentMethod()
-	return iu
-}
-
-// SetBankName sets the "bank_name" field.
-func (iu *InvoiceUpdate) SetBankName(s string) *InvoiceUpdate {
-	iu.mutation.SetBankName(s)
-	return iu
-}
-
-// SetNillableBankName sets the "bank_name" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableBankName(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetBankName(*s)
-	}
-	return iu
-}
-
-// ClearBankName clears the value of the "bank_name" field.
-func (iu *InvoiceUpdate) ClearBankName() *InvoiceUpdate {
-	iu.mutation.ClearBankName()
-	return iu
-}
-
-// SetBankAgency sets the "bank_agency" field.
-func (iu *InvoiceUpdate) SetBankAgency(s string) *InvoiceUpdate {
-	iu.mutation.SetBankAgency(s)
-	return iu
-}
-
-// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableBankAgency(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetBankAgency(*s)
-	}
-	return iu
-}
-
-// ClearBankAgency clears the value of the "bank_agency" field.
-func (iu *InvoiceUpdate) ClearBankAgency() *InvoiceUpdate {
-	iu.mutation.ClearBankAgency()
-	return iu
-}
-
-// SetBankAccountNumber sets the "bank_account_number" field.
-func (iu *InvoiceUpdate) SetBankAccountNumber(s string) *InvoiceUpdate {
-	iu.mutation.SetBankAccountNumber(s)
-	return iu
-}
-
-// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableBankAccountNumber(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetBankAccountNumber(*s)
-	}
-	return iu
-}
-
-// ClearBankAccountNumber clears the value of the "bank_account_number" field.
-func (iu *InvoiceUpdate) ClearBankAccountNumber() *InvoiceUpdate {
-	iu.mutation.ClearBankAccountNumber()
-	return iu
-}
-
-// SetBankAccountName sets the "bank_account_name" field.
-func (iu *InvoiceUpdate) SetBankAccountName(s string) *InvoiceUpdate {
-	iu.mutation.SetBankAccountName(s)
-	return iu
-}
-
-// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableBankAccountName(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetBankAccountName(*s)
-	}
-	return iu
-}
-
-// ClearBankAccountName clears the value of the "bank_account_name" field.
-func (iu *InvoiceUpdate) ClearBankAccountName() *InvoiceUpdate {
-	iu.mutation.ClearBankAccountName()
-	return iu
-}
-
-// SetStorageURI sets the "storage_URI" field.
-func (iu *InvoiceUpdate) SetStorageURI(s string) *InvoiceUpdate {
-	iu.mutation.SetStorageURI(s)
-	return iu
-}
-
-// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableStorageURI(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetStorageURI(*s)
-	}
-	return iu
-}
-
-// ClearStorageURI clears the value of the "storage_URI" field.
-func (iu *InvoiceUpdate) ClearStorageURI() *InvoiceUpdate {
-	iu.mutation.ClearStorageURI()
-	return iu
-}
-
-// SetURL sets the "URL" field.
-func (iu *InvoiceUpdate) SetURL(s string) *InvoiceUpdate {
-	iu.mutation.SetURL(s)
-	return iu
-}
-
-// SetNillableURL sets the "URL" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableURL(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetURL(*s)
-	}
-	return iu
-}
-
-// ClearURL clears the value of the "URL" field.
-func (iu *InvoiceUpdate) ClearURL() *InvoiceUpdate {
-	iu.mutation.ClearURL()
-	return iu
-}
-
-// SetFilename sets the "filename" field.
-func (iu *InvoiceUpdate) SetFilename(s string) *InvoiceUpdate {
-	iu.mutation.SetFilename(s)
-	return iu
-}
-
-// SetNillableFilename sets the "filename" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableFilename(s *string) *InvoiceUpdate {
-	if s != nil {
-		iu.SetFilename(*s)
-	}
-	return iu
-}
-
-// ClearFilename clears the value of the "filename" field.
-func (iu *InvoiceUpdate) ClearFilename() *InvoiceUpdate {
-	iu.mutation.ClearFilename()
-	return iu
-}
-
-// SetSize sets the "size" field.
-func (iu *InvoiceUpdate) SetSize(f float64) *InvoiceUpdate {
-	iu.mutation.ResetSize()
-	iu.mutation.SetSize(f)
-	return iu
-}
-
-// SetNillableSize sets the "size" field if the given value is not nil.
-func (iu *InvoiceUpdate) SetNillableSize(f *float64) *InvoiceUpdate {
-	if f != nil {
-		iu.SetSize(*f)
-	}
-	return iu
-}
-
-// AddSize adds f to the "size" field.
-func (iu *InvoiceUpdate) AddSize(f float64) *InvoiceUpdate {
-	iu.mutation.AddSize(f)
-	return iu
-}
-
-// ClearSize clears the value of the "size" field.
-func (iu *InvoiceUpdate) ClearSize() *InvoiceUpdate {
-	iu.mutation.ClearSize()
+// ClearTerms clears the value of the "terms" field.
+func (iu *InvoiceUpdate) ClearTerms() *InvoiceUpdate {
+	iu.mutation.ClearTerms()
 	return iu
 }
 
@@ -841,11 +662,6 @@ func (iu *InvoiceUpdate) check() error {
 			return &ValidationError{Name: "total", err: fmt.Errorf(`generated: validator failed for field "Invoice.total": %w`, err)}
 		}
 	}
-	if v, ok := iu.mutation.Size(); ok {
-		if err := invoice.SizeValidator(v); err != nil {
-			return &ValidationError{Name: "size", err: fmt.Errorf(`generated: validator failed for field "Invoice.size": %w`, err)}
-		}
-	}
 	if v, ok := iu.mutation.Keywords(); ok {
 		if err := invoice.KeywordsValidator(v); err != nil {
 			return &ValidationError{Name: "keywords", err: fmt.Errorf(`generated: validator failed for field "Invoice.keywords": %w`, err)}
@@ -884,11 +700,8 @@ func (iu *InvoiceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if iu.mutation.DeletedAtCleared() {
 		_spec.ClearField(invoice.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := iu.mutation.CompanyLogo(); ok {
-		_spec.SetField(invoice.FieldCompanyLogo, field.TypeString, value)
-	}
-	if iu.mutation.CompanyLogoCleared() {
-		_spec.ClearField(invoice.FieldCompanyLogo, field.TypeString)
+	if value, ok := iu.mutation.IsInvoice(); ok {
+		_spec.SetField(invoice.FieldIsInvoice, field.TypeBool, value)
 	}
 	if value, ok := iu.mutation.CompanyName(); ok {
 		_spec.SetField(invoice.FieldCompanyName, field.TypeString, value)
@@ -916,6 +729,9 @@ func (iu *InvoiceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if iu.mutation.CompanyPhoneCleared() {
 		_spec.ClearField(invoice.FieldCompanyPhone, field.TypeString)
+	}
+	if value, ok := iu.mutation.Currency(); ok {
+		_spec.SetField(invoice.FieldCurrency, field.TypeString, value)
 	}
 	if value, ok := iu.mutation.Number(); ok {
 		_spec.SetField(invoice.FieldNumber, field.TypeString, value)
@@ -995,68 +811,11 @@ func (iu *InvoiceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := iu.mutation.AddedTotal(); ok {
 		_spec.AddField(invoice.FieldTotal, field.TypeFloat64, value)
 	}
-	if value, ok := iu.mutation.Notes(); ok {
-		_spec.SetField(invoice.FieldNotes, field.TypeString, value)
+	if value, ok := iu.mutation.Terms(); ok {
+		_spec.SetField(invoice.FieldTerms, field.TypeString, value)
 	}
-	if iu.mutation.NotesCleared() {
-		_spec.ClearField(invoice.FieldNotes, field.TypeString)
-	}
-	if value, ok := iu.mutation.PaymentMethod(); ok {
-		_spec.SetField(invoice.FieldPaymentMethod, field.TypeString, value)
-	}
-	if iu.mutation.PaymentMethodCleared() {
-		_spec.ClearField(invoice.FieldPaymentMethod, field.TypeString)
-	}
-	if value, ok := iu.mutation.BankName(); ok {
-		_spec.SetField(invoice.FieldBankName, field.TypeString, value)
-	}
-	if iu.mutation.BankNameCleared() {
-		_spec.ClearField(invoice.FieldBankName, field.TypeString)
-	}
-	if value, ok := iu.mutation.BankAgency(); ok {
-		_spec.SetField(invoice.FieldBankAgency, field.TypeString, value)
-	}
-	if iu.mutation.BankAgencyCleared() {
-		_spec.ClearField(invoice.FieldBankAgency, field.TypeString)
-	}
-	if value, ok := iu.mutation.BankAccountNumber(); ok {
-		_spec.SetField(invoice.FieldBankAccountNumber, field.TypeString, value)
-	}
-	if iu.mutation.BankAccountNumberCleared() {
-		_spec.ClearField(invoice.FieldBankAccountNumber, field.TypeString)
-	}
-	if value, ok := iu.mutation.BankAccountName(); ok {
-		_spec.SetField(invoice.FieldBankAccountName, field.TypeString, value)
-	}
-	if iu.mutation.BankAccountNameCleared() {
-		_spec.ClearField(invoice.FieldBankAccountName, field.TypeString)
-	}
-	if value, ok := iu.mutation.StorageURI(); ok {
-		_spec.SetField(invoice.FieldStorageURI, field.TypeString, value)
-	}
-	if iu.mutation.StorageURICleared() {
-		_spec.ClearField(invoice.FieldStorageURI, field.TypeString)
-	}
-	if value, ok := iu.mutation.URL(); ok {
-		_spec.SetField(invoice.FieldURL, field.TypeString, value)
-	}
-	if iu.mutation.URLCleared() {
-		_spec.ClearField(invoice.FieldURL, field.TypeString)
-	}
-	if value, ok := iu.mutation.Filename(); ok {
-		_spec.SetField(invoice.FieldFilename, field.TypeString, value)
-	}
-	if iu.mutation.FilenameCleared() {
-		_spec.ClearField(invoice.FieldFilename, field.TypeString)
-	}
-	if value, ok := iu.mutation.Size(); ok {
-		_spec.SetField(invoice.FieldSize, field.TypeFloat64, value)
-	}
-	if value, ok := iu.mutation.AddedSize(); ok {
-		_spec.AddField(invoice.FieldSize, field.TypeFloat64, value)
-	}
-	if iu.mutation.SizeCleared() {
-		_spec.ClearField(invoice.FieldSize, field.TypeFloat64)
+	if iu.mutation.TermsCleared() {
+		_spec.ClearField(invoice.FieldTerms, field.TypeString)
 	}
 	if value, ok := iu.mutation.Keywords(); ok {
 		_spec.SetField(invoice.FieldKeywords, field.TypeString, value)
@@ -1225,23 +984,17 @@ func (iuo *InvoiceUpdateOne) ClearDeletedAt() *InvoiceUpdateOne {
 	return iuo
 }
 
-// SetCompanyLogo sets the "company_logo" field.
-func (iuo *InvoiceUpdateOne) SetCompanyLogo(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetCompanyLogo(s)
+// SetIsInvoice sets the "is_invoice" field.
+func (iuo *InvoiceUpdateOne) SetIsInvoice(b bool) *InvoiceUpdateOne {
+	iuo.mutation.SetIsInvoice(b)
 	return iuo
 }
 
-// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableCompanyLogo(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetCompanyLogo(*s)
+// SetNillableIsInvoice sets the "is_invoice" field if the given value is not nil.
+func (iuo *InvoiceUpdateOne) SetNillableIsInvoice(b *bool) *InvoiceUpdateOne {
+	if b != nil {
+		iuo.SetIsInvoice(*b)
 	}
-	return iuo
-}
-
-// ClearCompanyLogo clears the value of the "company_logo" field.
-func (iuo *InvoiceUpdateOne) ClearCompanyLogo() *InvoiceUpdateOne {
-	iuo.mutation.ClearCompanyLogo()
 	return iuo
 }
 
@@ -1344,6 +1097,20 @@ func (iuo *InvoiceUpdateOne) SetNillableCompanyPhone(s *string) *InvoiceUpdateOn
 // ClearCompanyPhone clears the value of the "company_phone" field.
 func (iuo *InvoiceUpdateOne) ClearCompanyPhone() *InvoiceUpdateOne {
 	iuo.mutation.ClearCompanyPhone()
+	return iuo
+}
+
+// SetCurrency sets the "currency" field.
+func (iuo *InvoiceUpdateOne) SetCurrency(s string) *InvoiceUpdateOne {
+	iuo.mutation.SetCurrency(s)
+	return iuo
+}
+
+// SetNillableCurrency sets the "currency" field if the given value is not nil.
+func (iuo *InvoiceUpdateOne) SetNillableCurrency(s *string) *InvoiceUpdateOne {
+	if s != nil {
+		iuo.SetCurrency(*s)
+	}
 	return iuo
 }
 
@@ -1626,210 +1393,23 @@ func (iuo *InvoiceUpdateOne) AddTotal(f float64) *InvoiceUpdateOne {
 	return iuo
 }
 
-// SetNotes sets the "notes" field.
-func (iuo *InvoiceUpdateOne) SetNotes(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetNotes(s)
+// SetTerms sets the "terms" field.
+func (iuo *InvoiceUpdateOne) SetTerms(s string) *InvoiceUpdateOne {
+	iuo.mutation.SetTerms(s)
 	return iuo
 }
 
-// SetNillableNotes sets the "notes" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableNotes(s *string) *InvoiceUpdateOne {
+// SetNillableTerms sets the "terms" field if the given value is not nil.
+func (iuo *InvoiceUpdateOne) SetNillableTerms(s *string) *InvoiceUpdateOne {
 	if s != nil {
-		iuo.SetNotes(*s)
+		iuo.SetTerms(*s)
 	}
 	return iuo
 }
 
-// ClearNotes clears the value of the "notes" field.
-func (iuo *InvoiceUpdateOne) ClearNotes() *InvoiceUpdateOne {
-	iuo.mutation.ClearNotes()
-	return iuo
-}
-
-// SetPaymentMethod sets the "payment_method" field.
-func (iuo *InvoiceUpdateOne) SetPaymentMethod(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetPaymentMethod(s)
-	return iuo
-}
-
-// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillablePaymentMethod(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetPaymentMethod(*s)
-	}
-	return iuo
-}
-
-// ClearPaymentMethod clears the value of the "payment_method" field.
-func (iuo *InvoiceUpdateOne) ClearPaymentMethod() *InvoiceUpdateOne {
-	iuo.mutation.ClearPaymentMethod()
-	return iuo
-}
-
-// SetBankName sets the "bank_name" field.
-func (iuo *InvoiceUpdateOne) SetBankName(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetBankName(s)
-	return iuo
-}
-
-// SetNillableBankName sets the "bank_name" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableBankName(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetBankName(*s)
-	}
-	return iuo
-}
-
-// ClearBankName clears the value of the "bank_name" field.
-func (iuo *InvoiceUpdateOne) ClearBankName() *InvoiceUpdateOne {
-	iuo.mutation.ClearBankName()
-	return iuo
-}
-
-// SetBankAgency sets the "bank_agency" field.
-func (iuo *InvoiceUpdateOne) SetBankAgency(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetBankAgency(s)
-	return iuo
-}
-
-// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableBankAgency(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetBankAgency(*s)
-	}
-	return iuo
-}
-
-// ClearBankAgency clears the value of the "bank_agency" field.
-func (iuo *InvoiceUpdateOne) ClearBankAgency() *InvoiceUpdateOne {
-	iuo.mutation.ClearBankAgency()
-	return iuo
-}
-
-// SetBankAccountNumber sets the "bank_account_number" field.
-func (iuo *InvoiceUpdateOne) SetBankAccountNumber(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetBankAccountNumber(s)
-	return iuo
-}
-
-// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableBankAccountNumber(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetBankAccountNumber(*s)
-	}
-	return iuo
-}
-
-// ClearBankAccountNumber clears the value of the "bank_account_number" field.
-func (iuo *InvoiceUpdateOne) ClearBankAccountNumber() *InvoiceUpdateOne {
-	iuo.mutation.ClearBankAccountNumber()
-	return iuo
-}
-
-// SetBankAccountName sets the "bank_account_name" field.
-func (iuo *InvoiceUpdateOne) SetBankAccountName(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetBankAccountName(s)
-	return iuo
-}
-
-// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableBankAccountName(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetBankAccountName(*s)
-	}
-	return iuo
-}
-
-// ClearBankAccountName clears the value of the "bank_account_name" field.
-func (iuo *InvoiceUpdateOne) ClearBankAccountName() *InvoiceUpdateOne {
-	iuo.mutation.ClearBankAccountName()
-	return iuo
-}
-
-// SetStorageURI sets the "storage_URI" field.
-func (iuo *InvoiceUpdateOne) SetStorageURI(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetStorageURI(s)
-	return iuo
-}
-
-// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableStorageURI(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetStorageURI(*s)
-	}
-	return iuo
-}
-
-// ClearStorageURI clears the value of the "storage_URI" field.
-func (iuo *InvoiceUpdateOne) ClearStorageURI() *InvoiceUpdateOne {
-	iuo.mutation.ClearStorageURI()
-	return iuo
-}
-
-// SetURL sets the "URL" field.
-func (iuo *InvoiceUpdateOne) SetURL(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetURL(s)
-	return iuo
-}
-
-// SetNillableURL sets the "URL" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableURL(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetURL(*s)
-	}
-	return iuo
-}
-
-// ClearURL clears the value of the "URL" field.
-func (iuo *InvoiceUpdateOne) ClearURL() *InvoiceUpdateOne {
-	iuo.mutation.ClearURL()
-	return iuo
-}
-
-// SetFilename sets the "filename" field.
-func (iuo *InvoiceUpdateOne) SetFilename(s string) *InvoiceUpdateOne {
-	iuo.mutation.SetFilename(s)
-	return iuo
-}
-
-// SetNillableFilename sets the "filename" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableFilename(s *string) *InvoiceUpdateOne {
-	if s != nil {
-		iuo.SetFilename(*s)
-	}
-	return iuo
-}
-
-// ClearFilename clears the value of the "filename" field.
-func (iuo *InvoiceUpdateOne) ClearFilename() *InvoiceUpdateOne {
-	iuo.mutation.ClearFilename()
-	return iuo
-}
-
-// SetSize sets the "size" field.
-func (iuo *InvoiceUpdateOne) SetSize(f float64) *InvoiceUpdateOne {
-	iuo.mutation.ResetSize()
-	iuo.mutation.SetSize(f)
-	return iuo
-}
-
-// SetNillableSize sets the "size" field if the given value is not nil.
-func (iuo *InvoiceUpdateOne) SetNillableSize(f *float64) *InvoiceUpdateOne {
-	if f != nil {
-		iuo.SetSize(*f)
-	}
-	return iuo
-}
-
-// AddSize adds f to the "size" field.
-func (iuo *InvoiceUpdateOne) AddSize(f float64) *InvoiceUpdateOne {
-	iuo.mutation.AddSize(f)
-	return iuo
-}
-
-// ClearSize clears the value of the "size" field.
-func (iuo *InvoiceUpdateOne) ClearSize() *InvoiceUpdateOne {
-	iuo.mutation.ClearSize()
+// ClearTerms clears the value of the "terms" field.
+func (iuo *InvoiceUpdateOne) ClearTerms() *InvoiceUpdateOne {
+	iuo.mutation.ClearTerms()
 	return iuo
 }
 
@@ -2020,11 +1600,6 @@ func (iuo *InvoiceUpdateOne) check() error {
 			return &ValidationError{Name: "total", err: fmt.Errorf(`generated: validator failed for field "Invoice.total": %w`, err)}
 		}
 	}
-	if v, ok := iuo.mutation.Size(); ok {
-		if err := invoice.SizeValidator(v); err != nil {
-			return &ValidationError{Name: "size", err: fmt.Errorf(`generated: validator failed for field "Invoice.size": %w`, err)}
-		}
-	}
 	if v, ok := iuo.mutation.Keywords(); ok {
 		if err := invoice.KeywordsValidator(v); err != nil {
 			return &ValidationError{Name: "keywords", err: fmt.Errorf(`generated: validator failed for field "Invoice.keywords": %w`, err)}
@@ -2080,11 +1655,8 @@ func (iuo *InvoiceUpdateOne) sqlSave(ctx context.Context) (_node *Invoice, err e
 	if iuo.mutation.DeletedAtCleared() {
 		_spec.ClearField(invoice.FieldDeletedAt, field.TypeTime)
 	}
-	if value, ok := iuo.mutation.CompanyLogo(); ok {
-		_spec.SetField(invoice.FieldCompanyLogo, field.TypeString, value)
-	}
-	if iuo.mutation.CompanyLogoCleared() {
-		_spec.ClearField(invoice.FieldCompanyLogo, field.TypeString)
+	if value, ok := iuo.mutation.IsInvoice(); ok {
+		_spec.SetField(invoice.FieldIsInvoice, field.TypeBool, value)
 	}
 	if value, ok := iuo.mutation.CompanyName(); ok {
 		_spec.SetField(invoice.FieldCompanyName, field.TypeString, value)
@@ -2112,6 +1684,9 @@ func (iuo *InvoiceUpdateOne) sqlSave(ctx context.Context) (_node *Invoice, err e
 	}
 	if iuo.mutation.CompanyPhoneCleared() {
 		_spec.ClearField(invoice.FieldCompanyPhone, field.TypeString)
+	}
+	if value, ok := iuo.mutation.Currency(); ok {
+		_spec.SetField(invoice.FieldCurrency, field.TypeString, value)
 	}
 	if value, ok := iuo.mutation.Number(); ok {
 		_spec.SetField(invoice.FieldNumber, field.TypeString, value)
@@ -2191,68 +1766,11 @@ func (iuo *InvoiceUpdateOne) sqlSave(ctx context.Context) (_node *Invoice, err e
 	if value, ok := iuo.mutation.AddedTotal(); ok {
 		_spec.AddField(invoice.FieldTotal, field.TypeFloat64, value)
 	}
-	if value, ok := iuo.mutation.Notes(); ok {
-		_spec.SetField(invoice.FieldNotes, field.TypeString, value)
+	if value, ok := iuo.mutation.Terms(); ok {
+		_spec.SetField(invoice.FieldTerms, field.TypeString, value)
 	}
-	if iuo.mutation.NotesCleared() {
-		_spec.ClearField(invoice.FieldNotes, field.TypeString)
-	}
-	if value, ok := iuo.mutation.PaymentMethod(); ok {
-		_spec.SetField(invoice.FieldPaymentMethod, field.TypeString, value)
-	}
-	if iuo.mutation.PaymentMethodCleared() {
-		_spec.ClearField(invoice.FieldPaymentMethod, field.TypeString)
-	}
-	if value, ok := iuo.mutation.BankName(); ok {
-		_spec.SetField(invoice.FieldBankName, field.TypeString, value)
-	}
-	if iuo.mutation.BankNameCleared() {
-		_spec.ClearField(invoice.FieldBankName, field.TypeString)
-	}
-	if value, ok := iuo.mutation.BankAgency(); ok {
-		_spec.SetField(invoice.FieldBankAgency, field.TypeString, value)
-	}
-	if iuo.mutation.BankAgencyCleared() {
-		_spec.ClearField(invoice.FieldBankAgency, field.TypeString)
-	}
-	if value, ok := iuo.mutation.BankAccountNumber(); ok {
-		_spec.SetField(invoice.FieldBankAccountNumber, field.TypeString, value)
-	}
-	if iuo.mutation.BankAccountNumberCleared() {
-		_spec.ClearField(invoice.FieldBankAccountNumber, field.TypeString)
-	}
-	if value, ok := iuo.mutation.BankAccountName(); ok {
-		_spec.SetField(invoice.FieldBankAccountName, field.TypeString, value)
-	}
-	if iuo.mutation.BankAccountNameCleared() {
-		_spec.ClearField(invoice.FieldBankAccountName, field.TypeString)
-	}
-	if value, ok := iuo.mutation.StorageURI(); ok {
-		_spec.SetField(invoice.FieldStorageURI, field.TypeString, value)
-	}
-	if iuo.mutation.StorageURICleared() {
-		_spec.ClearField(invoice.FieldStorageURI, field.TypeString)
-	}
-	if value, ok := iuo.mutation.URL(); ok {
-		_spec.SetField(invoice.FieldURL, field.TypeString, value)
-	}
-	if iuo.mutation.URLCleared() {
-		_spec.ClearField(invoice.FieldURL, field.TypeString)
-	}
-	if value, ok := iuo.mutation.Filename(); ok {
-		_spec.SetField(invoice.FieldFilename, field.TypeString, value)
-	}
-	if iuo.mutation.FilenameCleared() {
-		_spec.ClearField(invoice.FieldFilename, field.TypeString)
-	}
-	if value, ok := iuo.mutation.Size(); ok {
-		_spec.SetField(invoice.FieldSize, field.TypeFloat64, value)
-	}
-	if value, ok := iuo.mutation.AddedSize(); ok {
-		_spec.AddField(invoice.FieldSize, field.TypeFloat64, value)
-	}
-	if iuo.mutation.SizeCleared() {
-		_spec.ClearField(invoice.FieldSize, field.TypeFloat64)
+	if iuo.mutation.TermsCleared() {
+		_spec.ClearField(invoice.FieldTerms, field.TypeString)
 	}
 	if value, ok := iuo.mutation.Keywords(); ok {
 		_spec.SetField(invoice.FieldKeywords, field.TypeString, value)

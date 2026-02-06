@@ -9,18 +9,18 @@ import (
 )
 
 var companyDocumentCategories = []string{
-	"LEGAL",
-	"CONTRACT",
-	"LICENSE",
-	"TAX",
-	"HR",
+	"legal",
+	"contract",
+	"license",
+	"tax",
+	"hr",
 }
 
 var companyDocumentStatus = []string{
-	"PENDING",
-	"APPROVED",
-	"REJECTED",
-	"EXPIRED",
+	"pending",
+	"approved",
+	"rejected",
+	"expired",
 }
 
 // CompanyDocument holds the schema definition for the CompanyDocument entity.
@@ -40,7 +40,7 @@ func (CompanyDocument) Fields() []ent.Field {
 		field.String("filename").NotEmpty(),
 		field.String("title").NotEmpty(),
 		field.String("keywords").NotEmpty(),
-		field.Enum("category").Values(companyDocumentCategories...).Annotations(entgql.OrderField("CATEGORY")),
+		field.Enum("category").Values(companyDocumentCategories...).Annotations(entgql.OrderField("category")),
 		field.Int("size").Positive().Comment("File size in kilobyte"),
 		field.String("file_type").Nillable().Comment("mimetype e.g. application/pdf"),
 		field.Enum("status").Values(companyDocumentStatus...).
@@ -48,7 +48,7 @@ func (CompanyDocument) Fields() []ent.Field {
 		field.String("url").NotEmpty(),
 		field.String("storage_URI").NotEmpty().Sensitive().Comment("Firebase cloud storage URI. Not exposed to the client"),
 		field.String("thumbnail").Nillable().Optional(),
-		field.Time("expiry_date").Nillable().Annotations(entgql.OrderField("EXPIRY_DATE")),
+		field.Time("expiry_date").Nillable().Annotations(entgql.OrderField("expiryDate")),
 	}
 }
 

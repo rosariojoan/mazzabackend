@@ -34,12 +34,12 @@ func (ProjectTask) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("assignee_name").NotEmpty(),
 		field.String("description").Optional(),
-		field.Time("due_date").Annotations(entgql.OrderField("DUE_DATE")), // creates an order index on this fiels to avoid a full table scan
-		field.Time("end_date").Nillable().Optional().Annotations(entgql.OrderField("END_DATE")),
+		field.Time("due_date").Annotations(entgql.OrderField("dueDate")), // creates an order index on this fiels to avoid a full table scan
+		field.Time("end_date").Nillable().Optional().Annotations(entgql.OrderField("endDate")),
 		field.String("location").Optional().Comment("Where is task will be executed"),
 		field.String("name").NotEmpty(),
-		field.Time("start_date").Annotations(entgql.OrderField("START_DATE")),
-		field.Enum("status").Values("pending", "inProgress", "completed").Annotations(entgql.OrderField("STATUS")),
+		field.Time("start_date").Annotations(entgql.OrderField("startDate")),
+		field.Enum("status").Values("pending", "inProgress", "completed").Annotations(entgql.OrderField("status")),
 	}
 }
 

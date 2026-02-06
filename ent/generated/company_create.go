@@ -19,7 +19,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
@@ -213,6 +212,34 @@ func (cc *CompanyCreate) SetNillableLastInvoiceNumber(i *int32) *CompanyCreate {
 	return cc
 }
 
+// SetLastSalesQuotationNumber sets the "last_sales_quotation_number" field.
+func (cc *CompanyCreate) SetLastSalesQuotationNumber(i int32) *CompanyCreate {
+	cc.mutation.SetLastSalesQuotationNumber(i)
+	return cc
+}
+
+// SetNillableLastSalesQuotationNumber sets the "last_sales_quotation_number" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableLastSalesQuotationNumber(i *int32) *CompanyCreate {
+	if i != nil {
+		cc.SetLastSalesQuotationNumber(*i)
+	}
+	return cc
+}
+
+// SetInvoicePrefix sets the "invoice_prefix" field.
+func (cc *CompanyCreate) SetInvoicePrefix(s string) *CompanyCreate {
+	cc.mutation.SetInvoicePrefix(s)
+	return cc
+}
+
+// SetNillableInvoicePrefix sets the "invoice_prefix" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableInvoicePrefix(s *string) *CompanyCreate {
+	if s != nil {
+		cc.SetInvoicePrefix(*s)
+	}
+	return cc
+}
+
 // SetLogoURL sets the "logo_URL" field.
 func (cc *CompanyCreate) SetLogoURL(s string) *CompanyCreate {
 	cc.mutation.SetLogoURL(s)
@@ -271,6 +298,20 @@ func (cc *CompanyCreate) SetPhone(s string) *CompanyCreate {
 func (cc *CompanyCreate) SetNillablePhone(s *string) *CompanyCreate {
 	if s != nil {
 		cc.SetPhone(*s)
+	}
+	return cc
+}
+
+// SetQuotationPrefix sets the "quotation_prefix" field.
+func (cc *CompanyCreate) SetQuotationPrefix(s string) *CompanyCreate {
+	cc.mutation.SetQuotationPrefix(s)
+	return cc
+}
+
+// SetNillableQuotationPrefix sets the "quotation_prefix" field if the given value is not nil.
+func (cc *CompanyCreate) SetNillableQuotationPrefix(s *string) *CompanyCreate {
+	if s != nil {
+		cc.SetQuotationPrefix(*s)
 	}
 	return cc
 }
@@ -511,21 +552,6 @@ func (cc *CompanyCreate) AddMemberSignupTokens(m ...*MemberSignupToken) *Company
 	return cc.AddMemberSignupTokenIDs(ids...)
 }
 
-// AddProductIDs adds the "products" edge to the Product entity by IDs.
-func (cc *CompanyCreate) AddProductIDs(ids ...int) *CompanyCreate {
-	cc.mutation.AddProductIDs(ids...)
-	return cc
-}
-
-// AddProducts adds the "products" edges to the Product entity.
-func (cc *CompanyCreate) AddProducts(p ...*Product) *CompanyCreate {
-	ids := make([]int, len(p))
-	for i := range p {
-		ids[i] = p[i].ID
-	}
-	return cc.AddProductIDs(ids...)
-}
-
 // AddProjectIDs adds the "projects" edge to the Project entity by IDs.
 func (cc *CompanyCreate) AddProjectIDs(ids ...int) *CompanyCreate {
 	cc.mutation.AddProjectIDs(ids...)
@@ -731,9 +757,21 @@ func (cc *CompanyCreate) defaults() {
 		v := company.DefaultLastInvoiceNumber
 		cc.mutation.SetLastInvoiceNumber(v)
 	}
+	if _, ok := cc.mutation.LastSalesQuotationNumber(); !ok {
+		v := company.DefaultLastSalesQuotationNumber
+		cc.mutation.SetLastSalesQuotationNumber(v)
+	}
+	if _, ok := cc.mutation.InvoicePrefix(); !ok {
+		v := company.DefaultInvoicePrefix
+		cc.mutation.SetInvoicePrefix(v)
+	}
 	if _, ok := cc.mutation.NumberEmployees(); !ok {
 		v := company.DefaultNumberEmployees
 		cc.mutation.SetNumberEmployees(v)
+	}
+	if _, ok := cc.mutation.QuotationPrefix(); !ok {
+		v := company.DefaultQuotationPrefix
+		cc.mutation.SetQuotationPrefix(v)
 	}
 	if _, ok := cc.mutation.VatRate(); !ok {
 		v := company.DefaultVatRate
@@ -770,6 +808,14 @@ func (cc *CompanyCreate) check() error {
 			return &ValidationError{Name: "last_invoice_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_invoice_number": %w`, err)}
 		}
 	}
+	if v, ok := cc.mutation.LastSalesQuotationNumber(); ok {
+		if err := company.LastSalesQuotationNumberValidator(v); err != nil {
+			return &ValidationError{Name: "last_sales_quotation_number", err: fmt.Errorf(`generated: validator failed for field "Company.last_sales_quotation_number": %w`, err)}
+		}
+	}
+	if _, ok := cc.mutation.InvoicePrefix(); !ok {
+		return &ValidationError{Name: "invoice_prefix", err: errors.New(`generated: missing required field "Company.invoice_prefix"`)}
+	}
 	if _, ok := cc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`generated: missing required field "Company.name"`)}
 	}
@@ -780,6 +826,9 @@ func (cc *CompanyCreate) check() error {
 		if err := company.NumberEmployeesValidator(v); err != nil {
 			return &ValidationError{Name: "number_employees", err: fmt.Errorf(`generated: validator failed for field "Company.number_employees": %w`, err)}
 		}
+	}
+	if _, ok := cc.mutation.QuotationPrefix(); !ok {
+		return &ValidationError{Name: "quotation_prefix", err: errors.New(`generated: missing required field "Company.quotation_prefix"`)}
 	}
 	if _, ok := cc.mutation.VatRate(); !ok {
 		return &ValidationError{Name: "vat_rate", err: errors.New(`generated: missing required field "Company.vat_rate"`)}
@@ -866,6 +915,14 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldLastInvoiceNumber, field.TypeInt32, value)
 		_node.LastInvoiceNumber = value
 	}
+	if value, ok := cc.mutation.LastSalesQuotationNumber(); ok {
+		_spec.SetField(company.FieldLastSalesQuotationNumber, field.TypeInt32, value)
+		_node.LastSalesQuotationNumber = value
+	}
+	if value, ok := cc.mutation.InvoicePrefix(); ok {
+		_spec.SetField(company.FieldInvoicePrefix, field.TypeString, value)
+		_node.InvoicePrefix = value
+	}
 	if value, ok := cc.mutation.LogoURL(); ok {
 		_spec.SetField(company.FieldLogoURL, field.TypeString, value)
 		_node.LogoURL = &value
@@ -885,6 +942,10 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Phone(); ok {
 		_spec.SetField(company.FieldPhone, field.TypeString, value)
 		_node.Phone = &value
+	}
+	if value, ok := cc.mutation.QuotationPrefix(); ok {
+		_spec.SetField(company.FieldQuotationPrefix, field.TypeString, value)
+		_node.QuotationPrefix = value
 	}
 	if value, ok := cc.mutation.TaxID(); ok {
 		_spec.SetField(company.FieldTaxID, field.TypeString, value)
@@ -1087,22 +1148,6 @@ func (cc *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(membersignuptoken.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := cc.mutation.ProductsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   company.ProductsTable,
-			Columns: []string{company.ProductsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(product.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

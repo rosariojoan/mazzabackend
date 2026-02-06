@@ -20,14 +20,14 @@ func (File) Mixin() []ent.Mixin {
 }
 
 var fileCategory = []string{
-	"INVOICE",
-	"SALESQUOTATION",
+	"invoice",
+	"salesQuotation",
 }
 
 // Fields of the File.
 func (File) Fields() []ent.Field {
 	return []ent.Field{
-		field.Enum("category").Values(fileCategory...).Annotations(entgql.OrderField("CATEGORY")),
+		field.Enum("category").Values(fileCategory...).Annotations(entgql.OrderField("category")),
 		field.String("extension"),
 		field.String("size"),
 		field.String("uri").NotEmpty().Sensitive().Comment("uri used to handle the file from the storage"),

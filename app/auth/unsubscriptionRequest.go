@@ -49,7 +49,7 @@ func UnsubscriptionRequest(ctx *gin.Context) {
 	}
 
 	_, err = inits.Client.Token.Create().SetInput(generated.CreateTokenInput{
-		Category: token.CategoryACCOUNT_DELETE,
+		Category: token.CategoryAccountDelete,
 		UserID:   &targetUser.ID,
 		Token:    jwtToken,
 		Expiry:   expiry,

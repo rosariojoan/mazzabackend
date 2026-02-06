@@ -42,13 +42,13 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 	country, _ := "MZ", "PT"
 
 	excludedTypes := []string{
-		string(accountingentry.AccountTypeREVENUE),
-		string(accountingentry.AccountTypeCONTRA_REVENUE),
-		string(accountingentry.AccountTypeEXPENSE),
-		string(accountingentry.AccountTypeCONTRA_EXPENSE),
-		string(accountingentry.AccountTypeTAX_EXPENSE),
-		string(accountingentry.AccountTypeINCOME),
-		string(accountingentry.AccountTypeDIVIDEND_EXPENSE),
+		string(accountingentry.AccountTypeRevenue),
+		string(accountingentry.AccountTypeContraRevenue),
+		string(accountingentry.AccountTypeExpense),
+		string(accountingentry.AccountTypeContraExpense),
+		string(accountingentry.AccountTypeTaxExpense),
+		string(accountingentry.AccountTypeIncome),
+		string(accountingentry.AccountTypeDividendExpense),
 	}
 	balanceSheetAccounts, err := trialbalance.GetTrialBalance(client, ctx, user, currentCompany, endDate, excludedTypes)
 	if err != nil {
@@ -92,7 +92,7 @@ func GetBalanceSheet(client *ent.Client, ctx context.Context, user ent.User, cur
 
 		} else if utils.StartsWith(entry.Account, initials.FixedAssets) {
 			balance := entry.Balance
-			if entry.AccountType == accountingentry.AccountTypeCONTRA_ASSET.String() {
+			if entry.AccountType == accountingentry.AccountTypeContraAsset.String() {
 				balance *= -1 // make it negative
 			}
 			result.Assets.FixedAssets = append(result.Assets.FixedAssets, &model.ReportRowItem{Account: entry.Account, Label: entry.Label, Value: balance})

@@ -22,12 +22,12 @@ import (
 )
 
 // IssueSalesQuotation is the resolver for the issueSalesQuotation field.
-func (r *mutationResolver) IssueSalesQuotation(ctx context.Context, input model.SalesQuotationInput) (*model.InvoiceIssuanceOutput, error) {
-	return nil, nil
+func (r *mutationResolver) IssueSalesQuotation(ctx context.Context, input model.SalesQuotationInput) (*generated.Invoice, error) {
+	return accountingentry.IssueSalesQuotation(ctx, r.client, input)
 }
 
 // IssueInvoice is the resolver for the issueInvoice field.
-func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.InvoiceInput) (*model.InvoiceIssuanceOutput, error) {
+func (r *mutationResolver) IssueInvoice(ctx context.Context, input model.InvoiceInput) (*generated.Invoice, error) {
 	return accountingentry.IssueInvoice(ctx, r.client, input)
 }
 
@@ -36,7 +36,7 @@ func (r *mutationResolver) CreateInvoiceDraft(ctx context.Context, input generat
 	activeUser, activeCompany := utils.GetSession(&ctx)
 	// var number string
 	draft, err := r.client.Invoice.Create().SetInput(input).
-		SetStatus(invoice.StatusDRAFT).
+		SetStatus(invoice.StatusDraft).
 		// SetNumber(number).
 		SetNillableNumber(nil).
 		SetCompanyID(activeCompany.ID).
@@ -56,7 +56,7 @@ func (r *mutationResolver) DeleteInvoiceDraft(ctx context.Context, id int) (bool
 	err := r.client.Invoice.DeleteOneID(id).
 		Where(
 			invoice.HasCompanyWith(company.ID(activeCompany.ID)),
-			invoice.StatusEQ(invoice.StatusDRAFT),
+			invoice.StatusEQ(invoice.StatusDraft),
 		).Exec(ctx)
 	if err != nil {
 		return false, fmt.Errorf("an error occurred.")
@@ -158,4 +158,12 @@ func (r *queryResolver) CountInvoices(ctx context.Context) ([]*model.InvoiceCoun
 	}
 
 	return output, nil
+}
+
+// GetInvoice is the resolver for the getInvoice field.
+func (r *queryResolver) GetInvoice(ctx context.Context, id int) (*generated.Invoice, error) {
+	_, activeCompany := utils.GetSession(&ctx)
+	return r.client.Invoice.Query().
+		Where(invoice.HasCompanyWith(company.ID(activeCompany.ID)), invoice.ID(id)).
+		First(ctx)
 }

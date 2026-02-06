@@ -20,7 +20,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -111,7 +110,6 @@ func checkColumn(table, column string) error {
 			loanschedule.Table:      loanschedule.ValidColumn,
 			membersignuptoken.Table: membersignuptoken.ValidColumn,
 			payable.Table:           payable.ValidColumn,
-			product.Table:           product.ValidColumn,
 			project.Table:           project.ValidColumn,
 			projectmilestone.Table:  projectmilestone.ValidColumn,
 			projecttask.Table:       projecttask.ValidColumn,

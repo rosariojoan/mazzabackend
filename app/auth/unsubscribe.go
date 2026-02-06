@@ -26,7 +26,7 @@ func Unsubscribe(ctx *context.Context, client *generated.Client, activeUser *gen
 	isAdmin, err := activeUser.QueryAssignedRoles().
 		Where(
 			userrole.HasCompanyWith(company.ID(activeCompany.ID)),
-			userrole.RoleEQ(userrole.RoleADMIN)).
+			userrole.RoleEQ(userrole.RoleAdmin)).
 		Exist(*ctx)
 	if err != nil || !isAdmin {
 		fmt.Println("err:", err)

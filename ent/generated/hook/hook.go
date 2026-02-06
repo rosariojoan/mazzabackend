@@ -176,18 +176,6 @@ func (f PayableFunc) Mutate(ctx context.Context, m generated.Mutation) (generate
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.PayableMutation", m)
 }
 
-// The ProductFunc type is an adapter to allow the use of ordinary
-// function as Product mutator.
-type ProductFunc func(context.Context, *generated.ProductMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f ProductFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.ProductMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ProductMutation", m)
-}
-
 // The ProjectFunc type is an adapter to allow the use of ordinary
 // function as Project mutator.
 type ProjectFunc func(context.Context, *generated.ProjectMutation) (generated.Value, error)

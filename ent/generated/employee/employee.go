@@ -171,13 +171,13 @@ func GenderValidator(ge Gender) error {
 // Status defines the type for the "status" enum field.
 type Status string
 
-// StatusACTIVE is the default value of the Status enum.
-const DefaultStatus = StatusACTIVE
+// StatusActive is the default value of the Status enum.
+const DefaultStatus = StatusActive
 
 // Status values.
 const (
-	StatusACTIVE   Status = "ACTIVE"
-	StatusON_LEAVE Status = "ON_LEAVE"
+	StatusActive  Status = "active"
+	StatusOnLeave Status = "onLeave"
 )
 
 func (s Status) String() string {
@@ -187,7 +187,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusACTIVE, StatusON_LEAVE:
+	case StatusActive, StatusOnLeave:
 		return nil
 	default:
 		return fmt.Errorf("employee: invalid enum value for status field: %q", s)

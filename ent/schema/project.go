@@ -26,12 +26,12 @@ func (Project) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
 		field.String("description").NotEmpty(),
-		field.Time("planned_start_date").Annotations(entgql.OrderField("PLANNED_START_DATE")),
-		field.Time("actual_start_date").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_START_DATE")),
-		field.Time("planned_end_date").Annotations(entgql.OrderField("PLANNED_END_DATE")),
-		field.Time("actual_end_date").Nillable().Optional().Annotations(entgql.OrderField("ACTUAL_END_DATE")),
-		field.Float("progress").Min(0).Max(1).Default(0).Annotations(entgql.OrderField("PROGRESS")),
-		field.Enum("status").Values("pending", "inProgress", "completed", "delayed").Default("pending").Annotations(entgql.OrderField("STATUS")),
+		field.Time("planned_start_date").Annotations(entgql.OrderField("plannedStartDate")),
+		field.Time("actual_start_date").Nillable().Optional().Annotations(entgql.OrderField("actualStartDate")),
+		field.Time("planned_end_date").Annotations(entgql.OrderField("plannedEndDate")),
+		field.Time("actual_end_date").Nillable().Optional().Annotations(entgql.OrderField("actualEndDate")),
+		field.Float("progress").Min(0).Max(1).Default(0).Annotations(entgql.OrderField("progress")),
+		field.Enum("status").Values("pending", "inProgress", "completed", "delayed").Default("pending").Annotations(entgql.OrderField("status")),
 	}
 }
 

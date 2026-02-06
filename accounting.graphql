@@ -82,33 +82,33 @@ input PaymentDetails {
 }
 
 enum BaseOperationType {
-  SALES
-  SALES_RETURN
-  PURCHASE
-  PURCHASE_RETURN
-  FINANCE
-  OTHER
-  INITIAL_SETUP
+  sales
+  salesReturn
+  purchase
+  purchaseReturn
+  finance
+  other
+  initialSetup
 }
 
 enum SalesOperationType {
-  SALES
-  SALES_RETURN
+  sales
+  salesReturn
 }
 
 enum AccountType {
-  ASSET
-  LIABILITY
-  EQUITY
-  REVENUE
-  EXPENSE
-  TAX_EXPENSE
-  INCOME
-  DIVIDEND
-  CONTRA_ASSET
-  CONTRA_LIABILITY
-  CONTRA_REVENUE
-  CONTRA_EXPENSE
+  asset
+  liability
+  equity
+  revenue
+  expense
+  taxExpense
+  income
+  dividend
+  contraAsset
+  contraLiability
+  contraRevenue
+  contraExpense
 }
 
 input BaseEntryRegistrationInput {
@@ -122,7 +122,7 @@ input BaseEntryRegistrationInput {
   operationType: BaseOperationType!
   payableInput: PayableInput
   payableUpdateInput: PayableUpdateInput
-  productInput: Int
+  productInput: Float
   receivableInput: ReceivableInput
   receivableUpdateInput: ReceivableUpdateInput
   totalTransactionValue: Float!
@@ -231,11 +231,6 @@ type FileDetailsOutput {
   file: FileOutput
 }
 
-type InvoiceIssuanceOutput {
-  message: String!
-  fileUrl: String!
-}
-
 type InvoiceCount {
   status: InvoiceStatus!
   count: Int!
@@ -243,8 +238,8 @@ type InvoiceCount {
 
 # -------------------------------------------------
 extend type Mutation {
-  issueSalesQuotation(input: SalesQuotationInput!): InvoiceIssuanceOutput!
-  issueInvoice(input: InvoiceInput!): InvoiceIssuanceOutput!
+  issueSalesQuotation(input: SalesQuotationInput!): Invoice!
+  issueInvoice(input: InvoiceInput!): Invoice!
   createInvoiceDraft(input: CreateInvoiceInput!): Invoice!
   deleteInvoiceDraft(id: ID!): Boolean!
   registerAccountingEntries(input: BaseEntryRegistrationInput!): String
@@ -263,4 +258,5 @@ extend type Query {
   # downloadCashFlow(where: CashFlowDownloadInput!): FileDetailsOutput!
 
   countInvoices: [InvoiceCount!]!
+  getInvoice(id: ID!): Invoice!
 }

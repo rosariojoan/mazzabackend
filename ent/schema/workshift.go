@@ -38,14 +38,14 @@ func (Workshift) Mixin() []ent.Mixin {
 // Fields of the Workshift.
 func (Workshift) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("approved_at").Nillable().Optional().Annotations(entgql.OrderField("APPROVED_AT")).Comment("time that this shift was approved by the supervisor"),
-		field.Time("clock_in").Default(time.Now).Annotations(entgql.OrderField("CLOCK_IN")),
-		field.Time("clock_out").Nillable().Optional().Annotations(entgql.OrderField("CLOCK_OUT")),
+		field.Time("approved_at").Nillable().Optional().Annotations(entgql.OrderField("approvedAt")).Comment("time that this shift was approved by the supervisor"),
+		field.Time("clock_in").Default(time.Now).Annotations(entgql.OrderField("clockIn")),
+		field.Time("clock_out").Nillable().Optional().Annotations(entgql.OrderField("clockOut")),
 		field.String("clock_in_location").Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
 		field.String("clock_out_location").Optional().Comment("it expects a serialized json like: {latitude: float, longitude: float, description: string}"),
 		field.String("description").Optional(),
 		field.String("note").Optional().Comment("this is only used when the current item is a shift edit request"),
-		field.Enum("status").Values("APPROVED", "PENDING").Default("PENDING").Annotations(entgql.OrderField("STATUS")),
+		field.Enum("status").Values("approved", "pending").Default("pending").Annotations(entgql.OrderField("status")),
 	}
 }
 
@@ -93,7 +93,7 @@ func (Workshift) Hooks() []ent.Hook {
 					if err != nil {
 						// This employee does not have a leader, so his workshift status is automatically approved.
 						// Proceed with the mutation operation and return.
-						m.SetStatus(workshift.StatusAPPROVED)
+						m.SetStatus(workshift.StatusApproved)
 						m.SetApprovedAt(time.Now())
 						m.SetApprovedByID(userID)
 						return next.Mutate(ctx, m)

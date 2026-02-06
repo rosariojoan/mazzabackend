@@ -46,7 +46,7 @@ func HomepageAnalytics(ctx context.Context, client *generated.Client) (*model.Ho
 	// Get number of pending invoice
 	pendingInvoices, err := client.Invoice.Query().Where(
 		invoice.HasCompanyWith(company.ID(activeCompany.ID)),
-		invoice.StatusEQ(invoice.StatusPENDING),
+		invoice.StatusEQ(invoice.StatusPending),
 	).Count(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred")
@@ -82,11 +82,11 @@ func HomepageAnalytics(ctx context.Context, client *generated.Client) (*model.Ho
 	}
 
 	result := model.HomepageAnalytics{
-		RevenueFrequency: frequency,
+		RevenueFrequency:   frequency,
 		RevenueAggregation: revenueAggregation,
-		PendingInvoices: pendingInvoices,
-		OverdueTasks: overdueTasks,
-		ActiveProjects: activeProjects,
+		PendingInvoices:    pendingInvoices,
+		OverdueTasks:       overdueTasks,
+		ActiveProjects:     activeProjects,
 		RecentTransactions: recentTransactions,
 	}
 

@@ -21,7 +21,6 @@ import (
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
 	"mazza/ent/generated/predicate"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/receivable"
 	"mazza/ent/generated/supplier"
@@ -56,7 +55,6 @@ type CompanyQuery struct {
 	withLoans                   *LoanQuery
 	withLoanSchedule            *LoanScheduleQuery
 	withMemberSignupTokens      *MemberSignupTokenQuery
-	withProducts                *ProductQuery
 	withProjects                *ProjectQuery
 	withPayables                *PayableQuery
 	withReceivables             *ReceivableQuery
@@ -82,7 +80,6 @@ type CompanyQuery struct {
 	withNamedLoans              map[string]*LoanQuery
 	withNamedLoanSchedule       map[string]*LoanScheduleQuery
 	withNamedMemberSignupTokens map[string]*MemberSignupTokenQuery
-	withNamedProducts           map[string]*ProductQuery
 	withNamedProjects           map[string]*ProjectQuery
 	withNamedPayables           map[string]*PayableQuery
 	withNamedReceivables        map[string]*ReceivableQuery
@@ -385,28 +382,6 @@ func (cq *CompanyQuery) QueryMemberSignupTokens() *MemberSignupTokenQuery {
 			sqlgraph.From(company.Table, company.FieldID, selector),
 			sqlgraph.To(membersignuptoken.Table, membersignuptoken.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, company.MemberSignupTokensTable, company.MemberSignupTokensColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryProducts chains the current query on the "products" edge.
-func (cq *CompanyQuery) QueryProducts() *ProductQuery {
-	query := (&ProductClient{config: cq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := cq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := cq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(company.Table, company.FieldID, selector),
-			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, company.ProductsTable, company.ProductsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -838,7 +813,6 @@ func (cq *CompanyQuery) Clone() *CompanyQuery {
 		withLoans:              cq.withLoans.Clone(),
 		withLoanSchedule:       cq.withLoanSchedule.Clone(),
 		withMemberSignupTokens: cq.withMemberSignupTokens.Clone(),
-		withProducts:           cq.withProducts.Clone(),
 		withProjects:           cq.withProjects.Clone(),
 		withPayables:           cq.withPayables.Clone(),
 		withReceivables:        cq.withReceivables.Clone(),
@@ -985,17 +959,6 @@ func (cq *CompanyQuery) WithMemberSignupTokens(opts ...func(*MemberSignupTokenQu
 		opt(query)
 	}
 	cq.withMemberSignupTokens = query
-	return cq
-}
-
-// WithProducts tells the query-builder to eager-load the nodes that are connected to
-// the "products" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithProducts(opts ...func(*ProductQuery)) *CompanyQuery {
-	query := (&ProductClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	cq.withProducts = query
 	return cq
 }
 
@@ -1188,7 +1151,7 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		nodes       = []*Company{}
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
-		loadedTypes = [23]bool{
+		loadedTypes = [22]bool{
 			cq.withAvailableRoles != nil,
 			cq.withAccountingEntries != nil,
 			cq.withCustomers != nil,
@@ -1201,7 +1164,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 			cq.withLoans != nil,
 			cq.withLoanSchedule != nil,
 			cq.withMemberSignupTokens != nil,
-			cq.withProducts != nil,
 			cq.withProjects != nil,
 			cq.withPayables != nil,
 			cq.withReceivables != nil,
@@ -1326,13 +1288,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 			func(n *Company, e *MemberSignupToken) {
 				n.Edges.MemberSignupTokens = append(n.Edges.MemberSignupTokens, e)
 			}); err != nil {
-			return nil, err
-		}
-	}
-	if query := cq.withProducts; query != nil {
-		if err := cq.loadProducts(ctx, query, nodes,
-			func(n *Company) { n.Edges.Products = []*Product{} },
-			func(n *Company, e *Product) { n.Edges.Products = append(n.Edges.Products, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1486,13 +1441,6 @@ func (cq *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 		if err := cq.loadMemberSignupTokens(ctx, query, nodes,
 			func(n *Company) { n.appendNamedMemberSignupTokens(name) },
 			func(n *Company, e *MemberSignupToken) { n.appendNamedMemberSignupTokens(name, e) }); err != nil {
-			return nil, err
-		}
-	}
-	for name, query := range cq.withNamedProducts {
-		if err := cq.loadProducts(ctx, query, nodes,
-			func(n *Company) { n.appendNamedProducts(name) },
-			func(n *Company, e *Product) { n.appendNamedProducts(name, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -1934,37 +1882,6 @@ func (cq *CompanyQuery) loadMemberSignupTokens(ctx context.Context, query *Membe
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "company_member_signup_tokens" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (cq *CompanyQuery) loadProducts(ctx context.Context, query *ProductQuery, nodes []*Company, init func(*Company), assign func(*Company, *Product)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Company)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.Product(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(company.ProductsColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.company_products
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "company_products" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "company_products" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -2570,20 +2487,6 @@ func (cq *CompanyQuery) WithNamedMemberSignupTokens(name string, opts ...func(*M
 		cq.withNamedMemberSignupTokens = make(map[string]*MemberSignupTokenQuery)
 	}
 	cq.withNamedMemberSignupTokens[name] = query
-	return cq
-}
-
-// WithNamedProducts tells the query-builder to eager-load the nodes that are connected to the "products"
-// edge with the given name. The optional arguments are used to configure the query builder of the edge.
-func (cq *CompanyQuery) WithNamedProducts(name string, opts ...func(*ProductQuery)) *CompanyQuery {
-	query := (&ProductClient{config: cq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	if cq.withNamedProducts == nil {
-		cq.withNamedProducts = make(map[string]*ProductQuery)
-	}
-	cq.withNamedProducts[name] = query
 	return cq
 }
 

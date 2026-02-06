@@ -39,7 +39,7 @@ autobind:
   - mazza/ent/generated/loan
   - mazza/ent/generated/loanschedule
   - mazza/ent/generated/payable
-  - mazza/ent/generated/product
+  # - mazza/ent/generated/product
   - mazza/ent/generated/receivable
   - mazza/ent/generated/supplier
   - mazza/ent/generated/token

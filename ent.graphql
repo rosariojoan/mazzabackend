@@ -21,24 +21,25 @@ type AccountingEntry implements Node {
   company: Company
   user: User
   loan: Loan
-  loanschedules: [LoanSchedule!] @goField(name: "LoanSchedules", forceResolver: false)
+  loanSchedule: [LoanSchedule!]
 }
 """
 AccountingEntryAccountType is enum for the field account_type
 """
 enum AccountingEntryAccountType @goModel(model: "mazza/ent/generated/accountingentry.AccountType") {
-  ASSET
-  LIABILITY
-  EQUITY
-  REVENUE
-  EXPENSE
-  TAX_EXPENSE
-  INCOME
-  DIVIDEND_EXPENSE
-  CONTRA_ASSET
-  CONTRA_LIABILITY
-  CONTRA_REVENUE
-  CONTRA_EXPENSE
+  asset
+  liability
+  equity
+  revenue
+  expense
+  taxExpense
+  income
+  dividendExpense
+  contraAsset
+  contraLiability
+  contraEquity
+  contraRevenue
+  contraExpense
 }
 """
 A connection to a list of items.
@@ -87,17 +88,17 @@ input AccountingEntryOrder {
 Properties by which AccountingEntry connections can be ordered.
 """
 enum AccountingEntryOrderField {
-  CREATED_AT
-  UPDATED_AT
-  GROUP
-  DATE
-  ACCOUNT
-  AMOUNT
-  DESCRIPTION
-  ACCOUNTTYPE
-  CATEGORY
-  MAIN
-  ISDEBIT
+  createdAt
+  updatedAt
+  group
+  date
+  account
+  amount
+  description
+  accountType
+  category
+  main
+  isDebit
 }
 """
 AccountingEntryWhereInput is used for filtering AccountingEntry objects.
@@ -315,10 +316,10 @@ input AccountingEntryWhereInput {
   hasLoan: Boolean
   hasLoanWith: [LoanWhereInput!]
   """
-  loanSchedules edge predicates
+  loan_schedule edge predicates
   """
-  hasLoanSchedules: Boolean
-  hasLoanSchedulesWith: [LoanScheduleWhereInput!]
+  hasLoanSchedule: Boolean
+  hasLoanScheduleWith: [LoanScheduleWhereInput!]
 }
 type Calendar implements Node {
   id: ID!
@@ -359,10 +360,13 @@ type Company implements Node {
   industry: String
   lastEntryDate: Time
   lastInvoiceNumber: Int
+  lastSalesQuotationNumber: Int
+  invoicePrefix: String!
   logoURL: String
   name: String!
   numberEmployees: Int!
   phone: String
+  quotationPrefix: String!
   taxID: String
   vatRate: Float!
   website: String
@@ -379,7 +383,6 @@ type Company implements Node {
   loans: [Loan!]
   loanSchedule: [LoanSchedule!]
   memberSignupTokens: [MemberSignupToken!]
-  products: [Product!]
   projects: [Project!]
   payables: [Payable!]
   receivables: [Receivable!]
@@ -420,11 +423,11 @@ type CompanyDocument implements Node {
 CompanyDocumentCategory is enum for the field category
 """
 enum CompanyDocumentCategory @goModel(model: "mazza/ent/generated/companydocument.Category") {
-  LEGAL
-  CONTRACT
-  LICENSE
-  TAX
-  HR
+  legal
+  contract
+  license
+  tax
+  hr
 }
 """
 A connection to a list of items.
@@ -473,20 +476,20 @@ input CompanyDocumentOrder {
 Properties by which CompanyDocument connections can be ordered.
 """
 enum CompanyDocumentOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CATEGORY
+  createdAt
+  updatedAt
+  category
   STATUS
-  EXPIRY_DATE
+  expiryDate
 }
 """
 CompanyDocumentStatus is enum for the field status
 """
 enum CompanyDocumentStatus @goModel(model: "mazza/ent/generated/companydocument.Status") {
-  PENDING
-  APPROVED
-  REJECTED
-  EXPIRED
+  pending
+  approved
+  rejected
+  expired
 }
 """
 CompanyDocumentWhereInput is used for filtering CompanyDocument objects.
@@ -709,12 +712,12 @@ input CompanyOrder {
 Properties by which Company connections can be ordered.
 """
 enum CompanyOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CITY
-  COUNTRY
-  ESTABLISHEDAT
-  NAME
+  createdAt
+  updatedAt
+  city
+  country
+  establishedAt
+  name
 }
 """
 CompanyWhereInput is used for filtering Company objects.
@@ -946,6 +949,35 @@ input CompanyWhereInput {
   lastInvoiceNumberIsNil: Boolean
   lastInvoiceNumberNotNil: Boolean
   """
+  last_sales_quotation_number field predicates
+  """
+  lastSalesQuotationNumber: Int
+  lastSalesQuotationNumberNEQ: Int
+  lastSalesQuotationNumberIn: [Int!]
+  lastSalesQuotationNumberNotIn: [Int!]
+  lastSalesQuotationNumberGT: Int
+  lastSalesQuotationNumberGTE: Int
+  lastSalesQuotationNumberLT: Int
+  lastSalesQuotationNumberLTE: Int
+  lastSalesQuotationNumberIsNil: Boolean
+  lastSalesQuotationNumberNotNil: Boolean
+  """
+  invoice_prefix field predicates
+  """
+  invoicePrefix: String
+  invoicePrefixNEQ: String
+  invoicePrefixIn: [String!]
+  invoicePrefixNotIn: [String!]
+  invoicePrefixGT: String
+  invoicePrefixGTE: String
+  invoicePrefixLT: String
+  invoicePrefixLTE: String
+  invoicePrefixContains: String
+  invoicePrefixHasPrefix: String
+  invoicePrefixHasSuffix: String
+  invoicePrefixEqualFold: String
+  invoicePrefixContainsFold: String
+  """
   logo_URL field predicates
   """
   logoURL: String
@@ -1008,6 +1040,22 @@ input CompanyWhereInput {
   phoneNotNil: Boolean
   phoneEqualFold: String
   phoneContainsFold: String
+  """
+  quotation_prefix field predicates
+  """
+  quotationPrefix: String
+  quotationPrefixNEQ: String
+  quotationPrefixIn: [String!]
+  quotationPrefixNotIn: [String!]
+  quotationPrefixGT: String
+  quotationPrefixGTE: String
+  quotationPrefixLT: String
+  quotationPrefixLTE: String
+  quotationPrefixContains: String
+  quotationPrefixHasPrefix: String
+  quotationPrefixHasSuffix: String
+  quotationPrefixEqualFold: String
+  quotationPrefixContainsFold: String
   """
   tax_id field predicates
   """
@@ -1123,11 +1171,6 @@ input CompanyWhereInput {
   hasMemberSignupTokens: Boolean
   hasMemberSignupTokensWith: [MemberSignupTokenWhereInput!]
   """
-  products edge predicates
-  """
-  hasProducts: Boolean
-  hasProductsWith: [ProductWhereInput!]
-  """
   projects edge predicates
   """
   hasProjects: Boolean
@@ -1199,7 +1242,7 @@ input CreateAccountingEntryInput {
   companyID: ID
   userID: ID
   loanID: ID
-  loanscheduleIDs: [ID!]
+  loanScheduleIDs: [ID!]
 }
 """
 CreateCompanyDocumentInput is used for create CompanyDocument object.
@@ -1242,9 +1285,12 @@ input CreateCompanyInput {
   industry: String
   lastEntryDate: Time
   lastInvoiceNumber: Int
+  lastSalesQuotationNumber: Int
+  invoicePrefix: String
   name: String!
   numberEmployees: Int
   phone: String
+  quotationPrefix: String
   taxID: String
   vatRate: Float
   website: String
@@ -1261,7 +1307,6 @@ input CreateCompanyInput {
   loanIDs: [ID!]
   loanScheduleIDs: [ID!]
   memberSignupTokenIDs: [ID!]
-  productIDs: [ID!]
   projectIDs: [ID!]
   payableIDs: [ID!]
   receivableIDs: [ID!]
@@ -1360,13 +1405,14 @@ CreateInvoiceInput is used for create Invoice object.
 Input was generated by ent.
 """
 input CreateInvoiceInput {
-  companyLogo: String
+  isInvoice: Boolean
   companyName: String!
   companyTaxID: String
   companyAddress: String!
   companyCity: String!
   companyEmail: String
   companyPhone: String
+  currency: String!
   number: String
   issueDate: Time!
   dueDate: Time!
@@ -1385,19 +1431,7 @@ input CreateInvoiceInput {
   subtotal: Float!
   tax: Float!
   total: Float!
-  notes: String
-  paymentMethod: String
-  bankName: String
-  bankAgency: String
-  bankAccountNumber: String
-  bankAccountName: String
-  storageURI: String
-  url: String
-  filename: String
-  """
-  File size in KB
-  """
-  size: Float
+  terms: String
   keywords: String!
   clientID: ID
   receivableID: ID
@@ -1487,14 +1521,6 @@ input CreatePayableInput {
   totalTransaction: Float!
   dueDate: Time!
   status: PayableStatus!
-  companyID: ID
-}
-"""
-CreateProductInput is used for create Product object.
-Input was generated by ent.
-"""
-input CreateProductInput {
-  stock: Int
   companyID: ID
 }
 """
@@ -1723,10 +1749,10 @@ input CustomerOrder {
 Properties by which Customer connections can be ordered.
 """
 enum CustomerOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CITY
-  NAME
+  createdAt
+  updatedAt
+  city
+  name
 }
 """
 CustomerWhereInput is used for filtering Customer objects.
@@ -1998,17 +2024,17 @@ input EmployeeOrder {
 Properties by which Employee connections can be ordered.
 """
 enum EmployeeOrderField {
-  CREATED_AT
-  UPDATED_AT
-  GENDER
-  STATUS
+  createdAt
+  updatedAt
+  gender
+  status
 }
 """
 EmployeeStatus is enum for the field status
 """
 enum EmployeeStatus @goModel(model: "mazza/ent/generated/employee.Status") {
-  ACTIVE
-  ON_LEAVE
+  active
+  onLeave
 }
 """
 EmployeeWhereInput is used for filtering Employee objects.
@@ -2269,8 +2295,8 @@ type File implements Node {
 FileCategory is enum for the field category
 """
 enum FileCategory @goModel(model: "mazza/ent/generated/file.Category") {
-  INVOICE
-  SALESQUOTATION
+  invoice
+  salesQuotation
 }
 """
 A connection to a list of items.
@@ -2319,9 +2345,9 @@ input FileOrder {
 Properties by which File connections can be ordered.
 """
 enum FileOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CATEGORY
+  createdAt
+  updatedAt
+  category
 }
 """
 FileWhereInput is used for filtering File objects.
@@ -2476,12 +2502,12 @@ type Inventory implements Node {
 InventoryCategory is enum for the field category
 """
 enum InventoryCategory @goModel(model: "mazza/ent/generated/inventory.Category") {
-  RAW_MATERIALS
-  FINISHED_GOODS
-  MERCHANDISE
-  SUPPLIES
-  EQUIPMENT
-  OTHER
+  rawMaterial
+  finishedGood
+  merchandise
+  supplies
+  equipment
+  other
 }
 """
 A connection to a list of items.
@@ -2532,9 +2558,9 @@ type InventoryMovement implements Node {
 InventoryMovementCategory is enum for the field category
 """
 enum InventoryMovementCategory @goModel(model: "mazza/ent/generated/inventorymovement.Category") {
-  IN
-  OUT
-  ADJUSTMENT
+  inflow
+  outflow
+  adjustment
 }
 """
 A connection to a list of items.
@@ -2583,9 +2609,9 @@ input InventoryMovementOrder {
 Properties by which InventoryMovement connections can be ordered.
 """
 enum InventoryMovementOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CATEGORY
+  createdAt
+  updatedAt
+  category
 }
 """
 InventoryMovementWhereInput is used for filtering InventoryMovement objects.
@@ -2761,10 +2787,10 @@ input InventoryOrder {
 Properties by which Inventory connections can be ordered.
 """
 enum InventoryOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CATEGORY
-  CURRENT_VALUE
+  createdAt
+  updatedAt
+  category
+  currentValue
 }
 """
 InventoryWhereInput is used for filtering Inventory objects.
@@ -2924,13 +2950,14 @@ type Invoice implements Node {
   createdAt: Time!
   updatedAt: Time!
   deletedAt: Time
-  companyLogo: String
+  isInvoice: Boolean!
   companyName: String!
   companyTaxID: String
   companyAddress: String!
   companyCity: String!
   companyEmail: String
   companyPhone: String
+  currency: String!
   number: String
   issueDate: Time!
   dueDate: Time!
@@ -2949,18 +2976,7 @@ type Invoice implements Node {
   subtotal: Float!
   tax: Float!
   total: Float!
-  notes: String
-  paymentMethod: String
-  bankName: String
-  bankAgency: String
-  bankAccountNumber: String
-  bankAccountName: String
-  url: String
-  filename: String
-  """
-  File size in KB
-  """
-  size: Float
+  terms: String
   keywords: String!
   company: Company!
   issuedBy: User
@@ -3014,24 +3030,24 @@ input InvoiceOrder {
 Properties by which Invoice connections can be ordered.
 """
 enum InvoiceOrderField {
-  CREATED_AT
-  UPDATED_AT
-  ISSUE_DATE
-  DUE_DATE
-  PAID_AT
-  STATUS
-  TOTAL
+  createdAt
+  updatedAt
+  issueDate
+  dueDate
+  paidAt
+  status
+  total
 }
 """
 InvoiceStatus is enum for the field status
 """
 enum InvoiceStatus @goModel(model: "mazza/ent/generated/invoice.Status") {
-  DRAFT
-  CANCELED
-  PENDING
-  PAID
-  OVERDUE
-  DEFAULTED
+  draft
+  cancelled
+  pending
+  paid
+  overdue
+  defaulted
 }
 """
 InvoiceWhereInput is used for filtering Invoice objects.
@@ -3088,23 +3104,10 @@ input InvoiceWhereInput {
   deletedAtIsNil: Boolean
   deletedAtNotNil: Boolean
   """
-  company_logo field predicates
+  is_invoice field predicates
   """
-  companyLogo: String
-  companyLogoNEQ: String
-  companyLogoIn: [String!]
-  companyLogoNotIn: [String!]
-  companyLogoGT: String
-  companyLogoGTE: String
-  companyLogoLT: String
-  companyLogoLTE: String
-  companyLogoContains: String
-  companyLogoHasPrefix: String
-  companyLogoHasSuffix: String
-  companyLogoIsNil: Boolean
-  companyLogoNotNil: Boolean
-  companyLogoEqualFold: String
-  companyLogoContainsFold: String
+  isInvoice: Boolean
+  isInvoiceNEQ: Boolean
   """
   company_name field predicates
   """
@@ -3207,6 +3210,22 @@ input InvoiceWhereInput {
   companyPhoneNotNil: Boolean
   companyPhoneEqualFold: String
   companyPhoneContainsFold: String
+  """
+  currency field predicates
+  """
+  currency: String
+  currencyNEQ: String
+  currencyIn: [String!]
+  currencyNotIn: [String!]
+  currencyGT: String
+  currencyGTE: String
+  currencyLT: String
+  currencyLTE: String
+  currencyContains: String
+  currencyHasPrefix: String
+  currencyHasSuffix: String
+  currencyEqualFold: String
+  currencyContainsFold: String
   """
   number field predicates
   """
@@ -3425,162 +3444,23 @@ input InvoiceWhereInput {
   totalLT: Float
   totalLTE: Float
   """
-  notes field predicates
+  terms field predicates
   """
-  notes: String
-  notesNEQ: String
-  notesIn: [String!]
-  notesNotIn: [String!]
-  notesGT: String
-  notesGTE: String
-  notesLT: String
-  notesLTE: String
-  notesContains: String
-  notesHasPrefix: String
-  notesHasSuffix: String
-  notesIsNil: Boolean
-  notesNotNil: Boolean
-  notesEqualFold: String
-  notesContainsFold: String
-  """
-  payment_method field predicates
-  """
-  paymentMethod: String
-  paymentMethodNEQ: String
-  paymentMethodIn: [String!]
-  paymentMethodNotIn: [String!]
-  paymentMethodGT: String
-  paymentMethodGTE: String
-  paymentMethodLT: String
-  paymentMethodLTE: String
-  paymentMethodContains: String
-  paymentMethodHasPrefix: String
-  paymentMethodHasSuffix: String
-  paymentMethodIsNil: Boolean
-  paymentMethodNotNil: Boolean
-  paymentMethodEqualFold: String
-  paymentMethodContainsFold: String
-  """
-  bank_name field predicates
-  """
-  bankName: String
-  bankNameNEQ: String
-  bankNameIn: [String!]
-  bankNameNotIn: [String!]
-  bankNameGT: String
-  bankNameGTE: String
-  bankNameLT: String
-  bankNameLTE: String
-  bankNameContains: String
-  bankNameHasPrefix: String
-  bankNameHasSuffix: String
-  bankNameIsNil: Boolean
-  bankNameNotNil: Boolean
-  bankNameEqualFold: String
-  bankNameContainsFold: String
-  """
-  bank_agency field predicates
-  """
-  bankAgency: String
-  bankAgencyNEQ: String
-  bankAgencyIn: [String!]
-  bankAgencyNotIn: [String!]
-  bankAgencyGT: String
-  bankAgencyGTE: String
-  bankAgencyLT: String
-  bankAgencyLTE: String
-  bankAgencyContains: String
-  bankAgencyHasPrefix: String
-  bankAgencyHasSuffix: String
-  bankAgencyIsNil: Boolean
-  bankAgencyNotNil: Boolean
-  bankAgencyEqualFold: String
-  bankAgencyContainsFold: String
-  """
-  bank_account_number field predicates
-  """
-  bankAccountNumber: String
-  bankAccountNumberNEQ: String
-  bankAccountNumberIn: [String!]
-  bankAccountNumberNotIn: [String!]
-  bankAccountNumberGT: String
-  bankAccountNumberGTE: String
-  bankAccountNumberLT: String
-  bankAccountNumberLTE: String
-  bankAccountNumberContains: String
-  bankAccountNumberHasPrefix: String
-  bankAccountNumberHasSuffix: String
-  bankAccountNumberIsNil: Boolean
-  bankAccountNumberNotNil: Boolean
-  bankAccountNumberEqualFold: String
-  bankAccountNumberContainsFold: String
-  """
-  bank_account_name field predicates
-  """
-  bankAccountName: String
-  bankAccountNameNEQ: String
-  bankAccountNameIn: [String!]
-  bankAccountNameNotIn: [String!]
-  bankAccountNameGT: String
-  bankAccountNameGTE: String
-  bankAccountNameLT: String
-  bankAccountNameLTE: String
-  bankAccountNameContains: String
-  bankAccountNameHasPrefix: String
-  bankAccountNameHasSuffix: String
-  bankAccountNameIsNil: Boolean
-  bankAccountNameNotNil: Boolean
-  bankAccountNameEqualFold: String
-  bankAccountNameContainsFold: String
-  """
-  URL field predicates
-  """
-  url: String
-  urlNEQ: String
-  urlIn: [String!]
-  urlNotIn: [String!]
-  urlGT: String
-  urlGTE: String
-  urlLT: String
-  urlLTE: String
-  urlContains: String
-  urlHasPrefix: String
-  urlHasSuffix: String
-  urlIsNil: Boolean
-  urlNotNil: Boolean
-  urlEqualFold: String
-  urlContainsFold: String
-  """
-  filename field predicates
-  """
-  filename: String
-  filenameNEQ: String
-  filenameIn: [String!]
-  filenameNotIn: [String!]
-  filenameGT: String
-  filenameGTE: String
-  filenameLT: String
-  filenameLTE: String
-  filenameContains: String
-  filenameHasPrefix: String
-  filenameHasSuffix: String
-  filenameIsNil: Boolean
-  filenameNotNil: Boolean
-  filenameEqualFold: String
-  filenameContainsFold: String
-  """
-  size field predicates
-  """
-  size: Float
-  sizeNEQ: Float
-  sizeIn: [Float!]
-  sizeNotIn: [Float!]
-  sizeGT: Float
-  sizeGTE: Float
-  sizeLT: Float
-  sizeLTE: Float
-  sizeIsNil: Boolean
-  sizeNotNil: Boolean
+  terms: String
+  termsNEQ: String
+  termsIn: [String!]
+  termsNotIn: [String!]
+  termsGT: String
+  termsGTE: String
+  termsLT: String
+  termsLTE: String
+  termsContains: String
+  termsHasPrefix: String
+  termsHasSuffix: String
+  termsIsNil: Boolean
+  termsNotNil: Boolean
+  termsEqualFold: String
+  termsContainsFold: String
   """
   keywords field predicates
   """
@@ -3715,8 +3595,8 @@ input LoanOrder {
 Properties by which Loan connections can be ordered.
 """
 enum LoanOrderField {
-  CREATED_AT
-  UPDATED_AT
+  createdAt
+  updatedAt
   amount
   category
   interestRate
@@ -3815,8 +3695,8 @@ input LoanScheduleOrder {
 Properties by which LoanSchedule connections can be ordered.
 """
 enum LoanScheduleOrderField {
-  CREATED_AT
-  UPDATED_AT
+  createdAt
+  updatedAt
 }
 """
 LoanScheduleStatus is enum for the field status
@@ -4336,18 +4216,18 @@ input MemberSignupTokenOrder {
 Properties by which MemberSignupToken connections can be ordered.
 """
 enum MemberSignupTokenOrderField {
-  CREATED_AT
-  UPDATED_AT
+  createdAt
+  updatedAt
 }
 """
 MemberSignupTokenRole is enum for the field role
 """
 enum MemberSignupTokenRole @goModel(model: "mazza/ent/generated/membersignuptoken.Role") {
-  SUPERUSER
-  ADMIN
-  ACCOUNTANT
-  AUDITOR
-  STAFF
+  superUser
+  admin
+  accountant
+  auditor
+  staff
 }
 """
 MemberSignupTokenWhereInput is used for filtering MemberSignupToken objects.
@@ -4637,14 +4517,14 @@ input PayableOrder {
 Properties by which Payable connections can be ordered.
 """
 enum PayableOrderField {
-  CREATED_AT
-  UPDATED_AT
-  DATE
-  AMOUNT_IN_DEFAULT
-  OUTSTANDING_BALANCE
-  TOTAL_TRANSACTION
-  DUEDATE
-  STATUS
+  createdAt
+  updatedAt
+  date
+  amountInDefault
+  outstandingBalance
+  totalTransaction
+  dueDate
+  status
 }
 """
 PayableStatus is enum for the field status
@@ -4804,105 +4684,6 @@ input PayableWhereInput {
   hasCompany: Boolean
   hasCompanyWith: [CompanyWhereInput!]
 }
-type Product implements Node {
-  id: ID!
-  createdAt: Time!
-  updatedAt: Time!
-  deletedAt: Time
-  stock: Int!
-  company: Company
-}
-"""
-Ordering options for Product connections
-"""
-input ProductOrder {
-  """
-  The ordering direction.
-  """
-  direction: OrderDirection! = ASC
-  """
-  The field by which to order Products.
-  """
-  field: ProductOrderField!
-}
-"""
-Properties by which Product connections can be ordered.
-"""
-enum ProductOrderField {
-  CREATED_AT
-  UPDATED_AT
-}
-"""
-ProductWhereInput is used for filtering Product objects.
-Input was generated by ent.
-"""
-input ProductWhereInput {
-  not: ProductWhereInput
-  and: [ProductWhereInput!]
-  or: [ProductWhereInput!]
-  """
-  id field predicates
-  """
-  id: ID
-  idNEQ: ID
-  idIn: [ID!]
-  idNotIn: [ID!]
-  idGT: ID
-  idGTE: ID
-  idLT: ID
-  idLTE: ID
-  """
-  created_at field predicates
-  """
-  createdAt: Time
-  createdAtNEQ: Time
-  createdAtIn: [Time!]
-  createdAtNotIn: [Time!]
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
-  """
-  updated_at field predicates
-  """
-  updatedAt: Time
-  updatedAtNEQ: Time
-  updatedAtIn: [Time!]
-  updatedAtNotIn: [Time!]
-  updatedAtGT: Time
-  updatedAtGTE: Time
-  updatedAtLT: Time
-  updatedAtLTE: Time
-  """
-  deleted_at field predicates
-  """
-  deletedAt: Time
-  deletedAtNEQ: Time
-  deletedAtIn: [Time!]
-  deletedAtNotIn: [Time!]
-  deletedAtGT: Time
-  deletedAtGTE: Time
-  deletedAtLT: Time
-  deletedAtLTE: Time
-  deletedAtIsNil: Boolean
-  deletedAtNotNil: Boolean
-  """
-  stock field predicates
-  """
-  stock: Int
-  stockNEQ: Int
-  stockIn: [Int!]
-  stockNotIn: [Int!]
-  stockGT: Int
-  stockGTE: Int
-  stockLT: Int
-  stockLTE: Int
-  """
-  company edge predicates
-  """
-  hasCompany: Boolean
-  hasCompanyWith: [CompanyWhereInput!]
-}
 type Project implements Node {
   id: ID!
   createdAt: Time!
@@ -5027,14 +4808,14 @@ input ProjectOrder {
 Properties by which Project connections can be ordered.
 """
 enum ProjectOrderField {
-  CREATED_AT
-  UPDATED_AT
-  PLANNED_START_DATE
-  ACTUAL_START_DATE
-  PLANNED_END_DATE
-  ACTUAL_END_DATE
-  PROGRESS
-  STATUS
+  createdAt
+  updatedAt
+  plannedStartDate
+  actualStartDate
+  plannedEndDate
+  actualEndDate
+  progress
+  status
 }
 """
 ProjectStatus is enum for the field status
@@ -5114,12 +4895,12 @@ input ProjectTaskOrder {
 Properties by which ProjectTask connections can be ordered.
 """
 enum ProjectTaskOrderField {
-  CREATED_AT
-  UPDATED_AT
-  DUE_DATE
-  END_DATE
-  START_DATE
-  STATUS
+  createdAt
+  updatedAt
+  dueDate
+  endDate
+  startDate
+  status
 }
 """
 ProjectTaskStatus is enum for the field status
@@ -5985,14 +5766,14 @@ input ReceivableOrder {
 Properties by which Receivable connections can be ordered.
 """
 enum ReceivableOrderField {
-  CREATED_AT
-  UPDATED_AT
-  DATE
-  AMOUNT_IN_DEFAULT
-  OUTSTANDING_BALANCE
-  TOTAL_TRANSACTION
-  DUEDATE
-  STATUS
+  createdAt
+  updatedAt
+  date
+  amountInDefault
+  outstandingBalance
+  totalTransaction
+  dueDate
+  status
 }
 """
 ReceivableStatus is enum for the field status
@@ -6192,10 +5973,10 @@ input SupplierOrder {
 Properties by which Supplier connections can be ordered.
 """
 enum SupplierOrderField {
-  CREATED_AT
-  UPDATED_AT
-  CITY
-  NAME
+  createdAt
+  updatedAt
+  city
+  name
 }
 """
 SupplierWhereInput is used for filtering Supplier objects.
@@ -6432,7 +6213,7 @@ type Token implements Node {
 TokenCategory is enum for the field category
 """
 enum TokenCategory @goModel(model: "mazza/ent/generated/token.Category") {
-  ACCOUNT_DELETE
+  accountDelete
 }
 """
 TokenWhereInput is used for filtering Token objects.
@@ -6523,8 +6304,8 @@ input TreasuryOrder {
 Properties by which Treasury connections can be ordered.
 """
 enum TreasuryOrderField {
-  CREATED_AT
-  UPDATED_AT
+  createdAt
+  updatedAt
 }
 """
 TreasuryWhereInput is used for filtering Treasury objects.
@@ -6623,7 +6404,7 @@ input UpdateAccountingEntryInput {
   clearLoan: Boolean
   addLoanScheduleIDs: [ID!]
   removeLoanScheduleIDs: [ID!]
-  clearLoanSchedules: Boolean
+  clearLoanSchedule: Boolean
 }
 """
 UpdateCompanyDocumentInput is used for update CompanyDocument object.
@@ -6680,10 +6461,14 @@ input UpdateCompanyInput {
   clearLastEntryDate: Boolean
   lastInvoiceNumber: Int
   clearLastInvoiceNumber: Boolean
+  lastSalesQuotationNumber: Int
+  clearLastSalesQuotationNumber: Boolean
+  invoicePrefix: String
   name: String
   numberEmployees: Int
   phone: String
   clearPhone: Boolean
+  quotationPrefix: String
   taxID: String
   clearTaxID: Boolean
   vatRate: Float
@@ -6727,9 +6512,6 @@ input UpdateCompanyInput {
   addMemberSignupTokenIDs: [ID!]
   removeMemberSignupTokenIDs: [ID!]
   clearMemberSignupTokens: Boolean
-  addProductIDs: [ID!]
-  removeProductIDs: [ID!]
-  clearProducts: Boolean
   addProjectIDs: [ID!]
   removeProjectIDs: [ID!]
   clearProjects: Boolean
@@ -6868,8 +6650,7 @@ UpdateInvoiceInput is used for update Invoice object.
 Input was generated by ent.
 """
 input UpdateInvoiceInput {
-  companyLogo: String
-  clearCompanyLogo: Boolean
+  isInvoice: Boolean
   companyName: String
   companyTaxID: String
   clearCompanyTaxID: Boolean
@@ -6879,6 +6660,7 @@ input UpdateInvoiceInput {
   clearCompanyEmail: Boolean
   companyPhone: String
   clearCompanyPhone: Boolean
+  currency: String
   number: String
   clearNumber: Boolean
   issueDate: Time
@@ -6905,29 +6687,8 @@ input UpdateInvoiceInput {
   subtotal: Float
   tax: Float
   total: Float
-  notes: String
-  clearNotes: Boolean
-  paymentMethod: String
-  clearPaymentMethod: Boolean
-  bankName: String
-  clearBankName: Boolean
-  bankAgency: String
-  clearBankAgency: Boolean
-  bankAccountNumber: String
-  clearBankAccountNumber: Boolean
-  bankAccountName: String
-  clearBankAccountName: Boolean
-  storageURI: String
-  clearStorageURI: Boolean
-  url: String
-  clearURL: Boolean
-  filename: String
-  clearFilename: Boolean
-  """
-  File size in KB
-  """
-  size: Float
-  clearSize: Boolean
+  terms: String
+  clearTerms: Boolean
   keywords: String
 }
 """
@@ -7021,25 +6782,8 @@ UpdatePayableInput is used for update Payable object.
 Input was generated by ent.
 """
 input UpdatePayableInput {
-  entryGroup: Int
-  date: Time
   name: String
-  amountInDefault: Float
-  outstandingBalance: Float
-  totalTransaction: Float
   dueDate: Time
-  status: PayableStatus
-  companyID: ID
-  clearCompany: Boolean
-}
-"""
-UpdateProductInput is used for update Product object.
-Input was generated by ent.
-"""
-input UpdateProductInput {
-  stock: Int
-  companyID: ID
-  clearCompany: Boolean
 }
 """
 UpdateProjectInput is used for update Project object.
@@ -7112,16 +6856,8 @@ UpdateReceivableInput is used for update Receivable object.
 Input was generated by ent.
 """
 input UpdateReceivableInput {
-  entryGroup: Int
-  date: Time
   name: String
-  amountInDefault: Float
-  outstandingBalance: Float
-  totalTransaction: Float
   dueDate: Time
-  status: ReceivableStatus
-  companyID: ID
-  clearCompany: Boolean
 }
 """
 UpdateSupplierInput is used for update Supplier object.
@@ -7393,8 +7129,8 @@ input UserOrder {
 Properties by which User connections can be ordered.
 """
 enum UserOrderField {
-  CREATED_AT
-  UPDATED_AT
+  createdAt
+  updatedAt
   NAME
 }
 type UserRole implements Node {
@@ -7430,17 +7166,17 @@ input UserRoleOrder {
 Properties by which UserRole connections can be ordered.
 """
 enum UserRoleOrderField {
-  ROLES
+  roles
 }
 """
 UserRoleRole is enum for the field role
 """
 enum UserRoleRole @goModel(model: "mazza/ent/generated/userrole.Role") {
-  SUPERUSER
-  ADMIN
-  ACCOUNTANT
-  AUDITOR
-  STAFF
+  superUser
+  admin
+  accountant
+  auditor
+  staff
 }
 """
 UserRoleWhereInput is used for filtering UserRole objects.
@@ -7874,19 +7610,19 @@ input WorkshiftOrder {
 Properties by which Workshift connections can be ordered.
 """
 enum WorkshiftOrderField {
-  CREATED_AT
-  UPDATED_AT
-  APPROVED_AT
-  CLOCK_IN
-  CLOCK_OUT
-  STATUS
+  createdAt
+  updatedAt
+  approvedAt
+  clockIn
+  clockOut
+  status
 }
 """
 WorkshiftStatus is enum for the field status
 """
 enum WorkshiftStatus @goModel(model: "mazza/ent/generated/workshift.Status") {
-  APPROVED
-  PENDING
+  approved
+  pending
 }
 """
 WorkshiftWhereInput is used for filtering Workshift objects.

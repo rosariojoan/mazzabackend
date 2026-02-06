@@ -41,17 +41,17 @@ type AgingBucket {
 }
 
 enum ReceivablesGroupBy {
-  AGE
-  CUSTOMER
-  DAYSDUE
-  STATUS
+  age
+  customer
+  daysDue
+  status
 }
 
 enum PayablesGroupBy {
-  AGE
-  NAME
-  DAYSDUE
-  STATUS
+  age
+  name
+  daysDue
+  status
 }
 
 enum LoansGroupBy {
@@ -87,4 +87,11 @@ extend type Query {
 
   accountsReceivableAging(name: String): [AgingBucket!]!
   accountsPayableAging(name: String): [AgingBucket!]!
+
+  cashBalance: Float!
+}
+
+extend type Mutation {
+  updatePayable(id: ID!, input: UpdatePayableInput!): Payable!
+  updateReceivable(id: ID!, input: UpdateReceivableInput!): Receivable!
 }

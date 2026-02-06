@@ -71,15 +71,15 @@ func (r *mutationResolver) UploadDocument(ctx context.Context, input generated.C
 	userIsAdmin, _ := r.client.UserRole.Query().Where(
 		userrole.HasUserWith(user.ID(currentUser.ID)),
 		userrole.HasCompanyWith(company.ID(currentCompany.ID)),
-		userrole.RoleEQ(userrole.RoleADMIN),
+		userrole.RoleEQ(userrole.RoleAdmin),
 	).Exist(ctx)
 
 	builder := r.client.CompanyDocument.Create().
 		SetInput(input).SetCompanyID(currentCompany.ID).SetUploadedByID(currentUser.ID)
 	if userIsAdmin {
-		builder = builder.SetStatus(companydocument.StatusAPPROVED).SetApprovedByID(currentUser.ID)
+		builder = builder.SetStatus(companydocument.StatusApproved).SetApprovedByID(currentUser.ID)
 	} else {
-		builder = builder.SetStatus(companydocument.StatusPENDING)
+		builder = builder.SetStatus(companydocument.StatusPending)
 	}
 
 	document, err := builder.Save(ctx)
@@ -187,7 +187,7 @@ func (r *mutationResolver) RemoveUser(ctx context.Context, id int) (*string, err
 	// Check if active user is an admin of the company. If not, return;
 	_, err := currentUser.QueryAssignedRoles().Where(
 		userrole.HasCompanyWith(company.ID(currentCompany.ID)),
-		userrole.RoleIn(userrole.RoleADMIN, userrole.RoleSUPERUSER),
+		userrole.RoleIn(userrole.RoleAdmin, userrole.RoleSuperUser),
 	).Exist(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("unauthorized")

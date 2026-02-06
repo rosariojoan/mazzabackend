@@ -37,15 +37,15 @@ type LoginOutput {
 }
 
 enum CustomersGroupBy {
-  COMPANY
-  CITY
+  company
+  city
 }
 
 enum ShiftGroupBy {
-  APPROVED_AT
-  CLOCK_IN
-  CLOCK_OUT
-  STATUS
+  approvedAt
+  clockIn
+  clockOut
+  status
 }
 
 type TreasuryAggregatePayload {
@@ -69,11 +69,11 @@ extend type Query {
   customers(where: CustomerWhereInput): [Customer!]!
 
   employees(where: EmployeeWhereInput): [Employee!]!
-  products(where: ProductWhereInput): [Product!]!
-  lowStock(where: ProductWhereInput): [Product!]!
-  numberOfProducts(where: ProductWhereInput): Int!
-  numberOfLowStock(where: ProductWhereInput): Int!
-  numberOfOutOfStock(where: ProductWhereInput): Int!
+  inventory(where: InventoryWhereInput): [Inventory!]!
+  lowStock(where: InventoryWhereInput): [Inventory!]!
+  numberOfInventory(where: InventoryWhereInput): Int!
+  numberOfLowStock(where: InventoryWhereInput): Int!
+  numberOfOutOfStock(where: InventoryWhereInput): Int!
 
   """
   Query and retrieve only one project
@@ -127,9 +127,9 @@ type Mutation {
   updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
   deleteEmployee(id: ID!): Boolean!
 
-  createProduct(input: CreateProductInput!): Product
-  updateProduct(id: ID!, input: UpdateProductInput!): Product!
-  deleteProduct(id: ID!): Boolean!
+  # createProduct(input: CreateProductInput!): Product
+  # updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  # deleteProduct(id: ID!): Boolean!
 
   createProject(input: CreateProjectInput!): Project
   updateProject(id: ID!, input: UpdateProjectInput!): Project!

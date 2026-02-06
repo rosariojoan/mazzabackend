@@ -19,8 +19,9 @@ import (
 )
 
 type LoginInput struct {
-	FirebaseUID   string
-	ExpoPushToken *string
+	FirebaseUID string  `json:"firebaseUID"`
+	FcmToken    *string `json:"fcmToken"`
+	// ExpoPushToken *string `json:"expoPushToken"`
 }
 
 type LoginOutput struct {
@@ -100,8 +101,8 @@ func Login(ctx *gin.Context) {
 	}
 
 	// Update user ExpoPushToken
-	if input.ExpoPushToken != nil {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).SetExpoPushToken(*input.ExpoPushToken).Exec(ctx)
+	if input.FcmToken != nil {
+		err = inits.Client.User.UpdateOneID(currentUser.ID).SetFcmToken(*input.FcmToken).Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})
@@ -109,10 +110,10 @@ func Login(ctx *gin.Context) {
 		}
 		inits.Client.User.Update().Where(
 			user.IDNEQ(currentUser.ID),
-			user.ExpoPushToken(*input.ExpoPushToken),
-		).ClearExpoPushToken().Exec(ctx)
+			user.FcmToken(*input.FcmToken),
+		).ClearFcmToken().Exec(ctx)
 	} else {
-		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearExpoPushToken().Exec(ctx)
+		err = inits.Client.User.UpdateOneID(currentUser.ID).ClearFcmToken().Exec(ctx)
 		if err != nil {
 			fmt.Println("err:", err)
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "ocorreu um erro ao fazer o login"})

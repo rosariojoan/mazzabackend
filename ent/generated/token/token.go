@@ -84,7 +84,7 @@ type Category string
 
 // Category values.
 const (
-	CategoryACCOUNT_DELETE Category = "ACCOUNT_DELETE"
+	CategoryAccountDelete Category = "accountDelete"
 )
 
 func (c Category) String() string {
@@ -94,7 +94,7 @@ func (c Category) String() string {
 // CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
 func CategoryValidator(c Category) error {
 	switch c {
-	case CategoryACCOUNT_DELETE:
+	case CategoryAccountDelete:
 		return nil
 	default:
 		return fmt.Errorf("token: invalid enum value for category field: %q", c)

@@ -69,15 +69,15 @@ type AccountingEntryEdges struct {
 	User *User `json:"user,omitempty"`
 	// Loan holds the value of the loan edge.
 	Loan *Loan `json:"loan,omitempty"`
-	// LoanSchedules holds the value of the loanSchedules edge.
-	LoanSchedules []*LoanSchedule `json:"loanSchedules,omitempty"`
+	// LoanSchedule holds the value of the loan_schedule edge.
+	LoanSchedule []*LoanSchedule `json:"loan_schedule,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [4]bool
 	// totalCount holds the count of the edges above.
 	totalCount [4]map[string]int
 
-	namedLoanSchedules map[string][]*LoanSchedule
+	namedLoanSchedule map[string][]*LoanSchedule
 }
 
 // CompanyOrErr returns the Company value or an error if the edge
@@ -113,13 +113,13 @@ func (e AccountingEntryEdges) LoanOrErr() (*Loan, error) {
 	return nil, &NotLoadedError{edge: "loan"}
 }
 
-// LoanSchedulesOrErr returns the LoanSchedules value or an error if the edge
+// LoanScheduleOrErr returns the LoanSchedule value or an error if the edge
 // was not loaded in eager-loading.
-func (e AccountingEntryEdges) LoanSchedulesOrErr() ([]*LoanSchedule, error) {
+func (e AccountingEntryEdges) LoanScheduleOrErr() ([]*LoanSchedule, error) {
 	if e.loadedTypes[3] {
-		return e.LoanSchedules, nil
+		return e.LoanSchedule, nil
 	}
-	return nil, &NotLoadedError{edge: "loanSchedules"}
+	return nil, &NotLoadedError{edge: "loan_schedule"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -310,9 +310,9 @@ func (ae *AccountingEntry) QueryLoan() *LoanQuery {
 	return NewAccountingEntryClient(ae.config).QueryLoan(ae)
 }
 
-// QueryLoanSchedules queries the "loanSchedules" edge of the AccountingEntry entity.
-func (ae *AccountingEntry) QueryLoanSchedules() *LoanScheduleQuery {
-	return NewAccountingEntryClient(ae.config).QueryLoanSchedules(ae)
+// QueryLoanSchedule queries the "loan_schedule" edge of the AccountingEntry entity.
+func (ae *AccountingEntry) QueryLoanSchedule() *LoanScheduleQuery {
+	return NewAccountingEntryClient(ae.config).QueryLoanSchedule(ae)
 }
 
 // Update returns a builder for updating this AccountingEntry.
@@ -391,27 +391,27 @@ func (ae *AccountingEntry) String() string {
 	return builder.String()
 }
 
-// NamedLoanSchedules returns the LoanSchedules named value or an error if the edge was not
+// NamedLoanSchedule returns the LoanSchedule named value or an error if the edge was not
 // loaded in eager-loading with this name.
-func (ae *AccountingEntry) NamedLoanSchedules(name string) ([]*LoanSchedule, error) {
-	if ae.Edges.namedLoanSchedules == nil {
+func (ae *AccountingEntry) NamedLoanSchedule(name string) ([]*LoanSchedule, error) {
+	if ae.Edges.namedLoanSchedule == nil {
 		return nil, &NotLoadedError{edge: name}
 	}
-	nodes, ok := ae.Edges.namedLoanSchedules[name]
+	nodes, ok := ae.Edges.namedLoanSchedule[name]
 	if !ok {
 		return nil, &NotLoadedError{edge: name}
 	}
 	return nodes, nil
 }
 
-func (ae *AccountingEntry) appendNamedLoanSchedules(name string, edges ...*LoanSchedule) {
-	if ae.Edges.namedLoanSchedules == nil {
-		ae.Edges.namedLoanSchedules = make(map[string][]*LoanSchedule)
+func (ae *AccountingEntry) appendNamedLoanSchedule(name string, edges ...*LoanSchedule) {
+	if ae.Edges.namedLoanSchedule == nil {
+		ae.Edges.namedLoanSchedule = make(map[string][]*LoanSchedule)
 	}
 	if len(edges) == 0 {
-		ae.Edges.namedLoanSchedules[name] = []*LoanSchedule{}
+		ae.Edges.namedLoanSchedule[name] = []*LoanSchedule{}
 	} else {
-		ae.Edges.namedLoanSchedules[name] = append(ae.Edges.namedLoanSchedules[name], edges...)
+		ae.Edges.namedLoanSchedule[name] = append(ae.Edges.namedLoanSchedule[name], edges...)
 	}
 }
 

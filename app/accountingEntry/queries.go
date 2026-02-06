@@ -30,7 +30,7 @@ func AggregateExpenses(ctx context.Context, client generated.AccountingEntryClie
 		total_amount DESC;
 	`
 
-	rows, err := client.QueryContext(ctx, sqlStr, companyID, accountingentry.AccountTypeEXPENSE, timeRange)
+	rows, err := client.QueryContext(ctx, sqlStr, companyID, accountingentry.AccountTypeExpense, timeRange)
 	if err != nil {
 		fmt.Println("err:", err)
 		return nil, fmt.Errorf("an error occurred")
@@ -98,7 +98,7 @@ func AggregateRevenue(ctx context.Context, client generated.AccountingEntryClien
 		`
 	}
 
-	rows, err := client.QueryContext(ctx, sqlStr, companyID, accountingentry.AccountTypeREVENUE, timeRange)
+	rows, err := client.QueryContext(ctx, sqlStr, companyID, accountingentry.AccountTypeRevenue, timeRange)
 	if err != nil {
 		fmt.Println("err:", err)
 		return nil, fmt.Errorf("an error occurred")

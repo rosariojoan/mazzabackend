@@ -22,12 +22,12 @@ func (InventoryMovement) Mixin() []ent.Mixin {
 	}
 }
 
-var inventoryMovementTypes = []string{"IN", "OUT", "ADJUSTMENT"}
+var inventoryMovementTypes = []string{"inflow", "outflow", "adjustment"}
 
 // Fields of the InventoryMovement.
 func (InventoryMovement) Fields() []ent.Field {
 	return []ent.Field{
-		field.Enum("category").Values(inventoryMovementTypes...).Annotations(entgql.OrderField("CATEGORY")),
+		field.Enum("category").Values(inventoryMovementTypes...).Annotations(entgql.OrderField("category")),
 		field.Float("quantity"),
 		field.Float("value"),
 		field.Time("date").Default(time.Now),

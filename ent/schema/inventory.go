@@ -22,23 +22,23 @@ func (Inventory) Mixin() []ent.Mixin {
 }
 
 var inventoryCategories = []string{
-	"RAW_MATERIALS",
-	"FINISHED_GOODS",
-	"MERCHANDISE",
-	"SUPPLIES",
-	"EQUIPMENT",
-	"OTHER",
+	"rawMaterial",
+	"finishedGood",
+	"merchandise",
+	"supplies",
+	"equipment",
+	"other",
 }
 
 // Fields of the Inventory.
 func (Inventory) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
-		field.Enum("category").Values(inventoryCategories...).Annotations(entgql.OrderField("CATEGORY")),
+		field.Enum("category").Values(inventoryCategories...).Annotations(entgql.OrderField("category")),
 		field.Float("quantity").Min(0).Annotations(entsql.Check("quantity >= 0")),
 		field.String("unit").Comment("Unit of measurement. E.g. litre, unit, gram"),
 		field.Float("minimum_level").Min(0),
-		field.Float("current_value").Min(0).Annotations(entgql.OrderField("CURRENT_VALUE")),
+		field.Float("current_value").Min(0).Annotations(entgql.OrderField("currentValue")),
 		field.String("notes").NotEmpty(),
 	}
 }

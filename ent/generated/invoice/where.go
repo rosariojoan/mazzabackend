@@ -70,9 +70,9 @@ func DeletedAt(v time.Time) predicate.Invoice {
 	return predicate.Invoice(sql.FieldEQ(FieldDeletedAt, v))
 }
 
-// CompanyLogo applies equality check predicate on the "company_logo" field. It's identical to CompanyLogoEQ.
-func CompanyLogo(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldCompanyLogo, v))
+// IsInvoice applies equality check predicate on the "is_invoice" field. It's identical to IsInvoiceEQ.
+func IsInvoice(v bool) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldIsInvoice, v))
 }
 
 // CompanyName applies equality check predicate on the "company_name" field. It's identical to CompanyNameEQ.
@@ -103,6 +103,11 @@ func CompanyEmail(v string) predicate.Invoice {
 // CompanyPhone applies equality check predicate on the "company_phone" field. It's identical to CompanyPhoneEQ.
 func CompanyPhone(v string) predicate.Invoice {
 	return predicate.Invoice(sql.FieldEQ(FieldCompanyPhone, v))
+}
+
+// Currency applies equality check predicate on the "currency" field. It's identical to CurrencyEQ.
+func Currency(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldCurrency, v))
 }
 
 // Number applies equality check predicate on the "number" field. It's identical to NumberEQ.
@@ -175,54 +180,9 @@ func Total(v float64) predicate.Invoice {
 	return predicate.Invoice(sql.FieldEQ(FieldTotal, v))
 }
 
-// Notes applies equality check predicate on the "notes" field. It's identical to NotesEQ.
-func Notes(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldNotes, v))
-}
-
-// PaymentMethod applies equality check predicate on the "payment_method" field. It's identical to PaymentMethodEQ.
-func PaymentMethod(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldPaymentMethod, v))
-}
-
-// BankName applies equality check predicate on the "bank_name" field. It's identical to BankNameEQ.
-func BankName(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankName, v))
-}
-
-// BankAgency applies equality check predicate on the "bank_agency" field. It's identical to BankAgencyEQ.
-func BankAgency(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAgency, v))
-}
-
-// BankAccountNumber applies equality check predicate on the "bank_account_number" field. It's identical to BankAccountNumberEQ.
-func BankAccountNumber(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAccountNumber, v))
-}
-
-// BankAccountName applies equality check predicate on the "bank_account_name" field. It's identical to BankAccountNameEQ.
-func BankAccountName(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAccountName, v))
-}
-
-// StorageURI applies equality check predicate on the "storage_URI" field. It's identical to StorageURIEQ.
-func StorageURI(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldStorageURI, v))
-}
-
-// URL applies equality check predicate on the "URL" field. It's identical to URLEQ.
-func URL(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldURL, v))
-}
-
-// Filename applies equality check predicate on the "filename" field. It's identical to FilenameEQ.
-func Filename(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldFilename, v))
-}
-
-// Size applies equality check predicate on the "size" field. It's identical to SizeEQ.
-func Size(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldSize, v))
+// Terms applies equality check predicate on the "terms" field. It's identical to TermsEQ.
+func Terms(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldTerms, v))
 }
 
 // Keywords applies equality check predicate on the "keywords" field. It's identical to KeywordsEQ.
@@ -360,79 +320,14 @@ func DeletedAtNotNil() predicate.Invoice {
 	return predicate.Invoice(sql.FieldNotNull(FieldDeletedAt))
 }
 
-// CompanyLogoEQ applies the EQ predicate on the "company_logo" field.
-func CompanyLogoEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldCompanyLogo, v))
+// IsInvoiceEQ applies the EQ predicate on the "is_invoice" field.
+func IsInvoiceEQ(v bool) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldIsInvoice, v))
 }
 
-// CompanyLogoNEQ applies the NEQ predicate on the "company_logo" field.
-func CompanyLogoNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldCompanyLogo, v))
-}
-
-// CompanyLogoIn applies the In predicate on the "company_logo" field.
-func CompanyLogoIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldCompanyLogo, vs...))
-}
-
-// CompanyLogoNotIn applies the NotIn predicate on the "company_logo" field.
-func CompanyLogoNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldCompanyLogo, vs...))
-}
-
-// CompanyLogoGT applies the GT predicate on the "company_logo" field.
-func CompanyLogoGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldCompanyLogo, v))
-}
-
-// CompanyLogoGTE applies the GTE predicate on the "company_logo" field.
-func CompanyLogoGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldCompanyLogo, v))
-}
-
-// CompanyLogoLT applies the LT predicate on the "company_logo" field.
-func CompanyLogoLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldCompanyLogo, v))
-}
-
-// CompanyLogoLTE applies the LTE predicate on the "company_logo" field.
-func CompanyLogoLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldCompanyLogo, v))
-}
-
-// CompanyLogoContains applies the Contains predicate on the "company_logo" field.
-func CompanyLogoContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldCompanyLogo, v))
-}
-
-// CompanyLogoHasPrefix applies the HasPrefix predicate on the "company_logo" field.
-func CompanyLogoHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldCompanyLogo, v))
-}
-
-// CompanyLogoHasSuffix applies the HasSuffix predicate on the "company_logo" field.
-func CompanyLogoHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldCompanyLogo, v))
-}
-
-// CompanyLogoIsNil applies the IsNil predicate on the "company_logo" field.
-func CompanyLogoIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldCompanyLogo))
-}
-
-// CompanyLogoNotNil applies the NotNil predicate on the "company_logo" field.
-func CompanyLogoNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldCompanyLogo))
-}
-
-// CompanyLogoEqualFold applies the EqualFold predicate on the "company_logo" field.
-func CompanyLogoEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldCompanyLogo, v))
-}
-
-// CompanyLogoContainsFold applies the ContainsFold predicate on the "company_logo" field.
-func CompanyLogoContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldCompanyLogo, v))
+// IsInvoiceNEQ applies the NEQ predicate on the "is_invoice" field.
+func IsInvoiceNEQ(v bool) predicate.Invoice {
+	return predicate.Invoice(sql.FieldNEQ(FieldIsInvoice, v))
 }
 
 // CompanyNameEQ applies the EQ predicate on the "company_name" field.
@@ -853,6 +748,71 @@ func CompanyPhoneEqualFold(v string) predicate.Invoice {
 // CompanyPhoneContainsFold applies the ContainsFold predicate on the "company_phone" field.
 func CompanyPhoneContainsFold(v string) predicate.Invoice {
 	return predicate.Invoice(sql.FieldContainsFold(FieldCompanyPhone, v))
+}
+
+// CurrencyEQ applies the EQ predicate on the "currency" field.
+func CurrencyEQ(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldCurrency, v))
+}
+
+// CurrencyNEQ applies the NEQ predicate on the "currency" field.
+func CurrencyNEQ(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldNEQ(FieldCurrency, v))
+}
+
+// CurrencyIn applies the In predicate on the "currency" field.
+func CurrencyIn(vs ...string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldIn(FieldCurrency, vs...))
+}
+
+// CurrencyNotIn applies the NotIn predicate on the "currency" field.
+func CurrencyNotIn(vs ...string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldNotIn(FieldCurrency, vs...))
+}
+
+// CurrencyGT applies the GT predicate on the "currency" field.
+func CurrencyGT(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldGT(FieldCurrency, v))
+}
+
+// CurrencyGTE applies the GTE predicate on the "currency" field.
+func CurrencyGTE(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldGTE(FieldCurrency, v))
+}
+
+// CurrencyLT applies the LT predicate on the "currency" field.
+func CurrencyLT(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldLT(FieldCurrency, v))
+}
+
+// CurrencyLTE applies the LTE predicate on the "currency" field.
+func CurrencyLTE(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldLTE(FieldCurrency, v))
+}
+
+// CurrencyContains applies the Contains predicate on the "currency" field.
+func CurrencyContains(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldContains(FieldCurrency, v))
+}
+
+// CurrencyHasPrefix applies the HasPrefix predicate on the "currency" field.
+func CurrencyHasPrefix(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldHasPrefix(FieldCurrency, v))
+}
+
+// CurrencyHasSuffix applies the HasSuffix predicate on the "currency" field.
+func CurrencyHasSuffix(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldHasSuffix(FieldCurrency, v))
+}
+
+// CurrencyEqualFold applies the EqualFold predicate on the "currency" field.
+func CurrencyEqualFold(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEqualFold(FieldCurrency, v))
+}
+
+// CurrencyContainsFold applies the ContainsFold predicate on the "currency" field.
+func CurrencyContainsFold(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldContainsFold(FieldCurrency, v))
 }
 
 // NumberEQ applies the EQ predicate on the "number" field.
@@ -1715,729 +1675,79 @@ func TotalLTE(v float64) predicate.Invoice {
 	return predicate.Invoice(sql.FieldLTE(FieldTotal, v))
 }
 
-// NotesEQ applies the EQ predicate on the "notes" field.
-func NotesEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldNotes, v))
+// TermsEQ applies the EQ predicate on the "terms" field.
+func TermsEQ(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEQ(FieldTerms, v))
 }
 
-// NotesNEQ applies the NEQ predicate on the "notes" field.
-func NotesNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldNotes, v))
+// TermsNEQ applies the NEQ predicate on the "terms" field.
+func TermsNEQ(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldNEQ(FieldTerms, v))
 }
 
-// NotesIn applies the In predicate on the "notes" field.
-func NotesIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldNotes, vs...))
+// TermsIn applies the In predicate on the "terms" field.
+func TermsIn(vs ...string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldIn(FieldTerms, vs...))
 }
 
-// NotesNotIn applies the NotIn predicate on the "notes" field.
-func NotesNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldNotes, vs...))
+// TermsNotIn applies the NotIn predicate on the "terms" field.
+func TermsNotIn(vs ...string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldNotIn(FieldTerms, vs...))
 }
 
-// NotesGT applies the GT predicate on the "notes" field.
-func NotesGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldNotes, v))
+// TermsGT applies the GT predicate on the "terms" field.
+func TermsGT(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldGT(FieldTerms, v))
 }
 
-// NotesGTE applies the GTE predicate on the "notes" field.
-func NotesGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldNotes, v))
+// TermsGTE applies the GTE predicate on the "terms" field.
+func TermsGTE(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldGTE(FieldTerms, v))
 }
 
-// NotesLT applies the LT predicate on the "notes" field.
-func NotesLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldNotes, v))
+// TermsLT applies the LT predicate on the "terms" field.
+func TermsLT(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldLT(FieldTerms, v))
 }
 
-// NotesLTE applies the LTE predicate on the "notes" field.
-func NotesLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldNotes, v))
+// TermsLTE applies the LTE predicate on the "terms" field.
+func TermsLTE(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldLTE(FieldTerms, v))
 }
 
-// NotesContains applies the Contains predicate on the "notes" field.
-func NotesContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldNotes, v))
+// TermsContains applies the Contains predicate on the "terms" field.
+func TermsContains(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldContains(FieldTerms, v))
 }
 
-// NotesHasPrefix applies the HasPrefix predicate on the "notes" field.
-func NotesHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldNotes, v))
+// TermsHasPrefix applies the HasPrefix predicate on the "terms" field.
+func TermsHasPrefix(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldHasPrefix(FieldTerms, v))
 }
 
-// NotesHasSuffix applies the HasSuffix predicate on the "notes" field.
-func NotesHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldNotes, v))
+// TermsHasSuffix applies the HasSuffix predicate on the "terms" field.
+func TermsHasSuffix(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldHasSuffix(FieldTerms, v))
 }
 
-// NotesIsNil applies the IsNil predicate on the "notes" field.
-func NotesIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldNotes))
+// TermsIsNil applies the IsNil predicate on the "terms" field.
+func TermsIsNil() predicate.Invoice {
+	return predicate.Invoice(sql.FieldIsNull(FieldTerms))
 }
 
-// NotesNotNil applies the NotNil predicate on the "notes" field.
-func NotesNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldNotes))
+// TermsNotNil applies the NotNil predicate on the "terms" field.
+func TermsNotNil() predicate.Invoice {
+	return predicate.Invoice(sql.FieldNotNull(FieldTerms))
 }
 
-// NotesEqualFold applies the EqualFold predicate on the "notes" field.
-func NotesEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldNotes, v))
+// TermsEqualFold applies the EqualFold predicate on the "terms" field.
+func TermsEqualFold(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldEqualFold(FieldTerms, v))
 }
 
-// NotesContainsFold applies the ContainsFold predicate on the "notes" field.
-func NotesContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldNotes, v))
-}
-
-// PaymentMethodEQ applies the EQ predicate on the "payment_method" field.
-func PaymentMethodEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldPaymentMethod, v))
-}
-
-// PaymentMethodNEQ applies the NEQ predicate on the "payment_method" field.
-func PaymentMethodNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldPaymentMethod, v))
-}
-
-// PaymentMethodIn applies the In predicate on the "payment_method" field.
-func PaymentMethodIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldPaymentMethod, vs...))
-}
-
-// PaymentMethodNotIn applies the NotIn predicate on the "payment_method" field.
-func PaymentMethodNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldPaymentMethod, vs...))
-}
-
-// PaymentMethodGT applies the GT predicate on the "payment_method" field.
-func PaymentMethodGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldPaymentMethod, v))
-}
-
-// PaymentMethodGTE applies the GTE predicate on the "payment_method" field.
-func PaymentMethodGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldPaymentMethod, v))
-}
-
-// PaymentMethodLT applies the LT predicate on the "payment_method" field.
-func PaymentMethodLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldPaymentMethod, v))
-}
-
-// PaymentMethodLTE applies the LTE predicate on the "payment_method" field.
-func PaymentMethodLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldPaymentMethod, v))
-}
-
-// PaymentMethodContains applies the Contains predicate on the "payment_method" field.
-func PaymentMethodContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldPaymentMethod, v))
-}
-
-// PaymentMethodHasPrefix applies the HasPrefix predicate on the "payment_method" field.
-func PaymentMethodHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldPaymentMethod, v))
-}
-
-// PaymentMethodHasSuffix applies the HasSuffix predicate on the "payment_method" field.
-func PaymentMethodHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldPaymentMethod, v))
-}
-
-// PaymentMethodIsNil applies the IsNil predicate on the "payment_method" field.
-func PaymentMethodIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldPaymentMethod))
-}
-
-// PaymentMethodNotNil applies the NotNil predicate on the "payment_method" field.
-func PaymentMethodNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldPaymentMethod))
-}
-
-// PaymentMethodEqualFold applies the EqualFold predicate on the "payment_method" field.
-func PaymentMethodEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldPaymentMethod, v))
-}
-
-// PaymentMethodContainsFold applies the ContainsFold predicate on the "payment_method" field.
-func PaymentMethodContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldPaymentMethod, v))
-}
-
-// BankNameEQ applies the EQ predicate on the "bank_name" field.
-func BankNameEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankName, v))
-}
-
-// BankNameNEQ applies the NEQ predicate on the "bank_name" field.
-func BankNameNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldBankName, v))
-}
-
-// BankNameIn applies the In predicate on the "bank_name" field.
-func BankNameIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldBankName, vs...))
-}
-
-// BankNameNotIn applies the NotIn predicate on the "bank_name" field.
-func BankNameNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldBankName, vs...))
-}
-
-// BankNameGT applies the GT predicate on the "bank_name" field.
-func BankNameGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldBankName, v))
-}
-
-// BankNameGTE applies the GTE predicate on the "bank_name" field.
-func BankNameGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldBankName, v))
-}
-
-// BankNameLT applies the LT predicate on the "bank_name" field.
-func BankNameLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldBankName, v))
-}
-
-// BankNameLTE applies the LTE predicate on the "bank_name" field.
-func BankNameLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldBankName, v))
-}
-
-// BankNameContains applies the Contains predicate on the "bank_name" field.
-func BankNameContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldBankName, v))
-}
-
-// BankNameHasPrefix applies the HasPrefix predicate on the "bank_name" field.
-func BankNameHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldBankName, v))
-}
-
-// BankNameHasSuffix applies the HasSuffix predicate on the "bank_name" field.
-func BankNameHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldBankName, v))
-}
-
-// BankNameIsNil applies the IsNil predicate on the "bank_name" field.
-func BankNameIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldBankName))
-}
-
-// BankNameNotNil applies the NotNil predicate on the "bank_name" field.
-func BankNameNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldBankName))
-}
-
-// BankNameEqualFold applies the EqualFold predicate on the "bank_name" field.
-func BankNameEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldBankName, v))
-}
-
-// BankNameContainsFold applies the ContainsFold predicate on the "bank_name" field.
-func BankNameContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldBankName, v))
-}
-
-// BankAgencyEQ applies the EQ predicate on the "bank_agency" field.
-func BankAgencyEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAgency, v))
-}
-
-// BankAgencyNEQ applies the NEQ predicate on the "bank_agency" field.
-func BankAgencyNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldBankAgency, v))
-}
-
-// BankAgencyIn applies the In predicate on the "bank_agency" field.
-func BankAgencyIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldBankAgency, vs...))
-}
-
-// BankAgencyNotIn applies the NotIn predicate on the "bank_agency" field.
-func BankAgencyNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldBankAgency, vs...))
-}
-
-// BankAgencyGT applies the GT predicate on the "bank_agency" field.
-func BankAgencyGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldBankAgency, v))
-}
-
-// BankAgencyGTE applies the GTE predicate on the "bank_agency" field.
-func BankAgencyGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldBankAgency, v))
-}
-
-// BankAgencyLT applies the LT predicate on the "bank_agency" field.
-func BankAgencyLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldBankAgency, v))
-}
-
-// BankAgencyLTE applies the LTE predicate on the "bank_agency" field.
-func BankAgencyLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldBankAgency, v))
-}
-
-// BankAgencyContains applies the Contains predicate on the "bank_agency" field.
-func BankAgencyContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldBankAgency, v))
-}
-
-// BankAgencyHasPrefix applies the HasPrefix predicate on the "bank_agency" field.
-func BankAgencyHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldBankAgency, v))
-}
-
-// BankAgencyHasSuffix applies the HasSuffix predicate on the "bank_agency" field.
-func BankAgencyHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldBankAgency, v))
-}
-
-// BankAgencyIsNil applies the IsNil predicate on the "bank_agency" field.
-func BankAgencyIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldBankAgency))
-}
-
-// BankAgencyNotNil applies the NotNil predicate on the "bank_agency" field.
-func BankAgencyNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldBankAgency))
-}
-
-// BankAgencyEqualFold applies the EqualFold predicate on the "bank_agency" field.
-func BankAgencyEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldBankAgency, v))
-}
-
-// BankAgencyContainsFold applies the ContainsFold predicate on the "bank_agency" field.
-func BankAgencyContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldBankAgency, v))
-}
-
-// BankAccountNumberEQ applies the EQ predicate on the "bank_account_number" field.
-func BankAccountNumberEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberNEQ applies the NEQ predicate on the "bank_account_number" field.
-func BankAccountNumberNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberIn applies the In predicate on the "bank_account_number" field.
-func BankAccountNumberIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldBankAccountNumber, vs...))
-}
-
-// BankAccountNumberNotIn applies the NotIn predicate on the "bank_account_number" field.
-func BankAccountNumberNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldBankAccountNumber, vs...))
-}
-
-// BankAccountNumberGT applies the GT predicate on the "bank_account_number" field.
-func BankAccountNumberGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberGTE applies the GTE predicate on the "bank_account_number" field.
-func BankAccountNumberGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberLT applies the LT predicate on the "bank_account_number" field.
-func BankAccountNumberLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberLTE applies the LTE predicate on the "bank_account_number" field.
-func BankAccountNumberLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberContains applies the Contains predicate on the "bank_account_number" field.
-func BankAccountNumberContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberHasPrefix applies the HasPrefix predicate on the "bank_account_number" field.
-func BankAccountNumberHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberHasSuffix applies the HasSuffix predicate on the "bank_account_number" field.
-func BankAccountNumberHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberIsNil applies the IsNil predicate on the "bank_account_number" field.
-func BankAccountNumberIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldBankAccountNumber))
-}
-
-// BankAccountNumberNotNil applies the NotNil predicate on the "bank_account_number" field.
-func BankAccountNumberNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldBankAccountNumber))
-}
-
-// BankAccountNumberEqualFold applies the EqualFold predicate on the "bank_account_number" field.
-func BankAccountNumberEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldBankAccountNumber, v))
-}
-
-// BankAccountNumberContainsFold applies the ContainsFold predicate on the "bank_account_number" field.
-func BankAccountNumberContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldBankAccountNumber, v))
-}
-
-// BankAccountNameEQ applies the EQ predicate on the "bank_account_name" field.
-func BankAccountNameEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldBankAccountName, v))
-}
-
-// BankAccountNameNEQ applies the NEQ predicate on the "bank_account_name" field.
-func BankAccountNameNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldBankAccountName, v))
-}
-
-// BankAccountNameIn applies the In predicate on the "bank_account_name" field.
-func BankAccountNameIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldBankAccountName, vs...))
-}
-
-// BankAccountNameNotIn applies the NotIn predicate on the "bank_account_name" field.
-func BankAccountNameNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldBankAccountName, vs...))
-}
-
-// BankAccountNameGT applies the GT predicate on the "bank_account_name" field.
-func BankAccountNameGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldBankAccountName, v))
-}
-
-// BankAccountNameGTE applies the GTE predicate on the "bank_account_name" field.
-func BankAccountNameGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldBankAccountName, v))
-}
-
-// BankAccountNameLT applies the LT predicate on the "bank_account_name" field.
-func BankAccountNameLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldBankAccountName, v))
-}
-
-// BankAccountNameLTE applies the LTE predicate on the "bank_account_name" field.
-func BankAccountNameLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldBankAccountName, v))
-}
-
-// BankAccountNameContains applies the Contains predicate on the "bank_account_name" field.
-func BankAccountNameContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldBankAccountName, v))
-}
-
-// BankAccountNameHasPrefix applies the HasPrefix predicate on the "bank_account_name" field.
-func BankAccountNameHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldBankAccountName, v))
-}
-
-// BankAccountNameHasSuffix applies the HasSuffix predicate on the "bank_account_name" field.
-func BankAccountNameHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldBankAccountName, v))
-}
-
-// BankAccountNameIsNil applies the IsNil predicate on the "bank_account_name" field.
-func BankAccountNameIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldBankAccountName))
-}
-
-// BankAccountNameNotNil applies the NotNil predicate on the "bank_account_name" field.
-func BankAccountNameNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldBankAccountName))
-}
-
-// BankAccountNameEqualFold applies the EqualFold predicate on the "bank_account_name" field.
-func BankAccountNameEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldBankAccountName, v))
-}
-
-// BankAccountNameContainsFold applies the ContainsFold predicate on the "bank_account_name" field.
-func BankAccountNameContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldBankAccountName, v))
-}
-
-// StorageURIEQ applies the EQ predicate on the "storage_URI" field.
-func StorageURIEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldStorageURI, v))
-}
-
-// StorageURINEQ applies the NEQ predicate on the "storage_URI" field.
-func StorageURINEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldStorageURI, v))
-}
-
-// StorageURIIn applies the In predicate on the "storage_URI" field.
-func StorageURIIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldStorageURI, vs...))
-}
-
-// StorageURINotIn applies the NotIn predicate on the "storage_URI" field.
-func StorageURINotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldStorageURI, vs...))
-}
-
-// StorageURIGT applies the GT predicate on the "storage_URI" field.
-func StorageURIGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldStorageURI, v))
-}
-
-// StorageURIGTE applies the GTE predicate on the "storage_URI" field.
-func StorageURIGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldStorageURI, v))
-}
-
-// StorageURILT applies the LT predicate on the "storage_URI" field.
-func StorageURILT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldStorageURI, v))
-}
-
-// StorageURILTE applies the LTE predicate on the "storage_URI" field.
-func StorageURILTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldStorageURI, v))
-}
-
-// StorageURIContains applies the Contains predicate on the "storage_URI" field.
-func StorageURIContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldStorageURI, v))
-}
-
-// StorageURIHasPrefix applies the HasPrefix predicate on the "storage_URI" field.
-func StorageURIHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldStorageURI, v))
-}
-
-// StorageURIHasSuffix applies the HasSuffix predicate on the "storage_URI" field.
-func StorageURIHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldStorageURI, v))
-}
-
-// StorageURIIsNil applies the IsNil predicate on the "storage_URI" field.
-func StorageURIIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldStorageURI))
-}
-
-// StorageURINotNil applies the NotNil predicate on the "storage_URI" field.
-func StorageURINotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldStorageURI))
-}
-
-// StorageURIEqualFold applies the EqualFold predicate on the "storage_URI" field.
-func StorageURIEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldStorageURI, v))
-}
-
-// StorageURIContainsFold applies the ContainsFold predicate on the "storage_URI" field.
-func StorageURIContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldStorageURI, v))
-}
-
-// URLEQ applies the EQ predicate on the "URL" field.
-func URLEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldURL, v))
-}
-
-// URLNEQ applies the NEQ predicate on the "URL" field.
-func URLNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldURL, v))
-}
-
-// URLIn applies the In predicate on the "URL" field.
-func URLIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldURL, vs...))
-}
-
-// URLNotIn applies the NotIn predicate on the "URL" field.
-func URLNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldURL, vs...))
-}
-
-// URLGT applies the GT predicate on the "URL" field.
-func URLGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldURL, v))
-}
-
-// URLGTE applies the GTE predicate on the "URL" field.
-func URLGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldURL, v))
-}
-
-// URLLT applies the LT predicate on the "URL" field.
-func URLLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldURL, v))
-}
-
-// URLLTE applies the LTE predicate on the "URL" field.
-func URLLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldURL, v))
-}
-
-// URLContains applies the Contains predicate on the "URL" field.
-func URLContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldURL, v))
-}
-
-// URLHasPrefix applies the HasPrefix predicate on the "URL" field.
-func URLHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldURL, v))
-}
-
-// URLHasSuffix applies the HasSuffix predicate on the "URL" field.
-func URLHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldURL, v))
-}
-
-// URLIsNil applies the IsNil predicate on the "URL" field.
-func URLIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldURL))
-}
-
-// URLNotNil applies the NotNil predicate on the "URL" field.
-func URLNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldURL))
-}
-
-// URLEqualFold applies the EqualFold predicate on the "URL" field.
-func URLEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldURL, v))
-}
-
-// URLContainsFold applies the ContainsFold predicate on the "URL" field.
-func URLContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldURL, v))
-}
-
-// FilenameEQ applies the EQ predicate on the "filename" field.
-func FilenameEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldFilename, v))
-}
-
-// FilenameNEQ applies the NEQ predicate on the "filename" field.
-func FilenameNEQ(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldFilename, v))
-}
-
-// FilenameIn applies the In predicate on the "filename" field.
-func FilenameIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldFilename, vs...))
-}
-
-// FilenameNotIn applies the NotIn predicate on the "filename" field.
-func FilenameNotIn(vs ...string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldFilename, vs...))
-}
-
-// FilenameGT applies the GT predicate on the "filename" field.
-func FilenameGT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldFilename, v))
-}
-
-// FilenameGTE applies the GTE predicate on the "filename" field.
-func FilenameGTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldFilename, v))
-}
-
-// FilenameLT applies the LT predicate on the "filename" field.
-func FilenameLT(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldFilename, v))
-}
-
-// FilenameLTE applies the LTE predicate on the "filename" field.
-func FilenameLTE(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldFilename, v))
-}
-
-// FilenameContains applies the Contains predicate on the "filename" field.
-func FilenameContains(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContains(FieldFilename, v))
-}
-
-// FilenameHasPrefix applies the HasPrefix predicate on the "filename" field.
-func FilenameHasPrefix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasPrefix(FieldFilename, v))
-}
-
-// FilenameHasSuffix applies the HasSuffix predicate on the "filename" field.
-func FilenameHasSuffix(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldHasSuffix(FieldFilename, v))
-}
-
-// FilenameIsNil applies the IsNil predicate on the "filename" field.
-func FilenameIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldFilename))
-}
-
-// FilenameNotNil applies the NotNil predicate on the "filename" field.
-func FilenameNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldFilename))
-}
-
-// FilenameEqualFold applies the EqualFold predicate on the "filename" field.
-func FilenameEqualFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEqualFold(FieldFilename, v))
-}
-
-// FilenameContainsFold applies the ContainsFold predicate on the "filename" field.
-func FilenameContainsFold(v string) predicate.Invoice {
-	return predicate.Invoice(sql.FieldContainsFold(FieldFilename, v))
-}
-
-// SizeEQ applies the EQ predicate on the "size" field.
-func SizeEQ(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldEQ(FieldSize, v))
-}
-
-// SizeNEQ applies the NEQ predicate on the "size" field.
-func SizeNEQ(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNEQ(FieldSize, v))
-}
-
-// SizeIn applies the In predicate on the "size" field.
-func SizeIn(vs ...float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldIn(FieldSize, vs...))
-}
-
-// SizeNotIn applies the NotIn predicate on the "size" field.
-func SizeNotIn(vs ...float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotIn(FieldSize, vs...))
-}
-
-// SizeGT applies the GT predicate on the "size" field.
-func SizeGT(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGT(FieldSize, v))
-}
-
-// SizeGTE applies the GTE predicate on the "size" field.
-func SizeGTE(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldGTE(FieldSize, v))
-}
-
-// SizeLT applies the LT predicate on the "size" field.
-func SizeLT(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLT(FieldSize, v))
-}
-
-// SizeLTE applies the LTE predicate on the "size" field.
-func SizeLTE(v float64) predicate.Invoice {
-	return predicate.Invoice(sql.FieldLTE(FieldSize, v))
-}
-
-// SizeIsNil applies the IsNil predicate on the "size" field.
-func SizeIsNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldIsNull(FieldSize))
-}
-
-// SizeNotNil applies the NotNil predicate on the "size" field.
-func SizeNotNil() predicate.Invoice {
-	return predicate.Invoice(sql.FieldNotNull(FieldSize))
+// TermsContainsFold applies the ContainsFold predicate on the "terms" field.
+func TermsContainsFold(v string) predicate.Invoice {
+	return predicate.Invoice(sql.FieldContainsFold(FieldTerms, v))
 }
 
 // KeywordsEQ applies the EQ predicate on the "keywords" field.

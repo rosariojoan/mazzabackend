@@ -66,16 +66,16 @@ func (ic *InvoiceCreate) SetNillableDeletedAt(t *time.Time) *InvoiceCreate {
 	return ic
 }
 
-// SetCompanyLogo sets the "company_logo" field.
-func (ic *InvoiceCreate) SetCompanyLogo(s string) *InvoiceCreate {
-	ic.mutation.SetCompanyLogo(s)
+// SetIsInvoice sets the "is_invoice" field.
+func (ic *InvoiceCreate) SetIsInvoice(b bool) *InvoiceCreate {
+	ic.mutation.SetIsInvoice(b)
 	return ic
 }
 
-// SetNillableCompanyLogo sets the "company_logo" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableCompanyLogo(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetCompanyLogo(*s)
+// SetNillableIsInvoice sets the "is_invoice" field if the given value is not nil.
+func (ic *InvoiceCreate) SetNillableIsInvoice(b *bool) *InvoiceCreate {
+	if b != nil {
+		ic.SetIsInvoice(*b)
 	}
 	return ic
 }
@@ -137,6 +137,12 @@ func (ic *InvoiceCreate) SetNillableCompanyPhone(s *string) *InvoiceCreate {
 	if s != nil {
 		ic.SetCompanyPhone(*s)
 	}
+	return ic
+}
+
+// SetCurrency sets the "currency" field.
+func (ic *InvoiceCreate) SetCurrency(s string) *InvoiceCreate {
+	ic.mutation.SetCurrency(s)
 	return ic
 }
 
@@ -302,142 +308,16 @@ func (ic *InvoiceCreate) SetTotal(f float64) *InvoiceCreate {
 	return ic
 }
 
-// SetNotes sets the "notes" field.
-func (ic *InvoiceCreate) SetNotes(s string) *InvoiceCreate {
-	ic.mutation.SetNotes(s)
+// SetTerms sets the "terms" field.
+func (ic *InvoiceCreate) SetTerms(s string) *InvoiceCreate {
+	ic.mutation.SetTerms(s)
 	return ic
 }
 
-// SetNillableNotes sets the "notes" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableNotes(s *string) *InvoiceCreate {
+// SetNillableTerms sets the "terms" field if the given value is not nil.
+func (ic *InvoiceCreate) SetNillableTerms(s *string) *InvoiceCreate {
 	if s != nil {
-		ic.SetNotes(*s)
-	}
-	return ic
-}
-
-// SetPaymentMethod sets the "payment_method" field.
-func (ic *InvoiceCreate) SetPaymentMethod(s string) *InvoiceCreate {
-	ic.mutation.SetPaymentMethod(s)
-	return ic
-}
-
-// SetNillablePaymentMethod sets the "payment_method" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillablePaymentMethod(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetPaymentMethod(*s)
-	}
-	return ic
-}
-
-// SetBankName sets the "bank_name" field.
-func (ic *InvoiceCreate) SetBankName(s string) *InvoiceCreate {
-	ic.mutation.SetBankName(s)
-	return ic
-}
-
-// SetNillableBankName sets the "bank_name" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableBankName(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetBankName(*s)
-	}
-	return ic
-}
-
-// SetBankAgency sets the "bank_agency" field.
-func (ic *InvoiceCreate) SetBankAgency(s string) *InvoiceCreate {
-	ic.mutation.SetBankAgency(s)
-	return ic
-}
-
-// SetNillableBankAgency sets the "bank_agency" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableBankAgency(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetBankAgency(*s)
-	}
-	return ic
-}
-
-// SetBankAccountNumber sets the "bank_account_number" field.
-func (ic *InvoiceCreate) SetBankAccountNumber(s string) *InvoiceCreate {
-	ic.mutation.SetBankAccountNumber(s)
-	return ic
-}
-
-// SetNillableBankAccountNumber sets the "bank_account_number" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableBankAccountNumber(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetBankAccountNumber(*s)
-	}
-	return ic
-}
-
-// SetBankAccountName sets the "bank_account_name" field.
-func (ic *InvoiceCreate) SetBankAccountName(s string) *InvoiceCreate {
-	ic.mutation.SetBankAccountName(s)
-	return ic
-}
-
-// SetNillableBankAccountName sets the "bank_account_name" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableBankAccountName(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetBankAccountName(*s)
-	}
-	return ic
-}
-
-// SetStorageURI sets the "storage_URI" field.
-func (ic *InvoiceCreate) SetStorageURI(s string) *InvoiceCreate {
-	ic.mutation.SetStorageURI(s)
-	return ic
-}
-
-// SetNillableStorageURI sets the "storage_URI" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableStorageURI(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetStorageURI(*s)
-	}
-	return ic
-}
-
-// SetURL sets the "URL" field.
-func (ic *InvoiceCreate) SetURL(s string) *InvoiceCreate {
-	ic.mutation.SetURL(s)
-	return ic
-}
-
-// SetNillableURL sets the "URL" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableURL(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetURL(*s)
-	}
-	return ic
-}
-
-// SetFilename sets the "filename" field.
-func (ic *InvoiceCreate) SetFilename(s string) *InvoiceCreate {
-	ic.mutation.SetFilename(s)
-	return ic
-}
-
-// SetNillableFilename sets the "filename" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableFilename(s *string) *InvoiceCreate {
-	if s != nil {
-		ic.SetFilename(*s)
-	}
-	return ic
-}
-
-// SetSize sets the "size" field.
-func (ic *InvoiceCreate) SetSize(f float64) *InvoiceCreate {
-	ic.mutation.SetSize(f)
-	return ic
-}
-
-// SetNillableSize sets the "size" field if the given value is not nil.
-func (ic *InvoiceCreate) SetNillableSize(f *float64) *InvoiceCreate {
-	if f != nil {
-		ic.SetSize(*f)
+		ic.SetTerms(*s)
 	}
 	return ic
 }
@@ -559,6 +439,10 @@ func (ic *InvoiceCreate) defaults() {
 		v := invoice.DefaultUpdatedAt()
 		ic.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := ic.mutation.IsInvoice(); !ok {
+		v := invoice.DefaultIsInvoice
+		ic.mutation.SetIsInvoice(v)
+	}
 	if _, ok := ic.mutation.Status(); !ok {
 		v := invoice.DefaultStatus
 		ic.mutation.SetStatus(v)
@@ -577,6 +461,9 @@ func (ic *InvoiceCreate) check() error {
 	if _, ok := ic.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Invoice.updated_at"`)}
 	}
+	if _, ok := ic.mutation.IsInvoice(); !ok {
+		return &ValidationError{Name: "is_invoice", err: errors.New(`generated: missing required field "Invoice.is_invoice"`)}
+	}
 	if _, ok := ic.mutation.CompanyName(); !ok {
 		return &ValidationError{Name: "company_name", err: errors.New(`generated: missing required field "Invoice.company_name"`)}
 	}
@@ -585,6 +472,9 @@ func (ic *InvoiceCreate) check() error {
 	}
 	if _, ok := ic.mutation.CompanyCity(); !ok {
 		return &ValidationError{Name: "company_city", err: errors.New(`generated: missing required field "Invoice.company_city"`)}
+	}
+	if _, ok := ic.mutation.Currency(); !ok {
+		return &ValidationError{Name: "currency", err: errors.New(`generated: missing required field "Invoice.currency"`)}
 	}
 	if _, ok := ic.mutation.IssueDate(); !ok {
 		return &ValidationError{Name: "issue_date", err: errors.New(`generated: missing required field "Invoice.issue_date"`)}
@@ -630,11 +520,6 @@ func (ic *InvoiceCreate) check() error {
 	if v, ok := ic.mutation.Total(); ok {
 		if err := invoice.TotalValidator(v); err != nil {
 			return &ValidationError{Name: "total", err: fmt.Errorf(`generated: validator failed for field "Invoice.total": %w`, err)}
-		}
-	}
-	if v, ok := ic.mutation.Size(); ok {
-		if err := invoice.SizeValidator(v); err != nil {
-			return &ValidationError{Name: "size", err: fmt.Errorf(`generated: validator failed for field "Invoice.size": %w`, err)}
 		}
 	}
 	if _, ok := ic.mutation.Keywords(); !ok {
@@ -686,9 +571,9 @@ func (ic *InvoiceCreate) createSpec() (*Invoice, *sqlgraph.CreateSpec) {
 		_spec.SetField(invoice.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
-	if value, ok := ic.mutation.CompanyLogo(); ok {
-		_spec.SetField(invoice.FieldCompanyLogo, field.TypeString, value)
-		_node.CompanyLogo = &value
+	if value, ok := ic.mutation.IsInvoice(); ok {
+		_spec.SetField(invoice.FieldIsInvoice, field.TypeBool, value)
+		_node.IsInvoice = value
 	}
 	if value, ok := ic.mutation.CompanyName(); ok {
 		_spec.SetField(invoice.FieldCompanyName, field.TypeString, value)
@@ -713,6 +598,10 @@ func (ic *InvoiceCreate) createSpec() (*Invoice, *sqlgraph.CreateSpec) {
 	if value, ok := ic.mutation.CompanyPhone(); ok {
 		_spec.SetField(invoice.FieldCompanyPhone, field.TypeString, value)
 		_node.CompanyPhone = &value
+	}
+	if value, ok := ic.mutation.Currency(); ok {
+		_spec.SetField(invoice.FieldCurrency, field.TypeString, value)
+		_node.Currency = value
 	}
 	if value, ok := ic.mutation.Number(); ok {
 		_spec.SetField(invoice.FieldNumber, field.TypeString, value)
@@ -774,45 +663,9 @@ func (ic *InvoiceCreate) createSpec() (*Invoice, *sqlgraph.CreateSpec) {
 		_spec.SetField(invoice.FieldTotal, field.TypeFloat64, value)
 		_node.Total = value
 	}
-	if value, ok := ic.mutation.Notes(); ok {
-		_spec.SetField(invoice.FieldNotes, field.TypeString, value)
-		_node.Notes = &value
-	}
-	if value, ok := ic.mutation.PaymentMethod(); ok {
-		_spec.SetField(invoice.FieldPaymentMethod, field.TypeString, value)
-		_node.PaymentMethod = &value
-	}
-	if value, ok := ic.mutation.BankName(); ok {
-		_spec.SetField(invoice.FieldBankName, field.TypeString, value)
-		_node.BankName = &value
-	}
-	if value, ok := ic.mutation.BankAgency(); ok {
-		_spec.SetField(invoice.FieldBankAgency, field.TypeString, value)
-		_node.BankAgency = &value
-	}
-	if value, ok := ic.mutation.BankAccountNumber(); ok {
-		_spec.SetField(invoice.FieldBankAccountNumber, field.TypeString, value)
-		_node.BankAccountNumber = &value
-	}
-	if value, ok := ic.mutation.BankAccountName(); ok {
-		_spec.SetField(invoice.FieldBankAccountName, field.TypeString, value)
-		_node.BankAccountName = &value
-	}
-	if value, ok := ic.mutation.StorageURI(); ok {
-		_spec.SetField(invoice.FieldStorageURI, field.TypeString, value)
-		_node.StorageURI = &value
-	}
-	if value, ok := ic.mutation.URL(); ok {
-		_spec.SetField(invoice.FieldURL, field.TypeString, value)
-		_node.URL = &value
-	}
-	if value, ok := ic.mutation.Filename(); ok {
-		_spec.SetField(invoice.FieldFilename, field.TypeString, value)
-		_node.Filename = &value
-	}
-	if value, ok := ic.mutation.Size(); ok {
-		_spec.SetField(invoice.FieldSize, field.TypeFloat64, value)
-		_node.Size = &value
+	if value, ok := ic.mutation.Terms(); ok {
+		_spec.SetField(invoice.FieldTerms, field.TypeString, value)
+		_node.Terms = value
 	}
 	if value, ok := ic.mutation.Keywords(); ok {
 		_spec.SetField(invoice.FieldKeywords, field.TypeString, value)

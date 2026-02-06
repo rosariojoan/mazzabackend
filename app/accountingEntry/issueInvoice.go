@@ -7,22 +7,22 @@ import (
 	"mazza/ent/generated/company"
 	"mazza/ent/generated/invoice"
 	"mazza/ent/utils"
-	"mazza/firebase"
 	"mazza/mazza/generated/model"
 )
 
-func IssueInvoice(ctx context.Context, client *generated.Client, input model.InvoiceInput) (*model.InvoiceIssuanceOutput, error) {
+func IssueInvoice(ctx context.Context, client *generated.Client, input model.InvoiceInput) (*generated.Invoice, error) {
 	activeUser, activeCompany := utils.GetSession(&ctx)
+
 	// FIRST, CHECK THAT THE INVOICE NUMBER DOES NOT EXIST FOR THE COMPANY
 	exists, err := client.Invoice.Query().Where(
 		invoice.HasCompanyWith(company.ID(activeCompany.ID)),
 		invoice.Number(*input.InvoiceData.Number),
 	).Exist(ctx)
 
-	if exists || err != nil {
-		fmt.Println("invoice number exists or err:", &input.InvoiceData.Number, *input.InvoiceData.Number, err)
-		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
+	if exists {
+		return nil, fmt.Errorf("invoice number already registered")
+	} else if err != nil {
+		fmt.Println("invoice number exists or err:", input.InvoiceData.Number, *input.InvoiceData.Number, err)
 		return nil, fmt.Errorf("invalid invoice number. refresh company details")
 	}
 
@@ -30,31 +30,36 @@ func IssueInvoice(ctx context.Context, client *generated.Client, input model.Inv
 	tx, err := client.Tx(ctx)
 	if err != nil {
 		fmt.Println("err:", err)
-		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
+	currency := input.InvoiceData.Currency
+	if len(currency) == 0 {
+		currency = activeCompany.BaseCurrency
+	}
+
+	invoiceNumber := fmt.Sprintf("%s-%04d", activeCompany.InvoicePrefix, activeCompany.LastInvoiceNumber+1)
+
 	// Create invoice entry
 	invoiceEntry, err := tx.Invoice.Create().SetInput(*input.InvoiceData).
+		SetCurrency(currency).
+		SetNumber(invoiceNumber).
 		SetCompanyID(activeCompany.ID).
 		SetIssuedByID(activeUser.ID).
 		Save(ctx)
 	if err != nil {
 		_ = tx.Rollback()
 		fmt.Println("err:", err)
-		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
 	// Register accounting entries
-	result, err := RegisterAccountingOperations(ctx, tx, *input.AccountingEntryData, &invoiceEntry.ID)
+	_, err = RegisterAccountingOperations(ctx, tx, *input.AccountingEntryData, &invoiceEntry.ID)
 	if err != nil {
 		_ = tx.Rollback()
 		fmt.Println("InvoiceIssuance err:", err)
 		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
+		// go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
@@ -75,10 +80,10 @@ func IssueInvoice(ctx context.Context, client *generated.Client, input model.Inv
 		fmt.Println("err:", err)
 		_ = tx.Rollback()
 		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
+		// go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
-	
+
 	// Create invoice entry
 	// status := invoice.StatusPAID
 	// status := *input.InvoiceData.Status
@@ -89,15 +94,8 @@ func IssueInvoice(ctx context.Context, client *generated.Client, input model.Inv
 	if err = tx.Commit(); err != nil {
 		fmt.Println("err:", err)
 		_ = tx.Rollback()
-		// delete the invoice file from the storage as it is not valid
-		go firebase.DeleteItem(*input.InvoiceData.StorageURI)
 		return nil, fmt.Errorf("an error occurred")
 	}
 
-	output := model.InvoiceIssuanceOutput{
-		Message: *result,
-		FileURL: *input.InvoiceData.URL,
-	}
-
-	return &output, nil
+	return invoiceEntry, nil
 }

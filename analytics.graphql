@@ -1,8 +1,8 @@
 enum TimeRange {
-    WEEK
-    MONTH
-    QUARTER
-    YEAR
+    week
+    month
+    quarter
+    year
 }
 
 type ExpensesBreakdownOutput {

@@ -22,50 +22,36 @@ func (AccountingEntry) Mixin() []ent.Mixin {
 	}
 }
 
-// var accountTypes = []string{
-// 	"asset",
-// 	"liability",
-// 	"equity",
-// 	"revenue",
-// 	"expense",
-// 	"taxExpense",
-// 	"income",
-// 	"dividendExpense",
-// 	"contraAsset",
-// 	"contraLiability",
-// 	"contraRevenue",
-// 	"contraExpense",
-// }
-
 var accountTypes = []string{
-	"ASSET",
-	"LIABILITY",
-	"EQUITY",
-	"REVENUE",
-	"EXPENSE",
-	"TAX_EXPENSE",
-	"INCOME",
-	"DIVIDEND_EXPENSE",
-	"CONTRA_ASSET",
-	"CONTRA_LIABILITY",
-	"CONTRA_REVENUE",
-	"CONTRA_EXPENSE",
+	"asset",
+	"liability",
+	"equity",
+	"revenue",
+	"expense",
+	"taxExpense",
+	"income",
+	"dividendExpense",
+	"contraAsset",
+	"contraLiability",
+	"contraEquity",
+	"contraRevenue",
+	"contraExpense",
 }
 
 // Fields of the AccountingEntry.
 func (AccountingEntry) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("number").Positive(),
-		field.Int("group").Positive().Annotations(entgql.OrderField("GROUP")),
-		field.Time("date").Default(time.Now).Annotations(entgql.OrderField("DATE")),
-		field.String("account").NotEmpty().Annotations(entgql.OrderField("ACCOUNT")),
+		field.Int("group").Positive().Annotations(entgql.OrderField("group")),
+		field.Time("date").Default(time.Now).Annotations(entgql.OrderField("date")),
+		field.String("account").NotEmpty().Annotations(entgql.OrderField("account")),
 		field.String("label"),
-		field.Float("amount").Annotations(entgql.OrderField("AMOUNT")),
-		field.String("description").Annotations(entgql.OrderField("DESCRIPTION")),
-		field.Enum("account_type").Values(accountTypes...).Annotations(entgql.OrderField("ACCOUNTTYPE")),
-		field.String("category").Default("").Annotations(entgql.OrderField("CATEGORY")),
-		field.String("main").Default("").Annotations(entgql.OrderField("MAIN")),
-		field.Bool("is_debit").Annotations(entgql.OrderField("ISDEBIT")),
+		field.Float("amount").Annotations(entgql.OrderField("amount")),
+		field.String("description").Annotations(entgql.OrderField("description")),
+		field.Enum("account_type").Values(accountTypes...).Annotations(entgql.OrderField("accountType")),
+		field.String("category").Default("").Annotations(entgql.OrderField("category")),
+		field.String("main").Default("").Annotations(entgql.OrderField("main")),
+		field.Bool("is_debit").Annotations(entgql.OrderField("isDebit")),
 		field.Bool("is_reversal").Default(false),
 		field.Bool("reversed").Default(false),
 	}
@@ -84,7 +70,7 @@ func (AccountingEntry) Edges() []ent.Edge {
 		edge.From("company", Company.Type).Ref("accounting_entries").Unique(), // one company can have many accounting entries
 		edge.From("user", User.Type).Ref("accounting_entries").Unique(),
 		edge.From("loan", Loan.Type).Ref("transaction_history").Unique(),         // one user can have many accounting entries
-		edge.From("loanSchedules", LoanSchedule.Type).Ref("transaction_history"), // many-to-many
+		edge.From("loan_schedule", LoanSchedule.Type).Ref("transaction_history"), // many-to-many
 	}
 }
 

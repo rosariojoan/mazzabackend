@@ -241,14 +241,14 @@ func (aec *AccountingEntryCreate) SetLoan(l *Loan) *AccountingEntryCreate {
 	return aec.SetLoanID(l.ID)
 }
 
-// AddLoanScheduleIDs adds the "loanSchedules" edge to the LoanSchedule entity by IDs.
+// AddLoanScheduleIDs adds the "loan_schedule" edge to the LoanSchedule entity by IDs.
 func (aec *AccountingEntryCreate) AddLoanScheduleIDs(ids ...int) *AccountingEntryCreate {
 	aec.mutation.AddLoanScheduleIDs(ids...)
 	return aec
 }
 
-// AddLoanSchedules adds the "loanSchedules" edges to the LoanSchedule entity.
-func (aec *AccountingEntryCreate) AddLoanSchedules(l ...*LoanSchedule) *AccountingEntryCreate {
+// AddLoanSchedule adds the "loan_schedule" edges to the LoanSchedule entity.
+func (aec *AccountingEntryCreate) AddLoanSchedule(l ...*LoanSchedule) *AccountingEntryCreate {
 	ids := make([]int, len(l))
 	for i := range l {
 		ids[i] = l[i].ID
@@ -529,12 +529,12 @@ func (aec *AccountingEntryCreate) createSpec() (*AccountingEntry, *sqlgraph.Crea
 		_node.loan_transaction_history = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := aec.mutation.LoanSchedulesIDs(); len(nodes) > 0 {
+	if nodes := aec.mutation.LoanScheduleIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   accountingentry.LoanSchedulesTable,
-			Columns: accountingentry.LoanSchedulesPrimaryKey,
+			Table:   accountingentry.LoanScheduleTable,
+			Columns: accountingentry.LoanSchedulePrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(loanschedule.FieldID, field.TypeInt),

@@ -19,7 +19,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -88,9 +87,6 @@ func (n *MemberSignupToken) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Payable) IsNode() {}
-
-// IsNode implements the Node interface check for GQLGen.
-func (n *Product) IsNode() {}
 
 // IsNode implements the Node interface check for GQLGen.
 func (n *Project) IsNode() {}
@@ -340,18 +336,6 @@ func (c *Client) noder(ctx context.Context, table string, id int) (Noder, error)
 		query := c.Payable.Query().
 			Where(payable.ID(id))
 		query, err := query.CollectFields(ctx, "Payable")
-		if err != nil {
-			return nil, err
-		}
-		n, err := query.Only(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return n, nil
-	case product.Table:
-		query := c.Product.Query().
-			Where(product.ID(id))
-		query, err := query.CollectFields(ctx, "Product")
 		if err != nil {
 			return nil, err
 		}
@@ -765,22 +749,6 @@ func (c *Client) noders(ctx context.Context, table string, ids []int) ([]Noder, 
 		query := c.Payable.Query().
 			Where(payable.IDIn(ids...))
 		query, err := query.CollectFields(ctx, "Payable")
-		if err != nil {
-			return nil, err
-		}
-		nodes, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, node := range nodes {
-			for _, noder := range idmap[node.ID] {
-				*noder = node
-			}
-		}
-	case product.Table:
-		query := c.Product.Query().
-			Where(product.IDIn(ids...))
-		query, err := query.CollectFields(ctx, "Product")
 		if err != nil {
 			return nil, err
 		}

@@ -144,11 +144,11 @@ type Category string
 
 // Category values.
 const (
-	CategoryLEGAL    Category = "LEGAL"
-	CategoryCONTRACT Category = "CONTRACT"
-	CategoryLICENSE  Category = "LICENSE"
-	CategoryTAX      Category = "TAX"
-	CategoryHR       Category = "HR"
+	CategoryLegal    Category = "legal"
+	CategoryContract Category = "contract"
+	CategoryLicense  Category = "license"
+	CategoryTax      Category = "tax"
+	CategoryHr       Category = "hr"
 )
 
 func (c Category) String() string {
@@ -158,7 +158,7 @@ func (c Category) String() string {
 // CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
 func CategoryValidator(c Category) error {
 	switch c {
-	case CategoryLEGAL, CategoryCONTRACT, CategoryLICENSE, CategoryTAX, CategoryHR:
+	case CategoryLegal, CategoryContract, CategoryLicense, CategoryTax, CategoryHr:
 		return nil
 	default:
 		return fmt.Errorf("companydocument: invalid enum value for category field: %q", c)
@@ -170,10 +170,10 @@ type Status string
 
 // Status values.
 const (
-	StatusPENDING  Status = "PENDING"
-	StatusAPPROVED Status = "APPROVED"
-	StatusREJECTED Status = "REJECTED"
-	StatusEXPIRED  Status = "EXPIRED"
+	StatusPending  Status = "pending"
+	StatusApproved Status = "approved"
+	StatusRejected Status = "rejected"
+	StatusExpired  Status = "expired"
 )
 
 func (s Status) String() string {
@@ -183,7 +183,7 @@ func (s Status) String() string {
 // StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
 func StatusValidator(s Status) error {
 	switch s {
-	case StatusPENDING, StatusAPPROVED, StatusREJECTED, StatusEXPIRED:
+	case StatusPending, StatusApproved, StatusRejected, StatusExpired:
 		return nil
 	default:
 		return fmt.Errorf("companydocument: invalid enum value for status field: %q", s)

@@ -125,6 +125,16 @@ func LastInvoiceNumber(v int32) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLastInvoiceNumber, v))
 }
 
+// LastSalesQuotationNumber applies equality check predicate on the "last_sales_quotation_number" field. It's identical to LastSalesQuotationNumberEQ.
+func LastSalesQuotationNumber(v int32) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLastSalesQuotationNumber, v))
+}
+
+// InvoicePrefix applies equality check predicate on the "invoice_prefix" field. It's identical to InvoicePrefixEQ.
+func InvoicePrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldInvoicePrefix, v))
+}
+
 // LogoURL applies equality check predicate on the "logo_URL" field. It's identical to LogoURLEQ.
 func LogoURL(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
@@ -148,6 +158,11 @@ func NumberEmployees(v int32) predicate.Company {
 // Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
 func Phone(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldPhone, v))
+}
+
+// QuotationPrefix applies equality check predicate on the "quotation_prefix" field. It's identical to QuotationPrefixEQ.
+func QuotationPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldQuotationPrefix, v))
 }
 
 // TaxID applies equality check predicate on the "tax_id" field. It's identical to TaxIDEQ.
@@ -1010,6 +1025,121 @@ func LastInvoiceNumberNotNil() predicate.Company {
 	return predicate.Company(sql.FieldNotNull(FieldLastInvoiceNumber))
 }
 
+// LastSalesQuotationNumberEQ applies the EQ predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberEQ(v int32) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberNEQ applies the NEQ predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberNEQ(v int32) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberIn applies the In predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberIn(vs ...int32) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldLastSalesQuotationNumber, vs...))
+}
+
+// LastSalesQuotationNumberNotIn applies the NotIn predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberNotIn(vs ...int32) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldLastSalesQuotationNumber, vs...))
+}
+
+// LastSalesQuotationNumberGT applies the GT predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberGT(v int32) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberGTE applies the GTE predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberGTE(v int32) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberLT applies the LT predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberLT(v int32) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberLTE applies the LTE predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberLTE(v int32) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldLastSalesQuotationNumber, v))
+}
+
+// LastSalesQuotationNumberIsNil applies the IsNil predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberIsNil() predicate.Company {
+	return predicate.Company(sql.FieldIsNull(FieldLastSalesQuotationNumber))
+}
+
+// LastSalesQuotationNumberNotNil applies the NotNil predicate on the "last_sales_quotation_number" field.
+func LastSalesQuotationNumberNotNil() predicate.Company {
+	return predicate.Company(sql.FieldNotNull(FieldLastSalesQuotationNumber))
+}
+
+// InvoicePrefixEQ applies the EQ predicate on the "invoice_prefix" field.
+func InvoicePrefixEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixNEQ applies the NEQ predicate on the "invoice_prefix" field.
+func InvoicePrefixNEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixIn applies the In predicate on the "invoice_prefix" field.
+func InvoicePrefixIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldInvoicePrefix, vs...))
+}
+
+// InvoicePrefixNotIn applies the NotIn predicate on the "invoice_prefix" field.
+func InvoicePrefixNotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldInvoicePrefix, vs...))
+}
+
+// InvoicePrefixGT applies the GT predicate on the "invoice_prefix" field.
+func InvoicePrefixGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixGTE applies the GTE predicate on the "invoice_prefix" field.
+func InvoicePrefixGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixLT applies the LT predicate on the "invoice_prefix" field.
+func InvoicePrefixLT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixLTE applies the LTE predicate on the "invoice_prefix" field.
+func InvoicePrefixLTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixContains applies the Contains predicate on the "invoice_prefix" field.
+func InvoicePrefixContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixHasPrefix applies the HasPrefix predicate on the "invoice_prefix" field.
+func InvoicePrefixHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixHasSuffix applies the HasSuffix predicate on the "invoice_prefix" field.
+func InvoicePrefixHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixEqualFold applies the EqualFold predicate on the "invoice_prefix" field.
+func InvoicePrefixEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldInvoicePrefix, v))
+}
+
+// InvoicePrefixContainsFold applies the ContainsFold predicate on the "invoice_prefix" field.
+func InvoicePrefixContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldInvoicePrefix, v))
+}
+
 // LogoURLEQ applies the EQ predicate on the "logo_URL" field.
 func LogoURLEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldLogoURL, v))
@@ -1338,6 +1468,71 @@ func PhoneEqualFold(v string) predicate.Company {
 // PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
 func PhoneContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldPhone, v))
+}
+
+// QuotationPrefixEQ applies the EQ predicate on the "quotation_prefix" field.
+func QuotationPrefixEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldEQ(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixNEQ applies the NEQ predicate on the "quotation_prefix" field.
+func QuotationPrefixNEQ(v string) predicate.Company {
+	return predicate.Company(sql.FieldNEQ(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixIn applies the In predicate on the "quotation_prefix" field.
+func QuotationPrefixIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldIn(FieldQuotationPrefix, vs...))
+}
+
+// QuotationPrefixNotIn applies the NotIn predicate on the "quotation_prefix" field.
+func QuotationPrefixNotIn(vs ...string) predicate.Company {
+	return predicate.Company(sql.FieldNotIn(FieldQuotationPrefix, vs...))
+}
+
+// QuotationPrefixGT applies the GT predicate on the "quotation_prefix" field.
+func QuotationPrefixGT(v string) predicate.Company {
+	return predicate.Company(sql.FieldGT(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixGTE applies the GTE predicate on the "quotation_prefix" field.
+func QuotationPrefixGTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldGTE(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixLT applies the LT predicate on the "quotation_prefix" field.
+func QuotationPrefixLT(v string) predicate.Company {
+	return predicate.Company(sql.FieldLT(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixLTE applies the LTE predicate on the "quotation_prefix" field.
+func QuotationPrefixLTE(v string) predicate.Company {
+	return predicate.Company(sql.FieldLTE(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixContains applies the Contains predicate on the "quotation_prefix" field.
+func QuotationPrefixContains(v string) predicate.Company {
+	return predicate.Company(sql.FieldContains(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixHasPrefix applies the HasPrefix predicate on the "quotation_prefix" field.
+func QuotationPrefixHasPrefix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasPrefix(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixHasSuffix applies the HasSuffix predicate on the "quotation_prefix" field.
+func QuotationPrefixHasSuffix(v string) predicate.Company {
+	return predicate.Company(sql.FieldHasSuffix(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixEqualFold applies the EqualFold predicate on the "quotation_prefix" field.
+func QuotationPrefixEqualFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldEqualFold(FieldQuotationPrefix, v))
+}
+
+// QuotationPrefixContainsFold applies the ContainsFold predicate on the "quotation_prefix" field.
+func QuotationPrefixContainsFold(v string) predicate.Company {
+	return predicate.Company(sql.FieldContainsFold(FieldQuotationPrefix, v))
 }
 
 // TaxIDEQ applies the EQ predicate on the "tax_id" field.
@@ -1818,29 +2013,6 @@ func HasMemberSignupTokens() predicate.Company {
 func HasMemberSignupTokensWith(preds ...predicate.MemberSignupToken) predicate.Company {
 	return predicate.Company(func(s *sql.Selector) {
 		step := newMemberSignupTokensStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasProducts applies the HasEdge predicate on the "products" edge.
-func HasProducts() predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ProductsTable, ProductsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasProductsWith applies the HasEdge predicate on the "products" edge with a given conditions (other predicates).
-func HasProductsWith(preds ...predicate.Product) predicate.Company {
-	return predicate.Company(func(s *sql.Selector) {
-		step := newProductsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

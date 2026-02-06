@@ -26,9 +26,9 @@ func RegisterAccountingOperations(ctx context.Context, tx *ent.Tx, input model.B
 		_ = tx.Treasury.Update().Where(treasury.HasCompanyWith(companyQ)).AddBalance(*input.CashInput).SaveX(ctx)
 	}
 
-	if input.ProductInput != nil {
-		_ = tx.Product.Update().AddStock(*input.ProductInput).SaveX(ctx)
-	}
+	// if input.ProductInput != nil {
+	// 	_ = tx.Product.Update().AddStock(*input.ProductInput).SaveX(ctx)
+	// }
 
 	var accountingEntries []*ent.AccountingEntryCreate
 	var entryCounter = GetEntryCounter(ctx, tx.Client(), activeCompany.ID)

@@ -56,7 +56,7 @@ type BaseEntryRegistrationInput struct {
 	OperationType         BaseOperationType      `json:"operationType"`
 	PayableInput          *PayableInput          `json:"payableInput,omitempty"`
 	PayableUpdateInput    *PayableUpdateInput    `json:"payableUpdateInput,omitempty"`
-	ProductInput          *int                   `json:"productInput,omitempty"`
+	ProductInput          *float64               `json:"productInput,omitempty"`
 	ReceivableInput       *ReceivableInput       `json:"receivableInput,omitempty"`
 	ReceivableUpdateInput *ReceivableUpdateInput `json:"receivableUpdateInput,omitempty"`
 	TotalTransactionValue float64                `json:"totalTransactionValue"`
@@ -204,11 +204,6 @@ type InvoiceInput struct {
 	AccountingEntryData *BaseEntryRegistrationInput               `json:"accountingEntryData"`
 	InvoiceData         *generated.CreateInvoiceInput             `json:"invoiceData"`
 	InventoryMovements  []*generated.CreateInventoryMovementInput `json:"inventoryMovements,omitempty"`
-}
-
-type InvoiceIssuanceOutput struct {
-	Message string `json:"message"`
-	FileURL string `json:"fileUrl"`
 }
 
 type InvoiceIssuer struct {
@@ -427,13 +422,13 @@ type InvitedUserSignupInput struct {
 type BaseOperationType string
 
 const (
-	BaseOperationTypeSales          BaseOperationType = "SALES"
-	BaseOperationTypeSalesReturn    BaseOperationType = "SALES_RETURN"
-	BaseOperationTypePurchase       BaseOperationType = "PURCHASE"
-	BaseOperationTypePurchaseReturn BaseOperationType = "PURCHASE_RETURN"
-	BaseOperationTypeFinance        BaseOperationType = "FINANCE"
-	BaseOperationTypeOther          BaseOperationType = "OTHER"
-	BaseOperationTypeInitialSetup   BaseOperationType = "INITIAL_SETUP"
+	BaseOperationTypeSales          BaseOperationType = "sales"
+	BaseOperationTypeSalesReturn    BaseOperationType = "salesReturn"
+	BaseOperationTypePurchase       BaseOperationType = "purchase"
+	BaseOperationTypePurchaseReturn BaseOperationType = "purchaseReturn"
+	BaseOperationTypeFinance        BaseOperationType = "finance"
+	BaseOperationTypeOther          BaseOperationType = "other"
+	BaseOperationTypeInitialSetup   BaseOperationType = "initialSetup"
 )
 
 var AllBaseOperationType = []BaseOperationType{
@@ -478,8 +473,8 @@ func (e BaseOperationType) MarshalGQL(w io.Writer) {
 type CustomersGroupBy string
 
 const (
-	CustomersGroupByCompany CustomersGroupBy = "COMPANY"
-	CustomersGroupByCity    CustomersGroupBy = "CITY"
+	CustomersGroupByCompany CustomersGroupBy = "company"
+	CustomersGroupByCity    CustomersGroupBy = "city"
 )
 
 var AllCustomersGroupBy = []CustomersGroupBy{
@@ -562,22 +557,22 @@ func (e LoansGroupBy) MarshalGQL(w io.Writer) {
 type PayablesGroupBy string
 
 const (
-	PayablesGroupByAge     PayablesGroupBy = "AGE"
-	PayablesGroupByName    PayablesGroupBy = "NAME"
-	PayablesGroupByDaysdue PayablesGroupBy = "DAYSDUE"
-	PayablesGroupByStatus  PayablesGroupBy = "STATUS"
+	PayablesGroupByAge     PayablesGroupBy = "age"
+	PayablesGroupByName    PayablesGroupBy = "name"
+	PayablesGroupByDaysDue PayablesGroupBy = "daysDue"
+	PayablesGroupByStatus  PayablesGroupBy = "status"
 )
 
 var AllPayablesGroupBy = []PayablesGroupBy{
 	PayablesGroupByAge,
 	PayablesGroupByName,
-	PayablesGroupByDaysdue,
+	PayablesGroupByDaysDue,
 	PayablesGroupByStatus,
 }
 
 func (e PayablesGroupBy) IsValid() bool {
 	switch e {
-	case PayablesGroupByAge, PayablesGroupByName, PayablesGroupByDaysdue, PayablesGroupByStatus:
+	case PayablesGroupByAge, PayablesGroupByName, PayablesGroupByDaysDue, PayablesGroupByStatus:
 		return true
 	}
 	return false
@@ -607,22 +602,22 @@ func (e PayablesGroupBy) MarshalGQL(w io.Writer) {
 type ReceivablesGroupBy string
 
 const (
-	ReceivablesGroupByAge      ReceivablesGroupBy = "AGE"
-	ReceivablesGroupByCustomer ReceivablesGroupBy = "CUSTOMER"
-	ReceivablesGroupByDaysdue  ReceivablesGroupBy = "DAYSDUE"
-	ReceivablesGroupByStatus   ReceivablesGroupBy = "STATUS"
+	ReceivablesGroupByAge      ReceivablesGroupBy = "age"
+	ReceivablesGroupByCustomer ReceivablesGroupBy = "customer"
+	ReceivablesGroupByDaysDue  ReceivablesGroupBy = "daysDue"
+	ReceivablesGroupByStatus   ReceivablesGroupBy = "status"
 )
 
 var AllReceivablesGroupBy = []ReceivablesGroupBy{
 	ReceivablesGroupByAge,
 	ReceivablesGroupByCustomer,
-	ReceivablesGroupByDaysdue,
+	ReceivablesGroupByDaysDue,
 	ReceivablesGroupByStatus,
 }
 
 func (e ReceivablesGroupBy) IsValid() bool {
 	switch e {
-	case ReceivablesGroupByAge, ReceivablesGroupByCustomer, ReceivablesGroupByDaysdue, ReceivablesGroupByStatus:
+	case ReceivablesGroupByAge, ReceivablesGroupByCustomer, ReceivablesGroupByDaysDue, ReceivablesGroupByStatus:
 		return true
 	}
 	return false
@@ -652,8 +647,8 @@ func (e ReceivablesGroupBy) MarshalGQL(w io.Writer) {
 type SalesOperationType string
 
 const (
-	SalesOperationTypeSales       SalesOperationType = "SALES"
-	SalesOperationTypeSalesReturn SalesOperationType = "SALES_RETURN"
+	SalesOperationTypeSales       SalesOperationType = "sales"
+	SalesOperationTypeSalesReturn SalesOperationType = "salesReturn"
 )
 
 var AllSalesOperationType = []SalesOperationType{
@@ -693,10 +688,10 @@ func (e SalesOperationType) MarshalGQL(w io.Writer) {
 type ShiftGroupBy string
 
 const (
-	ShiftGroupByApprovedAt ShiftGroupBy = "APPROVED_AT"
-	ShiftGroupByClockIn    ShiftGroupBy = "CLOCK_IN"
-	ShiftGroupByClockOut   ShiftGroupBy = "CLOCK_OUT"
-	ShiftGroupByStatus     ShiftGroupBy = "STATUS"
+	ShiftGroupByApprovedAt ShiftGroupBy = "approvedAt"
+	ShiftGroupByClockIn    ShiftGroupBy = "clockIn"
+	ShiftGroupByClockOut   ShiftGroupBy = "clockOut"
+	ShiftGroupByStatus     ShiftGroupBy = "status"
 )
 
 var AllShiftGroupBy = []ShiftGroupBy{
@@ -738,10 +733,10 @@ func (e ShiftGroupBy) MarshalGQL(w io.Writer) {
 type TimeRange string
 
 const (
-	TimeRangeWeek    TimeRange = "WEEK"
-	TimeRangeMonth   TimeRange = "MONTH"
-	TimeRangeQuarter TimeRange = "QUARTER"
-	TimeRangeYear    TimeRange = "YEAR"
+	TimeRangeWeek    TimeRange = "week"
+	TimeRangeMonth   TimeRange = "month"
+	TimeRangeQuarter TimeRange = "quarter"
+	TimeRangeYear    TimeRange = "year"
 )
 
 var AllTimeRange = []TimeRange{

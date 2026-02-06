@@ -21,7 +21,6 @@ import (
 	"mazza/ent/generated/loanschedule"
 	"mazza/ent/generated/membersignuptoken"
 	"mazza/ent/generated/payable"
-	"mazza/ent/generated/product"
 	"mazza/ent/generated/project"
 	"mazza/ent/generated/projectmilestone"
 	"mazza/ent/generated/projecttask"
@@ -525,27 +524,27 @@ func (f AccountingEntryOrderField) String() string {
 	var str string
 	switch f.column {
 	case AccountingEntryOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case AccountingEntryOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case AccountingEntryOrderFieldGroup.column:
-		str = "GROUP"
+		str = "group"
 	case AccountingEntryOrderFieldDate.column:
-		str = "DATE"
+		str = "date"
 	case AccountingEntryOrderFieldAccount.column:
-		str = "ACCOUNT"
+		str = "account"
 	case AccountingEntryOrderFieldAmount.column:
-		str = "AMOUNT"
+		str = "amount"
 	case AccountingEntryOrderFieldDescription.column:
-		str = "DESCRIPTION"
+		str = "description"
 	case AccountingEntryOrderFieldAccountType.column:
-		str = "ACCOUNTTYPE"
+		str = "accountType"
 	case AccountingEntryOrderFieldCategory.column:
-		str = "CATEGORY"
+		str = "category"
 	case AccountingEntryOrderFieldMain.column:
-		str = "MAIN"
+		str = "main"
 	case AccountingEntryOrderFieldIsDebit.column:
-		str = "ISDEBIT"
+		str = "isDebit"
 	}
 	return str
 }
@@ -562,27 +561,27 @@ func (f *AccountingEntryOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("AccountingEntryOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *AccountingEntryOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *AccountingEntryOrderFieldUpdatedAt
-	case "GROUP":
+	case "group":
 		*f = *AccountingEntryOrderFieldGroup
-	case "DATE":
+	case "date":
 		*f = *AccountingEntryOrderFieldDate
-	case "ACCOUNT":
+	case "account":
 		*f = *AccountingEntryOrderFieldAccount
-	case "AMOUNT":
+	case "amount":
 		*f = *AccountingEntryOrderFieldAmount
-	case "DESCRIPTION":
+	case "description":
 		*f = *AccountingEntryOrderFieldDescription
-	case "ACCOUNTTYPE":
+	case "accountType":
 		*f = *AccountingEntryOrderFieldAccountType
-	case "CATEGORY":
+	case "category":
 		*f = *AccountingEntryOrderFieldCategory
-	case "MAIN":
+	case "main":
 		*f = *AccountingEntryOrderFieldMain
-	case "ISDEBIT":
+	case "isDebit":
 		*f = *AccountingEntryOrderFieldIsDebit
 	default:
 		return fmt.Errorf("%s is not a valid AccountingEntryOrderField", str)
@@ -1174,17 +1173,17 @@ func (f CompanyOrderField) String() string {
 	var str string
 	switch f.column {
 	case CompanyOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case CompanyOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case CompanyOrderFieldCity.column:
-		str = "CITY"
+		str = "city"
 	case CompanyOrderFieldCountry.column:
-		str = "COUNTRY"
+		str = "country"
 	case CompanyOrderFieldEstablishedAt.column:
-		str = "ESTABLISHEDAT"
+		str = "establishedAt"
 	case CompanyOrderFieldName.column:
-		str = "NAME"
+		str = "name"
 	}
 	return str
 }
@@ -1201,17 +1200,17 @@ func (f *CompanyOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("CompanyOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *CompanyOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *CompanyOrderFieldUpdatedAt
-	case "CITY":
+	case "city":
 		*f = *CompanyOrderFieldCity
-	case "COUNTRY":
+	case "country":
 		*f = *CompanyOrderFieldCountry
-	case "ESTABLISHEDAT":
+	case "establishedAt":
 		*f = *CompanyOrderFieldEstablishedAt
-	case "NAME":
+	case "name":
 		*f = *CompanyOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid CompanyOrderField", str)
@@ -1579,15 +1578,15 @@ func (f CompanyDocumentOrderField) String() string {
 	var str string
 	switch f.column {
 	case CompanyDocumentOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case CompanyDocumentOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case CompanyDocumentOrderFieldCategory.column:
-		str = "CATEGORY"
+		str = "category"
 	case CompanyDocumentOrderFieldStatus.column:
 		str = "STATUS"
 	case CompanyDocumentOrderFieldExpiryDate.column:
-		str = "EXPIRY_DATE"
+		str = "expiryDate"
 	}
 	return str
 }
@@ -1604,15 +1603,15 @@ func (f *CompanyDocumentOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("CompanyDocumentOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *CompanyDocumentOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *CompanyDocumentOrderFieldUpdatedAt
-	case "CATEGORY":
+	case "category":
 		*f = *CompanyDocumentOrderFieldCategory
 	case "STATUS":
 		*f = *CompanyDocumentOrderFieldStatus
-	case "EXPIRY_DATE":
+	case "expiryDate":
 		*f = *CompanyDocumentOrderFieldExpiryDate
 	default:
 		return fmt.Errorf("%s is not a valid CompanyDocumentOrderField", str)
@@ -1966,13 +1965,13 @@ func (f CustomerOrderField) String() string {
 	var str string
 	switch f.column {
 	case CustomerOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case CustomerOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case CustomerOrderFieldCity.column:
-		str = "CITY"
+		str = "city"
 	case CustomerOrderFieldName.column:
-		str = "NAME"
+		str = "name"
 	}
 	return str
 }
@@ -1989,13 +1988,13 @@ func (f *CustomerOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("CustomerOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *CustomerOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *CustomerOrderFieldUpdatedAt
-	case "CITY":
+	case "city":
 		*f = *CustomerOrderFieldCity
-	case "NAME":
+	case "name":
 		*f = *CustomerOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid CustomerOrderField", str)
@@ -2313,13 +2312,13 @@ func (f EmployeeOrderField) String() string {
 	var str string
 	switch f.column {
 	case EmployeeOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case EmployeeOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case EmployeeOrderFieldGender.column:
-		str = "GENDER"
+		str = "gender"
 	case EmployeeOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -2336,13 +2335,13 @@ func (f *EmployeeOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("EmployeeOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *EmployeeOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *EmployeeOrderFieldUpdatedAt
-	case "GENDER":
+	case "gender":
 		*f = *EmployeeOrderFieldGender
-	case "STATUS":
+	case "status":
 		*f = *EmployeeOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid EmployeeOrderField", str)
@@ -2646,11 +2645,11 @@ func (f FileOrderField) String() string {
 	var str string
 	switch f.column {
 	case FileOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case FileOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case FileOrderFieldCategory.column:
-		str = "CATEGORY"
+		str = "category"
 	}
 	return str
 }
@@ -2667,11 +2666,11 @@ func (f *FileOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("FileOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *FileOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *FileOrderFieldUpdatedAt
-	case "CATEGORY":
+	case "category":
 		*f = *FileOrderFieldCategory
 	default:
 		return fmt.Errorf("%s is not a valid FileOrderField", str)
@@ -3025,13 +3024,13 @@ func (f InventoryOrderField) String() string {
 	var str string
 	switch f.column {
 	case InventoryOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case InventoryOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case InventoryOrderFieldCategory.column:
-		str = "CATEGORY"
+		str = "category"
 	case InventoryOrderFieldCurrentValue.column:
-		str = "CURRENT_VALUE"
+		str = "currentValue"
 	}
 	return str
 }
@@ -3048,13 +3047,13 @@ func (f *InventoryOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("InventoryOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *InventoryOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *InventoryOrderFieldUpdatedAt
-	case "CATEGORY":
+	case "category":
 		*f = *InventoryOrderFieldCategory
-	case "CURRENT_VALUE":
+	case "currentValue":
 		*f = *InventoryOrderFieldCurrentValue
 	default:
 		return fmt.Errorf("%s is not a valid InventoryOrderField", str)
@@ -3394,11 +3393,11 @@ func (f InventoryMovementOrderField) String() string {
 	var str string
 	switch f.column {
 	case InventoryMovementOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case InventoryMovementOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case InventoryMovementOrderFieldCategory.column:
-		str = "CATEGORY"
+		str = "category"
 	}
 	return str
 }
@@ -3415,11 +3414,11 @@ func (f *InventoryMovementOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("InventoryMovementOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *InventoryMovementOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *InventoryMovementOrderFieldUpdatedAt
-	case "CATEGORY":
+	case "category":
 		*f = *InventoryMovementOrderFieldCategory
 	default:
 		return fmt.Errorf("%s is not a valid InventoryMovementOrderField", str)
@@ -3815,19 +3814,19 @@ func (f InvoiceOrderField) String() string {
 	var str string
 	switch f.column {
 	case InvoiceOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case InvoiceOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case InvoiceOrderFieldIssueDate.column:
-		str = "ISSUE_DATE"
+		str = "issueDate"
 	case InvoiceOrderFieldDueDate.column:
-		str = "DUE_DATE"
+		str = "dueDate"
 	case InvoiceOrderFieldPaidAt.column:
-		str = "PAID_AT"
+		str = "paidAt"
 	case InvoiceOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	case InvoiceOrderFieldTotal.column:
-		str = "TOTAL"
+		str = "total"
 	}
 	return str
 }
@@ -3844,19 +3843,19 @@ func (f *InvoiceOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("InvoiceOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *InvoiceOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *InvoiceOrderFieldUpdatedAt
-	case "ISSUE_DATE":
+	case "issueDate":
 		*f = *InvoiceOrderFieldIssueDate
-	case "DUE_DATE":
+	case "dueDate":
 		*f = *InvoiceOrderFieldDueDate
-	case "PAID_AT":
+	case "paidAt":
 		*f = *InvoiceOrderFieldPaidAt
-	case "STATUS":
+	case "status":
 		*f = *InvoiceOrderFieldStatus
-	case "TOTAL":
+	case "total":
 		*f = *InvoiceOrderFieldTotal
 	default:
 		return fmt.Errorf("%s is not a valid InvoiceOrderField", str)
@@ -4308,9 +4307,9 @@ func (f LoanOrderField) String() string {
 	var str string
 	switch f.column {
 	case LoanOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case LoanOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case LoanOrderFieldAmount.column:
 		str = "amount"
 	case LoanOrderFieldCategory.column:
@@ -4345,9 +4344,9 @@ func (f *LoanOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("LoanOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *LoanOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *LoanOrderFieldUpdatedAt
 	case "amount":
 		*f = *LoanOrderFieldAmount
@@ -4691,9 +4690,9 @@ func (f LoanScheduleOrderField) String() string {
 	var str string
 	switch f.column {
 	case LoanScheduleOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case LoanScheduleOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	}
 	return str
 }
@@ -4710,9 +4709,9 @@ func (f *LoanScheduleOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("LoanScheduleOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *LoanScheduleOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *LoanScheduleOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid LoanScheduleOrderField", str)
@@ -5038,9 +5037,9 @@ func (f MemberSignupTokenOrderField) String() string {
 	var str string
 	switch f.column {
 	case MemberSignupTokenOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case MemberSignupTokenOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	}
 	return str
 }
@@ -5057,9 +5056,9 @@ func (f *MemberSignupTokenOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("MemberSignupTokenOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *MemberSignupTokenOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *MemberSignupTokenOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid MemberSignupTokenOrderField", str)
@@ -5469,21 +5468,21 @@ func (f PayableOrderField) String() string {
 	var str string
 	switch f.column {
 	case PayableOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case PayableOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case PayableOrderFieldDate.column:
-		str = "DATE"
+		str = "date"
 	case PayableOrderFieldAmountInDefault.column:
-		str = "AMOUNT_IN_DEFAULT"
+		str = "amountInDefault"
 	case PayableOrderFieldOutstandingBalance.column:
-		str = "OUTSTANDING_BALANCE"
+		str = "outstandingBalance"
 	case PayableOrderFieldTotalTransaction.column:
-		str = "TOTAL_TRANSACTION"
+		str = "totalTransaction"
 	case PayableOrderFieldDueDate.column:
-		str = "DUEDATE"
+		str = "dueDate"
 	case PayableOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -5500,21 +5499,21 @@ func (f *PayableOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("PayableOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *PayableOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *PayableOrderFieldUpdatedAt
-	case "DATE":
+	case "date":
 		*f = *PayableOrderFieldDate
-	case "AMOUNT_IN_DEFAULT":
+	case "amountInDefault":
 		*f = *PayableOrderFieldAmountInDefault
-	case "OUTSTANDING_BALANCE":
+	case "outstandingBalance":
 		*f = *PayableOrderFieldOutstandingBalance
-	case "TOTAL_TRANSACTION":
+	case "totalTransaction":
 		*f = *PayableOrderFieldTotalTransaction
-	case "DUEDATE":
+	case "dueDate":
 		*f = *PayableOrderFieldDueDate
-	case "STATUS":
+	case "status":
 		*f = *PayableOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid PayableOrderField", str)
@@ -5560,317 +5559,6 @@ func (pa *Payable) ToEdge(order *PayableOrder) *PayableEdge {
 	return &PayableEdge{
 		Node:   pa,
 		Cursor: order.Field.toCursor(pa),
-	}
-}
-
-// ProductEdge is the edge representation of Product.
-type ProductEdge struct {
-	Node   *Product `json:"node"`
-	Cursor Cursor   `json:"cursor"`
-}
-
-// ProductConnection is the connection containing edges to Product.
-type ProductConnection struct {
-	Edges      []*ProductEdge `json:"edges"`
-	PageInfo   PageInfo       `json:"pageInfo"`
-	TotalCount int            `json:"totalCount"`
-}
-
-func (c *ProductConnection) build(nodes []*Product, pager *productPager, after *Cursor, first *int, before *Cursor, last *int) {
-	c.PageInfo.HasNextPage = before != nil
-	c.PageInfo.HasPreviousPage = after != nil
-	if first != nil && *first+1 == len(nodes) {
-		c.PageInfo.HasNextPage = true
-		nodes = nodes[:len(nodes)-1]
-	} else if last != nil && *last+1 == len(nodes) {
-		c.PageInfo.HasPreviousPage = true
-		nodes = nodes[:len(nodes)-1]
-	}
-	var nodeAt func(int) *Product
-	if last != nil {
-		n := len(nodes) - 1
-		nodeAt = func(i int) *Product {
-			return nodes[n-i]
-		}
-	} else {
-		nodeAt = func(i int) *Product {
-			return nodes[i]
-		}
-	}
-	c.Edges = make([]*ProductEdge, len(nodes))
-	for i := range nodes {
-		node := nodeAt(i)
-		c.Edges[i] = &ProductEdge{
-			Node:   node,
-			Cursor: pager.toCursor(node),
-		}
-	}
-	if l := len(c.Edges); l > 0 {
-		c.PageInfo.StartCursor = &c.Edges[0].Cursor
-		c.PageInfo.EndCursor = &c.Edges[l-1].Cursor
-	}
-	if c.TotalCount == 0 {
-		c.TotalCount = len(nodes)
-	}
-}
-
-// ProductPaginateOption enables pagination customization.
-type ProductPaginateOption func(*productPager) error
-
-// WithProductOrder configures pagination ordering.
-func WithProductOrder(order *ProductOrder) ProductPaginateOption {
-	if order == nil {
-		order = DefaultProductOrder
-	}
-	o := *order
-	return func(pager *productPager) error {
-		if err := o.Direction.Validate(); err != nil {
-			return err
-		}
-		if o.Field == nil {
-			o.Field = DefaultProductOrder.Field
-		}
-		pager.order = &o
-		return nil
-	}
-}
-
-// WithProductFilter configures pagination filter.
-func WithProductFilter(filter func(*ProductQuery) (*ProductQuery, error)) ProductPaginateOption {
-	return func(pager *productPager) error {
-		if filter == nil {
-			return errors.New("ProductQuery filter cannot be nil")
-		}
-		pager.filter = filter
-		return nil
-	}
-}
-
-type productPager struct {
-	reverse bool
-	order   *ProductOrder
-	filter  func(*ProductQuery) (*ProductQuery, error)
-}
-
-func newProductPager(opts []ProductPaginateOption, reverse bool) (*productPager, error) {
-	pager := &productPager{reverse: reverse}
-	for _, opt := range opts {
-		if err := opt(pager); err != nil {
-			return nil, err
-		}
-	}
-	if pager.order == nil {
-		pager.order = DefaultProductOrder
-	}
-	return pager, nil
-}
-
-func (p *productPager) applyFilter(query *ProductQuery) (*ProductQuery, error) {
-	if p.filter != nil {
-		return p.filter(query)
-	}
-	return query, nil
-}
-
-func (p *productPager) toCursor(pr *Product) Cursor {
-	return p.order.Field.toCursor(pr)
-}
-
-func (p *productPager) applyCursors(query *ProductQuery, after, before *Cursor) (*ProductQuery, error) {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
-	for _, predicate := range entgql.CursorsPredicate(after, before, DefaultProductOrder.Field.column, p.order.Field.column, direction) {
-		query = query.Where(predicate)
-	}
-	return query, nil
-}
-
-func (p *productPager) applyOrder(query *ProductQuery) *ProductQuery {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
-	query = query.Order(p.order.Field.toTerm(direction.OrderTermOption()))
-	if p.order.Field != DefaultProductOrder.Field {
-		query = query.Order(DefaultProductOrder.Field.toTerm(direction.OrderTermOption()))
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
-	}
-	return query
-}
-
-func (p *productPager) orderExpr(query *ProductQuery) sql.Querier {
-	direction := p.order.Direction
-	if p.reverse {
-		direction = direction.Reverse()
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(p.order.Field.column)
-	}
-	return sql.ExprFunc(func(b *sql.Builder) {
-		b.Ident(p.order.Field.column).Pad().WriteString(string(direction))
-		if p.order.Field != DefaultProductOrder.Field {
-			b.Comma().Ident(DefaultProductOrder.Field.column).Pad().WriteString(string(direction))
-		}
-	})
-}
-
-// Paginate executes the query and returns a relay based cursor connection to Product.
-func (pr *ProductQuery) Paginate(
-	ctx context.Context, after *Cursor, first *int,
-	before *Cursor, last *int, opts ...ProductPaginateOption,
-) (*ProductConnection, error) {
-	if err := validateFirstLast(first, last); err != nil {
-		return nil, err
-	}
-	pager, err := newProductPager(opts, last != nil)
-	if err != nil {
-		return nil, err
-	}
-	if pr, err = pager.applyFilter(pr); err != nil {
-		return nil, err
-	}
-	conn := &ProductConnection{Edges: []*ProductEdge{}}
-	ignoredEdges := !hasCollectedField(ctx, edgesField)
-	if hasCollectedField(ctx, totalCountField) || hasCollectedField(ctx, pageInfoField) {
-		hasPagination := after != nil || first != nil || before != nil || last != nil
-		if hasPagination || ignoredEdges {
-			if conn.TotalCount, err = pr.Clone().Count(ctx); err != nil {
-				return nil, err
-			}
-			conn.PageInfo.HasNextPage = first != nil && conn.TotalCount > 0
-			conn.PageInfo.HasPreviousPage = last != nil && conn.TotalCount > 0
-		}
-	}
-	if ignoredEdges || (first != nil && *first == 0) || (last != nil && *last == 0) {
-		return conn, nil
-	}
-	if pr, err = pager.applyCursors(pr, after, before); err != nil {
-		return nil, err
-	}
-	if limit := paginateLimit(first, last); limit != 0 {
-		pr.Limit(limit)
-	}
-	if field := collectedField(ctx, edgesField, nodeField); field != nil {
-		if err := pr.collectField(ctx, graphql.GetOperationContext(ctx), *field, []string{edgesField, nodeField}); err != nil {
-			return nil, err
-		}
-	}
-	pr = pager.applyOrder(pr)
-	nodes, err := pr.All(ctx)
-	if err != nil {
-		return nil, err
-	}
-	conn.build(nodes, pager, after, first, before, last)
-	return conn, nil
-}
-
-var (
-	// ProductOrderFieldCreatedAt orders Product by created_at.
-	ProductOrderFieldCreatedAt = &ProductOrderField{
-		Value: func(pr *Product) (ent.Value, error) {
-			return pr.CreatedAt, nil
-		},
-		column: product.FieldCreatedAt,
-		toTerm: product.ByCreatedAt,
-		toCursor: func(pr *Product) Cursor {
-			return Cursor{
-				ID:    pr.ID,
-				Value: pr.CreatedAt,
-			}
-		},
-	}
-	// ProductOrderFieldUpdatedAt orders Product by updated_at.
-	ProductOrderFieldUpdatedAt = &ProductOrderField{
-		Value: func(pr *Product) (ent.Value, error) {
-			return pr.UpdatedAt, nil
-		},
-		column: product.FieldUpdatedAt,
-		toTerm: product.ByUpdatedAt,
-		toCursor: func(pr *Product) Cursor {
-			return Cursor{
-				ID:    pr.ID,
-				Value: pr.UpdatedAt,
-			}
-		},
-	}
-)
-
-// String implement fmt.Stringer interface.
-func (f ProductOrderField) String() string {
-	var str string
-	switch f.column {
-	case ProductOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
-	case ProductOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
-	}
-	return str
-}
-
-// MarshalGQL implements graphql.Marshaler interface.
-func (f ProductOrderField) MarshalGQL(w io.Writer) {
-	io.WriteString(w, strconv.Quote(f.String()))
-}
-
-// UnmarshalGQL implements graphql.Unmarshaler interface.
-func (f *ProductOrderField) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("ProductOrderField %T must be a string", v)
-	}
-	switch str {
-	case "CREATED_AT":
-		*f = *ProductOrderFieldCreatedAt
-	case "UPDATED_AT":
-		*f = *ProductOrderFieldUpdatedAt
-	default:
-		return fmt.Errorf("%s is not a valid ProductOrderField", str)
-	}
-	return nil
-}
-
-// ProductOrderField defines the ordering field of Product.
-type ProductOrderField struct {
-	// Value extracts the ordering value from the given Product.
-	Value    func(*Product) (ent.Value, error)
-	column   string // field or computed.
-	toTerm   func(...sql.OrderTermOption) product.OrderOption
-	toCursor func(*Product) Cursor
-}
-
-// ProductOrder defines the ordering of Product.
-type ProductOrder struct {
-	Direction OrderDirection     `json:"direction"`
-	Field     *ProductOrderField `json:"field"`
-}
-
-// DefaultProductOrder is the default ordering of Product.
-var DefaultProductOrder = &ProductOrder{
-	Direction: entgql.OrderDirectionAsc,
-	Field: &ProductOrderField{
-		Value: func(pr *Product) (ent.Value, error) {
-			return pr.ID, nil
-		},
-		column: product.FieldID,
-		toTerm: product.ByID,
-		toCursor: func(pr *Product) Cursor {
-			return Cursor{ID: pr.ID}
-		},
-	},
-}
-
-// ToEdge converts Product into ProductEdge.
-func (pr *Product) ToEdge(order *ProductOrder) *ProductEdge {
-	if order == nil {
-		order = DefaultProductOrder
-	}
-	return &ProductEdge{
-		Node:   pr,
-		Cursor: order.Field.toCursor(pr),
 	}
 }
 
@@ -6235,21 +5923,21 @@ func (f ProjectOrderField) String() string {
 	var str string
 	switch f.column {
 	case ProjectOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case ProjectOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case ProjectOrderFieldPlannedStartDate.column:
-		str = "PLANNED_START_DATE"
+		str = "plannedStartDate"
 	case ProjectOrderFieldActualStartDate.column:
-		str = "ACTUAL_START_DATE"
+		str = "actualStartDate"
 	case ProjectOrderFieldPlannedEndDate.column:
-		str = "PLANNED_END_DATE"
+		str = "plannedEndDate"
 	case ProjectOrderFieldActualEndDate.column:
-		str = "ACTUAL_END_DATE"
+		str = "actualEndDate"
 	case ProjectOrderFieldProgress.column:
-		str = "PROGRESS"
+		str = "progress"
 	case ProjectOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -6266,21 +5954,21 @@ func (f *ProjectOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ProjectOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *ProjectOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *ProjectOrderFieldUpdatedAt
-	case "PLANNED_START_DATE":
+	case "plannedStartDate":
 		*f = *ProjectOrderFieldPlannedStartDate
-	case "ACTUAL_START_DATE":
+	case "actualStartDate":
 		*f = *ProjectOrderFieldActualStartDate
-	case "PLANNED_END_DATE":
+	case "plannedEndDate":
 		*f = *ProjectOrderFieldPlannedEndDate
-	case "ACTUAL_END_DATE":
+	case "actualEndDate":
 		*f = *ProjectOrderFieldActualEndDate
-	case "PROGRESS":
+	case "progress":
 		*f = *ProjectOrderFieldProgress
-	case "STATUS":
+	case "status":
 		*f = *ProjectOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid ProjectOrderField", str)
@@ -6908,17 +6596,17 @@ func (f ProjectTaskOrderField) String() string {
 	var str string
 	switch f.column {
 	case ProjectTaskOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case ProjectTaskOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case ProjectTaskOrderFieldDueDate.column:
-		str = "DUE_DATE"
+		str = "dueDate"
 	case ProjectTaskOrderFieldEndDate.column:
-		str = "END_DATE"
+		str = "endDate"
 	case ProjectTaskOrderFieldStartDate.column:
-		str = "START_DATE"
+		str = "startDate"
 	case ProjectTaskOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -6935,17 +6623,17 @@ func (f *ProjectTaskOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ProjectTaskOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *ProjectTaskOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *ProjectTaskOrderFieldUpdatedAt
-	case "DUE_DATE":
+	case "dueDate":
 		*f = *ProjectTaskOrderFieldDueDate
-	case "END_DATE":
+	case "endDate":
 		*f = *ProjectTaskOrderFieldEndDate
-	case "START_DATE":
+	case "startDate":
 		*f = *ProjectTaskOrderFieldStartDate
-	case "STATUS":
+	case "status":
 		*f = *ProjectTaskOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid ProjectTaskOrderField", str)
@@ -7355,21 +7043,21 @@ func (f ReceivableOrderField) String() string {
 	var str string
 	switch f.column {
 	case ReceivableOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case ReceivableOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case ReceivableOrderFieldDate.column:
-		str = "DATE"
+		str = "date"
 	case ReceivableOrderFieldAmountInDefault.column:
-		str = "AMOUNT_IN_DEFAULT"
+		str = "amountInDefault"
 	case ReceivableOrderFieldOutstandingBalance.column:
-		str = "OUTSTANDING_BALANCE"
+		str = "outstandingBalance"
 	case ReceivableOrderFieldTotalTransaction.column:
-		str = "TOTAL_TRANSACTION"
+		str = "totalTransaction"
 	case ReceivableOrderFieldDueDate.column:
-		str = "DUEDATE"
+		str = "dueDate"
 	case ReceivableOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -7386,21 +7074,21 @@ func (f *ReceivableOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("ReceivableOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *ReceivableOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *ReceivableOrderFieldUpdatedAt
-	case "DATE":
+	case "date":
 		*f = *ReceivableOrderFieldDate
-	case "AMOUNT_IN_DEFAULT":
+	case "amountInDefault":
 		*f = *ReceivableOrderFieldAmountInDefault
-	case "OUTSTANDING_BALANCE":
+	case "outstandingBalance":
 		*f = *ReceivableOrderFieldOutstandingBalance
-	case "TOTAL_TRANSACTION":
+	case "totalTransaction":
 		*f = *ReceivableOrderFieldTotalTransaction
-	case "DUEDATE":
+	case "dueDate":
 		*f = *ReceivableOrderFieldDueDate
-	case "STATUS":
+	case "status":
 		*f = *ReceivableOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid ReceivableOrderField", str)
@@ -7718,13 +7406,13 @@ func (f SupplierOrderField) String() string {
 	var str string
 	switch f.column {
 	case SupplierOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case SupplierOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case SupplierOrderFieldCity.column:
-		str = "CITY"
+		str = "city"
 	case SupplierOrderFieldName.column:
-		str = "NAME"
+		str = "name"
 	}
 	return str
 }
@@ -7741,13 +7429,13 @@ func (f *SupplierOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("SupplierOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *SupplierOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *SupplierOrderFieldUpdatedAt
-	case "CITY":
+	case "city":
 		*f = *SupplierOrderFieldCity
-	case "NAME":
+	case "name":
 		*f = *SupplierOrderFieldName
 	default:
 		return fmt.Errorf("%s is not a valid SupplierOrderField", str)
@@ -8283,9 +7971,9 @@ func (f TreasuryOrderField) String() string {
 	var str string
 	switch f.column {
 	case TreasuryOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case TreasuryOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	}
 	return str
 }
@@ -8302,9 +7990,9 @@ func (f *TreasuryOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("TreasuryOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *TreasuryOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *TreasuryOrderFieldUpdatedAt
 	default:
 		return fmt.Errorf("%s is not a valid TreasuryOrderField", str)
@@ -8608,9 +8296,9 @@ func (f UserOrderField) String() string {
 	var str string
 	switch f.column {
 	case UserOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case UserOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case UserOrderFieldName.column:
 		str = "NAME"
 	}
@@ -8629,9 +8317,9 @@ func (f *UserOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("UserOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *UserOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *UserOrderFieldUpdatedAt
 	case "NAME":
 		*f = *UserOrderFieldName
@@ -8909,7 +8597,7 @@ func (f UserRoleOrderField) String() string {
 	var str string
 	switch f.column {
 	case UserRoleOrderFieldRole.column:
-		str = "ROLES"
+		str = "roles"
 	}
 	return str
 }
@@ -8926,7 +8614,7 @@ func (f *UserRoleOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("UserRoleOrderField %T must be a string", v)
 	}
 	switch str {
-	case "ROLES":
+	case "roles":
 		*f = *UserRoleOrderFieldRole
 	default:
 		return fmt.Errorf("%s is not a valid UserRoleOrderField", str)
@@ -9308,17 +8996,17 @@ func (f WorkshiftOrderField) String() string {
 	var str string
 	switch f.column {
 	case WorkshiftOrderFieldCreatedAt.column:
-		str = "CREATED_AT"
+		str = "createdAt"
 	case WorkshiftOrderFieldUpdatedAt.column:
-		str = "UPDATED_AT"
+		str = "updatedAt"
 	case WorkshiftOrderFieldApprovedAt.column:
-		str = "APPROVED_AT"
+		str = "approvedAt"
 	case WorkshiftOrderFieldClockIn.column:
-		str = "CLOCK_IN"
+		str = "clockIn"
 	case WorkshiftOrderFieldClockOut.column:
-		str = "CLOCK_OUT"
+		str = "clockOut"
 	case WorkshiftOrderFieldStatus.column:
-		str = "STATUS"
+		str = "status"
 	}
 	return str
 }
@@ -9335,17 +9023,17 @@ func (f *WorkshiftOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("WorkshiftOrderField %T must be a string", v)
 	}
 	switch str {
-	case "CREATED_AT":
+	case "createdAt":
 		*f = *WorkshiftOrderFieldCreatedAt
-	case "UPDATED_AT":
+	case "updatedAt":
 		*f = *WorkshiftOrderFieldUpdatedAt
-	case "APPROVED_AT":
+	case "approvedAt":
 		*f = *WorkshiftOrderFieldApprovedAt
-	case "CLOCK_IN":
+	case "clockIn":
 		*f = *WorkshiftOrderFieldClockIn
-	case "CLOCK_OUT":
+	case "clockOut":
 		*f = *WorkshiftOrderFieldClockOut
-	case "STATUS":
+	case "status":
 		*f = *WorkshiftOrderFieldStatus
 	default:
 		return fmt.Errorf("%s is not a valid WorkshiftOrderField", str)

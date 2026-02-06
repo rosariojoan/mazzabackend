@@ -25,13 +25,13 @@ func (Customer) Mixin() []ent.Mixin {
 func (Customer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("address").Default("").Optional(),
-		field.String("city").Default("").Optional().Annotations(entgql.OrderField("CITY")),
+		field.String("city").Default("").Optional().Annotations(entgql.OrderField("city")),
 		field.String("country").Default("").Optional(),
 		field.String("description").Default("").Optional(),
 		field.String("email").Default("").Optional(),
 		field.Bool("is_default").Default(false).Optional().
 			Annotations(entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput)),
-		field.String("name").NotEmpty().Annotations(entgql.OrderField("NAME")),
+		field.String("name").NotEmpty().Annotations(entgql.OrderField("name")),
 		field.String("phone").Default("").Optional(),
 		field.String("tax_id").Default("").Optional(),
 	}

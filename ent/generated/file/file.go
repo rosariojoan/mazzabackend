@@ -99,8 +99,8 @@ type Category string
 
 // Category values.
 const (
-	CategoryINVOICE        Category = "INVOICE"
-	CategorySALESQUOTATION Category = "SALESQUOTATION"
+	CategoryInvoice        Category = "invoice"
+	CategorySalesQuotation Category = "salesQuotation"
 )
 
 func (c Category) String() string {
@@ -110,7 +110,7 @@ func (c Category) String() string {
 // CategoryValidator is a validator for the "category" field enum values. It is called by the builders before save.
 func CategoryValidator(c Category) error {
 	switch c {
-	case CategoryINVOICE, CategorySALESQUOTATION:
+	case CategoryInvoice, CategorySalesQuotation:
 		return nil
 	default:
 		return fmt.Errorf("file: invalid enum value for category field: %q", c)

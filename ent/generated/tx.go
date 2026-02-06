@@ -42,8 +42,6 @@ type Tx struct {
 	MemberSignupToken *MemberSignupTokenClient
 	// Payable is the client for interacting with the Payable builders.
 	Payable *PayableClient
-	// Product is the client for interacting with the Product builders.
-	Product *ProductClient
 	// Project is the client for interacting with the Project builders.
 	Project *ProjectClient
 	// ProjectMilestone is the client for interacting with the ProjectMilestone builders.
@@ -209,7 +207,6 @@ func (tx *Tx) init() {
 	tx.LoanSchedule = NewLoanScheduleClient(tx.config)
 	tx.MemberSignupToken = NewMemberSignupTokenClient(tx.config)
 	tx.Payable = NewPayableClient(tx.config)
-	tx.Product = NewProductClient(tx.config)
 	tx.Project = NewProjectClient(tx.config)
 	tx.ProjectMilestone = NewProjectMilestoneClient(tx.config)
 	tx.ProjectTask = NewProjectTaskClient(tx.config)

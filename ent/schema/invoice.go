@@ -21,12 +21,13 @@ func (Invoice) Mixin() []ent.Mixin {
 	}
 }
 
-var invoiceStatus = []string{"DRAFT", "CANCELED", "PENDING", "PAID", "OVERDUE", "DEFAULTED"}
+var invoiceStatus = []string{"draft", "cancelled", "pending", "paid", "overdue", "defaulted"}
 
 // Fields of the Invoice.
 func (Invoice) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("company_logo").Nillable().Optional(),
+		// field.String("company_logo").Nillable().Optional(),
+		field.Bool("is_invoice").Default(true),
 		field.String("company_name"),
 		field.String("company_tax_id").Nillable().Optional(),
 		field.String("company_address"),
@@ -34,11 +35,12 @@ func (Invoice) Fields() []ent.Field {
 		field.String("company_email").Nillable().Optional(),
 		field.String("company_phone").Nillable().Optional(),
 
+		field.String("currency"),
 		field.String("number").Nillable().Optional(),
-		field.Time("issue_date").Annotations(entgql.OrderField("ISSUE_DATE")),
-		field.Time("due_date").Annotations(entgql.OrderField("DUE_DATE")),
-		field.Time("paid_at").Nillable().Optional().Annotations(entgql.OrderField("PAID_AT")),
-		field.Enum("status").Values(invoiceStatus...).Default("PAID").Annotations(entgql.OrderField("STATUS")),
+		field.Time("issue_date").Annotations(entgql.OrderField("issueDate")),
+		field.Time("due_date").Annotations(entgql.OrderField("dueDate")),
+		field.Time("paid_at").Nillable().Optional().Annotations(entgql.OrderField("paidAt")),
+		field.Enum("status").Values(invoiceStatus...).Default("paid").Annotations(entgql.OrderField("status")),
 
 		field.String("customer_name").Default("other").Optional(),
 		field.String("customer_tax_id").Nillable().Optional(),
@@ -50,28 +52,29 @@ func (Invoice) Fields() []ent.Field {
 		field.String("items").NotEmpty().Comment("stringified JSON of product rows"),
 		field.Float("subtotal").Positive(),
 		field.Float("tax").Min(0),
-		field.Float("total").Positive().Annotations(entgql.OrderField("TOTAL")),
-
-		field.String("notes").Nillable().Optional(),
-		field.String("payment_method").Nillable().Optional(),
-		field.String("bank_name").Nillable().Optional(),
-		field.String("bank_agency").Nillable().Optional(),
-		field.String("bank_account_number").Nillable().Optional(),
-		field.String("bank_account_name").Nillable().Optional(),
-
-		field.String("storage_URI").Nillable().Sensitive().Optional().Annotations(
-		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
-		),
-		field.String("URL").Nillable().Optional().Annotations(
-		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
-		),
-		field.String("filename").Nillable().Optional().Annotations(
-		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
-		),
-		field.Float("size").Positive().Nillable().Optional().Annotations(
-		// entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
-		).Comment("File size in KB"),
+		field.Float("total").Positive().Annotations(entgql.OrderField("total")),
+		field.String("terms").Optional(),
 		field.String("keywords").NotEmpty().MaxLen(255),
+
+		// field.String("notes").Nillable().Optional(),
+		// field.String("payment_method").Nillable().Optional(),
+		// field.String("bank_name").Nillable().Optional(),
+		// field.String("bank_agency").Nillable().Optional(),
+		// field.String("bank_account_number").Nillable().Optional(),
+		// field.String("bank_account_name").Nillable().Optional(),
+
+		// field.String("storage_URI").Nillable().Sensitive().Optional().Annotations(
+		// // entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// ),
+		// field.String("URL").Nillable().Optional().Annotations(
+		// // entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// ),
+		// field.String("filename").Nillable().Optional().Annotations(
+		// // entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// ),
+		// field.Float("size").Positive().Nillable().Optional().Annotations(
+		// // entgql.Skip(entgql.SkipMutationCreateInput, entgql.SkipMutationUpdateInput),
+		// ).Comment("File size in KB"),
 	}
 }
 

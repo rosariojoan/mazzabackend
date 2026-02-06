@@ -45,6 +45,10 @@ type Company struct {
 	LastEntryDate *time.Time `json:"last_entry_date,omitempty"`
 	// LastInvoiceNumber holds the value of the "last_invoice_number" field.
 	LastInvoiceNumber int32 `json:"last_invoice_number,omitempty"`
+	// LastSalesQuotationNumber holds the value of the "last_sales_quotation_number" field.
+	LastSalesQuotationNumber int32 `json:"last_sales_quotation_number,omitempty"`
+	// InvoicePrefix holds the value of the "invoice_prefix" field.
+	InvoicePrefix string `json:"invoice_prefix,omitempty"`
 	// LogoURL holds the value of the "logo_URL" field.
 	LogoURL *string `json:"logo_URL,omitempty"`
 	// LogoStorageURI holds the value of the "logo_storage_URI" field.
@@ -55,6 +59,8 @@ type Company struct {
 	NumberEmployees int32 `json:"number_employees,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone *string `json:"phone,omitempty"`
+	// QuotationPrefix holds the value of the "quotation_prefix" field.
+	QuotationPrefix string `json:"quotation_prefix,omitempty"`
 	// TaxID holds the value of the "tax_id" field.
 	TaxID *string `json:"tax_id,omitempty"`
 	// VatRate holds the value of the "vat_rate" field.
@@ -96,8 +102,6 @@ type CompanyEdges struct {
 	LoanSchedule []*LoanSchedule `json:"loan_schedule,omitempty"`
 	// MemberSignupTokens holds the value of the member_signup_tokens edge.
 	MemberSignupTokens []*MemberSignupToken `json:"member_signup_tokens,omitempty"`
-	// Products holds the value of the products edge.
-	Products []*Product `json:"products,omitempty"`
 	// Projects holds the value of the projects edge.
 	Projects []*Project `json:"projects,omitempty"`
 	// Payables holds the value of the payables edge.
@@ -120,9 +124,9 @@ type CompanyEdges struct {
 	ParentCompany *Company `json:"parent_company,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [23]bool
+	loadedTypes [22]bool
 	// totalCount holds the count of the edges above.
-	totalCount [23]map[string]int
+	totalCount [22]map[string]int
 
 	namedAvailableRoles     map[string][]*UserRole
 	namedAccountingEntries  map[string][]*AccountingEntry
@@ -136,7 +140,6 @@ type CompanyEdges struct {
 	namedLoans              map[string][]*Loan
 	namedLoanSchedule       map[string][]*LoanSchedule
 	namedMemberSignupTokens map[string][]*MemberSignupToken
-	namedProducts           map[string][]*Product
 	namedProjects           map[string][]*Project
 	namedPayables           map[string][]*Payable
 	namedReceivables        map[string][]*Receivable
@@ -256,19 +259,10 @@ func (e CompanyEdges) MemberSignupTokensOrErr() ([]*MemberSignupToken, error) {
 	return nil, &NotLoadedError{edge: "member_signup_tokens"}
 }
 
-// ProductsOrErr returns the Products value or an error if the edge
-// was not loaded in eager-loading.
-func (e CompanyEdges) ProductsOrErr() ([]*Product, error) {
-	if e.loadedTypes[12] {
-		return e.Products, nil
-	}
-	return nil, &NotLoadedError{edge: "products"}
-}
-
 // ProjectsOrErr returns the Projects value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) ProjectsOrErr() ([]*Project, error) {
-	if e.loadedTypes[13] {
+	if e.loadedTypes[12] {
 		return e.Projects, nil
 	}
 	return nil, &NotLoadedError{edge: "projects"}
@@ -277,7 +271,7 @@ func (e CompanyEdges) ProjectsOrErr() ([]*Project, error) {
 // PayablesOrErr returns the Payables value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) PayablesOrErr() ([]*Payable, error) {
-	if e.loadedTypes[14] {
+	if e.loadedTypes[13] {
 		return e.Payables, nil
 	}
 	return nil, &NotLoadedError{edge: "payables"}
@@ -286,7 +280,7 @@ func (e CompanyEdges) PayablesOrErr() ([]*Payable, error) {
 // ReceivablesOrErr returns the Receivables value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) ReceivablesOrErr() ([]*Receivable, error) {
-	if e.loadedTypes[15] {
+	if e.loadedTypes[14] {
 		return e.Receivables, nil
 	}
 	return nil, &NotLoadedError{edge: "receivables"}
@@ -295,7 +289,7 @@ func (e CompanyEdges) ReceivablesOrErr() ([]*Receivable, error) {
 // SuppliersOrErr returns the Suppliers value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
-	if e.loadedTypes[16] {
+	if e.loadedTypes[15] {
 		return e.Suppliers, nil
 	}
 	return nil, &NotLoadedError{edge: "suppliers"}
@@ -304,7 +298,7 @@ func (e CompanyEdges) SuppliersOrErr() ([]*Supplier, error) {
 // TokensOrErr returns the Tokens value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
-	if e.loadedTypes[17] {
+	if e.loadedTypes[16] {
 		return e.Tokens, nil
 	}
 	return nil, &NotLoadedError{edge: "tokens"}
@@ -313,7 +307,7 @@ func (e CompanyEdges) TokensOrErr() ([]*Token, error) {
 // TreasuriesOrErr returns the Treasuries value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
-	if e.loadedTypes[18] {
+	if e.loadedTypes[17] {
 		return e.Treasuries, nil
 	}
 	return nil, &NotLoadedError{edge: "treasuries"}
@@ -322,7 +316,7 @@ func (e CompanyEdges) TreasuriesOrErr() ([]*Treasury, error) {
 // WorkShiftsOrErr returns the WorkShifts value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
-	if e.loadedTypes[19] {
+	if e.loadedTypes[18] {
 		return e.WorkShifts, nil
 	}
 	return nil, &NotLoadedError{edge: "work_shifts"}
@@ -331,7 +325,7 @@ func (e CompanyEdges) WorkShiftsOrErr() ([]*Workshift, error) {
 // UsersOrErr returns the Users value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) UsersOrErr() ([]*User, error) {
-	if e.loadedTypes[20] {
+	if e.loadedTypes[19] {
 		return e.Users, nil
 	}
 	return nil, &NotLoadedError{edge: "users"}
@@ -340,7 +334,7 @@ func (e CompanyEdges) UsersOrErr() ([]*User, error) {
 // DaughterCompaniesOrErr returns the DaughterCompanies value or an error if the edge
 // was not loaded in eager-loading.
 func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
-	if e.loadedTypes[21] {
+	if e.loadedTypes[20] {
 		return e.DaughterCompanies, nil
 	}
 	return nil, &NotLoadedError{edge: "daughter_companies"}
@@ -351,7 +345,7 @@ func (e CompanyEdges) DaughterCompaniesOrErr() ([]*Company, error) {
 func (e CompanyEdges) ParentCompanyOrErr() (*Company, error) {
 	if e.ParentCompany != nil {
 		return e.ParentCompany, nil
-	} else if e.loadedTypes[22] {
+	} else if e.loadedTypes[21] {
 		return nil, &NotFoundError{label: company.Label}
 	}
 	return nil, &NotLoadedError{edge: "parent_company"}
@@ -366,9 +360,9 @@ func (*Company) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case company.FieldVatRate:
 			values[i] = new(sql.NullFloat64)
-		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldNumberEmployees:
+		case company.FieldID, company.FieldLastInvoiceNumber, company.FieldLastSalesQuotationNumber, company.FieldNumberEmployees:
 			values[i] = new(sql.NullInt64)
-		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldLogoURL, company.FieldLogoStorageURI, company.FieldName, company.FieldPhone, company.FieldTaxID, company.FieldWebsite:
+		case company.FieldAddress, company.FieldBaseCurrency, company.FieldCeoName, company.FieldCity, company.FieldCountry, company.FieldDescription, company.FieldEmail, company.FieldIndustry, company.FieldInvoicePrefix, company.FieldLogoURL, company.FieldLogoStorageURI, company.FieldName, company.FieldPhone, company.FieldQuotationPrefix, company.FieldTaxID, company.FieldWebsite:
 			values[i] = new(sql.NullString)
 		case company.FieldCreatedAt, company.FieldUpdatedAt, company.FieldDeletedAt, company.FieldEstablishedAt, company.FieldLastEntryDate:
 			values[i] = new(sql.NullTime)
@@ -486,6 +480,18 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.LastInvoiceNumber = int32(value.Int64)
 			}
+		case company.FieldLastSalesQuotationNumber:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field last_sales_quotation_number", values[i])
+			} else if value.Valid {
+				c.LastSalesQuotationNumber = int32(value.Int64)
+			}
+		case company.FieldInvoicePrefix:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field invoice_prefix", values[i])
+			} else if value.Valid {
+				c.InvoicePrefix = value.String
+			}
 		case company.FieldLogoURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field logo_URL", values[i])
@@ -518,6 +524,12 @@ func (c *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.Phone = new(string)
 				*c.Phone = value.String
+			}
+		case company.FieldQuotationPrefix:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field quotation_prefix", values[i])
+			} else if value.Valid {
+				c.QuotationPrefix = value.String
 			}
 		case company.FieldTaxID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -623,11 +635,6 @@ func (c *Company) QueryLoanSchedule() *LoanScheduleQuery {
 // QueryMemberSignupTokens queries the "member_signup_tokens" edge of the Company entity.
 func (c *Company) QueryMemberSignupTokens() *MemberSignupTokenQuery {
 	return NewCompanyClient(c.config).QueryMemberSignupTokens(c)
-}
-
-// QueryProducts queries the "products" edge of the Company entity.
-func (c *Company) QueryProducts() *ProductQuery {
-	return NewCompanyClient(c.config).QueryProducts(c)
 }
 
 // QueryProjects queries the "projects" edge of the Company entity.
@@ -759,6 +766,12 @@ func (c *Company) String() string {
 	builder.WriteString("last_invoice_number=")
 	builder.WriteString(fmt.Sprintf("%v", c.LastInvoiceNumber))
 	builder.WriteString(", ")
+	builder.WriteString("last_sales_quotation_number=")
+	builder.WriteString(fmt.Sprintf("%v", c.LastSalesQuotationNumber))
+	builder.WriteString(", ")
+	builder.WriteString("invoice_prefix=")
+	builder.WriteString(c.InvoicePrefix)
+	builder.WriteString(", ")
 	if v := c.LogoURL; v != nil {
 		builder.WriteString("logo_URL=")
 		builder.WriteString(*v)
@@ -776,6 +789,9 @@ func (c *Company) String() string {
 		builder.WriteString("phone=")
 		builder.WriteString(*v)
 	}
+	builder.WriteString(", ")
+	builder.WriteString("quotation_prefix=")
+	builder.WriteString(c.QuotationPrefix)
 	builder.WriteString(", ")
 	if v := c.TaxID; v != nil {
 		builder.WriteString("tax_id=")
@@ -1081,30 +1097,6 @@ func (c *Company) appendNamedMemberSignupTokens(name string, edges ...*MemberSig
 		c.Edges.namedMemberSignupTokens[name] = []*MemberSignupToken{}
 	} else {
 		c.Edges.namedMemberSignupTokens[name] = append(c.Edges.namedMemberSignupTokens[name], edges...)
-	}
-}
-
-// NamedProducts returns the Products named value or an error if the edge was not
-// loaded in eager-loading with this name.
-func (c *Company) NamedProducts(name string) ([]*Product, error) {
-	if c.Edges.namedProducts == nil {
-		return nil, &NotLoadedError{edge: name}
-	}
-	nodes, ok := c.Edges.namedProducts[name]
-	if !ok {
-		return nil, &NotLoadedError{edge: name}
-	}
-	return nodes, nil
-}
-
-func (c *Company) appendNamedProducts(name string, edges ...*Product) {
-	if c.Edges.namedProducts == nil {
-		c.Edges.namedProducts = make(map[string][]*Product)
-	}
-	if len(edges) == 0 {
-		c.Edges.namedProducts[name] = []*Product{}
-	} else {
-		c.Edges.namedProducts[name] = append(c.Edges.namedProducts[name], edges...)
 	}
 }
 
